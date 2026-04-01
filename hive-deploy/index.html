@@ -2166,7 +2166,7 @@ window.onerror = function(msg, src, line, col, err) {
         <span class="radius-label"><i data-lucide="target"></i><span data-i18n="searchRadius">Raio de Pesquisa</span></span>
         <span class="radius-live-val" id="radiusLiveVal">🇵🇹 Todo</span>
       </div>
-      <input type="range" class="radius-slider" min="0" max="100" value="100" id="radiusSlider"/>
+      <input type="range" class="radius-slider" min="0" max="100" value="50" id="radiusSlider"/>
       <div class="radius-marks">
         <span style="left:0%">5</span>
         <span style="left:25%">15</span>
@@ -5437,8 +5437,8 @@ function clearAllFilters() {
   document.getElementById('ratingAny').checked      = true;
   const _uniInput = document.getElementById('searchUnified'); if(_uniInput) _uniInput.value = '';
   document.getElementById('sortAll').checked         = true;
-  document.getElementById('radiusSlider').value     = 100;
-  updateRadius(100);
+  document.getElementById('radiusSlider').value     = 50;
+  updateRadius(50);
   renderTagCloud();
   applyFilters();
   showToast(t('toastFiltersCleared'));
