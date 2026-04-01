@@ -5071,14 +5071,9 @@ function renderSectorFilters() {
   const sg = tr.sectorGroups || {};
   const sc = tr.sectors || {};
 
-  // Company count per subcategory — filtered by current radius so counts match map
-  const circleCenter = radiusCircle ? radiusCircle.getLatLng() : { lat: currentMapCenter[0], lng: currentMapCenter[1] };
-  const searchRadius = getRadiusKm();
-  const companiesInRadius = companies.filter(c =>
-    calculateDistance(circleCenter.lat, circleCenter.lng, c.lat, c.lng) <= searchRadius
-  );
+  // Company count per subcategory — total count regardless of radius
   const subCounts = {};
-  companiesInRadius.forEach(c => {
+  companies.forEach(c => {
     (c.sectors || [c.sector]).forEach(s => { subCounts[s] = (subCounts[s] || 0) + 1; });
   });
 
@@ -5131,7 +5126,7 @@ function renderSectorFilters() {
 
     catItem.innerHTML = `
       <span class="cat-icon" style="font-size:18px;line-height:1">${emoji}</span>
-      <span class="cat-label">${shortName}</span>
+      <span class="cat-label">${shortName}${groupCount > 0 ? ` <span style="opacity:.5;font-size:10px">(${groupCount})</span>` : ''}</span>
       <span class="cat-arrow">▾</span>
       ${dropdownHTML}
     `;
