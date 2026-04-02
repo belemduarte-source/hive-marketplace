@@ -4040,7 +4040,7 @@ function applyI18n() {
   }[currentLang];
 
   // 7. Chat input placeholder
-  document.getElementById('chatInput').placeholder = tr.chatPlaceholder;
+  const _chatIn = document.getElementById('chatInput'); if (_chatIn) _chatIn.placeholder = tr.chatPlaceholder;
 
   // 8. Re-render dynamic sectors & zones
   renderRegisterSectorSelect();
@@ -4282,7 +4282,7 @@ async function loadCompaniesFromDB() {
         emoji: d.emoji || '🏢', color: d.color || '#f97316',
         pinType: d.pinType || 'std', lat: d.lat, lng: d.lng,
         address: d.address || '', city: d.city || '', country: d.country || 'pt',
-        axes: [{l:'Qualidade',v:Math.round(d.rating*20)||0},{l:'Pontualidade',v:Math.round((d.rating-0.2)*20)||0},{l:'Atendimento',v:Math.round((d.rating+0.1)*20)||0},{l:'Preço',v:Math.round((d.rating-0.3)*20)||0}]
+        axes: [{l:'Qualidade',v:Math.min(5,d.rating||0)},{l:'Pontualidade',v:Math.min(5,Math.max(0,(d.rating||0)-0.2))},{l:'Atendimento',v:Math.min(5,Math.max(0,(d.rating||0)+0.1))},{l:'Preço',v:Math.min(5,Math.max(0,(d.rating||0)-0.3))}]
       });
     });
     nextCompanyId = Math.max(...companies.map(c => Number(c.id))) + 1;
@@ -6227,7 +6227,7 @@ setTimeout(() => detectUserLocation(true), 50);
 let lastScrollTop = 0;
 const nav = document.querySelector('nav');
 const detailPanel = document.querySelector('.detail-panel');
-const searchBar = document.querySelector('.search-bar');
+const searchBar = document.querySelector('.ub-bar');
 const main = document.querySelector('.main');
 
 function hideNavOnScroll(currentScrollTop) {
