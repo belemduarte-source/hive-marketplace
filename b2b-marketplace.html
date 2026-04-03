@@ -1814,7 +1814,7 @@ window.onerror = function(msg, src, line, col, err) {
         </button>
         <button class="lp-sb-tab" id="tabBtnCompany" onclick="heroSetMode('company')">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          <span>Por Empresa</span>
+          <span data-i18n="lpTabCompany">Por Empresa</span>
         </button>
       </div>
 
@@ -1851,8 +1851,8 @@ window.onerror = function(msg, src, line, col, err) {
           <div id="heroCompanyWrap" style="display:none">
             <div class="lp-sb-icon">🏢</div>
             <div class="lp-sb-inner">
-              <div class="lp-sb-label">Nome da Empresa</div>
-              <input type="text" id="heroCompanyName" placeholder="Ex: Construções Ribeiro, ElectroLux..." autocomplete="off"
+              <div class="lp-sb-label" data-i18n="lpCompanyLabel">Nome da Empresa</div>
+              <input type="text" id="heroCompanyName" placeholder="Ex: Construções Ribeiro, ElectroLux..." data-i18n-ph="lpCompanyPh" autocomplete="off"
                      onkeydown="if(event.key==='Enter') heroSearch()"/>
             </div>
           </div>
@@ -2035,7 +2035,7 @@ window.onerror = function(msg, src, line, col, err) {
         <div class="footer-logo">
           <span style="font-size:24px;font-weight:800;color:#f97316">Hive</span>
         </div>
-        <p class="footer-desc">A plataforma que liga clientes a profissionais de construção em Portugal. Pesquise, compare e contacte — tudo num só lugar.</p>
+        <p class="footer-desc" data-i18n="footerDesc">A plataforma que liga clientes a profissionais de construção em Portugal. Pesquise, compare e contacte — tudo num só lugar.</p>
         <div class="footer-social">
           <a href="#" class="footer-social-icon" title="Facebook">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
@@ -2049,28 +2049,28 @@ window.onerror = function(msg, src, line, col, err) {
         </div>
       </div>
       <div class="footer-col">
-        <h4 class="footer-title">Navegação</h4>
-        <a class="footer-link" onclick="showTab('home')">Início</a>
-        <a class="footer-link" onclick="showTab('search')">Pesquisa</a>
-        <a class="footer-link" onclick="showTab('about')">Sobre Nós</a>
-        <a class="footer-link" onclick="openRegister()">Registar Empresa</a>
+        <h4 class="footer-title" data-i18n="footerNav">Navegação</h4>
+        <a class="footer-link" onclick="showTab('home')" data-i18n="navHome">Início</a>
+        <a class="footer-link" onclick="showTab('search')" data-i18n="navSearch">Pesquisa</a>
+        <a class="footer-link" onclick="showTab('about')" data-i18n="navAbout">Sobre Nós</a>
+        <a class="footer-link" onclick="openRegister()" data-i18n="navRegister">Registar Empresa</a>
       </div>
       <div class="footer-col">
-        <h4 class="footer-title">Legal</h4>
-        <a class="footer-link" href="#">Termos de Serviço</a>
-        <a class="footer-link" href="#">Política de Privacidade</a>
-        <a class="footer-link" href="#">Cookies</a>
+        <h4 class="footer-title" data-i18n="footerLegal">Legal</h4>
+        <a class="footer-link" href="#" data-i18n="footerTerms">Termos de Serviço</a>
+        <a class="footer-link" href="#" data-i18n="footerPrivacy">Política de Privacidade</a>
+        <a class="footer-link" href="#" data-i18n="footerCookies">Cookies</a>
         <a class="footer-link" href="#">RGPD</a>
       </div>
       <div class="footer-col">
-        <h4 class="footer-title">Contacto</h4>
+        <h4 class="footer-title" data-i18n="footerContact">Contacto</h4>
         <p class="footer-contact">📧 info@hive.pt</p>
         <p class="footer-contact">📞 +351 210 000 000</p>
         <p class="footer-contact">📍 Lisboa, Portugal</p>
       </div>
     </div>
     <div class="footer-bottom">
-      <p>© 2026 Hive — Todos os direitos reservados</p>
+      <p data-i18n="footerRights">© 2026 Hive — Todos os direitos reservados</p>
     </div>
   </footer>
 
@@ -2265,18 +2265,18 @@ window.onerror = function(msg, src, line, col, err) {
     <!-- MAP LEGEND -->
     <div class="map-legend" id="mapLegend">
       <div class="map-legend-toggle" onclick="document.getElementById('mapLegend').classList.toggle('collapsed')">
-        <span class="map-legend-title">🎨 Legenda</span>
+        <span class="map-legend-title" data-i18n="legendTitle">🎨 Legenda</span>
         <span class="map-legend-arrow">▾</span>
       </div>
       <div class="map-legend-body">
-        <div class="map-legend-item"><span class="map-legend-dot" style="background:#e74c3c"></span>Estrutura</div>
-        <div class="map-legend-item"><span class="map-legend-dot" style="background:#f1c40f"></span>Instalações</div>
-        <div class="map-legend-item"><span class="map-legend-dot" style="background:#9b59b6"></span>Acabamentos</div>
-        <div class="map-legend-item"><span class="map-legend-dot" style="background:#8B4513"></span>Carpintaria</div>
-        <div class="map-legend-item"><span class="map-legend-dot" style="background:#607d8b"></span>Serralharia</div>
-        <div class="map-legend-item"><span class="map-legend-dot" style="background:#2ecc71"></span>Exterior</div>
-        <div class="map-legend-item"><span class="map-legend-dot" style="background:#3498db"></span>Projeto</div>
-        <div class="map-legend-item"><span class="map-legend-dot" style="background:#f97316"></span>Chave na Mão</div>
+        <div class="map-legend-item"><span class="map-legend-dot" style="background:#e74c3c"></span><span data-i18n="legendEstrutura">Estrutura</span></div>
+        <div class="map-legend-item"><span class="map-legend-dot" style="background:#f1c40f"></span><span data-i18n="legendInstalacoes">Instalações</span></div>
+        <div class="map-legend-item"><span class="map-legend-dot" style="background:#9b59b6"></span><span data-i18n="legendAcabamentos">Acabamentos</span></div>
+        <div class="map-legend-item"><span class="map-legend-dot" style="background:#8B4513"></span><span data-i18n="legendCarpintaria">Carpintaria</span></div>
+        <div class="map-legend-item"><span class="map-legend-dot" style="background:#607d8b"></span><span data-i18n="legendSerralharia">Serralharia</span></div>
+        <div class="map-legend-item"><span class="map-legend-dot" style="background:#2ecc71"></span><span data-i18n="legendExterior">Exterior</span></div>
+        <div class="map-legend-item"><span class="map-legend-dot" style="background:#3498db"></span><span data-i18n="legendProjeto">Projeto</span></div>
+        <div class="map-legend-item"><span class="map-legend-dot" style="background:#f97316"></span><span data-i18n="legendChaveNaMao">Chave na Mão</span></div>
       </div>
     </div>
     <!-- Floating filter button — visible only on mobile (CSS hides it on desktop) -->
@@ -2309,7 +2309,7 @@ window.onerror = function(msg, src, line, col, err) {
   <div class="dp-quote-bar">
     <button class="btn-request-quote" id="btnRequestQuote" onclick="requestQuote()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      Pedir Orçamento
+      <span data-i18n="btnRequestQuote">Pedir Orçamento</span>
     </button>
     <button class="btn-quote-secondary" onclick="callCompany()" title="Ligar">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -2364,12 +2364,12 @@ window.onerror = function(msg, src, line, col, err) {
       <div class="dp-section-title"><i data-lucide="message-circle"></i><span data-i18n="detailReviews">Avaliações Verificadas</span></div>
       <div id="dpReviews">
         <div class="review-item">
-          <div class="review-top"><span class="review-name">TechCorp Lda.</span><span class="review-date">Jan 2025</span></div>
+          <div class="review-top"><span class="review-name" data-i18n="review1Author">TechCorp Lda.</span><span class="review-date">Jan 2025</span></div>
           <div class="stars">★★★★★</div>
           <div class="review-text" data-i18n="review1">"Excelente parceiro, entregou dentro do prazo e com qualidade acima do esperado."</div>
         </div>
         <div class="review-item">
-          <div class="review-top"><span class="review-name">Ibérica Solutions SA</span><span class="review-date">Nov 2024</span></div>
+          <div class="review-top"><span class="review-name" data-i18n="review2Author">Ibérica Solutions SA</span><span class="review-date">Nov 2024</span></div>
           <div class="stars">★★★★☆</div>
           <div class="review-text" data-i18n="review2">"Boa comunicação e preços competitivos. Recomendado para projetos de médio prazo."</div>
         </div>
@@ -2424,13 +2424,13 @@ window.onerror = function(msg, src, line, col, err) {
           <button class="auth-back" onclick="regGoBack()">←</button>
           <div id="regTypeLabel" style="font-size:13px;font-weight:700;color:var(--text)"></div>
         </div>
-        <div class="form-row"><label>Nome completo <span class="req">*</span></label><input type="text" id="regAuthName" placeholder="O seu nome"/></div>
+        <div class="form-row"><label><span data-i18n="regAuthNameLabel">Nome completo</span> <span class="req">*</span></label><input type="text" id="regAuthName" placeholder="O seu nome" data-i18n-ph="regAuthNamePh"/></div>
         <!-- Company name - only for empresa -->
-        <div class="form-row" id="regCompanyRow" style="display:none"><label>Nome da empresa <span class="req">*</span></label><input type="text" id="regAuthCompany" placeholder="Nome da empresa"/></div>
+        <div class="form-row" id="regCompanyRow" style="display:none"><label><span data-i18n="regAuthCompanyLabel">Nome da empresa</span> <span class="req">*</span></label><input type="text" id="regAuthCompany" placeholder="Nome da empresa" data-i18n-ph="regAuthCompanyPh"/></div>
         <div class="form-row"><label>Email <span class="req">*</span></label><input type="email" id="regAuthEmail" placeholder="email@exemplo.com"/></div>
         <div class="form-row"><label>Palavra-passe <span class="req">*</span></label><input type="password" id="regAuthPass" placeholder="Mínimo 6 caracteres"/></div>
         <!-- Phone - only for empresa -->
-        <div class="form-row" id="regPhoneRow" style="display:none"><label>Telefone</label><input type="tel" id="regAuthPhone" placeholder="+351 912 345 678"/></div>
+        <div class="form-row" id="regPhoneRow" style="display:none"><label data-i18n="regAuthPhoneLabel">Telefone</label><input type="tel" id="regAuthPhone" placeholder="+351 912 345 678"/></div>
         <button class="btn-submit" style="width:100%;padding:11px;font-size:14px;margin-top:6px" onclick="doRegister()">Criar Conta</button>
       </div>
       <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">Já tem conta? <a href="#" onclick="switchLoginTab('login');return false" style="color:var(--primary);font-weight:700;text-decoration:none">Entrar</a></div>
@@ -2985,7 +2985,75 @@ const translations = {
     lpB2bBtn:'Explorar como empresa →',
     lpB2cBadge:'B2C · Para Particulares', lpB2cTitle:'Particular para Empresa',
     lpB2cDesc:'Precisa de reparações, renovações ou instalações? Compare profissionais verificados e peça orçamentos sem complicações.',
-    lpB2cBtn:'Encontrar profissional →'
+    lpB2cBtn:'Encontrar profissional →',
+    // ── Missing i18n keys ──
+    toastEmailUnavailable:'📧 Email não disponível — utilize o WhatsApp ou Chat interno',
+    toastPhoneUnavailable:'📞 Telefone não disponível',
+    toastLinkCopied:'📋 Link copiado!',
+    toastCopyFailed:'Não foi possível copiar',
+    toastGeoNotSupported:'Geolocalização não suportada neste browser.',
+    toastGeoPermissionDenied:'Permissão de localização negada.',
+    toastGeoPositionUnavailable:'Posição não disponível.',
+    toastGeoTimeout:'Tempo de espera excedido.',
+    toastGeoError:'Erro ao obter localização.',
+    toastLocationFound:'📍 Localização atual encontrada!',
+    toastLocationFailed:'Não foi possível obter a localização.',
+    toastLocationError:'Erro ao procurar localização.',
+    toastRegisterError:'❌ Erro ao guardar. Verifique a ligação e tente novamente.',
+    emailQuoteSubject:'Pedido de Orçamento',
+    emailQuoteBody:'Olá,\n\nGostaria de solicitar um orçamento para os vossos serviços.\n\nDetalhes do projeto:\n- Descrição: \n- Localização: \n- Prazo desejado: \n\nAguardo a vossa resposta.\n\nCumprimentos',
+    searchListEmpty:'Nenhuma empresa encontrada',
+    searchListEmptySub:'Tente ajustar os filtros ou aumentar o raio de pesquisa',
+    mapHintNoResults:'Nenhuma empresa encontrada nesta área',
+    mapHintNoResultsSub:'Tente aumentar o raio de pesquisa no mapa ou selecione outra atividade',
+    mapHintSelectSector:'Selecione uma área de atividade',
+    mapHintSelectSectorSub:'para ver empresas no mapa',
+    noRatingText:'Sem avaliação',
+    regTypeCompany:'🏢 Registo Empresa',
+    regTypeClient:'🔍 Registo Cliente',
+    typeCompanyLabel:'Empresa',
+    typeClientLabel:'Cliente',
+    avatarRegisterCompany:'Registar Empresa',
+    regAuthNameLabel:'Nome completo',
+    regAuthNamePh:'O seu nome',
+    regAuthCompanyLabel:'Nome da empresa',
+    regAuthCompanyPh:'Nome da empresa',
+    regAuthPhoneLabel:'Telefone',
+    lpTabCompany:'Por Empresa',
+    lpCompanyLabel:'Nome da Empresa',
+    lpCompanyPh:'Ex: Construções Ribeiro, ElectroLux...',
+    legendTitle:'🎨 Legenda',
+    legendEstrutura:'Estrutura',
+    legendInstalacoes:'Instalações',
+    legendAcabamentos:'Acabamentos',
+    legendCarpintaria:'Carpintaria',
+    legendSerralharia:'Serralharia',
+    legendExterior:'Exterior',
+    legendProjeto:'Projeto',
+    legendChaveNaMao:'Chave na Mão',
+    btnRequestQuote:'Pedir Orçamento',
+    testimonial1Name:'A sua empresa aqui',
+    testimonial1Sector:'Registe-se na HIVE',
+    testimonial1Quote:'Junte-se à plataforma e conecte-se com novos clientes em toda Portugal.',
+    testimonial2Name:'Profissionais verificados',
+    testimonial2Sector:'Qualidade garantida',
+    testimonial2Quote:'Todas as empresas são avaliadas pelos clientes para garantir o melhor serviço.',
+    testimonial3Name:'Orçamentos gratuitos',
+    testimonial3Sector:'Sem compromisso',
+    testimonial3Quote:'Peça orçamentos a vários profissionais e compare preços facilmente.',
+    testimonial4Name:'Chave na mão',
+    testimonial4Sector:'Projetos completos',
+    testimonial4Quote:'Encontre todos os profissionais para o seu projeto numa só plataforma.',
+    footerDesc:'Marketplace de construção em Portugal. Conectamos empresas e particulares com profissionais verificados.',
+    footerNav:'Navegação',
+    footerLegal:'Legal',
+    footerContact:'Contacto',
+    footerTerms:'Termos de Serviço',
+    footerPrivacy:'Política de Privacidade',
+    footerCookies:'Cookies',
+    footerRights:'© 2026 Hive — Todos os direitos reservados',
+    review1Author:'TechCorp Lda.',
+    review2Author:'Ibérica Solutions SA'
   },
   en: {
     navHome:'Home', navSearch:'Search', navBuyer:'Buyer Panel',
@@ -3172,7 +3240,75 @@ const translations = {
     lpB2bBtn:'Explore as a company →',
     lpB2cBadge:'B2C · For Individuals', lpB2cTitle:'Individual to Business',
     lpB2cDesc:'Need repairs, renovations or installations? Compare verified professionals and request quotes hassle-free.',
-    lpB2cBtn:'Find a professional →'
+    lpB2cBtn:'Find a professional →',
+    // ── Missing i18n keys ──
+    toastEmailUnavailable:'📧 Email not available — use WhatsApp or internal Chat',
+    toastPhoneUnavailable:'📞 Phone not available',
+    toastLinkCopied:'📋 Link copied!',
+    toastCopyFailed:'Could not copy',
+    toastGeoNotSupported:'Geolocation not supported in this browser.',
+    toastGeoPermissionDenied:'Location permission denied.',
+    toastGeoPositionUnavailable:'Position unavailable.',
+    toastGeoTimeout:'Location request timed out.',
+    toastGeoError:'Error getting location.',
+    toastLocationFound:'📍 Current location found!',
+    toastLocationFailed:'Could not get location.',
+    toastLocationError:'Error searching location.',
+    toastRegisterError:'❌ Error saving. Check connection and try again.',
+    emailQuoteSubject:'Quote Request',
+    emailQuoteBody:'Hello,\n\nI would like to request a quote for your services.\n\nProject details:\n- Description: \n- Location: \n- Desired deadline: \n\nLooking forward to your reply.\n\nBest regards',
+    searchListEmpty:'No companies found',
+    searchListEmptySub:'Try adjusting the filters or increasing the search radius',
+    mapHintNoResults:'No companies found in this area',
+    mapHintNoResultsSub:'Try increasing the search radius or selecting another activity',
+    mapHintSelectSector:'Select an activity area',
+    mapHintSelectSectorSub:'to see companies on the map',
+    noRatingText:'No ratings',
+    regTypeCompany:'🏢 Company Registration',
+    regTypeClient:'🔍 Client Registration',
+    typeCompanyLabel:'Company',
+    typeClientLabel:'Client',
+    avatarRegisterCompany:'Register Company',
+    regAuthNameLabel:'Full name',
+    regAuthNamePh:'Your name',
+    regAuthCompanyLabel:'Company name',
+    regAuthCompanyPh:'Company name',
+    regAuthPhoneLabel:'Phone',
+    lpTabCompany:'By Company',
+    lpCompanyLabel:'Company Name',
+    lpCompanyPh:'E.g.: Construções Ribeiro, ElectroLux...',
+    legendTitle:'🎨 Legend',
+    legendEstrutura:'Structure',
+    legendInstalacoes:'Installations',
+    legendAcabamentos:'Finishes',
+    legendCarpintaria:'Carpentry',
+    legendSerralharia:'Metalwork',
+    legendExterior:'Exterior',
+    legendProjeto:'Design',
+    legendChaveNaMao:'Turnkey',
+    btnRequestQuote:'Request Quote',
+    testimonial1Name:'Your company here',
+    testimonial1Sector:'Register on HIVE',
+    testimonial1Quote:'Join the platform and connect with new clients across Portugal.',
+    testimonial2Name:'Verified professionals',
+    testimonial2Sector:'Quality guaranteed',
+    testimonial2Quote:'All companies are rated by clients to ensure the best service.',
+    testimonial3Name:'Free quotes',
+    testimonial3Sector:'No commitment',
+    testimonial3Quote:'Request quotes from multiple professionals and compare prices easily.',
+    testimonial4Name:'Turnkey',
+    testimonial4Sector:'Complete projects',
+    testimonial4Quote:'Find all the professionals for your project on one platform.',
+    footerDesc:'Construction marketplace in Portugal. We connect businesses and individuals with verified professionals.',
+    footerNav:'Navigation',
+    footerLegal:'Legal',
+    footerContact:'Contact',
+    footerTerms:'Terms of Service',
+    footerPrivacy:'Privacy Policy',
+    footerCookies:'Cookies',
+    footerRights:'© 2026 Hive — All rights reserved',
+    review1Author:'TechCorp Ltd.',
+    review2Author:'Ibérica Solutions SA'
   },
   fr: {
     navHome:'Accueil', navSearch:'Recherche', navBuyer:'Espace Acheteur',
@@ -3362,7 +3498,75 @@ const translations = {
     lpB2bBtn:'Explorer comme entreprise →',
     lpB2cBadge:'B2C · Pour Particuliers', lpB2cTitle:'Particulier à Entreprise',
     lpB2cDesc:"Besoin de réparations, de rénovations ou d'installations? Comparez des professionnels vérifiés et demandez des devis sans complications.",
-    lpB2cBtn:'Trouver un professionnel →'
+    lpB2cBtn:'Trouver un professionnel →',
+    // ── Missing i18n keys ──
+    toastEmailUnavailable:"📧 E-mail non disponible — utilisez WhatsApp ou le Chat interne",
+    toastPhoneUnavailable:'📞 Téléphone non disponible',
+    toastLinkCopied:'📋 Lien copié !',
+    toastCopyFailed:'Impossible de copier',
+    toastGeoNotSupported:'Géolocalisation non supportée par ce navigateur.',
+    toastGeoPermissionDenied:'Permission de localisation refusée.',
+    toastGeoPositionUnavailable:'Position non disponible.',
+    toastGeoTimeout:'Délai de localisation dépassé.',
+    toastGeoError:'Erreur de localisation.',
+    toastLocationFound:'📍 Position actuelle trouvée !',
+    toastLocationFailed:'Impossible de trouver la position.',
+    toastLocationError:'Erreur lors de la recherche de localisation.',
+    toastRegisterError:'❌ Erreur lors de la sauvegarde. Vérifiez la connexion et réessayez.',
+    emailQuoteSubject:'Demande de Devis',
+    emailQuoteBody:"Bonjour,\n\nJe souhaiterais obtenir un devis pour vos services.\n\nDétails du projet :\n- Description : \n- Localisation : \n- Délai souhaité : \n\nDans l'attente de votre réponse.\n\nCordialement",
+    searchListEmpty:'Aucune entreprise trouvée',
+    searchListEmptySub:'Essayez de modifier les filtres ou augmenter le rayon de recherche',
+    mapHintNoResults:'Aucune entreprise trouvée dans cette zone',
+    mapHintNoResultsSub:'Essayez d\'augmenter le rayon de recherche ou sélectionnez une autre activité',
+    mapHintSelectSector:'Sélectionnez un domaine d\'activité',
+    mapHintSelectSectorSub:'pour voir les entreprises sur la carte',
+    noRatingText:'Pas encore noté',
+    regTypeCompany:"🏢 Inscription Entreprise",
+    regTypeClient:'🔍 Inscription Client',
+    typeCompanyLabel:'Entreprise',
+    typeClientLabel:'Client',
+    avatarRegisterCompany:'Enregistrer Entreprise',
+    regAuthNameLabel:'Nom complet',
+    regAuthNamePh:'Votre nom',
+    regAuthCompanyLabel:"Nom de l'entreprise",
+    regAuthCompanyPh:"Nom de l'entreprise",
+    regAuthPhoneLabel:'Téléphone',
+    lpTabCompany:'Par Entreprise',
+    lpCompanyLabel:"Nom de l'Entreprise",
+    lpCompanyPh:'Ex : Construções Ribeiro, ElectroLux...',
+    legendTitle:'🎨 Légende',
+    legendEstrutura:'Structure',
+    legendInstalacoes:'Installations',
+    legendAcabamentos:'Finitions',
+    legendCarpintaria:'Menuiserie',
+    legendSerralharia:'Métallerie',
+    legendExterior:'Extérieur',
+    legendProjeto:'Projet',
+    legendChaveNaMao:'Clé en main',
+    btnRequestQuote:'Demander un Devis',
+    testimonial1Name:'Votre entreprise ici',
+    testimonial1Sector:'Inscrivez-vous sur HIVE',
+    testimonial1Quote:'Rejoignez la plateforme et connectez-vous avec de nouveaux clients à travers le Portugal.',
+    testimonial2Name:'Professionnels vérifiés',
+    testimonial2Sector:'Qualité garantie',
+    testimonial2Quote:'Toutes les entreprises sont évaluées par les clients pour garantir le meilleur service.',
+    testimonial3Name:'Devis gratuits',
+    testimonial3Sector:'Sans engagement',
+    testimonial3Quote:'Demandez des devis à plusieurs professionnels et comparez les prix facilement.',
+    testimonial4Name:'Clé en main',
+    testimonial4Sector:'Projets complets',
+    testimonial4Quote:'Trouvez tous les professionnels pour votre projet sur une seule plateforme.',
+    footerDesc:'Marketplace de construction au Portugal. Nous connectons entreprises et particuliers avec des professionnels vérifiés.',
+    footerNav:'Navigation',
+    footerLegal:'Juridique',
+    footerContact:'Contact',
+    footerTerms:'Conditions de Service',
+    footerPrivacy:'Politique de Confidentialité',
+    footerCookies:'Cookies',
+    footerRights:'© 2026 Hive — Tous droits réservés',
+    review1Author:'TechCorp Sarl',
+    review2Author:'Ibérica Solutions SA'
   }
 };
 
@@ -3923,12 +4127,12 @@ function renderTestimonialBanner() {
   if (reviewed.length === 0) {
     // Show placeholder testimonials when no real companies exist
     const placeholders = [
-      { emoji:'🏗️', color:'#f97316', name:'A sua empresa aqui', sector:'Registe-se na HIVE', rating:5, quote:'Junte-se à plataforma e conecte-se com novos clientes em toda Portugal.' },
-      { emoji:'⚡', color:'#3b82f6', name:'Profissionais verificados', sector:'Qualidade garantida', rating:5, quote:'Todas as empresas são avaliadas pelos clientes para garantir o melhor serviço.' },
-      { emoji:'🎨', color:'#8b5cf6', name:'Orçamentos gratuitos', sector:'Sem compromisso', rating:5, quote:'Peça orçamentos a vários profissionais e compare preços facilmente.' },
-      { emoji:'🔑', color:'#10b981', name:'Chave na mão', sector:'Projetos completos', rating:5, quote:'Encontre todos os profissionais para o seu projeto numa só plataforma.' },
-      { emoji:'📐', color:'#06b6d4', name:'Do projeto à obra', sector:'Acompanhamento total', rating:5, quote:'Desde a arquitetura até aos acabamentos, tudo numa plataforma.' },
-      { emoji:'🌿', color:'#22c55e', name:'Todo Portugal', sector:'Norte a Sul', rating:5, quote:'Profissionais disponíveis em todas as regiões do país.' }
+      { emoji:'🏗️', color:'#f97316', name:t('testimonial1Name'), sector:t('testimonial1Sector'), rating:5, quote:t('testimonial1Quote') },
+      { emoji:'⚡', color:'#3b82f6', name:t('testimonial2Name'), sector:t('testimonial2Sector'), rating:5, quote:t('testimonial2Quote') },
+      { emoji:'🎨', color:'#8b5cf6', name:t('testimonial3Name'), sector:t('testimonial3Sector'), rating:5, quote:t('testimonial3Quote') },
+      { emoji:'🔑', color:'#10b981', name:t('testimonial4Name'), sector:t('testimonial4Sector'), rating:5, quote:t('testimonial4Quote') },
+      { emoji:'📐', color:'#06b6d4', name:t('testimonial1Name'), sector:t('testimonial1Sector'), rating:5, quote:t('testimonial1Quote') },
+      { emoji:'🌿', color:'#22c55e', name:t('testimonial2Name'), sector:t('testimonial2Sector'), rating:5, quote:t('testimonial2Quote') }
     ];
     const items = placeholders;
     const cards = items.map(c => `
@@ -5073,7 +5277,7 @@ function geocodeLocation(location) {
     })
     .catch(e => {
       console.error('Geocoding error:', e);
-      showToast('Erro ao procurar localização.');
+      showToast(t('toastLocationError'));
     });
 }
 
@@ -5460,11 +5664,11 @@ function applyFilters() {
     } else if (hasSectorSelected) {
       // Sector selected but no results — suggest increasing radius
       hint.classList.remove('hidden');
-      hintText.innerHTML = 'Nenhuma empresa encontrada nesta área<br><span>Tente aumentar o raio de pesquisa no mapa ou selecione outra atividade</span>';
+      hintText.innerHTML = t('mapHintNoResults') + '<br><span>' + t('mapHintNoResultsSub') + '</span>';
     } else {
       // No sector selected — default message
       hint.classList.remove('hidden');
-      hintText.innerHTML = 'Selecione uma área de atividade<br><span>para ver empresas no mapa</span>';
+      hintText.innerHTML = t('mapHintSelectSector') + '<br><span>' + t('mapHintSelectSectorSub') + '</span>';
     }
   }
   const l2hint = document.getElementById('layer2Hint');
@@ -5546,13 +5750,13 @@ function renderSearchList() {
   if (!listEl) return;
   const filtered = getFiltered();
   if (filtered.length === 0) {
-    listEl.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)"><p style="font-size:18px;margin-bottom:8px">Nenhuma empresa encontrada</p><p style="font-size:13px">Tente ajustar os filtros ou aumentar o raio de pesquisa</p></div>';
+    listEl.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)"><p style="font-size:18px;margin-bottom:8px">' + t('searchListEmpty') + '</p><p style="font-size:13px">' + t('searchListEmptySub') + '</p></div>';
     return;
   }
   const tr = translations[currentLang] || translations.pt;
   listEl.innerHTML = filtered.map(c => {
     const sectorLabel = (tr.sectors && tr.sectors[c.sector]) || c.sector || '';
-    const stars = c.rating > 0 ? '★'.repeat(Math.round(c.rating)) + ` ${c.rating.toFixed(1)}` : 'Sem avaliação';
+    const stars = c.rating > 0 ? '★'.repeat(Math.round(c.rating)) + ` ${c.rating.toFixed(1)}` : t('noRatingText');
     const tags = (c.tags || []).slice(0, 3).map(t => `<span class="slc-tag">${t}</span>`).join('');
     return `<div class="search-list-card" onclick="setSearchView('map');setTimeout(()=>openDetail(${c.id}),300)">
       <div class="slc-header">
@@ -5745,7 +5949,7 @@ function submitRegister() {
       processRegistration(result.lat, result.lng);
     }).catch(e => {
       console.error('Error:', e);
-      showToast('Erro ao processar localização. Tente novamente.');
+      showToast(t('toastLocationError'));
     });
   }
 
@@ -5797,7 +6001,7 @@ function submitRegister() {
     })
     .catch(e => {
       console.error('Geocoding error:', e);
-      showToast('Erro ao processar localização. Tente novamente.');
+      showToast(t('toastLocationError'));
     });
 
   async function processRegistration(lat, lng) {
@@ -5858,9 +6062,9 @@ function submitRegister() {
       }, 300);
     } catch(e) {
       console.error('Erro ao guardar empresa:', e);
-      showToast('❌ Erro ao guardar. Verifique a ligação e tente novamente.');
+      showToast(t('toastRegisterError'));
     } finally {
-      if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = '<i data-lucide="check-circle"></i> Registar Empresa'; lucide.createIcons(); }
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = '<i data-lucide="check-circle"></i> ' + t('regSubmit'); lucide.createIcons(); }
     }
   }
 }
@@ -5922,11 +6126,11 @@ function requestQuote() {
   const c = companies.find(x => x.id === selectedId);
   if (!c) return;
   if (c.email) {
-    const subject = encodeURIComponent('Pedido de Orçamento — ' + c.name);
-    const body = encodeURIComponent('Olá ' + c.name + ',\n\nGostaria de solicitar um orçamento para os vossos serviços.\n\nDetalhes do projeto:\n- Descrição: \n- Localização: \n- Prazo desejado: \n\nAguardo a vossa resposta.\n\nCumprimentos');
+    const subject = encodeURIComponent(t('emailQuoteSubject') + ' — ' + c.name);
+    const body = encodeURIComponent(t('emailQuoteBody').replace(/\\n/g, '\n'));
     window.open('mailto:' + c.email + '?subject=' + subject + '&body=' + body, '_blank');
   } else {
-    showToast('📧 Email não disponível — utilize o WhatsApp ou Chat interno');
+    showToast(t('toastEmailUnavailable'));
   }
 }
 
@@ -5936,7 +6140,7 @@ function callCompany() {
   if (c.phone) {
     window.open('tel:' + c.phone.replace(/\s/g, ''), '_blank');
   } else {
-    showToast('📞 Telefone não disponível');
+    showToast(t('toastPhoneUnavailable'));
   }
 }
 
@@ -5948,8 +6152,8 @@ function shareCompany() {
     navigator.share({ title: c.name, text: text, url: window.location.href }).catch(() => {});
   } else {
     navigator.clipboard.writeText(text + '\n' + window.location.href).then(() => {
-      showToast('📋 Link copiado!');
-    }).catch(() => showToast('Não foi possível copiar'));
+      showToast(t('toastLinkCopied'));
+    }).catch(() => showToast(t('toastCopyFailed')));
   }
 }
 
@@ -6004,7 +6208,7 @@ let userLocationMarker = null;
 
 function detectUserLocation(auto = false) {
   if (!navigator.geolocation) {
-    if (!auto) showToast('Geolocalização não suportada neste browser.');
+    if (!auto) showToast(t('toastGeoNotSupported'));
     return;
   }
 
@@ -6084,8 +6288,8 @@ function detectUserLocation(auto = false) {
       if (cityEl) cityEl.textContent = 'Arouca, Portugal';
 
       if (!auto) {
-        const msgs = { 1: 'Permissão de localização negada.', 2: 'Posição não disponível.', 3: 'Tempo de espera excedido.' };
-        showToast(msgs[err.code] || 'Erro ao obter localização.');
+        const msgs = { 1: t('toastGeoPermissionDenied'), 2: t('toastGeoPositionUnavailable'), 3: t('toastGeoTimeout') };
+        showToast(msgs[err.code] || t('toastGeoError'));
       }
     },
     { timeout: 10000, enableHighAccuracy: true }
@@ -6112,7 +6316,7 @@ function switchHelpTab(tab, el) {
 
 function goToMyLocation() {
   const btn = document.getElementById('btnMyLocation');
-  if (!navigator.geolocation) { showToast('Geolocalização não suportada neste browser.'); return; }
+  if (!navigator.geolocation) { showToast(t('toastGeoNotSupported')); return; }
   if (btn) btn.classList.add('locating');
   navigator.geolocation.getCurrentPosition(
     pos => {
@@ -6139,9 +6343,9 @@ function goToMyLocation() {
         }).catch(() => {});
       applyFilters();
       if (btn) btn.classList.remove('locating');
-      showToast('📍 Localização atual encontrada!');
+      showToast(t('toastLocationFound'));
     },
-    () => { if (btn) btn.classList.remove('locating'); showToast('Não foi possível obter a localização.'); },
+    () => { if (btn) btn.classList.remove('locating'); showToast(t('toastLocationFailed')); },
     { timeout: 10000, enableHighAccuracy: true }
   );
 }
@@ -6171,7 +6375,7 @@ function selectUserType(type, el) {
     document.getElementById('regStep2').style.display = 'block';
     document.getElementById('regCompanyRow').style.display = type === 'empresa' ? 'block' : 'none';
     document.getElementById('regPhoneRow').style.display = type === 'empresa' ? 'block' : 'none';
-    document.getElementById('regTypeLabel').textContent = type === 'empresa' ? '🏢 Registo Empresa' : '🔍 Registo Cliente';
+    document.getElementById('regTypeLabel').textContent = type === 'empresa' ? t('regTypeCompany') : t('regTypeClient');
   }, 200);
 }
 function regGoBack() {
@@ -6242,7 +6446,7 @@ function updateNavAuth() {
   } else {
     const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
     const typeClass = user.type === 'empresa' ? 'empresa' : 'cliente';
-    const typeLabel = user.type === 'empresa' ? 'Empresa' : 'Cliente';
+    const typeLabel = user.type === 'empresa' ? t('typeCompanyLabel') : t('typeClientLabel');
     area.innerHTML = `
       <div class="avatar-wrap" onclick="toggleAvatarMenu(event)">
         <div class="avatar">${initials}</div>
@@ -6252,7 +6456,7 @@ function updateNavAuth() {
             <div class="avatar-menu-email">${user.email}</div>
             <div class="avatar-menu-type ${typeClass}">${typeLabel}</div>
           </div>
-          ${user.type === 'empresa' ? '<div class="avatar-menu-item" onclick="openRegister();closeAvatarMenu()"><i data-lucide="building-2"></i>Registar Empresa</div>' : ''}
+          ${user.type === 'empresa' ? '<div class="avatar-menu-item" onclick="openRegister();closeAvatarMenu()"><i data-lucide="building-2"></i>' + t('avatarRegisterCompany') + '</div>' : ''}
           <div class="avatar-menu-item" onclick="showToast(\'Funcionalidade em breve\')"><i data-lucide="user"></i>O Meu Perfil</div>
           <div class="avatar-menu-divider"></div>
           <div class="avatar-menu-item danger" onclick="doLogout()"><i data-lucide="log-out"></i>Terminar Sessão</div>
