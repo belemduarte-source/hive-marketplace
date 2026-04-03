@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teste Mapa</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    body { margin: 0; padding: 0; font-family: Arial; }
+    #map { width: 100vw; height: 100vh; }
+    button {
+      position: fixed;
+      top: 10px;
+      left: 10px;
+      padding: 10px 20px;
+      background: #f97316;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      z-index: 1000;
+    }
+    #info {
+      position: fixed;
+      top: 60px;
+      left: 10px;
+      background: white;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 12px;
+      z-index: 1000;
+      max-width: 200px;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="add5empresas()">ADICIONAR 5 EMPRESAS</button>
+  <div id="info">Clica no botão acima</div>
+  <div id="map"></div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script>
+    // Inicializar mapa
+    const map = L.map('map').setView([40, -8], 6);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png').addTo(map);
+
+    // 5 empresas
+    const empresas = [
+      { id: 1, nome: 'Construções Lisboa', lat: 38.7223, lng: -9.1393, emoji: '🏗️' },
+      { id: 2, nome: 'TechSolutions Porto', lat: 41.1579, lng: -8.6291, emoji: '💼' },
+      { id: 3, nome: 'Eletrox Braga', lat: 41.5454, lng: -8.4265, emoji: '⚡' },
+      { id: 4, nome: 'Clínica Covilhã', lat: 40.2833, lng: -7.5, emoji: '🏥' },
+      { id: 5, nome: 'Transportes Faro', lat: 37.0141, lng: -7.9102, emoji: '🚚' }
+    ];
+
+    function add5empresas() {
+      console.log('1. Função iniciada');
+      document.getElementById('info').innerHTML = 'Adicionando empresas...';
+      console.log('2. Info atualizado');
+
+      let count = 0;
+      empresas.forEach(e => {
+        try {
+          console.log('3.' + (++count) + ' Adicionando ' + e.nome);
+          const m = L.marker([e.lat, e.lng]);
+          console.log('3.' + count + 'a Marcador criado');
+          m.bindPopup(e.emoji + ' ' + e.nome);
+          console.log('3.' + count + 'b Popup ligado');
+          m.addTo(map);
+          console.log('3.' + count + 'c Marcador adicionado ao mapa');
+        } catch(err) {
+          console.error('ERRO em ' + e.nome + ':', err.message);
+          alert('ERRO: ' + err.message);
+        }
+      });
+
+      console.log('4. Concluído');
+      document.getElementById('info').innerHTML = '✅ ' + count + ' empresas adicionadas!';
+      alert('Adicionadas ' + count + ' empresas. Vê o console (F12) para detalhes.');
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Test: Add 5 Companies (Isolated)</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: Arial, sans-serif; background: #f5f5f5; padding: 20px; }
+    .container { max-width: 1200px; margin: 0 auto; }
+    h1 { color: #333; margin-bottom: 20px; }
+    .controls { background: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    button {
+      padding: 12px 24px;
+      margin-right: 10px;
+      margin-bottom: 10px;
+      background: #f97316;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    button:hover { background: #ea580c; }
+    button:active { background: #dc2626; }
+    #map {
+      width: 100%;
+      height: 500px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    .status {
+      background: white;
+      padding: 15px;
+      border-radius: 8px;
+      margin-top: 20px;
+      border-left: 4px solid #f97316;
+    }
+    .log {
+      background: #f0f0f0;
+      padding: 12px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 10px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    .success { color: #22c55e; font-weight: bold; }
+    .error { color: #dc2626; font-weight: bold; }
+    .info { color: #0ea5e9; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🧪 Test: Add 5 Companies to Leaflet Map</h1>
+
+  <div class="controls">
+    <h3>Testa as funções abaixo:</h3>
+    <button onclick="testSetupCheck()">1️⃣ Check Setup</button>
+    <button onclick="add5()">2️⃣ Add 5 Companies</button>
+    <button onclick="clearMarkers()">3️⃣ Clear All Markers</button>
+    <button onclick="testSimpleMarker()">4️⃣ Test Single Marker</button>
+    <button onclick="clearLog()">🗑️ Clear Log</button>
+  </div>
+
+  <div id="map"></div>
+
+  <div class="status">
+    <strong>Status Log:</strong>
+    <div id="logOutput" class="log"></div>
+  </div>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script>
+
+// ============ SETUP ============
+const map = L.map('map').setView([40, -8], 6);
+L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  attribution: '&copy; OpenStreetMap &copy; CARTO',
+  maxZoom: 19
+}).addTo(map);
+
+let markers = [];
+
+// ============ LOGGING ============
+function log(msg, type = 'info') {
+  const output = document.getElementById('logOutput');
+  const timestamp = new Date().toLocaleTimeString('pt-PT');
+  let color = '#0ea5e9'; // info
+
+  if (type === 'success') color = '#22c55e';
+  if (type === 'error') color = '#dc2626';
+
+  const logEntry = `<span style="color: ${color}">[${timestamp}] ${msg}</span>`;
+  output.innerHTML += logEntry + '\n';
+  output.scrollTop = output.scrollHeight;
+
+  console.log(`[${type.toUpperCase()}]`, msg);
+}
+
+function clearLog() {
+  document.getElementById('logOutput').innerHTML = '';
+}
+
+// ============ DIAGNOSTIC ============
+function testSetupCheck() {
+  clearLog();
+  log('Iniciando diagnóstico...', 'info');
+
+  log(`✓ window.map: ${typeof window.map !== 'undefined' ? '✅ EXISTS' : '❌ MISSING'}`, 'info');
+  log(`✓ L (Leaflet): ${typeof L !== 'undefined' ? '✅ EXISTS' : '❌ MISSING'}`, 'info');
+  log(`✓ map bounds: ${map.getBounds()}`, 'info');
+  log(`✓ markers array: ${markers.length} markers`, 'info');
+
+  log('Diagnóstico completo!', 'success');
+}
+
+// ============ ADD 5 COMPANIES ============
+window.addTestCompanies = function() {
+  log('🚀 addTestCompanies() chamada', 'info');
+
+  const empresas = [
+    { lat: 38.7223, lng: -9.1393, nome: 'Construções Lisboa', emoji: '🏗️' },
+    { lat: 41.1579, lng: -8.6291, nome: 'TechSolutions Porto', emoji: '💼' },
+    { lat: 41.5454, lng: -8.4265, nome: 'Eletrox Braga', emoji: '⚡' },
+    { lat: 40.2833, lng: -7.5, nome: 'Clínica Covilhã', emoji: '🏥' },
+    { lat: 37.0141, lng: -7.9102, nome: 'Transportes Faro', emoji: '🚚' }
+  ];
+
+  log(`Adicionando ${empresas.length} empresas...`, 'info');
+
+  empresas.forEach((e, idx) => {
+    try {
+      const m = L.marker([e.lat, e.lng])
+        .bindPopup(`<strong>${e.emoji} ${e.nome}</strong>`)
+        .addTo(map);
+
+      markers.push(m);
+      log(`${idx + 1}. ✅ ${e.nome}`, 'success');
+    } catch (err) {
+      log(`${idx + 1}. ❌ ERRO em ${e.nome}: ${err.message}`, 'error');
+    }
+  });
+
+  if (empresas.length > 0) {
+    map.setView([38.7223, -9.1393], 7);
+    log(`Mapa centrado em Lisboa`, 'success');
+  }
+
+  log(`✅ Concluído! ${markers.length} marcadores adicionados`, 'success');
+};
+
+// ============ WRAPPER ============
+window.add5 = function() {
+  try {
+    clearLog();
+    log('🔄 add5() chamada - wrapper iniciado', 'info');
+    addTestCompanies();
+    log('✨ Função completa!', 'success');
+  } catch(e) {
+    log(`❌ ERRO NA WRAPPER: ${e.message}`, 'error');
+    log(`Stack: ${e.stack}`, 'error');
+  }
+};
+
+// ============ HELPERS ============
+function testSimpleMarker() {
+  clearLog();
+  log('Testando L.marker() simples...', 'info');
+
+  try {
+    const testMarker = L.marker([38.7223, -9.1393])
+      .bindPopup('Teste: Pin em Lisboa')
+      .addTo(map);
+
+    markers.push(testMarker);
+    map.setView([38.7223, -9.1393], 8);
+
+    log('✅ Pin de teste criado em Lisboa!', 'success');
+  } catch(err) {
+    log(`❌ ERRO: ${err.message}`, 'error');
+  }
+}
+
+function clearMarkers() {
+  log('Limpando todos os marcadores...', 'info');
+
+  markers.forEach(m => {
+    map.removeLayer(m);
+  });
+
+  markers = [];
+  log(`✅ ${markers.length} marcadores restantes`, 'success');
+}
+
+// ============ AUTO-TEST ON LOAD ============
+window.addEventListener('load', () => {
+  log('✅ Página carregada - Leaflet ativo', 'success');
+  log('Clica em "Check Setup" ou "Add 5 Companies"', 'info');
+});
+
+</script>
+
+</body>
+</html>

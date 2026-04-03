@@ -14,8 +14,10 @@
   <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png"/>
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.css"/>
   <!-- Supabase JS client (free cloud database) -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   <style>
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
@@ -2797,6 +2799,7 @@ window.onerror = function(msg, src, line, col, err) {
 <div class="toast" id="toast"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.js"></script>
 <script src="https://unpkg.com/lucide@0.441.0/dist/umd/lucide.min.js"></script>
 <script>
 // ── TRANSLATIONS ───────────────────────────────────────────────────────────────
@@ -5198,12 +5201,32 @@ function buildPopupHtml(c) {
   </div>`;
 }
 
+// Marker cluster group for performance with many markers
+let markerClusterGroup = null;
+function ensureClusterGroup() {
+  if (markerClusterGroup) return markerClusterGroup;
+  if (!map || typeof L === 'undefined' || !L.markerClusterGroup) return null;
+  markerClusterGroup = L.markerClusterGroup({
+    maxClusterRadius: 50,
+    spiderfyOnMaxZoom: true,
+    showCoverageOnHover: false,
+    zoomToBoundsOnClick: true,
+    disableClusteringAtZoom: 16
+  });
+  map.addLayer(markerClusterGroup);
+  return markerClusterGroup;
+}
+
 function addCompanyMarker(c) {
   if (!map || typeof L === 'undefined') return;
-  const m = L.marker([c.lat, c.lng], { icon: createMarkerIcon(c) }).addTo(map);
+  const m = L.marker([c.lat, c.lng], { icon: createMarkerIcon(c) });
   m.bindPopup(buildPopupHtml(c));
   m.on('click', () => openDetail(c.id));
   markerMap[c.id] = m;
+  // Add to cluster group if available, else directly to map
+  const cluster = ensureClusterGroup();
+  if (cluster) cluster.addLayer(m);
+  else m.addTo(map);
 }
 
 // Refresh all popup content when language changes (called in applyI18n → applyFilters)
@@ -5696,11 +5719,23 @@ function applyFilters() {
 
 function updateMarkers(filtered) {
   const ids = new Set(filtered.map(c => c.id));
-  companies.forEach(c => {
-    if (!markerMap[c.id]) return;
-    if (ids.has(c.id)) { if (!map.hasLayer(markerMap[c.id])) markerMap[c.id].addTo(map); }
-    else               { if (map.hasLayer(markerMap[c.id]))  map.removeLayer(markerMap[c.id]); }
-  });
+  const cluster = markerClusterGroup;
+  if (cluster) {
+    // Batch update: remove all, add only filtered — much faster than individual add/remove
+    const toAdd = [];
+    companies.forEach(c => {
+      if (!markerMap[c.id]) return;
+      if (ids.has(c.id)) toAdd.push(markerMap[c.id]);
+    });
+    cluster.clearLayers();
+    cluster.addLayers(toAdd);
+  } else {
+    companies.forEach(c => {
+      if (!markerMap[c.id]) return;
+      if (ids.has(c.id)) { if (!map.hasLayer(markerMap[c.id])) markerMap[c.id].addTo(map); }
+      else               { if (map.hasLayer(markerMap[c.id]))  map.removeLayer(markerMap[c.id]); }
+    });
+  }
 }
 
 function clearAllFilters() {
