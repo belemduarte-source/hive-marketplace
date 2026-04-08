@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hive-v2';
+const CACHE_NAME = 'hive-v3';
 const ASSETS = [
   '/',
   '/index.html',
