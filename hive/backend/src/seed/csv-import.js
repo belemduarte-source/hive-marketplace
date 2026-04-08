@@ -18,6 +18,8 @@ async function seedFromCsv() {
       columns: true,
       skip_empty_lines: true,
       trim: true,
+      relax_column_count: true,
+      bom: true,
     });
   } catch (e) {
     console.warn('⚠️  CSV parse error:', e.message);
