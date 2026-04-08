@@ -1,7 +1,7 @@
 require('dotenv').config({ path: require('path').join(__dirname, '../../.env') });
 const fs = require('fs');
 const path = require('path');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const pool = require('../db');
 const DEMO_COMPANIES = require('./demo-companies');
 const { seedFromCsv } = require('./csv-import');
