@@ -4019,42 +4019,45 @@ function heroQuickSearch(sectorKey) {
 function renderHeroCats() {
   const strip = document.getElementById('lpHeroCats');
   if (!strip) return;
-  strip.innerHTML = LP_CATS.map(cat => `
-    <button class="lp-hero-cat" onclick="lpCatSearch('${cat.key}')" title="${cat.label}">
-      <img src="${cat.photo}" alt="${cat.label}" loading="lazy"/>
+  strip.innerHTML = LP_CATS.map(cat => {
+    const label = t(cat.labelKey) || cat.label;
+    return `
+    <button class="lp-hero-cat" onclick="lpCatSearch('${cat.key}')" title="${label}">
+      <img src="${cat.photo}" alt="${label}" loading="lazy"/>
       <div class="lp-hero-cat-overlay">
         <span class="lp-hero-cat-emoji">${cat.emoji}</span>
-        <span class="lp-hero-cat-name">${cat.label}</span>
+        <span class="lp-hero-cat-name">${label}</span>
       </div>
-    </button>`).join('');
+    </button>`;
+  }).join('');
 }
 
 // ── LANDING PAGE — Category grid + Featured companies ──────────────────────
 
 const LP_CATS = [
   // Estrutura: reinforced concrete formwork under construction
-  { key:'estrutura_fundacao', emoji:'🏗️', label:'Estrutura',
+  { key:'estrutura_fundacao', emoji:'🏗️', label:'Estrutura',    labelKey:'legendEstrutura',
     photo:'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=600&q=80&auto=format&fit=crop&crop=center' },
   // Instalações: electrician wiring panel
-  { key:'instalacoes',        emoji:'⚡',  label:'Instalações',
+  { key:'instalacoes',        emoji:'⚡',  label:'Instalações',  labelKey:'legendInstalacoes',
     photo:'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&q=80&auto=format&fit=crop&crop=center' },
   // Acabamentos: painter with roller on a white wall
-  { key:'acabamentos',        emoji:'🎨',  label:'Acabamentos',
+  { key:'acabamentos',        emoji:'🎨',  label:'Acabamentos',  labelKey:'legendAcabamentos',
     photo:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&q=80&auto=format&fit=crop&crop=center' },
   // Carpintaria: carpenter planing wood in workshop
-  { key:'carpintaria',        emoji:'🪚',  label:'Carpintaria',
+  { key:'carpintaria',        emoji:'🪚',  label:'Carpintaria',  labelKey:'legendCarpintaria',
     photo:'https://images.unsplash.com/photo-1504148455328-c376907d081c?w=600&q=80&auto=format&fit=crop&crop=center' },
   // Serralharia: welding sparks / metal fabrication
-  { key:'serralharia_metal',  emoji:'🔩',  label:'Serralharia',
+  { key:'serralharia_metal',  emoji:'🔩',  label:'Serralharia',  labelKey:'legendSerralharia',
     photo:'https://images.unsplash.com/photo-1504328345606-18bbc8c9d7d1?w=600&q=80&auto=format&fit=crop&crop=center' },
   // Exterior: beautiful house pool with lush lawn and garden
-  { key:'exterior_jardim',    emoji:'🌿',  label:'Exterior',
+  { key:'exterior_jardim',    emoji:'🌿',  label:'Exterior',     labelKey:'legendExterior',
     photo:'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80&auto=format&fit=crop&crop=center' },
   // Projeto: architect working on blueprints
-  { key:'projeto_gestao',     emoji:'📐',  label:'Projeto',
+  { key:'projeto_gestao',     emoji:'📐',  label:'Projeto',      labelKey:'legendProjeto',
     photo:'https://images.unsplash.com/photo-1503387762-592deb58ef4e?w=600&q=80&auto=format&fit=crop&crop=center' },
   // Chave na Mão: modern house exterior — key handover moment
-  { key:'chave_na_mao',       emoji:'🔑',  label:'Chave na Mão',
+  { key:'chave_na_mao',       emoji:'🔑',  label:'Chave na Mão', labelKey:'legendChaveNaMao',
     photo:'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80&auto=format&fit=crop&crop=center' },
 ];
 
@@ -4073,6 +4076,7 @@ function renderLandingCategories() {
   });
   grid.innerHTML = LP_CATS.map(cat => {
     const count = groupCounts[cat.key] || 0;
+    const label = t(cat.labelKey) || cat.label;
     const bgStyle = cat.photo
       ? `background-image:url('${cat.photo}');background-size:cover;background-position:center`
       : `background:${cat.bg || '#334155'}`;
@@ -4080,7 +4084,7 @@ function renderLandingCategories() {
       <div class="lp-cat-card lp-cat-photo" style="${bgStyle}" onclick="lpCatSearch('${cat.key}')">
         <div class="lp-cat-photo-overlay"></div>
         <div class="lp-cat-emoji">${cat.emoji}</div>
-        <div class="lp-cat-name">${cat.label}</div>
+        <div class="lp-cat-name">${label}</div>
         ${count > 0 ? `<div class="lp-cat-count">${count} empresa${count !== 1 ? 's' : ''}</div>` : '<div class="lp-cat-count">em breve</div>'}
       </div>`;
   }).join('');
@@ -4362,6 +4366,7 @@ function applyI18n() {
   applyFilters();
 
   // 11. Landing page dynamic content — always re-render so language change applies even from other tabs
+  renderHeroCats();
   renderFeaturedCompanies();
   renderTestimonialBanner();
   updateLandingStats();
