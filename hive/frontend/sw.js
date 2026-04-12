@@ -1,12 +1,10 @@
-const CACHE_NAME = 'hive-v4';
+const CACHE_NAME = 'hive-v5';
 const ASSETS = [
-  '/',
-  '/index.html',
   '/manifest.json',
   '/api.js'
 ];
 
-// Install: cache core assets
+// Install: cache only static assets (never HTML)
 self.addEventListener('install', e => {
   e.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
@@ -24,12 +22,19 @@ self.addEventListener('activate', e => {
   self.clients.claim();
 });
 
-// Fetch: network-first strategy; never cache API calls
+// Fetch: HTML always from network; static assets cache-first; API never cached
 self.addEventListener('fetch', e => {
-  // Skip non-GET and cross-origin requests
   if (e.request.method !== 'GET') return;
-  // Never cache API responses
   if (e.request.url.includes('/api/')) return;
+
+  const url = new URL(e.request.url);
+  const isHtml = url.pathname === '/' || url.pathname.endsWith('.html');
+
+  if (isHtml) {
+    // Always fetch HTML fresh from network
+    e.respondWith(fetch(e.request));
+    return;
+  }
 
   e.respondWith(
     fetch(e.request)
