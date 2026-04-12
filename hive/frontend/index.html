@@ -19,6 +19,7 @@
   <!-- Hive API client (replaces Supabase) -->
   <script src="api.js"></script>
   <style>
+    html{overflow-x:hidden}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
     :root{
       /* ── PALETA MODERNIZADA ── */
@@ -322,7 +323,7 @@
     @keyframes locationPing{from{box-shadow:0 2px 10px rgba(249,115,22,.2)}to{box-shadow:0 4px 20px rgba(249,115,22,.6)}}
     .live-dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite}
     @keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
-    .logo-tagline{font-size:10px;color:#ffffff;font-weight:700;letter-spacing:.8px;text-transform:uppercase;white-space:nowrap;margin-top:-2px;text-align:center}
+    .logo-tagline{font-size:10px;color:#ffffff;font-weight:700;letter-spacing:.8px;text-transform:uppercase;white-space:nowrap;margin-top:-2px;text-align:center;max-width:100%;overflow:hidden;text-overflow:ellipsis}
     /* ── LOGO LETTERS — static dark orange ── */
     .logo-l{display:inline-block;font-weight:800;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;color:#ea580c;line-height:1;text-shadow:0 0 18px rgba(234,88,12,.5),0 0 40px rgba(234,88,12,.15)}
     .logo-h{font-size:56px;text-transform:uppercase}
@@ -574,7 +575,7 @@
     /* ── LANDING HERO (idealista-style) ── */
     .home-hero{
       background:linear-gradient(135deg,#0f172a 0%,#0c1827 40%,#1a1040 70%,#0f172a 100%);
-      color:#fff;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      color:#fff;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;
       text-align:center;position:relative;flex-shrink:0;padding:40px 24px 60px
     }
     .home-hero::before{content:'';position:absolute;inset:0;
@@ -762,19 +763,14 @@
       /* Move floating filter button above the bottom bar */
       .mobile-filter-btn{bottom:calc(72px + env(safe-area-inset-bottom)) !important}
 
-      nav{grid-template-columns:1fr !important;grid-template-rows:auto auto !important}
-      .nav-banner{grid-column:1 !important;grid-row:1 !important;padding:4px 10px !important;gap:8px !important}
+      .nav-banner{padding:4px 10px !important;gap:8px !important}
       .nav-banner svg{width:60px !important;height:60px !important}
       .logo-l,.logo-e{font-size:34px !important}
       .logo-h{font-size:38px !important}
       .logo-i{font-size:28px !important}
       .logo-v{font-size:32px !important}
-      .nav-right{flex-direction:row !important;min-width:auto !important;border-left:none !important;padding:6px 12px !important;justify-content:center !important;align-items:center !important;flex-wrap:wrap !important;gap:6px !important}
-      .nav-right .btn-pro,.nav-right .btn-nav,.nav-right .lang-switcher,.nav-right .btn-ajuda{width:auto !important}
-      .nav-right .btn-pro-cta{font-size:11px !important;padding:8px 14px !important}
-      .nav-right .btn-nav{font-size:11px !important;padding:8px 12px !important}
-      .nav-right-bottom{gap:4px !important;width:auto !important}
-      .nav-right .btn-ajuda,.nav-right .lang-btn{font-size:10px !important;padding:6px 10px !important}
+      /* Hide desktop auth buttons on mobile — accessible via hamburger drawer */
+      .nav-right{display:none !important}
       .ad-banner{min-height:60px !important;margin:0 4px 0 8px !important}
       .ad-title{font-size:14px !important}
       .ad-sub{font-size:10px !important}
@@ -785,6 +781,8 @@
       .ub-search{width:100% !important;padding:2px 4px !important}
       .ub-flex1{flex:1 1 auto !important;min-width:0 !important}
       .ub-divider{display:none !important}
+      .ub-sectors-wrap{width:100% !important;overflow:visible !important}
+      .ub-sectors-fade{display:none !important}
       .ub-sectors{width:100% !important;overflow-x:auto !important;scrollbar-width:none !important;padding:2px 4px !important}
       .ub-sectors .sector-filter-container{width:max-content !important}
       .cat-item{flex:0 0 auto !important;padding:6px 10px !important;font-size:10px !important}
@@ -799,16 +797,15 @@
 
     /* Mobile (≤480px) */
     @media (max-width:480px) {
-      .nav-banner{flex-direction:column !important;align-items:flex-start !important;gap:6px !important;padding:6px 8px !important}
-      .nav-banner svg{width:52px !important;height:52px !important}
+      .nav-banner{flex-direction:row !important;align-items:center !important;gap:8px !important;padding:6px 8px !important}
+      .nav-banner svg{width:44px !important;height:44px !important}
+      .logo-tagline{display:none !important}
       .logo-l,.logo-e{font-size:26px !important}
       .logo-h{font-size:30px !important}
       .logo-i{font-size:22px !important}
       .logo-v{font-size:26px !important}
       .ad-banner{display:none !important}
-      .nav-right{flex-direction:row !important;flex-wrap:wrap !important;gap:4px !important;padding:4px 8px !important;justify-content:center !important}
-      .nav-right .btn-pro,.nav-right .btn-nav{font-size:10px !important;padding:6px 10px !important}
-      .nav-right .btn-ajuda,.nav-right .lang-btn{font-size:9px !important;padding:5px 8px !important}
+      .ad-banner-home{display:none !important}
       .main{flex-direction:column !important}
       .filter-sidebar{width:100% !important;min-width:auto !important;max-height:200px !important;border-right:none !important;border-bottom:1px solid var(--border) !important}
       #map{min-height:300px !important}
@@ -830,7 +827,7 @@
        ═══════════════════════════════════════════════════════════════════════ */
 
     /* ── Hero overrides ── */
-    .lp-hero{min-height:100vh;padding:0px 24px 80px;justify-content:center}
+    .lp-hero{min-height:100vh;min-height:100dvh;padding:0px 24px 80px;justify-content:center}
     .lp-hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);border-radius:20px;padding:6px 18px;font-size:11px;font-weight:700;color:#fb923c;letter-spacing:.8px;text-transform:uppercase;margin-bottom:24px;position:relative;z-index:1}
     .lp-hero-title{font-size:52px;font-weight:900;line-height:1.1;color:#fff;margin-bottom:18px;letter-spacing:-.5px;position:relative;z-index:1;max-width:700px}
     .lp-hero-sub{font-size:17px;color:rgba(255,255,255,.6);max-width:520px;margin:0 auto 44px;line-height:1.7;position:relative;z-index:1}
@@ -1520,6 +1517,7 @@
 
       /* Nav banner: hide ad on very small screens  */
       .ad-banner { display: none !important; }
+      .ad-banner-home { display: none !important; }
 
       /* Map empty hint — even more compact on phones */
       .map-empty-hint {
@@ -1617,7 +1615,7 @@
     .mobile-nav-link.active svg{opacity:1;color:#f97316}
     .mobile-nav-divider{height:1px;background:rgba(255,255,255,.1);margin:8px 0}
     .mobile-nav-logo{color:#f97316;font-size:22px;font-weight:900;letter-spacing:.05em;margin-bottom:16px;padding:0 16px}
-    @media (max-width:768px){.hamburger{display:flex !important}}
+    @media (max-width:768px){.hamburger{display:flex !important;margin-left:auto !important;margin-right:12px !important}}
 
     /* ── IMPROVEMENT 3: Filter loading spinner ── */
     .filter-loading{position:absolute;inset:0;background:rgba(245,247,250,.75);display:none;align-items:center;justify-content:center;z-index:50;border-radius:var(--radius);backdrop-filter:blur(2px)}
@@ -1688,7 +1686,7 @@
     .reg-ms-panel .reg-ms-opt:focus{background:var(--orange-light);outline:none}
 
     /* ── IMPROVEMENT 11: Sector pills scroll fade indicator ── */
-    .ub-sectors-wrap{position:relative;flex:1;overflow:hidden;display:flex}
+    .ub-sectors-wrap{position:relative;flex:1;overflow:visible;display:flex}
     .ub-sectors-fade{position:absolute;right:0;top:0;bottom:0;width:40px;background:linear-gradient(to right,transparent,var(--bg));pointer-events:none;transition:opacity .3s;z-index:5}
     .ub-sectors-fade.hidden{opacity:0}
     .ub-sectors-scroll-hint{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--muted);pointer-events:none;transition:opacity .3s;z-index:6}
@@ -1921,6 +1919,13 @@ window.onerror = function(msg, src, line, col, err) {
       <span data-i18n="navAbout">Sobre</span>
     </button>
     <div class="mobile-nav-divider"></div>
+    <!-- Auth area: updated dynamically by updateNavAuth() -->
+    <div id="mobileAuthArea">
+      <button class="mobile-nav-link" onclick="openLogin();closeMobileNavPanel()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        <span data-i18n="navLogin">Entrar</span>
+      </button>
+    </div>
     <button class="mobile-nav-link" onclick="openRegister();closeMobileNavPanel()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <span data-i18n="navRegister">Registar Empresa</span>
@@ -1929,6 +1934,10 @@ window.onerror = function(msg, src, line, col, err) {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       <span data-i18n="navHelp">Ajuda</span>
     </button>
+    <div class="mobile-nav-divider"></div>
+    <button class="mobile-nav-link" onclick="setLanguage('pt');closeMobileNavPanel()">🇵🇹 <span>Português</span></button>
+    <button class="mobile-nav-link" onclick="setLanguage('en');closeMobileNavPanel()">🇬🇧 <span>English</span></button>
+    <button class="mobile-nav-link" onclick="setLanguage('fr');closeMobileNavPanel()">🇫🇷 <span>Français</span></button>
   </div>
 </div>
 
@@ -6727,15 +6736,16 @@ async function doLogout() {
 }
 function updateNavAuth() {
   const area = document.getElementById('authArea');
-  if (!area) return;
+  const mobileArea = document.getElementById('mobileAuthArea');
   const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
   if (!user) {
-    area.innerHTML = '<button class="btn-nav btn-login" onclick="openLogin()" style="justify-content:center"><span data-i18n="navLogin">Entrar</span></button>';
+    if (area) area.innerHTML = '<button class="btn-nav btn-login" onclick="openLogin()" style="justify-content:center"><span data-i18n="navLogin">Entrar</span></button>';
+    if (mobileArea) mobileArea.innerHTML = '<button class="mobile-nav-link" onclick="openLogin();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span data-i18n="navLogin">Entrar</span></button>';
   } else {
     const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
     const typeClass = user.type === 'empresa' ? 'empresa' : 'cliente';
     const typeLabel = user.type === 'empresa' ? t('typeCompanyLabel') : t('typeClientLabel');
-    area.innerHTML = `
+    if (area) area.innerHTML = `
       <div class="avatar-wrap" onclick="toggleAvatarMenu(event)">
         <div class="avatar">${initials}</div>
         <div class="avatar-menu" id="avatarMenu">
@@ -6750,6 +6760,7 @@ function updateNavAuth() {
           <div class="avatar-menu-item danger" onclick="doLogout()"><i data-lucide="log-out"></i>Terminar Sessão</div>
         </div>
       </div>`;
+    if (mobileArea) mobileArea.innerHTML = `<button class="mobile-nav-link" onclick="openProfilePanel();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>${user.name}</span></button><button class="mobile-nav-link" style="color:#ef4444" onclick="doLogout();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Terminar Sessão</span></button>`;
   }
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
