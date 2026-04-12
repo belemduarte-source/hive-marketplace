@@ -2473,6 +2473,17 @@ window.onerror = function(msg, src, line, col, err) {
       <input type="text" id="regCae" data-i18n-ph="regCaePh"/>
     </div>
 
+    <div class="form-grid2">
+      <div class="form-row">
+        <label><span data-i18n="regAlvara">Alvará</span> <span class="req">*</span></label>
+        <input type="text" id="regAlvara" data-i18n-ph="regAlvaraPh"/>
+      </div>
+      <div class="form-row">
+        <label><span data-i18n="regCertidao">Certidão Permanente</span> <span class="req">*</span></label>
+        <input type="text" id="regCertidao" data-i18n-ph="regCertidaoPh"/>
+      </div>
+    </div>
+
     <div class="form-row">
       <label><span data-i18n="regCountry">País</span> <span class="req">*</span></label>
       <select id="regCountry">
@@ -2892,6 +2903,9 @@ const translations = {
     regCompanyName:'Nome da Empresa', regNamePh:'Ex: Mota-Engil, SA',
     regSectorLabel:'Setor de Atividade', regSectorPh:'Selecionar setor...',
     regCae:'Código CAE', regCaePh:'Ex: CAE 41 – Construção',
+    regAlvara:'Alvará', regAlvaraPh:'Nº do Alvará de Licenciamento',
+    regCertidao:'Certidão Permanente', regCertidaoPh:'Código de acesso à Certidão Permanente',
+    valAlvara:'Introduza o número do Alvará', valCertidao:'Introduza o código da Certidão Permanente',
     regAddress:'Morada', regAddressPh:'Ex: Av. da Liberdade 200, Lisboa',
     regZone:'Localidade / Zona',
     regEmail:'Email de Contacto', regEmailPh:'empresa@email.pt',
@@ -3154,6 +3168,9 @@ const translations = {
     regCompanyName:'Company Name', regNamePh:'Ex: Company Name, Ltd',
     regSectorLabel:'Activity Sector', regSectorPh:'Select sector...',
     regCae:'CAE Code', regCaePh:'Ex: CAE 41 – Construction',
+    regAlvara:'Business Licence (Alvará)', regAlvaraPh:'Licence number',
+    regCertidao:'Permanent Certificate', regCertidaoPh:'Access code for Certidão Permanente',
+    valAlvara:'Please enter the business licence number', valCertidao:'Please enter the Permanent Certificate code',
     regAddress:'Address', regAddressPh:'Ex: Main Street 200, Lisbon',
     regZone:'Locality / Zone',
     regEmail:'Contact Email', regEmailPh:'company@email.com',
@@ -3419,6 +3436,9 @@ const translations = {
     regCompanyName:"Nom de l'Entreprise", regNamePh:"Ex : Nom de l'Entreprise, SA",
     regSectorLabel:"Secteur d'Activité", regSectorPh:'Sélectionner un secteur...',
     regCae:'Code CAE', regCaePh:'Ex : CAE 41 – Construction',
+    regAlvara:'Licence Commerciale (Alvará)', regAlvaraPh:'Numéro de licence',
+    regCertidao:'Certificat Permanent', regCertidaoPh:"Code d'accès au Certificat Permanent",
+    valAlvara:'Veuillez saisir le numéro de licence commerciale', valCertidao:'Veuillez saisir le code du Certificat Permanent',
     regAddress:'Adresse', regAddressPh:'Ex : Av. da Liberdade 200, Lisbonne',
     regZone:'Localité / Zone',
     regEmail:'E-mail de Contact', regEmailPh:'entreprise@email.fr',
@@ -4608,7 +4628,9 @@ async function saveCompanyToDB(company) {
       name:        company.name,
       sectors:     company.sectors,
       sector:      company.sector,
-      cae:         company.cae         || null,
+      cae:                 company.cae                 || null,
+      alvara:              company.alvara              || null,
+      certidao_permanente: company.certidao_permanente || null,
       address:     company.address     || null,
       postal_code: company.postalCode  || null,
       city:        company.city        || null,
@@ -5965,6 +5987,8 @@ function submitRegister() {
   const email   = document.getElementById('regEmail').value.trim();
   const phone   = document.getElementById('regPhone').value.trim();
   const tagsRaw = document.getElementById('regTags').value.trim();
+  const alvara  = document.getElementById('regAlvara').value.trim();
+  const certidao = document.getElementById('regCertidao').value.trim();
 
   if (!name)           { showToast(t('valName'));    return; }
   if (sectors.length === 0) { showToast(t('valSector'));  return; }
@@ -5975,6 +5999,8 @@ function submitRegister() {
   if (!country)        { showToast('Selecione um país'); return; }
   if (!city)           { showToast('Selecione uma cidade'); return; }
   if (!postalCode)     { showToast('Introduza o código postal'); return; }
+  if (!alvara)         { showToast(t('valAlvara'));  return; }
+  if (!certidao)       { showToast(t('valCertidao')); return; }
 
   const tags   = tagsRaw.split(',').map(s => s.trim()).filter(Boolean);
   const idx    = nextCompanyId % defaultEmojis.length;
@@ -6062,6 +6088,8 @@ function submitRegister() {
       id:          nextCompanyId++,
       name,
       cae:         cae || '',
+      alvara:      alvara || '',
+      certidao_permanente: certidao || '',
       sector,
       sectors,
       rating:      0, reviews: 0,
@@ -6094,7 +6122,7 @@ function submitRegister() {
       renderTagCloud();
 
       // Reset form
-      ['regName','regCae','regAddress','regEmail','regPhone','regWebsite','regTags','regDesc','regPostalCode']
+      ['regName','regCae','regAlvara','regCertidao','regAddress','regEmail','regPhone','regWebsite','regTags','regDesc','regPostalCode']
         .forEach(fid => { const el = document.getElementById(fid); if(el) el.value = ''; });
       _regSelectedSectors = [];
       renderRegisterSectorSelect();

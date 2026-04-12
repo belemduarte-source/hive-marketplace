@@ -20,7 +20,9 @@ CREATE TABLE IF NOT EXISTS companies (
   name        TEXT NOT NULL,
   sectors     TEXT[] NOT NULL DEFAULT '{}',
   sector      TEXT,
-  cae         TEXT,
+  cae                  TEXT,
+  alvara               TEXT,
+  certidao_permanente  TEXT,
   address     TEXT,
   postal_code TEXT,
   city        TEXT,
@@ -53,3 +55,7 @@ CREATE INDEX IF NOT EXISTS idx_companies_status  ON companies(status);
 CREATE INDEX IF NOT EXISTS idx_companies_lat_lng ON companies(lat, lng);
 CREATE INDEX IF NOT EXISTS idx_companies_rating  ON companies(rating DESC);
 CREATE INDEX IF NOT EXISTS idx_companies_country ON companies(country);
+
+-- Migrations for existing databases (safe to re-run)
+ALTER TABLE companies ADD COLUMN IF NOT EXISTS alvara              TEXT;
+ALTER TABLE companies ADD COLUMN IF NOT EXISTS certidao_permanente TEXT;

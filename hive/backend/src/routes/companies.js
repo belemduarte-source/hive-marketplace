@@ -39,7 +39,8 @@ router.get('/:id', async (req, res, next) => {
 router.post('/', requireAuth, async (req, res, next) => {
   try {
     const {
-      name, sectors, sector, cae, address, postal_code, city, country,
+      name, sectors, sector, cae, alvara, certidao_permanente,
+      address, postal_code, city, country,
       zone, email, phone, website, tags, description, lat, lng,
       emoji, color, pin_type
     } = req.body;
@@ -50,16 +51,19 @@ router.post('/', requireAuth, async (req, res, next) => {
 
     const { rows } = await pool.query(
       `INSERT INTO companies
-        (name, sectors, sector, cae, address, postal_code, city, country, zone,
+        (name, sectors, sector, cae, alvara, certidao_permanente,
+         address, postal_code, city, country, zone,
          email, phone, website, tags, description, lat, lng, emoji, color, pin_type,
          status, created_by)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,'approved',$20)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,'approved',$22)
        RETURNING *`,
       [
         name,
         sectors || (sector ? [sector] : []),
         sector || (sectors && sectors[0]) || null,
         cae || null,
+        alvara || null,
+        certidao_permanente || null,
         address || null,
         postal_code || null,
         city || null,
@@ -95,7 +99,8 @@ router.put('/:id', requireAuth, async (req, res, next) => {
     }
 
     const {
-      name, sectors, sector, cae, address, postal_code, city, country,
+      name, sectors, sector, cae, alvara, certidao_permanente,
+      address, postal_code, city, country,
       zone, email, phone, website, tags, description, lat, lng,
       emoji, color, pin_type, status
     } = req.body;
@@ -106,26 +111,29 @@ router.put('/:id', requireAuth, async (req, res, next) => {
         sectors = COALESCE($2, sectors),
         sector = COALESCE($3, sector),
         cae = COALESCE($4, cae),
-        address = COALESCE($5, address),
-        postal_code = COALESCE($6, postal_code),
-        city = COALESCE($7, city),
-        country = COALESCE($8, country),
-        zone = COALESCE($9, zone),
-        email = COALESCE($10, email),
-        phone = COALESCE($11, phone),
-        website = COALESCE($12, website),
-        tags = COALESCE($13, tags),
-        description = COALESCE($14, description),
-        lat = COALESCE($15, lat),
-        lng = COALESCE($16, lng),
-        emoji = COALESCE($17, emoji),
-        color = COALESCE($18, color),
-        pin_type = COALESCE($19, pin_type),
-        status = COALESCE($20, status),
+        alvara = COALESCE($5, alvara),
+        certidao_permanente = COALESCE($6, certidao_permanente),
+        address = COALESCE($7, address),
+        postal_code = COALESCE($8, postal_code),
+        city = COALESCE($9, city),
+        country = COALESCE($10, country),
+        zone = COALESCE($11, zone),
+        email = COALESCE($12, email),
+        phone = COALESCE($13, phone),
+        website = COALESCE($14, website),
+        tags = COALESCE($15, tags),
+        description = COALESCE($16, description),
+        lat = COALESCE($17, lat),
+        lng = COALESCE($18, lng),
+        emoji = COALESCE($19, emoji),
+        color = COALESCE($20, color),
+        pin_type = COALESCE($21, pin_type),
+        status = COALESCE($22, status),
         updated_at = NOW()
-       WHERE id = $21
+       WHERE id = $23
        RETURNING *`,
-      [name, sectors, sector, cae, address, postal_code, city, country,
+      [name, sectors, sector, cae, alvara, certidao_permanente,
+       address, postal_code, city, country,
        zone, email, phone, website, tags, description, lat, lng,
        emoji, color, pin_type, status, req.params.id]
     );
