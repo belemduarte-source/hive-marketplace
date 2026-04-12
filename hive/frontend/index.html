@@ -1580,6 +1580,119 @@
         transition-duration: .01ms !important;
       }
     }
+
+    /* ── IMPROVEMENT 1: Multi-step registration ── */
+    .reg-steps-bar{display:flex;align-items:center;gap:0;margin-bottom:20px;padding:0 4px}
+    .reg-step-item{display:flex;flex-direction:column;align-items:center;gap:4px;flex:1;position:relative}
+    .reg-step-item:not(:last-child)::after{content:'';position:absolute;top:14px;left:calc(50% + 16px);right:calc(-50% + 16px);height:2px;background:var(--border);transition:background .3s}
+    .reg-step-item.done:not(:last-child)::after{background:var(--primary)}
+    .reg-step-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:var(--surface);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;color:var(--muted);transition:all .3s;z-index:1}
+    .reg-step-item.active .reg-step-dot{border-color:var(--primary);background:var(--primary);color:#fff}
+    .reg-step-item.done .reg-step-dot{border-color:var(--primary);background:var(--primary);color:#fff}
+    .reg-step-label{font-size:10px;color:var(--muted);font-weight:500;text-align:center;white-space:nowrap}
+    .reg-step-item.active .reg-step-label{color:var(--primary);font-weight:700}
+    .reg-step-item.done .reg-step-label{color:var(--primary)}
+    .reg-step-panel{display:none}.reg-step-panel.active{display:block}
+    .reg-step-nav{display:flex;gap:10px;margin-top:16px}
+    .btn-step-back{flex:0 0 auto;padding:10px 18px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);font-size:14px;font-weight:600;cursor:pointer;transition:all .2s}
+    .btn-step-back:hover{border-color:var(--primary);color:var(--primary)}
+    .btn-step-next{flex:1;padding:10px 18px;border-radius:10px;border:none;background:var(--primary);color:#fff;font-size:14px;font-weight:700;cursor:pointer;transition:background .2s}
+    .btn-step-next:hover{background:var(--primary-dark)}
+
+    /* ── IMPROVEMENT 2: Hamburger + mobile nav drawer ── */
+    .hamburger{display:none;flex-direction:column;justify-content:center;gap:5px;width:36px;height:36px;padding:6px;cursor:pointer;border:none;background:rgba(255,255,255,.08);border-radius:8px;margin-left:8px;flex-shrink:0}
+    .hamburger span{display:block;width:100%;height:2px;background:#fff;border-radius:2px;transition:all .3s}
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+    .hamburger.open span:nth-child(2){opacity:0}
+    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+    .mobile-nav-drawer{position:fixed;inset:0;z-index:1500;display:flex;pointer-events:none}
+    .mobile-nav-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);opacity:0;transition:opacity .3s}
+    .mobile-nav-panel{position:absolute;top:0;left:-280px;width:260px;height:100%;background:var(--nav);display:flex;flex-direction:column;padding:24px 16px;gap:4px;transition:left .3s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(0,0,0,.3)}
+    .mobile-nav-drawer.open{pointer-events:all}
+    .mobile-nav-drawer.open .mobile-nav-backdrop{opacity:1}
+    .mobile-nav-drawer.open .mobile-nav-panel{left:0}
+    .mobile-nav-link{display:flex;align-items:center;gap:12px;color:#e2e8f0;font-size:15px;font-weight:600;padding:12px 16px;border-radius:10px;cursor:pointer;border:none;background:transparent;font-family:inherit;text-align:left;transition:background .2s}
+    .mobile-nav-link:hover,.mobile-nav-link.active{background:rgba(249,115,22,.15);color:#fff}
+    .mobile-nav-link svg{width:20px;height:20px;opacity:.7}
+    .mobile-nav-link.active svg{opacity:1;color:#f97316}
+    .mobile-nav-divider{height:1px;background:rgba(255,255,255,.1);margin:8px 0}
+    .mobile-nav-logo{color:#f97316;font-size:22px;font-weight:900;letter-spacing:.05em;margin-bottom:16px;padding:0 16px}
+    @media (max-width:768px){.hamburger{display:flex !important}}
+
+    /* ── IMPROVEMENT 3: Filter loading spinner ── */
+    .filter-loading{position:absolute;inset:0;background:rgba(245,247,250,.75);display:none;align-items:center;justify-content:center;z-index:50;border-radius:var(--radius);backdrop-filter:blur(2px)}
+    .filter-loading.active{display:flex}
+    .filter-spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--primary);border-radius:50%;animation:spin .7s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    #searchPane{position:relative}
+
+    /* ── IMPROVEMENT 4: Registration success screen ── */
+    .reg-success-overlay{position:fixed;inset:0;z-index:2000;background:rgba(15,23,42,.6);display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+    .reg-success-overlay.open{display:flex}
+    .reg-success-card{background:var(--surface);border-radius:20px;padding:40px 32px;max-width:400px;width:90%;text-align:center;box-shadow:var(--shadow-lg);animation:popIn .4s cubic-bezier(.34,1.56,.64,1)}
+    @keyframes popIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
+    .reg-success-icon{width:72px;height:72px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px}
+    .reg-success-title{font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px}
+    .reg-success-sub{font-size:14px;color:var(--text-secondary);margin-bottom:24px;line-height:1.6}
+    .reg-success-name{display:inline-block;background:var(--orange-mid);color:var(--primary-dark);font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:16px;font-size:15px}
+    .reg-success-actions{display:flex;flex-direction:column;gap:10px}
+    .btn-success-view{padding:12px 20px;border-radius:10px;background:var(--primary);color:#fff;font-weight:700;font-size:14px;cursor:pointer;border:none;transition:background .2s}
+    .btn-success-view:hover{background:var(--primary-dark)}
+    .btn-success-close{padding:10px 20px;border-radius:10px;background:transparent;color:var(--text-secondary);font-weight:600;font-size:14px;cursor:pointer;border:1.5px solid var(--border);transition:all .2s}
+    .btn-success-close:hover{border-color:var(--primary);color:var(--primary)}
+
+    /* ── IMPROVEMENT 5: Improved company cards ── */
+    .slc-footer{display:flex;align-items:center;justify-content:space-between;margin-top:10px;gap:8px}
+    .slc-phone{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--text-secondary);padding:5px 10px;border-radius:8px;border:1.5px solid var(--border);background:var(--surface);cursor:pointer;text-decoration:none;transition:all .2s;white-space:nowrap}
+    .slc-phone:hover{border-color:var(--green);color:var(--green)}
+    .slc-phone svg{width:13px;height:13px;flex-shrink:0}
+    .btn-slc-contact{flex:1;padding:6px 12px;border-radius:8px;background:var(--primary);color:#fff;font-size:12px;font-weight:700;border:none;cursor:pointer;transition:background .2s}
+    .btn-slc-contact:hover{background:var(--primary-dark)}
+    .slc-sector-badge{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:var(--text-secondary);background:var(--border-light);border-radius:6px;padding:2px 8px;margin-top:4px}
+
+    /* ── IMPROVEMENT 6: Mobile detail panel drag handle ── */
+    .dp-drag-handle{display:none;width:40px;height:4px;border-radius:2px;background:var(--border);margin:8px auto 0;cursor:grab}
+    @media (max-width:768px){.dp-drag-handle{display:block !important}}
+
+    /* ── IMPROVEMENT 7: Profile panel ── */
+    .profile-panel-overlay{position:fixed;inset:0;z-index:1800;background:rgba(15,23,42,.6);display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+    .profile-panel-overlay.open{display:flex}
+    .profile-panel{background:var(--surface);border-radius:20px;width:min(480px,94vw);max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+    .profile-panel-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border)}
+    .profile-panel-title{font-size:18px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px}
+    .profile-panel-close{width:32px;height:32px;border-radius:50%;border:none;background:var(--border-light);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary)}
+    .profile-panel-close:hover{background:var(--border)}
+    .profile-panel-body{padding:20px 24px;display:flex;flex-direction:column;gap:16px}
+    .profile-info-row{display:flex;align-items:center;gap:12px}
+    .profile-avatar-big{width:56px;height:56px;border-radius:50%;background:var(--primary);color:#fff;font-size:20px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+    .profile-user-info{flex:1}
+    .profile-user-name{font-size:17px;font-weight:700}
+    .profile-user-email{font-size:13px;color:var(--text-secondary)}
+    .profile-section-title{font-size:13px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+    .profile-company-card{border:1.5px solid var(--border);border-radius:12px;padding:14px;display:flex;align-items:center;gap:12px;transition:border-color .2s;cursor:pointer}
+    .profile-company-card:hover{border-color:var(--primary)}
+    .profile-company-emoji{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0}
+    .profile-company-info{flex:1;min-width:0}
+    .profile-company-name{font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .profile-company-city{font-size:12px;color:var(--text-secondary)}
+    .profile-empty{text-align:center;padding:24px;color:var(--muted);font-size:14px}
+
+    /* ── IMPROVEMENT 8: Layer 2 hint ── */
+    .layer2-unlock-hint{display:flex;align-items:center;gap:8px;padding:10px 12px;background:var(--orange-light);border:1px solid var(--orange-border);border-radius:8px;font-size:12px;color:var(--primary-dark);margin-bottom:8px}
+    .layer2-unlock-hint svg{width:14px;height:14px;flex-shrink:0}
+    #filtersLayer2.locked .layer2-unlock-hint{display:flex}
+    #filtersLayer2:not(.locked) .layer2-unlock-hint{display:none}
+
+    /* ── IMPROVEMENT 9: Keyboard focus on sector multi-select ── */
+    .reg-ms-trigger:focus{outline:2px solid var(--primary);outline-offset:2px}
+    .reg-ms-panel .reg-ms-opt:focus{background:var(--orange-light);outline:none}
+
+    /* ── IMPROVEMENT 11: Sector pills scroll fade indicator ── */
+    .ub-sectors-wrap{position:relative;flex:1;overflow:hidden;display:flex}
+    .ub-sectors-fade{position:absolute;right:0;top:0;bottom:0;width:40px;background:linear-gradient(to right,transparent,var(--bg));pointer-events:none;transition:opacity .3s;z-index:5}
+    .ub-sectors-fade.hidden{opacity:0}
+    .ub-sectors-scroll-hint{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--muted);pointer-events:none;transition:opacity .3s;z-index:6}
+    .ub-sectors-fade.hidden + .ub-sectors-scroll-hint{opacity:0}
   </style>
 </head>
 <body>
@@ -1719,6 +1832,10 @@ window.onerror = function(msg, src, line, col, err) {
       <span data-i18n="navAbout">Sobre</span>
     </button>
   </div>
+  <!-- Hamburger — visible only on mobile -->
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 
   <!-- AD BANNER — fills free space between tabs and buttons -->
   <div class="nav-ad" id="navAdBanner">
@@ -1785,6 +1902,63 @@ window.onerror = function(msg, src, line, col, err) {
     </div>
   </div>
 </nav>
+
+<!-- MOBILE NAV DRAWER -->
+<div class="mobile-nav-drawer" id="mobileNavDrawer" onclick="closeMobileNav(event)">
+  <div class="mobile-nav-backdrop"></div>
+  <div class="mobile-nav-panel" onclick="event.stopPropagation()">
+    <div class="mobile-nav-logo">🐝 Hive</div>
+    <button class="mobile-nav-link active" id="mnHome" onclick="showTab('home');closeMobileNavPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span data-i18n="navHome">Início</span>
+    </button>
+    <button class="mobile-nav-link" id="mnSearch" onclick="showTab('search');closeMobileNavPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span data-i18n="navSearch">Pesquisa</span>
+    </button>
+    <button class="mobile-nav-link" id="mnAbout" onclick="showTab('about');closeMobileNavPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span data-i18n="navAbout">Sobre</span>
+    </button>
+    <div class="mobile-nav-divider"></div>
+    <button class="mobile-nav-link" onclick="openRegister();closeMobileNavPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span data-i18n="navRegister">Registar Empresa</span>
+    </button>
+    <button class="mobile-nav-link" onclick="openHelp();closeMobileNavPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span data-i18n="navHelp">Ajuda</span>
+    </button>
+  </div>
+</div>
+
+<!-- REGISTRATION SUCCESS SCREEN -->
+<div class="reg-success-overlay" id="regSuccessOverlay">
+  <div class="reg-success-card">
+    <div class="reg-success-icon">✅</div>
+    <div class="reg-success-title" data-i18n="successTitle">Empresa Registada!</div>
+    <div class="reg-success-name" id="regSuccessName"></div>
+    <div class="reg-success-sub" data-i18n="successSub">A sua empresa foi adicionada à plataforma e já é visível no mapa.</div>
+    <div class="reg-success-actions">
+      <button class="btn-success-view" onclick="closeRegSuccess(true)" data-i18n="successView">Ver no Mapa</button>
+      <button class="btn-success-close" onclick="closeRegSuccess(false)" data-i18n="successClose">Continuar a Navegar</button>
+    </div>
+  </div>
+</div>
+
+<!-- PROFILE PANEL -->
+<div class="profile-panel-overlay" id="profilePanelOverlay" onclick="closeProfilePanel(event)">
+  <div class="profile-panel" onclick="event.stopPropagation()">
+    <div class="profile-panel-header">
+      <div class="profile-panel-title">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        <span>O Meu Perfil</span>
+      </div>
+      <button class="profile-panel-close" onclick="document.getElementById('profilePanelOverlay').classList.remove('open')">✕</button>
+    </div>
+    <div class="profile-panel-body" id="profilePanelBody"></div>
+  </div>
+</div>
 
 <!-- HOME TAB -->
 <section id="tab-home" class="tab-home">
@@ -2094,7 +2268,10 @@ window.onerror = function(msg, src, line, col, err) {
     </button>
   </div>
   <div class="ub-divider"></div>
-  <div class="ub-sectors" id="sectorFilters"></div>
+  <div class="ub-sectors-wrap">
+    <div class="ub-sectors" id="sectorFilters"></div>
+    <div class="ub-sectors-fade" id="sectorFade"></div>
+  </div>
   <div class="ub-divider"></div>
 </div>
 
@@ -2102,7 +2279,8 @@ window.onerror = function(msg, src, line, col, err) {
 <div class="filter-backdrop" id="filterBackdrop" onclick="closeMobileFilter()"></div>
 
 <!-- MAIN -->
-<div class="main">
+<div class="main" id="searchPane">
+  <div class="filter-loading" id="filterLoading"><div class="filter-spinner"></div></div>
 
   <!-- FILTER SIDEBAR -->
   <div class="filter-sidebar">
@@ -2123,14 +2301,12 @@ window.onerror = function(msg, src, line, col, err) {
     </div>
 
     <!-- ── LAYER 2: secondary filters — active only when a sector is selected ── -->
-    <div class="filters-layer2" id="filtersLayer2">
+    <div class="filters-layer2 locked" id="filtersLayer2">
 
       <!-- Hint shown when no sector is active -->
-      <div class="layer2-hint hidden" id="layer2Hint">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M12 19V5M5 12l7-7 7 7"/>
-        </svg>
-        Selecione primeiro uma área de atividade
+      <div class="layer2-unlock-hint" id="layer2Hint">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        Selecione uma área de atividade para desbloquear mais filtros
       </div>
 
     <!-- SORT -->
@@ -2298,6 +2474,7 @@ window.onerror = function(msg, src, line, col, err) {
 
 <!-- DETAIL PANEL -->
 <div class="detail-panel" id="detailPanel">
+  <div class="dp-drag-handle"></div>
   <div class="dp-header">
     <div class="dp-logo" id="dpLogo"></div>
     <div class="dp-info">
@@ -2444,118 +2621,136 @@ window.onerror = function(msg, src, line, col, err) {
 <div class="overlay" id="registerOverlay" onclick="closeRegisterIfBg(event)">
   <div class="modal">
     <div class="modal-title"><i data-lucide="building-2"></i><span data-i18n="regTitle">Registar Nova Empresa</span></div>
-    <div class="modal-sub">
-      <span data-i18n="regSub">Preencha os dados para adicionar a sua empresa à plataforma Hive. Campos com</span>
-      <span class="req"> *</span>
-      <span data-i18n="regSubSuffix">são obrigatórios.</span>
+
+    <!-- Step progress bar -->
+    <div class="reg-steps-bar">
+      <div class="reg-step-item active" id="regStepItem1">
+        <div class="reg-step-dot">1</div>
+        <div class="reg-step-label" data-i18n="regStep1Label">Identidade</div>
+      </div>
+      <div class="reg-step-item" id="regStepItem2">
+        <div class="reg-step-dot">2</div>
+        <div class="reg-step-label" data-i18n="regStep2Label">Localização</div>
+      </div>
+      <div class="reg-step-item" id="regStepItem3">
+        <div class="reg-step-dot">3</div>
+        <div class="reg-step-label" data-i18n="regStep3Label">Contactos</div>
+      </div>
     </div>
 
-    <div class="form-row">
-      <label><span data-i18n="regCompanyName">Nome da Empresa</span> <span class="req">*</span></label>
-      <input type="text" id="regName" data-i18n-ph="regNamePh"/>
-    </div>
-
-    <div class="form-row">
-      <label><span data-i18n="regSectorLabel">Setor de Atividade</span> <span class="req">*</span></label>
-      <!-- Custom multi-select -->
-      <div class="reg-ms-wrap" id="regSectorWrap">
-        <div class="reg-ms-trigger" id="regSectorTrigger" onclick="toggleRegSectorPanel()">
-          <span class="reg-ms-text" id="regSectorText">Selecionar áreas de atividade...</span>
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="reg-ms-arrow"><polyline points="6 9 12 15 18 9"/></svg>
+    <!-- STEP 1: Identity -->
+    <div class="reg-step-panel active" id="regStepPanel1">
+      <div class="form-row">
+        <label><span data-i18n="regCompanyName">Nome da Empresa</span> <span class="req">*</span></label>
+        <input type="text" id="regName" data-i18n-ph="regNamePh"/>
+      </div>
+      <div class="form-row">
+        <label><span data-i18n="regSectorLabel">Setor de Atividade</span> <span class="req">*</span></label>
+        <div class="reg-ms-wrap" id="regSectorWrap">
+          <div class="reg-ms-trigger" id="regSectorTrigger" tabindex="0" onclick="toggleRegSectorPanel()" onkeydown="regSectorKeydown(event)">
+            <span class="reg-ms-text" id="regSectorText">Selecionar áreas de atividade...</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="reg-ms-arrow"><polyline points="6 9 12 15 18 9"/></svg>
+          </div>
+          <div class="reg-ms-panel" id="regSectorPanel"></div>
         </div>
-        <div class="reg-ms-panel" id="regSectorPanel"></div>
-      </div>
-      <div class="form-hint">Pode selecionar várias áreas de atividade.</div>
-    </div>
-
-    <div class="form-row">
-      <label data-i18n="regCae">Código CAE</label>
-      <input type="text" id="regCae" data-i18n-ph="regCaePh"/>
-    </div>
-
-    <div class="form-grid2">
-      <div class="form-row">
-        <label><span data-i18n="regAlvara">Alvará</span> <span class="req">*</span></label>
-        <input type="text" id="regAlvara" data-i18n-ph="regAlvaraPh"/>
+        <div class="form-hint">Pode selecionar várias áreas de atividade.</div>
       </div>
       <div class="form-row">
-        <label><span data-i18n="regCertidao">Certidão Permanente</span> <span class="req">*</span></label>
-        <input type="text" id="regCertidao" data-i18n-ph="regCertidaoPh"/>
+        <label data-i18n="regCae">Código CAE</label>
+        <input type="text" id="regCae" data-i18n-ph="regCaePh"/>
+      </div>
+      <div class="form-grid2">
+        <div class="form-row">
+          <label><span data-i18n="regAlvara">Alvará</span> <span class="req">*</span></label>
+          <input type="text" id="regAlvara" data-i18n-ph="regAlvaraPh"/>
+        </div>
+        <div class="form-row">
+          <label><span data-i18n="regCertidao">Certidão Permanente</span> <span class="req">*</span></label>
+          <input type="text" id="regCertidao" data-i18n-ph="regCertidaoPh"/>
+        </div>
+      </div>
+      <div class="reg-step-nav">
+        <button class="btn-cancel" onclick="closeRegister()" data-i18n="regCancel">Cancelar</button>
+        <button class="btn-step-next" onclick="regNextStep(1)"><span data-i18n="regStepNext">Seguinte</span> →</button>
       </div>
     </div>
 
-    <div class="form-row">
-      <label><span data-i18n="regCountry">País</span> <span class="req">*</span></label>
-      <select id="regCountry">
-        <option value="">Selecione um país</option>
-        <option value="pt">Portugal</option>
-        <option value="es">Espanha</option>
-        <option value="fr">França</option>
-        <option value="it">Itália</option>
-        <option value="de">Alemanha</option>
-        <option value="uk">Reino Unido</option>
-        <option value="nl">Países Baixos</option>
-        <option value="be">Bélgica</option>
-        <option value="ch">Suíça</option>
-        <option value="at">Áustria</option>
-        <option value="other">Outro país</option>
-      </select>
-    </div>
-
-    <div class="form-grid2">
+    <!-- STEP 2: Location -->
+    <div class="reg-step-panel" id="regStepPanel2">
       <div class="form-row">
-        <label><span data-i18n="regPostalCode">Código Postal</span> <span class="req">*</span></label>
-        <input type="text" id="regPostalCode" placeholder="Ex: 1000-001"/>
+        <label><span data-i18n="regCountry">País</span> <span class="req">*</span></label>
+        <select id="regCountry">
+          <option value="">Selecione um país</option>
+          <option value="pt">Portugal</option>
+          <option value="es">Espanha</option>
+          <option value="fr">França</option>
+          <option value="it">Itália</option>
+          <option value="de">Alemanha</option>
+          <option value="uk">Reino Unido</option>
+          <option value="nl">Países Baixos</option>
+          <option value="be">Bélgica</option>
+          <option value="ch">Suíça</option>
+          <option value="at">Áustria</option>
+          <option value="other">Outro país</option>
+        </select>
       </div>
-      <div class="form-row">
-        <label><span data-i18n="regCity">Localidade / Cidade</span> <span class="req">*</span></label>
-        <select id="regCity"></select>
-      </div>
-    </div>
-
-    <div class="form-row">
-      <label><span data-i18n="regAddress">Morada Detalhada</span> <span class="req">*</span></label>
-      <input type="text" id="regAddress" data-i18n-ph="regAddressPh" placeholder="Ex: Rua da Paz, 123, Apto 4B"/>
-      <div class="form-hint">Incluir rua, número, apartamento e complementos para localização precisa no mapa.</div>
-    </div>
-
-    <div class="form-row">
-      <label data-i18n="regZone">Localidade / Zona (Opcional)</label>
-      <select id="regZone"></select>
-      <div class="form-hint">Selecione a localidade ou zona específica dentro da cidade. Este campo atualiza automaticamente baseado na cidade selecionada.</div>
-    </div>
-
-    <div class="form-grid2">
-      <div class="form-row">
-        <label><span data-i18n="regEmail">Email de Contacto</span> <span class="req">*</span></label>
-        <input type="email" id="regEmail" data-i18n-ph="regEmailPh"/>
+      <div class="form-grid2">
+        <div class="form-row">
+          <label><span data-i18n="regPostalCode">Código Postal</span> <span class="req">*</span></label>
+          <input type="text" id="regPostalCode" placeholder="Ex: 1000-001"/>
+        </div>
+        <div class="form-row">
+          <label><span data-i18n="regCity">Localidade / Cidade</span> <span class="req">*</span></label>
+          <select id="regCity"></select>
+        </div>
       </div>
       <div class="form-row">
-        <label><span data-i18n="regPhone">Telefone / WhatsApp</span> <span class="req">*</span></label>
-        <input type="tel" id="regPhone" placeholder="+351 XXX XXX XXX"/>
+        <label><span data-i18n="regAddress">Morada Detalhada</span> <span class="req">*</span></label>
+        <input type="text" id="regAddress" data-i18n-ph="regAddressPh" placeholder="Ex: Rua da Paz, 123, Apto 4B"/>
+        <div class="form-hint">Incluir rua, número, apartamento e complementos para localização precisa no mapa.</div>
+      </div>
+      <div class="form-row">
+        <label data-i18n="regZone">Localidade / Zona (Opcional)</label>
+        <select id="regZone"></select>
+        <div class="form-hint">Selecione a localidade ou zona específica dentro da cidade.</div>
+      </div>
+      <div class="reg-step-nav">
+        <button class="btn-step-back" onclick="regGoStep(1)">← <span data-i18n="regStepBack">Anterior</span></button>
+        <button class="btn-step-next" onclick="regNextStep(2)"><span data-i18n="regStepNext">Seguinte</span> →</button>
       </div>
     </div>
 
-    <div class="form-row">
-      <label data-i18n="regWebsite">Website</label>
-      <input type="url" id="regWebsite" data-i18n-ph="regWebsitePh"/>
+    <!-- STEP 3: Contacts & Presentation -->
+    <div class="reg-step-panel" id="regStepPanel3">
+      <div class="form-grid2">
+        <div class="form-row">
+          <label><span data-i18n="regEmail">Email de Contacto</span> <span class="req">*</span></label>
+          <input type="email" id="regEmail" data-i18n-ph="regEmailPh"/>
+        </div>
+        <div class="form-row">
+          <label><span data-i18n="regPhone">Telefone / WhatsApp</span> <span class="req">*</span></label>
+          <input type="tel" id="regPhone" placeholder="+351 XXX XXX XXX"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <label data-i18n="regWebsite">Website</label>
+        <input type="url" id="regWebsite" data-i18n-ph="regWebsitePh"/>
+      </div>
+      <div class="form-row">
+        <label><span data-i18n="regSpecialties">Especialidades</span> <span class="req">*</span></label>
+        <input type="text" id="regTags" data-i18n-ph="regTagsPh"/>
+        <div class="form-hint" data-i18n="regTagsHint">Separe as especialidades por vírgulas.</div>
+      </div>
+      <div class="form-row">
+        <label data-i18n="regDescription">Descrição Breve</label>
+        <textarea id="regDesc" data-i18n-ph="regDescPh"></textarea>
+      </div>
+      <div class="reg-step-nav">
+        <button class="btn-step-back" onclick="regGoStep(2)">← <span data-i18n="regStepBack">Anterior</span></button>
+        <button class="btn-step-next" onclick="submitRegister()"><i data-lucide="check-circle"></i> <span data-i18n="regSubmit">Registar Empresa</span></button>
+      </div>
     </div>
 
-    <div class="form-row">
-      <label><span data-i18n="regSpecialties">Especialidades</span> <span class="req">*</span></label>
-      <input type="text" id="regTags" data-i18n-ph="regTagsPh"/>
-      <div class="form-hint" data-i18n="regTagsHint">Separe as especialidades por vírgulas.</div>
-    </div>
-
-    <div class="form-row">
-      <label data-i18n="regDescription">Descrição Breve</label>
-      <textarea id="regDesc" data-i18n-ph="regDescPh"></textarea>
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn-cancel" onclick="closeRegister()" data-i18n="regCancel">Cancelar</button>
-      <button class="btn-submit" onclick="submitRegister()"><i data-lucide="check-circle"></i><span data-i18n="regSubmit">Registar Empresa</span></button>
-    </div>
   </div>
 </div>
 
@@ -5709,6 +5904,11 @@ function getFiltered() {
 }
 
 function applyFilters() {
+  // Show loading indicator briefly
+  const loadingEl = document.getElementById('filterLoading');
+  if (loadingEl) { loadingEl.classList.add('active'); }
+  // Use setTimeout(0) so the spinner renders before heavy work
+  setTimeout(() => {
   const filtered = getFiltered();
   updateMarkers(filtered);
   document.getElementById('countNum').textContent = filtered.length;
@@ -5719,23 +5919,25 @@ function applyFilters() {
   if (hint && hintText) {
     const hasSectorSelected = activeSectors.size > 0;
     if (filtered.length > 0) {
-      // Companies found — hide hint
       hint.classList.add('hidden');
     } else if (hasSectorSelected) {
-      // Sector selected but no results — suggest increasing radius
       hint.classList.remove('hidden');
       hintText.innerHTML = t('mapHintNoResults') + '<br><span>' + t('mapHintNoResultsSub') + '</span>';
     } else {
-      // No sector selected — default message
       hint.classList.remove('hidden');
       hintText.innerHTML = t('mapHintSelectSector') + '<br><span>' + t('mapHintSelectSectorSub') + '</span>';
     }
   }
-  const l2hint = document.getElementById('layer2Hint');
-  if (l2hint) l2hint.classList.toggle('hidden', true);
-  // Sidebar filters always usable — results just won't show until a sector is selected
+  // Layer 2: lock when no sector selected, unlock when sector active
   const layer2 = document.getElementById('filtersLayer2');
-  if (layer2) layer2.classList.remove('inactive');
+  if (layer2) {
+    if (activeSectors.size > 0) {
+      layer2.classList.remove('locked');
+      layer2.classList.remove('inactive');
+    } else {
+      layer2.classList.add('locked');
+    }
+  }
   // Highlight the clear-all button when any filter is active
   const clearBtn = document.getElementById('ubClearBtn');
   if (clearBtn) {
@@ -5752,6 +5954,8 @@ function applyFilters() {
   const countEl = document.getElementById('viewResultCount');
   if (countEl) countEl.textContent = filtered.length + ' empresa' + (filtered.length !== 1 ? 's' : '');
   if (document.getElementById('searchListView')?.style.display !== 'none') renderSearchList();
+  if (loadingEl) loadingEl.classList.remove('active');
+  }, 0);
 }
 
 function updateMarkers(filtered) {
@@ -5829,18 +6033,23 @@ function renderSearchList() {
   listEl.innerHTML = filtered.map(c => {
     const sectorLabel = (tr.sectors && tr.sectors[c.sector]) || c.sector || '';
     const stars = c.rating > 0 ? '★'.repeat(Math.round(c.rating)) + ` ${c.rating.toFixed(1)}` : t('noRatingText');
-    const tags = (c.tags || []).slice(0, 3).map(t => `<span class="slc-tag">${t}</span>`).join('');
+    const tags = (c.tags || []).slice(0, 3).map(tag => `<span class="slc-tag">${tag}</span>`).join('');
+    const phoneFrag = c.phone ? `<a class="slc-phone" href="tel:${c.phone}" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>${c.phone}</a>` : '';
     return `<div class="search-list-card" onclick="setSearchView('map');setTimeout(()=>openDetail(${c.id}),300)">
       <div class="slc-header">
         <div class="slc-emoji" style="background:${c.color}22">${c.emoji || '🏢'}</div>
         <div class="slc-info">
           <div class="slc-name">${c.name}</div>
-          <div class="slc-sector">${sectorLabel}</div>
+          <div class="slc-sector-badge"><span style="width:8px;height:8px;border-radius:50%;background:${c.color};display:inline-block;flex-shrink:0"></span>${sectorLabel}</div>
         </div>
         <div class="slc-rating">${stars}</div>
       </div>
-      <div class="slc-address">📍 ${c.address || c.city || 'Portugal'}</div>
+      <div class="slc-address">📍 ${c.city || c.address || 'Portugal'}</div>
       ${tags ? `<div class="slc-tags">${tags}</div>` : ''}
+      <div class="slc-footer">
+        ${phoneFrag}
+        <button class="btn-slc-contact" onclick="event.stopPropagation();setSearchView('map');setTimeout(()=>{openDetail(${c.id});},300)" data-i18n="btnRequestQuote">Pedir Orçamento</button>
+      </div>
     </div>`;
   }).join('');
 }
@@ -5884,7 +6093,7 @@ function openRegister() {
   }
 }
 
-function closeRegister() { document.getElementById('registerOverlay').classList.remove('open'); }
+function closeRegister() { document.getElementById('registerOverlay').classList.remove('open'); regGoStep(1); }
 function closeRegisterIfBg(e) { if (e.target === document.getElementById('registerOverlay')) closeRegister(); }
 
 // ── Multi-select sector state ─────────────────────────────────────────────────
@@ -6133,11 +6342,10 @@ function submitRegister() {
 
       closeRegister();
       applyFilters();
-      showToast(t('toastRegistered')(name));
-      setTimeout(() => {
-        map.flyTo([newCompany.lat, newCompany.lng], 14, { animate: true, duration: 1.5 });
-        setTimeout(() => markerMap[newCompany.id]?.openPopup(), 1600);
-      }, 300);
+      // Show success screen
+      _lastRegisteredCompany = newCompany;
+      document.getElementById('regSuccessName').textContent = name;
+      document.getElementById('regSuccessOverlay').classList.add('open');
     } catch(e) {
       console.error('Erro ao guardar empresa:', e);
       showToast(t('toastRegisterError'));
@@ -6537,7 +6745,7 @@ function updateNavAuth() {
             <div class="avatar-menu-type ${typeClass}">${typeLabel}</div>
           </div>
           ${user.type === 'empresa' ? '<div class="avatar-menu-item" onclick="openRegister();closeAvatarMenu()"><i data-lucide="building-2"></i>' + t('avatarRegisterCompany') + '</div>' : ''}
-          <div class="avatar-menu-item" onclick="showToast(\'Funcionalidade em breve\')"><i data-lucide="user"></i>O Meu Perfil</div>
+          <div class="avatar-menu-item" onclick="openProfilePanel();closeAvatarMenu()"><i data-lucide="user"></i>O Meu Perfil</div>
           <div class="avatar-menu-divider"></div>
           <div class="avatar-menu-item danger" onclick="doLogout()"><i data-lucide="log-out"></i>Terminar Sessão</div>
         </div>
@@ -6954,6 +7162,187 @@ window.diagnosticCheck = function() {
   console.log('%c✓ Supabase:', 'color: #22c55e;', sb ? '✅ Configurado' : '⚠️ Não configurado (armazenamento local)');
   console.log('%c✓ Empresas carregadas:', 'color: #22c55e;', companies.length);
 };
+
+// ── IMPROVEMENT 2: Mobile nav drawer ────────────────────────────────────────
+function toggleMobileNav() {
+  const drawer = document.getElementById('mobileNavDrawer');
+  const btn = document.getElementById('hamburgerBtn');
+  if (!drawer) return;
+  const open = drawer.classList.toggle('open');
+  if (btn) btn.classList.toggle('open', open);
+}
+function closeMobileNav(e) {
+  if (e && e.target !== document.querySelector('.mobile-nav-backdrop') && !e.target.closest('.mobile-nav-backdrop')) return;
+  closeMobileNavPanel();
+}
+function closeMobileNavPanel() {
+  const drawer = document.getElementById('mobileNavDrawer');
+  const btn = document.getElementById('hamburgerBtn');
+  if (drawer) drawer.classList.remove('open');
+  if (btn) btn.classList.remove('open');
+}
+// Sync mobile nav active state with tab switches
+const _origShowTab = showTab;
+showTab = function(tab) {
+  _origShowTab(tab);
+  ['home','search','about'].forEach(id => {
+    const el = document.getElementById('mn' + id.charAt(0).toUpperCase() + id.slice(1));
+    if (el) el.classList.toggle('active', id === tab);
+  });
+};
+
+// ── IMPROVEMENT 1: Multi-step registration ──────────────────────────────────
+let _currentRegStep = 1;
+
+function regGoStep(step) {
+  [1,2,3].forEach(n => {
+    document.getElementById('regStepPanel' + n)?.classList.toggle('active', n === step);
+    const item = document.getElementById('regStepItem' + n);
+    if (item) {
+      item.classList.toggle('active', n === step);
+      item.classList.toggle('done', n < step);
+    }
+  });
+  _currentRegStep = step;
+  // Scroll modal back to top on step change
+  document.querySelector('#registerOverlay .modal')?.scrollTo(0, 0);
+}
+
+function regNextStep(fromStep) {
+  if (fromStep === 1) {
+    const name = document.getElementById('regName')?.value.trim();
+    const alvara = document.getElementById('regAlvara')?.value.trim();
+    const certidao = document.getElementById('regCertidao')?.value.trim();
+    if (!name) { showToast(t('valName')); return; }
+    if (_regSelectedSectors.length === 0) { showToast(t('valSector')); return; }
+    if (!alvara) { showToast(t('valAlvara')); return; }
+    if (!certidao) { showToast(t('valCertidao')); return; }
+  } else if (fromStep === 2) {
+    const country = document.getElementById('regCountry')?.value;
+    const city = document.getElementById('regCity')?.value;
+    const address = document.getElementById('regAddress')?.value.trim();
+    const postal = document.getElementById('regPostalCode')?.value.trim();
+    if (!country) { showToast('Selecione um país'); return; }
+    if (!city) { showToast('Selecione uma cidade'); return; }
+    if (!address) { showToast(t('valAddress')); return; }
+    if (!postal) { showToast('Introduza o código postal'); return; }
+  }
+  regGoStep(fromStep + 1);
+}
+
+// Reset step state when opening the register modal
+const _origOpenRegister = openRegister;
+openRegister = function() {
+  _origOpenRegister();
+  regGoStep(1);
+};
+
+// ── IMPROVEMENT 4: Registration success screen ──────────────────────────────
+let _lastRegisteredCompany = null;
+
+function closeRegSuccess(viewOnMap) {
+  document.getElementById('regSuccessOverlay').classList.remove('open');
+  if (viewOnMap && _lastRegisteredCompany) {
+    showTab('search');
+    setSearchView('map');
+    setTimeout(() => {
+      map.flyTo([_lastRegisteredCompany.lat, _lastRegisteredCompany.lng], 14, { animate: true, duration: 1.5 });
+      setTimeout(() => markerMap[_lastRegisteredCompany.id]?.openPopup(), 1600);
+    }, 300);
+  }
+  _lastRegisteredCompany = null;
+}
+
+// ── IMPROVEMENT 7: Profile panel ────────────────────────────────────────────
+function openProfilePanel() {
+  const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  if (!user) { openLogin(); return; }
+  const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
+  const myCompanies = companies.filter(c => c.createdBy === user.id || c.created_by === user.id);
+  const companiesHtml = myCompanies.length > 0
+    ? myCompanies.map(c => `
+        <div class="profile-company-card" onclick="document.getElementById('profilePanelOverlay').classList.remove('open');showTab('search');setTimeout(()=>openDetail(${c.id}),300)">
+          <div class="profile-company-emoji" style="background:${c.color}22">${c.emoji||'🏢'}</div>
+          <div class="profile-company-info">
+            <div class="profile-company-name">${c.name}</div>
+            <div class="profile-company-city">📍 ${c.city||'Portugal'}</div>
+          </div>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+        </div>`).join('')
+    : `<div class="profile-empty">Nenhuma empresa registada.<br><br><button class="btn-step-next" style="width:100%" onclick="document.getElementById('profilePanelOverlay').classList.remove('open');openRegister()">Registar Empresa</button></div>`;
+
+  document.getElementById('profilePanelBody').innerHTML = `
+    <div class="profile-info-row">
+      <div class="profile-avatar-big">${initials}</div>
+      <div class="profile-user-info">
+        <div class="profile-user-name">${user.name}</div>
+        <div class="profile-user-email">${user.email}</div>
+      </div>
+    </div>
+    ${user.type === 'empresa' ? `<div><div class="profile-section-title">As Minhas Empresas</div>${companiesHtml}</div>` : ''}
+  `;
+  document.getElementById('profilePanelOverlay').classList.add('open');
+  if (typeof lucide !== 'undefined') lucide.createIcons();
+}
+function closeProfilePanel(e) {
+  if (e && !e.target.classList.contains('profile-panel-overlay')) return;
+  document.getElementById('profilePanelOverlay').classList.remove('open');
+}
+
+// ── IMPROVEMENT 9: Keyboard nav for sector multi-select ──────────────────────
+function regSectorKeydown(e) {
+  if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleRegSectorPanel(); }
+  if (e.key === 'Escape') {
+    document.getElementById('regSectorWrap')?.classList.remove('open');
+    document.getElementById('regSectorTrigger')?.focus();
+  }
+}
+
+// ── IMPROVEMENT 11: Sector pills scroll fade indicator ───────────────────────
+function initSectorScrollFade() {
+  const wrap = document.getElementById('sectorFilters');
+  const fade = document.getElementById('sectorFade');
+  if (!wrap || !fade) return;
+  function update() {
+    const atEnd = wrap.scrollLeft + wrap.clientWidth >= wrap.scrollWidth - 4;
+    fade.classList.toggle('hidden', atEnd);
+  }
+  wrap.addEventListener('scroll', update, { passive: true });
+  new ResizeObserver(update).observe(wrap);
+  update();
+}
+document.addEventListener('DOMContentLoaded', initSectorScrollFade);
+// Also run after sector filters render
+const _origRenderSectorFilters = typeof renderSectorFilters === 'function' ? renderSectorFilters : null;
+if (_origRenderSectorFilters) {
+  renderSectorFilters = function() {
+    _origRenderSectorFilters();
+    setTimeout(initSectorScrollFade, 50);
+  };
+}
+
+// ── Add translations for new UI strings ──────────────────────────────────────
+(function() {
+  const extra = {
+    pt: { regStep1Label:'Identidade', regStep2Label:'Localização', regStep3Label:'Contactos',
+          regStepNext:'Seguinte', regStepBack:'Anterior',
+          successTitle:'Empresa Registada!', successSub:'A sua empresa foi adicionada à plataforma e já é visível no mapa.',
+          successView:'Ver no Mapa', successClose:'Continuar a Navegar' },
+    en: { regStep1Label:'Identity', regStep2Label:'Location', regStep3Label:'Contacts',
+          regStepNext:'Next', regStepBack:'Back',
+          successTitle:'Company Registered!', successSub:'Your company has been added to the platform and is now visible on the map.',
+          successView:'View on Map', successClose:'Keep Browsing' },
+    fr: { regStep1Label:'Identité', regStep2Label:'Localisation', regStep3Label:'Contacts',
+          regStepNext:'Suivant', regStepBack:'Précédent',
+          successTitle:'Entreprise Enregistrée!', successSub:"Votre entreprise a été ajoutée à la plateforme et est maintenant visible sur la carte.",
+          successView:'Voir sur la Carte', successClose:'Continuer à Naviguer' }
+  };
+  if (typeof translations !== 'undefined') {
+    Object.keys(extra).forEach(lang => {
+      if (translations[lang]) Object.assign(translations[lang], extra[lang]);
+    });
+  }
+})();
 
 // Register Service Worker for PWA
 if ('serviceWorker' in navigator) {
