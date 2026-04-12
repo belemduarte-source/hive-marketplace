@@ -40,7 +40,11 @@ try {
                 $bytes = [System.IO.File]::ReadAllBytes((Join-Path $root 'index.html'))
                 $mime = 'text/html; charset=utf-8'
             }
-            $header = "HTTP/1.1 200 OK`r`nContent-Type: $mime`r`nContent-Length: $($bytes.Length)`r`nConnection: close`r`n`r`n"
+            $extraHeaders = ""
+            if ($mime -like 'text/html*') {
+                $extraHeaders = "Cache-Control: no-store`r`nClear-Site-Data: `"cache`", `"storage`"`r`n"
+            }
+            $header = "HTTP/1.1 200 OK`r`nContent-Type: $mime`r`nContent-Length: $($bytes.Length)`r`nConnection: close`r`n${extraHeaders}`r`n"
             $hb = [System.Text.Encoding]::ASCII.GetBytes($header)
             $stream.Write($hb, 0, $hb.Length)
             $stream.Write($bytes, 0, $bytes.Length)
