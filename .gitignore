@@ -1,0 +1,8 @@
+node_modules/
+.env
+.env.local
+hive/backend/.env
+hive/backend/node_modules/
+hive/node_modules/
+*.log
+.vercel/
