@@ -2494,14 +2494,8 @@ window.onerror = function(msg, src, line, col, err) {
       <div class="mobile-sub-activities" id="mobileSubActivities"></div>
     </div>
 
-    <!-- ── LAYER 2: secondary filters — active only when a sector is selected ── -->
-    <div class="filters-layer2 locked" id="filtersLayer2">
-
-      <!-- Hint shown when no sector is active -->
-      <div class="layer2-unlock-hint" id="layer2Hint">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        Selecione uma área de atividade acima para desbloquear mais filtros
-      </div>
+    <!-- filters (always accessible — sector selection shows companies on the map) -->
+    <div id="filtersLayer2">
 
     <!-- SORT -->
     <div class="filter-section">
@@ -4044,6 +4038,27 @@ function showTab(name) {
     if (typeof lucide !== 'undefined') lucide.createIcons();
   } else if (name === 'search') {
     search.style.display = 'flex';
+
+    // On mobile: force the filter sidebar to display inline (beats all CSS specificity)
+    if (window.innerWidth <= 768) {
+      const sidebar = document.querySelector('.filter-sidebar');
+      if (sidebar) {
+        sidebar.classList.remove('mobile-open'); // clear any drawer state
+        const p = (k,v) => sidebar.style.setProperty(k, v, 'important');
+        p('position','relative');
+        p('bottom','auto'); p('left','auto'); p('right','auto'); p('top','auto');
+        p('transform','none'); p('-webkit-transform','none');
+        p('width','100%'); p('min-width','auto');
+        p('max-height','44vh'); p('height','auto');
+        p('overflow-y','auto'); p('overflow-x','hidden');
+        p('z-index','1');
+        p('border-right','none'); p('border-top','none');
+        p('border-bottom','2px solid rgba(255,255,255,.1)');
+        p('border-radius','0'); p('box-shadow','none');
+        p('padding-bottom','8px'); p('transition','none');
+      }
+      renderMobileFilterPanel();
+    }
 
     // Tell Leaflet to recalculate the container size and reload any grey tiles.
     // Must run after the browser has painted the newly-visible container.
@@ -6205,16 +6220,7 @@ function applyFilters() {
       hintText.innerHTML = t('mapHintSelectSector') + '<br><span>' + t('mapHintSelectSectorSub') + '</span>';
     }
   }
-  // Layer 2: lock when no sector selected, unlock when sector active
-  const layer2 = document.getElementById('filtersLayer2');
-  if (layer2) {
-    if (activeSectors.size > 0) {
-      layer2.classList.remove('locked');
-      layer2.classList.remove('inactive');
-    } else {
-      layer2.classList.add('locked');
-    }
-  }
+  // No locking mechanic — all filters are always accessible
   // Highlight the clear-all button when any filter is active
   const clearBtn = document.getElementById('ubClearBtn');
   if (clearBtn) {
