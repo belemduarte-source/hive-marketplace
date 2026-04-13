@@ -1039,6 +1039,7 @@
     /* ── Featured Companies ── */
     .lp-featured-section{background:#f9fafb;max-width:100%;padding:60px 0}
     .lp-featured-section > *{max-width:1100px;margin-left:auto;margin-right:auto;padding-left:32px;padding-right:32px}
+    @media(max-width:768px){.lp-featured-section > *{padding-left:16px;padding-right:16px}}
     .lp-featured-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
 
     /* Scrolling testimonial banner */
@@ -1147,8 +1148,18 @@
       .lp-search-wrap[data-mode="activity"] .lp-searchbar{border-radius:16px 0 16px 16px}
       .lp-sb-field{padding:16px 18px}
       .lp-sb-btn{width:100%;justify-content:center;min-height:54px;border-radius:0 0 16px 16px}
-      .lp-cats-grid{grid-template-columns:repeat(2,1fr);gap:12px}
-      .lp-featured-grid{grid-template-columns:1fr}
+      /* Keep hero cats 4-col on mobile — same as desktop, just shorter */
+      .lp-hero-cats{grid-template-columns:repeat(4,1fr) !important;gap:10px !important}
+      .lp-hero-cat{height:110px !important}
+      .lp-hero-cat-emoji{font-size:22px !important}
+      .lp-hero-cat-name{font-size:10px !important}
+      /* Keep featured grid 2-col on mobile */
+      .lp-featured-grid{grid-template-columns:repeat(2,1fr)}
+      .lp-company-card{padding:16px}
+      .lp-cc-name{font-size:13px}
+      /* Keep category grid 4-col on mobile */
+      .lp-cats-grid{grid-template-columns:repeat(4,1fr);gap:8px}
+      .lp-cat-card{height:130px}
       .lp-testimonial-card{width:260px !important}
       .lp-testimonial-banner::before,.lp-testimonial-banner::after{width:30px !important}
       .lp-stats-bar{flex-wrap:wrap;gap:20px;padding:18px 24px}
@@ -1166,10 +1177,16 @@
       .lp-hero{padding:60px 16px 60px}
       .lp-hero-title{font-size:28px}
       .lp-hero-sub{font-size:15px}
+      /* On small phones, drop to 2-col for hero cats and category grid */
+      .lp-hero-cats{grid-template-columns:repeat(2,1fr) !important;gap:8px !important}
+      .lp-hero-cat{height:100px !important}
       .lp-cats-grid{grid-template-columns:repeat(2,1fr);gap:10px}
-      .lp-cat-card{height:140px}
+      .lp-cat-card{height:130px}
       .lp-cat-emoji{font-size:30px;top:18px}
       .lp-cat-name{font-size:12px}
+      /* Keep featured 2-col on small phones */
+      .lp-featured-grid{grid-template-columns:repeat(2,1fr)}
+      .lp-company-card{padding:12px}
       .lp-cta-title{font-size:28px}
       .lp-stat{padding:0 10px}
       .lp-stat-num{font-size:20px}
@@ -1371,14 +1388,14 @@
       .lp-hero-badge { margin: 0 auto 20px !important; }
       .lp-search-wrap { padding: 0 !important; }
 
-      /* Hero photo grid: 4-col → 2-col  */
+      /* Hero photo grid: keep 4-col on tablet, same as desktop */
       .lp-hero-cats {
-        grid-template-columns: repeat(2, 1fr) !important;
+        grid-template-columns: repeat(4, 1fr) !important;
         gap: 10px !important;
         max-width: 100% !important;
       }
-      .lp-hero-cat { height: 118px !important; }
-      .lp-hero-cat-emoji { font-size: 22px !important; }
+      .lp-hero-cat { height: 110px !important; }
+      .lp-hero-cat-emoji { font-size: 20px !important; }
 
       /* Stats bar */
       .lp-stats-bar { padding: 16px 16px !important; gap: 10px !important; flex-wrap: wrap !important; }
@@ -1481,8 +1498,8 @@
       .lp-hero-title { font-size: 27px !important; }
       .lp-hero-sub { font-size: 13px !important; margin-bottom: 28px !important; }
 
-      /* Photo strip cards */
-      .lp-hero-cats { gap: 8px !important; }
+      /* Photo strip cards — 2-col on small phones only */
+      .lp-hero-cats { grid-template-columns: repeat(2, 1fr) !important; gap: 8px !important; }
       .lp-hero-cat { height: 100px !important; border-radius: 14px !important; }
       .lp-hero-cat-emoji { font-size: 20px !important; }
       .lp-hero-cat-name { font-size: 10px !important; }
