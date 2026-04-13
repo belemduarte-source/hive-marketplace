@@ -771,6 +771,15 @@
       .logo-v{font-size:32px !important}
       /* Hide desktop auth buttons on mobile — accessible via hamburger drawer */
       .nav-right{display:none !important}
+      /* Mobile language button — flag icon next to hamburger */
+      .mobile-lang-btn{display:flex !important;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);cursor:pointer;font-size:18px;line-height:1;margin-left:auto;flex-shrink:0;transition:background .15s}
+      .mobile-lang-btn:active{background:rgba(249,115,22,.25) !important}
+      /* Filtros button inside ub-search row — mobile only */
+      .ub-filtros-btn{display:flex !important;align-items:center;gap:5px;background:rgba(249,115,22,.18);border:1.5px solid rgba(249,115,22,.5);color:#fb923c;border-radius:8px;padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:inherit;transition:background .15s}
+      .ub-filtros-btn:active{background:rgba(249,115,22,.35) !important}
+      .ub-filtros-btn.active{background:rgba(249,115,22,.35) !important;border-color:var(--primary) !important}
+      /* Sectors label row — mobile only */
+      .ub-sectors-label{display:block !important;width:100% !important;padding:2px 8px 0 !important;font-size:10px !important;font-weight:700 !important;color:rgba(255,255,255,.45) !important;letter-spacing:.06em !important;text-transform:uppercase !important}
       .ad-banner{min-height:60px !important;margin:0 4px 0 8px !important}
       .ad-title{font-size:14px !important}
       .ad-sub{font-size:10px !important}
@@ -785,9 +794,9 @@
       .ub-sectors-fade{display:none !important}
       .ub-sectors{width:100% !important;overflow-x:auto !important;scrollbar-width:none !important;padding:2px 4px !important}
       .ub-sectors .sector-filter-container{width:max-content !important}
-      .cat-item{flex:0 0 auto !important;padding:6px 10px !important;font-size:10px !important}
-      .cat-item .cat-label{font-size:11px !important}
-      .cat-item .cat-icon[data-lucide]{width:14px !important;height:14px !important}
+      .cat-item{flex:0 0 auto !important;padding:8px 12px !important;font-size:12px !important}
+      .cat-item .cat-label{font-size:12px !important}
+      .cat-item .cat-icon[data-lucide]{width:15px !important;height:15px !important}
       .filter-sidebar{width:180px !important;min-width:160px !important}
       .filter-section-title{font-size:10px !important}
       .filter-opt label{font-size:11px !important}
@@ -1283,6 +1292,9 @@
     .filter-backdrop.visible { display: block; }
 
     .mobile-filter-btn { display: none; } /* shown only via media query */
+    .mobile-lang-btn { display: none; }   /* shown only on mobile */
+    .ub-filtros-btn { display: none; }    /* shown only on mobile */
+    .ub-sectors-label { display: none; } /* shown only on mobile */
 
     /* ─────────────────────────────────────────────────────────────────────
        TABLETS & LARGE PHONES  (≤ 768px)
@@ -1847,6 +1859,11 @@ window.onerror = function(msg, src, line, col, err) {
       <span data-i18n="navAbout">Sobre</span>
     </button>
   </div>
+  <!-- Mobile language toggle — visible only on mobile, next to hamburger -->
+  <button class="mobile-lang-btn" id="mobileLangBtn" onclick="cycleLang()" aria-label="Idioma">
+    <span id="mobileLangFlag">🇵🇹</span>
+  </button>
+
   <!-- Hamburger — visible only on mobile -->
   <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Menu">
     <span></span><span></span><span></span>
@@ -2292,8 +2309,14 @@ window.onerror = function(msg, src, line, col, err) {
     <button class="ub-btn" id="btnSearch" onclick="applyFilters();showToast(t('searchUpdated'))">
       <i data-lucide="search"></i><span data-i18n="btnSearch">Pesquisar</span>
     </button>
+    <!-- Mobile-only Filtros button inside the search row -->
+    <button class="ub-filtros-btn" id="ubFiltrosBtn" onclick="toggleMobileFilter()">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></svg>
+      <span data-i18n="filterTitle">Filtros</span>
+    </button>
   </div>
   <div class="ub-divider"></div>
+  <div class="ub-sectors-label" id="ubSectorsLabel">Áreas de Atividade</div>
   <div class="ub-sectors-wrap">
     <div class="ub-sectors" id="sectorFilters"></div>
     <div class="ub-sectors-fade" id="sectorFade"></div>
@@ -4539,6 +4562,8 @@ function setLanguage(lang) {
   const codes  = {pt:'PT',  en:'EN',  fr:'FR'};
   document.getElementById('langFlag').textContent = flags[lang];
   document.getElementById('langCode').textContent = codes[lang];
+  const mobileFlag = document.getElementById('mobileLangFlag');
+  if (mobileFlag) mobileFlag.textContent = flags[lang];
 
   // Highlight active option
   document.querySelectorAll('.lang-opt').forEach(opt => {
@@ -4551,6 +4576,13 @@ function setLanguage(lang) {
 
   // Apply all translations
   applyI18n();
+}
+
+// Cycle through PT → EN → FR → PT for the mobile flag button
+function cycleLang() {
+  const order = ['pt', 'en', 'fr'];
+  const next = order[(order.indexOf(currentLang) + 1) % order.length];
+  setLanguage(next);
 }
 
 function applyI18n() {
@@ -6923,6 +6955,8 @@ function toggleMobileFilter() {
   } else {
     sidebar.classList.add('mobile-open');
     if (btn)      btn.classList.add('active');
+    const ubBtn = document.getElementById('ubFiltrosBtn');
+    if (ubBtn)    ubBtn.classList.add('active');
     if (backdrop) backdrop.classList.add('visible');
     // Resize map after drawer animation so tiles fill correctly
     if (typeof map !== 'undefined' && map) {
@@ -6937,6 +6971,8 @@ function closeMobileFilter() {
   const backdrop = document.getElementById('filterBackdrop');
   if (sidebar)  sidebar.classList.remove('mobile-open');
   if (btn)      btn.classList.remove('active');
+  const ubBtn = document.getElementById('ubFiltrosBtn');
+  if (ubBtn)    ubBtn.classList.remove('active');
   if (backdrop) backdrop.classList.remove('visible');
   if (typeof map !== 'undefined' && map) {
     setTimeout(() => map.invalidateSize({ animate: false }), 360);
