@@ -1729,6 +1729,125 @@
     .ub-sectors-scroll-hint{position:absolute;right:6px;top:50%;transform:translateY(-50%);font-size:10px;color:var(--muted);pointer-events:none;transition:opacity .3s;z-index:6}
     .ub-sectors-fade.hidden + .ub-sectors-scroll-hint{opacity:0}
   </style>
+
+  <!-- Mobile filter panel overrides — must come last to win the cascade -->
+  <style>
+    /* ── Hide mobile-only elements on desktop ── */
+    .mobile-sectors-section { display: none; }
+
+    /* ── MOBILE (≤768px): filter sidebar becomes an inline panel above the map ── */
+    @media (max-width: 768px) {
+      /* Show the sector section */
+      .mobile-sectors-section { display: block !important; }
+
+      /* Override the bottom-drawer CSS: make sidebar inline */
+      .filter-sidebar {
+        position: static !important;
+        bottom: auto !important;
+        left: auto !important;
+        right: auto !important;
+        top: auto !important;
+        width: 100% !important;
+        min-width: auto !important;
+        max-height: 44vh !important;
+        height: auto !important;
+        overflow-y: auto !important;
+        -webkit-transform: none !important;
+        transform: none !important;
+        border-right: none !important;
+        border-top: none !important;
+        border-bottom: 2px solid var(--border) !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+        z-index: 1 !important;
+        padding-bottom: 6px !important;
+        transition: none !important;
+      }
+      .filter-sidebar::before { display: none !important; } /* no drag handle */
+
+      /* Hide floating button and backdrop — sidebar is always visible */
+      .mobile-filter-btn { display: none !important; }
+      .filter-backdrop { display: none !important; }
+      .ub-filtros-btn { display: none !important; }
+
+      /* Hide sector pills row from unified bar — they're in the sidebar now */
+      .ub-sectors-wrap { display: none !important; }
+      .ub-sectors-label { display: none !important; }
+      .ub-divider { display: none !important; }
+
+      /* The map fills the remaining space */
+      #map { min-height: 40vh !important; }
+
+      /* Sector grid: 2 columns, all 8 groups visible at once */
+      .mobile-sector-grid {
+        display: grid !important;
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 6px !important;
+        padding: 4px 10px 6px !important;
+      }
+      .mobile-sector-btn {
+        display: flex !important;
+        align-items: center !important;
+        gap: 7px !important;
+        background: var(--surface) !important;
+        border: 1.5px solid var(--border) !important;
+        border-radius: 8px !important;
+        padding: 8px 10px !important;
+        font-size: 12px !important;
+        font-weight: 600 !important;
+        color: var(--text) !important;
+        cursor: pointer !important;
+        text-align: left !important;
+        transition: background .15s, border-color .15s !important;
+        font-family: inherit !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+      }
+      .mobile-sector-btn:active { opacity: .8 !important; }
+      .mobile-sector-btn.active {
+        background: rgba(249,115,22,.18) !important;
+        border-color: var(--primary) !important;
+        color: #f97316 !important;
+        font-weight: 700 !important;
+      }
+      .msb-emoji { font-size: 16px; flex-shrink: 0; }
+      .msb-label { overflow: hidden; text-overflow: ellipsis; }
+
+      /* Sub-activities section (shown when a sector is active) */
+      .mobile-sub-activities { padding: 0 10px 4px; }
+      .mobile-sub-section { margin-bottom: 8px; }
+      .mobile-sub-title {
+        font-size: 10px !important;
+        font-weight: 800 !important;
+        color: var(--text-secondary) !important;
+        text-transform: uppercase !important;
+        letter-spacing: .06em !important;
+        padding: 4px 0 4px !important;
+        border-bottom: 1px solid var(--border) !important;
+        margin-bottom: 4px !important;
+      }
+      .mobile-sub-item {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        padding: 6px 4px !important;
+        font-size: 12px !important;
+        color: var(--text) !important;
+        cursor: pointer !important;
+        border-radius: 5px !important;
+        transition: background .1s !important;
+      }
+      .mobile-sub-item:active { background: var(--surface) !important; }
+      .mobile-sub-item input[type=checkbox] {
+        width: 15px !important;
+        height: 15px !important;
+        accent-color: var(--primary) !important;
+        flex-shrink: 0 !important;
+        cursor: pointer !important;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -2366,13 +2485,22 @@ window.onerror = function(msg, src, line, col, err) {
       <strong id="countNum">0</strong>&nbsp;<span data-i18n="companiesFound">empresas encontradas</span>
     </div>
 
+    <!-- ── MOBILE ONLY: sector + sub-activity selection ── -->
+    <div class="mobile-sectors-section" id="mobileSectorsSection">
+      <div class="filter-section-title" style="padding:6px 12px 4px">
+        <i data-lucide="grid-2x2"></i><span>Áreas de Atividade</span>
+      </div>
+      <div class="mobile-sector-grid" id="mobileSectorGrid"></div>
+      <div class="mobile-sub-activities" id="mobileSubActivities"></div>
+    </div>
+
     <!-- ── LAYER 2: secondary filters — active only when a sector is selected ── -->
     <div class="filters-layer2 locked" id="filtersLayer2">
 
       <!-- Hint shown when no sector is active -->
       <div class="layer2-unlock-hint" id="layer2Hint">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        Selecione uma área de atividade para desbloquear mais filtros
+        Selecione uma área de atividade acima para desbloquear mais filtros
       </div>
 
     <!-- SORT -->
@@ -5857,6 +5985,8 @@ function updateSectorActiveStates() {
   // Show/hide clear-all button
   const clearBtn = document.getElementById('sectorClearBtn');
   if (clearBtn) clearBtn.style.display = activeSectors.size > 0 ? '' : 'none';
+  // Keep mobile filter panel in sync
+  if (document.getElementById('mobileSectorGrid')) renderMobileFilterPanel();
 }
 
 function toggleSector(sector) {
@@ -5870,6 +6000,78 @@ function toggleTagFilter(tag) {
   activeTag = (activeTag === tag) ? null : tag;
   renderTagCloud();
   applyFilters();
+}
+
+// ── Mobile filter panel: sector grid + sub-activities ─────────────────────────
+const _sectorEmojis = {
+  'estrutura_fundacao':'🏗️','instalacoes':'⚡','acabamentos':'🎨',
+  'carpintaria':'🪚','serralharia_metal':'🔩','exterior_jardim':'🌿',
+  'projeto_gestao':'📐','chave_na_mao':'🔑'
+};
+
+function renderMobileFilterPanel() {
+  const grid = document.getElementById('mobileSectorGrid');
+  const subs = document.getElementById('mobileSubActivities');
+  if (!grid || !subs) return;
+
+  const tr = translations[currentLang] || translations.pt;
+  const sg = tr.sectorGroups || {};
+  const sc = tr.sectors || {};
+
+  // ── Sector group buttons ──
+  grid.innerHTML = '';
+  Object.entries(SECTOR_HIERARCHY).forEach(([groupKey, group]) => {
+    const allSubKeys = [];
+    Object.values(group.categories).forEach(cat =>
+      Object.keys(cat.subcategories).forEach(k => allSubKeys.push(k)));
+    const isActive = allSubKeys.some(k => activeSectors.has(k));
+
+    const btn = document.createElement('button');
+    btn.className = 'mobile-sector-btn' + (isActive ? ' active' : '');
+    btn.dataset.group = groupKey;
+    const label = sg[groupKey] || group.label;
+    btn.innerHTML = `<span class="msb-emoji">${_sectorEmojis[groupKey] || '📦'}</span><span class="msb-label">${label}</span>`;
+
+    btn.addEventListener('click', () => {
+      const allSelected = allSubKeys.every(k => activeSectors.has(k));
+      if (allSelected) { allSubKeys.forEach(k => activeSectors.delete(k)); }
+      else             { allSubKeys.forEach(k => activeSectors.add(k)); }
+      renderMobileFilterPanel();
+      updateSectorActiveStates();
+      applyFilters();
+    });
+    grid.appendChild(btn);
+  });
+
+  // ── Sub-activities for active sectors ──
+  subs.innerHTML = '';
+  Object.entries(SECTOR_HIERARCHY).forEach(([groupKey, group]) => {
+    const allSubKeys = [];
+    Object.values(group.categories).forEach(cat =>
+      Object.keys(cat.subcategories).forEach(k => allSubKeys.push(k)));
+    if (!allSubKeys.some(k => activeSectors.has(k))) return; // group not active
+
+    const label = sg[groupKey] || group.label;
+    const section = document.createElement('div');
+    section.className = 'mobile-sub-section';
+
+    let html = `<div class="mobile-sub-title">${_sectorEmojis[groupKey] || ''} ${label}</div>`;
+    Object.values(group.categories).forEach(cat => {
+      Object.entries(cat.subcategories).forEach(([subKey, subLabel]) => {
+        const checked = activeSectors.has(subKey) ? 'checked' : '';
+        const tLabel = sc[subKey] || subLabel;
+        html += `<label class="mobile-sub-item">
+          <input type="checkbox" ${checked} onchange="
+            if(this.checked) activeSectors.add('${subKey}');
+            else activeSectors.delete('${subKey}');
+            renderMobileFilterPanel();updateSectorActiveStates();applyFilters();">
+          <span>${tLabel}</span>
+        </label>`;
+      });
+    });
+    section.innerHTML = html;
+    subs.appendChild(section);
+  });
 }
 
 // ── FILTER LOGIC ──────────────────────────────────────────────────────────────
@@ -6858,6 +7060,7 @@ try {
   try { renderRegisterZoneSelect(); } catch(e) { console.warn('Init skip: renderRegisterZoneSelect', e); }
   try { renderEmailTypeSelect(); } catch(e) { console.warn('Init skip: renderEmailTypeSelect', e); }
   try { renderSectorFilters(); } catch(e) { console.warn('Init skip: renderSectorFilters', e); }
+  try { renderMobileFilterPanel(); } catch(e) { console.warn('Init skip: renderMobileFilterPanel', e); }
   try { renderTagCloud(); } catch(e) { console.warn('Init skip: renderTagCloud', e); }
   try { updateNavAuth(); } catch(e) { console.warn('Init skip: updateNavAuth', e); }
   try { applyI18n(); } catch(e) { console.warn('Init skip: applyI18n', e); }
