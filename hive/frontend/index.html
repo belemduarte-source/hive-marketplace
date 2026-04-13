@@ -763,7 +763,7 @@
       /* Move floating filter button above the bottom bar */
       .mobile-filter-btn{bottom:calc(72px + env(safe-area-inset-bottom)) !important}
 
-      .nav-banner{padding:4px 10px !important;gap:8px !important}
+      .nav-banner{padding:4px 10px !important;gap:8px !important;flex-shrink:1 !important;min-width:0 !important;overflow:hidden !important}
       .nav-banner svg{width:60px !important;height:60px !important}
       .logo-l,.logo-e{font-size:34px !important}
       .logo-h{font-size:38px !important}
@@ -771,8 +771,15 @@
       .logo-v{font-size:32px !important}
       /* Hide desktop auth buttons on mobile — accessible via hamburger drawer */
       .nav-right{display:none !important}
-      /* Mobile language button — flag icon next to hamburger */
-      .mobile-lang-btn{display:flex !important;align-items:center;justify-content:center;width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);cursor:pointer;font-size:18px;line-height:1;margin-left:auto;flex-shrink:0;transition:background .15s}
+      /* Mobile top-nav action cluster (auth + lang) */
+      .mobile-top-actions{display:flex !important;align-items:center;gap:6px;margin-left:auto;flex-shrink:0}
+      /* Compact login button in mobile top nav */
+      .mobile-top-login{display:flex;align-items:center;gap:5px;background:rgba(249,115,22,.18);border:1.5px solid rgba(249,115,22,.5);color:#fb923c;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;transition:background .15s}
+      .mobile-top-login:active{background:rgba(249,115,22,.35) !important}
+      /* Compact avatar for mobile top nav when logged in */
+      .mobile-top-avatar{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:800;cursor:pointer;border:none;font-family:inherit}
+      /* Mobile language button — flag icon */
+      .mobile-lang-btn{display:flex !important;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);cursor:pointer;font-size:16px;line-height:1;flex-shrink:0;transition:background .15s}
       .mobile-lang-btn:active{background:rgba(249,115,22,.25) !important}
       /* Filtros button inside ub-search row — mobile only */
       .ub-filtros-btn{display:flex !important;align-items:center;gap:5px;background:rgba(249,115,22,.18);border:1.5px solid rgba(249,115,22,.5);color:#fb923c;border-radius:8px;padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:inherit;transition:background .15s}
@@ -1291,10 +1298,11 @@
     }
     .filter-backdrop.visible { display: block; }
 
-    .mobile-filter-btn { display: none; } /* shown only via media query */
-    .mobile-lang-btn { display: none; }   /* shown only on mobile */
-    .ub-filtros-btn { display: none; }    /* shown only on mobile */
-    .ub-sectors-label { display: none; } /* shown only on mobile */
+    .mobile-filter-btn { display: none; }   /* shown only via media query */
+    .mobile-lang-btn { display: none; }    /* shown only on mobile */
+    .mobile-top-actions { display: none; } /* shown only on mobile */
+    .ub-filtros-btn { display: none; }     /* shown only on mobile */
+    .ub-sectors-label { display: none; }  /* shown only on mobile */
 
     /* ─────────────────────────────────────────────────────────────────────
        TABLETS & LARGE PHONES  (≤ 768px)
@@ -1644,7 +1652,7 @@
     .mobile-nav-link.active svg{opacity:1;color:#f97316}
     .mobile-nav-divider{height:1px;background:rgba(255,255,255,.1);margin:8px 0}
     .mobile-nav-logo{color:#f97316;font-size:22px;font-weight:900;letter-spacing:.05em;margin-bottom:16px;padding:0 16px}
-    @media (max-width:768px){.hamburger{display:flex !important;margin-left:auto !important;margin-right:12px !important}}
+    @media (max-width:768px){.hamburger{display:flex !important;margin-left:0 !important;margin-right:8px !important}}
 
     /* ── IMPROVEMENT 3: Filter loading spinner ── */
     .filter-loading{position:absolute;inset:0;background:rgba(245,247,250,.75);display:none;align-items:center;justify-content:center;z-index:50;border-radius:var(--radius);backdrop-filter:blur(2px)}
@@ -1859,10 +1867,19 @@ window.onerror = function(msg, src, line, col, err) {
       <span data-i18n="navAbout">Sobre</span>
     </button>
   </div>
-  <!-- Mobile language toggle — visible only on mobile, next to hamburger -->
-  <button class="mobile-lang-btn" id="mobileLangBtn" onclick="cycleLang()" aria-label="Idioma">
-    <span id="mobileLangFlag">🇵🇹</span>
-  </button>
+  <!-- Mobile top-nav auth + lang — visible only on mobile -->
+  <div class="mobile-top-actions">
+    <div id="mobileTopAuth">
+      <!-- populated by updateNavAuth() -->
+      <button class="mobile-top-login" onclick="openLogin()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+        <span data-i18n="navLogin">Entrar</span>
+      </button>
+    </div>
+    <button class="mobile-lang-btn" id="mobileLangBtn" onclick="cycleLang()" aria-label="Idioma">
+      <span id="mobileLangFlag">🇵🇹</span>
+    </button>
+  </div>
 
   <!-- Hamburger — visible only on mobile -->
   <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Menu">
@@ -6786,10 +6803,12 @@ async function doLogout() {
 function updateNavAuth() {
   const area = document.getElementById('authArea');
   const mobileArea = document.getElementById('mobileAuthArea');
+  const mobileTopAuth = document.getElementById('mobileTopAuth');
   const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
   if (!user) {
     if (area) area.innerHTML = '<button class="btn-nav btn-login" onclick="openLogin()" style="justify-content:center"><span data-i18n="navLogin">Entrar</span></button>';
     if (mobileArea) mobileArea.innerHTML = '<button class="mobile-nav-link" onclick="openLogin();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span data-i18n="navLogin">Entrar</span></button>';
+    if (mobileTopAuth) mobileTopAuth.innerHTML = '<button class="mobile-top-login" onclick="openLogin()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span data-i18n="navLogin">Entrar</span></button>';
   } else {
     const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
     const typeClass = user.type === 'empresa' ? 'empresa' : 'cliente';
@@ -6810,6 +6829,7 @@ function updateNavAuth() {
         </div>
       </div>`;
     if (mobileArea) mobileArea.innerHTML = `<button class="mobile-nav-link" onclick="openProfilePanel();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>${user.name}</span></button><button class="mobile-nav-link" style="color:#ef4444" onclick="doLogout();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Terminar Sessão</span></button>`;
+    if (mobileTopAuth) mobileTopAuth.innerHTML = `<button class="mobile-top-avatar" onclick="toggleMobileNav()" title="${user.name}">${initials}</button>`;
   }
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
