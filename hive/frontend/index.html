@@ -1778,110 +1778,160 @@
       .ub-sectors-label { display: none !important; }
       .ub-divider { display: none !important; }
 
-      /* ── Mobile search panel ── */
+      /* ── Mobile filter chip bar ── */
       #mobileSearchPanel {
         display: block !important;
         background: var(--surface);
-        border-bottom: 2px solid var(--border);
-        overflow-y: auto;
-        max-height: 42vh;
-        -webkit-overflow-scrolling: touch;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
       }
-      .msp-section { padding: 8px 12px 6px; }
-      .msp-label {
-        font-size: 10px;
-        font-weight: 800;
-        color: var(--text-secondary);
-        text-transform: uppercase;
-        letter-spacing: .07em;
-        margin-bottom: 6px;
-      }
-      .msp-sectors {
+      #mspChipBar {
         display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-        padding-bottom: 2px;
+        align-items: center;
+        gap: 7px;
+        padding: 8px 12px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
       }
-      .msp-sector-btn {
+      #mspChipBar::-webkit-scrollbar { display: none; }
+      .msp-chip {
         display: inline-flex;
         align-items: center;
         gap: 5px;
         background: var(--bg);
         border: 1.5px solid var(--border);
         border-radius: 20px;
-        padding: 7px 12px;
+        padding: 7px 11px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text);
+        cursor: pointer;
+        font-family: inherit;
+        white-space: nowrap;
+        flex-shrink: 0;
+        transition: background .15s, border-color .15s, color .15s;
+      }
+      .msp-chip.active {
+        background: rgba(249,115,22,.14);
+        border-color: var(--primary);
+        color: #ea580c;
+        font-weight: 700;
+      }
+      .msp-chip-caret { opacity: .45; transition: transform .2s; }
+      .msp-chip.open .msp-chip-caret { transform: rotate(180deg); }
+      .msp-chip-clear {
+        background: var(--red-light);
+        border-color: var(--red);
+        color: var(--red);
+        font-size: 11px;
+      }
+      /* ── Bottom sheet ── */
+      #mspBackdrop {
+        display: none;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.45);
+        z-index: 1100;
+        opacity: 0;
+        transition: opacity .22s;
+      }
+      #mspBackdrop.open { display: block; opacity: 1; }
+      #mspSheet {
+        position: fixed;
+        bottom: 0; left: 0; right: 0;
+        background: var(--surface);
+        border-radius: 18px 18px 0 0;
+        box-shadow: 0 -4px 32px rgba(0,0,0,.18);
+        z-index: 1101;
+        max-height: 70vh;
+        display: flex;
+        flex-direction: column;
+        transform: translateY(100%);
+        transition: transform .28s cubic-bezier(.32,0,.67,0);
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+      }
+      #mspSheet.open { transform: translateY(0); }
+      #mspSheetHandle {
+        width: 36px; height: 4px;
+        background: var(--border);
+        border-radius: 2px;
+        margin: 10px auto 0;
+        flex-shrink: 0;
+      }
+      #mspSheetTitle {
+        font-size: 14px;
+        font-weight: 800;
+        color: var(--text);
+        padding: 12px 18px 10px;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+        letter-spacing: .02em;
+      }
+      #mspSheetBody {
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 12px 16px 20px;
+        flex: 1;
+      }
+      /* Sheet inner content */
+      .msp-sheet-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 4px;
+      }
+      .msp-sheet-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        background: var(--bg);
+        border: 1.5px solid var(--border);
+        border-radius: 20px;
+        padding: 8px 14px;
         font-size: 13px;
         font-weight: 600;
         color: var(--text);
         cursor: pointer;
         font-family: inherit;
-        transition: background .15s, border-color .15s;
         white-space: nowrap;
+        transition: background .15s, border-color .15s, color .15s;
       }
-      .msp-sector-btn.active {
-        background: rgba(249,115,22,.18);
+      .msp-sheet-btn.active {
+        background: rgba(249,115,22,.16);
         border-color: var(--primary);
-        color: #f97316;
+        color: #ea580c;
         font-weight: 700;
       }
-      .msp-subs {
-        padding: 0 12px 4px;
-        border-top: 1px solid var(--border);
-      }
-      .msp-sub-group { padding: 6px 0 2px; }
-      .msp-sub-group-title {
+      .msp-sheet-section-label {
         font-size: 10px;
         font-weight: 800;
         color: var(--text-secondary);
         text-transform: uppercase;
-        letter-spacing: .05em;
-        padding: 2px 0 4px;
+        letter-spacing: .07em;
+        margin: 14px 0 8px;
       }
+      .msp-sheet-section-label:first-child { margin-top: 0; }
       .msp-sub-item {
         display: flex;
         align-items: center;
-        gap: 8px;
-        padding: 5px 2px;
-        font-size: 13px;
+        gap: 10px;
+        padding: 9px 4px;
+        font-size: 14px;
         color: var(--text);
         cursor: pointer;
+        border-bottom: 1px solid var(--border-light);
       }
+      .msp-sub-item:last-child { border-bottom: none; }
       .msp-sub-item input[type=checkbox] {
-        width: 16px;
-        height: 16px;
+        width: 17px; height: 17px;
         accent-color: var(--primary);
         cursor: pointer;
         flex-shrink: 0;
       }
-      .msp-row {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 6px;
-      }
-      .msp-btn {
-        display: inline-flex;
-        align-items: center;
-        background: var(--bg);
-        border: 1.5px solid var(--border);
-        border-radius: 20px;
-        padding: 6px 12px;
-        font-size: 12px;
-        font-weight: 600;
-        color: var(--text-secondary);
-        cursor: pointer;
-        font-family: inherit;
-        transition: background .15s, border-color .15s, color .15s;
-        white-space: nowrap;
-      }
-      .msp-btn.active {
-        background: rgba(249,115,22,.18);
-        border-color: var(--primary);
-        color: #f97316;
-        font-weight: 700;
-      }
 
-      /* The map fills the remaining space */
-      #map { min-height: 40vh !important; }
+      /* The map fills the remaining space — chip bar is only ~44px so map gets much more room */
+      #map { min-height: 55vh !important; }
 
       /* Sector grid: 2 columns, all 8 groups visible at once */
       .mobile-sector-grid {
@@ -2565,45 +2615,41 @@ window.onerror = function(msg, src, line, col, err) {
   <div class="ub-divider"></div>
 </div>
 
-<!-- MOBILE FILTER PANEL — completely separate from desktop sidebar, zero CSS conflicts -->
+<!-- MOBILE FILTER CHIP BAR — compact single row, opens bottom sheet on tap -->
 <div id="mobileSearchPanel">
-  <!-- Sector selection -->
-  <div class="msp-section">
-    <div class="msp-label">Áreas de Atividade — toque para filtrar</div>
-    <div class="msp-sectors" id="mspSectors"></div>
+  <div id="mspChipBar">
+    <button class="msp-chip" id="mspChipArea"    onclick="mspOpenSheet('area')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
+      <span id="mspChipAreaLabel">Área</span>
+      <svg class="msp-chip-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <button class="msp-chip" id="mspChipSort"    onclick="mspOpenSheet('sort')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M6 12h12M9 18h6"/></svg>
+      <span id="mspChipSortLabel">Ordenar</span>
+      <svg class="msp-chip-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <button class="msp-chip" id="mspChipRating"  onclick="mspOpenSheet('rating')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      <span id="mspChipRatingLabel">Avaliação</span>
+      <svg class="msp-chip-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <button class="msp-chip" id="mspChipStatus"  onclick="mspOpenSheet('status')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
+      <span id="mspChipStatusLabel">Destaque</span>
+      <svg class="msp-chip-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
+    <button class="msp-chip msp-chip-clear" id="mspChipClear" onclick="mspClearAll()" style="display:none">
+      ✕ Limpar
+    </button>
   </div>
-  <!-- Sub-activities (shown when a sector is active) -->
-  <div class="msp-subs" id="mspSubs"></div>
-  <!-- Sort -->
-  <div class="msp-section">
-    <div class="msp-label" data-i18n="sortBy">Ordenar Por</div>
-    <div class="msp-row">
-      <button class="msp-btn active" data-sort="all"     onclick="mspSetSort('all')"     data-i18n="sortAll">Todos</button>
-      <button class="msp-btn"        data-sort="rating"  onclick="mspSetSort('rating')"  data-i18n="sortRating">⭐ Melhor Avaliação</button>
-      <button class="msp-btn"        data-sort="reviews" onclick="mspSetSort('reviews')" data-i18n="sortReviews">💬 Mais Avaliados</button>
-      <button class="msp-btn"        data-sort="name"    onclick="mspSetSort('name')"    data-i18n="sortName">A–Z</button>
-    </div>
-  </div>
-  <!-- Min rating -->
-  <div class="msp-section">
-    <div class="msp-label" data-i18n="minRating">Avaliação Mínima</div>
-    <div class="msp-row">
-      <button class="msp-btn active" data-rating="0"   onclick="mspSetRating(0)"   data-i18n="ratingAny">Qualquer</button>
-      <button class="msp-btn"        data-rating="4.0" onclick="mspSetRating(4.0)">★★★★☆ 4.0+</button>
-      <button class="msp-btn"        data-rating="4.5" onclick="mspSetRating(4.5)">★★★★☆ 4.5+</button>
-      <button class="msp-btn"        data-rating="4.8" onclick="mspSetRating(4.8)">★★★★★ 4.8+</button>
-      <button class="msp-btn"        data-rating="5.0" onclick="mspSetRating(5.0)">★★★★★ 5.0</button>
-    </div>
-  </div>
-  <!-- Status -->
-  <div class="msp-section">
-    <div class="msp-label" data-i18n="featured">Destaque</div>
-    <div class="msp-row">
-      <button class="msp-btn" data-status="topRated"  onclick="mspToggleStatus('topRated')"  data-i18n="topRated">Top Rated</button>
-      <button class="msp-btn" data-status="verified"  onclick="mspToggleStatus('verified')"  data-i18n="verified">Verificado</button>
-      <button class="msp-btn" data-status="new"       onclick="mspToggleStatus('new')"       data-i18n="newEntry">🆕 Novo</button>
-    </div>
-  </div>
+</div>
+
+<!-- MOBILE FILTER BOTTOM SHEET -->
+<div id="mspBackdrop" onclick="mspCloseSheet()"></div>
+<div id="mspSheet">
+  <div id="mspSheetHandle"></div>
+  <div id="mspSheetTitle"></div>
+  <div id="mspSheetBody"></div>
 </div>
 
 <!-- MOBILE: filter backdrop + floating toggle (only shown on ≤768px) -->
@@ -6147,66 +6193,233 @@ function toggleTagFilter(tag) {
   applyFilters();
 }
 
-// ── Mobile search panel (replaces desktop sidebar on mobile) ──────────────────
+// ── Mobile filter chip bar + bottom sheet ─────────────────────────────────────
 const _mspEmojis = {
   'estrutura_fundacao':'🏗️','instalacoes':'⚡','acabamentos':'🎨',
   'carpintaria':'🪚','serralharia_metal':'🔩','exterior_jardim':'🌿',
   'projeto_gestao':'📐','chave_na_mao':'🔑'
 };
 
-function renderMobileSearchPanel() {
-  const sectorsEl = document.getElementById('mspSectors');
-  const subsEl    = document.getElementById('mspSubs');
-  if (!sectorsEl) return;
+let _mspActiveSheet = null;
+
+function mspOpenSheet(type) {
+  if (_mspActiveSheet === type) { mspCloseSheet(); return; }
+  _mspActiveSheet = type;
+  const backdrop = document.getElementById('mspBackdrop');
+  const sheet    = document.getElementById('mspSheet');
+  const title    = document.getElementById('mspSheetTitle');
+  const body     = document.getElementById('mspSheetBody');
+  if (!sheet) return;
 
   const tr = translations[currentLang] || translations.pt;
   const sg = tr.sectorGroups || {};
   const sc = tr.sectors || {};
 
-  // ── Sector buttons ──
-  sectorsEl.innerHTML = '';
+  // Mark chip as open
+  document.querySelectorAll('.msp-chip').forEach(c => c.classList.remove('open'));
+  const chipId = {area:'mspChipArea',sort:'mspChipSort',rating:'mspChipRating',status:'mspChipStatus'}[type];
+  if (chipId) document.getElementById(chipId)?.classList.add('open');
+
+  if (type === 'area') {
+    title.textContent = 'Áreas de Atividade';
+    let html = '<div class="msp-sheet-row">';
+    Object.entries(SECTOR_HIERARCHY).forEach(([groupKey, group]) => {
+      const allSubKeys = [];
+      Object.values(group.categories).forEach(cat =>
+        Object.keys(cat.subcategories).forEach(k => allSubKeys.push(k)));
+      const isActive = allSubKeys.some(k => activeSectors.has(k));
+      html += `<button class="msp-sheet-btn${isActive?' active':''}" data-group="${groupKey}"
+        onclick="mspToggleSector('${groupKey}');mspRefreshAreaSheet()">
+        ${_mspEmojis[groupKey]||'📦'} ${sg[groupKey]||group.label}
+      </button>`;
+    });
+    html += '</div>';
+    // Sub-activities for active groups
+    Object.entries(SECTOR_HIERARCHY).forEach(([groupKey, group]) => {
+      const allSubKeys = [];
+      Object.values(group.categories).forEach(cat =>
+        Object.keys(cat.subcategories).forEach(k => allSubKeys.push(k)));
+      if (!allSubKeys.some(k => activeSectors.has(k))) return;
+      html += `<div class="msp-sheet-section-label">${_mspEmojis[groupKey]||''} ${sg[groupKey]||group.label}</div>`;
+      Object.values(group.categories).forEach(cat => {
+        Object.entries(cat.subcategories).forEach(([subKey, subLabel]) => {
+          const checked = activeSectors.has(subKey) ? 'checked' : '';
+          html += `<label class="msp-sub-item">
+            <input type="checkbox" ${checked}
+              onchange="if(this.checked)activeSectors.add('${subKey}');else activeSectors.delete('${subKey}');
+                        updateSectorActiveStates();applyFilters();mspUpdateChips();mspRefreshAreaSheet();">
+            ${sc[subKey]||subLabel}
+          </label>`;
+        });
+      });
+    });
+    body.innerHTML = html;
+
+  } else if (type === 'sort') {
+    title.textContent = 'Ordenar Por';
+    const current = (() => {
+      if (document.getElementById('sortRating')?.checked) return 'rating';
+      if (document.getElementById('sortReviews')?.checked) return 'reviews';
+      if (document.getElementById('sortName')?.checked) return 'name';
+      return 'all';
+    })();
+    const opts = [
+      {val:'all',    label:'Todos'},
+      {val:'rating', label:'⭐ Melhor Avaliação'},
+      {val:'reviews',label:'💬 Mais Avaliados'},
+      {val:'name',   label:'A–Z'},
+    ];
+    body.innerHTML = `<div class="msp-sheet-row">${opts.map(o =>
+      `<button class="msp-sheet-btn${o.val===current?' active':''}" data-sort="${o.val}"
+        onclick="mspSetSort('${o.val}');mspCloseSheet()">${o.label}</button>`
+    ).join('')}</div>`;
+
+  } else if (type === 'rating') {
+    title.textContent = 'Avaliação Mínima';
+    const current = parseFloat([...document.querySelectorAll('input[name="minRating"]')]
+      .find(r => r.checked)?.value || '0');
+    const opts = [
+      {val:0,   label:'Qualquer'},
+      {val:4.0, label:'★★★★☆ 4.0+'},
+      {val:4.5, label:'★★★★☆ 4.5+'},
+      {val:4.8, label:'★★★★★ 4.8+'},
+      {val:5.0, label:'★★★★★ 5.0'},
+    ];
+    body.innerHTML = `<div class="msp-sheet-row">${opts.map(o =>
+      `<button class="msp-sheet-btn${o.val===current?' active':''}" data-rating="${o.val}"
+        onclick="mspSetRating(${o.val});mspCloseSheet()">${o.label}</button>`
+    ).join('')}</div>`;
+
+  } else if (type === 'status') {
+    title.textContent = 'Destaque';
+    const topRated = document.getElementById('filterTopRated')?.checked;
+    const verified = document.getElementById('filterVerified')?.checked;
+    const isNew    = document.getElementById('filterNew')?.checked;
+    body.innerHTML = `<div class="msp-sheet-row">
+      <button class="msp-sheet-btn${topRated?' active':''}" data-status="topRated"
+        onclick="mspToggleStatus('topRated');this.classList.toggle('active')">⭐ Top Rated</button>
+      <button class="msp-sheet-btn${verified?' active':''}" data-status="verified"
+        onclick="mspToggleStatus('verified');this.classList.toggle('active')">✅ Verificado</button>
+      <button class="msp-sheet-btn${isNew?' active':''}" data-status="new"
+        onclick="mspToggleStatus('new');this.classList.toggle('active')">🆕 Novo</button>
+    </div>`;
+  }
+
+  if (backdrop) { backdrop.style.display = 'block'; requestAnimationFrame(() => backdrop.classList.add('open')); }
+  sheet.classList.add('open');
+}
+
+function mspRefreshAreaSheet() {
+  // Re-render just the area sheet body in place (keeps sheet open)
+  if (_mspActiveSheet !== 'area') return;
+  mspUpdateChips();
+  const body = document.getElementById('mspSheetBody');
+  if (!body) return;
+  const tr = translations[currentLang] || translations.pt;
+  const sg = tr.sectorGroups || {};
+  const sc = tr.sectors || {};
+  let html = '<div class="msp-sheet-row">';
   Object.entries(SECTOR_HIERARCHY).forEach(([groupKey, group]) => {
     const allSubKeys = [];
     Object.values(group.categories).forEach(cat =>
       Object.keys(cat.subcategories).forEach(k => allSubKeys.push(k)));
     const isActive = allSubKeys.some(k => activeSectors.has(k));
-    const btn = document.createElement('button');
-    btn.className = 'msp-sector-btn' + (isActive ? ' active' : '');
-    btn.dataset.group = groupKey;
-    btn.textContent = (_mspEmojis[groupKey] || '📦') + ' ' + (sg[groupKey] || group.label);
-    btn.addEventListener('click', () => mspToggleSector(groupKey));
-    sectorsEl.appendChild(btn);
+    html += `<button class="msp-sheet-btn${isActive?' active':''}" data-group="${groupKey}"
+      onclick="mspToggleSector('${groupKey}');mspRefreshAreaSheet()">
+      ${_mspEmojis[groupKey]||'📦'} ${sg[groupKey]||group.label}
+    </button>`;
   });
-
-  // ── Sub-activities for active groups ──
-  if (!subsEl) return;
-  let subsHtml = '';
+  html += '</div>';
   Object.entries(SECTOR_HIERARCHY).forEach(([groupKey, group]) => {
     const allSubKeys = [];
     Object.values(group.categories).forEach(cat =>
       Object.keys(cat.subcategories).forEach(k => allSubKeys.push(k)));
     if (!allSubKeys.some(k => activeSectors.has(k))) return;
-
-    subsHtml += `<div class="msp-sub-group">
-      <div class="msp-sub-group-title">${_mspEmojis[groupKey] || ''} ${sg[groupKey] || group.label}</div>`;
+    html += `<div class="msp-sheet-section-label">${_mspEmojis[groupKey]||''} ${sg[groupKey]||group.label}</div>`;
     Object.values(group.categories).forEach(cat => {
       Object.entries(cat.subcategories).forEach(([subKey, subLabel]) => {
         const checked = activeSectors.has(subKey) ? 'checked' : '';
-        const tLabel = sc[subKey] || subLabel;
-        subsHtml += `<label class="msp-sub-item">
+        html += `<label class="msp-sub-item">
           <input type="checkbox" ${checked}
-            onchange="if(this.checked)activeSectors.add('${subKey}');
-                      else activeSectors.delete('${subKey}');
-                      renderMobileSearchPanel();updateSectorActiveStates();applyFilters();">
-          ${tLabel}
+            onchange="if(this.checked)activeSectors.add('${subKey}');else activeSectors.delete('${subKey}');
+                      updateSectorActiveStates();applyFilters();mspUpdateChips();mspRefreshAreaSheet();">
+          ${sc[subKey]||subLabel}
         </label>`;
       });
     });
-    subsHtml += '</div>';
   });
-  subsEl.innerHTML = subsHtml;
-  subsEl.style.display = subsHtml ? '' : 'none';
+  body.innerHTML = html;
 }
+
+function mspCloseSheet() {
+  _mspActiveSheet = null;
+  const backdrop = document.getElementById('mspBackdrop');
+  const sheet    = document.getElementById('mspSheet');
+  document.querySelectorAll('.msp-chip').forEach(c => c.classList.remove('open'));
+  sheet?.classList.remove('open');
+  if (backdrop) {
+    backdrop.classList.remove('open');
+    setTimeout(() => { backdrop.style.display = 'none'; }, 240);
+  }
+}
+
+function mspUpdateChips() {
+  // Area chip
+  const areaActive = activeSectors.size > 0;
+  const areaChip = document.getElementById('mspChipArea');
+  const areaLabel = document.getElementById('mspChipAreaLabel');
+  if (areaChip) areaChip.classList.toggle('active', areaActive);
+  if (areaLabel) areaLabel.textContent = areaActive ? `Área (${activeSectors.size})` : 'Área';
+
+  // Sort chip
+  const sortChip  = document.getElementById('mspChipSort');
+  const sortLabel = document.getElementById('mspChipSortLabel');
+  let sortVal = 'Ordenar';
+  if (document.getElementById('sortRating')?.checked)  sortVal = 'Melhor Avaliação';
+  if (document.getElementById('sortReviews')?.checked) sortVal = 'Mais Avaliados';
+  if (document.getElementById('sortName')?.checked)    sortVal = 'A–Z';
+  const sortActive = sortVal !== 'Ordenar';
+  if (sortChip)  sortChip.classList.toggle('active', sortActive);
+  if (sortLabel) sortLabel.textContent = sortVal;
+
+  // Rating chip
+  const ratingChip  = document.getElementById('mspChipRating');
+  const ratingLabel = document.getElementById('mspChipRatingLabel');
+  const ratingVal = parseFloat([...document.querySelectorAll('input[name="minRating"]')].find(r=>r.checked)?.value||'0');
+  const ratingActive = ratingVal > 0;
+  if (ratingChip)  ratingChip.classList.toggle('active', ratingActive);
+  if (ratingLabel) ratingLabel.textContent = ratingActive ? `★ ${ratingVal}+` : 'Avaliação';
+
+  // Status chip
+  const statusChip  = document.getElementById('mspChipStatus');
+  const statusLabel = document.getElementById('mspChipStatusLabel');
+  const statusCount = [
+    document.getElementById('filterTopRated')?.checked,
+    document.getElementById('filterVerified')?.checked,
+    document.getElementById('filterNew')?.checked
+  ].filter(Boolean).length;
+  if (statusChip)  statusChip.classList.toggle('active', statusCount > 0);
+  if (statusLabel) statusLabel.textContent = statusCount > 0 ? `Destaque (${statusCount})` : 'Destaque';
+
+  // Clear button
+  const clearBtn = document.getElementById('mspChipClear');
+  const anyActive = areaActive || sortActive || ratingActive || statusCount > 0;
+  if (clearBtn) clearBtn.style.display = anyActive ? '' : 'none';
+}
+
+function mspClearAll() {
+  activeSectors.clear();
+  ['sortAll'].forEach(id => { const el = document.getElementById(id); if(el) el.checked = true; });
+  document.querySelectorAll('input[name="minRating"]').forEach(r => r.checked = (parseFloat(r.value)===0));
+  ['filterTopRated','filterVerified','filterNew'].forEach(id => { const el = document.getElementById(id); if(el) el.checked = false; });
+  updateSectorActiveStates();
+  applyFilters();
+  mspUpdateChips();
+  mspCloseSheet();
+}
+
+// Renamed stubs kept for backwards-compat (called from updateSectorActiveStates)
+function renderMobileSearchPanel() { mspUpdateChips(); }
 
 function mspToggleSector(groupKey) {
   const group = SECTOR_HIERARCHY[groupKey];
@@ -6217,40 +6430,33 @@ function mspToggleSector(groupKey) {
   const allSelected = allSubKeys.every(k => activeSectors.has(k));
   if (allSelected) allSubKeys.forEach(k => activeSectors.delete(k));
   else             allSubKeys.forEach(k => activeSectors.add(k));
-  renderMobileSearchPanel();
   updateSectorActiveStates();
   applyFilters();
+  mspUpdateChips();
 }
 
 function mspSetSort(value) {
-  // Sync with the desktop radio so getFiltered() reads correctly
   const map = { all:'sortAll', rating:'sortRating', reviews:'sortReviews', name:'sortName' };
   const radio = document.getElementById(map[value]);
   if (radio) radio.checked = true;
-  // Update button active states
-  document.querySelectorAll('#mobileSearchPanel [data-sort]').forEach(btn =>
-    btn.classList.toggle('active', btn.dataset.sort === value));
   applyFilters();
+  mspUpdateChips();
 }
 
 function mspSetRating(value) {
-  // Sync with the desktop radio
   document.querySelectorAll('input[name="minRating"]').forEach(r => {
     r.checked = parseFloat(r.value) === value;
   });
-  // Update button active states
-  document.querySelectorAll('#mobileSearchPanel [data-rating]').forEach(btn =>
-    btn.classList.toggle('active', parseFloat(btn.dataset.rating) === value));
   applyFilters();
+  mspUpdateChips();
 }
 
 function mspToggleStatus(statusKey) {
   const idMap = { topRated:'filterTopRated', verified:'filterVerified', new:'filterNew' };
   const checkbox = document.getElementById(idMap[statusKey]);
   if (checkbox) checkbox.checked = !checkbox.checked;
-  const btn = document.querySelector(`#mobileSearchPanel [data-status="${statusKey}"]`);
-  if (btn) btn.classList.toggle('active', checkbox ? checkbox.checked : false);
   applyFilters();
+  mspUpdateChips();
 }
 
 // ── Mobile filter panel: sector grid + sub-activities ─────────────────────────
