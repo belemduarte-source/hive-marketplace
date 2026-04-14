@@ -1860,14 +1860,32 @@
         flex-shrink: 0;
       }
       #mspSheetTitle {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
         font-size: 14px;
         font-weight: 800;
         color: var(--text);
-        padding: 12px 18px 10px;
+        padding: 12px 12px 10px 18px;
         border-bottom: 1px solid var(--border);
         flex-shrink: 0;
         letter-spacing: .02em;
       }
+      #mspSheetClose {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 30px; height: 30px;
+        border-radius: 50%;
+        border: none;
+        background: var(--bg);
+        color: var(--text-secondary);
+        font-size: 16px;
+        cursor: pointer;
+        flex-shrink: 0;
+        line-height: 1;
+      }
+      #mspSheetClose:hover { background: var(--border); color: var(--text); }
       #mspSheetBody {
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
@@ -2648,7 +2666,10 @@ window.onerror = function(msg, src, line, col, err) {
 <div id="mspBackdrop" onclick="mspCloseSheet()"></div>
 <div id="mspSheet">
   <div id="mspSheetHandle"></div>
-  <div id="mspSheetTitle"></div>
+  <div id="mspSheetTitle">
+    <span id="mspSheetTitleText"></span>
+    <button id="mspSheetClose" onclick="mspCloseSheet()" aria-label="Fechar">✕</button>
+  </div>
   <div id="mspSheetBody"></div>
 </div>
 
@@ -6207,7 +6228,7 @@ function mspOpenSheet(type) {
   _mspActiveSheet = type;
   const backdrop = document.getElementById('mspBackdrop');
   const sheet    = document.getElementById('mspSheet');
-  const title    = document.getElementById('mspSheetTitle');
+  const title    = document.getElementById('mspSheetTitleText');
   const body     = document.getElementById('mspSheetBody');
   if (!sheet) return;
 
