@@ -6197,8 +6197,8 @@ function updateSectorActiveStates() {
   // Show/hide clear-all button
   const clearBtn = document.getElementById('sectorClearBtn');
   if (clearBtn) clearBtn.style.display = activeSectors.size > 0 ? '' : 'none';
-  // Keep mobile panels in sync
-  if (document.getElementById('mspSectors')) renderMobileSearchPanel();
+  // Keep mobile chip bar in sync
+  if (document.getElementById('mspChipBar')) mspUpdateChips();
 }
 
 function toggleSector(sector) {
