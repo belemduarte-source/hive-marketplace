@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
+const { sendRegistrationNotification } = require('../email');
 
 // GET /api/companies — public, returns all approved companies
 router.get('/', async (req, res, next) => {
@@ -82,6 +83,11 @@ router.post('/', requireAuth, async (req, res, next) => {
         req.user.id,
       ]
     );
+    // Fire-and-forget admin notification — never blocks the response
+    sendRegistrationNotification(rows[0]).catch(err =>
+      console.error('[email] Failed to send registration notification:', err.message)
+    );
+
     res.status(201).json(rows[0]);
   } catch (e) {
     next(e);
