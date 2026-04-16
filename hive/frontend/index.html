@@ -6338,6 +6338,9 @@ loadCompaniesFromDB();
 // Sync radius label + circle with the slider's initial value on page load
 updateRadius(parseInt(document.getElementById('radiusSlider')?.value || 50, 10));
 
+// Auto-center map on user's location silently on page load
+detectUserLocation(true);
+
 // ── MARKERS ───────────────────────────────────────────────────────────────────
 function createMarkerIcon(c) {
   const sectorColor = getSectorColor(c);
@@ -7786,14 +7789,10 @@ function detectUserLocation(auto = false) {
       currentMapCenter = [lat, lng];
       if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
 
-      // Fly map to user position (auto = stay zoomed out on country)
-      if (auto) {
-        // Keep country-wide zoom, just move radius circle to user location
-        if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
-        currentMapCenter = [lat, lng];
-      } else {
-        map.flyTo([lat, lng], 13, { duration: 1.8 });
-      }
+      // Fly map to user position
+      map.flyTo([lat, lng], 13, { duration: auto ? 1.2 : 1.8 });
+      if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
+      currentMapCenter = [lat, lng];
 
       // Remove previous marker
       if (userLocationMarker) { userLocationMarker.remove(); userLocationMarker = null; }
