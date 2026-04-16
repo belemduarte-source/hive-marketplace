@@ -42,7 +42,7 @@
     nav{background:var(--nav);padding:0;display:flex;align-items:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3);position:relative;z-index:200;transition:transform 0.3s ease;overflow:visible}
     nav.scrolled{transform:translateY(-100%);}
     .nav-links{display:flex;gap:4px;padding:4px 12px;align-items:center;background:var(--nav)}
-    .nav-link{display:inline-flex;align-items:center;gap:8px;color:#ffffff;font-size:14px;font-weight:700;padding:10px 22px;border-radius:10px;cursor:pointer;text-decoration:none;transition:all .25s;white-space:nowrap;border:none;background:transparent;font-family:inherit;letter-spacing:.02em;position:relative}
+    .nav-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;color:#ffffff;font-size:14px;font-weight:700;padding:10px 36px;border-radius:10px;cursor:pointer;text-decoration:none;transition:all .25s;white-space:nowrap;border:none;background:transparent;font-family:inherit;letter-spacing:.02em;position:relative;flex:1}
     .nav-link svg{width:18px;height:18px;opacity:.6;transition:opacity .25s}
     .nav-link:hover{color:#e2e8f0;background:rgba(255,255,255,.06)}
     .nav-link:hover svg{opacity:1}
@@ -2154,10 +2154,6 @@ window.onerror = function(msg, src, line, col, err) {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <span data-i18n="navSearch">Pesquisa</span>
     </button>
-    <button class="nav-link" data-tab="about" onclick="showTab('about')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <span data-i18n="navAbout">Sobre</span>
-    </button>
   </div>
   <!-- Mobile top-nav auth + lang — visible only on mobile -->
   <div class="mobile-top-actions">
@@ -2256,10 +2252,6 @@ window.onerror = function(msg, src, line, col, err) {
     <button class="mobile-nav-link" id="mnSearch" onclick="showTab('search');closeMobileNavPanel()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <span data-i18n="navSearch">Pesquisa</span>
-    </button>
-    <button class="mobile-nav-link" id="mnAbout" onclick="showTab('about');closeMobileNavPanel()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <span data-i18n="navAbout">Sobre</span>
     </button>
     <div class="mobile-nav-divider"></div>
     <!-- Auth area: updated dynamically by updateNavAuth() -->
@@ -2580,7 +2572,6 @@ window.onerror = function(msg, src, line, col, err) {
         <h4 class="footer-title" data-i18n="footerNav">Navegação</h4>
         <a class="footer-link" onclick="showTab('home')" data-i18n="navHome">Início</a>
         <a class="footer-link" onclick="showTab('search')" data-i18n="navSearch">Pesquisa</a>
-        <a class="footer-link" onclick="showTab('about')" data-i18n="navAbout">Sobre Nós</a>
         <a class="footer-link" onclick="openRegister()" data-i18n="navRegister">Registar Empresa</a>
       </div>
       <div class="footer-col">
