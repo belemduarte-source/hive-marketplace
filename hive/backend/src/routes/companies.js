@@ -100,8 +100,8 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
-// POST /api/companies — authenticated users can submit a company (starts as pending)
-router.post('/', requireAuth, async (req, res, next) => {
+// POST /api/companies — public; anyone can submit a company (starts as pending, requires admin approval)
+router.post('/', async (req, res, next) => {
   try {
     const {
       name, sectors, sector, cae, alvara, certidao_permanente,
@@ -144,7 +144,7 @@ router.post('/', requireAuth, async (req, res, next) => {
         emoji || '🏢',
         color || '#f97316',
         pin_type || 'std',
-        req.user.id,
+        req.user?.id || null,   // null when submitted by a non-authenticated visitor
       ]
     );
 

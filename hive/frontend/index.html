@@ -5764,36 +5764,31 @@ async function loadCompaniesFromDB() {
 
 // Save a new company to the backend API; returns the persisted record (with DB id)
 async function saveCompanyToDB(company) {
-  try {
-    const saved = await api.createCompany({
-      name:        company.name,
-      sectors:     company.sectors,
-      sector:      company.sector,
-      cae:                 company.cae                 || null,
-      alvara:              company.alvara              || null,
-      certidao_permanente: company.certidao_permanente || null,
-      address:     company.address     || null,
-      postal_code: company.postalCode  || null,
-      city:        company.city        || null,
-      country:     company.country     || 'pt',
-      zone:        company.zone        || null,
-      email:       company.email,
-      phone:       company.phone,
-      website:     company.website     || null,
-      tags:        company.tags        || [],
-      description: company.description || null,
-      lat:         company.lat,
-      lng:         company.lng,
-      emoji:       company.emoji,
-      color:       company.color,
-      pin_type:    company.pinType     || 'std',
-    });
-    return dbRowToCompany(saved);
-  } catch(e) {
-    console.error('Erro ao guardar empresa:', e.message);
-    // Fallback: keep in memory only
-    return company;
-  }
+  // Let errors propagate — the caller (processRegistration) handles them
+  const saved = await api.createCompany({
+    name:        company.name,
+    sectors:     company.sectors,
+    sector:      company.sector,
+    cae:                 company.cae                 || null,
+    alvara:              company.alvara              || null,
+    certidao_permanente: company.certidao_permanente || null,
+    address:     company.address     || null,
+    postal_code: company.postalCode  || null,
+    city:        company.city        || null,
+    country:     company.country     || 'pt',
+    zone:        company.zone        || null,
+    email:       company.email,
+    phone:       company.phone,
+    website:     company.website     || null,
+    tags:        company.tags        || [],
+    description: company.description || null,
+    lat:         company.lat,
+    lng:         company.lng,
+    emoji:       company.emoji,
+    color:       company.color,
+    pin_type:    company.pinType     || 'std',
+  });
+  return dbRowToCompany(saved);
 }
 
 // Legacy no-op kept so any remaining references don't throw
