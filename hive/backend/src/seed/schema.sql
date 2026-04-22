@@ -48,13 +48,18 @@ CREATE TABLE IF NOT EXISTS companies (
   created_at  TIMESTAMPTZ DEFAULT NOW(),
   updated_at  TIMESTAMPTZ DEFAULT NOW()
 );
-CREATE INDEX IF NOT EXISTS idx_companies_sector  ON companies(sector);
-CREATE INDEX IF NOT EXISTS idx_companies_sectors ON companies USING GIN(sectors);
-CREATE INDEX IF NOT EXISTS idx_companies_tags    ON companies USING GIN(tags);
-CREATE INDEX IF NOT EXISTS idx_companies_status  ON companies(status);
-CREATE INDEX IF NOT EXISTS idx_companies_lat_lng ON companies(lat, lng);
-CREATE INDEX IF NOT EXISTS idx_companies_rating  ON companies(rating DESC);
-CREATE INDEX IF NOT EXISTS idx_companies_country ON companies(country);
+CREATE INDEX IF NOT EXISTS idx_companies_sector     ON companies(sector);
+CREATE INDEX IF NOT EXISTS idx_companies_sectors    ON companies USING GIN(sectors);
+CREATE INDEX IF NOT EXISTS idx_companies_tags       ON companies USING GIN(tags);
+CREATE INDEX IF NOT EXISTS idx_companies_status     ON companies(status);
+CREATE INDEX IF NOT EXISTS idx_companies_lat_lng    ON companies(lat, lng);
+CREATE INDEX IF NOT EXISTS idx_companies_rating     ON companies(rating DESC);
+CREATE INDEX IF NOT EXISTS idx_companies_country    ON companies(country);
+-- Composite index for the primary list query: WHERE status='approved' [AND country=X] ORDER BY created_at DESC
+CREATE INDEX IF NOT EXISTS idx_companies_status_country_created
+  ON companies(status, country, created_at DESC);
+-- Allows fast lookup of companies submitted by a given user
+CREATE INDEX IF NOT EXISTS idx_companies_created_by ON companies(created_by);
 
 -- Migrations for existing databases (safe to re-run)
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS alvara              TEXT;

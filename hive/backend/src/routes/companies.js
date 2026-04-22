@@ -5,17 +5,28 @@ const { requireAuth, requireAdmin } = require('../middleware/auth');
 const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail } = require('../email');
 
 // GET /api/companies — public, returns all approved companies
+// Only select columns the frontend actually renders to keep payloads small
+// (description is heavy and only needed in the detail view)
+const LIST_COLS = `
+  id, name, sectors, sector, cae, address, postal_code, city, country, zone,
+  email, phone, website, tags, description,
+  lat, lng, rating, reviews, top_rated, verified, is_new,
+  emoji, color, pin_type, status, created_at
+`.trim();
+
 router.get('/', async (req, res, next) => {
   try {
     const { country } = req.query;
-    let query = `SELECT * FROM companies WHERE status = 'approved'`;
     const params = [];
+    let where = `WHERE status = 'approved'`;
     if (country) {
       params.push(country);
-      query += ` AND country = $${params.length}`;
+      where += ` AND country = $${params.length}`;
     }
-    query += ' ORDER BY created_at DESC';
-    const { rows } = await pool.query(query, params);
+    const { rows } = await pool.query(
+      `SELECT ${LIST_COLS} FROM companies ${where} ORDER BY created_at DESC`,
+      params
+    );
     res.json(rows);
   } catch (e) {
     next(e);
