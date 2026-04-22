@@ -18,7 +18,10 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
-      - name: Deploy to Vercel (production)
+      - name: Deploy hive/ to Vercel (production)
+        # vercel.json lives inside hive/ — deploy from there so Vercel
+        # picks up outputDirectory, rewrites, and the api/ function correctly
+        working-directory: hive
         run: vercel deploy --prod --yes --token=${{ secrets.VERCEL_TOKEN }}
         env:
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
