@@ -21,6 +21,11 @@
   <style>
     html{overflow-x:hidden}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    /* Eliminate 300ms tap delay on all interactive elements */
+    a,button,input,select,textarea,label,[role="button"],[tabindex]{touch-action:manipulation}
+    /* GPU-composite layers for common animated elements */
+    .overlay,.modal,#detailPanel,#mspSheet,#mspBackdrop,#filterBackdrop,
+    .reg-success-overlay,.profile-panel-overlay{will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden}
     :root{
       /* ── PALETA MODERNIZADA ── */
       --bg:#f5f7fa;--surface:#ffffff;--nav:#0f172a;
@@ -335,7 +340,7 @@
     .btn-register-now:hover{background:var(--primary-dark)}
 
     /* ── DETAIL PANEL ── */
-    .detail-panel{position:fixed;top:170px;right:-440px;width:420px;height:calc(100vh - 170px);background:var(--surface);box-shadow:-4px 0 16px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transition:right .3s cubic-bezier(.4,.0,.2,1), top .3s ease, height .3s ease;border-left:1px solid var(--border)}
+    .detail-panel{position:fixed;top:170px;right:-440px;width:420px;height:calc(100vh - 170px);background:var(--surface);box-shadow:-4px 0 16px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transition:right .25s cubic-bezier(.25,.46,.45,.94);border-left:1px solid var(--border);will-change:right;-webkit-backface-visibility:hidden;backface-visibility:hidden}
     .detail-panel.open{right:0}
     .dp-header{background:linear-gradient(135deg,var(--nav) 0%,#1a2a4a 100%);padding:18px 18px;display:flex;align-items:flex-start;gap:14px;flex-shrink:0;border-bottom:1px solid var(--border)}
     .dp-logo{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;flex-shrink:0;background:rgba(249,115,22,.2)}
@@ -1385,20 +1390,22 @@
       /* Detail panel → full-width bottom sheet */
       .detail-panel {
         top: auto !important;
-        bottom: -100vh !important;
         right: 0 !important;
         left: 0 !important;
+        bottom: 0 !important;
         width: 100% !important;
         height: 82vh !important;
         border-left: none !important;
         border-top: 1px solid var(--border) !important;
         border-radius: 22px 22px 0 0 !important;
-        transition: bottom .3s cubic-bezier(.4,0,.2,1) !important;
+        /* Use transform instead of bottom for GPU compositing */
+        transform: translateY(100%) !important;
+        transition: transform .25s cubic-bezier(.25,.46,.45,.94) !important;
+        will-change: transform !important;
         padding-bottom: env(safe-area-inset-bottom) !important;
       }
       .detail-panel.open {
-        bottom: 0 !important;
-        right: 0 !important;
+        transform: translateY(0) !important;
       }
 
       /* ── Landing page hero ── */
@@ -1847,12 +1854,15 @@
         border-radius: 18px 18px 0 0;
         box-shadow: 0 -4px 32px rgba(0,0,0,.18);
         z-index: 1101;
-        max-height: 70vh;
+        max-height: 75vh;
         display: flex;
         flex-direction: column;
         transform: translateY(100%);
-        transition: transform .28s cubic-bezier(.32,0,.67,0);
+        transition: transform .25s cubic-bezier(.25,.46,.45,.94);
         padding-bottom: env(safe-area-inset-bottom, 0px);
+        will-change: transform;
+        -webkit-backface-visibility: hidden;
+        backface-visibility: hidden;
       }
       #mspSheet.open { transform: translateY(0); }
       #mspSheetHandle {
@@ -2639,6 +2649,15 @@ window.onerror = function(msg, src, line, col, err) {
 <!-- MOBILE FILTER CHIP BAR — compact single row, opens bottom sheet on tap -->
 <div id="mobileSearchPanel">
   <div id="mspChipBar">
+    <button class="msp-chip" id="mspChipLocation" onclick="mspOpenSheet('location')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+      <span id="mspChipLocationLabel">Localização</span>
+    </button>
+    <button class="msp-chip" id="mspChipRadius" onclick="mspOpenSheet('radius')">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="9"/><line x1="12" y1="12" x2="20" y2="12"/></svg>
+      <span id="mspChipRadiusLabel">Raio</span>
+      <svg class="msp-chip-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
+    </button>
     <button class="msp-chip" id="mspChipArea"    onclick="mspOpenSheet('area')">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M3 6h18M7 12h10M11 18h2"/></svg>
       <span id="mspChipAreaLabel">Área</span>
@@ -3082,15 +3101,10 @@ window.onerror = function(msg, src, line, col, err) {
         <label data-i18n="regCae">Código CAE</label>
         <input type="text" id="regCae" data-i18n-ph="regCaePh"/>
       </div>
-      <div class="form-grid2">
-        <div class="form-row">
-          <label><span data-i18n="regAlvara">Alvará</span></label>
-          <input type="text" id="regAlvara" data-i18n-ph="regAlvaraPh"/>
-        </div>
-        <div class="form-row">
-          <label><span data-i18n="regCertidao">Certidão Permanente</span> <span class="req">*</span></label>
-          <input type="text" id="regCertidao" data-i18n-ph="regCertidaoPh"/>
-        </div>
+      <div class="form-row">
+        <label><span data-i18n="regAlvara">Alvará</span> <span style="font-size:11px;color:var(--muted);font-weight:400">(opcional)</span></label>
+        <input type="text" id="regAlvara" data-i18n-ph="regAlvaraPh" placeholder="Ex: 123/2024"/>
+        <div class="form-hint">Número de alvará de construção, se aplicável.</div>
       </div>
       <div class="reg-step-nav">
         <button class="btn-cancel" onclick="closeRegister()" data-i18n="regCancel">Cancelar</button>
@@ -3132,11 +3146,8 @@ window.onerror = function(msg, src, line, col, err) {
         <input type="text" id="regAddress" data-i18n-ph="regAddressPh" placeholder="Ex: Rua da Paz, 123, Apto 4B"/>
         <div class="form-hint">Incluir rua, número, apartamento e complementos para localização precisa no mapa.</div>
       </div>
-      <div class="form-row">
-        <label data-i18n="regZone">Localidade / Zona (Opcional)</label>
-        <select id="regZone"></select>
-        <div class="form-hint">Selecione a localidade ou zona específica dentro da cidade.</div>
-      </div>
+      <!-- Hidden zone select kept for backward-compat with geocoding logic -->
+      <select id="regZone" style="display:none"></select>
       <div class="reg-step-nav">
         <button class="btn-step-back" onclick="regGoStep(1)">← <span data-i18n="regStepBack">Anterior</span></button>
         <button class="btn-step-next" onclick="regNextStep(2)"><span data-i18n="regStepNext">Seguinte</span> →</button>
@@ -6794,7 +6805,7 @@ function mspOpenSheet(type) {
 
   // Mark chip as open
   document.querySelectorAll('.msp-chip').forEach(c => c.classList.remove('open'));
-  const chipId = {area:'mspChipArea',sort:'mspChipSort',rating:'mspChipRating',status:'mspChipStatus'}[type];
+  const chipId = {area:'mspChipArea',sort:'mspChipSort',rating:'mspChipRating',status:'mspChipStatus',radius:'mspChipRadius',location:'mspChipLocation'}[type];
   if (chipId) document.getElementById(chipId)?.classList.add('open');
 
   if (type === 'area') {
@@ -6880,6 +6891,36 @@ function mspOpenSheet(type) {
       <button class="msp-sheet-btn${isNew?' active':''}" data-status="new"
         onclick="mspToggleStatus('new');this.classList.toggle('active')">🆕 Novo</button>
     </div>`;
+
+  } else if (type === 'radius') {
+    title.textContent = 'Raio de Pesquisa';
+    const slider = document.getElementById('radiusSlider');
+    const currentVal = slider ? parseInt(slider.value) : 50;
+    const kmLabels = {0:'5 km',25:'15 km',50:'50 km',75:'165 km',100:'🇵🇹 Todo'};
+    body.innerHTML = `
+      <div style="padding:8px 4px 20px">
+        <div style="font-size:28px;font-weight:800;color:var(--primary);text-align:center;margin-bottom:6px" id="mspRadiusDisplay">${kmLabels[currentVal]||'50 km'}</div>
+        <div style="color:var(--muted);font-size:12px;text-align:center;margin-bottom:20px">Distância máxima ao centro do mapa</div>
+        <input type="range" min="0" max="100" step="25" value="${currentVal}" style="width:100%;accent-color:var(--primary);height:6px;cursor:pointer"
+          oninput="mspRadiusInput(this.value)" onchange="mspRadiusApply(this.value)"/>
+        <div style="display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-top:8px;padding:0 2px">
+          <span>5 km</span><span>15 km</span><span>50 km</span><span>165 km</span><span>Todo</span>
+        </div>
+      </div>`;
+
+  } else if (type === 'location') {
+    title.textContent = 'A Minha Localização';
+    const hasLoc = !!window._locationObtained;
+    body.innerHTML = `
+      <div style="text-align:center;padding:12px 4px 20px">
+        <div style="font-size:44px;margin-bottom:12px">${hasLoc ? '📍' : '📡'}</div>
+        <div style="font-weight:700;font-size:15px;color:var(--text);margin-bottom:6px">${hasLoc ? 'Localização ativa' : 'Localização não ativada'}</div>
+        <div style="font-size:13px;color:var(--muted);margin-bottom:20px;line-height:1.5">${hasLoc ? 'O mapa está centrado na sua posição atual.' : 'Ative o GPS para centrar o mapa na sua localização e encontrar fornecedores perto de si.'}</div>
+        <button onclick="mspRequestLocation()" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:13px 28px;font-size:14px;font-weight:700;cursor:pointer;width:100%;font-family:inherit">
+          ${hasLoc ? '🔄 Atualizar Localização' : '📍 Ativar GPS'}
+        </button>
+        ${hasLoc ? `<button onclick="mspClearLocation()" style="background:none;color:var(--muted);border:none;font-size:13px;cursor:pointer;margin-top:14px;font-family:inherit;width:100%">Limpar localização</button>` : ''}
+      </div>`;
   }
 
   if (backdrop) { backdrop.style.display = 'block'; requestAnimationFrame(() => backdrop.classList.add('open')); }
@@ -6978,6 +7019,26 @@ function mspUpdateChips() {
   if (statusChip)  statusChip.classList.toggle('active', statusCount > 0);
   if (statusLabel) statusLabel.textContent = statusCount > 0 ? `Destaque (${statusCount})` : 'Destaque';
 
+  // Radius chip
+  const radiusChip  = document.getElementById('mspChipRadius');
+  const radiusLabel = document.getElementById('mspChipRadiusLabel');
+  const slider = document.getElementById('radiusSlider');
+  if (radiusChip && radiusLabel && slider) {
+    const km = sliderToKm ? sliderToKm(slider.value) : null;
+    const radiusActive = parseInt(slider.value) < 100;
+    radiusChip.classList.toggle('active', radiusActive);
+    radiusLabel.textContent = radiusActive && km ? `Raio ${km} km` : 'Raio';
+  }
+
+  // Location chip
+  const locChip  = document.getElementById('mspChipLocation');
+  const locLabel = document.getElementById('mspChipLocationLabel');
+  if (locChip && locLabel) {
+    const hasLoc = !!window._locationObtained;
+    locChip.classList.toggle('active', hasLoc);
+    locLabel.textContent = hasLoc ? '📍 Localizado' : 'Localização';
+  }
+
   // Clear button
   const clearBtn = document.getElementById('mspChipClear');
   const anyActive = areaActive || sortActive || ratingActive || statusCount > 0;
@@ -6993,6 +7054,41 @@ function mspClearAll() {
   applyFilters();
   mspUpdateChips();
   mspCloseSheet();
+}
+
+// ── Mobile radius helpers ─────────────────────────────────────────────────────
+function mspRadiusInput(val) {
+  const labels = {0:'5 km',25:'15 km',50:'50 km',75:'165 km',100:'🇵🇹 Todo'};
+  const display = document.getElementById('mspRadiusDisplay');
+  if (display) display.textContent = labels[val] || val + ' km';
+}
+
+function mspRadiusApply(val) {
+  // Sync the desktop radius slider
+  const desktopSlider = document.getElementById('radiusSlider');
+  if (desktopSlider) {
+    desktopSlider.value = val;
+    if (typeof updateRadius === 'function') updateRadius(val);
+    if (typeof applyFilters === 'function') applyFilters();
+  }
+  mspUpdateChips();
+}
+
+// ── Mobile location helpers ───────────────────────────────────────────────────
+function mspRequestLocation() {
+  mspCloseSheet();
+  if (typeof detectUserLocation === 'function') {
+    detectUserLocation(false);
+    // Refresh chip state after a short delay to pick up the result
+    setTimeout(mspUpdateChips, 4000);
+  }
+}
+
+function mspClearLocation() {
+  window._locationObtained = false;
+  mspUpdateChips();
+  mspCloseSheet();
+  if (map && typeof PORTUGAL_CENTER !== 'undefined') map.setView(PORTUGAL_CENTER, 7);
 }
 
 // Renamed stubs kept for backwards-compat (called from updateSectorActiveStates)
@@ -7506,8 +7602,7 @@ function submitRegister() {
   const email   = document.getElementById('regEmail').value.trim();
   const phone   = document.getElementById('regPhone').value.trim();
   const tagsRaw = document.getElementById('regTags').value.trim();
-  const alvara  = document.getElementById('regAlvara').value.trim();
-  const certidao = document.getElementById('regCertidao').value.trim();
+  const alvara  = document.getElementById('regAlvara')?.value.trim() || '';
 
   if (!name)           { showToast(t('valName'));    return; }
   if (sectors.length === 0) { showToast(t('valSector'));  return; }
@@ -7518,7 +7613,6 @@ function submitRegister() {
   if (!country)        { showToast('Selecione um país'); return; }
   if (!city)           { showToast('Selecione uma cidade'); return; }
   if (!postalCode)     { showToast('Introduza o código postal'); return; }
-  if (!certidao)       { showToast(t('valCertidao')); return; }
 
   const tags   = tagsRaw.split(',').map(s => s.trim()).filter(Boolean);
   const idx    = nextCompanyId % defaultEmojis.length;
@@ -7607,7 +7701,6 @@ function submitRegister() {
       name,
       cae:         cae || '',
       alvara:      alvara || '',
-      certidao_permanente: certidao || '',
       sector,
       sectors,
       rating:      0, reviews: 0,
@@ -7631,24 +7724,42 @@ function submitRegister() {
     if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'A guardar...'; }
 
     try {
-      await saveCompanyToDB(newCompany);
-      // Company is now pending admin approval — do NOT add to map yet
+      const editId = window._editingCompanyId;
+      if (editId) {
+        // PUT — update existing company
+        await api.updateCompany(editId, {
+          name, sectors, sector: sectors[0] || '', cae: cae || null,
+          alvara: alvara || null, address, postal_code: postalCode, city, country,
+          email, phone, website: document.getElementById('regWebsite')?.value.trim() || null,
+          tags, description: document.getElementById('regDesc')?.value.trim() || null,
+        });
+        // Refresh local companies list
+        const idx2 = companies.findIndex(x => x.id === editId);
+        if (idx2 >= 0) {
+          Object.assign(companies[idx2], { name, sectors, sector: sectors[0] || '', cae, alvara,
+            address, postal_code: postalCode, city, country, email, phone, tags,
+            description: document.getElementById('regDesc')?.value.trim() || '' });
+        }
+        window._editingCompanyId = null;
+        closeRegister();
+        showToast('✅ Empresa atualizada com sucesso!');
+      } else {
+        // POST — new company (pending approval)
+        await saveCompanyToDB(newCompany);
+        _lastRegisteredCompany = newCompany;
+        document.getElementById('regSuccessName').textContent = name;
+        document.getElementById('regSuccessOverlay').classList.add('open');
+      }
 
       // Reset form
-      ['regName','regCae','regAlvara','regCertidao','regAddress','regEmail','regPhone','regWebsite','regTags','regDesc','regPostalCode']
+      ['regName','regCae','regAlvara','regAddress','regEmail','regPhone','regWebsite','regTags','regDesc','regPostalCode']
         .forEach(fid => { const el = document.getElementById(fid); if(el) el.value = ''; });
       _regSelectedSectors = [];
       renderRegisterSectorSelect();
       document.getElementById('regSectorWrap').classList.remove('open');
       document.getElementById('regCountry').value = '';
       document.getElementById('regCity').value    = '';
-      document.getElementById('regZone').value    = 'lisbon_center';
-
       closeRegister();
-      // Show pending-approval success screen
-      _lastRegisteredCompany = newCompany;
-      document.getElementById('regSuccessName').textContent = name;
-      document.getElementById('regSuccessOverlay').classList.add('open');
     } catch(e) {
       console.error('Erro ao guardar empresa:', e);
       showToast(t('toastRegisterError'));
@@ -8534,11 +8645,8 @@ function regGoStep(step) {
 function regNextStep(fromStep) {
   if (fromStep === 1) {
     const name = document.getElementById('regName')?.value.trim();
-    const alvara = document.getElementById('regAlvara')?.value.trim();
-    const certidao = document.getElementById('regCertidao')?.value.trim();
     if (!name) { showToast(t('valName')); return; }
     if (_regSelectedSectors.length === 0) { showToast(t('valSector')); return; }
-    if (!certidao) { showToast(t('valCertidao')); return; }
   } else if (fromStep === 2) {
     const country = document.getElementById('regCountry')?.value;
     const city = document.getElementById('regCity')?.value;
@@ -8552,12 +8660,27 @@ function regNextStep(fromStep) {
   regGoStep(fromStep + 1);
 }
 
-// Reset step state when opening the register modal
+// Reset step state and editing flag when opening or closing the register modal
 const _origOpenRegister = openRegister;
 openRegister = function() {
+  window._editingCompanyId = null;
+  // Restore submit button label
+  setTimeout(() => {
+    const submitBtn = document.querySelector('#registerOverlay .btn-step-next[onclick*="submitRegister"]');
+    if (submitBtn) submitBtn.innerHTML = '<i data-lucide="check-circle"></i> <span data-i18n="regSubmit">Registar Empresa</span>';
+    if (typeof lucide !== 'undefined') lucide.createIcons();
+  }, 50);
   _origOpenRegister();
   regGoStep(1);
 };
+
+const _origCloseRegister = typeof closeRegister === 'function' ? closeRegister : null;
+if (_origCloseRegister) {
+  closeRegister = function() {
+    window._editingCompanyId = null;
+    _origCloseRegister();
+  };
+}
 
 // ── IMPROVEMENT 4: Registration success screen ──────────────────────────────
 let _lastRegisteredCompany = null;
@@ -8572,18 +8695,19 @@ function openProfilePanel() {
   const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
   if (!user) { openLogin(); return; }
   const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
-  const myCompanies = companies.filter(c => c.createdBy === user.id || c.created_by === user.id);
-  const companiesHtml = myCompanies.length > 0
+  const myCompanies = companies.filter(c => (c.createdBy === user.id || c.created_by === user.id));
+
+  const companyCards = myCompanies.length > 0
     ? myCompanies.map(c => `
-        <div class="profile-company-card" onclick="document.getElementById('profilePanelOverlay').classList.remove('open');showTab('search');setTimeout(()=>openDetail(${c.id}),300)">
-          <div class="profile-company-emoji" style="background:${c.color}22">${c.emoji||'🏢'}</div>
-          <div class="profile-company-info">
+        <div class="profile-company-card">
+          <div class="profile-company-emoji" style="background:${c.color}22;cursor:pointer" onclick="closeProfilePanel();showTab('search');setTimeout(()=>openDetail(${c.id}),300)">${c.emoji||'🏢'}</div>
+          <div class="profile-company-info" style="cursor:pointer;flex:1" onclick="closeProfilePanel();showTab('search');setTimeout(()=>openDetail(${c.id}),300)">
             <div class="profile-company-name">${c.name}</div>
-            <div class="profile-company-city">📍 ${c.city||'Portugal'}</div>
+            <div class="profile-company-city">📍 ${c.city||'Portugal'} · <span style="color:${c.status==='approved'?'var(--green)':c.status==='pending'?'#f59e0b':'var(--red)'};font-weight:700;font-size:11px">${c.status==='approved'?'✅ Aprovada':c.status==='pending'?'⏳ Pendente':'❌ Rejeitada'}</span></div>
           </div>
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          <button onclick="profileEditCompany(${c.id})" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;color:var(--text-secondary);cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0" title="Editar empresa">✏️</button>
         </div>`).join('')
-    : `<div class="profile-empty">Nenhuma empresa registada.<br><br><button class="btn-step-next" style="width:100%" onclick="document.getElementById('profilePanelOverlay').classList.remove('open');openRegister()">Registar Empresa</button></div>`;
+    : '';
 
   document.getElementById('profilePanelBody').innerHTML = `
     <div class="profile-info-row">
@@ -8591,16 +8715,84 @@ function openProfilePanel() {
       <div class="profile-user-info">
         <div class="profile-user-name">${user.name}</div>
         <div class="profile-user-email">${user.email}</div>
+        <div style="font-size:11px;color:var(--muted);margin-top:2px">${user.type === 'empresa' ? '🏢 Empresa' : '🔍 Cliente'}</div>
       </div>
     </div>
-    ${user.type === 'empresa' ? `<div><div class="profile-section-title">As Minhas Empresas</div>${companiesHtml}</div>` : ''}
+
+    <div style="margin-top:6px">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+        <div class="profile-section-title" style="margin:0">As Minhas Empresas${myCompanies.length > 0 ? ` (${myCompanies.length})` : ''}</div>
+        <button onclick="closeProfilePanel();openRegister()" style="background:var(--primary);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> Adicionar
+        </button>
+      </div>
+      ${companyCards || `<div class="profile-empty" style="text-align:center;padding:28px 16px;color:var(--muted)">
+        <div style="font-size:32px;margin-bottom:10px">🏢</div>
+        <div style="font-weight:700;margin-bottom:6px;color:var(--text)">Nenhuma empresa registada</div>
+        <div style="font-size:13px;margin-bottom:18px">Registe a sua empresa para aparecer no mapa e receber orçamentos.</div>
+        <button onclick="closeProfilePanel();openRegister()" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;width:100%">Registar Empresa</button>
+      </div>`}
+    </div>
   `;
   document.getElementById('profilePanelOverlay').classList.add('open');
   if (typeof lucide !== 'undefined') lucide.createIcons();
 }
+
 function closeProfilePanel(e) {
-  if (e && !e.target.classList.contains('profile-panel-overlay')) return;
+  if (e && e.target && !e.target.classList.contains('profile-panel-overlay')) return;
   document.getElementById('profilePanelOverlay').classList.remove('open');
+}
+
+// Open the register modal pre-filled for editing an existing company
+function profileEditCompany(companyId) {
+  const c = companies.find(x => x.id === companyId);
+  if (!c) return;
+  closeProfilePanel();
+
+  // Open the register modal and pre-fill step 1 fields after a brief delay
+  openRegister();
+  setTimeout(() => {
+    // Pre-fill identity fields
+    const nameEl = document.getElementById('regName');
+    const caeEl  = document.getElementById('regCae');
+    const alvaraEl = document.getElementById('regAlvara');
+    if (nameEl)   nameEl.value   = c.name || '';
+    if (caeEl)    caeEl.value    = c.cae  || '';
+    if (alvaraEl) alvaraEl.value = c.alvara || '';
+
+    // Pre-select sectors
+    _regSelectedSectors = (c.sectors || (c.sector ? [c.sector] : [])).slice();
+    if (typeof renderRegisterSectorSelect === 'function') renderRegisterSectorSelect();
+
+    // Pre-fill step 2 location
+    const countryEl = document.getElementById('regCountry');
+    const postalEl  = document.getElementById('regPostalCode');
+    const addressEl = document.getElementById('regAddress');
+    if (countryEl) { countryEl.value = c.country || 'pt'; countryEl.dispatchEvent(new Event('change')); }
+    if (postalEl)  postalEl.value  = c.postal_code || '';
+    if (addressEl) addressEl.value = c.address || '';
+
+    // Pre-fill step 3 contacts
+    const emailEl  = document.getElementById('regEmail');
+    const phoneEl  = document.getElementById('regPhone');
+    const websiteEl= document.getElementById('regWebsite');
+    const tagsEl   = document.getElementById('regTags');
+    const descEl   = document.getElementById('regDesc');
+    if (emailEl)   emailEl.value   = c.email   || '';
+    if (phoneEl)   phoneEl.value   = c.phone   || '';
+    if (websiteEl) websiteEl.value = c.website || '';
+    if (tagsEl)    tagsEl.value    = (c.tags || []).join(', ');
+    if (descEl)    descEl.value    = c.description || '';
+
+    // Store the company id being edited so submitRegister can PUT instead of POST
+    window._editingCompanyId = companyId;
+
+    // Update the submit button label
+    const submitBtn = document.querySelector('#registerOverlay .btn-step-next[onclick*="submitRegister"]');
+    if (submitBtn) submitBtn.innerHTML = '<i data-lucide="save"></i> <span>Guardar Alterações</span>';
+
+    showToast('Formulário pré-preenchido — edite e submeta para guardar.');
+  }, 350);
 }
 
 // ── IMPROVEMENT 9: Keyboard nav for sector multi-select ──────────────────────
