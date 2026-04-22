@@ -24,11 +24,20 @@ app.use(helmet({
 app.use(compression());
 
 // ── CORS ──────────────────────────────────────────────────────────────────────
-const allowedOrigins = (process.env.CORS_ORIGIN || 'http://localhost:9091')
-  .split(',')
-  .map(s => s.trim());
+// Vercel automatically sets VERCEL_URL (current deployment) and
+// VERCEL_PROJECT_PRODUCTION_URL (stable production domain) — include both
+// so the deployed frontend can always reach the API without manual config.
+const _vercelOrigins = [
+  process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`,
+  process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`,
+].filter(Boolean);
 
-app.use(cors({
+const allowedOrigins = [
+  ...(process.env.CORS_ORIGIN || 'http://localhost:9091').split(',').map(s => s.trim()),
+  ..._vercelOrigins,
+];
+
+const corsOptions = {
   origin: (origin, cb) => {
     // Allow same-origin requests (no Origin header) and whitelisted origins
     if (!origin || allowedOrigins.includes('*') || allowedOrigins.includes(origin)) {
@@ -37,7 +46,11 @@ app.use(cors({
     cb(new Error('Not allowed by CORS'));
   },
   credentials: true,
-}));
+};
+
+// Handle OPTIONS preflight requests for all API routes
+app.options('/api/*', cors(corsOptions));
+app.use(cors(corsOptions));
 
 // ── Body parsing (50 kb cap to prevent payload abuse) ─────────────────────────
 app.use(express.json({ limit: '50kb' }));

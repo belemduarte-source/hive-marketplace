@@ -111,7 +111,7 @@ ok('openRegister in edit flow',     js.includes('openRegister()'));
 // ── 8. Integrity checks ───────────────────────────────────────────────────────
 console.log('\n[8] Integrity');
 ok('map null-guarded',          js.includes('if (map)'));
-ok('SW cache v16',              sw.includes('hive-v16'));
+ok('SW cache v17',              sw.includes('hive-v17'));
 ok('serviceWorker registered',  js.includes('serviceWorker.register'));
 ok('translations.pt exists',    html.includes('pt: {') || html.includes("pt : {") || html.includes("pt:{"));
 ok('localStorage hive_lang set', js.includes("localStorage.setItem('hive_lang'") || js.includes('localStorage.setItem("hive_lang"'));
