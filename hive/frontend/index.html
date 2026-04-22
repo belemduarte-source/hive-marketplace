@@ -4791,9 +4791,14 @@ function showTab(name) {
         map.invalidateSize({ animate: false });
         if (!window._mapEverShown) {
           window._mapEverShown = true;
-          // First visit: center on Portugal, then detect user location
-          map.setView(PORTUGAL_CENTER, 7);
-          setTimeout(() => detectUserLocation(true), 300);
+          if (!_locationObtained) {
+            // Location not yet received — request it now the map is visible
+            map.setView(PORTUGAL_CENTER, 7);
+            setTimeout(() => detectUserLocation(true), 300);
+          } else {
+            // Location already obtained on page load — just re-center smoothly
+            map.flyTo(currentMapCenter, 13, { duration: 1.2 });
+          }
         }
       }
     });
@@ -6338,8 +6343,9 @@ loadCompaniesFromDB();
 // Sync radius label + circle with the slider's initial value on page load
 updateRadius(parseInt(document.getElementById('radiusSlider')?.value || 50, 10));
 
-// Auto-center map on user's location silently on page load
-detectUserLocation(true);
+// Auto-detect location on page load (mobile & desktop).
+// DOMContentLoaded ensures the inputs exist before we try to fill them.
+document.addEventListener('DOMContentLoaded', () => detectUserLocation(true));
 
 // ── MARKERS ───────────────────────────────────────────────────────────────────
 function createMarkerIcon(c) {
@@ -7766,12 +7772,16 @@ function showToast(msg) {
 
 // ── GEOLOCATION ────────────────────────────────────────────────────────────────
 let userLocationMarker = null;
+let _locationObtained  = false;   // true once we have real coords
 
 function detectUserLocation(auto = false) {
   if (!navigator.geolocation) {
     if (!auto) showToast(t('toastGeoNotSupported'));
     return;
   }
+
+  // Skip a second auto-request if we already have the user's position
+  if (auto && _locationObtained) return;
 
   const btn = document.getElementById('btnLocate');
 
@@ -7783,15 +7793,14 @@ function detectUserLocation(auto = false) {
   navigator.geolocation.getCurrentPosition(
     pos => {
       const { latitude: lat, longitude: lng, accuracy } = pos.coords;
+      _locationObtained = true;
 
       // Update current map center and radius circle
       currentMapCenter = [lat, lng];
       if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
 
-      // Fly map to user position
-      map.flyTo([lat, lng], 13, { duration: auto ? 1.2 : 1.8 });
-      if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
-      currentMapCenter = [lat, lng];
+      // Fly map to user position (works even if map tab is hidden)
+      if (map) map.flyTo([lat, lng], 13, { duration: auto ? 1.2 : 1.8 });
 
       // Remove previous marker
       if (userLocationMarker) { userLocationMarker.remove(); userLocationMarker = null; }
@@ -7807,13 +7816,14 @@ function detectUserLocation(auto = false) {
         iconAnchor: [12, 12],
       });
 
-      userLocationMarker = L.marker([lat, lng], { icon: youIcon, zIndexOffset: 1000 })
-        .addTo(map)
-        .bindPopup(`<strong>📍 A sua localização</strong><br><small style="color:#6b7280">Precisão: ±${Math.round(accuracy)} m</small>`);
+      if (map) {
+        userLocationMarker = L.marker([lat, lng], { icon: youIcon, zIndexOffset: 1000 })
+          .addTo(map)
+          .bindPopup(`<strong>📍 A sua localização</strong><br><small style="color:#6b7280">Precisão: ±${Math.round(accuracy)} m</small>`);
+        if (!auto) userLocationMarker.openPopup();
+      }
 
-      if (!auto) userLocationMarker.openPopup();
-
-      // Reverse geocode with Nominatim
+      // Reverse geocode with Nominatim → pre-fill ALL location inputs on the page
       fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=pt`)
         .then(r => r.json())
         .then(data => {
@@ -7822,8 +7832,13 @@ function detectUserLocation(auto = false) {
           const country = a.country || '';
           const label = [city, country].filter(Boolean).join(', ');
           if (label) {
-            document.getElementById('searchUnified').value = label;
-            // update map info box city
+            // Search tab unified input
+            const uni = document.getElementById('searchUnified');
+            if (uni) uni.value = label;
+            // Home page hero location input
+            const hero = document.getElementById('heroLocation');
+            if (hero && !hero.value) hero.value = label;
+            // Map info box city label
             const cityEl = document.querySelector('[data-i18n="mapCity"]');
             if (cityEl) cityEl.textContent = label;
           }
