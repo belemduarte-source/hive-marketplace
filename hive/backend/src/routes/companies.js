@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
-const { sendRegistrationNotification } = require('../email');
+const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail } = require('../email');
 
 // GET /api/companies — public, returns all approved companies
 router.get('/', async (req, res, next) => {
@@ -22,7 +22,71 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// GET /api/companies/:id
+// GET /api/companies/:id/approve?token=ADMIN_TOKEN — one-click approval from email
+router.get('/:id/approve', async (req, res, next) => {
+  try {
+    const adminToken = process.env.ADMIN_TOKEN;
+    if (!adminToken || req.query.token !== adminToken) {
+      return res.status(403).send(htmlPage('❌ Acesso negado', 'Token de administrador inválido.', '#dc2626'));
+    }
+
+    const { rows } = await pool.query(
+      `UPDATE companies SET status = 'approved', updated_at = NOW() WHERE id = $1 RETURNING *`,
+      [req.params.id]
+    );
+
+    if (!rows[0]) {
+      return res.status(404).send(htmlPage('❌ Não encontrada', 'Empresa não encontrada na base de dados.', '#dc2626'));
+    }
+
+    // Send confirmation email to the company (fire-and-forget)
+    sendCompanyApprovalEmail(rows[0]).catch(err =>
+      console.error('[email] Failed to send approval email to company:', err.message)
+    );
+
+    res.send(htmlPage(
+      '✅ Empresa aprovada!',
+      `<strong>${rows[0].name}</strong> foi aprovada e já está visível na plataforma Hive.<br><br>Foi enviado um email de confirmação para <strong>${rows[0].email || '(sem email)'}</strong>.`,
+      '#16a34a'
+    ));
+  } catch (e) {
+    next(e);
+  }
+});
+
+// GET /api/companies/:id/reject?token=ADMIN_TOKEN — one-click rejection from email
+router.get('/:id/reject', async (req, res, next) => {
+  try {
+    const adminToken = process.env.ADMIN_TOKEN;
+    if (!adminToken || req.query.token !== adminToken) {
+      return res.status(403).send(htmlPage('❌ Acesso negado', 'Token de administrador inválido.', '#dc2626'));
+    }
+
+    const { rows } = await pool.query(
+      `UPDATE companies SET status = 'rejected', updated_at = NOW() WHERE id = $1 RETURNING *`,
+      [req.params.id]
+    );
+
+    if (!rows[0]) {
+      return res.status(404).send(htmlPage('❌ Não encontrada', 'Empresa não encontrada na base de dados.', '#dc2626'));
+    }
+
+    // Optionally notify the company (fire-and-forget)
+    sendCompanyRejectionEmail(rows[0]).catch(err =>
+      console.error('[email] Failed to send rejection email to company:', err.message)
+    );
+
+    res.send(htmlPage(
+      '🚫 Empresa rejeitada',
+      `O registo de <strong>${rows[0].name}</strong> foi rejeitado e não será publicado na plataforma.`,
+      '#f97316'
+    ));
+  } catch (e) {
+    next(e);
+  }
+});
+
+// GET /api/companies/:id — public, only approved
 router.get('/:id', async (req, res, next) => {
   try {
     const { rows } = await pool.query(
@@ -36,7 +100,7 @@ router.get('/:id', async (req, res, next) => {
   }
 });
 
-// POST /api/companies — authenticated users can create companies
+// POST /api/companies — authenticated users can submit a company (starts as pending)
 router.post('/', requireAuth, async (req, res, next) => {
   try {
     const {
@@ -56,7 +120,7 @@ router.post('/', requireAuth, async (req, res, next) => {
          address, postal_code, city, country, zone,
          email, phone, website, tags, description, lat, lng, emoji, color, pin_type,
          status, created_by)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,'approved',$22)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,'pending',$22)
        RETURNING *`,
       [
         name,
@@ -83,7 +147,8 @@ router.post('/', requireAuth, async (req, res, next) => {
         req.user.id,
       ]
     );
-    // Fire-and-forget admin notification — never blocks the response
+
+    // Fire-and-forget admin notification with approve/reject links
     sendRegistrationNotification(rows[0]).catch(err =>
       console.error('[email] Failed to send registration notification:', err.message)
     );
@@ -161,5 +226,24 @@ router.delete('/:id', requireAdmin, async (req, res, next) => {
     next(e);
   }
 });
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function htmlPage(title, body, color = '#f97316') {
+  return `<!DOCTYPE html><html lang="pt"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title} — Hive</title>
+<style>
+  body{font-family:Arial,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f9fafb}
+  .card{background:#fff;border-radius:12px;padding:48px 40px;max-width:520px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.1)}
+  h1{color:${color};font-size:28px;margin:0 0 16px}
+  p{color:#374151;font-size:16px;line-height:1.6;margin:0 0 24px}
+  a{display:inline-block;background:${color};color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700}
+</style></head>
+<body><div class="card">
+  <h1>${title}</h1>
+  <p>${body}</p>
+  <a href="/">Voltar ao Hive</a>
+</div></body></html>`;
+}
 
 module.exports = router;

@@ -2287,12 +2287,11 @@ window.onerror = function(msg, src, line, col, err) {
 <!-- REGISTRATION SUCCESS SCREEN -->
 <div class="reg-success-overlay" id="regSuccessOverlay">
   <div class="reg-success-card">
-    <div class="reg-success-icon">✅</div>
-    <div class="reg-success-title" data-i18n="successTitle">Empresa Registada!</div>
+    <div class="reg-success-icon">📩</div>
+    <div class="reg-success-title" data-i18n="successTitle">Pedido Enviado!</div>
     <div class="reg-success-name" id="regSuccessName"></div>
-    <div class="reg-success-sub" data-i18n="successSub">A sua empresa foi adicionada à plataforma e já é visível no mapa.</div>
+    <div class="reg-success-sub" data-i18n="successSub">O seu pedido foi recebido e está a aguardar validação. Receberá um email de confirmação assim que a empresa for aprovada.</div>
     <div class="reg-success-actions">
-      <button class="btn-success-view" onclick="closeRegSuccess(true)" data-i18n="successView">Ver no Mapa</button>
       <button class="btn-success-close" onclick="closeRegSuccess(false)" data-i18n="successClose">Continuar a Navegar</button>
     </div>
   </div>
@@ -7603,13 +7602,8 @@ function submitRegister() {
     if (submitBtn) { submitBtn.disabled = true; submitBtn.textContent = 'A guardar...'; }
 
     try {
-      const saved = await saveCompanyToDB(newCompany);
-      // Use the DB-assigned id so marker lookups work
-      newCompany.id = saved.id;
-      companies.push(newCompany);
-      addCompanyMarker(newCompany);
-      renderSectorFilters();
-      renderTagCloud();
+      await saveCompanyToDB(newCompany);
+      // Company is now pending admin approval — do NOT add to map yet
 
       // Reset form
       ['regName','regCae','regAlvara','regCertidao','regAddress','regEmail','regPhone','regWebsite','regTags','regDesc','regPostalCode']
@@ -7622,8 +7616,7 @@ function submitRegister() {
       document.getElementById('regZone').value    = 'lisbon_center';
 
       closeRegister();
-      applyFilters();
-      // Show success screen
+      // Show pending-approval success screen
       _lastRegisteredCompany = newCompany;
       document.getElementById('regSuccessName').textContent = name;
       document.getElementById('regSuccessOverlay').classList.add('open');
@@ -8622,16 +8615,24 @@ if (_origRenderSectorFilters) {
   const extra = {
     pt: { regStep1Label:'Identidade', regStep2Label:'Localização', regStep3Label:'Contactos',
           regStepNext:'Seguinte', regStepBack:'Anterior',
-          successTitle:'Empresa Registada!', successSub:'A sua empresa foi adicionada à plataforma e já é visível no mapa.',
-          successView:'Ver no Mapa', successClose:'Continuar a Navegar' },
+          successTitle:'Pedido Enviado!', successSub:'O seu pedido foi recebido e está a aguardar validação. Receberá um email de confirmação assim que a empresa for aprovada.',
+          successClose:'Continuar a Navegar' },
     en: { regStep1Label:'Identity', regStep2Label:'Location', regStep3Label:'Contacts',
           regStepNext:'Next', regStepBack:'Back',
-          successTitle:'Company Registered!', successSub:'Your company has been added to the platform and is now visible on the map.',
-          successView:'View on Map', successClose:'Keep Browsing' },
+          successTitle:'Request Submitted!', successSub:'Your request has been received and is pending validation. You will receive a confirmation email once the company is approved.',
+          successClose:'Keep Browsing' },
     fr: { regStep1Label:'Identité', regStep2Label:'Localisation', regStep3Label:'Contacts',
           regStepNext:'Suivant', regStepBack:'Précédent',
-          successTitle:'Entreprise Enregistrée!', successSub:"Votre entreprise a été ajoutée à la plateforme et est maintenant visible sur la carte.",
-          successView:'Voir sur la Carte', successClose:'Continuer à Naviguer' }
+          successTitle:'Demande Envoyée !', successSub:"Votre demande a été reçue et est en attente de validation. Vous recevrez un email de confirmation dès que l'entreprise sera approuvée.",
+          successClose:'Continuer à Naviguer' },
+    es: { regStep1Label:'Identidad', regStep2Label:'Ubicación', regStep3Label:'Contactos',
+          regStepNext:'Siguiente', regStepBack:'Anterior',
+          successTitle:'¡Solicitud Enviada!', successSub:'Su solicitud ha sido recibida y está pendiente de validación. Recibirá un email de confirmación una vez aprobada la empresa.',
+          successClose:'Seguir Navegando' },
+    de: { regStep1Label:'Identität', regStep2Label:'Standort', regStep3Label:'Kontakte',
+          regStepNext:'Weiter', regStepBack:'Zurück',
+          successTitle:'Anfrage gesendet!', successSub:'Ihre Anfrage wurde empfangen und wird geprüft. Sie erhalten eine Bestätigungs-E-Mail, sobald das Unternehmen freigegeben wurde.',
+          successClose:'Weiter browsen' }
   };
   if (typeof translations !== 'undefined') {
     Object.keys(extra).forEach(lang => {
