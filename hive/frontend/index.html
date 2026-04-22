@@ -3533,8 +3533,7 @@ const translations = {
     regSectorLabel:'Setor de Atividade', regSectorPh:'Selecionar setor...',
     regCae:'Código CAE', regCaePh:'Ex: CAE 41 – Construção',
     regAlvara:'Alvará', regAlvaraPh:'Nº do Alvará de Licenciamento',
-    regCertidao:'Certidão Permanente', regCertidaoPh:'Código de acesso à Certidão Permanente',
-    valAlvara:'Introduza o número do Alvará', valCertidao:'Introduza o código da Certidão Permanente',
+    valAlvara:'Introduza o número do Alvará',
     regAddress:'Morada', regAddressPh:'Ex: Av. da Liberdade 200, Lisboa',
     regZone:'Localidade / Zona',
     regEmail:'Email de Contacto', regEmailPh:'empresa@email.pt',
@@ -3798,8 +3797,7 @@ const translations = {
     regSectorLabel:'Activity Sector', regSectorPh:'Select sector...',
     regCae:'CAE Code', regCaePh:'Ex: CAE 41 – Construction',
     regAlvara:'Business Licence (Alvará)', regAlvaraPh:'Licence number',
-    regCertidao:'Permanent Certificate', regCertidaoPh:'Access code for Certidão Permanente',
-    valAlvara:'Please enter the business licence number', valCertidao:'Please enter the Permanent Certificate code',
+    valAlvara:'Please enter the business licence number',
     regAddress:'Address', regAddressPh:'Ex: Main Street 200, Lisbon',
     regZone:'Locality / Zone',
     regEmail:'Contact Email', regEmailPh:'company@email.com',
@@ -4066,8 +4064,7 @@ const translations = {
     regSectorLabel:"Secteur d'Activité", regSectorPh:'Sélectionner un secteur...',
     regCae:'Code CAE', regCaePh:'Ex : CAE 41 – Construction',
     regAlvara:'Licence Commerciale (Alvará)', regAlvaraPh:'Numéro de licence',
-    regCertidao:'Certificat Permanent', regCertidaoPh:"Code d'accès au Certificat Permanent",
-    valAlvara:'Veuillez saisir le numéro de licence commerciale', valCertidao:'Veuillez saisir le code du Certificat Permanent',
+    valAlvara:'Veuillez saisir le numéro de licence commerciale',
     regAddress:'Adresse', regAddressPh:'Ex : Av. da Liberdade 200, Lisbonne',
     regZone:'Localité / Zone',
     regEmail:'E-mail de Contact', regEmailPh:'entreprise@email.fr',
@@ -4330,8 +4327,7 @@ const translations = {
     regSectorLabel:'Sector de Actividad', regSectorPh:'Seleccionar sector...',
     regCae:'Código CAE', regCaePh:'Ej: CAE 41 – Construcción',
     regAlvara:'Licencia', regAlvaraPh:'Nº de Licencia',
-    regCertidao:'Certificado Permanente', regCertidaoPh:'Código de acceso',
-    valAlvara:'Introduzca el número de Licencia', valCertidao:'Introduzca el código del Certificado',
+    valAlvara:'Introduzca el número de Licencia',
     regAddress:'Dirección', regAddressPh:'Ej: Calle Mayor 10, Madrid',
     regZone:'Localidad / Zona',
     regEmail:'Email de Contacto', regEmailPh:'empresa@email.es',
@@ -4594,8 +4590,7 @@ const translations = {
     regSectorLabel:'Tätigkeitsbereich', regSectorPh:'Bereich auswählen...',
     regCae:'CAE-Code', regCaePh:'z. B. CAE 41 – Hochbau',
     regAlvara:'Gewerbeschein', regAlvaraPh:'Gewerberegisternummer',
-    regCertidao:'Handelsregisterauszug', regCertidaoPh:'Zugangscode',
-    valAlvara:'Bitte Gewerberegisternummer eingeben.', valCertidao:'Bitte Handelsregistercode eingeben.',
+    valAlvara:'Bitte Gewerberegisternummer eingeben.',
     regAddress:'Adresse', regAddressPh:'z. B. Hauptstraße 200, Lissabon',
     regZone:'Stadt/Region',
     regEmail:'Kontakt-E-Mail', regEmailPh:'firma@email.com',
@@ -8254,9 +8249,9 @@ setTimeout(() => {
   }
 }, 100);
 
-// Auto-detect user location silently (centres map, no toast)
-// Try immediately, with short delay to ensure map is ready
-setTimeout(() => detectUserLocation(true), 50);
+// Auto-location is fired once from DOMContentLoaded (see top of file).
+// The duplicate naked setTimeout that was here has been removed to prevent
+// two concurrent getCurrentPosition calls racing before the guard flag is set.
 
 // Hide nav on scroll
 let lastScrollTop = 0;
