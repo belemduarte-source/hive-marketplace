@@ -1802,7 +1802,8 @@
         background: var(--bg);
         border: 1.5px solid var(--border);
         border-radius: 20px;
-        padding: 7px 11px;
+        padding: 10px 13px;
+        min-height: 44px;
         font-size: 12px;
         font-weight: 600;
         color: var(--text);
@@ -1906,7 +1907,8 @@
         background: var(--bg);
         border: 1.5px solid var(--border);
         border-radius: 20px;
-        padding: 8px 14px;
+        padding: 10px 16px;
+        min-height: 44px;
         font-size: 13px;
         font-weight: 600;
         color: var(--text);
@@ -4737,7 +4739,7 @@ const translations = {
 };
 
 // ── LANGUAGE STATE ─────────────────────────────────────────────────────────────
-let currentLang = 'pt';
+let currentLang = (function() { try { return localStorage.getItem('hive_lang') || 'pt'; } catch(_) { return 'pt'; } })();
 
 // shorthand helper
 function t(key) {
@@ -5444,6 +5446,7 @@ document.addEventListener('click', e => {
 function setLanguage(lang) {
   currentLang = lang;
   document.documentElement.lang = lang;
+  try { localStorage.setItem('hive_lang', lang); } catch(_) {}
 
   // Update button
   const flags = {pt:'🇵🇹', en:'🇬🇧', fr:'🇫🇷', es:'🇪🇸', de:'🇩🇪'};
@@ -5735,6 +5738,7 @@ async function loadCompaniesFromDB() {
     }
   } catch(e) {
     console.warn('Erro ao carregar da API — a usar dados demo:', e.message);
+    showToast('Sem ligação ao servidor — a mostrar dados de demonstração');
     // Graceful fallback: load DEMO_COMPANIES so map is never empty
     DEMO_COMPANIES.forEach(d => {
       companies.push({
@@ -7664,7 +7668,7 @@ function openDetail(id) {
   document.getElementById('dpReviewsSection').style.display = c.isNew ? 'none' : 'block';
   document.getElementById('detailPanel').classList.add('open');
   updateAdminUI();
-  map.flyTo([c.lat, c.lng], 15, { animate: true, duration: 1.2 });
+  if (map) map.flyTo([c.lat, c.lng], 15, { animate: true, duration: 1.2 });
 
   setTimeout(() => markerMap[c.id]?.openPopup(), 1300);
 }
@@ -7673,7 +7677,7 @@ function closeDetail() {
   document.getElementById('detailPanel').classList.remove('open');
   selectedId = null;
   // Return to the location user was viewing
-  map.flyTo(currentMapCenter, 12, { animate: true, duration: 1 });
+  if (map) map.flyTo(currentMapCenter, 12, { animate: true, duration: 1 });
 }
 
 // ── REQUEST QUOTE / CALL / SHARE ─────────────────────────────────────────────
@@ -8524,16 +8528,8 @@ openRegister = function() {
 // ── IMPROVEMENT 4: Registration success screen ──────────────────────────────
 let _lastRegisteredCompany = null;
 
-function closeRegSuccess(viewOnMap) {
+function closeRegSuccess() {
   document.getElementById('regSuccessOverlay').classList.remove('open');
-  if (viewOnMap && _lastRegisteredCompany) {
-    showTab('search');
-    setSearchView('map');
-    setTimeout(() => {
-      map.flyTo([_lastRegisteredCompany.lat, _lastRegisteredCompany.lng], 14, { animate: true, duration: 1.5 });
-      setTimeout(() => markerMap[_lastRegisteredCompany.id]?.openPopup(), 1600);
-    }, 300);
-  }
   _lastRegisteredCompany = null;
 }
 
