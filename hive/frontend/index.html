@@ -3061,7 +3061,7 @@ window.onerror = function(msg, src, line, col, err) {
       </div>
       <div class="form-grid2">
         <div class="form-row">
-          <label><span data-i18n="regAlvara">Alvará</span> <span class="req">*</span></label>
+          <label><span data-i18n="regAlvara">Alvará</span></label>
           <input type="text" id="regAlvara" data-i18n-ph="regAlvaraPh"/>
         </div>
         <div class="form-row">
@@ -7484,7 +7484,6 @@ function submitRegister() {
   if (!country)        { showToast('Selecione um país'); return; }
   if (!city)           { showToast('Selecione uma cidade'); return; }
   if (!postalCode)     { showToast('Introduza o código postal'); return; }
-  if (!alvara)         { showToast(t('valAlvara'));  return; }
   if (!certidao)       { showToast(t('valCertidao')); return; }
 
   const tags   = tagsRaw.split(',').map(s => s.trim()).filter(Boolean);
@@ -8498,7 +8497,6 @@ function regNextStep(fromStep) {
     const certidao = document.getElementById('regCertidao')?.value.trim();
     if (!name) { showToast(t('valName')); return; }
     if (_regSelectedSectors.length === 0) { showToast(t('valSector')); return; }
-    if (!alvara) { showToast(t('valAlvara')); return; }
     if (!certidao) { showToast(t('valCertidao')); return; }
   } else if (fromStep === 2) {
     const country = document.getElementById('regCountry')?.value;
