@@ -2891,8 +2891,8 @@ window.onerror = function(msg, src, line, col, err) {
     <button class="dp-close" id="dpEditBtn" style="display:none" onclick="openEditCompany()" title="Editar">✎</button>
     <button class="dp-close" onclick="closeDetail()">✕</button>
   </div>
-  <!-- REQUEST QUOTE BUTTON -->
-  <div class="dp-quote-bar">
+  <!-- REQUEST QUOTE BUTTON — visible only when logged in -->
+  <div class="dp-quote-bar" id="dpQuoteBar">
     <button class="btn-request-quote" id="btnRequestQuote" onclick="requestQuote()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
       <span data-i18n="btnRequestQuote">Pedir Orçamento</span>
@@ -2904,63 +2904,79 @@ window.onerror = function(msg, src, line, col, err) {
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
     </button>
   </div>
+
+  <!-- LOGIN GATE — shown to guests instead of contact details -->
+  <div id="dpLoginGate" style="display:none;padding:18px 20px">
+    <div style="background:linear-gradient(135deg,rgba(249,115,22,.08),rgba(249,115,22,.04));border:1.5px solid rgba(249,115,22,.25);border-radius:14px;padding:22px 20px;text-align:center">
+      <div style="font-size:28px;margin-bottom:10px">🔒</div>
+      <div style="font-weight:800;font-size:15px;color:var(--text);margin-bottom:6px">Inicie sessão para ver os contactos</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5">Crie uma conta gratuita para aceder aos contactos, morada, avaliações e pedir orçamentos.</div>
+      <button onclick="openLogin()" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;width:100%">Entrar / Criar Conta Grátis</button>
+    </div>
+  </div>
+
   <div class="dp-body">
-    <div>
-      <div class="dp-section-title"><i data-lucide="map-pin"></i><span data-i18n="detailLocation">Localização</span></div>
-      <div class="dp-address" id="dpAddress"></div>
-    </div>
-    <div>
-      <div class="dp-section-title"><i data-lucide="bar-chart-2"></i><span data-i18n="detailRating">Avaliação Multidimensional</span></div>
-      <div class="rating-grid" id="dpRatings"></div>
-    </div>
-    <div>
-      <div class="dp-section-title"><i data-lucide="phone-call"></i><span data-i18n="detailContact">Canais de Contacto</span></div>
-      <div class="channel-grid">
-        <div class="channel-btn wa" onclick="showToast(t('toastWhatsapp'))">
-          <div class="ch-icon"><i data-lucide="message-circle"></i></div>
-          <div class="ch-info">
-            <div class="ch-name" data-i18n="waName">WhatsApp Direct</div>
-            <div class="ch-desc" data-i18n="waDesc">Mensagem pré-preenchida com contexto</div>
-          </div>
-          <i data-lucide="arrow-up-right" class="ch-arrow"></i>
-        </div>
-        <div class="channel-btn chat" onclick="openWhatsAppContact()">
-          <div class="ch-icon"><i data-lucide="message-square"></i></div>
-          <div class="ch-info">
-            <div class="ch-name" data-i18n="chatChannelName">WhatsApp / Mensagem</div>
-            <div class="ch-desc" data-i18n="chatChannelDesc">Contacto directo via WhatsApp ou SMS</div>
-          </div>
-          <i data-lucide="arrow-up-right" class="ch-arrow"></i>
-        </div>
-        <div class="channel-btn email" onclick="openEmail()">
-          <div class="ch-icon"><i data-lucide="mail"></i></div>
-          <div class="ch-info">
-            <div class="ch-name" data-i18n="emailChannelName">E-mail Gateway</div>
-            <div class="ch-desc" data-i18n="emailChannelDesc">Pedido formal direto ao fornecedor</div>
-          </div>
-          <i data-lucide="arrow-up-right" class="ch-arrow"></i>
-        </div>
-      </div>
-    </div>
+    <!-- Always visible: specialties -->
     <div>
       <div class="dp-section-title"><i data-lucide="tag"></i><span data-i18n="detailSpecialties">Especialidades</span></div>
       <div class="card-tags" id="dpTags"></div>
     </div>
-    <div id="dpReviewsSection">
-      <div class="dp-section-title"><i data-lucide="message-circle"></i><span data-i18n="detailReviews">Avaliações Verificadas</span></div>
-      <div id="dpReviews">
-        <div class="review-item">
-          <div class="review-top"><span class="review-name" data-i18n="review1Author">TechCorp Lda.</span><span class="review-date">Jan 2025</span></div>
-          <div class="stars">★★★★★</div>
-          <div class="review-text" data-i18n="review1">"Excelente parceiro, entregou dentro do prazo e com qualidade acima do esperado."</div>
-        </div>
-        <div class="review-item">
-          <div class="review-top"><span class="review-name" data-i18n="review2Author">Ibérica Solutions SA</span><span class="review-date">Nov 2024</span></div>
-          <div class="stars">★★★★☆</div>
-          <div class="review-text" data-i18n="review2">"Boa comunicação e preços competitivos. Recomendado para projetos de médio prazo."</div>
+
+    <!-- Gated sections — hidden from guests -->
+    <div id="dpGatedSections">
+      <div>
+        <div class="dp-section-title"><i data-lucide="map-pin"></i><span data-i18n="detailLocation">Localização</span></div>
+        <div class="dp-address" id="dpAddress"></div>
+      </div>
+      <div>
+        <div class="dp-section-title"><i data-lucide="bar-chart-2"></i><span data-i18n="detailRating">Avaliação Multidimensional</span></div>
+        <div class="rating-grid" id="dpRatings"></div>
+      </div>
+      <div>
+        <div class="dp-section-title"><i data-lucide="phone-call"></i><span data-i18n="detailContact">Canais de Contacto</span></div>
+        <div class="channel-grid">
+          <div class="channel-btn wa" onclick="showToast(t('toastWhatsapp'))">
+            <div class="ch-icon"><i data-lucide="message-circle"></i></div>
+            <div class="ch-info">
+              <div class="ch-name" data-i18n="waName">WhatsApp Direct</div>
+              <div class="ch-desc" data-i18n="waDesc">Mensagem pré-preenchida com contexto</div>
+            </div>
+            <i data-lucide="arrow-up-right" class="ch-arrow"></i>
+          </div>
+          <div class="channel-btn chat" onclick="openWhatsAppContact()">
+            <div class="ch-icon"><i data-lucide="message-square"></i></div>
+            <div class="ch-info">
+              <div class="ch-name" data-i18n="chatChannelName">WhatsApp / Mensagem</div>
+              <div class="ch-desc" data-i18n="chatChannelDesc">Contacto directo via WhatsApp ou SMS</div>
+            </div>
+            <i data-lucide="arrow-up-right" class="ch-arrow"></i>
+          </div>
+          <div class="channel-btn email" onclick="openEmail()">
+            <div class="ch-icon"><i data-lucide="mail"></i></div>
+            <div class="ch-info">
+              <div class="ch-name" data-i18n="emailChannelName">E-mail Gateway</div>
+              <div class="ch-desc" data-i18n="emailChannelDesc">Pedido formal direto ao fornecedor</div>
+            </div>
+            <i data-lucide="arrow-up-right" class="ch-arrow"></i>
+          </div>
         </div>
       </div>
-    </div>
+      <div id="dpReviewsSection">
+        <div class="dp-section-title"><i data-lucide="message-circle"></i><span data-i18n="detailReviews">Avaliações Verificadas</span></div>
+        <div id="dpReviews">
+          <div class="review-item">
+            <div class="review-top"><span class="review-name" data-i18n="review1Author">TechCorp Lda.</span><span class="review-date">Jan 2025</span></div>
+            <div class="stars">★★★★★</div>
+            <div class="review-text" data-i18n="review1">"Excelente parceiro, entregou dentro do prazo e com qualidade acima do esperado."</div>
+          </div>
+          <div class="review-item">
+            <div class="review-top"><span class="review-name" data-i18n="review2Author">Ibérica Solutions SA</span><span class="review-date">Nov 2024</span></div>
+            <div class="stars">★★★★☆</div>
+            <div class="review-text" data-i18n="review2">"Boa comunicação e preços competitivos. Recomendado para projetos de médio prazo."</div>
+          </div>
+        </div>
+      </div>
+    </div><!-- /dpGatedSections -->
   </div>
 </div>
 
@@ -7680,6 +7696,16 @@ function openDetail(id) {
     `<span class="tag">${tag}</span>`).join('');
   document.getElementById('chatName').textContent = c.name;
   document.getElementById('dpReviewsSection').style.display = c.isNew ? 'none' : 'block';
+
+  // Auth gate: show contact details only to logged-in users
+  const loggedIn = !!JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  const quoteBar = document.getElementById('dpQuoteBar');
+  const loginGate = document.getElementById('dpLoginGate');
+  const gatedSections = document.getElementById('dpGatedSections');
+  if (quoteBar) quoteBar.style.display = loggedIn ? '' : 'none';
+  if (loginGate) loginGate.style.display = loggedIn ? 'none' : '';
+  if (gatedSections) gatedSections.style.display = loggedIn ? '' : 'none';
+
   document.getElementById('detailPanel').classList.add('open');
   updateAdminUI();
   if (map) map.flyTo([c.lat, c.lng], 15, { animate: true, duration: 1.2 });
@@ -7965,6 +7991,7 @@ async function doLogin() {
     closeLogin();
     updateNavAuth();
     showToast('Bem-vindo, ' + user.name + '!');
+    if (selectedId) openDetail(selectedId);
     document.getElementById('loginEmail').value = '';
     document.getElementById('loginPass').value = '';
   } catch(e) {
@@ -7991,6 +8018,7 @@ async function doRegister() {
       setTimeout(() => openRegister(), 800);
     } else {
       showToast('Bem-vindo à Hive, ' + name + '!');
+      if (selectedId) openDetail(selectedId);
     }
     document.getElementById('regAuthName').value = '';
     document.getElementById('regAuthEmail').value = '';
