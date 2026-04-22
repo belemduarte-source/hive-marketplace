@@ -2,7 +2,9 @@
 <html lang="pt">
 <head>
   <meta charset="UTF-8"/>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
+  <meta name="format-detection" content="telephone=no"/>
   <title>Hive – B2B Marketplace</title>
 
   <!-- PWA -->
@@ -19,10 +21,19 @@
   <!-- Hive API client (replaces Supabase) -->
   <script src="api.js"></script>
   <style>
-    html{overflow-x:hidden}
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    /* Cross-device baseline */
+    html{
+      overflow-x:hidden;
+      -webkit-text-size-adjust:100%;
+      -moz-text-size-adjust:100%;
+      text-size-adjust:100%;
+      /* iOS safe-area padding so content clears the notch / home indicator */
+      padding-top:env(safe-area-inset-top);
+      padding-bottom:env(safe-area-inset-bottom);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
     /* Eliminate 300ms tap delay on all interactive elements */
-    a,button,input,select,textarea,label,[role="button"],[tabindex]{touch-action:manipulation}
+    a,button,input,select,textarea,label,[role="button"],[tabindex]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
     /* GPU-composite layers for common animated elements */
     .overlay,.modal,#detailPanel,#mspSheet,#mspBackdrop,#filterBackdrop,
     .reg-success-overlay,.profile-panel-overlay{will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden}
