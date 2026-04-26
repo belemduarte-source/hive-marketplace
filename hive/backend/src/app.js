@@ -27,6 +27,7 @@ const path = require('path');
 
 const companiesRouter = require('./routes/companies');
 const authRouter = require('./routes/auth');
+const adminRouter = require('./routes/admin');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -148,6 +149,7 @@ app.use(async (req, res, next) => {
 app.post('/api/companies', registerLimiter);  // registration spam guard (POST only)
 app.use('/api/companies', companiesRouter);
 app.use('/api/auth', authRouter);
+app.use('/api/admin', adminRouter);
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ ok: true, ts: new Date().toISOString() }));

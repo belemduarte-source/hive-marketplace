@@ -2,30 +2,61 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const { requireAuth, requireAdmin } = require('../middleware/auth');
-const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail } = require('../email');
+const reviewsRouter = require('./reviews');
+const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail, sendContactEmail } = require('../email');
 
 // GET /api/companies — public, returns all approved companies
-// Only select columns the frontend actually renders to keep payloads small
-// (description is heavy and only needed in the detail view)
+// Supports: ?country=pt  ?q=search_text  ?sector=Construção
 const LIST_COLS = `
   id, name, sectors, sector, cae, address, postal_code, city, country, zone,
   email, phone, website, tags, description,
-  lat, lng, rating, reviews, top_rated, verified, is_new,
+  lat, lng, rating, reviews, top_rated, verified, is_new, featured,
   emoji, color, pin_type, status, created_at
 `.trim();
 
 router.get('/', async (req, res, next) => {
   try {
-    const { country } = req.query;
+    const { country, q, sector } = req.query;
     const params = [];
-    let where = `WHERE status = 'approved'`;
+    const conditions = [`status = 'approved'`];
+
     if (country) {
       params.push(country);
-      where += ` AND country = $${params.length}`;
+      conditions.push(`country = $${params.length}`);
     }
+    if (sector) {
+      params.push(sector);
+      conditions.push(`($${params.length} = ANY(sectors) OR sector = $${params.length})`);
+    }
+    if (q && q.trim()) {
+      params.push(q.trim());
+      conditions.push(
+        `to_tsvector('portuguese', name || ' ' || COALESCE(description,'') || ' ' || array_to_string(tags,' ') || ' ' || COALESCE(cae,'') || ' ' || COALESCE(city,''))
+         @@ plainto_tsquery('portuguese', $${params.length})`
+      );
+    }
+
+    const where = 'WHERE ' + conditions.join(' AND ');
     const { rows } = await pool.query(
-      `SELECT ${LIST_COLS} FROM companies ${where} ORDER BY created_at DESC`,
+      `SELECT ${LIST_COLS} FROM companies ${where}
+       ORDER BY featured DESC NULLS LAST, created_at DESC`,
       params
+    );
+    res.json(rows);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// GET /api/companies/status?email= — check registration status (public)
+router.get('/status', async (req, res, next) => {
+  try {
+    const { email } = req.query;
+    if (!email) return res.status(400).json({ error: 'email é obrigatório' });
+
+    const { rows } = await pool.query(
+      `SELECT id, name, status, created_at FROM companies WHERE email = $1 ORDER BY created_at DESC LIMIT 5`,
+      [email.toLowerCase().trim()]
     );
     res.json(rows);
   } catch (e) {
@@ -225,6 +256,85 @@ router.put('/:id', requireAuth, async (req, res, next) => {
   }
 });
 
+// POST /api/companies/:id/contact — relay a message to the company (auth required)
+router.post('/:id/contact', requireAuth, async (req, res, next) => {
+  try {
+    const { message } = req.body;
+    if (!message || message.trim().length < 10) {
+      return res.status(400).json({ error: 'Mensagem demasiado curta (mínimo 10 caracteres)' });
+    }
+
+    const { rows } = await pool.query(
+      `SELECT id, name, email FROM companies WHERE id = $1 AND status = 'approved'`,
+      [req.params.id]
+    );
+    if (!rows[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
+    if (!rows[0].email) return res.status(422).json({ error: 'Esta empresa não tem email configurado' });
+
+    const sender = { name: req.user.name, email: req.user.email };
+    sendContactEmail(rows[0], sender, message.trim()).catch(err =>
+      console.error('[email] Contact relay failed:', err.message)
+    );
+
+    // Track as contact event
+    pool.query(
+      `INSERT INTO events (company_id, event_type) VALUES ($1, 'contact')`,
+      [req.params.id]
+    ).catch(() => {});
+
+    res.json({ ok: true });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// POST /api/companies/:id/event — track analytics event (fire-and-forget, no auth required)
+router.post('/:id/event', async (req, res, next) => {
+  try {
+    const { type } = req.body;
+    const allowed = ['view', 'contact', 'website_click', 'whatsapp'];
+    if (!allowed.includes(type)) return res.status(400).json({ error: 'type inválido' });
+
+    await pool.query(
+      `INSERT INTO events (company_id, event_type) VALUES ($1, $2)`,
+      [req.params.id, type]
+    );
+    res.json({ ok: true });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// GET /api/companies/:id/analytics — owner or admin only
+router.get('/:id/analytics', requireAuth, async (req, res, next) => {
+  try {
+    const { rows: co } = await pool.query('SELECT * FROM companies WHERE id = $1', [req.params.id]);
+    if (!co[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
+    if (!req.user.is_admin && co[0].created_by !== req.user.id) {
+      return res.status(403).json({ error: 'Sem permissão' });
+    }
+
+    const { rows } = await pool.query(
+      `SELECT
+         event_type,
+         COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '7 days')::int  AS last_7d,
+         COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '30 days')::int AS last_30d,
+         COUNT(*)::int AS total
+       FROM events
+       WHERE company_id = $1
+       GROUP BY event_type`,
+      [req.params.id]
+    );
+
+    // Pivot into a friendly object
+    const stats = { view: {}, contact: {}, website_click: {}, whatsapp: {} };
+    rows.forEach(r => { stats[r.event_type] = { last_7d: r.last_7d, last_30d: r.last_30d, total: r.total }; });
+    res.json(stats);
+  } catch (e) {
+    next(e);
+  }
+});
+
 // DELETE /api/companies/:id — admin only (soft delete)
 router.delete('/:id', requireAdmin, async (req, res, next) => {
   try {
@@ -237,6 +347,9 @@ router.delete('/:id', requireAdmin, async (req, res, next) => {
     next(e);
   }
 });
+
+// Mount reviews sub-router
+router.use('/:id/reviews', reviewsRouter);
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 function htmlPage(title, body, color = '#f97316') {

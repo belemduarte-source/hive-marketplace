@@ -16,7 +16,7 @@ async function apiFetch(path, options = {}) {
 }
 
 const api = {
-  // Companies
+  // ── Companies ──────────────────────────────────────────────────────────────
   getCompanies(params) {
     const qs = params ? '?' + new URLSearchParams(params).toString() : '';
     return apiFetch('/companies' + qs);
@@ -34,7 +34,64 @@ const api = {
     return apiFetch('/companies/' + id, { method: 'DELETE' });
   },
 
-  // Auth
+  // GET /api/companies/status?email= — check registration status
+  getCompanyStatus(email) {
+    return apiFetch('/companies/status?email=' + encodeURIComponent(email));
+  },
+
+  // ── Reviews ────────────────────────────────────────────────────────────────
+  getReviews(companyId) {
+    return apiFetch('/companies/' + companyId + '/reviews');
+  },
+  submitReview(companyId, score, comment) {
+    return apiFetch('/companies/' + companyId + '/reviews', {
+      method: 'POST',
+      body: { score, comment },
+    });
+  },
+
+  // ── Contact form relay ─────────────────────────────────────────────────────
+  contactCompany(companyId, message) {
+    return apiFetch('/companies/' + companyId + '/contact', {
+      method: 'POST',
+      body: { message },
+    });
+  },
+
+  // ── Analytics ──────────────────────────────────────────────────────────────
+  trackEvent(companyId, type) {
+    // Fire-and-forget — never throws
+    apiFetch('/companies/' + companyId + '/event', {
+      method: 'POST',
+      body: { type },
+    }).catch(() => {});
+  },
+  getAnalytics(companyId) {
+    return apiFetch('/companies/' + companyId + '/analytics');
+  },
+
+  // ── Admin ──────────────────────────────────────────────────────────────────
+  adminStats() {
+    return apiFetch('/admin/stats');
+  },
+  adminCompanies(params) {
+    const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+    return apiFetch('/admin/companies' + qs);
+  },
+  adminSetStatus(id, status) {
+    return apiFetch('/admin/companies/' + id + '/status', { method: 'PUT', body: { status } });
+  },
+  adminSetFeatured(id, featured) {
+    return apiFetch('/admin/companies/' + id + '/featured', { method: 'PUT', body: { featured } });
+  },
+  adminSetVerified(id, verified) {
+    return apiFetch('/admin/companies/' + id + '/verified', { method: 'PUT', body: { verified } });
+  },
+  adminDeleteReview(id) {
+    return apiFetch('/admin/reviews/' + id, { method: 'DELETE' });
+  },
+
+  // ── Auth ───────────────────────────────────────────────────────────────────
   login(email, password) {
     return apiFetch('/auth/login', { method: 'POST', body: { email, password } });
   },

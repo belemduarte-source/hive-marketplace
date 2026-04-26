@@ -2050,6 +2050,94 @@
       }
     }
   </style>
+
+  <!-- ── NEW FEATURE STYLES ── -->
+  <style>
+    /* ── Contact Modal ── */
+    #contactModal .modal{max-width:480px}
+    .contact-form-group{margin-bottom:14px}
+    .contact-form-group label{display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
+    .contact-form-group textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;color:var(--text);background:var(--bg);resize:vertical;min-height:120px;transition:border-color .2s}
+    .contact-form-group textarea:focus{outline:none;border-color:var(--primary)}
+
+    /* ── Reviews ── */
+    .reviews-list{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
+    .review-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px}
+    .review-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+    .review-card-author{font-weight:700;font-size:13px;color:var(--text)}
+    .review-card-date{font-size:11px;color:var(--muted)}
+    .review-card-stars{color:#f59e0b;font-size:14px;margin-bottom:4px}
+    .review-card-comment{font-size:13px;color:var(--text-secondary);line-height:1.5}
+    .review-form{background:var(--orange-light);border:1.5px solid var(--orange-border);border-radius:12px;padding:16px;margin-top:8px}
+    .review-form-title{font-weight:800;font-size:13px;color:var(--text);margin-bottom:12px}
+    .star-picker{display:flex;gap:4px;margin-bottom:10px}
+    .star-picker span{font-size:24px;cursor:pointer;transition:transform .15s;color:#d1d5db}
+    .star-picker span.active{color:#f59e0b}
+    .star-picker span:hover{transform:scale(1.2)}
+    .review-form textarea{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;font-family:inherit;resize:none;height:80px;color:var(--text);background:#fff}
+    .review-form textarea:focus{outline:none;border-color:var(--primary)}
+    .review-submit-btn{margin-top:10px;background:var(--primary);color:#fff;border:none;border-radius:8px;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;width:100%}
+
+    /* ── Featured pin ring ── */
+    .featured-pin-ring{border:3px solid #f59e0b !important;box-shadow:0 0 0 4px rgba(245,158,11,.25),0 4px 16px rgba(0,0,0,.2) !important}
+    .featured-badge{position:absolute;top:-8px;right:-8px;background:#f59e0b;color:#fff;font-size:9px;font-weight:900;border-radius:8px;padding:2px 5px;letter-spacing:.03em;line-height:1.3}
+
+    /* ── Admin Panel ── */
+    #adminPanel .modal{max-width:900px;width:95vw;max-height:88vh;display:flex;flex-direction:column;padding:0;overflow:hidden}
+    .admin-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+    .admin-header h2{font-size:18px;font-weight:800;margin:0;color:var(--text)}
+    .admin-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);flex-shrink:0;padding:0 24px}
+    .admin-tab{padding:10px 16px;font-size:13px;font-weight:700;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;transition:all .2s;white-space:nowrap}
+    .admin-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
+    .admin-body{flex:1;overflow-y:auto;padding:20px 24px}
+    .admin-stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+    .admin-stat-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;text-align:center}
+    .admin-stat-value{font-size:28px;font-weight:900;color:var(--primary);line-height:1}
+    .admin-stat-label{font-size:11px;color:var(--muted);margin-top:4px;font-weight:600;text-transform:uppercase}
+    .admin-company-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-light)}
+    .admin-company-row:last-child{border-bottom:none}
+    .admin-company-name{font-weight:700;font-size:13px;color:var(--text);flex:1;min-width:0}
+    .admin-company-sub{font-size:11px;color:var(--muted);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .admin-status-badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:8px;white-space:nowrap;flex-shrink:0}
+    .admin-status-badge.approved{background:var(--green-light);color:#065f46}
+    .admin-status-badge.pending{background:#fef3c7;color:#92400e}
+    .admin-status-badge.rejected{background:var(--red-light);color:#991b1b}
+    .admin-action-btn{font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap;flex-shrink:0}
+    .admin-action-btn:hover{background:var(--bg);border-color:var(--primary);color:var(--primary)}
+    .admin-action-btn.danger:hover{border-color:var(--red);color:var(--red)}
+    .admin-search-bar{display:flex;gap:8px;margin-bottom:16px}
+    .admin-search-bar input{flex:1;border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;color:var(--text);background:var(--bg)}
+    .admin-search-bar select{border:1.5px solid var(--border);border-radius:8px;padding:9px 12px;font-size:13px;font-family:inherit;color:var(--text);background:var(--bg);cursor:pointer}
+    @media(max-width:600px){.admin-stat-grid{grid-template-columns:repeat(2,1fr)}}
+
+    /* ── Status Check Modal ── */
+    #statusModal .modal{max-width:440px}
+    .status-result{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+    .status-card{border-radius:10px;padding:14px 16px;border:1.5px solid var(--border)}
+    .status-card.approved{border-color:var(--green);background:var(--green-light)}
+    .status-card.pending{border-color:#f59e0b;background:#fef3c7}
+    .status-card.rejected{border-color:var(--red);background:var(--red-light)}
+
+    /* ── Analytics Card (in profile panel) ── */
+    .analytics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-top:10px}
+    .analytics-stat{background:var(--bg);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
+    .analytics-stat-val{font-size:22px;font-weight:900;color:var(--primary)}
+    .analytics-stat-label{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;margin-top:2px}
+
+    /* ── Sector Landing Page (inside home tab) ── */
+    .sector-landing{display:none;padding:32px 24px;max-width:900px;margin:0 auto;width:100%}
+    .sector-landing.active{display:block}
+    .sector-landing-header{display:flex;align-items:center;gap:12px;margin-bottom:24px}
+    .sector-landing-back{background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;color:var(--text-secondary);cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:6px}
+    .sector-landing-title{font-size:24px;font-weight:900;color:var(--text)}
+    .sector-company-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+    .sector-company-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;transition:all .2s}
+    .sector-company-card:hover{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-2px)}
+
+    /* ── dp contact button ── */
+    .btn-dp-contact{flex:1;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:11px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .2s}
+    .btn-dp-contact:hover{background:var(--primary-dark)}
+  </style>
 </head>
 <body>
 
@@ -2273,6 +2361,10 @@ window.onerror = function(msg, src, line, col, err) {
         <span data-i18n="navHelp">Ajuda</span>
       </button>
     </div>
+    <button class="btn-nav" onclick="openStatusModal()" style="font-size:12px;padding:7px 12px;border-radius:8px;width:100%">
+      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      Estado do Registo
+    </button>
   </div>
 </nav>
 
@@ -2305,6 +2397,10 @@ window.onerror = function(msg, src, line, col, err) {
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       <span data-i18n="navHelp">Ajuda</span>
     </button>
+    <button class="mobile-nav-link" onclick="openStatusModal();closeMobileNavPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      <span>Estado do Registo</span>
+    </button>
     <div class="mobile-nav-divider"></div>
     <button class="mobile-nav-link" onclick="setLanguage('pt');closeMobileNavPanel()">🇵🇹 <span>Português</span></button>
     <button class="mobile-nav-link" onclick="setLanguage('en');closeMobileNavPanel()">🇬🇧 <span>English</span></button>
@@ -2324,6 +2420,9 @@ window.onerror = function(msg, src, line, col, err) {
     <div class="reg-success-actions">
       <button class="btn-success-close" onclick="closeRegSuccess(false)" data-i18n="successClose">Continuar a Navegar</button>
     </div>
+    <div style="text-align:center;margin-top:12px">
+      <button onclick="closeRegSuccess();openStatusModal()" style="background:none;border:none;color:var(--primary);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:underline">Verificar estado do registo →</button>
+    </div>
   </div>
 </div>
 
@@ -2338,6 +2437,64 @@ window.onerror = function(msg, src, line, col, err) {
       <button class="profile-panel-close" onclick="document.getElementById('profilePanelOverlay').classList.remove('open')">✕</button>
     </div>
     <div class="profile-panel-body" id="profilePanelBody"></div>
+  </div>
+</div>
+
+<!-- CONTACT FORM MODAL -->
+<div class="overlay" id="contactModal" onclick="if(event.target===this)closeContactModal()">
+  <div class="modal" style="width:480px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
+      <div>
+        <div style="font-size:17px;font-weight:800;color:var(--text)">Enviar Mensagem</div>
+        <div style="font-size:12px;color:var(--muted);margin-top:2px" id="contactModalSub">A sua mensagem será entregue directamente à empresa</div>
+      </div>
+      <button onclick="closeContactModal()" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <div class="contact-form-group">
+      <label>Mensagem</label>
+      <textarea id="contactMessage" placeholder="Olá! Gostaria de solicitar informações sobre os vossos serviços..."></textarea>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:16px;font-size:12px;color:var(--muted)">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      O email da empresa nunca é partilhado consigo — a Hive entrega a mensagem de forma segura.
+    </div>
+    <button onclick="submitContactForm()" style="width:100%;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit">
+      Enviar Mensagem
+    </button>
+  </div>
+</div>
+
+<!-- ADMIN DASHBOARD MODAL -->
+<div class="overlay" id="adminPanel" onclick="if(event.target===this)closeAdminPanel()">
+  <div class="modal" style="width:900px;max-width:95vw;max-height:88vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
+    <div class="admin-header">
+      <h2>⚙️ Painel de Administração</h2>
+      <button onclick="closeAdminPanel()" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <div class="admin-tabs">
+      <div class="admin-tab active" onclick="adminSwitchTab('stats')">📊 Estatísticas</div>
+      <div class="admin-tab" onclick="adminSwitchTab('pending')">⏳ Pendentes</div>
+      <div class="admin-tab" onclick="adminSwitchTab('all')">🏢 Todas</div>
+    </div>
+    <div class="admin-body" id="adminBody">
+      <div style="text-align:center;padding:48px;color:var(--muted)">A carregar...</div>
+    </div>
+  </div>
+</div>
+
+<!-- REGISTRATION STATUS MODAL -->
+<div class="overlay" id="statusModal" onclick="if(event.target===this)closeStatusModal()">
+  <div class="modal" style="width:440px">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
+      <div style="font-size:17px;font-weight:800;color:var(--text)">Estado do Registo</div>
+      <button onclick="closeStatusModal()" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <div style="font-size:13px;color:var(--text-secondary);margin-bottom:16px">Introduza o email com que registou a sua empresa para verificar o estado.</div>
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <input type="email" id="statusEmail" placeholder="email@empresa.com" style="flex:1;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:13px;font-family:inherit;color:var(--text);background:var(--bg)" onkeydown="if(event.key==='Enter')checkRegistrationStatus()"/>
+      <button onclick="checkRegistrationStatus()" style="background:var(--primary);color:#fff;border:none;border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;white-space:nowrap">Verificar</button>
+    </div>
+    <div id="statusResult" class="status-result" style="display:none"></div>
   </div>
 </div>
 
@@ -2925,11 +3082,11 @@ window.onerror = function(msg, src, line, col, err) {
     <button class="dp-close" id="dpEditBtn" style="display:none" onclick="openEditCompany()" title="Editar">✎</button>
     <button class="dp-close" onclick="closeDetail()">✕</button>
   </div>
-  <!-- REQUEST QUOTE BUTTON — visible only when logged in -->
+  <!-- ACTION BAR — visible only when logged in -->
   <div class="dp-quote-bar" id="dpQuoteBar">
-    <button class="btn-request-quote" id="btnRequestQuote" onclick="requestQuote()">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
-      <span data-i18n="btnRequestQuote">Pedir Orçamento</span>
+    <button class="btn-dp-contact" id="btnRequestQuote" onclick="openContactModal()">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      <span>Enviar Mensagem</span>
     </button>
     <button class="btn-quote-secondary" onclick="callCompany()" title="Ligar">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -2996,18 +3153,24 @@ window.onerror = function(msg, src, line, col, err) {
         </div>
       </div>
       <div id="dpReviewsSection">
-        <div class="dp-section-title"><i data-lucide="message-circle"></i><span data-i18n="detailReviews">Avaliações Verificadas</span></div>
-        <div id="dpReviews">
-          <div class="review-item">
-            <div class="review-top"><span class="review-name" data-i18n="review1Author">TechCorp Lda.</span><span class="review-date">Jan 2025</span></div>
-            <div class="stars">★★★★★</div>
-            <div class="review-text" data-i18n="review1">"Excelente parceiro, entregou dentro do prazo e com qualidade acima do esperado."</div>
+        <div class="dp-section-title"><i data-lucide="star"></i><span>Avaliações</span></div>
+        <div id="dpReviewsList" class="reviews-list"></div>
+        <div id="dpReviewForm" class="review-form" style="display:none">
+          <div class="review-form-title">✍️ A sua avaliação</div>
+          <div class="star-picker" id="starPicker">
+            <span onclick="setReviewStar(1)">★</span>
+            <span onclick="setReviewStar(2)">★</span>
+            <span onclick="setReviewStar(3)">★</span>
+            <span onclick="setReviewStar(4)">★</span>
+            <span onclick="setReviewStar(5)">★</span>
           </div>
-          <div class="review-item">
-            <div class="review-top"><span class="review-name" data-i18n="review2Author">Ibérica Solutions SA</span><span class="review-date">Nov 2024</span></div>
-            <div class="stars">★★★★☆</div>
-            <div class="review-text" data-i18n="review2">"Boa comunicação e preços competitivos. Recomendado para projetos de médio prazo."</div>
-          </div>
+          <textarea id="reviewComment" placeholder="Partilhe a sua experiência com esta empresa..."></textarea>
+          <button class="review-submit-btn" onclick="submitReview()">Publicar Avaliação</button>
+        </div>
+        <div id="dpReviewFormToggle" style="display:none;margin-top:8px">
+          <button onclick="toggleReviewForm()" style="width:100%;background:var(--bg);border:1.5px dashed var(--border);border-radius:8px;padding:10px;font-size:13px;font-weight:700;color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .2s">
+            + Escrever Avaliação
+          </button>
         </div>
       </div>
     </div><!-- /dpGatedSections -->
@@ -9078,6 +9241,559 @@ if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('sw.js').catch(() => {});
   });
 }
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FEATURE: URL Hash Routing — company deep links + sector landing pages
+// ═══════════════════════════════════════════════════════════════════════════════
+function _parseHash() {
+  const h = location.hash.replace('#', '');
+  if (!h) return null;
+  const [type, value] = h.split('/');
+  return { type, value: decodeURIComponent(value || '') };
+}
+
+function _handleHashRoute() {
+  const route = _parseHash();
+  if (!route) return;
+  if (route.type === 'empresa' && route.value) {
+    const id = parseInt(route.value, 10);
+    const c  = companies.find(x => x.id === id || x.slug === route.value);
+    if (c) { showTab('search'); setTimeout(() => openDetail(c.id), 400); }
+  } else if (route.type === 'setor' && route.value) {
+    openSectorLanding(route.value);
+  }
+}
+
+window.addEventListener('hashchange', _handleHashRoute);
+
+// Update URL hash when opening a company (for sharing + SEO)
+const _origOpenDetail = openDetail;
+openDetail = function(id) {
+  _origOpenDetail(id);
+  const c = companies.find(x => x.id === id);
+  if (c) {
+    const slug = c.id;
+    history.replaceState(null, '', '#empresa/' + slug);
+    // Update page title for SEO/sharing
+    document.title = c.name + ' — Hive B2B Marketplace';
+  }
+};
+const _origCloseDetail = closeDetail;
+closeDetail = function() {
+  _origCloseDetail();
+  history.replaceState(null, '', location.pathname);
+  document.title = 'Hive – B2B Marketplace';
+};
+
+// Sector landing page
+function openSectorLanding(sector) {
+  const sectorCompanies = companies.filter(c =>
+    c.status === 'approved' &&
+    ((c.sectors || []).includes(sector) || c.sector === sector)
+  );
+
+  showTab('search');
+  // Activate the sector filter instead of building a separate page
+  activeSectors.clear();
+  activeSectors.add(sector);
+  applyFilters.now();
+  history.replaceState(null, '', '#setor/' + encodeURIComponent(sector));
+  document.title = sector + ' — Hive B2B Marketplace';
+  showToast('A mostrar ' + sectorCompanies.length + ' empresas em ' + sector);
+}
+
+// Run hash routing after companies load
+const _origLoadCompanies = typeof loadCompaniesFromDB === 'function' ? loadCompaniesFromDB : null;
+if (_origLoadCompanies) {
+  loadCompaniesFromDB = async function() {
+    await _origLoadCompanies();
+    setTimeout(_handleHashRoute, 600);
+  };
+}
+// Also try on DOMContentLoaded in case companies are already loaded
+document.addEventListener('DOMContentLoaded', () => setTimeout(_handleHashRoute, 1200));
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FEATURE: Featured pins — gold ring on map markers
+// ═══════════════════════════════════════════════════════════════════════════════
+// Patch addCompanyMarker to apply featured styling
+const _origAddMarker = typeof addCompanyMarker === 'function' ? addCompanyMarker : null;
+if (_origAddMarker) {
+  addCompanyMarker = function(c) {
+    _origAddMarker(c);
+    if (c.featured && markerMap[c.id]) {
+      const el = markerMap[c.id]._icon;
+      if (el) {
+        el.classList.add('featured-pin-ring');
+        el.style.position = 'relative';
+        const badge = document.createElement('span');
+        badge.className = 'featured-badge';
+        badge.textContent = '⭐';
+        el.appendChild(badge);
+      }
+    }
+  };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FEATURE: Analytics event tracking
+// ═══════════════════════════════════════════════════════════════════════════════
+// Track view when opening detail
+const _origOpenDetailForAnalytics = openDetail;
+openDetail = function(id) {
+  _origOpenDetailForAnalytics(id);
+  if (typeof api !== 'undefined') api.trackEvent(id, 'view');
+};
+
+// Track website click
+const _origOpenWebsite = typeof openWebsite === 'function' ? openWebsite : null;
+document.addEventListener('click', function(e) {
+  const a = e.target.closest('a[href^="http"]');
+  if (a && selectedId) {
+    const c = companies.find(x => x.id === selectedId);
+    if (c && c.website && a.href.includes(c.website.replace(/https?:\/\//, ''))) {
+      api.trackEvent(selectedId, 'website_click');
+    }
+  }
+});
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FEATURE: Reviews — load + submit
+// ═══════════════════════════════════════════════════════════════════════════════
+let _reviewStar = 0;
+
+function setReviewStar(n) {
+  _reviewStar = n;
+  document.querySelectorAll('#starPicker span').forEach((el, i) => {
+    el.classList.toggle('active', i < n);
+  });
+}
+
+function toggleReviewForm() {
+  const form   = document.getElementById('dpReviewForm');
+  const toggle = document.getElementById('dpReviewFormToggle');
+  if (!form) return;
+  const isHidden = form.style.display === 'none';
+  form.style.display    = isHidden ? 'block' : 'none';
+  toggle.style.display  = isHidden ? 'none'  : 'block';
+  if (isHidden) { _reviewStar = 0; setReviewStar(0); document.getElementById('reviewComment').value = ''; }
+}
+
+async function loadReviews(companyId) {
+  const list = document.getElementById('dpReviewsList');
+  const toggle = document.getElementById('dpReviewFormToggle');
+  if (!list) return;
+  list.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px">A carregar avaliações...</div>';
+  try {
+    const reviews = await api.getReviews(companyId);
+    if (reviews.length === 0) {
+      list.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px">Nenhuma avaliação ainda. Seja o primeiro!</div>';
+    } else {
+      list.innerHTML = reviews.map(r => {
+        const stars = '★'.repeat(r.score) + '☆'.repeat(5 - r.score);
+        const date  = new Date(r.created_at).toLocaleDateString('pt-PT', { month: 'short', year: 'numeric' });
+        return `<div class="review-card">
+          <div class="review-card-top">
+            <span class="review-card-author">${escHtml(r.author_name)}</span>
+            <span class="review-card-date">${date}</span>
+          </div>
+          <div class="review-card-stars">${stars}</div>
+          ${r.comment ? `<div class="review-card-comment">${escHtml(r.comment)}</div>` : ''}
+        </div>`;
+      }).join('');
+    }
+    // Show review form for logged-in users
+    const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+    if (user && toggle) toggle.style.display = 'block';
+  } catch(e) {
+    list.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px">Não foi possível carregar as avaliações.</div>';
+  }
+}
+
+async function submitReview() {
+  if (_reviewStar === 0) { showToast('Selecione uma classificação (1-5 estrelas)'); return; }
+  const comment = (document.getElementById('reviewComment')?.value || '').trim();
+  const btn = document.querySelector('.review-submit-btn');
+  if (btn) btn.disabled = true;
+  try {
+    await api.submitReview(selectedId, _reviewStar, comment);
+    showToast('✅ Avaliação publicada!');
+    toggleReviewForm();
+    loadReviews(selectedId);
+    // Refresh company rating in local data
+    try {
+      const updated = await api.getCompany(selectedId);
+      const c = companies.find(x => x.id === selectedId);
+      if (c && updated) { c.rating = updated.rating; c.reviews = updated.reviews; }
+    } catch(e) {}
+  } catch(e) {
+    showToast(e.message || 'Erro ao publicar avaliação');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+// Patch openDetail to load real reviews
+const _openDetailForReviews = openDetail;
+openDetail = function(id) {
+  _openDetailForReviews(id);
+  // Reset review section
+  const list   = document.getElementById('dpReviewsList');
+  const form   = document.getElementById('dpReviewForm');
+  const toggle = document.getElementById('dpReviewFormToggle');
+  if (list)   list.innerHTML = '';
+  if (form)   form.style.display = 'none';
+  if (toggle) toggle.style.display = 'none';
+  // Load real reviews for logged-in users
+  const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  if (user) loadReviews(id);
+};
+
+function escHtml(str) {
+  return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FEATURE: Contact Form Modal
+// ═══════════════════════════════════════════════════════════════════════════════
+function openContactModal() {
+  const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  if (!user) { openLogin(); return; }
+  const c = companies.find(x => x.id === selectedId);
+  if (!c) return;
+  const sub = document.getElementById('contactModalSub');
+  if (sub) sub.textContent = 'Enviar mensagem para ' + c.name;
+  const msg = document.getElementById('contactMessage');
+  if (msg) msg.value = '';
+  document.getElementById('contactModal').classList.add('open');
+  setTimeout(() => msg?.focus(), 200);
+}
+
+function closeContactModal() {
+  document.getElementById('contactModal').classList.remove('open');
+}
+
+async function submitContactForm() {
+  const msg = (document.getElementById('contactMessage')?.value || '').trim();
+  if (msg.length < 10) { showToast('Mensagem demasiado curta'); return; }
+  const btn = document.querySelector('#contactModal button[onclick="submitContactForm()"]');
+  if (btn) { btn.disabled = true; btn.textContent = 'A enviar...'; }
+  try {
+    await api.contactCompany(selectedId, msg);
+    closeContactModal();
+    showToast('✅ Mensagem enviada com sucesso!');
+  } catch(e) {
+    showToast(e.message || 'Erro ao enviar mensagem');
+  } finally {
+    if (btn) { btn.disabled = false; btn.textContent = 'Enviar Mensagem'; }
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FEATURE: Admin Dashboard Panel
+// ═══════════════════════════════════════════════════════════════════════════════
+let _adminCurrentTab = 'stats';
+
+function openAdminPanel() {
+  document.getElementById('adminPanel').classList.add('open');
+  adminSwitchTab('stats');
+}
+
+function closeAdminPanel() {
+  document.getElementById('adminPanel').classList.remove('open');
+}
+
+function adminSwitchTab(tab) {
+  _adminCurrentTab = tab;
+  document.querySelectorAll('.admin-tab').forEach((el, i) => {
+    el.classList.toggle('active', ['stats','pending','all'][i] === tab);
+  });
+  if (tab === 'stats') adminLoadStats();
+  else if (tab === 'pending') adminLoadCompanies('pending');
+  else adminLoadCompanies();
+}
+
+async function adminLoadStats() {
+  const body = document.getElementById('adminBody');
+  body.innerHTML = '<div style="text-align:center;padding:32px;color:var(--muted)">A carregar...</div>';
+  try {
+    const s = await api.adminStats();
+    body.innerHTML = `
+      <div class="admin-stat-grid">
+        <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--green)">${s.approved}</div><div class="admin-stat-label">Aprovadas</div></div>
+        <div class="admin-stat-card"><div class="admin-stat-value" style="color:#f59e0b">${s.pending}</div><div class="admin-stat-label">Pendentes</div></div>
+        <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--red)">${s.rejected}</div><div class="admin-stat-label">Rejeitadas</div></div>
+        <div class="admin-stat-card"><div class="admin-stat-value">${s.total_users}</div><div class="admin-stat-label">Utilizadores</div></div>
+        <div class="admin-stat-card"><div class="admin-stat-value">${s.total_reviews}</div><div class="admin-stat-label">Avaliações</div></div>
+        <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--primary)">${s.events_7d}</div><div class="admin-stat-label">Eventos (7d)</div></div>
+        <div class="admin-stat-card"><div class="admin-stat-value">${s.new_7d}</div><div class="admin-stat-label">Novas (7d)</div></div>
+        <div class="admin-stat-card"><div class="admin-stat-value">${s.total_companies}</div><div class="admin-stat-label">Total Empresas</div></div>
+      </div>
+      <div style="text-align:center;margin-top:8px">
+        <button onclick="adminSwitchTab('pending')" style="background:var(--primary);color:#fff;border:none;border-radius:8px;padding:10px 24px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit">
+          Ver ${s.pending} empresa(s) pendente(s) →
+        </button>
+      </div>`;
+  } catch(e) {
+    body.innerHTML = '<div style="color:var(--red);text-align:center;padding:32px">' + (e.message||'Erro ao carregar') + '</div>';
+  }
+}
+
+async function adminLoadCompanies(status) {
+  const body = document.getElementById('adminBody');
+  body.innerHTML = `
+    <div class="admin-search-bar">
+      <input type="text" id="adminSearchQ" placeholder="Pesquisar por nome ou email..." oninput="adminFilterRows(this.value)"/>
+      <select id="adminStatusFilter" onchange="adminReloadWithStatus(this.value)">
+        <option value="">Todos</option>
+        <option value="pending" ${status==='pending'?'selected':''}>Pendentes</option>
+        <option value="approved">Aprovadas</option>
+        <option value="rejected">Rejeitadas</option>
+      </select>
+    </div>
+    <div id="adminCompaniesList"><div style="text-align:center;padding:32px;color:var(--muted)">A carregar...</div></div>`;
+
+  try {
+    const rows = await api.adminCompanies(status ? { status } : {});
+    _adminRows = rows;
+    renderAdminRows(rows);
+  } catch(e) {
+    document.getElementById('adminCompaniesList').innerHTML = '<div style="color:var(--red);padding:20px">' + (e.message||'Erro') + '</div>';
+  }
+}
+
+let _adminRows = [];
+
+function adminFilterRows(q) {
+  if (!q) { renderAdminRows(_adminRows); return; }
+  const lq = q.toLowerCase();
+  renderAdminRows(_adminRows.filter(r =>
+    r.name.toLowerCase().includes(lq) || (r.email||'').toLowerCase().includes(lq)
+  ));
+}
+
+function adminReloadWithStatus(status) {
+  adminLoadCompanies(status || undefined);
+}
+
+function renderAdminRows(rows) {
+  const list = document.getElementById('adminCompaniesList');
+  if (!list) return;
+  if (rows.length === 0) { list.innerHTML = '<div style="text-align:center;padding:32px;color:var(--muted)">Nenhuma empresa encontrada.</div>'; return; }
+  list.innerHTML = rows.map(r => `
+    <div class="admin-company-row" id="adminRow${r.id}">
+      <div style="flex:1;min-width:0">
+        <div class="admin-company-name">${escHtml(r.name)} ${r.featured?'⭐':''}${r.verified?'✅':''}</div>
+        <div class="admin-company-sub">${escHtml(r.email||'')} · ${escHtml(r.city||'')} · ${escHtml(r.sector||'')}</div>
+        <div style="font-size:10px;color:var(--muted);margin-top:1px">
+          ${r.created_at ? new Date(r.created_at).toLocaleDateString('pt-PT') : ''} · ${escHtml(r.owner_name||'sem conta')}
+        </div>
+      </div>
+      <span class="admin-status-badge ${r.status}">${r.status==='approved'?'✅ Aprovada':r.status==='pending'?'⏳ Pendente':'❌ Rejeitada'}</span>
+      ${r.status !== 'approved' ? `<button class="admin-action-btn" onclick="adminApprove(${r.id})">Aprovar</button>` : ''}
+      ${r.status !== 'rejected' ? `<button class="admin-action-btn danger" onclick="adminReject(${r.id})">Rejeitar</button>` : ''}
+      <button class="admin-action-btn" onclick="adminToggleFeatured(${r.id},${!r.featured})" title="${r.featured?'Remover destaque':'Destacar'}">
+        ${r.featured ? '⭐ Remover' : '☆ Destacar'}
+      </button>
+    </div>`).join('');
+}
+
+async function adminApprove(id) {
+  try {
+    await api.adminSetStatus(id, 'approved');
+    const row = _adminRows.find(r => r.id === id);
+    if (row) row.status = 'approved';
+    renderAdminRows(_adminRows);
+    // Also update local companies array
+    const c = companies.find(x => x.id === id);
+    if (c) c.status = 'approved';
+    showToast('✅ Empresa aprovada');
+  } catch(e) { showToast(e.message||'Erro'); }
+}
+
+async function adminReject(id) {
+  try {
+    await api.adminSetStatus(id, 'rejected');
+    const row = _adminRows.find(r => r.id === id);
+    if (row) row.status = 'rejected';
+    renderAdminRows(_adminRows);
+    showToast('Empresa rejeitada');
+  } catch(e) { showToast(e.message||'Erro'); }
+}
+
+async function adminToggleFeatured(id, featured) {
+  try {
+    await api.adminSetFeatured(id, featured);
+    const row = _adminRows.find(r => r.id === id);
+    if (row) row.featured = featured;
+    renderAdminRows(_adminRows);
+    // Update local companies
+    const c = companies.find(x => x.id === id);
+    if (c) { c.featured = featured; applyFilters.now(); }
+    showToast(featured ? '⭐ Empresa destacada' : 'Destaque removido');
+  } catch(e) { showToast(e.message||'Erro'); }
+}
+
+// Add Admin button to the avatar menu for admin users
+const _origUpdateNavAuth = updateNavAuth;
+updateNavAuth = function() {
+  _origUpdateNavAuth();
+  const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  if (user && user.is_admin) {
+    const menu = document.getElementById('avatarMenu');
+    if (menu && !menu.querySelector('.admin-menu-item')) {
+      const divider = menu.querySelector('.avatar-menu-divider');
+      if (divider) {
+        const adminBtn = document.createElement('div');
+        adminBtn.className = 'avatar-menu-item admin-menu-item';
+        adminBtn.style.color = '#f59e0b';
+        adminBtn.onclick = () => { closeAvatarMenu(); openAdminPanel(); };
+        adminBtn.innerHTML = '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>Painel Admin';
+        divider.before(adminBtn);
+      }
+    }
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FEATURE: Registration Status Check
+// ═══════════════════════════════════════════════════════════════════════════════
+function openStatusModal() {
+  document.getElementById('statusModal').classList.add('open');
+  document.getElementById('statusResult').style.display = 'none';
+  const emailEl = document.getElementById('statusEmail');
+  if (emailEl) emailEl.value = '';
+  setTimeout(() => emailEl?.focus(), 200);
+}
+
+function closeStatusModal() {
+  document.getElementById('statusModal').classList.remove('open');
+}
+
+async function checkRegistrationStatus() {
+  const email = (document.getElementById('statusEmail')?.value || '').trim();
+  if (!email) { showToast('Introduza um email'); return; }
+  const result = document.getElementById('statusResult');
+  result.style.display = 'flex';
+  result.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px">A verificar...</div>';
+  try {
+    const rows = await api.getCompanyStatus(email);
+    if (rows.length === 0) {
+      result.innerHTML = '<div style="color:var(--muted);font-size:13px;padding:8px">Nenhum registo encontrado para este email.</div>';
+      return;
+    }
+    result.innerHTML = rows.map(r => {
+      const statusMap = { approved: { label: '✅ Aprovada', cls: 'approved' }, pending: { label: '⏳ A aguardar aprovação', cls: 'pending' }, rejected: { label: '❌ Rejeitada', cls: 'rejected' } };
+      const s = statusMap[r.status] || { label: r.status, cls: 'pending' };
+      const date = new Date(r.created_at).toLocaleDateString('pt-PT');
+      return `<div class="status-card ${s.cls}">
+        <div style="font-weight:800;font-size:14px;margin-bottom:4px">${escHtml(r.name)}</div>
+        <div style="font-size:13px;font-weight:700">${s.label}</div>
+        <div style="font-size:11px;color:var(--text-secondary);margin-top:4px">Submetido em ${date}</div>
+      </div>`;
+    }).join('');
+  } catch(e) {
+    result.innerHTML = '<div style="color:var(--red);font-size:13px;padding:8px">' + (e.message||'Erro ao verificar') + '</div>';
+  }
+}
+
+// Add "Verificar Estado" link to registration success screen
+(function() {
+  const successCard = document.querySelector('.reg-success-card');
+  if (successCard) {
+    const link = document.createElement('div');
+    link.style.cssText = 'text-align:center;margin-top:8px';
+    link.innerHTML = '<button onclick="closeRegSuccess();openStatusModal()" style="background:none;border:none;color:var(--primary);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:underline">Verificar estado do registo →</button>';
+    successCard.appendChild(link);
+  }
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FEATURE: Analytics view in profile panel
+// ═══════════════════════════════════════════════════════════════════════════════
+async function openCompanyAnalytics(companyId) {
+  const c = companies.find(x => x.id === companyId);
+  if (!c) return;
+
+  // Show in a toast-style overlay or inject into profile panel
+  showToast('A carregar estatísticas...');
+  try {
+    const stats = await api.getAnalytics(companyId);
+    const total = (k) => (stats[k]?.total || 0);
+    const d7    = (k) => (stats[k]?.last_7d || 0);
+
+    const panel = document.getElementById('profilePanelBody');
+    const analyticsHtml = `
+      <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px">
+        <div class="profile-section-title" style="display:flex;align-items:center;justify-content:space-between">
+          <span>📊 Estatísticas — ${escHtml(c.name)}</span>
+          <button onclick="openProfilePanel()" style="background:none;border:none;font-size:12px;color:var(--muted);cursor:pointer;font-family:inherit">← Voltar</button>
+        </div>
+        <div class="analytics-grid">
+          <div class="analytics-stat"><div class="analytics-stat-val">${total('view')}</div><div class="analytics-stat-label">Visualizações</div></div>
+          <div class="analytics-stat"><div class="analytics-stat-val">${d7('view')}</div><div class="analytics-stat-label">Vis. (7 dias)</div></div>
+          <div class="analytics-stat"><div class="analytics-stat-val">${total('contact')}</div><div class="analytics-stat-label">Contactos</div></div>
+          <div class="analytics-stat"><div class="analytics-stat-val">${total('whatsapp')}</div><div class="analytics-stat-label">WhatsApp</div></div>
+          <div class="analytics-stat"><div class="analytics-stat-val">${total('website_click')}</div><div class="analytics-stat-label">Cliques Site</div></div>
+          <div class="analytics-stat"><div class="analytics-stat-val" style="color:var(--gold)">${c.rating||0}</div><div class="analytics-stat-label">Classificação</div></div>
+        </div>
+      </div>`;
+    panel.insertAdjacentHTML('beforeend', analyticsHtml);
+    // Scroll to analytics
+    panel.scrollTo({ top: panel.scrollHeight, behavior: 'smooth' });
+  } catch(e) {
+    showToast('Erro ao carregar estatísticas');
+  }
+}
+
+// Add analytics button to each company card in profile panel
+const _origOpenProfilePanel = openProfilePanel;
+openProfilePanel = function() {
+  _origOpenProfilePanel();
+  // Inject analytics button after profile renders
+  setTimeout(() => {
+    document.querySelectorAll('.profile-company-card').forEach(card => {
+      const editBtn = card.querySelector('button[onclick*="profileEditCompany"]');
+      if (editBtn && !card.querySelector('.analytics-btn')) {
+        const match = editBtn.getAttribute('onclick').match(/\d+/);
+        if (match) {
+          const companyId = parseInt(match[0]);
+          const analyticsBtn = document.createElement('button');
+          analyticsBtn.className = 'analytics-btn';
+          analyticsBtn.title = 'Estatísticas';
+          analyticsBtn.style.cssText = 'background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;color:var(--text-secondary);cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0;margin-left:4px';
+          analyticsBtn.textContent = '📊';
+          analyticsBtn.onclick = () => openCompanyAnalytics(companyId);
+          editBtn.after(analyticsBtn);
+        }
+      }
+    });
+  }, 100);
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// FEATURE: Sector landing pages — add to footer + home hero categories
+// ═══════════════════════════════════════════════════════════════════════════════
+// Wire hero category buttons to URL hash routing
+document.querySelectorAll('[data-sector-link]').forEach(el => {
+  el.addEventListener('click', () => openSectorLanding(el.dataset.sectorLink));
+});
+
+// Add "Verificar Estado" in nav drawer for non-logged users
+(function() {
+  const mobileDrawer = document.querySelector('.mobile-nav-drawer-content');
+  if (mobileDrawer) {
+    // inject after the help button if it exists
+    const helpBtn = Array.from(mobileDrawer.querySelectorAll('button')).find(b => b.textContent.includes('Ajuda'));
+    if (helpBtn) {
+      const statusBtn = document.createElement('button');
+      statusBtn.className = 'mobile-nav-link';
+      statusBtn.onclick = () => { openStatusModal(); closeMobileNavPanel(); };
+      statusBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Estado do Registo</span>';
+      helpBtn.after(statusBtn);
+    }
+  }
+})();
 </script>
 
 </body>

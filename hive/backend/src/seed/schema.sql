@@ -61,6 +61,30 @@ CREATE INDEX IF NOT EXISTS idx_companies_status_country_created
 -- Allows fast lookup of companies submitted by a given user
 CREATE INDEX IF NOT EXISTS idx_companies_created_by ON companies(created_by);
 
--- Migrations for existing databases (safe to re-run)
+-- ── Reviews ───────────────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS reviews (
+  id          BIGSERIAL PRIMARY KEY,
+  company_id  BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+  user_id     BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  score       SMALLINT NOT NULL CHECK (score BETWEEN 1 AND 5),
+  comment     TEXT,
+  created_at  TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(company_id, user_id)  -- one review per user per company
+);
+CREATE INDEX IF NOT EXISTS idx_reviews_company ON reviews(company_id);
+CREATE INDEX IF NOT EXISTS idx_reviews_user    ON reviews(user_id);
+
+-- ── Analytics events ──────────────────────────────────────────────────────────
+CREATE TABLE IF NOT EXISTS events (
+  id          BIGSERIAL PRIMARY KEY,
+  company_id  BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+  event_type  TEXT NOT NULL CHECK (event_type IN ('view','contact','website_click','whatsapp')),
+  created_at  TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_events_company ON events(company_id);
+CREATE INDEX IF NOT EXISTS idx_events_created ON events(created_at DESC);
+
+-- ── Migrations for existing databases (safe to re-run) ────────────────────────
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS alvara              TEXT;
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS certidao_permanente TEXT;
+ALTER TABLE companies ADD COLUMN IF NOT EXISTS featured            BOOLEAN DEFAULT FALSE;

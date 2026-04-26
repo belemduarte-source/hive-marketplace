@@ -201,6 +201,53 @@ async function sendCompanyRejectionEmail(company) {
   });
 }
 
+/**
+ * Relay a contact form message to a company's email address.
+ * The sender's email is shown in the email body but the company's
+ * address is never exposed to the frontend.
+ */
+async function sendContactEmail(company, sender, message) {
+  const transporter = createTransporter();
+  if (!transporter || !company.email) return;
+
+  const html = `
+<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
+  <div style="background:#f97316;padding:24px 32px">
+    <h1 style="margin:0;color:#fff;font-size:20px">🐝 Hive — Nova mensagem de contacto</h1>
+  </div>
+  <div style="padding:28px 32px">
+    <p style="margin-top:0;color:#374151;font-size:15px">
+      Recebeu uma mensagem através da plataforma <strong>Hive Marketplace</strong>:
+    </p>
+    <table style="width:100%;border-collapse:collapse;margin-bottom:20px">
+      <tr style="background:#f9fafb">
+        <td style="padding:10px 14px;font-weight:700;color:#111827;width:30%;border:1px solid #e5e7eb">De</td>
+        <td style="padding:10px 14px;color:#374151;border:1px solid #e5e7eb">${esc(sender.name)} &lt;${esc(sender.email)}&gt;</td>
+      </tr>
+      <tr>
+        <td style="padding:10px 14px;font-weight:700;color:#111827;border:1px solid #e5e7eb">Para</td>
+        <td style="padding:10px 14px;color:#374151;border:1px solid #e5e7eb">${esc(company.name)}</td>
+      </tr>
+    </table>
+    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:24px">
+      <p style="margin:0;color:#1f2937;font-size:15px;line-height:1.7;white-space:pre-wrap">${esc(message)}</p>
+    </div>
+    <p style="color:#6b7280;font-size:13px;margin:0">
+      Para responder, contacte directamente: <a href="mailto:${esc(sender.email)}" style="color:#f97316">${esc(sender.email)}</a><br><br>
+      Equipa Hive Marketplace
+    </p>
+  </div>
+</div>`;
+
+  await transporter.sendMail({
+    from:    `"Hive Marketplace" <${process.env.SMTP_USER}>`,
+    to:      company.email,
+    replyTo: sender.email,
+    subject: `[Hive] Mensagem de ${sender.name} para ${company.name}`,
+    html,
+  });
+}
+
 // Minimal HTML escaping
 function esc(str) {
   return String(str)
@@ -210,4 +257,4 @@ function esc(str) {
     .replace(/"/g, '&quot;');
 }
 
-module.exports = { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail };
+module.exports = { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail, sendContactEmail };
