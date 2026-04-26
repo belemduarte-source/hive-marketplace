@@ -120,19 +120,27 @@ async function ensureSchema() {
       `SELECT 1 FROM information_schema.tables
        WHERE table_schema = 'public' AND table_name = 'companies'`
     );
+    const sql = fs.readFileSync(path.join(__dirname, 'seed/schema.sql'), 'utf8');
     if (rows.length === 0) {
-      const sql = fs.readFileSync(path.join(__dirname, 'seed/schema.sql'), 'utf8');
+      // Fresh DB — run entire schema
       await pool.query(sql);
       console.log('✅ Schema created');
     } else {
-      // Tables exist — still apply safe ALTER TABLE migrations
-      const sql = fs.readFileSync(path.join(__dirname, 'seed/schema.sql'), 'utf8');
-      // Extract only the ALTER TABLE lines (safe to re-run)
-      const alterStatements = sql
-        .split('\n')
-        .filter(l => /^ALTER TABLE/i.test(l.trim()))
-        .join('\n');
-      if (alterStatements) await pool.query(alterStatements);
+      // Existing DB — run all CREATE TABLE IF NOT EXISTS + ALTER TABLE statements
+      // Split on statement boundaries and keep only safe idempotent ones
+      const statements = sql
+        .split(/;\s*\n/)
+        .map(s => s.trim())
+        .filter(s =>
+          /^CREATE TABLE IF NOT EXISTS/i.test(s) ||
+          /^CREATE INDEX IF NOT EXISTS/i.test(s) ||
+          /^ALTER TABLE/i.test(s)
+        )
+        .map(s => s + ';');
+      for (const stmt of statements) {
+        await pool.query(stmt);
+      }
+      console.log('✅ Schema migrations applied');
     }
     _migrated = true;
   } catch (e) {

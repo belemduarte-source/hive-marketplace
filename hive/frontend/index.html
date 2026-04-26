@@ -2141,17 +2141,6 @@
 </head>
 <body>
 
-<!-- ERROR DISPLAY (temporary debug) -->
-<div id="jsErrorBox" style="display:none;position:fixed;bottom:10px;right:10px;z-index:99999;background:#ff0000;color:#fff;padding:12px 18px;border-radius:8px;font-size:13px;max-width:500px;max-height:200px;overflow:auto;font-family:monospace;box-shadow:0 4px 20px rgba(0,0,0,.5)"></div>
-<script>
-window._errors = [];
-window.onerror = function(msg, src, line, col, err) {
-  window._errors.push('Line ' + line + ': ' + msg);
-  var box = document.getElementById('jsErrorBox');
-  if (box) { box.style.display = 'block'; box.innerHTML = '<b>JS Errors:</b><br>' + window._errors.join('<br>'); }
-  return false;
-};
-</script>
 
 <!-- NAV -->
 <nav>
@@ -6651,10 +6640,15 @@ function createMarkerIcon(c) {
   const bg   = c.pinType === 'gold' ? '#f59e0b' : sectorColor;
   const hexToGlow = (hex) => { const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16); return `rgba(${r},${g},${b},.4)`; };
   const glow = c.pinType === 'gold' ? 'rgba(245,158,11,.4)' : hexToGlow(sectorColor);
+  // Featured companies get a gold ring and ⭐ badge
+  const featuredBorder = c.featured ? '3px solid #f59e0b' : '2.5px solid #fff';
+  const featuredShadow = c.featured ? `0 3px 12px ${glow},0 0 0 4px rgba(245,158,11,.25)` : `0 3px 12px ${glow}`;
+  const featuredBadge  = c.featured ? `<span style="position:absolute;top:-8px;right:-6px;background:#f59e0b;color:#fff;font-size:9px;font-weight:900;border-radius:8px;padding:1px 4px;line-height:1.4;z-index:1">⭐</span>` : '';
   return L.divIcon({
     className: '',
     html: `<div style="width:38px;height:44px;position:relative;cursor:pointer">
-      <div style="width:38px;height:38px;background:${bg};border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:0 3px 12px ${glow};border:2.5px solid #fff">
+      ${featuredBadge}
+      <div style="width:38px;height:38px;background:${bg};border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:flex;align-items:center;justify-content:center;box-shadow:${featuredShadow};border:${featuredBorder}">
         <span style="transform:rotate(45deg);font-size:16px;display:block;line-height:1">${c.emoji}</span>
       </div>
     </div>`,
@@ -9313,27 +9307,9 @@ if (_origLoadCompanies) {
 // Also try on DOMContentLoaded in case companies are already loaded
 document.addEventListener('DOMContentLoaded', () => setTimeout(_handleHashRoute, 1200));
 
-// ═══════════════════════════════════════════════════════════════════════════════
-// FEATURE: Featured pins — gold ring on map markers
-// ═══════════════════════════════════════════════════════════════════════════════
-// Patch addCompanyMarker to apply featured styling
-const _origAddMarker = typeof addCompanyMarker === 'function' ? addCompanyMarker : null;
-if (_origAddMarker) {
-  addCompanyMarker = function(c) {
-    _origAddMarker(c);
-    if (c.featured && markerMap[c.id]) {
-      const el = markerMap[c.id]._icon;
-      if (el) {
-        el.classList.add('featured-pin-ring');
-        el.style.position = 'relative';
-        const badge = document.createElement('span');
-        badge.className = 'featured-badge';
-        badge.textContent = '⭐';
-        el.appendChild(badge);
-      }
-    }
-  };
-}
+// FEATURE: Featured pins — styling is baked into createMarkerIcon() above,
+// which applies a gold ring and ⭐ badge when c.featured === true.
+// No DOM patching needed here.
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // FEATURE: Analytics event tracking
@@ -9697,16 +9673,7 @@ async function checkRegistrationStatus() {
   }
 }
 
-// Add "Verificar Estado" link to registration success screen
-(function() {
-  const successCard = document.querySelector('.reg-success-card');
-  if (successCard) {
-    const link = document.createElement('div');
-    link.style.cssText = 'text-align:center;margin-top:8px';
-    link.innerHTML = '<button onclick="closeRegSuccess();openStatusModal()" style="background:none;border:none;color:var(--primary);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:underline">Verificar estado do registo →</button>';
-    successCard.appendChild(link);
-  }
-})();
+// "Verificar Estado" button is already in the HTML inside .reg-success-card
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // FEATURE: Analytics view in profile panel
