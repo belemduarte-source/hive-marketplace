@@ -3662,9 +3662,9 @@
 
 <div class="toast" id="toast"></div>
 
-<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" crossorigin="anonymous"></script>
 <script>
 // ── TRANSLATIONS ───────────────────────────────────────────────────────────────
 const translations = {
@@ -5959,6 +5959,7 @@ function dbRowToCompany(row) {
     reviews:   row.reviews   || 0,
     topRated:  row.top_rated || false,
     verified:  row.verified  || false,
+    featured:  row.featured  || false,
     isNew:     row.is_new    !== undefined ? row.is_new : true,
     tags:      row.tags      || [],
     email:     row.email     || '',
@@ -5986,6 +5987,8 @@ async function loadCompaniesFromDB() {
   try {
     const data = await api.getCompanies();
     if (data && data.length > 0) {
+      // Sort featured companies to top client-side (avoids full-table-scan ORDER BY in DB)
+      data.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
       data.forEach(row => companies.push(dbRowToCompany(row)));
       nextCompanyId = Math.max(...companies.map(c => Number(c.id))) + 1;
     }

@@ -39,7 +39,7 @@ router.get('/', async (req, res, next) => {
     const where = 'WHERE ' + conditions.join(' AND ');
     const { rows } = await pool.query(
       `SELECT ${LIST_COLS} FROM companies ${where}
-       ORDER BY featured DESC NULLS LAST, created_at DESC`,
+       ORDER BY created_at DESC`,
       params
     );
     res.json(rows);
