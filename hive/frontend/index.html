@@ -55,7 +55,7 @@
     body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
 
     /* ── NAV ── */
-    nav{background:var(--nav);padding:0;display:flex;align-items:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3);position:relative;z-index:200;transition:transform 0.3s ease;overflow:visible}
+    nav{background:var(--nav);padding:0;display:flex;align-items:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3);position:relative;z-index:200;transition:transform 0.3s ease;overflow:visible;will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden}
     nav.scrolled{transform:translateY(-100%);}
     .nav-links{display:flex;gap:4px;padding:4px 12px;align-items:center;background:var(--nav)}
     .nav-link{display:inline-flex;align-items:center;justify-content:center;gap:8px;color:#ffffff;font-size:14px;font-weight:700;padding:10px 36px;border-radius:10px;cursor:pointer;text-decoration:none;transition:all .25s;white-space:nowrap;border:none;background:transparent;font-family:inherit;letter-spacing:.02em;position:relative;flex:1}
@@ -170,6 +170,9 @@
     .ub-ico{width:14px;height:14px;color:#8899aa;flex-shrink:0}
     .ub-input .btn-locate{background:none;border:none;cursor:pointer;padding:2px;display:flex;color:#8899aa}
     .ub-input .btn-locate:hover{color:var(--primary)}
+    /* Pulse animation shown when auto-detect fails — tells user to tap the button */
+    @keyframes locatePulse{0%,100%{color:#8899aa;transform:scale(1)}50%{color:#f97316;transform:scale(1.25)}}
+    .btn-locate.pulse-hint{animation:locatePulse 1.2s ease-in-out 3}
     .ub-btn{background:var(--primary);color:#fff;border:none;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;display:flex;align-items:center;gap:4px}
     .ub-btn:hover{background:var(--primary-dark)}
     .ub-divider{width:1px;background:rgba(255,255,255,.15);margin:8px 0;flex-shrink:0}
@@ -6386,8 +6389,12 @@ loadCompaniesFromDB();
 // Sync radius label + circle with the slider's initial value on page load
 updateRadius(parseInt(document.getElementById('radiusSlider')?.value || 50, 10));
 
-// Auto-detect location on page load (mobile & desktop).
-// DOMContentLoaded ensures the inputs exist before we try to fill them.
+// Auto-detect location.
+// On desktop (and mobile when permission was already granted) this resolves
+// immediately. On mobile first-visit, the browser requires a real user gesture
+// to show the permission dialog — the auto call will time out silently.
+// In that case onGeoError (auto=true) makes the locate button pulse so the
+// user knows to tap it.
 document.addEventListener('DOMContentLoaded', () => detectUserLocation(true));
 
 // ── MARKERS ───────────────────────────────────────────────────────────────────
@@ -6492,8 +6499,6 @@ function updateRadius(sliderVal) {
   } catch (e) {
     console.error('Error updating radius:', e);
   }
-  // Refresh counts in dropdown to match new radius
-  renderSectorFilters();
 }
 
 // Geocode location and center map
@@ -8008,76 +8013,82 @@ function showToast(msg, type) {
 // ── GEOLOCATION ────────────────────────────────────────────────────────────────
 let userLocationMarker = null;
 let _locationObtained  = false;   // true once we have real coords
+let _geoInProgress     = false;   // prevents concurrent getCurrentPosition calls
 
 function detectUserLocation(auto = false) {
   if (!navigator.geolocation) {
     if (!auto) showToast(t('toastGeoNotSupported'));
     return;
   }
-
-  // Skip a second auto-request if we already have the user's position
+  // Skip if we already have a location (auto mode)
   if (auto && _locationObtained) return;
+  // Prevent two concurrent geolocation requests
+  if (_geoInProgress) return;
+  _geoInProgress = true;
 
   const btn = document.getElementById('btnLocate');
-
-  if (!auto && btn) {
+  if (btn) {
     btn.classList.add('locating');
     btn.title = 'A detetar localização...';
   }
 
-  // Two-stage GPS: fast network/cell location first, then optionally upgrade.
-  // enableHighAccuracy: false gets a result in <2s on mobile (cell/Wi-Fi).
-  // maximumAge: 60000 allows using a cached position up to 1 minute old.
-  const geoOpts = { timeout: 20000, maximumAge: 60000, enableHighAccuracy: false };
+  // On mobile first-visit, iOS/Android may not show the permission dialog unless
+  // triggered by a user gesture. Auto mode uses a short 8s timeout so failure is
+  // fast and silent. Manual tap (auto=false) uses 20s and shows error toasts.
+  const geoOpts = {
+    enableHighAccuracy: false,  // cell/Wi-Fi positioning — resolves in <2s
+    maximumAge: 60000,          // accept a cached position up to 1 min old
+    timeout: auto ? 8000 : 20000,
+  };
+
+  function _cleanup() {
+    _geoInProgress = false;
+    if (btn) { btn.classList.remove('locating'); btn.title = 'Usar localização atual'; }
+  }
 
   function onGeoSuccess(pos) {
+    _cleanup();
     const { latitude: lat, longitude: lng, accuracy } = pos.coords;
     _locationObtained = true;
 
-    // Update current map center and radius circle
     currentMapCenter = [lat, lng];
     invalidateDistanceCache();
     if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
 
-    // Narrow radius to 50km now that we have a real location
+    // Narrow radius to 50 km now that we have a precise location
     const slider = document.getElementById('radiusSlider');
-    if (slider && parseInt(slider.value) >= 100) {
+    if (slider && parseInt(slider.value, 10) >= 100) {
       slider.value = 50;
       updateRadius(50);
     }
 
-    // Fly map to user position (works even if map tab is hidden)
     if (map) map.flyTo([lat, lng], 13, { duration: auto ? 1.2 : 1.8 });
 
-    // Remove previous marker
     if (userLocationMarker) { userLocationMarker.remove(); userLocationMarker = null; }
 
-    // Pulsing orange "you are here" marker
-    const youIcon = L.divIcon({
-      className: '',
-      html: `<div style="position:relative;width:24px;height:24px">
-        <div style="position:absolute;inset:0;background:rgba(249,115,22,.25);border-radius:50%;animation:pulse 2s infinite"></div>
-        <div style="position:absolute;inset:5px;background:#f97316;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(249,115,22,.7)"></div>
-      </div>`,
-      iconSize: [24, 24],
-      iconAnchor: [12, 12],
-    });
-
-    if (map) {
+    if (map && typeof L !== 'undefined') {
+      const youIcon = L.divIcon({
+        className: '',
+        html: `<div style="position:relative;width:24px;height:24px">
+          <div style="position:absolute;inset:0;background:rgba(249,115,22,.25);border-radius:50%;animation:pulse 2s infinite"></div>
+          <div style="position:absolute;inset:5px;background:#f97316;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(249,115,22,.7)"></div>
+        </div>`,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12],
+      });
       userLocationMarker = L.marker([lat, lng], { icon: youIcon, zIndexOffset: 1000 })
         .addTo(map)
         .bindPopup(`<strong>📍 A sua localização</strong><br><small style="color:#6b7280">Precisão: ±${Math.round(accuracy)} m</small>`);
       if (!auto) userLocationMarker.openPopup();
     }
 
-    // Reverse geocode with Nominatim → pre-fill ALL location inputs on the page
+    // Reverse-geocode silently; don't block anything on its result
     fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=pt`)
       .then(r => r.json())
       .then(data => {
         const a = data.address || {};
         const city = a.city || a.town || a.village || a.municipality || '';
-        const country = a.country || '';
-        const label = [city, country].filter(Boolean).join(', ');
+        const label = [city, a.country].filter(Boolean).join(', ');
         if (label) {
           const uni = document.getElementById('searchUnified');
           if (uni) uni.value = label;
@@ -8089,23 +8100,31 @@ function detectUserLocation(auto = false) {
       })
       .catch(() => {});
 
-    if (btn) { btn.classList.remove('locating'); btn.title = 'Usar localização atual'; }
     if (!auto) showToast('📍 Localização detetada!');
     applyFilters();
   }
 
   function onGeoError(err) {
-    if (btn) { btn.classList.remove('locating'); btn.title = 'Usar localização atual'; }
+    _cleanup();
     // Fallback — keep Portugal-wide view
-    currentMapCenter = PORTUGAL_CENTER;
+    if (!_locationObtained) {
+      currentMapCenter = PORTUGAL_CENTER;
+      if (radiusCircle) radiusCircle.setLatLng(PORTUGAL_CENTER);
+    }
     if (!auto && map) map.setView(PORTUGAL_CENTER, 7, { animate: true });
-    if (radiusCircle) radiusCircle.setLatLng(PORTUGAL_CENTER);
-    const uniEl = document.getElementById('searchUnified');
-    if (uniEl && !uniEl.value) uniEl.value = 'Portugal';
-    const cityEl = document.querySelector('[data-i18n="mapCity"]');
-    if (cityEl) cityEl.textContent = 'Portugal';
-    if (!auto) {
-      const msgs = { 1: t('toastGeoPermissionDenied'), 2: t('toastGeoPositionUnavailable'), 3: t('toastGeoTimeout') };
+
+    if (auto) {
+      // Silent failure on auto — pulse the locate button so user knows to tap it
+      if (btn) {
+        btn.classList.add('pulse-hint');
+        setTimeout(() => btn && btn.classList.remove('pulse-hint'), 6000);
+      }
+    } else {
+      const msgs = {
+        1: t('toastGeoPermissionDenied'),
+        2: t('toastGeoPositionUnavailable'),
+        3: t('toastGeoTimeout'),
+      };
       showToast(msgs[err.code] || t('toastGeoError'), 'error');
     }
   }
@@ -8132,40 +8151,8 @@ function switchHelpTab(tab, el) {
 }
 
 function goToMyLocation() {
-  const btn = document.getElementById('btnMyLocation');
-  if (!navigator.geolocation) { showToast(t('toastGeoNotSupported')); return; }
-  if (btn) btn.classList.add('locating');
-  navigator.geolocation.getCurrentPosition(
-    pos => {
-      const { latitude: lat, longitude: lng } = pos.coords;
-      currentMapCenter = [lat, lng];
-      invalidateDistanceCache();
-      if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
-      map.flyTo([lat, lng], 14, { duration: 1.5 });
-      if (userLocationMarker) { userLocationMarker.remove(); userLocationMarker = null; }
-      const youIcon = L.divIcon({
-        className: '',
-        html: `<div style="position:relative;width:24px;height:24px">
-          <div style="position:absolute;inset:0;background:rgba(249,115,22,.25);border-radius:50%;animation:pulse 2s infinite"></div>
-          <div style="position:absolute;inset:5px;background:#f97316;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(249,115,22,.7)"></div>
-        </div>`,
-        iconSize: [24, 24], iconAnchor: [12, 12],
-      });
-      userLocationMarker = L.marker([lat, lng], { icon: youIcon, zIndexOffset: 1000 })
-        .addTo(map).bindPopup('<strong>📍 A sua localização</strong>').openPopup();
-      fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=pt`)
-        .then(r => r.json()).then(data => {
-          const a = data.address || {};
-          const label = [a.city || a.town || a.village || a.municipality, a.country].filter(Boolean).join(', ');
-          if (label) { document.getElementById('searchUnified').value = label; const el = document.querySelector('[data-i18n="mapCity"]'); if (el) el.textContent = label; }
-        }).catch(() => {});
-      applyFilters();
-      if (btn) btn.classList.remove('locating');
-      showToast(t('toastLocationFound'));
-    },
-    () => { if (btn) btn.classList.remove('locating'); showToast(t('toastLocationFailed')); },
-    { timeout: 10000, enableHighAccuracy: true }
-  );
+  // Route through detectUserLocation so the _geoInProgress guard is respected
+  detectUserLocation(false);
 }
 
 // ── AUTH / LOGIN ─────────────────────────────────────────────────────────────
@@ -8369,59 +8356,41 @@ setTimeout(() => {
 // The duplicate naked setTimeout that was here has been removed to prevent
 // two concurrent getCurrentPosition calls racing before the guard flag is set.
 
-// Hide nav on scroll
-let lastScrollTop = 0;
+// ── NAV HIDE-ON-SCROLL ────────────────────────────────────────────────────────
+// Uses a single rAF-throttled listener on the window touchmove/scroll events.
+// No per-element listeners, no inline style mutations (uses CSS class only),
+// which eliminates layout reflow on every scroll frame.
 const nav = document.querySelector('nav');
-const detailPanel = document.querySelector('.detail-panel');
-const searchBar = document.querySelector('.ub-bar');
-const main = document.querySelector('.main');
 
-function hideNavOnScroll(currentScrollTop) {
-  if (!nav) return;
-  // Never hide the nav while on the home/landing page
-  const _ht = document.getElementById('tab-home');
-  if (_ht && _ht.style.display !== 'none') return;
-
-  if (currentScrollTop > lastScrollTop && currentScrollTop > 30) {
-    // Scrolling DOWN - hide nav, map and filters expand
-    nav.classList.add('scrolled');
-    if (detailPanel) {
-      detailPanel.style.top = '60px';
-      detailPanel.style.height = 'calc(100vh - 60px)';
-    }
-    if (searchBar) {
-      searchBar.style.opacity = '0.5';
-      searchBar.style.pointerEvents = 'none';
-    }
-    if (main) {
-      main.style.flex = '1';
-    }
-  } else if (currentScrollTop < lastScrollTop - 10) {
-    // Scrolling UP - show nav, map and filters return to normal
-    nav.classList.remove('scrolled');
-    if (detailPanel) {
-      detailPanel.style.top = '230px';
-      detailPanel.style.height = 'calc(100vh - 230px)';
-    }
-    if (searchBar) {
-      searchBar.style.opacity = '';
-      searchBar.style.pointerEvents = '';
-    }
-    if (main) {
-      main.style.flex = '1';
-    }
-  }
-
-  lastScrollTop = currentScrollTop;
-}
-
-// Listen to scroll events on all possible elements
-// Ignore scroll events originating from the filter sidebar to prevent nav trembling
-// Never hide the nav while on the home tab — only on the search/map tab
-const filterSidebarEl = document.querySelector('.filter-sidebar');
 function isHomeTabActive() {
   const h = document.getElementById('tab-home');
   return h && h.style.display !== 'none';
+}
+
+{
+  let lastY = 0;
+  let ticking = false;
+
+  function _applyNavScroll(y) {
+    if (!nav || isHomeTabActive()) return;
+    if (y > lastY + 4 && y > 40) {
+      nav.classList.add('scrolled');
+    } else if (y < lastY - 8) {
+      nav.classList.remove('scrolled');
+    }
+    lastY = y;
+    ticking = false;
+  }
+
+  function _onScroll() {
+    if (ticking) return;
+    const y = window.pageYOffset || document.documentElement.scrollTop || 0;
+    ticking = true;
+    requestAnimationFrame(() => _applyNavScroll(y));
+  }
+
+  window.addEventListener('scroll',     _onScroll, { passive: true });
+  window.addEventListener('touchmove',  _onScroll, { passive: true });
 }
 
 // ── Mobile filter drawer ───────────────────────────────────────────────
@@ -8459,28 +8428,6 @@ function closeMobileFilter() {
     setTimeout(() => map.invalidateSize({ animate: false }), 360);
   }
 }
-window.addEventListener('wheel', (e) => {
-  if (isHomeTabActive()) return;                              // keep nav visible on home
-  if (filterSidebarEl && filterSidebarEl.contains(e.target)) return;
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  hideNavOnScroll(scrollTop);
-}, { passive: true });
-
-// Also try to detect scroll within the page (exclude filter sidebar)
-setTimeout(() => {
-  const mainElements = [
-    document.getElementById('tab-search'),
-    document.querySelector('.map-panel')
-    // tab-home intentionally excluded — nav must stay visible while browsing home
-  ].filter(el => el !== null);
-
-  mainElements.forEach(element => {
-    element.addEventListener('scroll', (e) => {
-      if (isHomeTabActive()) return;
-      hideNavOnScroll(e.target.scrollTop);
-    }, { passive: true });
-  });
-}, 100);
 
 // Diagnostic helper
 // ── AD BANNER: Rotating slides + video fallback ──
