@@ -3203,6 +3203,63 @@ window.onerror = function(msg, src, line, col, err) {
   </div>
 </div>
 
+<!-- LOCATION PERMISSION HELP MODAL -->
+<div class="overlay" id="geoHelpOverlay" onclick="if(event.target===this)closeGeoHelp()">
+  <div class="modal" style="max-width:440px;padding:0;overflow:hidden">
+    <div style="background:linear-gradient(135deg,#f97316,#ea580c);padding:24px 24px 20px;text-align:center">
+      <div style="font-size:42px;margin-bottom:8px">📍</div>
+      <h2 style="color:#fff;font-size:18px;font-weight:800;margin:0 0 6px">Localização Bloqueada</h2>
+      <p style="color:rgba(255,255,255,.85);font-size:13px;margin:0;line-height:1.4">O browser bloqueou o acesso à localização. Siga os passos abaixo para ativar.</p>
+    </div>
+    <div style="padding:20px 24px 8px">
+      <!-- iOS instructions -->
+      <div id="geoHelpIOS" style="display:none">
+        <p style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:0 0 12px">iPhone / iPad (Safari)</p>
+        <ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--text);line-height:1.5">
+          <li>Abra as <strong>Definições</strong> do iPhone</li>
+          <li>Toque em <strong>Privacidade e Segurança</strong></li>
+          <li>Toque em <strong>Serviços de Localização</strong> e certifique-se que está <strong>ativado</strong></li>
+          <li>Encontre <strong>Safari</strong> na lista e selecione <strong>Ao Usar a App</strong></li>
+          <li>Volte ao browser e toque no botão 📍</li>
+        </ol>
+        <div style="margin-top:14px;padding:10px 12px;background:rgba(249,115,22,.08);border-radius:8px;border-left:3px solid #f97316;font-size:12px;color:var(--muted);line-height:1.5">
+          Em alternativa: toque no botão <strong>aA</strong> na barra de endereço do Safari → <strong>Definições do Site</strong> → <strong>Localização → Permitir</strong>
+        </div>
+      </div>
+      <!-- Android instructions -->
+      <div id="geoHelpAndroid" style="display:none">
+        <p style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:0 0 12px">Android (Chrome)</p>
+        <ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--text);line-height:1.5">
+          <li>Toque no <strong>cadeado 🔒</strong> na barra de endereço</li>
+          <li>Toque em <strong>Permissões</strong></li>
+          <li>Em <strong>Localização</strong>, selecione <strong>Permitir</strong></li>
+          <li>Recarregue a página e toque em 📍</li>
+        </ol>
+        <div style="margin-top:14px;padding:10px 12px;background:rgba(249,115,22,.08);border-radius:8px;border-left:3px solid #f97316;font-size:12px;color:var(--muted);line-height:1.5">
+          Se não aparecer o cadeado: Definições do Chrome → Definições do Site → Localização → permitir este site.
+        </div>
+      </div>
+      <!-- Generic / desktop instructions -->
+      <div id="geoHelpGeneric" style="display:none">
+        <p style="font-size:12px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:0 0 12px">Browser</p>
+        <ol style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:10px;font-size:14px;color:var(--text);line-height:1.5">
+          <li>Clique no <strong>cadeado 🔒</strong> na barra de endereço</li>
+          <li>Encontre <strong>Localização</strong> e defina como <strong>Permitir</strong></li>
+          <li>Recarregue a página</li>
+        </ol>
+      </div>
+    </div>
+    <div style="padding:12px 24px 24px;display:flex;flex-direction:column;gap:8px">
+      <button onclick="closeGeoHelp();detectUserLocation(false)" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;transition:background .2s" onmouseover="this.style.background='#ea580c'" onmouseout="this.style.background='var(--primary)'">
+        📍 Tentar novamente
+      </button>
+      <button onclick="closeGeoHelp()" style="background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:11px;font-size:13px;cursor:pointer;font-family:inherit;width:100%">
+        Continuar sem localização
+      </button>
+    </div>
+  </div>
+</div>
+
 <!-- EMAIL MODAL -->
 <div class="overlay" id="emailOverlay" onclick="closeEmailIfBg(event)">
   <div class="modal modal-sm">
@@ -6401,26 +6458,32 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     if (navigator.permissions) {
       const perm = await navigator.permissions.query({ name: 'geolocation' });
+
       if (perm.state === 'granted') {
-        detectUserLocation(true); // already allowed — safe to auto-detect
+        detectUserLocation(true);
+
+      } else if (perm.state === 'denied') {
+        // Already blocked — open the help modal immediately so the user knows
+        // what to do before they even try to tap the button
+        openGeoHelp();
+
       } else {
-        // 'prompt' or 'denied': don't auto-call, just pulse the button
-        // so the user knows to tap it (the tap IS a user gesture on all browsers)
+        // 'prompt' — don't auto-call without a gesture; pulse the button
         const b = document.getElementById('btnLocate');
-        if (b && perm.state === 'prompt') {
-          b.classList.add('pulse-hint');
-          setTimeout(() => b.classList.remove('pulse-hint'), 5000);
-        }
-        // Listen for permission change (e.g. user grants from settings)
-        perm.onchange = () => { if (perm.state === 'granted') detectUserLocation(true); };
+        if (b) { b.classList.add('pulse-hint'); setTimeout(() => b.classList.remove('pulse-hint'), 5000); }
       }
+
+      // React to future permission changes (e.g. user enables from OS Settings)
+      perm.onchange = () => {
+        if (perm.state === 'granted') { closeGeoHelp(); detectUserLocation(true); }
+        else if (perm.state === 'denied') { openGeoHelp(); }
+      };
     } else {
-      // No Permissions API (iOS ≤15, older browsers): try auto — works for
-      // returning visitors; first-visit will prompt or silently fail
+      // No Permissions API (iOS ≤15): try auto — works for returning visitors
       detectUserLocation(true);
     }
   } catch(e) {
-    detectUserLocation(true); // fallback
+    detectUserLocation(true);
   }
 });
 
@@ -8146,15 +8209,21 @@ function detectUserLocation(auto = false) {
   function onGeoError(err) {
     if (!_geoCleanup(myGen)) return; // stale
 
+    if (err.code === 1) {
+      // PERMISSION_DENIED — open the help modal with platform-specific instructions.
+      // This applies for both auto and manual: the user (or the system) blocked us.
+      openGeoHelp();
+      return;
+    }
+
     if (auto) {
-      // Silent auto failure — pulse the locate button to invite a tap
+      // Timeout / unavailable on auto — silent, just pulse the button
       if (btn) {
         btn.classList.add('pulse-hint');
         setTimeout(() => btn && btn.classList.remove('pulse-hint'), 5000);
       }
     } else {
       const msgs = {
-        1: t('toastGeoPermissionDenied'),
         2: t('toastGeoPositionUnavailable'),
         3: t('toastGeoTimeout'),
       };
@@ -8191,8 +8260,27 @@ function switchHelpTab(tab, el) {
 }
 
 function goToMyLocation() {
-  // Route through detectUserLocation so the _geoInProgress guard is respected
   detectUserLocation(false);
+}
+
+// ── LOCATION PERMISSION HELP ──────────────────────────────────────────────────
+function openGeoHelp() {
+  const ov = document.getElementById('geoHelpOverlay');
+  if (!ov) return;
+  // Detect platform and show relevant instructions
+  const ua = navigator.userAgent || '';
+  const isIOS     = /iPhone|iPad|iPod/i.test(ua);
+  const isAndroid = /Android/i.test(ua);
+  document.getElementById('geoHelpIOS').style.display     = isIOS     ? 'block' : 'none';
+  document.getElementById('geoHelpAndroid').style.display = isAndroid ? 'block' : 'none';
+  document.getElementById('geoHelpGeneric').style.display = (!isIOS && !isAndroid) ? 'block' : 'none';
+  ov.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeGeoHelp() {
+  const ov = document.getElementById('geoHelpOverlay');
+  if (ov) ov.classList.remove('open');
+  document.body.style.overflow = '';
 }
 
 // ── AUTH / LOGIN ─────────────────────────────────────────────────────────────
