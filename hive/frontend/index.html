@@ -512,8 +512,9 @@
     .avatar-menu-divider{height:1px;background:var(--border);margin:0}
 
     /* ── TOAST ── */
-    .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--nav);color:#fff;padding:9px 20px;border-radius:28px;font-size:13px;font-weight:500;box-shadow:var(--shadow-lg);display:none;z-index:500;animation:fadeUp .3s ease}
+    .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--nav);color:#fff;padding:9px 20px;border-radius:28px;font-size:13px;font-weight:500;box-shadow:var(--shadow-lg);display:none;z-index:500;animation:fadeUp .3s ease;max-width:calc(100vw - 32px);text-align:center}
     .toast.show{display:block}
+    .toast.toast-error{background:#dc2626}
     @keyframes fadeUp{from{opacity:0;transform:translateX(-50%) translateY(8px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 
     /* ── Leaflet ── */
@@ -2807,7 +2808,7 @@ window.onerror = function(msg, src, line, col, err) {
         <span class="radius-label"><i data-lucide="target"></i><span data-i18n="searchRadius">Raio de Pesquisa</span></span>
         <span class="radius-live-val" id="radiusLiveVal">🇵🇹 Todo</span>
       </div>
-      <input type="range" class="radius-slider" min="0" max="100" value="50" id="radiusSlider"/>
+      <input type="range" class="radius-slider" min="0" max="100" value="100" id="radiusSlider"/>
       <div class="radius-marks">
         <span style="left:0%">5</span>
         <span style="left:25%">15</span>
@@ -7402,8 +7403,8 @@ function clearAllFilters() {
   document.getElementById('ratingAny').checked      = true;
   const _uniInput = document.getElementById('searchUnified'); if(_uniInput) _uniInput.value = '';
   document.getElementById('sortAll').checked         = true;
-  document.getElementById('radiusSlider').value     = 50;
-  updateRadius(50);
+  document.getElementById('radiusSlider').value     = 100;
+  updateRadius(100);
   renderTagCloud();
   applyFilters();
   showToast(t('toastFiltersCleared'));
@@ -7904,11 +7905,17 @@ function closeEmailIfBg(e) { if (e.target === document.getElementById('emailOver
 function submitEmail() { closeEmail(); showToast(t('toastEmailSent')); }
 
 // ── TOAST ──────────────────────────────────────────────────────────────────────
-function showToast(msg) {
+let _toastTimer = null;
+function showToast(msg, type) {
   const el = document.getElementById('toast');
+  if (!el) return;
+  // Deduplicate: skip if same message is already showing
+  if (el.classList.contains('show') && el.textContent === msg) return;
+  if (_toastTimer) clearTimeout(_toastTimer);
   el.textContent = msg;
+  el.classList.toggle('toast-error', type === 'error');
   el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 2800);
+  _toastTimer = setTimeout(() => { el.classList.remove('show'); _toastTimer = null; }, 3000);
 }
 
 // ── GEOLOCATION ────────────────────────────────────────────────────────────────
@@ -7931,82 +7938,91 @@ function detectUserLocation(auto = false) {
     btn.title = 'A detetar localização...';
   }
 
-  navigator.geolocation.getCurrentPosition(
-    pos => {
-      const { latitude: lat, longitude: lng, accuracy } = pos.coords;
-      _locationObtained = true;
+  // Two-stage GPS: fast network/cell location first, then optionally upgrade.
+  // enableHighAccuracy: false gets a result in <2s on mobile (cell/Wi-Fi).
+  // maximumAge: 60000 allows using a cached position up to 1 minute old.
+  const geoOpts = { timeout: 20000, maximumAge: 60000, enableHighAccuracy: false };
 
-      // Update current map center and radius circle
-      currentMapCenter = [lat, lng];
-      if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
+  function onGeoSuccess(pos) {
+    const { latitude: lat, longitude: lng, accuracy } = pos.coords;
+    _locationObtained = true;
 
-      // Fly map to user position (works even if map tab is hidden)
-      if (map) map.flyTo([lat, lng], 13, { duration: auto ? 1.2 : 1.8 });
+    // Update current map center and radius circle
+    currentMapCenter = [lat, lng];
+    if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
 
-      // Remove previous marker
-      if (userLocationMarker) { userLocationMarker.remove(); userLocationMarker = null; }
+    // Narrow radius to 50km now that we have a real location
+    const slider = document.getElementById('radiusSlider');
+    if (slider && parseInt(slider.value) >= 100) {
+      slider.value = 50;
+      updateRadius(50);
+    }
 
-      // Pulsing orange "you are here" marker
-      const youIcon = L.divIcon({
-        className: '',
-        html: `<div style="position:relative;width:24px;height:24px">
-          <div style="position:absolute;inset:0;background:rgba(249,115,22,.25);border-radius:50%;animation:pulse 2s infinite"></div>
-          <div style="position:absolute;inset:5px;background:#f97316;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(249,115,22,.7)"></div>
-        </div>`,
-        iconSize: [24, 24],
-        iconAnchor: [12, 12],
-      });
+    // Fly map to user position (works even if map tab is hidden)
+    if (map) map.flyTo([lat, lng], 13, { duration: auto ? 1.2 : 1.8 });
 
-      if (map) {
-        userLocationMarker = L.marker([lat, lng], { icon: youIcon, zIndexOffset: 1000 })
-          .addTo(map)
-          .bindPopup(`<strong>📍 A sua localização</strong><br><small style="color:#6b7280">Precisão: ±${Math.round(accuracy)} m</small>`);
-        if (!auto) userLocationMarker.openPopup();
-      }
+    // Remove previous marker
+    if (userLocationMarker) { userLocationMarker.remove(); userLocationMarker = null; }
 
-      // Reverse geocode with Nominatim → pre-fill ALL location inputs on the page
-      fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=pt`)
-        .then(r => r.json())
-        .then(data => {
-          const a = data.address || {};
-          const city = a.city || a.town || a.village || a.municipality || '';
-          const country = a.country || '';
-          const label = [city, country].filter(Boolean).join(', ');
-          if (label) {
-            // Search tab unified input
-            const uni = document.getElementById('searchUnified');
-            if (uni) uni.value = label;
-            // Home page hero location input
-            const hero = document.getElementById('heroLocation');
-            if (hero && !hero.value) hero.value = label;
-            // Map info box city label
-            const cityEl = document.querySelector('[data-i18n="mapCity"]');
-            if (cityEl) cityEl.textContent = label;
-          }
-        })
-        .catch(() => {});
+    // Pulsing orange "you are here" marker
+    const youIcon = L.divIcon({
+      className: '',
+      html: `<div style="position:relative;width:24px;height:24px">
+        <div style="position:absolute;inset:0;background:rgba(249,115,22,.25);border-radius:50%;animation:pulse 2s infinite"></div>
+        <div style="position:absolute;inset:5px;background:#f97316;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(249,115,22,.7)"></div>
+      </div>`,
+      iconSize: [24, 24],
+      iconAnchor: [12, 12],
+    });
 
-      if (btn) { btn.classList.remove('locating'); btn.title = 'Usar localização atual'; }
-      if (!auto) showToast('Localização detetada!');
-    },
-    err => {
-      if (btn) { btn.classList.remove('locating'); btn.title = 'Usar localização atual'; }
+    if (map) {
+      userLocationMarker = L.marker([lat, lng], { icon: youIcon, zIndexOffset: 1000 })
+        .addTo(map)
+        .bindPopup(`<strong>📍 A sua localização</strong><br><small style="color:#6b7280">Precisão: ±${Math.round(accuracy)} m</small>`);
+      if (!auto) userLocationMarker.openPopup();
+    }
 
-      // Fallback — keep Portugal-wide view
-      currentMapCenter = PORTUGAL_CENTER;
-      if (!auto && map) map.setView(PORTUGAL_CENTER, 7, { animate: true });
-      if (radiusCircle) radiusCircle.setLatLng(PORTUGAL_CENTER);
-      document.getElementById('searchUnified').value = 'Portugal';
-      const cityEl = document.querySelector('[data-i18n="mapCity"]');
-      if (cityEl) cityEl.textContent = 'Arouca, Portugal';
+    // Reverse geocode with Nominatim → pre-fill ALL location inputs on the page
+    fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=pt`)
+      .then(r => r.json())
+      .then(data => {
+        const a = data.address || {};
+        const city = a.city || a.town || a.village || a.municipality || '';
+        const country = a.country || '';
+        const label = [city, country].filter(Boolean).join(', ');
+        if (label) {
+          const uni = document.getElementById('searchUnified');
+          if (uni) uni.value = label;
+          const hero = document.getElementById('heroLocation');
+          if (hero && !hero.value) hero.value = label;
+          const cityEl = document.querySelector('[data-i18n="mapCity"]');
+          if (cityEl) cityEl.textContent = label;
+        }
+      })
+      .catch(() => {});
 
-      if (!auto) {
-        const msgs = { 1: t('toastGeoPermissionDenied'), 2: t('toastGeoPositionUnavailable'), 3: t('toastGeoTimeout') };
-        showToast(msgs[err.code] || t('toastGeoError'));
-      }
-    },
-    { timeout: 10000, enableHighAccuracy: true }
-  );
+    if (btn) { btn.classList.remove('locating'); btn.title = 'Usar localização atual'; }
+    if (!auto) showToast('📍 Localização detetada!');
+    applyFilters();
+  }
+
+  function onGeoError(err) {
+    if (btn) { btn.classList.remove('locating'); btn.title = 'Usar localização atual'; }
+    // Fallback — keep Portugal-wide view
+    currentMapCenter = PORTUGAL_CENTER;
+    if (!auto && map) map.setView(PORTUGAL_CENTER, 7, { animate: true });
+    if (radiusCircle) radiusCircle.setLatLng(PORTUGAL_CENTER);
+    const uniEl = document.getElementById('searchUnified');
+    if (uniEl && !uniEl.value) uniEl.value = 'Portugal';
+    const cityEl = document.querySelector('[data-i18n="mapCity"]');
+    if (cityEl) cityEl.textContent = 'Portugal';
+    if (!auto) {
+      const msgs = { 1: t('toastGeoPermissionDenied'), 2: t('toastGeoPositionUnavailable'), 3: t('toastGeoTimeout') };
+      showToast(msgs[err.code] || t('toastGeoError'), 'error');
+    }
+  }
+
+  navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError, geoOpts);
 }
 
 // ── HELP PANEL ──────────────────────────────────────────────────────────────
