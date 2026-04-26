@@ -5196,7 +5196,7 @@ function heroSearch() {
 
   updateSectorActiveStates();
   renderSectorFilters();
-  applyFilters();
+  applyFilters.now();
 }
 
 function heroQuickSearch(sectorKey) {
@@ -5206,7 +5206,7 @@ function heroQuickSearch(sectorKey) {
   activeSectors.add(sectorKey);
   updateSectorActiveStates();
   renderSectorFilters();
-  applyFilters();
+  applyFilters.now();
 }
 
 // ── HERO CATEGORY STRIP ───────────────────────────────────────────────────
@@ -5296,7 +5296,7 @@ function lpCatSearch(groupKey) {
   }
   updateSectorActiveStates();
   renderSectorFilters();
-  applyFilters();
+  applyFilters.now();
 }
 
 function renderFeaturedCompanies() {
@@ -5567,7 +5567,7 @@ function applyI18n() {
   document.title = 'Hive – B2B Marketplace';
 
   // 10. Refresh count label (number stays, text updates)
-  applyFilters();
+  applyFilters.now();
 
   // 11. Landing page dynamic content — always re-render so language change applies even from other tabs
   renderHeroCats();
@@ -5797,10 +5797,15 @@ async function loadCompaniesFromDB() {
     if (companies.length > 0) nextCompanyId = Math.max(...companies.map(c => Number(c.id))) + 1;
   }
   // Render
-  companies.forEach(c => addCompanyMarker(c));
+  // Pre-compute a lowercase search index per company so fuzzySearch
+  // never re-builds the haystack string during filtering
+  companies.forEach(c => {
+    c._searchIndex = [c.name, c.cae, ...(c.tags || [])].join(' ').toLowerCase();
+    addCompanyMarker(c);
+  });
   renderSectorFilters();
   renderTagCloud();
-  applyFilters();
+  applyFilters.now();
   renderFeaturedCompanies();
   renderTestimonialBanner();
   updateLandingStats();
@@ -6441,7 +6446,9 @@ function ensureClusterGroup() {
 function addCompanyMarker(c) {
   if (!map || typeof L === 'undefined') return;
   const m = L.marker([c.lat, c.lng], { icon: createMarkerIcon(c) });
-  m.bindPopup(buildPopupHtml(c));
+  // Lazy popup: content built only when the popup is actually opened,
+  // so language changes and filter runs don't rebuild HTML for all markers
+  m.bindPopup(() => buildPopupHtml(c));
   m.on('click', () => openDetail(c.id));
   markerMap[c.id] = m;
   // Add to cluster group if available, else directly to map
@@ -6511,6 +6518,7 @@ function geocodeLocation(location) {
         map.setView([lat, lng], zoom, { animate: true });
         // Update current map center
         currentMapCenter = [lat, lng];
+        invalidateDistanceCache();
         // Update radius circle center
         if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
         // Show location name in toast
@@ -7271,70 +7279,101 @@ function handleUnifiedSearch(val) {
 }
 
 function fuzzySearch(kw, company) {
-  const hay = [company.name, company.cae, ...(company.tags || [])].join(' ').toLowerCase();
+  // Use pre-computed _searchIndex (built at load time) to avoid repeated string join
+  const hay = company._searchIndex || [company.name, company.cae, ...(company.tags || [])].join(' ').toLowerCase();
   const tokens = kw.toLowerCase().split(/\s+/).filter(t => t.length > 0);
   return tokens.every(token => fuzzyMatchToken(token, hay));
 }
 
-function getFiltered() {
-  let res = [...companies];
+// ── DISTANCE CACHE ────────────────────────────────────────────────────────────
+// Avoids recomputing Haversine for every company when the map center hasn't moved
+let _distCacheCenter = null; // {lat, lng} string key
+let _distCache = {};         // company id → km
 
+function _getCachedDistance(centerLat, centerLng, c) {
+  const cacheKey = `${centerLat.toFixed(5)},${centerLng.toFixed(5)}`;
+  if (_distCacheCenter !== cacheKey) {
+    _distCache = {};
+    _distCacheCenter = cacheKey;
+  }
+  if (_distCache[c.id] === undefined) {
+    _distCache[c.id] = calculateDistance(centerLat, centerLng, c.lat, c.lng);
+  }
+  return _distCache[c.id];
+}
+
+// Call this when the map center moves to invalidate the distance cache
+function invalidateDistanceCache() { _distCacheCenter = null; _distCache = {}; }
+
+function getFiltered() {
   // ── 1. SECTOR FILTER — must select at least one activity to see companies ──
   if (activeSectors.size === 0) return [];
-  res = res.filter(c =>
-    activeSectors.has(c.sector) ||
-    (c.sectors && [...c.sectors].some(s => activeSectors.has(s)))
-  );
 
-  // ── 2. RADIUS FILTER — narrows sector results to geographic area ──
   const searchRadius = getRadiusKm();
-  const circleCenter = radiusCircle ? radiusCircle.getLatLng() : { lat: currentMapCenter[0], lng: currentMapCenter[1] };
-  res = res.filter(c => calculateDistance(circleCenter.lat, circleCenter.lng, c.lat, c.lng) <= searchRadius);
+  const cc = radiusCircle ? radiusCircle.getLatLng() : { lat: currentMapCenter[0], lng: currentMapCenter[1] };
 
   const ratingEl  = document.querySelector('input[name="minRating"]:checked');
   const minRating = ratingEl ? parseFloat(ratingEl.value) : 0;
-  if (minRating > 0) res = res.filter(c => c.rating >= minRating);
-  if (document.getElementById('filterTopRated')?.checked) res = res.filter(c => c.topRated);
-  if (document.getElementById('filterVerified')?.checked) res = res.filter(c => c.verified === true);
-  if (document.getElementById('filterNew')?.checked)      res = res.filter(c => c.isNew === true);
-  if (activeTag) res = res.filter(c => c.tags && c.tags.includes(activeTag));
-  // Keyword filter — uses _keywordFilter (NOT the location bar text)
+  const filterTopRated = document.getElementById('filterTopRated')?.checked;
+  const filterVerified = document.getElementById('filterVerified')?.checked;
+  const filterNew      = document.getElementById('filterNew')?.checked;
   const kw = _keywordFilter || '';
-  if (kw) res = res.filter(c => fuzzySearch(kw, c));
-
   const sort = document.querySelector('input[name="sort"]:checked')?.value || 'all';
-  if (sort === 'rating') {
-    res = res.filter(c => c.rating >= 4);
-    res.sort((a,b) => b.rating - a.rating);
-  } else if (sort === 'reviews') {
-    res = res.filter(c => (c.reviews || 0) >= 100);
-    res.sort((a,b) => (b.reviews||0) - (a.reviews||0));
-  } else if (sort === 'name') {
-    res.sort((a,b) => a.name.localeCompare(b.name));
-  } else {
-    res.sort((a,b) => b.rating - a.rating);
+
+  // Single-pass filter (no intermediate array copies)
+  const res = [];
+  for (let i = 0; i < companies.length; i++) {
+    const c = companies[i];
+    // Sector
+    if (!activeSectors.has(c.sector) && !(c.sectors && c.sectors.some(s => activeSectors.has(s)))) continue;
+    // Radius (cached Haversine)
+    if (_getCachedDistance(cc.lat, cc.lng, c) > searchRadius) continue;
+    // Rating
+    if (minRating > 0 && c.rating < minRating) continue;
+    // Checkboxes
+    if (filterTopRated && !c.topRated) continue;
+    if (filterVerified && c.verified !== true) continue;
+    if (filterNew && c.isNew !== true) continue;
+    // Tag
+    if (activeTag && !(c.tags && c.tags.includes(activeTag))) continue;
+    // Keyword (uses pre-built _searchIndex)
+    if (kw && !fuzzySearch(kw, c)) continue;
+    // Sort pre-filter
+    if (sort === 'rating' && c.rating < 4) continue;
+    if (sort === 'reviews' && (c.reviews || 0) < 100) continue;
+    res.push(c);
   }
+
+  if (sort === 'rating') res.sort((a,b) => b.rating - a.rating);
+  else if (sort === 'reviews') res.sort((a,b) => (b.reviews||0) - (a.reviews||0));
+  else if (sort === 'name') res.sort((a,b) => a.name.localeCompare(b.name));
+  else res.sort((a,b) => b.rating - a.rating);
+
   return res;
 }
 
+// ── DEBOUNCED applyFilters ─────────────────────────────────────────────────────
+// All filter UI calls go through here — rapid changes (slider, typing) are
+// coalesced into a single run 80 ms after the last event, eliminating jank.
+let _afTimer = null;
 function applyFilters() {
-  // Show loading indicator briefly
-  const loadingEl = document.getElementById('filterLoading');
-  if (loadingEl) { loadingEl.classList.add('active'); }
-  // Use setTimeout(0) so the spinner renders before heavy work
-  setTimeout(() => {
+  clearTimeout(_afTimer);
+  _afTimer = setTimeout(_runApplyFilters, 80);
+}
+// Call .now() when an immediate run is needed (init, clear-all, language change)
+applyFilters.now = function() { clearTimeout(_afTimer); _runApplyFilters(); };
+
+function _runApplyFilters() {
   const filtered = getFiltered();
   updateMarkers(filtered);
   document.getElementById('countNum').textContent = filtered.length;
-  refreshPopups();
-  // Show/hide the empty-state map hint and sidebar hint
+  // Show/hide the empty-state map hint
   const hint = document.getElementById('mapEmptyHint');
   const hintText = document.getElementById('mapEmptyHintText');
   if (hint && hintText) {
-    const hasSectorSelected = activeSectors.size > 0;
     if (filtered.length > 0) {
       hint.classList.add('hidden');
-    } else if (hasSectorSelected) {
+    } else if (activeSectors.size > 0) {
       hint.classList.remove('hidden');
       hintText.innerHTML = t('mapHintNoResults') + '<br><span>' + t('mapHintNoResultsSub') + '</span>';
     } else {
@@ -7342,8 +7381,7 @@ function applyFilters() {
       hintText.innerHTML = t('mapHintSelectSector') + '<br><span>' + t('mapHintSelectSectorSub') + '</span>';
     }
   }
-  // No locking mechanic — all filters are always accessible
-  // Highlight the clear-all button when any filter is active + update nav badge
+  // Filter badge count
   const clearBtn = document.getElementById('ubClearBtn');
   const filterBadge = document.getElementById('filterBadge');
   {
@@ -7355,7 +7393,7 @@ function applyFilters() {
     if (document.getElementById('filterNew')?.checked) filterCount++;
     if (!document.getElementById('ratingAny')?.checked) filterCount++;
     if (_keywordFilter !== '') filterCount++;
-    if (parseInt(document.getElementById('radiusSlider')?.value || 50) < 50) filterCount++;
+    if (parseInt(document.getElementById('radiusSlider')?.value || 100) < 100) filterCount++;
     const hasFilters = filterCount > 0;
     if (clearBtn) clearBtn.dataset.active = hasFilters ? 'true' : 'false';
     if (filterBadge) {
@@ -7363,33 +7401,33 @@ function applyFilters() {
       filterBadge.style.display = hasFilters ? '' : 'none';
     }
   }
-  // Update view toggle result count + list view
+  // Result count label + list view (pass filtered so list doesn't re-compute)
   const countEl = document.getElementById('viewResultCount');
   if (countEl) countEl.textContent = filtered.length + ' empresa' + (filtered.length !== 1 ? 's' : '');
-  if (document.getElementById('searchListView')?.style.display !== 'none') renderSearchList();
-  if (loadingEl) loadingEl.classList.remove('active');
-  }, 0);
+  if (document.getElementById('searchListView')?.style.display !== 'none') renderSearchList(filtered);
 }
 
+// ── MARKER DIFF UPDATE ─────────────────────────────────────────────────────────
+// Only add/remove the markers that actually changed instead of clearLayers+addLayers
+let _visibleMarkerIds = new Set();
 function updateMarkers(filtered) {
-  const ids = new Set(filtered.map(c => c.id));
+  const newIds = new Set(filtered.map(c => c.id));
   const cluster = markerClusterGroup;
   if (cluster) {
-    // Batch update: remove all, add only filtered — much faster than individual add/remove
-    const toAdd = [];
-    companies.forEach(c => {
-      if (!markerMap[c.id]) return;
-      if (ids.has(c.id)) toAdd.push(markerMap[c.id]);
-    });
-    cluster.clearLayers();
-    cluster.addLayers(toAdd);
+    const toAdd    = filtered.filter(c => !_visibleMarkerIds.has(c.id) && markerMap[c.id]).map(c => markerMap[c.id]);
+    const toRemove = [];
+    _visibleMarkerIds.forEach(id => { if (!newIds.has(id) && markerMap[id]) toRemove.push(markerMap[id]); });
+    if (toRemove.length) cluster.removeLayers(toRemove);
+    if (toAdd.length)    cluster.addLayers(toAdd);
   } else {
-    companies.forEach(c => {
-      if (!markerMap[c.id]) return;
-      if (ids.has(c.id)) { if (!map.hasLayer(markerMap[c.id])) markerMap[c.id].addTo(map); }
-      else               { if (map.hasLayer(markerMap[c.id]))  map.removeLayer(markerMap[c.id]); }
+    filtered.forEach(c => {
+      if (markerMap[c.id] && !map.hasLayer(markerMap[c.id])) markerMap[c.id].addTo(map);
+    });
+    _visibleMarkerIds.forEach(id => {
+      if (!newIds.has(id) && markerMap[id] && map.hasLayer(markerMap[id])) map.removeLayer(markerMap[id]);
     });
   }
+  _visibleMarkerIds = newIds;
 }
 
 function clearAllFilters() {
@@ -7406,7 +7444,7 @@ function clearAllFilters() {
   document.getElementById('radiusSlider').value     = 100;
   updateRadius(100);
   renderTagCloud();
-  applyFilters();
+  applyFilters.now();
   showToast(t('toastFiltersCleared'));
 }
 
@@ -7434,22 +7472,71 @@ function setSearchView(mode) {
   }
 }
 
-function renderSearchList() {
+const _LIST_PAGE = 40; // cards rendered per batch
+let _listRenderedCount = 0;
+let _listCurrentData = [];
+
+function renderSearchList(filtered) {
   const listEl = document.getElementById('searchListView');
   if (!listEl) return;
-  const filtered = getFiltered();
-  if (filtered.length === 0) {
+  // Accept pre-computed results or compute fresh (e.g. direct call from list-view toggle)
+  const data = filtered !== undefined ? filtered : getFiltered();
+  _listCurrentData = data;
+  _listRenderedCount = 0;
+
+  if (data.length === 0) {
     listEl.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)"><p style="font-size:18px;margin-bottom:8px">' + t('searchListEmpty') + '</p><p style="font-size:13px">' + t('searchListEmptySub') + '</p></div>';
     return;
   }
+
+  // Render first batch synchronously, append more on scroll
+  const frag = document.createDocumentFragment();
+  _appendListCards(frag, data, 0, Math.min(_LIST_PAGE, data.length));
+  _listRenderedCount = Math.min(_LIST_PAGE, data.length);
+  listEl.innerHTML = '';
+  listEl.appendChild(frag);
+
+  // Sentinel element for IntersectionObserver-based infinite scroll
+  if (_listRenderedCount < data.length) {
+    const sentinel = document.createElement('div');
+    sentinel.id = 'slcSentinel';
+    sentinel.style.cssText = 'height:1px;grid-column:1/-1';
+    listEl.appendChild(sentinel);
+    const obs = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      obs.disconnect();
+      const start = _listRenderedCount;
+      const end   = Math.min(start + _LIST_PAGE, _listCurrentData.length);
+      const f = document.createDocumentFragment();
+      _appendListCards(f, _listCurrentData, start, end);
+      _listRenderedCount = end;
+      // Remove old sentinel, append new cards, add new sentinel if more remain
+      sentinel.remove();
+      listEl.appendChild(f);
+      if (_listRenderedCount < _listCurrentData.length) {
+        const next = sentinel.cloneNode();
+        next.id = 'slcSentinel';
+        listEl.appendChild(next);
+        // Observe the new sentinel next tick so layout is settled
+        requestAnimationFrame(() => obs.observe(next));
+      }
+    }, { rootMargin: '200px' });
+    obs.observe(sentinel);
+  }
+}
+
+function _appendListCards(frag, data, start, end) {
   const tr = translations[currentLang] || translations.pt;
-  listEl.innerHTML = filtered.map(c => {
+  for (let i = start; i < end; i++) {
+    const c = data[i];
     const sectorLabel = (tr.sectors && tr.sectors[c.sector]) || c.sector || '';
     const stars = c.rating > 0 ? '★'.repeat(Math.round(c.rating)) + ` ${c.rating.toFixed(1)}` : t('noRatingText');
     const tags = (c.tags || []).slice(0, 3).map(tag => `<span class="slc-tag">${tag}</span>`).join('');
     const phoneFrag = c.phone ? `<a class="slc-phone" href="tel:${c.phone}" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>${c.phone}</a>` : '';
-    return `<div class="search-list-card" onclick="setSearchView('map');setTimeout(()=>openDetail(${c.id}),300)">
-      <div class="slc-header">
+    const div = document.createElement('div');
+    div.className = 'search-list-card';
+    div.onclick = () => { setSearchView('map'); setTimeout(() => openDetail(c.id), 300); };
+    div.innerHTML = `<div class="slc-header">
         <div class="slc-emoji" style="background:${c.color}22">${c.emoji || '🏢'}</div>
         <div class="slc-info">
           <div class="slc-name">${c.name}</div>
@@ -7462,9 +7549,9 @@ function renderSearchList() {
       <div class="slc-footer">
         ${phoneFrag}
         <button class="btn-slc-contact" onclick="event.stopPropagation();setSearchView('map');setTimeout(()=>{openDetail(${c.id});},300)" data-i18n="btnRequestQuote">Pedir Orçamento</button>
-      </div>
-    </div>`;
-  }).join('');
+      </div>`;
+    frag.appendChild(div);
+  }
 }
 
 // ── REGISTER COMPANY ──────────────────────────────────────────────────────────
@@ -7949,6 +8036,7 @@ function detectUserLocation(auto = false) {
 
     // Update current map center and radius circle
     currentMapCenter = [lat, lng];
+    invalidateDistanceCache();
     if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
 
     // Narrow radius to 50km now that we have a real location
@@ -8051,6 +8139,7 @@ function goToMyLocation() {
     pos => {
       const { latitude: lat, longitude: lng } = pos.coords;
       currentMapCenter = [lat, lng];
+      invalidateDistanceCache();
       if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
       map.flyTo([lat, lng], 14, { duration: 1.5 });
       if (userLocationMarker) { userLocationMarker.remove(); userLocationMarker = null; }
