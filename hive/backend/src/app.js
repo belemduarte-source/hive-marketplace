@@ -1,4 +1,21 @@
 require('dotenv').config();
+
+// ── Startup validation — fail loudly rather than silently misbehave ──────────
+const _required = ['JWT_SECRET', 'DATABASE_URL'];
+const _missing  = _required.filter(k => !process.env[k]);
+if (_missing.length) {
+  console.error(`❌ Missing required environment variables: ${_missing.join(', ')}`);
+  process.exit(1);
+}
+
+// ── Global error safety net ───────────────────────────────────────────────────
+process.on('unhandledRejection', (reason) => {
+  console.error('Unhandled promise rejection:', reason);
+});
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught exception:', err);
+});
+
 const express = require('express');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');

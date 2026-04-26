@@ -5836,10 +5836,8 @@ async function loadCompaniesFromDB() {
     if (data && data.length > 0) {
       data.forEach(row => companies.push(dbRowToCompany(row)));
       nextCompanyId = Math.max(...companies.map(c => Number(c.id))) + 1;
-      console.log(`✅ ${companies.length} empresa(s) carregada(s) da base de dados`);
     }
   } catch(e) {
-    console.warn('Erro ao carregar da API — a usar dados demo:', e.message);
     showToast('Sem ligação ao servidor — a mostrar dados de demonstração');
     // Graceful fallback: load DEMO_COMPANIES so map is never empty
     DEMO_COMPANIES.forEach(d => {
@@ -6400,11 +6398,8 @@ let nextCompanyId = 1;
 //  CREATE POLICY "public_select" ON companies FOR SELECT USING (true);
 //
 // ════════════════════════════════════════════════════════════════════════════
-// Backend API — configured in api.js (loaded in <head>)
-// Change API_BASE for production deployment:
-//   window.API_BASE = '/api';       // same-origin (production)
-//   window.API_BASE = 'http://localhost:4000/api';  // dev
-window.API_BASE = window.API_BASE || 'http://localhost:4000/api';
+// Backend API — api.js (loaded in <head>) sets API_BASE to '/api' by default.
+// Override only for local dev: window.API_BASE = 'http://localhost:4000/api';
 const sb = null; // Supabase removed — kept so residual if(sb) checks are safe
 
 // ── STATE ──────────────────────────────────────────────────────────────────────
@@ -7812,12 +7807,10 @@ function submitRegister() {
 
   // If city is in our predefined LOCALITY_COORDS, use those coordinates
   if (LOCALITY_COORDS[city]) {
-    console.log(`✅ Usando coordenadas predefinidas para ${city}`);
     const coords = LOCALITY_COORDS[city];
     return new Promise(resolve => {
       resolve({ lat: coords[0], lng: coords[1], source: 'predefined' });
     }).then(result => {
-      console.log(`Localização: ${result.source} (${city})`);
       processRegistration(result.lat, result.lng);
     }).catch(e => {
       console.error('Error:', e);
@@ -7868,7 +7861,6 @@ function submitRegister() {
 
   geocodeWithPostalCode()
     .then(result => {
-      console.log(`Localização geocodificada via: ${result.source}`);
       processRegistration(result.lat, result.lng);
     })
     .catch(e => {
@@ -9083,11 +9075,7 @@ if (_origRenderSectorFilters) {
 // Register Service Worker for PWA
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js').then(reg => {
-      console.log('✅ PWA Service Worker registado');
-    }).catch(err => {
-      console.warn('SW registration failed:', err);
-    });
+    navigator.serviceWorker.register('sw.js').catch(() => {});
   });
 }
 </script>
