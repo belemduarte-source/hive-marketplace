@@ -4836,9 +4836,11 @@ function showTab(name) {
         if (!window._mapEverShown) {
           window._mapEverShown = true;
           if (!_locationObtained) {
-            // Location not yet received — request it now the map is visible
+            // Location not yet received — request it now the map is visible.
+            // Only fires if no request is already in-flight (_geoInProgress check
+            // is inside detectUserLocation for auto=true calls).
             map.setView(PORTUGAL_CENTER, 7);
-            setTimeout(() => detectUserLocation(true), 300);
+            setTimeout(() => detectUserLocation(true), 200);
           } else {
             // Location already obtained on page load — just re-center smoothly
             map.flyTo(currentMapCenter, 13, { duration: 1.2 });
@@ -6389,13 +6391,38 @@ loadCompaniesFromDB();
 // Sync radius label + circle with the slider's initial value on page load
 updateRadius(parseInt(document.getElementById('radiusSlider')?.value || 50, 10));
 
-// Auto-detect location.
-// On desktop (and mobile when permission was already granted) this resolves
-// immediately. On mobile first-visit, the browser requires a real user gesture
-// to show the permission dialog — the auto call will time out silently.
-// In that case onGeoError (auto=true) makes the locate button pulse so the
-// user knows to tap it.
-document.addEventListener('DOMContentLoaded', () => detectUserLocation(true));
+// Auto-detect location at startup.
+// First checks the Permissions API to avoid calling getCurrentPosition without
+// a user gesture on first-visit mobile (which silently times out and blocks the
+// button for up to 8 s). If permission is already granted → auto-detect.
+// If unknown → pulse the button so user knows to tap. If denied → do nothing.
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!navigator.geolocation) return;
+  try {
+    if (navigator.permissions) {
+      const perm = await navigator.permissions.query({ name: 'geolocation' });
+      if (perm.state === 'granted') {
+        detectUserLocation(true); // already allowed — safe to auto-detect
+      } else {
+        // 'prompt' or 'denied': don't auto-call, just pulse the button
+        // so the user knows to tap it (the tap IS a user gesture on all browsers)
+        const b = document.getElementById('btnLocate');
+        if (b && perm.state === 'prompt') {
+          b.classList.add('pulse-hint');
+          setTimeout(() => b.classList.remove('pulse-hint'), 5000);
+        }
+        // Listen for permission change (e.g. user grants from settings)
+        perm.onchange = () => { if (perm.state === 'granted') detectUserLocation(true); };
+      }
+    } else {
+      // No Permissions API (iOS ≤15, older browsers): try auto — works for
+      // returning visitors; first-visit will prompt or silently fail
+      detectUserLocation(true);
+    }
+  } catch(e) {
+    detectUserLocation(true); // fallback
+  }
+});
 
 // ── MARKERS ───────────────────────────────────────────────────────────────────
 function createMarkerIcon(c) {
@@ -8012,42 +8039,54 @@ function showToast(msg, type) {
 
 // ── GEOLOCATION ────────────────────────────────────────────────────────────────
 let userLocationMarker = null;
-let _locationObtained  = false;   // true once we have real coords
-let _geoInProgress     = false;   // prevents concurrent getCurrentPosition calls
+let _locationObtained  = false;
+let _geoInProgress     = false;
+// Generation counter — incremented on every call. Callbacks compare their
+// captured generation to the current one; stale results are discarded.
+// This lets a user tap always override a pending auto-detect without blocking.
+let _geoGen = 0;
+
+function _geoCleanup(gen) {
+  // Only clear flags if this callback belongs to the CURRENT request
+  if (gen !== _geoGen) return false; // stale — caller should discard result
+  _geoInProgress = false;
+  const b  = document.getElementById('btnLocate');
+  const b2 = document.getElementById('btnMyLocation');
+  if (b)  { b.classList.remove('locating');  b.title = 'Usar localização atual'; }
+  if (b2) b2.classList.remove('locating');
+  return true; // current — caller should process result
+}
 
 function detectUserLocation(auto = false) {
   if (!navigator.geolocation) {
     if (!auto) showToast(t('toastGeoNotSupported'));
     return;
   }
-  // Skip if we already have a location (auto mode)
   if (auto && _locationObtained) return;
-  // Prevent two concurrent geolocation requests
-  if (_geoInProgress) return;
+  // Auto calls don't stack; user taps always proceed (they bump the generation
+  // so any pending auto callback is discarded when it eventually fires)
+  if (auto && _geoInProgress) return;
+
+  _geoGen++;                 // invalidates any pending callback
+  const myGen = _geoGen;
   _geoInProgress = true;
 
-  const btn = document.getElementById('btnLocate');
-  if (btn) {
-    btn.classList.add('locating');
-    btn.title = 'A detetar localização...';
-  }
+  // Show loading state on both locate buttons
+  const btn   = document.getElementById('btnLocate');
+  const mapBtn = document.getElementById('btnMyLocation');
+  if (btn)   { btn.classList.remove('pulse-hint'); btn.classList.add('locating'); btn.title = 'A detetar…'; }
+  if (!auto && mapBtn) mapBtn.classList.add('locating');
 
-  // On mobile first-visit, iOS/Android may not show the permission dialog unless
-  // triggered by a user gesture. Auto mode uses a short 8s timeout so failure is
-  // fast and silent. Manual tap (auto=false) uses 20s and shows error toasts.
+  // Auto: allow a cached position (up to 30 s old), short timeout so failure
+  // is quick and silent. User tap: fresh position, long timeout (user is waiting).
   const geoOpts = {
-    enableHighAccuracy: false,  // cell/Wi-Fi positioning — resolves in <2s
-    maximumAge: 60000,          // accept a cached position up to 1 min old
-    timeout: auto ? 8000 : 20000,
+    enableHighAccuracy: false, // cell/Wi-Fi — fast on mobile, <2 s typical
+    maximumAge: auto ? 30000 : 0,
+    timeout:    auto ? 10000 : 30000,
   };
 
-  function _cleanup() {
-    _geoInProgress = false;
-    if (btn) { btn.classList.remove('locating'); btn.title = 'Usar localização atual'; }
-  }
-
   function onGeoSuccess(pos) {
-    _cleanup();
+    if (!_geoCleanup(myGen)) return; // stale result from a superseded request
     const { latitude: lat, longitude: lng, accuracy } = pos.coords;
     _locationObtained = true;
 
@@ -8055,7 +8094,7 @@ function detectUserLocation(auto = false) {
     invalidateDistanceCache();
     if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
 
-    // Narrow radius to 50 km now that we have a precise location
+    // Narrow radius to 50 km now that we have a precise position
     const slider = document.getElementById('radiusSlider');
     if (slider && parseInt(slider.value, 10) >= 100) {
       slider.value = 50;
@@ -8064,17 +8103,17 @@ function detectUserLocation(auto = false) {
 
     if (map) map.flyTo([lat, lng], 13, { duration: auto ? 1.2 : 1.8 });
 
+    // Place/update the "you are here" marker
     if (userLocationMarker) { userLocationMarker.remove(); userLocationMarker = null; }
-
     if (map && typeof L !== 'undefined') {
       const youIcon = L.divIcon({
         className: '',
-        html: `<div style="position:relative;width:24px;height:24px">
-          <div style="position:absolute;inset:0;background:rgba(249,115,22,.25);border-radius:50%;animation:pulse 2s infinite"></div>
-          <div style="position:absolute;inset:5px;background:#f97316;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(249,115,22,.7)"></div>
+        html: `<div style="position:relative;width:28px;height:28px">
+          <div style="position:absolute;inset:0;background:rgba(249,115,22,.22);border-radius:50%;animation:pulse 2s infinite"></div>
+          <div style="position:absolute;inset:6px;background:#f97316;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(249,115,22,.7)"></div>
         </div>`,
-        iconSize: [24, 24],
-        iconAnchor: [12, 12],
+        iconSize: [28, 28],
+        iconAnchor: [14, 14],
       });
       userLocationMarker = L.marker([lat, lng], { icon: youIcon, zIndexOffset: 1000 })
         .addTo(map)
@@ -8082,16 +8121,16 @@ function detectUserLocation(auto = false) {
       if (!auto) userLocationMarker.openPopup();
     }
 
-    // Reverse-geocode silently; don't block anything on its result
+    // Reverse-geocode to fill city inputs — fire-and-forget, never blocks UX
     fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=pt`)
       .then(r => r.json())
       .then(data => {
         const a = data.address || {};
-        const city = a.city || a.town || a.village || a.municipality || '';
+        const city  = a.city || a.town || a.village || a.municipality || '';
         const label = [city, a.country].filter(Boolean).join(', ');
         if (label) {
           const uni = document.getElementById('searchUnified');
-          if (uni) uni.value = label;
+          if (uni && !uni.matches(':focus')) uni.value = label;
           const hero = document.getElementById('heroLocation');
           if (hero && !hero.value) hero.value = label;
           const cityEl = document.querySelector('[data-i18n="mapCity"]');
@@ -8105,19 +8144,13 @@ function detectUserLocation(auto = false) {
   }
 
   function onGeoError(err) {
-    _cleanup();
-    // Fallback — keep Portugal-wide view
-    if (!_locationObtained) {
-      currentMapCenter = PORTUGAL_CENTER;
-      if (radiusCircle) radiusCircle.setLatLng(PORTUGAL_CENTER);
-    }
-    if (!auto && map) map.setView(PORTUGAL_CENTER, 7, { animate: true });
+    if (!_geoCleanup(myGen)) return; // stale
 
     if (auto) {
-      // Silent failure on auto — pulse the locate button so user knows to tap it
+      // Silent auto failure — pulse the locate button to invite a tap
       if (btn) {
         btn.classList.add('pulse-hint');
-        setTimeout(() => btn && btn.classList.remove('pulse-hint'), 6000);
+        setTimeout(() => btn && btn.classList.remove('pulse-hint'), 5000);
       }
     } else {
       const msgs = {
@@ -8129,7 +8162,14 @@ function detectUserLocation(auto = false) {
     }
   }
 
-  navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError, geoOpts);
+  try {
+    navigator.geolocation.getCurrentPosition(onGeoSuccess, onGeoError, geoOpts);
+  } catch(e) {
+    // Synchronous exception (rare) — reset state so button isn't stuck
+    _geoInProgress = false;
+    _geoCleanup(myGen);
+    if (!auto) showToast(t('toastGeoError'), 'error');
+  }
 }
 
 // ── HELP PANEL ──────────────────────────────────────────────────────────────

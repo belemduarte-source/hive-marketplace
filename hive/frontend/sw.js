@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hive-v20';
+const CACHE_NAME = 'hive-v21';
 const ASSETS = [
   '/manifest.json',
   '/api.js'
