@@ -7401,9 +7401,6 @@ function _getCachedDistance(centerLat, centerLng, c) {
 function invalidateDistanceCache() { _distCacheCenter = null; _distCache = {}; }
 
 function getFiltered() {
-  // ── 1. SECTOR FILTER — must select at least one activity to see companies ──
-  if (activeSectors.size === 0) return [];
-
   const searchRadius = getRadiusKm();
   const cc = radiusCircle ? radiusCircle.getLatLng() : { lat: currentMapCenter[0], lng: currentMapCenter[1] };
 
@@ -7414,14 +7411,15 @@ function getFiltered() {
   const filterNew      = document.getElementById('filterNew')?.checked;
   const kw = _keywordFilter || '';
   const sort = document.querySelector('input[name="sort"]:checked')?.value || 'all';
+  const hasSectorFilter = activeSectors.size > 0;
 
   // Single-pass filter (no intermediate array copies)
   const res = [];
   for (let i = 0; i < companies.length; i++) {
     const c = companies[i];
-    // Sector
-    if (!activeSectors.has(c.sector) && !(c.sectors && c.sectors.some(s => activeSectors.has(s)))) continue;
-    // Radius (cached Haversine)
+    // Sector — only applied when the user has selected at least one sector
+    if (hasSectorFilter && !activeSectors.has(c.sector) && !(c.sectors && c.sectors.some(s => activeSectors.has(s)))) continue;
+    // Radius (cached Haversine) — always applied
     if (_getCachedDistance(cc.lat, cc.lng, c) > searchRadius) continue;
     // Rating
     if (minRating > 0 && c.rating < minRating) continue;
@@ -7468,12 +7466,9 @@ function _runApplyFilters() {
   if (hint && hintText) {
     if (filtered.length > 0) {
       hint.classList.add('hidden');
-    } else if (activeSectors.size > 0) {
-      hint.classList.remove('hidden');
-      hintText.innerHTML = t('mapHintNoResults') + '<br><span>' + t('mapHintNoResultsSub') + '</span>';
     } else {
       hint.classList.remove('hidden');
-      hintText.innerHTML = t('mapHintSelectSector') + '<br><span>' + t('mapHintSelectSectorSub') + '</span>';
+      hintText.innerHTML = t('mapHintNoResults') + '<br><span>' + t('mapHintNoResultsSub') + '</span>';
     }
   }
   // Filter badge count
