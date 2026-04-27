@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
-const { requireAuth, requireAdmin } = require('../middleware/auth');
+const { requireAuth, requireAdmin, optionalAuth } = require('../middleware/auth');
 const reviewsRouter = require('./reviews');
 const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail, sendContactEmail } = require('../email');
 
@@ -128,15 +128,24 @@ router.get('/:id/reject', async (req, res, next) => {
   }
 });
 
-// GET /api/companies/:id — public, only approved
-router.get('/:id', async (req, res, next) => {
+// GET /api/companies/:id — public, only approved.
+// Private credentials (certidão permanente, alvará) are redacted unless the
+// caller is the company owner or an admin.
+router.get('/:id', optionalAuth, async (req, res, next) => {
   try {
     const { rows } = await pool.query(
       `SELECT * FROM companies WHERE id = $1 AND status = 'approved'`,
       [req.params.id]
     );
     if (!rows[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
-    res.json(rows[0]);
+    const company = rows[0];
+    const isOwner = req.user && req.user.id === company.created_by;
+    const isAdmin = req.user && req.user.is_admin;
+    if (!isOwner && !isAdmin) {
+      delete company.certidao_permanente;
+      delete company.alvara;
+    }
+    res.json(company);
   } catch (e) {
     next(e);
   }
@@ -155,6 +164,12 @@ router.post('/', async (req, res, next) => {
     if (!name || lat == null || lng == null || isNaN(Number(lat)) || isNaN(Number(lng))) {
       return res.status(400).json({ error: 'name, lat e lng são obrigatórios' });
     }
+    // Certidão Permanente is mandatory at registration to prove the company is
+    // a real, registered Portuguese commercial entity.
+    const certidao = certidao_permanente && String(certidao_permanente).trim();
+    if (!certidao || certidao.replace(/[\s-]/g, '').length < 8) {
+      return res.status(400).json({ error: 'Código da certidão permanente é obrigatório (mínimo 8 caracteres).' });
+    }
 
     const { rows } = await pool.query(
       `INSERT INTO companies
@@ -170,7 +185,7 @@ router.post('/', async (req, res, next) => {
         sector || (sectors && sectors[0]) || null,
         cae || null,
         alvara || null,
-        certidao_permanente || null,
+        certidao,
         address || null,
         postal_code || null,
         city || null,

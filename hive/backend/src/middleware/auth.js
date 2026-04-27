@@ -19,4 +19,15 @@ function requireAdmin(req, res, next) {
   });
 }
 
-module.exports = { requireAuth, requireAdmin };
+// Like requireAuth, but never blocks the request — populates req.user when a
+// valid token is present, leaves it undefined otherwise. Useful for endpoints
+// whose response shape depends on whether the caller is the resource owner.
+function optionalAuth(req, res, next) {
+  const token = req.cookies && req.cookies.hive_token;
+  if (token) {
+    try { req.user = jwt.verify(token, process.env.JWT_SECRET); } catch { /* ignore */ }
+  }
+  next();
+}
+
+module.exports = { requireAuth, requireAdmin, optionalAuth };

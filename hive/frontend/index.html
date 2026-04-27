@@ -3283,6 +3283,11 @@
         <input type="text" id="regAlvara" data-i18n-ph="regAlvaraPh" placeholder="Ex: 123/2024"/>
         <div class="form-hint">Número de alvará de construção, se aplicável.</div>
       </div>
+      <div class="form-row">
+        <label><span data-i18n="regCertidao">Código da Certidão Permanente</span> <span class="req">*</span></label>
+        <input type="text" id="regCertidao" data-i18n-ph="regCertidaoPh" placeholder="Ex: 1234-5678-9012" maxlength="32" autocomplete="off"/>
+        <div class="form-hint" data-i18n="regCertidaoHint">Código de acesso à certidão permanente do registo comercial (12 dígitos, formato XXXX-XXXX-XXXX).</div>
+      </div>
       <div class="reg-step-nav">
         <button class="btn-cancel" onclick="closeRegister()" data-i18n="regCancel">Cancelar</button>
         <button class="btn-step-next" onclick="regNextStep(1)"><span data-i18n="regStepNext">Seguinte</span> →</button>
@@ -3768,6 +3773,10 @@ const translations = {
     regCae:'Código CAE', regCaePh:'Ex: CAE 41 – Construção',
     regAlvara:'Alvará', regAlvaraPh:'Nº do Alvará de Licenciamento',
     valAlvara:'Introduza o número do Alvará',
+    regCertidao:'Código da Certidão Permanente', regCertidaoPh:'Ex: 1234-5678-9012',
+    regCertidaoHint:'Código de acesso à certidão permanente do registo comercial (12 dígitos, formato XXXX-XXXX-XXXX).',
+    valCertidao:'Introduza o código da certidão permanente.',
+    valCertidaoFormat:'Código da certidão permanente inválido (mínimo 8 caracteres alfanuméricos).',
     regAddress:'Morada', regAddressPh:'Ex: Av. da Liberdade 200, Lisboa',
     regZone:'Localidade / Zona',
     regEmail:'Email de Contacto', regEmailPh:'empresa@email.pt',
@@ -4044,6 +4053,10 @@ const translations = {
     regCae:'CAE Code', regCaePh:'Ex: CAE 41 – Construction',
     regAlvara:'Business Licence (Alvará)', regAlvaraPh:'Licence number',
     valAlvara:'Please enter the business licence number',
+    regCertidao:'Permanent Commercial Certificate Code', regCertidaoPh:'Ex: 1234-5678-9012',
+    regCertidaoHint:'Access code for the Portuguese commercial registry (Certidão Permanente — 12 digits, format XXXX-XXXX-XXXX).',
+    valCertidao:'Please enter the Certidão Permanente code.',
+    valCertidaoFormat:'Invalid Certidão Permanente code (minimum 8 alphanumeric characters).',
     regAddress:'Address', regAddressPh:'Ex: Main Street 200, Lisbon',
     regZone:'Locality / Zone',
     regEmail:'Contact Email', regEmailPh:'company@email.com',
@@ -4323,6 +4336,10 @@ const translations = {
     regCae:'Code CAE', regCaePh:'Ex : CAE 41 – Construction',
     regAlvara:'Licence Commerciale (Alvará)', regAlvaraPh:'Numéro de licence',
     valAlvara:'Veuillez saisir le numéro de licence commerciale',
+    regCertidao:'Code du Certificat Permanent', regCertidaoPh:'Ex : 1234-5678-9012',
+    regCertidaoHint:"Code d'accès au registre commercial portugais (Certidão Permanente — 12 chiffres, format XXXX-XXXX-XXXX).",
+    valCertidao:'Veuillez saisir le code du Certificat Permanent.',
+    valCertidaoFormat:'Code du Certificat Permanent invalide (minimum 8 caractères alphanumériques).',
     regAddress:'Adresse', regAddressPh:'Ex : Av. da Liberdade 200, Lisbonne',
     regZone:'Localité / Zone',
     regEmail:'E-mail de Contact', regEmailPh:'entreprise@email.fr',
@@ -4598,6 +4615,10 @@ const translations = {
     regCae:'Código CAE', regCaePh:'Ej: CAE 41 – Construcción',
     regAlvara:'Licencia', regAlvaraPh:'Nº de Licencia',
     valAlvara:'Introduzca el número de Licencia',
+    regCertidao:'Código del Certificado Permanente', regCertidaoPh:'Ej: 1234-5678-9012',
+    regCertidaoHint:'Código de acceso al registro mercantil portugués (Certidão Permanente — 12 dígitos, formato XXXX-XXXX-XXXX).',
+    valCertidao:'Introduzca el código del Certificado Permanente.',
+    valCertidaoFormat:'Código del Certificado Permanente inválido (mínimo 8 caracteres alfanuméricos).',
     regAddress:'Dirección', regAddressPh:'Ej: Calle Mayor 10, Madrid',
     regZone:'Localidad / Zona',
     regEmail:'Email de Contacto', regEmailPh:'empresa@email.es',
@@ -4864,6 +4885,10 @@ const translations = {
     regCae:'CAE-Code', regCaePh:'z. B. CAE 41 – Hochbau',
     regAlvara:'Gewerbeschein', regAlvaraPh:'Gewerberegisternummer',
     valAlvara:'Bitte Gewerberegisternummer eingeben.',
+    regCertidao:'Code des Handelsregisterauszugs', regCertidaoPh:'z. B. 1234-5678-9012',
+    regCertidaoHint:'Zugangscode zum portugiesischen Handelsregister (Certidão Permanente — 12-stellig, Format XXXX-XXXX-XXXX).',
+    valCertidao:'Bitte den Code des Handelsregisterauszugs eingeben.',
+    valCertidaoFormat:'Ungültiger Code (mindestens 8 alphanumerische Zeichen).',
     regAddress:'Adresse', regAddressPh:'z. B. Hauptstraße 200, Lissabon',
     regZone:'Stadt/Region',
     regEmail:'Kontakt-E-Mail', regEmailPh:'firma@email.com',
@@ -5949,6 +5974,8 @@ function dbRowToCompany(row) {
     id:        row.id,
     name:      row.name,
     cae:       row.cae       || '',
+    alvara:    row.alvara    || '',
+    certidao_permanente: row.certidao_permanente || '',
     sector:    row.sector    || (row.sectors || [])[0] || '',
     sectors:   row.sectors   || [],
     rating:    parseFloat(row.rating) || 0,
@@ -7901,9 +7928,12 @@ function submitRegister() {
   const phone   = document.getElementById('regPhone').value.trim();
   const tagsRaw = document.getElementById('regTags').value.trim();
   const alvara  = document.getElementById('regAlvara')?.value.trim() || '';
+  const certidao = (document.getElementById('regCertidao')?.value || '').trim();
 
   if (!name)           { showToast(t('valName'));    return; }
   if (sectors.length === 0) { showToast(t('valSector'));  return; }
+  if (!certidao)       { showToast(t('valCertidao')); return; }
+  if (certidao.replace(/[\s-]/g, '').length < 8) { showToast(t('valCertidaoFormat')); return; }
   if (!address)        { showToast(t('valAddress')); return; }
   if (!email)          { showToast(t('valEmail'));   return; }
   if (!phone)          { showToast('Introduza o número de telemóvel da empresa'); return; }
@@ -7996,6 +8026,7 @@ function submitRegister() {
       name,
       cae:         cae || '',
       alvara:      alvara || '',
+      certidao_permanente: certidao,
       sector,
       sectors,
       rating:      0, reviews: 0,
@@ -8024,7 +8055,8 @@ function submitRegister() {
         // PUT — update existing company
         await api.updateCompany(editId, {
           name, sectors, sector: sectors[0] || '', cae: cae || null,
-          alvara: alvara || null, address, postal_code: postalCode, city, country,
+          alvara: alvara || null, certidao_permanente: certidao || null,
+          address, postal_code: postalCode, city, country,
           email, phone, website: document.getElementById('regWebsite')?.value.trim() || null,
           tags, description: document.getElementById('regDesc')?.value.trim() || null,
         });
@@ -8032,6 +8064,7 @@ function submitRegister() {
         const idx2 = companies.findIndex(x => x.id === editId);
         if (idx2 >= 0) {
           Object.assign(companies[idx2], { name, sectors, sector: sectors[0] || '', cae, alvara,
+            certidao_permanente: certidao,
             address, postal_code: postalCode, city, country, email, phone, tags,
             description: document.getElementById('regDesc')?.value.trim() || '' });
         }
@@ -8047,7 +8080,7 @@ function submitRegister() {
       }
 
       // Reset form
-      ['regName','regCae','regAlvara','regAddress','regEmail','regPhone','regWebsite','regTags','regDesc','regPostalCode']
+      ['regName','regCae','regAlvara','regCertidao','regAddress','regEmail','regPhone','regWebsite','regTags','regDesc','regPostalCode']
         .forEach(fid => { const el = document.getElementById(fid); if(el) el.value = ''; });
       _regSelectedSectors = [];
       renderRegisterSectorSelect();
@@ -8889,6 +8922,10 @@ function regNextStep(fromStep) {
     const name = document.getElementById('regName')?.value.trim();
     if (!name) { showToast(t('valName')); return; }
     if (_regSelectedSectors.length === 0) { showToast(t('valSector')); return; }
+    const certidao = (document.getElementById('regCertidao')?.value || '').trim();
+    if (!certidao) { showToast(t('valCertidao')); return; }
+    // Permissive format check — at least 8 alphanumeric chars (ignoring dashes/spaces)
+    if (certidao.replace(/[\s-]/g, '').length < 8) { showToast(t('valCertidaoFormat')); return; }
   } else if (fromStep === 2) {
     const country = document.getElementById('regCountry')?.value;
     const city = document.getElementById('regCity')?.value;
@@ -8986,10 +9023,19 @@ function closeProfilePanel(e) {
 }
 
 // Open the register modal pre-filled for editing an existing company
-function profileEditCompany(companyId) {
+async function profileEditCompany(companyId) {
   const c = companies.find(x => x.id === companyId);
   if (!c) return;
   closeProfilePanel();
+
+  // Fetch the full record so private fields (alvará, certidão permanente)
+  // — which are intentionally absent from the public list endpoint —
+  // are available to pre-fill the form.
+  let full = c;
+  try {
+    const fresh = await api.getCompany(companyId);
+    if (fresh) full = { ...c, ...fresh };
+  } catch (_) { /* fall back to list snapshot */ }
 
   // Open the register modal and pre-fill step 1 fields after a brief delay
   openRegister();
@@ -8998,21 +9044,23 @@ function profileEditCompany(companyId) {
     const nameEl = document.getElementById('regName');
     const caeEl  = document.getElementById('regCae');
     const alvaraEl = document.getElementById('regAlvara');
-    if (nameEl)   nameEl.value   = c.name || '';
-    if (caeEl)    caeEl.value    = c.cae  || '';
-    if (alvaraEl) alvaraEl.value = c.alvara || '';
+    const certidaoEl = document.getElementById('regCertidao');
+    if (nameEl)     nameEl.value     = full.name || '';
+    if (caeEl)      caeEl.value      = full.cae  || '';
+    if (alvaraEl)   alvaraEl.value   = full.alvara || '';
+    if (certidaoEl) certidaoEl.value = full.certidao_permanente || '';
 
     // Pre-select sectors
-    _regSelectedSectors = (c.sectors || (c.sector ? [c.sector] : [])).slice();
+    _regSelectedSectors = (full.sectors || (full.sector ? [full.sector] : [])).slice();
     if (typeof renderRegisterSectorSelect === 'function') renderRegisterSectorSelect();
 
     // Pre-fill step 2 location
     const countryEl = document.getElementById('regCountry');
     const postalEl  = document.getElementById('regPostalCode');
     const addressEl = document.getElementById('regAddress');
-    if (countryEl) { countryEl.value = c.country || 'pt'; countryEl.dispatchEvent(new Event('change')); }
-    if (postalEl)  postalEl.value  = c.postal_code || '';
-    if (addressEl) addressEl.value = c.address || '';
+    if (countryEl) { countryEl.value = full.country || 'pt'; countryEl.dispatchEvent(new Event('change')); }
+    if (postalEl)  postalEl.value  = full.postal_code || '';
+    if (addressEl) addressEl.value = full.address || '';
 
     // Pre-fill step 3 contacts
     const emailEl  = document.getElementById('regEmail');
@@ -9020,11 +9068,11 @@ function profileEditCompany(companyId) {
     const websiteEl= document.getElementById('regWebsite');
     const tagsEl   = document.getElementById('regTags');
     const descEl   = document.getElementById('regDesc');
-    if (emailEl)   emailEl.value   = c.email   || '';
-    if (phoneEl)   phoneEl.value   = c.phone   || '';
-    if (websiteEl) websiteEl.value = c.website || '';
-    if (tagsEl)    tagsEl.value    = (c.tags || []).join(', ');
-    if (descEl)    descEl.value    = c.description || '';
+    if (emailEl)   emailEl.value   = full.email   || '';
+    if (phoneEl)   phoneEl.value   = full.phone   || '';
+    if (websiteEl) websiteEl.value = full.website || '';
+    if (tagsEl)    tagsEl.value    = (full.tags || []).join(', ');
+    if (descEl)    descEl.value    = full.description || '';
 
     // Store the company id being edited so submitRegister can PUT instead of POST
     window._editingCompanyId = companyId;
