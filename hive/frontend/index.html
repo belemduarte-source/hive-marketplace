@@ -20,6 +20,8 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.min.css"/>
   <!-- Hive API client (replaces Supabase) -->
   <script src="api.js"></script>
+  <!-- Google Identity Services (Sign-in with Google) -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
   <style>
     /* Cross-device baseline */
     html{
@@ -486,6 +488,10 @@
     .auth-tab:hover{color:var(--text)}
     .auth-tab.active{color:var(--primary);border-bottom-color:var(--primary)}
     .auth-panel{animation:fadeUp .25s ease}
+    .google-btn-slot{display:flex;justify-content:center;margin-bottom:14px;min-height:0}
+    .google-btn-slot:empty{display:none}
+    .auth-divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:11px;margin:0 0 14px 0;text-transform:uppercase;letter-spacing:.05em}
+    .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
     .auth-type-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px}
     .auth-type-card{border:2px solid var(--border);border-radius:12px;padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg)}
     .auth-type-card:hover{border-color:var(--primary);background:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
@@ -3181,6 +3187,8 @@
 
     <!-- LOGIN TAB -->
     <div class="auth-panel" id="authLogin">
+      <div id="googleLoginSlot" class="google-btn-slot"></div>
+      <div id="googleLoginDivider" class="auth-divider" style="display:none"><span>ou continue com email</span></div>
       <div class="form-row"><label>Email</label><input type="email" id="loginEmail" placeholder="email@exemplo.com"/></div>
       <div class="form-row"><label>Palavra-passe</label><input type="password" id="loginPass" placeholder="••••••••"/></div>
       <div style="text-align:right;margin-bottom:12px"><a href="#" style="font-size:11px;color:var(--primary);text-decoration:none">Esqueceu a palavra-passe?</a></div>
@@ -3212,6 +3220,8 @@
           <button class="auth-back" onclick="regGoBack()">←</button>
           <div id="regTypeLabel" style="font-size:13px;font-weight:700;color:var(--text)"></div>
         </div>
+        <div id="googleRegisterSlot" class="google-btn-slot"></div>
+        <div id="googleRegisterDivider" class="auth-divider" style="display:none"><span>ou preencha os dados</span></div>
         <div class="form-row"><label><span data-i18n="regAuthNameLabel">Nome completo</span> <span class="req">*</span></label><input type="text" id="regAuthName" placeholder="O seu nome" data-i18n-ph="regAuthNamePh"/></div>
         <!-- Company name - only for empresa -->
         <div class="form-row" id="regCompanyRow" style="display:none"><label><span data-i18n="regAuthCompanyLabel">Nome da empresa</span> <span class="req">*</span></label><input type="text" id="regAuthCompany" placeholder="Nome da empresa" data-i18n-ph="regAuthCompanyPh"/></div>
@@ -8363,6 +8373,8 @@ function closeGeoHelp() {
 function openLogin() {
   const ov = document.getElementById('loginOverlay');
   if (ov) { ov.classList.add('open'); switchLoginTab('login'); }
+  // Re-render the Google button now the slot is visible
+  if (typeof _renderGoogleButtons === 'function') _renderGoogleButtons();
 }
 function closeLogin() {
   const ov = document.getElementById('loginOverlay');
@@ -8385,6 +8397,8 @@ function selectUserType(type, el) {
     document.getElementById('regCompanyRow').style.display = type === 'empresa' ? 'block' : 'none';
     document.getElementById('regPhoneRow').style.display = type === 'empresa' ? 'block' : 'none';
     document.getElementById('regTypeLabel').textContent = type === 'empresa' ? t('regTypeCompany') : t('regTypeClient');
+    // Google button is now visible inside the register panel
+    if (typeof _renderGoogleButtons === 'function') _renderGoogleButtons();
   }, 200);
 }
 function regGoBack() {
@@ -8449,6 +8463,79 @@ async function doLogout() {
   updateNavAuth();
   showToast('Sessão terminada');
   closeAvatarMenu();
+  // Stop Google from auto-signing the user back in next visit
+  try { if (window.google && google.accounts && google.accounts.id) google.accounts.id.disableAutoSelect(); } catch(_) {}
+}
+
+// ── GOOGLE SIGN-IN ───────────────────────────────────────────────────────────
+// Loads the OAuth client ID from /api/auth/config, initializes Google Identity
+// Services, and renders the "Continue with Google" button into the login and
+// register panels. If GOOGLE_CLIENT_ID is unset on the backend, the buttons
+// stay hidden and the rest of the auth UI keeps working.
+let _googleConfig = null;
+let _googleReady  = false;
+
+(async function _loadGoogleConfig() {
+  try { _googleConfig = await api.getAuthConfig(); }
+  catch (_) { _googleConfig = { googleClientId: '' }; }
+  _initGoogleSignIn();
+})();
+
+function _initGoogleSignIn() {
+  if (_googleReady) return;
+  if (!_googleConfig || !_googleConfig.googleClientId) return; // disabled
+  if (typeof google === 'undefined' || !google.accounts || !google.accounts.id) {
+    // GSI script hasn't loaded yet — retry shortly
+    setTimeout(_initGoogleSignIn, 200);
+    return;
+  }
+  google.accounts.id.initialize({
+    client_id: _googleConfig.googleClientId,
+    callback:  _onGoogleCredential,
+    ux_mode:   'popup',
+    auto_select: false,
+  });
+  _googleReady = true;
+  _renderGoogleButtons();
+}
+
+function _renderGoogleButtons() {
+  if (!_googleReady) return;
+  const opts = {
+    type: 'standard', theme: 'outline', size: 'large',
+    text: 'continue_with', shape: 'rectangular',
+    logo_alignment: 'left', width: 320,
+  };
+  const slots = [
+    ['googleLoginSlot',    'googleLoginDivider'],
+    ['googleRegisterSlot', 'googleRegisterDivider'],
+  ];
+  slots.forEach(([slotId, dividerId]) => {
+    const slot = document.getElementById(slotId);
+    if (!slot) return;
+    slot.innerHTML = '';
+    google.accounts.id.renderButton(slot, opts);
+    const div = document.getElementById(dividerId);
+    if (div) div.style.display = 'flex';
+  });
+}
+
+async function _onGoogleCredential(response) {
+  try {
+    const idToken = response && response.credential;
+    if (!idToken) throw new Error('Sem credencial Google');
+    // regUserType is populated when a registering user picked a role;
+    // otherwise the backend defaults to 'cliente'.
+    const { user } = await api.loginWithGoogle(idToken, regUserType || undefined);
+    sessionStorage.setItem('hive_user', JSON.stringify(user));
+    isAdminMode = user.is_admin === true;
+    closeLogin();
+    updateNavAuth();
+    showToast('Bem-vindo, ' + user.name + '!');
+    if (selectedId) openDetail(selectedId);
+  } catch (e) {
+    showToast(e.message || 'Falha ao iniciar sessão com Google');
+  }
 }
 function updateNavAuth() {
   const area = document.getElementById('authArea');

@@ -6,7 +6,9 @@ CREATE TABLE IF NOT EXISTS users (
   id            BIGSERIAL PRIMARY KEY,
   name          TEXT NOT NULL,
   email         TEXT NOT NULL UNIQUE,
-  password_hash TEXT NOT NULL,
+  password_hash TEXT,
+  google_id     TEXT UNIQUE,
+  picture       TEXT,
   type          TEXT NOT NULL CHECK (type IN ('empresa', 'cliente')),
   company       TEXT DEFAULT '',
   phone         TEXT DEFAULT '',
@@ -14,6 +16,12 @@ CREATE TABLE IF NOT EXISTS users (
   created_at    TIMESTAMPTZ DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
+CREATE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id);
+
+-- Migrations for existing deployments (idempotent — safe to re-run)
+ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id TEXT UNIQUE;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS picture TEXT;
 
 CREATE TABLE IF NOT EXISTS companies (
   id          BIGSERIAL PRIMARY KEY,

@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const { OAuth2Client } = require('google-auth-library');
 const pool = require('../db');
 const { requireAuth } = require('../middleware/auth');
 
@@ -12,6 +13,15 @@ const COOKIE_OPTS = {
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 };
 
+// Lazy-init Google client so missing GOOGLE_CLIENT_ID only breaks /auth/google,
+// not the whole server.
+let _googleClient = null;
+function googleClient() {
+  if (!process.env.GOOGLE_CLIENT_ID) return null;
+  if (!_googleClient) _googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+  return _googleClient;
+}
+
 function signToken(user) {
   return jwt.sign(
     { id: user.id, email: user.email, name: user.name, type: user.type, is_admin: user.is_admin },
@@ -21,7 +31,11 @@ function signToken(user) {
 }
 
 function safeUser(user) {
-  return { id: user.id, name: user.name, email: user.email, type: user.type, company: user.company, phone: user.phone, is_admin: user.is_admin };
+  return {
+    id: user.id, name: user.name, email: user.email, type: user.type,
+    company: user.company, phone: user.phone, is_admin: user.is_admin,
+    picture: user.picture || null,
+  };
 }
 
 // POST /api/auth/register
@@ -83,6 +97,88 @@ router.get('/me', requireAuth, async (req, res, next) => {
     const { rows } = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
     if (!rows[0]) return res.status(401).json({ error: 'Utilizador não encontrado' });
     res.json({ user: safeUser(rows[0]) });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// GET /api/auth/config — public; returns the Google OAuth client ID for the
+// frontend to initialize Google Identity Services. Empty string means Google
+// sign-in is disabled (button hidden).
+router.get('/config', (req, res) => {
+  res.json({ googleClientId: process.env.GOOGLE_CLIENT_ID || '' });
+});
+
+// POST /api/auth/google — exchange a Google ID token for a Hive session cookie
+// Body: { idToken: string, type?: 'empresa' | 'cliente' }
+//
+// Behaviour:
+//   - Verifies the ID token against GOOGLE_CLIENT_ID
+//   - If a user exists with that google_id → log them in
+//   - Else if a user exists with that email → link google_id to it, log them in
+//   - Else → create a new user (default type = 'cliente') and log them in
+router.post('/google', async (req, res, next) => {
+  try {
+    const client = googleClient();
+    if (!client) {
+      return res.status(503).json({ error: 'Google sign-in não está configurado' });
+    }
+
+    const { idToken } = req.body;
+    let { type } = req.body;
+    if (!idToken) return res.status(400).json({ error: 'idToken é obrigatório' });
+    if (type && !['empresa', 'cliente'].includes(type)) type = undefined;
+
+    let payload;
+    try {
+      const ticket = await client.verifyIdToken({
+        idToken,
+        audience: process.env.GOOGLE_CLIENT_ID,
+      });
+      payload = ticket.getPayload();
+    } catch (e) {
+      return res.status(401).json({ error: 'Token Google inválido' });
+    }
+
+    if (!payload || !payload.email_verified) {
+      return res.status(401).json({ error: 'Email Google não verificado' });
+    }
+
+    const googleId = payload.sub;
+    const email    = String(payload.email).toLowerCase();
+    const name     = payload.name || payload.given_name || email.split('@')[0];
+    const picture  = payload.picture || null;
+
+    // 1. Try google_id
+    let { rows } = await pool.query('SELECT * FROM users WHERE google_id = $1', [googleId]);
+    let user = rows[0];
+
+    // 2. Else try email — link this Google account to it
+    if (!user) {
+      ({ rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]));
+      if (rows[0]) {
+        const { rows: updated } = await pool.query(
+          `UPDATE users SET google_id = $1, picture = COALESCE(picture, $2) WHERE id = $3 RETURNING *`,
+          [googleId, picture, rows[0].id]
+        );
+        user = updated[0];
+      }
+    }
+
+    // 3. Else create a new user (default type = cliente)
+    if (!user) {
+      const { rows: created } = await pool.query(
+        `INSERT INTO users (name, email, google_id, picture, type, company, phone)
+         VALUES ($1, $2, $3, $4, $5, '', '')
+         RETURNING *`,
+        [name, email, googleId, picture, type || 'cliente']
+      );
+      user = created[0];
+    }
+
+    const token = signToken(user);
+    res.cookie('hive_token', token, COOKIE_OPTS);
+    res.json({ user: safeUser(user) });
   } catch (e) {
     next(e);
   }

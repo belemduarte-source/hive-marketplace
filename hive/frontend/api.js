@@ -104,6 +104,14 @@ const api = {
   getMe() {
     return apiFetch('/auth/me');
   },
+  // Google sign-in: exchanges a Google ID token for a Hive session cookie
+  loginWithGoogle(idToken, type) {
+    return apiFetch('/auth/google', { method: 'POST', body: { idToken, type } });
+  },
+  // Returns { googleClientId } — empty string if Google sign-in is disabled
+  getAuthConfig() {
+    return apiFetch('/auth/config');
+  },
 };
 
 window.api = api;
