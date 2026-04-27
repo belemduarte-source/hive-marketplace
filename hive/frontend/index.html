@@ -3929,7 +3929,19 @@ const translations = {
     adNavSub:'10 especialistas, 1 plataforma',
     adMainSub:'8 áreas, 1 plataforma',
     adCta:'Encontre<br>tudo aqui',
-    footerRgpd:'RGPD'
+    footerRgpd:'RGPD',
+    successTitle:'Pedido Enviado!',
+    successSub:'O seu pedido foi recebido e está a aguardar validação. Receberá um email de confirmação assim que a empresa for aprovada.',
+    successClose:'Fechar',
+    sortAll:'Todas',
+    regStep1Label:'Identidade',
+    regStep2Label:'Localização',
+    regStep3Label:'Detalhes',
+    regStepNext:'Seguinte',
+    regStepBack:'Voltar',
+    regCountry:'País',
+    regPostalCode:'Código Postal',
+    regCity:'Localidade / Cidade'
   },
   en: {
     navHome:'Home', navSearch:'Search', navBuyer:'Buyer Panel',
@@ -4193,7 +4205,19 @@ const translations = {
     adNavSub:'10 specialists, 1 platform',
     adMainSub:'8 areas, 1 platform',
     adCta:'Find<br>everything here',
-    footerRgpd:'GDPR'
+    footerRgpd:'GDPR',
+    successTitle:'Request Sent!',
+    successSub:'Your request has been received and is awaiting validation. You will receive a confirmation email once the company is approved.',
+    successClose:'Close',
+    sortAll:'All',
+    regStep1Label:'Identity',
+    regStep2Label:'Location',
+    regStep3Label:'Details',
+    regStepNext:'Next',
+    regStepBack:'Back',
+    regCountry:'Country',
+    regPostalCode:'Postal Code',
+    regCity:'Locality / City'
   },
   fr: {
     navHome:'Accueil', navSearch:'Recherche', navBuyer:'Espace Acheteur',
@@ -4460,7 +4484,19 @@ const translations = {
     adNavSub:'10 spécialistes, 1 plateforme',
     adMainSub:'8 domaines, 1 plateforme',
     adCta:'Trouvez<br>tout ici',
-    footerRgpd:'RGPD'
+    footerRgpd:'RGPD',
+    successTitle:'Demande envoyée !',
+    successSub:'Votre demande a été reçue et est en attente de validation. Vous recevrez un email de confirmation dès que l\'entreprise sera approuvée.',
+    successClose:'Fermer',
+    sortAll:'Toutes',
+    regStep1Label:'Identité',
+    regStep2Label:'Localisation',
+    regStep3Label:'Détails',
+    regStepNext:'Suivant',
+    regStepBack:'Retour',
+    regCountry:'Pays',
+    regPostalCode:'Code Postal',
+    regCity:'Localité / Ville'
   },
 
   es: {
@@ -4723,7 +4759,10 @@ const translations = {
     adMainSub:'8 áreas, 1 plataforma',
     adCta:'Encuentre<br>todo aquí',
     footerRgpd:'RGPD',
-    sortAll:'Todos'
+    sortAll:'Todos',
+    regCountry:'País',
+    regPostalCode:'Código Postal',
+    regCity:'Localidad / Ciudad'
   },
 
   de: {
@@ -4986,7 +5025,10 @@ const translations = {
     adMainSub:'8 Gewerke, 1 Plattform',
     adCta:'Hier alles<br>finden',
     footerRgpd:'DSGVO',
-    sortAll:'Alle'
+    sortAll:'Alle',
+    regCountry:'Land',
+    regPostalCode:'Postleitzahl',
+    regCity:'Ort / Stadt'
   }
 };
 
@@ -5413,16 +5455,6 @@ function heroSearch() {
   applyFilters.now();
 }
 
-function heroQuickSearch(sectorKey) {
-  showTab('search');
-  activeSectors.clear();
-  _keywordFilter = '';
-  activeSectors.add(sectorKey);
-  updateSectorActiveStates();
-  renderSectorFilters();
-  applyFilters.now();
-}
-
 // ── HERO CATEGORY STRIP ───────────────────────────────────────────────────
 function renderHeroCats() {
   const strip = document.getElementById('lpHeroCats');
@@ -5468,35 +5500,6 @@ const LP_CATS = [
   { key:'chave_na_mao',       emoji:'🔑',  label:'Chave na Mão', labelKey:'legendChaveNaMao',
     photo:'https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=600&q=80&auto=format&fit=crop&crop=center' },
 ];
-
-function renderLandingCategories() {
-  const grid = document.getElementById('lpCatsGrid');
-  if (!grid) return;
-  // Count companies per sector group
-  const groupCounts = {};
-  LP_CATS.forEach(cat => {
-    const group = SECTOR_HIERARCHY[cat.key];
-    if (!group) return;
-    const allSubKeys = Object.values(group.categories).flatMap(c => Object.keys(c.subcategories));
-    groupCounts[cat.key] = companies.filter(c =>
-      allSubKeys.includes(c.sector) || (c.sectors || []).some(s => allSubKeys.includes(s))
-    ).length;
-  });
-  grid.innerHTML = LP_CATS.map(cat => {
-    const count = groupCounts[cat.key] || 0;
-    const label = t(cat.labelKey) || cat.label;
-    const bgStyle = cat.photo
-      ? `background-image:url('${cat.photo}');background-size:cover;background-position:center`
-      : `background:${cat.bg || '#334155'}`;
-    return `
-      <div class="lp-cat-card lp-cat-photo" style="${bgStyle}" onclick="lpCatSearch('${cat.key}')">
-        <div class="lp-cat-photo-overlay"></div>
-        <div class="lp-cat-emoji">${cat.emoji}</div>
-        <div class="lp-cat-name">${label}</div>
-        ${count > 0 ? `<div class="lp-cat-count">${count} empresa${count !== 1 ? 's' : ''}</div>` : '<div class="lp-cat-count">em breve</div>'}
-      </div>`;
-  }).join('');
-}
 
 function lpCatSearch(groupKey) {
   showTab('search');
@@ -5654,23 +5657,6 @@ function updateLandingStats() {
     });
     elSpec.textContent = totalSubs;
   }
-}
-
-function renderHouseGrid() {
-  const grid = document.getElementById('houseGrid');
-  if (!grid) return;
-  const specs = translations[currentLang].houseSpecialties || translations.pt.houseSpecialties;
-  grid.innerHTML = specs.map(s => {
-    const svg = SPECIALTY_SVG[s.icon] || '';
-    return `
-    <div class="house-card">
-      <div class="house-card-icon">${svg}</div>
-      <div>
-        <div class="house-card-name">${s.name}</div>
-        <div class="house-card-sub">${s.sub}</div>
-      </div>
-    </div>`;
-  }).join('');
 }
 
 // ── LANGUAGE SWITCHER ──────────────────────────────────────────────────────────
@@ -5981,6 +5967,13 @@ function dbRowToCompany(row) {
   };
 }
 
+// Returns the highest numeric id + 1; falls back to current if no numeric ids
+// (e.g. server returns UUIDs). Avoids -Infinity / NaN from Math.max on empty/non-numeric.
+function computeNextCompanyId(list, current) {
+  const nums = list.map(c => Number(c.id)).filter(n => Number.isFinite(n));
+  return nums.length ? Math.max(...nums) + 1 : (current || 1);
+}
+
 // Load companies from backend API; renders markers when done
 async function loadCompaniesFromDB() {
   companies.length = 0;
@@ -5990,7 +5983,7 @@ async function loadCompaniesFromDB() {
       // Sort featured companies to top client-side (avoids full-table-scan ORDER BY in DB)
       data.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
       data.forEach(row => companies.push(dbRowToCompany(row)));
-      nextCompanyId = Math.max(...companies.map(c => Number(c.id))) + 1;
+      nextCompanyId = computeNextCompanyId(companies, nextCompanyId);
     }
   } catch(e) {
     showToast('Sem ligação ao servidor — a mostrar dados de demonstração');
@@ -6009,7 +6002,7 @@ async function loadCompaniesFromDB() {
         axes: [{l:'Qualidade',v:Math.min(5,d.rating||0)},{l:'Pontualidade',v:Math.min(5,Math.max(0,(d.rating||0)-0.2))},{l:'Atendimento',v:Math.min(5,Math.max(0,(d.rating||0)+0.1))},{l:'Preço',v:Math.min(5,Math.max(0,(d.rating||0)-0.3))}]
       });
     });
-    if (companies.length > 0) nextCompanyId = Math.max(...companies.map(c => Number(c.id))) + 1;
+    if (companies.length > 0) nextCompanyId = computeNextCompanyId(companies, nextCompanyId);
   }
   // Render
   // Pre-compute a lowercase search index per company so fuzzySearch
@@ -6055,17 +6048,6 @@ async function saveCompanyToDB(company) {
   return dbRowToCompany(saved);
 }
 
-// Legacy no-op kept so any remaining references don't throw
-function saveCompanies() { /* replaced by saveCompanyToDB() */ }
-
-function clearAllData() {
-  if (confirm('⚠️ Tem certeza que quer APAGAR TODAS as empresas registadas?\n\nIsso não pode ser desfeito!')) {
-    companies.length = 0;
-    nextCompanyId = 1;
-    location.reload();
-  }
-}
-
 // ── ADMIN MODE ──────────────────────────────────────────────────────────────
 // Admin status is server-authoritative — derived from JWT user claim
 let isAdminMode = (function() {
@@ -6074,12 +6056,6 @@ let isAdminMode = (function() {
     return u && u.is_admin === true;
   } catch { return false; }
 })();
-
-function toggleAdminMode() {
-  isAdminMode = !isAdminMode;
-  updateAdminUI();
-  showToast(isAdminMode ? '🔓 Modo Administrador ATIVO' : '🔒 Modo Administrador DESATIVO');
-}
 
 function updateAdminUI() {
   const editBtn = document.getElementById('dpEditBtn');
@@ -6586,6 +6562,18 @@ try {
   }).addTo(map);
 } catch(e) {
   console.error('Map init failed:', e);
+  // Surface a visible message on the map container so users see something is wrong
+  const mapEl = document.getElementById('map');
+  if (mapEl) {
+    mapEl.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:100%;padding:24px;text-align:center;color:#6b7280;background:#f5f7fa;font-family:Segoe UI,system-ui,sans-serif">'
+      + '<div style="font-size:48px;margin-bottom:12px">🗺️</div>'
+      + '<div style="font-size:16px;font-weight:700;color:#374151;margin-bottom:6px">Não foi possível carregar o mapa</div>'
+      + '<div style="font-size:13px;max-width:340px;line-height:1.5">Verifique a sua ligação e recarregue a página. Se o problema persistir, alguma extensão do browser pode estar a bloquear o serviço de mapas.</div>'
+      + '<button onclick="location.reload()" style="margin-top:16px;background:#f97316;color:#fff;border:0;padding:10px 24px;border-radius:8px;font-weight:700;cursor:pointer">Recarregar</button>'
+      + '</div>';
+  }
+  // Defer toast so showToast is defined by the time we call it
+  setTimeout(() => { try { showToast('⚠️ Mapa indisponível — verifique a sua ligação'); } catch(_) {} }, 500);
 }
 
 // Map drag does NOT move the search/radius center.
@@ -6709,13 +6697,6 @@ function addCompanyMarker(c) {
   else m.addTo(map);
 }
 
-// Refresh all popup content when language changes (called in applyI18n → applyFilters)
-function refreshPopups() {
-  companies.forEach(c => {
-    if (markerMap[c.id]) markerMap[c.id].setPopupContent(buildPopupHtml(c));
-  });
-}
-
 // Logarithmic slider: slider 0-100 → real km 5-600
 // slider=0 → 5km, slider=50 → ~50km, slider=100 → 600km
 function sliderToKm(sliderVal) {
@@ -6815,38 +6796,6 @@ function renderEmailTypeSelect() {
 }
 
 // ── FILTER SIDEBAR ────────────────────────────────────────────────────────────
-function getSectorCounts() {
-  const counts = {};
-  companies.forEach(c => { counts[c.sector] = (counts[c.sector] || 0) + 1; });
-  return counts;
-}
-
-function getHierarchyCounts() {
-  const counts = { groups: {}, categories: {}, subcategories: {} };
-
-  // Count by subcategory
-  companies.forEach(c => {
-    counts.subcategories[c.sector] = (counts.subcategories[c.sector] || 0) + 1;
-  });
-
-  // Count by category and group
-  Object.entries(SECTOR_HIERARCHY).forEach(([groupKey, group]) => {
-    let groupCount = 0;
-    Object.entries(group.categories).forEach(([categoryKey, category]) => {
-      let categoryCount = 0;
-      Object.keys(category.subcategories).forEach(subcatKey => {
-        const count = counts.subcategories[subcatKey] || 0;
-        categoryCount += count;
-      });
-      counts.categories[categoryKey] = categoryCount;
-      groupCount += categoryCount;
-    });
-    counts.groups[groupKey] = groupCount;
-  });
-
-  return counts;
-}
-
 function renderSectorFilters() {
   const container = document.getElementById('sectorFilters');
   container.innerHTML = '';
@@ -8167,19 +8116,7 @@ function closeDetail() {
   if (map) map.flyTo(currentMapCenter, 12, { animate: true, duration: 1 });
 }
 
-// ── REQUEST QUOTE / CALL / SHARE ─────────────────────────────────────────────
-function requestQuote() {
-  const c = companies.find(x => x.id === selectedId);
-  if (!c) return;
-  if (c.email) {
-    const subject = encodeURIComponent(t('emailQuoteSubject') + ' — ' + c.name);
-    const body = encodeURIComponent(t('emailQuoteBody').replace(/\\n/g, '\n'));
-    window.open('mailto:' + c.email + '?subject=' + subject + '&body=' + body, '_blank');
-  } else {
-    showToast(t('toastEmailUnavailable'));
-  }
-}
-
+// ── CALL / SHARE ────────────────────────────────────────────────────────────
 function callCompany() {
   const c = companies.find(x => x.id === selectedId);
   if (!c) return;
@@ -8203,15 +8140,7 @@ function shareCompany() {
   }
 }
 
-// ── CHAT ──────────────────────────────────────────────────────────────────────
-// Chat widget replaced with direct WhatsApp/phone redirect
-function toggleChat() {}
-function openChat() { openWhatsAppContact(); }
-function openChatFor(name) { openWhatsAppContact(); }
-function closeChat() {}
-function sendMsg() {}
-function sendMsgBtn() {}
-
+// ── WHATSAPP CONTACT ──────────────────────────────────────────────────────────
 function openWhatsAppContact() {
   const c = companies.find(x => x.id === selectedId);
   if (!c) return;
@@ -8763,7 +8692,7 @@ function toggleAdSound() {
   const btn = document.getElementById('adMute');
   if (!vid) return;
   vid.muted = !vid.muted;
-  btn.textContent = vid.muted ? '🔇' : '🔊';
+  if (btn) btn.textContent = vid.muted ? '🔇' : '🔊';
 }
 window.toggleAdSound = toggleAdSound;
 
@@ -8799,113 +8728,6 @@ window.toggleAdSound = toggleAdSound;
   startNavCasa();
 })();
 
-// ── OSM / OVERPASS API INTEGRATION ──────────────────────────────────────────
-// Mapping: OSM tag key=value → site sector key(s)
-const OSM_SECTOR_MAP = {
-  // craft tags
-  'craft=electrician':         ['eletricistas'],
-  'craft=plumber':             ['picheleiros','canalizacao_saneamento'],
-  'craft=painter':             ['pintores'],
-  'craft=carpenter':           ['carpinteiros'],
-  'craft=joiner':              ['carpinteiros','moveis_medida'],
-  'craft=roofer':              ['telhados_coberturas'],
-  'craft=glazier':             ['vidraceiros'],
-  'craft=stonemason':          ['pedreiros','marmoraria'],
-  'craft=blacksmith':          ['serralharia'],
-  'craft=metalconstruction':   ['serralharia','estruturas_metalicas'],
-  'craft=hvac':                ['climatizacao_avac'],
-  'craft=insulation':          ['isolamento'],
-  'craft=plasterer':           ['estucadores'],
-  'craft=tiler':               ['azulejos','pavimentos'],
-  'craft=flooring':            ['pavimentos'],
-  'craft=landscape_architect': ['paisagismo_jardins'],
-  'craft=gardener':            ['paisagismo_jardins'],
-  'craft=demolition':          ['demolicao'],
-  'craft=upholsterer':         ['moveis_medida'],
-  'craft=window_construction': ['caixilharia','aluminios_pvc'],
-  'craft=fence_maker':         ['portoes_vedacoes','vedacoes_muros'],
-  'craft=saw_mill':            ['carpinteiros'],
-  'craft=pool_professional':   ['piscinas'],
-  'craft=waterproofer':        ['impermeabilizacao'],
-  // office tags
-  'office=architect':          ['arquitetura_projetos'],
-  'office=engineer':           ['engenharia_civil'],
-  'office=surveyor':           ['topografia'],
-  'office=construction_company':['gestao_obra','pedreiros'],
-  'office=interior_design':    ['design_interiores'],
-  'office=energy_supplier':    ['energias_renovaveis'],
-  // shop tags
-  'shop=hardware':             ['materiais_construcao'],
-  'shop=doityourself':         ['materiais_construcao'],
-  'shop=tiles':                ['azulejos'],
-  'shop=floor':                ['pavimentos'],
-  'shop=glass':                ['vidraceiros'],
-  'shop=paint':                ['pintores'],
-  'shop=pool_and_spa':         ['piscinas'],
-  'shop=garden_centre':        ['paisagismo_jardins'],
-  'shop=furniture':            ['moveis_medida'],
-  'shop=doors':                ['caixilharia','aluminios_pvc'],
-  'shop=windows':              ['caixilharia','aluminios_pvc'],
-  'shop=electrical':           ['eletricistas','materiais_construcao'],
-  'shop=bathroom_furnishing':  ['picheleiros','pavimentos'],
-  'shop=kitchen':              ['moveis_medida','design_interiores'],
-  'shop=stone':                ['marmoraria'],
-  'shop=roofing':              ['telhados_coberturas'],
-};
-
-// OSM tag types/values to include in Overpass query
-const OSM_QUERY_TAGS = {
-  craft: ['electrician','plumber','painter','carpenter','joiner','roofer','glazier',
-          'stonemason','blacksmith','metalconstruction','hvac','insulation','plasterer',
-          'tiler','flooring','landscape_architect','gardener','demolition','upholsterer',
-          'window_construction','fence_maker','saw_mill','pool_professional','waterproofer'],
-  office: ['architect','engineer','surveyor','construction_company','interior_design','energy_supplier'],
-  shop:   ['hardware','doityourself','tiles','floor','glass','paint','pool_and_spa',
-           'garden_centre','furniture','doors','windows','electrical','bathroom_furnishing',
-           'kitchen','stone','roofing'],
-};
-
-// Sector → emoji
-const OSM_SECTOR_EMOJI = {
-  pedreiros:'🧱', escavacao:'🚧', betao_cimento:'🏗️', demolicao:'💥', alvenaria:'🧱',
-  cofragem:'🏗️', impermeabilizacao:'💧', eletricistas:'⚡', picheleiros:'🔧',
-  canalizacao_saneamento:'🚿', climatizacao_avac:'❄️', gas:'🔥', domotica_automacao:'🤖',
-  energias_renovaveis:'☀️', seguranca_alarmes:'🔒', pintores:'🎨', estucadores:'🏠',
-  pavimentos:'🪵', azulejos:'🏺', marmoraria:'💎', isolamento:'🌡️', gesso_cartonado:'🏠',
-  carpinteiros:'🪵', moveis_medida:'🛋️', serralharia:'🔩', estruturas_metalicas:'⚙️',
-  aluminios_pvc:'🚪', caixilharia:'🪟', vidraceiros:'🪟', portoes_vedacoes:'🚧',
-  telhados_coberturas:'🏠', piscinas:'🏊', paisagismo_jardins:'🌿', vedacoes_muros:'🧱',
-  calcetamento:'🛤️', fachadas:'🏛️', arquitetura_projetos:'📐', engenharia_civil:'🏗️',
-  topografia:'🗺️', gestao_obra:'📋', certificacao_energetica:'✅', seguranca_trabalho:'🦺',
-  design_interiores:'🎨', materiais_construcao:'📦', equipamentos_construcao:'🚛',
-};
-
-function osmGetSectors(tags) {
-  const sectors = new Set();
-  for (const [k, v] of Object.entries(tags)) {
-    const mapped = OSM_SECTOR_MAP[`${k}=${v}`];
-    if (mapped) mapped.forEach(s => sectors.add(s));
-  }
-  return [...sectors];
-}
-
-function osmGetGroup(sectorKey) {
-  for (const [gk, group] of Object.entries(SECTOR_HIERARCHY)) {
-    for (const cat of Object.values(group.categories)) {
-      if (sectorKey in cat.subcategories) return gk;
-    }
-  }
-  return 'projeto_gestao';
-}
-
-function osmGetSectorLabel(sectorKey) {
-  for (const group of Object.values(SECTOR_HIERARCHY)) {
-    for (const cat of Object.values(group.categories)) {
-      if (cat.subcategories[sectorKey]) return cat.subcategories[sectorKey];
-    }
-  }
-  return sectorKey;
-}
 
 
 
@@ -9165,22 +8987,32 @@ if (_origRenderSectorFilters) {
   const extra = {
     pt: { regStep1Label:'Identidade', regStep2Label:'Localização', regStep3Label:'Contactos',
           regStepNext:'Seguinte', regStepBack:'Anterior',
+          regCountry:'País', regPostalCode:'Código Postal', regCity:'Localidade / Cidade',
+          sortAll:'Todas',
           successTitle:'Pedido Enviado!', successSub:'O seu pedido foi recebido e está a aguardar validação. Receberá um email de confirmação assim que a empresa for aprovada.',
           successClose:'Continuar a Navegar' },
     en: { regStep1Label:'Identity', regStep2Label:'Location', regStep3Label:'Contacts',
           regStepNext:'Next', regStepBack:'Back',
+          regCountry:'Country', regPostalCode:'Postal Code', regCity:'Locality / City',
+          sortAll:'All',
           successTitle:'Request Submitted!', successSub:'Your request has been received and is pending validation. You will receive a confirmation email once the company is approved.',
           successClose:'Keep Browsing' },
     fr: { regStep1Label:'Identité', regStep2Label:'Localisation', regStep3Label:'Contacts',
           regStepNext:'Suivant', regStepBack:'Précédent',
+          regCountry:'Pays', regPostalCode:'Code Postal', regCity:'Localité / Ville',
+          sortAll:'Toutes',
           successTitle:'Demande Envoyée !', successSub:"Votre demande a été reçue et est en attente de validation. Vous recevrez un email de confirmation dès que l'entreprise sera approuvée.",
           successClose:'Continuer à Naviguer' },
     es: { regStep1Label:'Identidad', regStep2Label:'Ubicación', regStep3Label:'Contactos',
           regStepNext:'Siguiente', regStepBack:'Anterior',
+          regCountry:'País', regPostalCode:'Código Postal', regCity:'Localidad / Ciudad',
+          sortAll:'Todos',
           successTitle:'¡Solicitud Enviada!', successSub:'Su solicitud ha sido recibida y está pendiente de validación. Recibirá un email de confirmación una vez aprobada la empresa.',
           successClose:'Seguir Navegando' },
     de: { regStep1Label:'Identität', regStep2Label:'Standort', regStep3Label:'Kontakte',
           regStepNext:'Weiter', regStepBack:'Zurück',
+          regCountry:'Land', regPostalCode:'Postleitzahl', regCity:'Ort / Stadt',
+          sortAll:'Alle',
           successTitle:'Anfrage gesendet!', successSub:'Ihre Anfrage wurde empfangen und wird geprüft. Sie erhalten eine Bestätigungs-E-Mail, sobald das Unternehmen freigegeben wurde.',
           successClose:'Weiter browsen' }
   };

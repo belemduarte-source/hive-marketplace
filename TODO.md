@@ -1,2 +1,2 @@
 # Architecture changes
-Review the platform architecture and separate between a backend and frontend services. Also create a database using postgress to support the application. Do not change the current behavior of the solution, just make the solution more resiliant and with a scalable architecture.
+Review the platform architecture and separate between a backend and frontend services. Also create a database using postgress to support the application. Do not change the current behavior of the solution, just make the solution more resiliant and with a scalable architecture.   

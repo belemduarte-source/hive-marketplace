@@ -88,7 +88,7 @@ router.get('/:id/approve', async (req, res, next) => {
 
     res.send(htmlPage(
       '✅ Empresa aprovada!',
-      `<strong>${rows[0].name}</strong> foi aprovada e já está visível na plataforma Hive.<br><br>Foi enviado um email de confirmação para <strong>${rows[0].email || '(sem email)'}</strong>.`,
+      `<strong>${escHtml(rows[0].name)}</strong> foi aprovada e já está visível na plataforma Hive.<br><br>Foi enviado um email de confirmação para <strong>${escHtml(rows[0].email || '(sem email)')}</strong>.`,
       '#16a34a'
     ));
   } catch (e) {
@@ -120,7 +120,7 @@ router.get('/:id/reject', async (req, res, next) => {
 
     res.send(htmlPage(
       '🚫 Empresa rejeitada',
-      `O registo de <strong>${rows[0].name}</strong> foi rejeitado e não será publicado na plataforma.`,
+      `O registo de <strong>${escHtml(rows[0].name)}</strong> foi rejeitado e não será publicado na plataforma.`,
       '#f97316'
     ));
   } catch (e) {
@@ -152,7 +152,7 @@ router.post('/', async (req, res, next) => {
       emoji, color, pin_type
     } = req.body;
 
-    if (!name || !lat || !lng) {
+    if (!name || lat == null || lng == null || isNaN(Number(lat)) || isNaN(Number(lng))) {
       return res.status(400).json({ error: 'name, lat e lng são obrigatórios' });
     }
 
@@ -352,6 +352,15 @@ router.delete('/:id', requireAdmin, async (req, res, next) => {
 router.use('/:id/reviews', reviewsRouter);
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
+function escHtml(str) {
+  return String(str == null ? '' : str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
 function htmlPage(title, body, color = '#f97316') {
   return `<!DOCTYPE html><html lang="pt"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
