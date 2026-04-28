@@ -569,6 +569,18 @@
     .legal-body li{margin-bottom:4px}
     .legal-body a{color:var(--primary);text-decoration:underline}
     .legal-body strong{font-weight:700}
+    /* Email verification banner */
+    .verify-banner{position:fixed;top:0;left:0;right:0;background:#fef3c7;border-bottom:1px solid #fde68a;z-index:150;animation:slideDown .3s ease both}
+    @keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
+    .verify-banner-inner{display:flex;align-items:center;gap:12px;max-width:1200px;margin:0 auto;padding:10px 16px}
+    .verify-banner-icon{font-size:18px;flex-shrink:0}
+    .verify-banner-text{flex:1;font-size:13px;color:#78350f;line-height:1.4;font-weight:500}
+    .verify-banner-btn{background:#f97316;color:#fff;border:0;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;transition:background .15s}
+    .verify-banner-btn:hover{background:#ea580c}
+    .verify-banner-btn:disabled{opacity:.6;cursor:not-allowed}
+    .verify-banner-close{background:none;border:0;font-size:20px;color:#78350f;opacity:.6;cursor:pointer;padding:4px 8px;flex-shrink:0;line-height:1}
+    .verify-banner-close:hover{opacity:1}
+    @media(max-width:560px){.verify-banner-inner{flex-wrap:wrap}.verify-banner-text{flex:1 0 100%;order:2}.verify-banner-btn{order:3}}
     /* Cookie consent banner */
     .cookie-banner{position:fixed;bottom:16px;left:16px;right:16px;background:#0f172a;color:#fff;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.25);z-index:9998;padding:0;animation:slideUp .4s ease both}
     @keyframes slideUp{from{transform:translateY(120%);opacity:0}to{transform:translateY(0);opacity:1}}
@@ -3826,6 +3838,16 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- ── EMAIL VERIFICATION BANNER ──────────────────────────────────────── -->
+<div id="emailVerifyBanner" class="verify-banner" hidden>
+  <div class="verify-banner-inner">
+    <span class="verify-banner-icon">📧</span>
+    <span class="verify-banner-text" data-i18n="verifyBannerText">Confirme o seu email para desbloquear todas as funcionalidades.</span>
+    <button type="button" id="verifyResendBtn" class="verify-banner-btn" onclick="resendVerification()" data-i18n="verifyResend">Reenviar email</button>
+    <button type="button" class="verify-banner-close" onclick="dismissVerifyBanner()" aria-label="Fechar">×</button>
+  </div>
+</div>
 
 <!-- ── PASSWORD RECOVERY (request + reset) ──────────────────────────────── -->
 <div class="overlay" id="forgotOverlay" onclick="if(event.target===this)closeForgotPassword()" role="dialog" aria-modal="true" aria-labelledby="forgotTitle">
@@ -9190,7 +9212,49 @@ function updateNavAuth() {
     if (mobileTopAuth) mobileTopAuth.innerHTML = `<button class="mobile-top-avatar" onclick="toggleMobileNav()" title="${user.name}">${initials}</button>`;
   }
   if (typeof lucide !== 'undefined') lucide.createIcons();
+  updateVerifyBanner();
 }
+
+// ── EMAIL VERIFY BANNER ──────────────────────────────────────────────────
+// Shows a small dismissable banner at the top of the page when the logged-in
+// user hasn't yet confirmed their email. Dismissal lasts the session.
+const VERIFY_BANNER_DISMISS_KEY = 'hive_verify_banner_dismissed';
+function updateVerifyBanner() {
+  const banner = document.getElementById('emailVerifyBanner');
+  if (!banner) return;
+  const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  const dismissed = sessionStorage.getItem(VERIFY_BANNER_DISMISS_KEY) === '1';
+  const shouldShow = user && user.email_verified === false && !dismissed;
+  banner.hidden = !shouldShow;
+}
+function dismissVerifyBanner() {
+  sessionStorage.setItem(VERIFY_BANNER_DISMISS_KEY, '1');
+  updateVerifyBanner();
+}
+async function resendVerification() {
+  const btn = document.getElementById('verifyResendBtn');
+  setBusy(btn, true);
+  try {
+    const r = await api.resendEmailVerification();
+    if (r && r.alreadyVerified) {
+      showToast('Email já confirmado. Atualize a página.');
+      // Sync local state and hide banner
+      try {
+        const me = await api.getMe();
+        if (me && me.user) sessionStorage.setItem('hive_user', JSON.stringify(me.user));
+      } catch (_) {}
+      updateVerifyBanner();
+    } else {
+      showToast('📧 Email de confirmação enviado. Verifique a sua caixa de entrada.');
+    }
+  } catch (e) {
+    showToast(e.message || 'Não foi possível enviar o email.');
+  } finally {
+    setBusy(btn, false);
+  }
+}
+window.dismissVerifyBanner = dismissVerifyBanner;
+window.resendVerification  = resendVerification;
 function toggleAvatarMenu(e) {
   e.stopPropagation();
   const menu = document.getElementById('avatarMenu');
@@ -9775,6 +9839,8 @@ if (_origRenderSectorFilters) {
           successTitle:'Pedido Enviado!', successSub:'O seu pedido foi recebido e está a aguardar validação. Receberá um email de confirmação assim que a empresa for aprovada.',
           successClose:'Continuar a Navegar',
           forgotPwd:'Esqueceu a palavra-passe?',
+          verifyBannerText:'Confirme o seu email para desbloquear todas as funcionalidades.',
+          verifyResend:'Reenviar email',
           forgotTitle:'Recuperar palavra-passe',
           forgotBody:'Indique o seu email e enviaremos um link para definir uma nova palavra-passe.',
           forgotSend:'Enviar link',
@@ -9793,6 +9859,8 @@ if (_origRenderSectorFilters) {
           successTitle:'Request Submitted!', successSub:'Your request has been received and is pending validation. You will receive a confirmation email once the company is approved.',
           successClose:'Keep Browsing',
           forgotPwd:'Forgot your password?',
+          verifyBannerText:'Confirm your email to unlock all features.',
+          verifyResend:'Resend email',
           forgotTitle:'Reset your password',
           forgotBody:'Enter your email and we\'ll send you a link to set a new password.',
           forgotSend:'Send link',
@@ -9811,6 +9879,8 @@ if (_origRenderSectorFilters) {
           successTitle:'Demande Envoyée !', successSub:"Votre demande a été reçue et est en attente de validation. Vous recevrez un email de confirmation dès que l'entreprise sera approuvée.",
           successClose:'Continuer à Naviguer',
           forgotPwd:'Mot de passe oublié ?',
+          verifyBannerText:'Confirmez votre email pour débloquer toutes les fonctionnalités.',
+          verifyResend:'Renvoyer l\'email',
           forgotTitle:'Réinitialiser le mot de passe',
           forgotBody:'Indiquez votre email et nous vous enverrons un lien pour définir un nouveau mot de passe.',
           forgotSend:'Envoyer le lien',
@@ -9829,6 +9899,8 @@ if (_origRenderSectorFilters) {
           successTitle:'¡Solicitud Enviada!', successSub:'Su solicitud ha sido recibida y está pendiente de validación. Recibirá un email de confirmación una vez aprobada la empresa.',
           successClose:'Seguir Navegando',
           forgotPwd:'¿Olvidó la contraseña?',
+          verifyBannerText:'Confirme su email para desbloquear todas las funcionalidades.',
+          verifyResend:'Reenviar email',
           forgotTitle:'Recuperar contraseña',
           forgotBody:'Indique su email y le enviaremos un enlace para establecer una nueva contraseña.',
           forgotSend:'Enviar enlace',
@@ -9847,6 +9919,8 @@ if (_origRenderSectorFilters) {
           successTitle:'Anfrage gesendet!', successSub:'Ihre Anfrage wurde empfangen und wird geprüft. Sie erhalten eine Bestätigungs-E-Mail, sobald das Unternehmen freigegeben wurde.',
           successClose:'Weiter browsen',
           forgotPwd:'Passwort vergessen?',
+          verifyBannerText:'Bestätigen Sie Ihre E-Mail, um alle Funktionen freizuschalten.',
+          verifyResend:'E-Mail erneut senden',
           forgotTitle:'Passwort zurücksetzen',
           forgotBody:'Geben Sie Ihre E-Mail-Adresse ein. Wir senden Ihnen einen Link, um ein neues Passwort festzulegen.',
           forgotSend:'Link senden',

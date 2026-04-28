@@ -37,6 +37,7 @@ function safeUser(user) {
     id: user.id, name: user.name, email: user.email, type: user.type,
     company: user.company, phone: user.phone, is_admin: user.is_admin,
     picture: user.picture || null,
+    email_verified: !!user.email_verified,
   };
 }
 
@@ -52,13 +53,25 @@ router.post('/register', async (req, res, next) => {
     if (existing.rows.length > 0) return res.status(409).json({ error: 'Este email já está registado' });
 
     const passwordHash = await bcrypt.hash(password, 10);
+    const verifyToken  = crypto.randomBytes(32).toString('hex');
+    const verifyExp    = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+
     const { rows } = await pool.query(
-      `INSERT INTO users (name, email, password_hash, type, company, phone)
-       VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO users (name, email, password_hash, type, company, phone,
+                          email_verification_token, email_verification_expires_at)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        RETURNING *`,
-      [name, email.toLowerCase(), passwordHash, type, company || '', phone || '']
+      [name, email.toLowerCase(), passwordHash, type, company || '', phone || '', verifyToken, verifyExp]
     );
     const user = rows[0];
+
+    // Fire-and-forget verification email
+    const appUrl    = (process.env.APP_URL || '').replace(/\/$/, '');
+    const verifyUrl = `${appUrl}/api/auth/verify-email?token=${verifyToken}`;
+    sendEmailVerification(user, verifyUrl).catch(err =>
+      console.error('[email] verification at signup failed:', err.message)
+    );
+
     const token = signToken(user);
     res.cookie('hive_token', token, COOKIE_OPTS);
     res.status(201).json({ user: safeUser(user) });
@@ -167,15 +180,24 @@ router.post('/google', async (req, res, next) => {
       }
     }
 
-    // 3. Else create a new user (default type = cliente)
+    // 3. Else create a new user (default type = cliente). Google guarantees
+    //    email verification via the email_verified claim, so we mark verified.
     if (!user) {
       const { rows: created } = await pool.query(
-        `INSERT INTO users (name, email, google_id, picture, type, company, phone)
-         VALUES ($1, $2, $3, $4, $5, '', '')
+        `INSERT INTO users (name, email, google_id, picture, type, company, phone, email_verified)
+         VALUES ($1, $2, $3, $4, $5, '', '', TRUE)
          RETURNING *`,
         [name, email, googleId, picture, type || 'cliente']
       );
       user = created[0];
+    }
+    // Existing accounts that just linked Google can be considered verified too
+    if (user && !user.email_verified) {
+      const { rows: updated } = await pool.query(
+        'UPDATE users SET email_verified = TRUE WHERE id = $1 RETURNING *',
+        [user.id]
+      );
+      user = updated[0] || user;
     }
 
     const token = signToken(user);
