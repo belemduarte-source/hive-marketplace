@@ -54,8 +54,19 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.min.css" crossorigin="anonymous"/>
   <!-- Hive API client (replaces Supabase) -->
   <script src="api.js"></script>
-  <!-- Google Identity Services (Sign-in with Google) -->
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <!-- Google Identity Services (Sign-in with Google).
+       Loaded dynamically so the GSI button text matches the user's saved
+       language preference instead of always defaulting to English. -->
+  <script>
+    (function() {
+      var lang = 'pt';
+      try { lang = localStorage.getItem('hive_lang') || 'pt'; } catch (_) {}
+      var s = document.createElement('script');
+      s.src = 'https://accounts.google.com/gsi/client?hl=' + encodeURIComponent(lang);
+      s.async = true; s.defer = true;
+      document.head.appendChild(s);
+    })();
+  </script>
 
   <!-- JSON-LD: Organization markup helps Google understand the site -->
   <script type="application/ld+json">
@@ -5348,6 +5359,17 @@ function showTab(name) {
   } else if (name === 'search') {
     search.style.display = 'flex';
 
+    // First-time hint: tell users they can click pins to see details.
+    // localStorage flag means it shows only once per browser.
+    try {
+      if (!localStorage.getItem('hive_pin_hint_shown')) {
+        setTimeout(() => {
+          showToast(t('mapPinHint') || '💡 Toque num pin para ver os detalhes da empresa.');
+          try { localStorage.setItem('hive_pin_hint_shown', '1'); } catch(_) {}
+        }, 1200);
+      }
+    } catch(_) {}
+
     // On mobile: render the mobile search panel (replaces desktop sidebar)
     if (window.innerWidth <= 768) {
       renderMobileSearchPanel();
@@ -5815,7 +5837,7 @@ function renderFeaturedCompanies() {
             <div class="lp-cc-name" title="${c.name}">${c.name}</div>
             <div class="lp-cc-sector">${sectorLabel}</div>
           </div>
-          ${c.verified ? `<div class="lp-cc-badge-verified">${tr.featuredVerified || '✓ Verificado'}</div>` : ''}
+          ${c.verified ? `<div class="lp-cc-badge-verified" title="${(tr.verifiedTooltip || 'Empresa cuja certidão permanente foi confirmada pela equipa Hive.')}" tabindex="0" aria-label="${(tr.verifiedTooltip || 'Empresa cuja certidão permanente foi confirmada pela equipa Hive.')}">${tr.featuredVerified || '✓ Verificado'}</div>` : ''}
         </div>
         <div class="lp-cc-rating">
           <span class="lp-cc-stars">${stars}</span>
@@ -9841,6 +9863,8 @@ if (_origRenderSectorFilters) {
           forgotPwd:'Esqueceu a palavra-passe?',
           verifyBannerText:'Confirme o seu email para desbloquear todas as funcionalidades.',
           verifyResend:'Reenviar email',
+          verifiedTooltip:'Empresa cuja certidão permanente foi confirmada pela equipa Hive — uma camada extra de confiança.',
+          mapPinHint:'💡 Toque num pin para ver os detalhes da empresa.',
           forgotTitle:'Recuperar palavra-passe',
           forgotBody:'Indique o seu email e enviaremos um link para definir uma nova palavra-passe.',
           forgotSend:'Enviar link',
@@ -9861,6 +9885,8 @@ if (_origRenderSectorFilters) {
           forgotPwd:'Forgot your password?',
           verifyBannerText:'Confirm your email to unlock all features.',
           verifyResend:'Resend email',
+          verifiedTooltip:'Company whose Portuguese commercial registry certificate has been confirmed by the Hive team — an extra layer of trust.',
+          mapPinHint:'💡 Tap a pin to see company details.',
           forgotTitle:'Reset your password',
           forgotBody:'Enter your email and we\'ll send you a link to set a new password.',
           forgotSend:'Send link',
@@ -9881,6 +9907,8 @@ if (_origRenderSectorFilters) {
           forgotPwd:'Mot de passe oublié ?',
           verifyBannerText:'Confirmez votre email pour débloquer toutes les fonctionnalités.',
           verifyResend:'Renvoyer l\'email',
+          verifiedTooltip:"Entreprise dont le certificat permanent du registre du commerce portugais a été confirmé par l'équipe Hive.",
+          mapPinHint:"💡 Touchez un pin pour voir les détails de l'entreprise.",
           forgotTitle:'Réinitialiser le mot de passe',
           forgotBody:'Indiquez votre email et nous vous enverrons un lien pour définir un nouveau mot de passe.',
           forgotSend:'Envoyer le lien',
@@ -9901,6 +9929,8 @@ if (_origRenderSectorFilters) {
           forgotPwd:'¿Olvidó la contraseña?',
           verifyBannerText:'Confirme su email para desbloquear todas las funcionalidades.',
           verifyResend:'Reenviar email',
+          verifiedTooltip:'Empresa cuya certificación permanente del registro mercantil portugués ha sido confirmada por el equipo Hive.',
+          mapPinHint:'💡 Toque un pin para ver los detalles de la empresa.',
           forgotTitle:'Recuperar contraseña',
           forgotBody:'Indique su email y le enviaremos un enlace para establecer una nueva contraseña.',
           forgotSend:'Enviar enlace',
@@ -9921,6 +9951,8 @@ if (_origRenderSectorFilters) {
           forgotPwd:'Passwort vergessen?',
           verifyBannerText:'Bestätigen Sie Ihre E-Mail, um alle Funktionen freizuschalten.',
           verifyResend:'E-Mail erneut senden',
+          verifiedTooltip:'Unternehmen, dessen portugiesischer Handelsregisterauszug vom Hive-Team verifiziert wurde — zusätzliche Vertrauensebene.',
+          mapPinHint:'💡 Tippen Sie auf einen Pin, um Firmendetails zu sehen.',
           forgotTitle:'Passwort zurücksetzen',
           forgotBody:'Geben Sie Ihre E-Mail-Adresse ein. Wir senden Ihnen einen Link, um ein neues Passwort festzulegen.',
           forgotSend:'Link senden',
