@@ -543,6 +543,21 @@
     .google-btn-slot:empty{display:none}
     .auth-divider{display:flex;align-items:center;gap:10px;color:var(--muted);font-size:11px;margin:0 0 14px 0;text-transform:uppercase;letter-spacing:.05em}
     .auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--border)}
+    /* Password input with show/hide eye toggle */
+    .pwd-wrap{position:relative;display:flex;align-items:stretch}
+    .pwd-wrap input{flex:1;padding-right:40px}
+    .pwd-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;color:var(--muted);cursor:pointer;padding:6px;border-radius:6px;display:flex;align-items:center;justify-content:center;transition:color .15s,background .15s}
+    .pwd-toggle:hover{color:var(--text);background:rgba(0,0,0,.04)}
+    .pwd-toggle:focus-visible{outline:2px solid var(--primary);outline-offset:1px}
+    .caps-hint{font-size:11px;color:#b45309;background:#fef3c7;border:1px solid #fde68a;border-radius:6px;padding:4px 8px;margin-top:4px;display:inline-block}
+    /* Inline form-field error state */
+    .form-row input[aria-invalid="true"],.form-row select[aria-invalid="true"],.form-row textarea[aria-invalid="true"]{border-color:var(--red)!important;background:#fff5f5}
+    .field-error{color:var(--red);font-size:11px;margin-top:4px;display:none}
+    .form-row.has-error .field-error{display:block}
+    /* Pending state for any submit button (replaces inline disabled+textContent dance) */
+    button[data-busy="true"]{position:relative;color:transparent!important;pointer-events:none}
+    button[data-busy="true"]::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid currentColor;border-top-color:transparent;animation:spinBtn .7s linear infinite;color:#fff}
+    @keyframes spinBtn{to{transform:rotate(360deg)}}
     .auth-type-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px}
     .auth-type-card{border:2px solid var(--border);border-radius:12px;padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg)}
     .auth-type-card:hover{border-color:var(--primary);background:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
@@ -3253,11 +3268,25 @@
     <div class="auth-panel" id="authLogin">
       <div id="googleLoginSlot" class="google-btn-slot"></div>
       <div id="googleLoginDivider" class="auth-divider" style="display:none"><span>ou continue com email</span></div>
-      <div class="form-row"><label>Email</label><input type="email" id="loginEmail" placeholder="email@exemplo.com"/></div>
-      <div class="form-row"><label>Palavra-passe</label><input type="password" id="loginPass" placeholder="••••••••"/></div>
-      <div style="text-align:right;margin-bottom:12px"><a href="#" style="font-size:11px;color:var(--primary);text-decoration:none">Esqueceu a palavra-passe?</a></div>
-      <button class="btn-submit" style="width:100%;padding:11px;font-size:14px" onclick="doLogin()">Entrar</button>
-      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">Ainda não tem conta? <a href="#" onclick="switchLoginTab('register');return false" style="color:var(--primary);font-weight:700;text-decoration:none">Criar Conta</a></div>
+      <form id="loginForm" onsubmit="event.preventDefault();doLogin()" novalidate>
+        <div class="form-row">
+          <label for="loginEmail">Email</label>
+          <input type="email" id="loginEmail" name="email" placeholder="email@exemplo.com" autocomplete="email" inputmode="email" required aria-required="true"/>
+        </div>
+        <div class="form-row">
+          <label for="loginPass">Palavra-passe</label>
+          <div class="pwd-wrap">
+            <input type="password" id="loginPass" name="current-password" autocomplete="current-password" required aria-required="true"/>
+            <button type="button" class="pwd-toggle" aria-label="Mostrar/ocultar palavra-passe" onclick="togglePassword('loginPass', this)" tabindex="-1">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="caps-hint" id="loginCapsHint" hidden>⚠️ Caps Lock está ativado</div>
+        </div>
+        <div style="text-align:right;margin-bottom:12px"><a href="#" onclick="openForgotPassword();return false" style="font-size:11px;color:var(--primary);text-decoration:none" data-i18n="forgotPwd">Esqueceu a palavra-passe?</a></div>
+        <button type="submit" class="btn-submit" id="loginSubmitBtn" style="width:100%;padding:11px;font-size:14px">Entrar</button>
+      </form>
+      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">Ainda não tem conta? <button type="button" onclick="switchLoginTab('register')" style="background:none;border:0;color:var(--primary);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0">Criar Conta</button></div>
     </div>
 
     <!-- REGISTER TAB -->
@@ -3266,12 +3295,12 @@
       <div id="regStep1">
         <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;text-align:center">Como pretende utilizar a Hive?</div>
         <div class="auth-type-cards">
-          <div class="auth-type-card" onclick="selectUserType('empresa', this)">
+          <div class="auth-type-card" role="button" tabindex="0" onclick="selectUserType('empresa', this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectUserType('empresa', this)}">
             <div class="auth-type-icon">🏢</div>
             <div class="auth-type-title">Sou Empresa</div>
             <div class="auth-type-desc">Quero registar a minha empresa e aparecer no marketplace</div>
           </div>
-          <div class="auth-type-card" onclick="selectUserType('cliente', this)">
+          <div class="auth-type-card" role="button" tabindex="0" onclick="selectUserType('cliente', this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectUserType('cliente', this)}">
             <div class="auth-type-icon">🔍</div>
             <div class="auth-type-title">Procuro Serviços</div>
             <div class="auth-type-desc">Quero pesquisar e encontrar empresas e profissionais</div>
@@ -3281,21 +3310,45 @@
       <!-- Step 2: Registration form (shown after type selection) -->
       <div id="regStep2" style="display:none">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-          <button class="auth-back" onclick="regGoBack()">←</button>
+          <button type="button" class="auth-back" onclick="regGoBack()" aria-label="Voltar">←</button>
           <div id="regTypeLabel" style="font-size:13px;font-weight:700;color:var(--text)"></div>
         </div>
         <div id="googleRegisterSlot" class="google-btn-slot"></div>
         <div id="googleRegisterDivider" class="auth-divider" style="display:none"><span>ou preencha os dados</span></div>
-        <div class="form-row"><label><span data-i18n="regAuthNameLabel">Nome completo</span> <span class="req">*</span></label><input type="text" id="regAuthName" placeholder="O seu nome" data-i18n-ph="regAuthNamePh"/></div>
-        <!-- Company name - only for empresa -->
-        <div class="form-row" id="regCompanyRow" style="display:none"><label><span data-i18n="regAuthCompanyLabel">Nome da empresa</span> <span class="req">*</span></label><input type="text" id="regAuthCompany" placeholder="Nome da empresa" data-i18n-ph="regAuthCompanyPh"/></div>
-        <div class="form-row"><label>Email <span class="req">*</span></label><input type="email" id="regAuthEmail" placeholder="email@exemplo.com"/></div>
-        <div class="form-row"><label>Palavra-passe <span class="req">*</span></label><input type="password" id="regAuthPass" placeholder="Mínimo 6 caracteres"/></div>
-        <!-- Phone - only for empresa -->
-        <div class="form-row" id="regPhoneRow" style="display:none"><label data-i18n="regAuthPhoneLabel">Telefone</label><input type="tel" id="regAuthPhone" placeholder="+351 912 345 678"/></div>
-        <button class="btn-submit" style="width:100%;padding:11px;font-size:14px;margin-top:6px" onclick="doRegister()">Criar Conta</button>
+        <form id="registerForm" onsubmit="event.preventDefault();doRegister()" novalidate>
+          <div class="form-row">
+            <label for="regAuthName"><span data-i18n="regAuthNameLabel">Nome completo</span> <span class="req">*</span></label>
+            <input type="text" id="regAuthName" name="name" placeholder="O seu nome" data-i18n-ph="regAuthNamePh" autocomplete="name" required aria-required="true"/>
+          </div>
+          <!-- Company name - only for empresa -->
+          <div class="form-row" id="regCompanyRow" style="display:none">
+            <label for="regAuthCompany"><span data-i18n="regAuthCompanyLabel">Nome da empresa</span> <span class="req">*</span></label>
+            <input type="text" id="regAuthCompany" name="organization" placeholder="Nome da empresa" data-i18n-ph="regAuthCompanyPh" autocomplete="organization"/>
+          </div>
+          <div class="form-row">
+            <label for="regAuthEmail">Email <span class="req">*</span></label>
+            <input type="email" id="regAuthEmail" name="email" placeholder="email@exemplo.com" autocomplete="email" inputmode="email" required aria-required="true"/>
+          </div>
+          <div class="form-row">
+            <label for="regAuthPass">Palavra-passe <span class="req">*</span></label>
+            <div class="pwd-wrap">
+              <input type="password" id="regAuthPass" name="new-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required minlength="6" aria-required="true" aria-describedby="regAuthPassHint"/>
+              <button type="button" class="pwd-toggle" aria-label="Mostrar/ocultar palavra-passe" onclick="togglePassword('regAuthPass', this)" tabindex="-1">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+              </button>
+            </div>
+            <div class="caps-hint" id="regCapsHint" hidden>⚠️ Caps Lock está ativado</div>
+            <div class="form-hint" id="regAuthPassHint">Mínimo 6 caracteres.</div>
+          </div>
+          <!-- Phone - only for empresa -->
+          <div class="form-row" id="regPhoneRow" style="display:none">
+            <label for="regAuthPhone" data-i18n="regAuthPhoneLabel">Telefone</label>
+            <input type="tel" id="regAuthPhone" name="tel" placeholder="+351 912 345 678" autocomplete="tel" inputmode="tel"/>
+          </div>
+          <button type="submit" class="btn-submit" id="registerSubmitBtn" style="width:100%;padding:11px;font-size:14px;margin-top:6px">Criar Conta</button>
+        </form>
       </div>
-      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">Já tem conta? <a href="#" onclick="switchLoginTab('login');return false" style="color:var(--primary);font-weight:700;text-decoration:none">Entrar</a></div>
+      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">Já tem conta? <button type="button" onclick="switchLoginTab('login')" style="background:none;border:0;color:var(--primary);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0">Entrar</button></div>
     </div>
   </div>
 </div>
@@ -3324,8 +3377,8 @@
     <!-- STEP 1: Identity -->
     <div class="reg-step-panel active" id="regStepPanel1">
       <div class="form-row">
-        <label><span data-i18n="regCompanyName">Nome da Empresa</span> <span class="req">*</span></label>
-        <input type="text" id="regName" data-i18n-ph="regNamePh"/>
+        <label for="regName"><span data-i18n="regCompanyName">Nome da Empresa</span> <span class="req">*</span></label>
+        <input type="text" id="regName" data-i18n-ph="regNamePh" autocomplete="organization" required aria-required="true"/>
       </div>
       <div class="form-row">
         <label><span data-i18n="regSectorLabel">Setor de Atividade</span> <span class="req">*</span></label>
@@ -3361,8 +3414,8 @@
     <!-- STEP 2: Location -->
     <div class="reg-step-panel" id="regStepPanel2">
       <div class="form-row">
-        <label><span data-i18n="regCountry">País</span> <span class="req">*</span></label>
-        <select id="regCountry">
+        <label for="regCountry"><span data-i18n="regCountry">País</span> <span class="req">*</span></label>
+        <select id="regCountry" autocomplete="country" required aria-required="true">
           <option value="">Selecione um país</option>
           <option value="pt">Portugal</option>
           <option value="es">Espanha</option>
@@ -3379,17 +3432,17 @@
       </div>
       <div class="form-grid2">
         <div class="form-row">
-          <label><span data-i18n="regPostalCode">Código Postal</span> <span class="req">*</span></label>
-          <input type="text" id="regPostalCode" placeholder="Ex: 1000-001"/>
+          <label for="regPostalCode"><span data-i18n="regPostalCode">Código Postal</span> <span class="req">*</span></label>
+          <input type="text" id="regPostalCode" placeholder="Ex: 1000-001" autocomplete="postal-code" inputmode="numeric" required aria-required="true"/>
         </div>
         <div class="form-row">
-          <label><span data-i18n="regCity">Localidade / Cidade</span> <span class="req">*</span></label>
-          <select id="regCity"></select>
+          <label for="regCity"><span data-i18n="regCity">Localidade / Cidade</span> <span class="req">*</span></label>
+          <select id="regCity" autocomplete="address-level2" required aria-required="true"></select>
         </div>
       </div>
       <div class="form-row">
-        <label><span data-i18n="regAddress">Morada Detalhada</span> <span class="req">*</span></label>
-        <input type="text" id="regAddress" data-i18n-ph="regAddressPh" placeholder="Ex: Rua da Paz, 123, Apto 4B"/>
+        <label for="regAddress"><span data-i18n="regAddress">Morada Detalhada</span> <span class="req">*</span></label>
+        <input type="text" id="regAddress" data-i18n-ph="regAddressPh" placeholder="Ex: Rua da Paz, 123, Apto 4B" autocomplete="street-address" required aria-required="true"/>
         <div class="form-hint">Incluir rua, número, apartamento e complementos para localização precisa no mapa.</div>
       </div>
       <!-- Hidden zone select kept for backward-compat with geocoding logic -->
@@ -3404,25 +3457,25 @@
     <div class="reg-step-panel" id="regStepPanel3">
       <div class="form-grid2">
         <div class="form-row">
-          <label><span data-i18n="regEmail">Email de Contacto</span> <span class="req">*</span></label>
-          <input type="email" id="regEmail" data-i18n-ph="regEmailPh"/>
+          <label for="regEmail"><span data-i18n="regEmail">Email de Contacto</span> <span class="req">*</span></label>
+          <input type="email" id="regEmail" data-i18n-ph="regEmailPh" autocomplete="email" inputmode="email" required aria-required="true"/>
         </div>
         <div class="form-row">
-          <label><span data-i18n="regPhone">Telefone / WhatsApp</span> <span class="req">*</span></label>
-          <input type="tel" id="regPhone" placeholder="+351 XXX XXX XXX"/>
+          <label for="regPhone"><span data-i18n="regPhone">Telefone / WhatsApp</span> <span class="req">*</span></label>
+          <input type="tel" id="regPhone" placeholder="+351 XXX XXX XXX" autocomplete="tel" inputmode="tel" required aria-required="true"/>
         </div>
       </div>
       <div class="form-row">
-        <label data-i18n="regWebsite">Website</label>
-        <input type="url" id="regWebsite" data-i18n-ph="regWebsitePh"/>
+        <label for="regWebsite" data-i18n="regWebsite">Website</label>
+        <input type="url" id="regWebsite" data-i18n-ph="regWebsitePh" autocomplete="url" inputmode="url"/>
       </div>
       <div class="form-row">
-        <label><span data-i18n="regSpecialties">Especialidades</span> <span class="req">*</span></label>
-        <input type="text" id="regTags" data-i18n-ph="regTagsPh"/>
+        <label for="regTags"><span data-i18n="regSpecialties">Especialidades</span> <span class="req">*</span></label>
+        <input type="text" id="regTags" data-i18n-ph="regTagsPh" autocomplete="off" required aria-required="true"/>
         <div class="form-hint" data-i18n="regTagsHint">Separe as especialidades por vírgulas.</div>
       </div>
       <div class="form-row">
-        <label data-i18n="regDescription">Descrição Breve</label>
+        <label for="regDesc" data-i18n="regDescription">Descrição Breve</label>
         <textarea id="regDesc" data-i18n-ph="regDescPh"></textarea>
       </div>
       <div class="reg-step-nav">
@@ -8504,10 +8557,66 @@ function regGoBack() {
   regUserType = '';
   document.querySelectorAll('.auth-type-card').forEach(c => c.classList.remove('selected'));
 }
+// Stub for the password-reset modal (real flow lives further down — see
+// commit "Password reset flow"). Defined here so the link works even before
+// that block is reached during script parsing.
+if (typeof window.openForgotPassword !== 'function') {
+  window.openForgotPassword = function() { showToast('Recuperação de palavra-passe em breve disponível.'); };
+}
+
+// ── Generic UX helpers ─────────────────────────────────────────────────────
+// Toggle a password input between text and password type, swapping the eye icon
+function togglePassword(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  if (!inp) return;
+  const showing = inp.type === 'text';
+  inp.type = showing ? 'password' : 'text';
+  if (btn) btn.setAttribute('aria-label', showing ? 'Mostrar palavra-passe' : 'Ocultar palavra-passe');
+}
+
+// Mark a button as busy so the user can't double-submit. Uses a CSS spinner;
+// the original label is preserved in [data-original-label] and restored.
+function setBusy(btn, busy) {
+  if (!btn) return;
+  if (busy) {
+    btn.dataset.busy = 'true';
+    btn.disabled = true;
+    btn.setAttribute('aria-busy', 'true');
+  } else {
+    delete btn.dataset.busy;
+    btn.disabled = false;
+    btn.removeAttribute('aria-busy');
+  }
+}
+
+// Show a Caps Lock warning under password inputs (keydown event has getModifierState)
+(function() {
+  const map = [
+    { inp: 'loginPass',   hint: 'loginCapsHint' },
+    { inp: 'regAuthPass', hint: 'regCapsHint'   },
+  ];
+  function bind() {
+    map.forEach(({inp, hint}) => {
+      const i = document.getElementById(inp);
+      const h = document.getElementById(hint);
+      if (!i || !h || i.dataset.capsBound) return;
+      i.dataset.capsBound = '1';
+      const update = e => { h.hidden = !e.getModifierState || !e.getModifierState('CapsLock'); };
+      i.addEventListener('keydown', update);
+      i.addEventListener('keyup', update);
+      i.addEventListener('blur', () => { h.hidden = true; });
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', bind);
+  else bind();
+})();
+
 async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const pass = document.getElementById('loginPass').value;
+  const btn  = document.getElementById('loginSubmitBtn');
   if (!email || !pass) { showToast('Preencha todos os campos'); return; }
+  setBusy(btn, true);
   try {
     const { user } = await api.login(email, pass);
     sessionStorage.setItem('hive_user', JSON.stringify(user));
@@ -8519,7 +8628,10 @@ async function doLogin() {
     document.getElementById('loginEmail').value = '';
     document.getElementById('loginPass').value = '';
   } catch(e) {
-    showToast('Email ou palavra-passe incorretos');
+    // 429 from the auth rate-limiter has its own message; surface it.
+    showToast(e.status === 429 ? (e.message || 'Demasiadas tentativas. Tente mais tarde.') : 'Email ou palavra-passe incorretos');
+  } finally {
+    setBusy(btn, false);
   }
 }
 async function doRegister() {
@@ -8528,9 +8640,11 @@ async function doRegister() {
   const pass = document.getElementById('regAuthPass').value;
   const company = document.getElementById('regAuthCompany').value.trim();
   const phone = document.getElementById('regAuthPhone').value.trim();
+  const btn = document.getElementById('registerSubmitBtn');
   if (!name || !email || !pass) { showToast('Preencha os campos obrigatórios'); return; }
   if (pass.length < 6) { showToast('A palavra-passe deve ter pelo menos 6 caracteres'); return; }
   if (regUserType === 'empresa' && !company) { showToast('Preencha o nome da empresa'); return; }
+  setBusy(btn, true);
   try {
     const { user } = await api.register({ name, email, password: pass, type: regUserType, company: company || '', phone: phone || '' });
     sessionStorage.setItem('hive_user', JSON.stringify(user));
@@ -8551,6 +8665,8 @@ async function doRegister() {
     document.getElementById('regAuthPhone').value = '';
   } catch(e) {
     showToast(e.message || 'Erro ao criar conta');
+  } finally {
+    setBusy(btn, false);
   }
 }
 async function doLogout() {
