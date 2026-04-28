@@ -1787,7 +1787,10 @@
     @keyframes popIn{from{opacity:0;transform:scale(.8)}to{opacity:1;transform:scale(1)}}
     .reg-success-icon{width:72px;height:72px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;font-size:36px}
     .reg-success-title{font-size:22px;font-weight:800;color:var(--text);margin-bottom:8px}
-    .reg-success-sub{font-size:14px;color:var(--text-secondary);margin-bottom:24px;line-height:1.6}
+    .reg-success-sub{font-size:14px;color:var(--text-secondary);margin-bottom:18px;line-height:1.6}
+    .reg-success-steps{list-style:none;padding:0;margin:0 0 24px;text-align:left;background:var(--bg);border-radius:12px;padding:14px 16px;border:1px solid var(--border)}
+    .reg-success-steps li{font-size:13px;color:var(--text);line-height:1.7;padding-left:0}
+    .reg-success-steps li + li{border-top:1px solid var(--border-light);padding-top:6px;margin-top:6px}
     .reg-success-name{display:inline-block;background:var(--orange-mid);color:var(--primary-dark);font-weight:700;padding:4px 12px;border-radius:20px;margin-bottom:16px;font-size:15px}
     .reg-success-actions{display:flex;flex-direction:column;gap:10px}
     .btn-success-view{padding:12px 20px;border-radius:10px;background:var(--primary);color:#fff;font-weight:700;font-size:14px;cursor:pointer;border:none;transition:background .2s}
@@ -2516,6 +2519,11 @@
     <div class="reg-success-title" data-i18n="successTitle">Pedido Enviado!</div>
     <div class="reg-success-name" id="regSuccessName"></div>
     <div class="reg-success-sub" data-i18n="successSub">O seu pedido foi recebido e está a aguardar validação. Receberá um email de confirmação assim que a empresa for aprovada.</div>
+    <ul class="reg-success-steps" data-i18n-list="successNextSteps">
+      <li>📧 Validação tipicamente em <strong>até 24h úteis</strong>.</li>
+      <li>✅ Receberá email de confirmação assim que aprovada.</li>
+      <li>🔍 Pode acompanhar o estado a qualquer momento.</li>
+    </ul>
     <div class="reg-success-actions">
       <button class="btn-success-close" onclick="closeRegSuccess(false)" data-i18n="successClose">Continuar a Navegar</button>
     </div>
@@ -8098,17 +8106,20 @@ function submitRegister() {
   const alvara  = document.getElementById('regAlvara')?.value.trim() || '';
   const certidao = (document.getElementById('regCertidao')?.value || '').trim();
 
-  if (!name)           { showToast(t('valName'));    return; }
+  // Clear any stale field errors on the registration overlay before re-checking
+  if (typeof clearAllFieldErrors === 'function') clearAllFieldErrors(document.getElementById('registerOverlay'));
+
+  if (!name)           { failField('regName',       t('valName'));    return; }
   if (sectors.length === 0) { showToast(t('valSector'));  return; }
-  if (!certidao)       { showToast(t('valCertidao')); return; }
-  if (certidao.replace(/[\s-]/g, '').length < 8) { showToast(t('valCertidaoFormat')); return; }
-  if (!address)        { showToast(t('valAddress')); return; }
-  if (!email)          { showToast(t('valEmail'));   return; }
-  if (!phone)          { showToast('Introduza o número de telemóvel da empresa'); return; }
-  if (!tagsRaw)        { showToast(t('valTags'));    return; }
-  if (!country)        { showToast('Selecione um país'); return; }
-  if (!city)           { showToast('Selecione uma cidade'); return; }
-  if (!postalCode)     { showToast('Introduza o código postal'); return; }
+  if (!certidao)       { failField('regCertidao',   t('valCertidao')); return; }
+  if (certidao.replace(/[\s-]/g, '').length < 8) { failField('regCertidao', t('valCertidaoFormat')); return; }
+  if (!country)        { failField('regCountry',    'Selecione um país'); return; }
+  if (!city)           { failField('regCity',       'Selecione uma cidade'); return; }
+  if (!postalCode)     { failField('regPostalCode', 'Introduza o código postal'); return; }
+  if (!address)        { failField('regAddress',    t('valAddress')); return; }
+  if (!email)          { failField('regEmail',      t('valEmail'));   return; }
+  if (!phone)          { failField('regPhone',      'Introduza o número de telemóvel da empresa'); return; }
+  if (!tagsRaw)        { failField('regTags',       t('valTags'));    return; }
 
   const tags   = tagsRaw.split(',').map(s => s.trim()).filter(Boolean);
   const idx    = nextCompanyId % defaultEmojis.length;
@@ -8258,7 +8269,10 @@ function submitRegister() {
       closeRegister();
     } catch(e) {
       console.error('Erro ao guardar empresa:', e);
-      showToast(t('toastRegisterError'));
+      // Surface the server's actual message — it's already translated and
+      // tells the user *what* is wrong (e.g. "certidão é obrigatório") instead
+      // of a useless generic "Erro ao guardar".
+      showToast(e.message || t('toastRegisterError'));
     } finally {
       if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = '<i data-lucide="check-circle"></i> ' + t('regSubmit'); lucide.createIcons(); }
     }
@@ -9329,24 +9343,84 @@ function regGoStep(step) {
   document.querySelector('#registerOverlay .modal')?.scrollTo(0, 0);
 }
 
+// ── Inline field-error helpers ─────────────────────────────────────────────
+// Marks an input as invalid with a red border, ARIA flag, and an error
+// message rendered inline directly under it. Replaces the previous behaviour
+// where validation errors were only visible as a toast — users had to guess
+// which field was wrong.
+function markFieldError(id, message) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const row = el.closest('.form-row');
+  if (!row) return;
+  el.setAttribute('aria-invalid', 'true');
+  row.classList.add('has-error');
+  let err = row.querySelector('.field-error');
+  if (!err) {
+    err = document.createElement('div');
+    err.className = 'field-error';
+    err.setAttribute('role', 'alert');
+    row.appendChild(err);
+  }
+  err.textContent = message;
+  // Clear the error once the user starts editing again
+  if (!el.dataset.errBound) {
+    el.dataset.errBound = '1';
+    const clear = () => clearFieldError(id);
+    el.addEventListener('input',  clear);
+    el.addEventListener('change', clear);
+  }
+}
+function clearFieldError(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const row = el.closest('.form-row');
+  if (!row) return;
+  el.removeAttribute('aria-invalid');
+  row.classList.remove('has-error');
+  const err = row.querySelector('.field-error');
+  if (err) err.textContent = '';
+}
+function clearAllFieldErrors(scopeEl) {
+  const root = scopeEl || document;
+  root.querySelectorAll('.form-row.has-error').forEach(row => {
+    row.classList.remove('has-error');
+    const inp = row.querySelector('input,select,textarea');
+    if (inp) inp.removeAttribute('aria-invalid');
+    const err = row.querySelector('.field-error');
+    if (err) err.textContent = '';
+  });
+}
+// First failed validation focuses + scrolls to its field
+function failField(id, message) {
+  markFieldError(id, message);
+  const el = document.getElementById(id);
+  if (el) {
+    el.focus({ preventScroll: false });
+    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }
+  showToast(message);
+}
+
 function regNextStep(fromStep) {
+  // Clear stale errors on the panel we're validating
+  clearAllFieldErrors(document.getElementById('regStepPanel' + fromStep));
   if (fromStep === 1) {
     const name = document.getElementById('regName')?.value.trim();
-    if (!name) { showToast(t('valName')); return; }
+    if (!name) { failField('regName', t('valName')); return; }
     if (_regSelectedSectors.length === 0) { showToast(t('valSector')); return; }
     const certidao = (document.getElementById('regCertidao')?.value || '').trim();
-    if (!certidao) { showToast(t('valCertidao')); return; }
-    // Permissive format check — at least 8 alphanumeric chars (ignoring dashes/spaces)
-    if (certidao.replace(/[\s-]/g, '').length < 8) { showToast(t('valCertidaoFormat')); return; }
+    if (!certidao) { failField('regCertidao', t('valCertidao')); return; }
+    if (certidao.replace(/[\s-]/g, '').length < 8) { failField('regCertidao', t('valCertidaoFormat')); return; }
   } else if (fromStep === 2) {
     const country = document.getElementById('regCountry')?.value;
     const city = document.getElementById('regCity')?.value;
     const address = document.getElementById('regAddress')?.value.trim();
     const postal = document.getElementById('regPostalCode')?.value.trim();
-    if (!country) { showToast('Selecione um país'); return; }
-    if (!city) { showToast('Selecione uma cidade'); return; }
-    if (!address) { showToast(t('valAddress')); return; }
-    if (!postal) { showToast('Introduza o código postal'); return; }
+    if (!country) { failField('regCountry', 'Selecione um país'); return; }
+    if (!city) { failField('regCity', 'Selecione uma cidade'); return; }
+    if (!postal) { failField('regPostalCode', 'Introduza o código postal'); return; }
+    if (!address) { failField('regAddress', t('valAddress')); return; }
   }
   regGoStep(fromStep + 1);
 }
