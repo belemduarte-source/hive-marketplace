@@ -7128,7 +7128,6 @@ function renderSectorFilters() {
     });
 
     const groupIsActive = allSubKeys.some(k => activeSectors.has(k));
-    const groupCount = allSubKeys.reduce((sum, k) => sum + (subCounts[k] || 0), 0);
     const catItem = document.createElement('div');
     catItem.className = 'cat-item' + (groupIsActive ? ' active' : '');
     catItem.dataset.group = groupKey;
@@ -7167,7 +7166,7 @@ function renderSectorFilters() {
 
     catItem.innerHTML = `
       <span class="cat-icon" style="font-size:18px;line-height:1">${emoji}</span>
-      <span class="cat-label">${shortName}${groupCount > 0 ? ` <span style="opacity:.5;font-size:10px">(${groupCount})</span>` : ''}</span>
+      <span class="cat-label">${shortName}</span>
       <span class="cat-arrow">▾</span>
       ${dropdownHTML}
     `;
