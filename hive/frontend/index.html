@@ -6302,6 +6302,16 @@ async function loadCompaniesFromDB() {
     });
     if (companies.length > 0) nextCompanyId = computeNextCompanyId(companies, nextCompanyId);
   }
+  // Drop any markers from a previous load so re-loads start clean. We do this
+  // here (after the await) instead of at the top of the function, because the
+  // first call to loadCompaniesFromDB() runs synchronously past this point
+  // before the rest of the script defines _visibleMarkerIds (TDZ).
+  if (typeof markerClusterGroup !== 'undefined' && markerClusterGroup) {
+    try { markerClusterGroup.clearLayers(); } catch(_) {}
+  }
+  for (const id in markerMap) delete markerMap[id];
+  if (typeof _visibleMarkerIds !== 'undefined') _visibleMarkerIds = new Set();
+
   // Render
   // Pre-compute a lowercase search index per company so fuzzySearch
   // never re-builds the haystack string during filtering
@@ -6989,10 +6999,10 @@ function addCompanyMarker(c) {
   m.bindPopup(() => buildPopupHtml(c));
   m.on('click', () => openDetail(c.id));
   markerMap[c.id] = m;
-  // Add to cluster group if available, else directly to map
-  const cluster = ensureClusterGroup();
-  if (cluster) cluster.addLayer(m);
-  else m.addTo(map);
+  // Ensure the cluster layer exists so updateMarkers() has something to add to,
+  // but DO NOT add this marker yet — visibility is owned by applyFilters() so
+  // that filters and the radius constraint are honoured from first paint.
+  ensureClusterGroup();
 }
 
 // Logarithmic slider: slider 0-100 → real km 5-600
