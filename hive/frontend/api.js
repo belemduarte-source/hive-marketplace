@@ -112,6 +112,17 @@ const api = {
   getAuthConfig() {
     return apiFetch('/auth/config');
   },
+  // Password reset
+  requestPasswordReset(email) {
+    return apiFetch('/auth/forgot-password', { method: 'POST', body: { email } });
+  },
+  resetPassword(token, password) {
+    return apiFetch('/auth/reset-password', { method: 'POST', body: { token, password } });
+  },
+  // Email verification
+  resendEmailVerification() {
+    return apiFetch('/auth/resend-verification', { method: 'POST' });
+  },
 };
 
 window.api = api;

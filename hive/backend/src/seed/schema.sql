@@ -3,17 +3,22 @@
 -- Or via seed.js which executes this file automatically
 
 CREATE TABLE IF NOT EXISTS users (
-  id            BIGSERIAL PRIMARY KEY,
-  name          TEXT NOT NULL,
-  email         TEXT NOT NULL UNIQUE,
-  password_hash TEXT,
-  google_id     TEXT UNIQUE,
-  picture       TEXT,
-  type          TEXT NOT NULL CHECK (type IN ('empresa', 'cliente')),
-  company       TEXT DEFAULT '',
-  phone         TEXT DEFAULT '',
-  is_admin      BOOLEAN DEFAULT FALSE,
-  created_at    TIMESTAMPTZ DEFAULT NOW()
+  id                            BIGSERIAL PRIMARY KEY,
+  name                          TEXT NOT NULL,
+  email                         TEXT NOT NULL UNIQUE,
+  password_hash                 TEXT,
+  google_id                     TEXT UNIQUE,
+  picture                       TEXT,
+  type                          TEXT NOT NULL CHECK (type IN ('empresa', 'cliente')),
+  company                       TEXT DEFAULT '',
+  phone                         TEXT DEFAULT '',
+  is_admin                      BOOLEAN DEFAULT FALSE,
+  email_verified                BOOLEAN DEFAULT FALSE,
+  email_verification_token      TEXT,
+  email_verification_expires_at TIMESTAMPTZ,
+  password_reset_token          TEXT,
+  password_reset_expires_at     TIMESTAMPTZ,
+  created_at                    TIMESTAMPTZ DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS idx_users_email ON users(email);
 CREATE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id);
@@ -22,6 +27,13 @@ CREATE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id);
 ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id TEXT UNIQUE;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS picture TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT FALSE;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verification_token TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verification_expires_at TIMESTAMPTZ;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS password_reset_token TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS password_reset_expires_at TIMESTAMPTZ;
+CREATE INDEX IF NOT EXISTS idx_users_email_verification_token ON users(email_verification_token);
+CREATE INDEX IF NOT EXISTS idx_users_password_reset_token ON users(password_reset_token);
 
 CREATE TABLE IF NOT EXISTS companies (
   id          BIGSERIAL PRIMARY KEY,

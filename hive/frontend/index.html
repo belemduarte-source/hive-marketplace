@@ -3827,6 +3827,47 @@
 
 <div class="toast" id="toast"></div>
 
+<!-- ── PASSWORD RECOVERY (request + reset) ──────────────────────────────── -->
+<div class="overlay" id="forgotOverlay" onclick="if(event.target===this)closeForgotPassword()" role="dialog" aria-modal="true" aria-labelledby="forgotTitle">
+  <div class="modal" style="width:420px">
+    <button class="modal-close" onclick="closeForgotPassword()" aria-label="Fechar" style="position:absolute;top:14px;right:14px;background:none;border:0;font-size:22px;color:var(--muted);cursor:pointer">×</button>
+    <h2 id="forgotTitle" style="font-size:20px;font-weight:800;margin:0 0 6px;color:var(--text)" data-i18n="forgotTitle">Recuperar palavra-passe</h2>
+    <p style="font-size:13px;color:var(--muted);margin:0 0 16px;line-height:1.5" data-i18n="forgotBody">Indique o seu email e enviaremos um link para definir uma nova palavra-passe.</p>
+    <form id="forgotForm" onsubmit="event.preventDefault();submitForgotPassword()" novalidate>
+      <div class="form-row">
+        <label for="forgotEmail">Email</label>
+        <input type="email" id="forgotEmail" name="email" placeholder="email@exemplo.com" autocomplete="email" inputmode="email" required aria-required="true"/>
+      </div>
+      <button type="submit" class="btn-submit" id="forgotSubmitBtn" style="width:100%;padding:11px;font-size:14px" data-i18n="forgotSend">Enviar link</button>
+    </form>
+    <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">
+      <button type="button" onclick="closeForgotPassword();openLogin()" style="background:none;border:0;color:var(--primary);font-weight:700;cursor:pointer;font-family:inherit;font-size:12px">Voltar a iniciar sessão</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reset-password modal (opened via deep link #reset-password/<token>) -->
+<div class="overlay" id="resetOverlay" onclick="if(event.target===this)closeResetPassword()" role="dialog" aria-modal="true" aria-labelledby="resetTitle">
+  <div class="modal" style="width:420px">
+    <h2 id="resetTitle" style="font-size:20px;font-weight:800;margin:0 0 6px;color:var(--text)" data-i18n="resetTitle">Definir nova palavra-passe</h2>
+    <p style="font-size:13px;color:var(--muted);margin:0 0 16px;line-height:1.5" data-i18n="resetBody">Escolha uma nova palavra-passe (mínimo 6 caracteres).</p>
+    <form id="resetForm" onsubmit="event.preventDefault();submitResetPassword()" novalidate>
+      <input type="hidden" id="resetToken"/>
+      <div class="form-row">
+        <label for="resetPass">Nova palavra-passe</label>
+        <div class="pwd-wrap">
+          <input type="password" id="resetPass" name="new-password" autocomplete="new-password" minlength="6" required aria-required="true"/>
+          <button type="button" class="pwd-toggle" aria-label="Mostrar/ocultar palavra-passe" onclick="togglePassword('resetPass', this)" tabindex="-1">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+          </button>
+        </div>
+        <div class="form-hint">Mínimo 6 caracteres.</div>
+      </div>
+      <button type="submit" class="btn-submit" id="resetSubmitBtn" style="width:100%;padding:11px;font-size:14px" data-i18n="resetSubmit">Definir palavra-passe</button>
+    </form>
+  </div>
+</div>
+
 <!-- ── LEGAL MODAL (Terms / Privacy / Cookies / RGPD) ──────────────────── -->
 <div class="overlay" id="legalOverlay" onclick="if(event.target===this)closeLegal()" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
   <div class="modal legal-modal">
@@ -8860,12 +8901,76 @@ function regGoBack() {
   regUserType = '';
   document.querySelectorAll('.auth-type-card').forEach(c => c.classList.remove('selected'));
 }
-// Stub for the password-reset modal (real flow lives further down — see
-// commit "Password reset flow"). Defined here so the link works even before
-// that block is reached during script parsing.
-if (typeof window.openForgotPassword !== 'function') {
-  window.openForgotPassword = function() { showToast('Recuperação de palavra-passe em breve disponível.'); };
+// ── Password recovery (forgot + reset) ─────────────────────────────────────
+function openForgotPassword() {
+  closeLogin();
+  const ov = document.getElementById('forgotOverlay');
+  if (!ov) return;
+  ov.classList.add('open');
+  // Pre-fill from login email if user already typed it
+  const li = document.getElementById('loginEmail');
+  const fi = document.getElementById('forgotEmail');
+  if (li && fi && li.value) fi.value = li.value;
 }
+function closeForgotPassword() {
+  const ov = document.getElementById('forgotOverlay');
+  if (ov) ov.classList.remove('open');
+}
+async function submitForgotPassword() {
+  const email = (document.getElementById('forgotEmail')?.value || '').trim();
+  const btn   = document.getElementById('forgotSubmitBtn');
+  if (!email) { showToast('Indique o seu email'); return; }
+  setBusy(btn, true);
+  try {
+    const r = await api.requestPasswordReset(email);
+    showToast(r.message || 'Verifique a sua caixa de email.');
+    closeForgotPassword();
+  } catch (e) {
+    showToast(e.message || 'Não foi possível enviar o pedido. Tente novamente.');
+  } finally {
+    setBusy(btn, false);
+  }
+}
+function openResetPassword(token) {
+  const ov = document.getElementById('resetOverlay');
+  if (!ov) return;
+  document.getElementById('resetToken').value = token || '';
+  ov.classList.add('open');
+}
+function closeResetPassword() {
+  const ov = document.getElementById('resetOverlay');
+  if (ov) ov.classList.remove('open');
+}
+async function submitResetPassword() {
+  const token = document.getElementById('resetToken').value;
+  const pass  = document.getElementById('resetPass').value;
+  const btn   = document.getElementById('resetSubmitBtn');
+  if (!pass || pass.length < 6) { showToast('A palavra-passe deve ter pelo menos 6 caracteres'); return; }
+  setBusy(btn, true);
+  try {
+    await api.resetPassword(token, pass);
+    showToast('✅ Palavra-passe redefinida! Pode iniciar sessão.');
+    closeResetPassword();
+    // Clear the hash so refreshing the page doesn't try the (now-used) token again
+    if (history.replaceState) history.replaceState(null, '', location.pathname);
+    setTimeout(() => openLogin(), 400);
+  } catch (e) {
+    showToast(e.message || 'Não foi possível redefinir a palavra-passe.');
+  } finally {
+    setBusy(btn, false);
+  }
+}
+window.openForgotPassword  = openForgotPassword;
+window.closeForgotPassword = closeForgotPassword;
+window.submitForgotPassword= submitForgotPassword;
+window.closeResetPassword  = closeResetPassword;
+window.submitResetPassword = submitResetPassword;
+
+// Detect /#reset-password/<token> in the URL and open the reset modal
+(function() {
+  const m = location.hash.match(/^#reset-password\/([A-Za-z0-9]+)/);
+  if (m) setTimeout(() => openResetPassword(m[1]), 300);
+})();
 
 // ── Generic UX helpers ─────────────────────────────────────────────────────
 // Toggle a password input between text and password type, swapping the eye icon
@@ -9670,6 +9775,12 @@ if (_origRenderSectorFilters) {
           successTitle:'Pedido Enviado!', successSub:'O seu pedido foi recebido e está a aguardar validação. Receberá um email de confirmação assim que a empresa for aprovada.',
           successClose:'Continuar a Navegar',
           forgotPwd:'Esqueceu a palavra-passe?',
+          forgotTitle:'Recuperar palavra-passe',
+          forgotBody:'Indique o seu email e enviaremos um link para definir uma nova palavra-passe.',
+          forgotSend:'Enviar link',
+          resetTitle:'Definir nova palavra-passe',
+          resetBody:'Escolha uma nova palavra-passe (mínimo 6 caracteres).',
+          resetSubmit:'Definir palavra-passe',
           cookieTitle:'🍪 Privacidade e cookies',
           cookieBody:'Usamos cookies estritamente necessários para o funcionamento da plataforma (autenticação e preferência de idioma). Cookies analíticos só são ativados se aceitar.',
           cookieMore:'Saber mais',
@@ -9682,6 +9793,12 @@ if (_origRenderSectorFilters) {
           successTitle:'Request Submitted!', successSub:'Your request has been received and is pending validation. You will receive a confirmation email once the company is approved.',
           successClose:'Keep Browsing',
           forgotPwd:'Forgot your password?',
+          forgotTitle:'Reset your password',
+          forgotBody:'Enter your email and we\'ll send you a link to set a new password.',
+          forgotSend:'Send link',
+          resetTitle:'Set a new password',
+          resetBody:'Choose a new password (at least 6 characters).',
+          resetSubmit:'Set password',
           cookieTitle:'🍪 Privacy and cookies',
           cookieBody:'We use strictly-necessary cookies (authentication, language preference). Analytics cookies are only enabled if you accept.',
           cookieMore:'Learn more',
@@ -9694,6 +9811,12 @@ if (_origRenderSectorFilters) {
           successTitle:'Demande Envoyée !', successSub:"Votre demande a été reçue et est en attente de validation. Vous recevrez un email de confirmation dès que l'entreprise sera approuvée.",
           successClose:'Continuer à Naviguer',
           forgotPwd:'Mot de passe oublié ?',
+          forgotTitle:'Réinitialiser le mot de passe',
+          forgotBody:'Indiquez votre email et nous vous enverrons un lien pour définir un nouveau mot de passe.',
+          forgotSend:'Envoyer le lien',
+          resetTitle:'Définir un nouveau mot de passe',
+          resetBody:'Choisissez un nouveau mot de passe (minimum 6 caractères).',
+          resetSubmit:'Définir le mot de passe',
           cookieTitle:'🍪 Confidentialité et cookies',
           cookieBody:'Nous utilisons des cookies strictement nécessaires (authentification, préférence de langue). Les cookies analytiques ne sont activés que si vous acceptez.',
           cookieMore:'En savoir plus',
@@ -9706,6 +9829,12 @@ if (_origRenderSectorFilters) {
           successTitle:'¡Solicitud Enviada!', successSub:'Su solicitud ha sido recibida y está pendiente de validación. Recibirá un email de confirmación una vez aprobada la empresa.',
           successClose:'Seguir Navegando',
           forgotPwd:'¿Olvidó la contraseña?',
+          forgotTitle:'Recuperar contraseña',
+          forgotBody:'Indique su email y le enviaremos un enlace para establecer una nueva contraseña.',
+          forgotSend:'Enviar enlace',
+          resetTitle:'Establecer nueva contraseña',
+          resetBody:'Elija una nueva contraseña (mínimo 6 caracteres).',
+          resetSubmit:'Establecer contraseña',
           cookieTitle:'🍪 Privacidad y cookies',
           cookieBody:'Usamos cookies estrictamente necesarios (autenticación, preferencia de idioma). Las cookies analíticas solo se activan si las acepta.',
           cookieMore:'Más información',
@@ -9718,6 +9847,12 @@ if (_origRenderSectorFilters) {
           successTitle:'Anfrage gesendet!', successSub:'Ihre Anfrage wurde empfangen und wird geprüft. Sie erhalten eine Bestätigungs-E-Mail, sobald das Unternehmen freigegeben wurde.',
           successClose:'Weiter browsen',
           forgotPwd:'Passwort vergessen?',
+          forgotTitle:'Passwort zurücksetzen',
+          forgotBody:'Geben Sie Ihre E-Mail-Adresse ein. Wir senden Ihnen einen Link, um ein neues Passwort festzulegen.',
+          forgotSend:'Link senden',
+          resetTitle:'Neues Passwort festlegen',
+          resetBody:'Wählen Sie ein neues Passwort (mindestens 6 Zeichen).',
+          resetSubmit:'Passwort festlegen',
           cookieTitle:'🍪 Datenschutz und Cookies',
           cookieBody:'Wir verwenden ausschließlich notwendige Cookies (Authentifizierung, Spracheinstellung). Analyse-Cookies werden nur nach Ihrer Zustimmung aktiviert.',
           cookieMore:'Mehr erfahren',

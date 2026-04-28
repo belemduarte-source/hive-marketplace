@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const bcrypt = require('bcryptjs');
+const crypto = require('crypto');
 const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const pool = require('../db');
 const { requireAuth } = require('../middleware/auth');
+const { sendPasswordResetEmail, sendEmailVerification } = require('../email');
 
 const COOKIE_OPTS = {
   httpOnly: true,
@@ -183,5 +185,133 @@ router.post('/google', async (req, res, next) => {
     next(e);
   }
 });
+
+// ── Password reset ────────────────────────────────────────────────────────
+// POST /api/auth/forgot-password — body: { email }
+// Always returns 200 to prevent account enumeration. If the email matches a
+// real user, a reset token is generated and emailed.
+router.post('/forgot-password', async (req, res, next) => {
+  try {
+    const email = String(req.body?.email || '').toLowerCase().trim();
+    if (!email) return res.status(400).json({ error: 'email é obrigatório' });
+
+    // Don't leak whether the address is registered
+    const generic = { ok: true, message: 'Se o email estiver registado, receberá em breve um link de recuperação.' };
+
+    const { rows } = await pool.query('SELECT id, name, email FROM users WHERE email = $1', [email]);
+    const user = rows[0];
+    if (!user) return res.json(generic);
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const expires = new Date(Date.now() + 60 * 60 * 1000); // 60 minutes
+    await pool.query(
+      'UPDATE users SET password_reset_token = $1, password_reset_expires_at = $2 WHERE id = $3',
+      [token, expires, user.id]
+    );
+
+    const appUrl = (process.env.APP_URL || '').replace(/\/$/, '');
+    const resetUrl = `${appUrl}/#reset-password/${token}`;
+    sendPasswordResetEmail(user, resetUrl).catch(err =>
+      console.error('[email] password reset failed:', err.message)
+    );
+
+    res.json(generic);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// POST /api/auth/reset-password — body: { token, password }
+router.post('/reset-password', async (req, res, next) => {
+  try {
+    const { token, password } = req.body || {};
+    if (!token || !password) return res.status(400).json({ error: 'token e password são obrigatórios' });
+    if (password.length < 6) return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 6 caracteres' });
+
+    const { rows } = await pool.query(
+      'SELECT id FROM users WHERE password_reset_token = $1 AND password_reset_expires_at > NOW()',
+      [token]
+    );
+    if (!rows[0]) return res.status(400).json({ error: 'Hiperligação inválida ou expirada. Peça uma nova.' });
+
+    const passwordHash = await bcrypt.hash(password, 10);
+    await pool.query(
+      'UPDATE users SET password_hash = $1, password_reset_token = NULL, password_reset_expires_at = NULL WHERE id = $2',
+      [passwordHash, rows[0].id]
+    );
+    res.json({ ok: true });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// ── Email verification ────────────────────────────────────────────────────
+// GET /api/auth/verify-email?token=...  (one-shot, idempotent)
+router.get('/verify-email', async (req, res, next) => {
+  try {
+    const token = String(req.query?.token || '');
+    if (!token) return res.status(400).send(verifyHtml('❌ Token em falta', 'A hiperligação de verificação está incompleta.', '#dc2626'));
+
+    const { rows } = await pool.query(
+      `UPDATE users SET email_verified = TRUE,
+                       email_verification_token = NULL,
+                       email_verification_expires_at = NULL
+        WHERE email_verification_token = $1
+          AND email_verification_expires_at > NOW()
+        RETURNING id, name, email`,
+      [token]
+    );
+    if (!rows[0]) return res.status(400).send(verifyHtml('⚠️ Hiperligação inválida', 'O link expirou ou já foi usado. Inicie sessão e peça um novo email de verificação.', '#dc2626'));
+
+    res.send(verifyHtml('✅ Email confirmado!', `O email <strong>${rows[0].email.replace(/[<>]/g, '')}</strong> foi confirmado com sucesso. Já pode fechar esta página.`, '#16a34a'));
+  } catch (e) {
+    next(e);
+  }
+});
+
+// POST /api/auth/resend-verification — for the logged-in user
+router.post('/resend-verification', requireAuth, async (req, res, next) => {
+  try {
+    const { rows } = await pool.query('SELECT id, name, email, email_verified FROM users WHERE id = $1', [req.user.id]);
+    const user = rows[0];
+    if (!user) return res.status(404).json({ error: 'Utilizador não encontrado' });
+    if (user.email_verified) return res.json({ ok: true, alreadyVerified: true });
+
+    const token = crypto.randomBytes(32).toString('hex');
+    const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
+    await pool.query(
+      'UPDATE users SET email_verification_token = $1, email_verification_expires_at = $2 WHERE id = $3',
+      [token, expires, user.id]
+    );
+
+    const appUrl = (process.env.APP_URL || '').replace(/\/$/, '');
+    const verifyUrl = `${appUrl}/api/auth/verify-email?token=${token}`;
+    sendEmailVerification(user, verifyUrl).catch(err =>
+      console.error('[email] verification resend failed:', err.message)
+    );
+    res.json({ ok: true });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// Tiny standalone HTML page for the verify-email landing
+function verifyHtml(title, body, color) {
+  return `<!DOCTYPE html><html lang="pt"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${title} — Hive</title>
+<style>
+  body{font-family:Arial,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f9fafb}
+  .card{background:#fff;border-radius:12px;padding:48px 40px;max-width:520px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.1)}
+  h1{color:${color};font-size:28px;margin:0 0 16px}
+  p{color:#374151;font-size:16px;line-height:1.6;margin:0 0 24px}
+  a{display:inline-block;background:${color};color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700}
+</style></head>
+<body><div class="card">
+  <h1>${title}</h1>
+  <p>${body}</p>
+  <a href="/">Voltar ao Hive</a>
+</div></body></html>`;
+}
 
 module.exports = router;
