@@ -2541,14 +2541,14 @@
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
         <span>O Meu Perfil</span>
       </div>
-      <button class="profile-panel-close" onclick="document.getElementById('profilePanelOverlay').classList.remove('open')">✕</button>
+      <button class="profile-panel-close" onclick="document.getElementById('profilePanelOverlay').classList.remove('open')" aria-label="Fechar perfil">✕</button>
     </div>
     <div class="profile-panel-body" id="profilePanelBody"></div>
   </div>
 </div>
 
 <!-- CONTACT FORM MODAL -->
-<div class="overlay" id="contactModal" onclick="if(event.target===this)closeContactModal()">
+<div class="overlay" id="contactModal" onclick="if(event.target===this)closeContactModal()" role="dialog" aria-modal="true" aria-label="Contactar empresa">
   <div class="modal" style="width:480px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
       <div>
@@ -2572,7 +2572,7 @@
 </div>
 
 <!-- ADMIN DASHBOARD MODAL -->
-<div class="overlay" id="adminPanel" onclick="if(event.target===this)closeAdminPanel()">
+<div class="overlay" id="adminPanel" onclick="if(event.target===this)closeAdminPanel()" role="dialog" aria-modal="true" aria-label="Painel de Administração">
   <div class="modal" style="width:900px;max-width:95vw;max-height:88vh;display:flex;flex-direction:column;padding:0;overflow:hidden">
     <div class="admin-header">
       <h2>⚙️ Painel de Administração</h2>
@@ -2590,7 +2590,7 @@
 </div>
 
 <!-- REGISTRATION STATUS MODAL -->
-<div class="overlay" id="statusModal" onclick="if(event.target===this)closeStatusModal()">
+<div class="overlay" id="statusModal" onclick="if(event.target===this)closeStatusModal()" role="dialog" aria-modal="true" aria-label="Estado do registo">
   <div class="modal" style="width:440px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
       <div style="font-size:17px;font-weight:800;color:var(--text)">Estado do Registo</div>
@@ -3125,7 +3125,7 @@
       </button>
       <span class="view-result-count" id="viewResultCount">0 empresas</span>
     </div>
-    <div id="map"></div>
+    <div id="map" role="region" aria-label="Mapa interativo com empresas registadas. Use as setas para navegar e Enter para abrir os detalhes de uma empresa."></div>
     <!-- List view (hidden by default) -->
     <div class="search-list-view" id="searchListView" style="display:none"></div>
 
@@ -3186,8 +3186,8 @@
       <div class="dp-name" id="dpName"></div>
       <div class="dp-sub" id="dpSub"></div>
     </div>
-    <button class="dp-close" id="dpEditBtn" style="display:none" onclick="openEditCompany()" title="Editar">✎</button>
-    <button class="dp-close" onclick="closeDetail()">✕</button>
+    <button class="dp-close" id="dpEditBtn" style="display:none" onclick="openEditCompany()" title="Editar" aria-label="Editar empresa">✎</button>
+    <button class="dp-close" onclick="closeDetail()" aria-label="Fechar detalhes">✕</button>
   </div>
   <!-- ACTION BAR — visible only when logged in -->
   <div class="dp-quote-bar" id="dpQuoteBar">
@@ -3285,7 +3285,7 @@
 </div>
 
 <!-- LOGIN / REGISTER MODAL -->
-<div class="overlay" id="loginOverlay" onclick="if(event.target===this)closeLogin()">
+<div class="overlay" id="loginOverlay" onclick="if(event.target===this)closeLogin()" role="dialog" aria-modal="true" aria-label="Iniciar sessão ou criar conta">
   <div class="modal" style="width:440px">
     <div style="text-align:center;margin-bottom:18px">
       <div style="font-size:22px;font-weight:800;color:var(--text)">Bem-vindo à <span style="color:var(--primary)">Hive</span></div>
@@ -3387,7 +3387,7 @@
 </div>
 
 <!-- REGISTRATION MODAL -->
-<div class="overlay" id="registerOverlay" onclick="closeRegisterIfBg(event)">
+<div class="overlay" id="registerOverlay" onclick="closeRegisterIfBg(event)" role="dialog" aria-modal="true" aria-label="Registar empresa">
   <div class="modal">
     <div class="modal-title"><i data-lucide="building-2"></i><span data-i18n="regTitle">Registar Nova Empresa</span></div>
 
@@ -3521,7 +3521,7 @@
 </div>
 
 <!-- LOCATION PERMISSION HELP MODAL -->
-<div class="overlay" id="geoHelpOverlay" onclick="if(event.target===this)closeGeoHelp()">
+<div class="overlay" id="geoHelpOverlay" onclick="if(event.target===this)closeGeoHelp()" role="dialog" aria-modal="true" aria-label="Ajuda — permissão de localização">
   <div class="modal" style="max-width:440px;padding:0;overflow:hidden">
     <div style="background:linear-gradient(135deg,#f97316,#ea580c);padding:24px 24px 20px;text-align:center">
       <div style="font-size:42px;margin-bottom:8px">📍</div>
@@ -3578,7 +3578,7 @@
 </div>
 
 <!-- EMAIL MODAL -->
-<div class="overlay" id="emailOverlay" onclick="closeEmailIfBg(event)">
+<div class="overlay" id="emailOverlay" onclick="closeEmailIfBg(event)" role="dialog" aria-modal="true" aria-label="Pedido de orçamento por email">
   <div class="modal modal-sm">
     <div class="modal-title"><i data-lucide="mail"></i><span data-i18n="emailTitle">Pedido de Orçamento</span></div>
     <div class="modal-sub" data-i18n="emailSub">Enviado diretamente para o fornecedor via e-mail verificado.</div>
@@ -8400,6 +8400,63 @@ function showToast(msg, type) {
   el.classList.add('show');
   _toastTimer = setTimeout(() => { el.classList.remove('show'); _toastTimer = null; }, 3000);
 }
+
+// ── Modal a11y: focus trap + Escape to close + restore focus ───────────────
+// Applied generically to any element marked role="dialog" that opens via the
+// existing .open class. Tab cycles within the modal so keyboard users can't
+// escape into the page underneath; Escape closes whichever modal is on top.
+const FOCUSABLE = 'a[href],button:not([disabled]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),[tabindex]:not([tabindex="-1"])';
+let _modalReturnFocus = null;
+function _topmostOpenModal() {
+  const modals = document.querySelectorAll('[role="dialog"].open, .reg-success-overlay.open');
+  return modals.length ? modals[modals.length - 1] : null;
+}
+function _focusFirstIn(modal) {
+  if (!modal) return;
+  const focusable = modal.querySelectorAll(FOCUSABLE);
+  for (const el of focusable) {
+    if (el.offsetParent !== null) { el.focus(); return; }
+  }
+  modal.setAttribute('tabindex', '-1');
+  modal.focus();
+}
+// Trap Tab within the modal
+document.addEventListener('keydown', function(e) {
+  const modal = _topmostOpenModal();
+  if (!modal) return;
+  if (e.key === 'Tab') {
+    const focusable = Array.from(modal.querySelectorAll(FOCUSABLE)).filter(el => el.offsetParent !== null);
+    if (focusable.length === 0) return;
+    const first = focusable[0], last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { last.focus(); e.preventDefault(); }
+    else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
+  } else if (e.key === 'Escape') {
+    // Close in priority order; each close-fn no-ops if already shut.
+    const closers = ['closeLegal','closeContactModal','closeAdminPanel','closeStatusModal','closeGeoHelp','closeEmail','closeRegister','closeLogin','closeHelp'];
+    for (const fn of closers) {
+      if (typeof window[fn] === 'function') { try { window[fn](); } catch(_) {} }
+    }
+  }
+});
+// When a modal opens, remember where focus came from and move focus inside
+const _modalObserver = new MutationObserver(function(records) {
+  records.forEach(r => {
+    if (r.type !== 'attributes' || r.attributeName !== 'class') return;
+    const t = r.target;
+    const wasOpen = (r.oldValue || '').split(' ').includes('open');
+    const isOpen  = t.classList.contains('open');
+    if (!wasOpen && isOpen && (t.getAttribute('role') === 'dialog' || t.classList.contains('reg-success-overlay'))) {
+      _modalReturnFocus = document.activeElement;
+      setTimeout(() => _focusFirstIn(t), 50);
+    } else if (wasOpen && !isOpen && _modalReturnFocus) {
+      try { _modalReturnFocus.focus(); } catch(_) {}
+      _modalReturnFocus = null;
+    }
+  });
+});
+document.querySelectorAll('[role="dialog"], .reg-success-overlay').forEach(el => {
+  _modalObserver.observe(el, { attributes: true, attributeOldValue: true, attributeFilter: ['class'] });
+});
 
 // ── LEGAL MODAL (Terms / Privacy / Cookies / RGPD) ─────────────────────────
 // Content lives in JS so it's translated alongside everything else and
