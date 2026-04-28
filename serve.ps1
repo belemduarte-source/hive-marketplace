@@ -1,4 +1,4 @@
-$root = 'C:\Users\35191\Desktop\Claude\hive-deploy'
+$root = 'C:\Users\35191\Desktop\Claude\hive\frontend'
 $port = 9090
 
 $endpoint = New-Object System.Net.IPEndPoint([System.Net.IPAddress]::Loopback, $port)
