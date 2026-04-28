@@ -558,6 +558,31 @@
     button[data-busy="true"]{position:relative;color:transparent!important;pointer-events:none}
     button[data-busy="true"]::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid currentColor;border-top-color:transparent;animation:spinBtn .7s linear infinite;color:#fff}
     @keyframes spinBtn{to{transform:rotate(360deg)}}
+    /* Legal modal (Terms / Privacy / Cookies / RGPD) */
+    .legal-modal{max-width:680px;max-height:85vh;display:flex;flex-direction:column}
+    .legal-title{font-size:22px;font-weight:800;color:var(--text);margin:0 0 6px;padding-right:32px}
+    .legal-meta{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:14px}
+    .legal-body{font-size:14px;line-height:1.65;color:var(--text);overflow-y:auto;padding-right:8px;flex:1}
+    .legal-body h3{font-size:15px;font-weight:800;color:var(--text);margin:18px 0 6px}
+    .legal-body p{margin-bottom:10px}
+    .legal-body ul{margin:6px 0 12px 22px}
+    .legal-body li{margin-bottom:4px}
+    .legal-body a{color:var(--primary);text-decoration:underline}
+    .legal-body strong{font-weight:700}
+    /* Cookie consent banner */
+    .cookie-banner{position:fixed;bottom:16px;left:16px;right:16px;background:#0f172a;color:#fff;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.25);z-index:9998;padding:0;animation:slideUp .4s ease both}
+    @keyframes slideUp{from{transform:translateY(120%);opacity:0}to{transform:translateY(0);opacity:1}}
+    .cookie-banner-inner{display:flex;flex-wrap:wrap;align-items:center;gap:18px;padding:14px 18px;max-width:1200px;margin:0 auto}
+    .cookie-banner-text{flex:1;min-width:260px;font-size:13px;line-height:1.5}
+    .cookie-banner-text strong{display:block;margin-bottom:2px;color:#f97316;font-weight:700}
+    .cookie-banner-text a{color:#f97316;text-decoration:underline;margin-left:6px}
+    .cookie-banner-actions{display:flex;gap:8px;flex-shrink:0}
+    .cookie-btn{padding:9px 18px;border-radius:8px;border:0;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+    .cookie-btn-primary{background:#f97316;color:#fff}
+    .cookie-btn-primary:hover{background:#ea580c}
+    .cookie-btn-secondary{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18)}
+    .cookie-btn-secondary:hover{background:rgba(255,255,255,.14)}
+    @media(max-width:560px){.cookie-banner{bottom:8px;left:8px;right:8px}.cookie-banner-actions{width:100%}.cookie-btn{flex:1}}
     .auth-type-cards{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:10px}
     .auth-type-card{border:2px solid var(--border);border-radius:12px;padding:20px 14px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg)}
     .auth-type-card:hover{border-color:var(--primary);background:#fff;transform:translateY(-2px);box-shadow:0 4px 12px rgba(0,0,0,.08)}
@@ -2844,10 +2869,10 @@
       </div>
       <div class="footer-col">
         <h4 class="footer-title" data-i18n="footerLegal">Legal</h4>
-        <a class="footer-link" href="#" data-i18n="footerTerms">Termos de Serviço</a>
-        <a class="footer-link" href="#" data-i18n="footerPrivacy">Política de Privacidade</a>
-        <a class="footer-link" href="#" data-i18n="footerCookies">Cookies</a>
-        <a class="footer-link" href="#" data-i18n="footerRgpd">RGPD</a>
+        <a class="footer-link" href="#legal/terms" onclick="openLegal('terms');return false" data-i18n="footerTerms">Termos de Serviço</a>
+        <a class="footer-link" href="#legal/privacy" onclick="openLegal('privacy');return false" data-i18n="footerPrivacy">Política de Privacidade</a>
+        <a class="footer-link" href="#legal/cookies" onclick="openLegal('cookies');return false" data-i18n="footerCookies">Cookies</a>
+        <a class="footer-link" href="#legal/rgpd" onclick="openLegal('rgpd');return false" data-i18n="footerRgpd">RGPD</a>
       </div>
       <div class="footer-col">
         <h4 class="footer-title" data-i18n="footerContact">Contacto</h4>
@@ -3793,6 +3818,32 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- ── LEGAL MODAL (Terms / Privacy / Cookies / RGPD) ──────────────────── -->
+<div class="overlay" id="legalOverlay" onclick="if(event.target===this)closeLegal()" role="dialog" aria-modal="true" aria-labelledby="legalTitle">
+  <div class="modal legal-modal">
+    <button class="modal-close" onclick="closeLegal()" aria-label="Fechar">×</button>
+    <h2 id="legalTitle" class="legal-title"></h2>
+    <div class="legal-meta" id="legalMeta"></div>
+    <div class="legal-body" id="legalBody"></div>
+    <div style="text-align:right;margin-top:18px"><button class="btn-submit" onclick="closeLegal()">Fechar</button></div>
+  </div>
+</div>
+
+<!-- ── COOKIE CONSENT BANNER ──────────────────────────────────────────── -->
+<div id="cookieBanner" class="cookie-banner" hidden>
+  <div class="cookie-banner-inner">
+    <div class="cookie-banner-text">
+      <strong data-i18n="cookieTitle">🍪 Privacidade e cookies</strong>
+      <span data-i18n="cookieBody">Usamos cookies estritamente necessários para o funcionamento da plataforma (autenticação e preferência de idioma). Cookies analíticos só são ativados se aceitar.</span>
+      <a href="#legal/cookies" onclick="openLegal('cookies');return false" data-i18n="cookieMore">Saber mais</a>
+    </div>
+    <div class="cookie-banner-actions">
+      <button type="button" class="cookie-btn cookie-btn-secondary" onclick="setCookieConsent('rejected')" data-i18n="cookieReject">Rejeitar</button>
+      <button type="button" class="cookie-btn cookie-btn-primary" onclick="setCookieConsent('accepted')" data-i18n="cookieAccept">Aceitar tudo</button>
+    </div>
+  </div>
+</div>
 
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" crossorigin="anonymous"></script>
@@ -8336,6 +8387,187 @@ function showToast(msg, type) {
   _toastTimer = setTimeout(() => { el.classList.remove('show'); _toastTimer = null; }, 3000);
 }
 
+// ── LEGAL MODAL (Terms / Privacy / Cookies / RGPD) ─────────────────────────
+// Content lives in JS so it's translated alongside everything else and
+// doesn't need separate static pages.
+const LEGAL_DOCS = {
+  pt: {
+    terms: {
+      title: 'Termos de Serviço',
+      meta:  'Última atualização: 28 de Abril de 2026',
+      html: `
+        <p>Bem-vindo à <strong>Hive</strong>, marketplace que liga empresas e particulares aos melhores profissionais de construção em Portugal. Ao usar a plataforma, aceita estes Termos de Serviço.</p>
+        <h3>1. Quem somos</h3>
+        <p>A Hive é uma plataforma operada em Portugal que disponibiliza um diretório pesquisável de empresas registadas no setor da construção e serviços associados, permitindo aos utilizadores comparar perfis, ler avaliações e contactar diretamente os fornecedores.</p>
+        <h3>2. Conta de utilizador</h3>
+        <ul>
+          <li>O utilizador é responsável pela veracidade dos dados fornecidos no registo.</li>
+          <li>Empresas registadas devem fornecer um <strong>código da Certidão Permanente</strong> válido emitido pelo Registo Comercial.</li>
+          <li>É proibido criar contas em nome de terceiros sem autorização.</li>
+        </ul>
+        <h3>3. Conteúdo de empresas e avaliações</h3>
+        <ul>
+          <li>As empresas são responsáveis pelo conteúdo dos seus perfis. A Hive reserva-se o direito de remover conteúdo enganoso, ofensivo ou ilegal.</li>
+          <li>As avaliações refletem a opinião pessoal de quem as publica e devem basear-se em interações reais.</li>
+        </ul>
+        <h3>4. Limitação de responsabilidade</h3>
+        <p>A Hive funciona como intermediário tecnológico. Não somos parte em contratos, orçamentos ou disputas comerciais entre clientes e empresas. Recomendamos sempre confirmação independente das credenciais profissionais antes de contratar serviços.</p>
+        <h3>5. Lei aplicável</h3>
+        <p>Estes termos regem-se pela lei portuguesa. Eventuais litígios serão dirimidos no foro do Tribunal Judicial da Comarca de Lisboa.</p>
+        <h3>6. Contacto</h3>
+        <p>Dúvidas: <a href="mailto:suporte@hive.pt">suporte@hive.pt</a>.</p>
+      `,
+    },
+    privacy: {
+      title: 'Política de Privacidade',
+      meta:  'Última atualização: 28 de Abril de 2026 · Conformidade RGPD',
+      html: `
+        <p>A Hive respeita a sua privacidade e cumpre o <strong>Regulamento (UE) 2016/679 (RGPD)</strong> e a Lei n.º 58/2019 de Portugal.</p>
+        <h3>1. Responsável pelo tratamento</h3>
+        <p>Hive — <a href="mailto:privacidade@hive.pt">privacidade@hive.pt</a></p>
+        <h3>2. Dados que recolhemos</h3>
+        <ul>
+          <li><strong>Conta:</strong> nome, e-mail, palavra-passe (cifrada com bcrypt) ou identificador Google. Telefone se for empresa.</li>
+          <li><strong>Empresa:</strong> dados públicos comerciais (nome, CAE, morada, contactos) + código da Certidão Permanente (apenas visível ao próprio e à equipa Hive).</li>
+          <li><strong>Utilização:</strong> eventos analíticos básicos (visualizações de perfis, cliques) — apenas se aceitar cookies analíticos.</li>
+          <li><strong>Localização:</strong> coordenadas só se autorizar o navegador a partilhá-las; nunca são guardadas no servidor.</li>
+        </ul>
+        <h3>3. Para que usamos os dados</h3>
+        <ul>
+          <li>Operar a plataforma e autenticar utilizadores.</li>
+          <li>Mostrar empresas relevantes em pesquisas e mapa.</li>
+          <li>Enviar emails transacionais (confirmação de registo, aprovação, mensagens entre utilizadores).</li>
+          <li>Prevenir fraude e abuso (rate-limiting baseado em IP).</li>
+        </ul>
+        <h3>4. Base legal</h3>
+        <p>Execução do contrato (Art. 6.º, n.º 1, alínea b)) para conta e perfil; consentimento (alínea a)) para cookies analíticos; interesse legítimo (alínea f)) para prevenção de fraude.</p>
+        <h3>5. Partilha com terceiros</h3>
+        <p>Não vendemos dados. Partilhamos apenas com sub-processadores estritamente necessários: <strong>Vercel</strong> (hospedagem), <strong>Neon/Postgres</strong> (base de dados), <strong>Google</strong> (Sign-in opcional), <strong>OpenStreetMap/Carto</strong> (tiles do mapa). Todos cumprem o RGPD.</p>
+        <h3>6. Período de conservação</h3>
+        <p>Mantemos os dados enquanto a conta estiver ativa. Após eliminação, dados de conta são apagados em 30 dias. Logs de segurança: 12 meses. Empresas aprovadas continuam visíveis no diretório até pedido de remoção.</p>
+        <h3>7. Os seus direitos</h3>
+        <ul>
+          <li>Aceder, retificar, eliminar ou portar os seus dados.</li>
+          <li>Limitar ou opor-se ao tratamento.</li>
+          <li>Retirar consentimento a qualquer momento.</li>
+          <li>Apresentar reclamação à <a href="https://www.cnpd.pt/" target="_blank" rel="noopener">CNPD</a>.</li>
+        </ul>
+        <p>Para exercer qualquer destes direitos: <a href="mailto:privacidade@hive.pt">privacidade@hive.pt</a>.</p>
+      `,
+    },
+    cookies: {
+      title: 'Política de Cookies',
+      meta:  'Última atualização: 28 de Abril de 2026',
+      html: `
+        <p>Esta página explica que cookies e tecnologias semelhantes a Hive utiliza, e como pode controlá-los.</p>
+        <h3>1. O que são cookies?</h3>
+        <p>Cookies são pequenos ficheiros de texto guardados pelo seu navegador quando visita um site. Permitem-nos lembrar preferências e compreender como a plataforma é usada.</p>
+        <h3>2. Cookies que usamos</h3>
+        <p><strong>Estritamente necessários (sempre ativos):</strong></p>
+        <ul>
+          <li><code>hive_token</code> — cookie HttpOnly de autenticação. Caduca em 7 dias.</li>
+          <li><code>hive_lang</code> — preferência de idioma (PT/EN/FR/ES/DE), guardada em localStorage.</li>
+          <li><code>hive_cookie_consent</code> — regista a sua escolha sobre este banner.</li>
+        </ul>
+        <p><strong>Analíticos (apenas com consentimento):</strong></p>
+        <ul>
+          <li>Eventos agregados de utilização (cliques em perfis, contactos), sem identificação pessoal.</li>
+        </ul>
+        <p>Não usamos cookies de publicidade nem partilhamos dados com redes de tracking.</p>
+        <h3>3. Como gerir</h3>
+        <p>Pode aceitar ou rejeitar cookies analíticos no banner que aparece na primeira visita, e mudar de ideias a qualquer momento limpando os cookies do site no seu navegador. Cookies estritamente necessários não podem ser desativados sem comprometer o funcionamento da plataforma.</p>
+        <h3>4. Contacto</h3>
+        <p><a href="mailto:privacidade@hive.pt">privacidade@hive.pt</a></p>
+      `,
+    },
+    rgpd: {
+      title: 'RGPD — Os seus direitos',
+      meta:  'Resumo dos direitos do titular dos dados',
+      html: `
+        <p>Como utilizador da Hive, ao abrigo do <strong>Regulamento Geral de Proteção de Dados</strong>, tem os seguintes direitos:</p>
+        <ul>
+          <li><strong>Acesso:</strong> obter cópia dos seus dados pessoais.</li>
+          <li><strong>Retificação:</strong> corrigir dados incorretos ou incompletos.</li>
+          <li><strong>Apagamento ("ser esquecido"):</strong> pedir a eliminação dos seus dados.</li>
+          <li><strong>Limitação:</strong> restringir o tratamento em determinadas circunstâncias.</li>
+          <li><strong>Portabilidade:</strong> receber os seus dados num formato estruturado e legível.</li>
+          <li><strong>Oposição:</strong> opor-se ao tratamento por motivos legítimos.</li>
+          <li><strong>Reclamação:</strong> apresentar queixa à autoridade de controlo (<a href="https://www.cnpd.pt/" target="_blank" rel="noopener">CNPD</a> em Portugal).</li>
+        </ul>
+        <h3>Como exercer os seus direitos</h3>
+        <p>Envie um email para <a href="mailto:privacidade@hive.pt">privacidade@hive.pt</a> indicando claramente o pedido. Responderemos no prazo máximo de <strong>30 dias</strong>, podendo prolongar-se até 60 dias em casos complexos (com aviso prévio).</p>
+        <h3>Encarregado da Proteção de Dados (DPO)</h3>
+        <p>Para questões formais relacionadas com proteção de dados pessoais: <a href="mailto:dpo@hive.pt">dpo@hive.pt</a></p>
+      `,
+    },
+  },
+};
+// English fallback for non-PT users (full translations can be added incrementally)
+LEGAL_DOCS.en = LEGAL_DOCS.fr = LEGAL_DOCS.es = LEGAL_DOCS.de = LEGAL_DOCS.pt;
+
+function openLegal(kind) {
+  const lang = (typeof currentLang !== 'undefined' && currentLang) || 'pt';
+  const doc  = (LEGAL_DOCS[lang] || LEGAL_DOCS.pt)[kind] || LEGAL_DOCS.pt[kind];
+  if (!doc) return;
+  document.getElementById('legalTitle').textContent = doc.title;
+  document.getElementById('legalMeta').textContent  = doc.meta || '';
+  document.getElementById('legalBody').innerHTML    = doc.html;
+  const ov = document.getElementById('legalOverlay');
+  ov.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  if (history.replaceState) history.replaceState(null, '', '#legal/' + kind);
+}
+function closeLegal() {
+  const ov = document.getElementById('legalOverlay');
+  if (ov) ov.classList.remove('open');
+  document.body.style.overflow = '';
+  if (location.hash.startsWith('#legal/') && history.replaceState) history.replaceState(null, '', location.pathname);
+}
+window.openLegal  = openLegal;
+window.closeLegal = closeLegal;
+
+// Open legal modal if landing on /#legal/<kind>
+(function() {
+  const m = location.hash.match(/^#legal\/(terms|privacy|cookies|rgpd)$/);
+  if (m) setTimeout(() => openLegal(m[1]), 200);
+})();
+
+// ── COOKIE CONSENT ─────────────────────────────────────────────────────────
+// Records the user's choice in localStorage. Until consent is given, the
+// analytics tracker (api.trackEvent) is a no-op. Strictly-necessary cookies
+// (auth, language) are always set — that's allowed by ePrivacy without consent.
+const COOKIE_CONSENT_KEY = 'hive_cookie_consent';
+function getCookieConsent() {
+  try { return localStorage.getItem(COOKIE_CONSENT_KEY); } catch (_) { return null; }
+}
+function setCookieConsent(value) {
+  try { localStorage.setItem(COOKIE_CONSENT_KEY, value); } catch (_) {}
+  const banner = document.getElementById('cookieBanner');
+  if (banner) banner.hidden = true;
+  // Re-evaluate the analytics tracker now consent state changed
+  if (typeof window.api !== 'undefined' && window.api) {
+    window.api._analyticsAllowed = value === 'accepted';
+  }
+}
+function showCookieBannerIfNeeded() {
+  if (getCookieConsent()) return; // already decided
+  const banner = document.getElementById('cookieBanner');
+  if (banner) banner.hidden = false;
+}
+window.setCookieConsent = setCookieConsent;
+// Wire up the analytics gate: api.trackEvent only fires if user accepted.
+if (typeof window.api !== 'undefined' && window.api && typeof window.api.trackEvent === 'function') {
+  const _origTrack = window.api.trackEvent.bind(window.api);
+  window.api._analyticsAllowed = getCookieConsent() === 'accepted';
+  window.api.trackEvent = function(companyId, type) {
+    if (!window.api._analyticsAllowed) return;
+    return _origTrack(companyId, type);
+  };
+}
+// Show the banner once everything is rendered
+if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(showCookieBannerIfNeeded, 800));
+else setTimeout(showCookieBannerIfNeeded, 800);
+
 // ── GEOLOCATION ────────────────────────────────────────────────────────────────
 let userLocationMarker = null;
 let _locationObtained  = false;
@@ -9305,31 +9537,61 @@ if (_origRenderSectorFilters) {
           regCountry:'País', regPostalCode:'Código Postal', regCity:'Localidade / Cidade',
           sortAll:'Todas',
           successTitle:'Pedido Enviado!', successSub:'O seu pedido foi recebido e está a aguardar validação. Receberá um email de confirmação assim que a empresa for aprovada.',
-          successClose:'Continuar a Navegar' },
+          successClose:'Continuar a Navegar',
+          forgotPwd:'Esqueceu a palavra-passe?',
+          cookieTitle:'🍪 Privacidade e cookies',
+          cookieBody:'Usamos cookies estritamente necessários para o funcionamento da plataforma (autenticação e preferência de idioma). Cookies analíticos só são ativados se aceitar.',
+          cookieMore:'Saber mais',
+          cookieAccept:'Aceitar tudo',
+          cookieReject:'Rejeitar' },
     en: { regStep1Label:'Identity', regStep2Label:'Location', regStep3Label:'Contacts',
           regStepNext:'Next', regStepBack:'Back',
           regCountry:'Country', regPostalCode:'Postal Code', regCity:'Locality / City',
           sortAll:'All',
           successTitle:'Request Submitted!', successSub:'Your request has been received and is pending validation. You will receive a confirmation email once the company is approved.',
-          successClose:'Keep Browsing' },
+          successClose:'Keep Browsing',
+          forgotPwd:'Forgot your password?',
+          cookieTitle:'🍪 Privacy and cookies',
+          cookieBody:'We use strictly-necessary cookies (authentication, language preference). Analytics cookies are only enabled if you accept.',
+          cookieMore:'Learn more',
+          cookieAccept:'Accept all',
+          cookieReject:'Reject' },
     fr: { regStep1Label:'Identité', regStep2Label:'Localisation', regStep3Label:'Contacts',
           regStepNext:'Suivant', regStepBack:'Précédent',
           regCountry:'Pays', regPostalCode:'Code Postal', regCity:'Localité / Ville',
           sortAll:'Toutes',
           successTitle:'Demande Envoyée !', successSub:"Votre demande a été reçue et est en attente de validation. Vous recevrez un email de confirmation dès que l'entreprise sera approuvée.",
-          successClose:'Continuer à Naviguer' },
+          successClose:'Continuer à Naviguer',
+          forgotPwd:'Mot de passe oublié ?',
+          cookieTitle:'🍪 Confidentialité et cookies',
+          cookieBody:'Nous utilisons des cookies strictement nécessaires (authentification, préférence de langue). Les cookies analytiques ne sont activés que si vous acceptez.',
+          cookieMore:'En savoir plus',
+          cookieAccept:'Tout accepter',
+          cookieReject:'Refuser' },
     es: { regStep1Label:'Identidad', regStep2Label:'Ubicación', regStep3Label:'Contactos',
           regStepNext:'Siguiente', regStepBack:'Anterior',
           regCountry:'País', regPostalCode:'Código Postal', regCity:'Localidad / Ciudad',
           sortAll:'Todos',
           successTitle:'¡Solicitud Enviada!', successSub:'Su solicitud ha sido recibida y está pendiente de validación. Recibirá un email de confirmación una vez aprobada la empresa.',
-          successClose:'Seguir Navegando' },
+          successClose:'Seguir Navegando',
+          forgotPwd:'¿Olvidó la contraseña?',
+          cookieTitle:'🍪 Privacidad y cookies',
+          cookieBody:'Usamos cookies estrictamente necesarios (autenticación, preferencia de idioma). Las cookies analíticas solo se activan si las acepta.',
+          cookieMore:'Más información',
+          cookieAccept:'Aceptar todo',
+          cookieReject:'Rechazar' },
     de: { regStep1Label:'Identität', regStep2Label:'Standort', regStep3Label:'Kontakte',
           regStepNext:'Weiter', regStepBack:'Zurück',
           regCountry:'Land', regPostalCode:'Postleitzahl', regCity:'Ort / Stadt',
           sortAll:'Alle',
           successTitle:'Anfrage gesendet!', successSub:'Ihre Anfrage wurde empfangen und wird geprüft. Sie erhalten eine Bestätigungs-E-Mail, sobald das Unternehmen freigegeben wurde.',
-          successClose:'Weiter browsen' }
+          successClose:'Weiter browsen',
+          forgotPwd:'Passwort vergessen?',
+          cookieTitle:'🍪 Datenschutz und Cookies',
+          cookieBody:'Wir verwenden ausschließlich notwendige Cookies (Authentifizierung, Spracheinstellung). Analyse-Cookies werden nur nach Ihrer Zustimmung aktiviert.',
+          cookieMore:'Mehr erfahren',
+          cookieAccept:'Alle akzeptieren',
+          cookieReject:'Ablehnen' }
   };
   if (typeof translations !== 'undefined') {
     Object.keys(extra).forEach(lang => {
