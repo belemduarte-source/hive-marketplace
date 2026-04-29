@@ -580,6 +580,20 @@
     .legal-body li{margin-bottom:4px}
     .legal-body a{color:var(--primary);text-decoration:underline}
     .legal-body strong{font-weight:700}
+    /* FAQ accordion (uses <details>/<summary>) */
+    .faq-item{border:1px solid var(--border);border-radius:10px;margin-bottom:8px;background:var(--surface);overflow:hidden;transition:box-shadow .15s}
+    .faq-item[open]{box-shadow:var(--shadow-md);border-color:var(--orange-border)}
+    .faq-item summary{padding:14px 18px;font-size:14px;font-weight:700;color:var(--text);cursor:pointer;list-style:none;display:flex;align-items:center;gap:10px;transition:background .15s}
+    .faq-item summary::-webkit-details-marker{display:none}
+    .faq-item summary:hover{background:var(--bg)}
+    .faq-item summary::after{content:"+";margin-left:auto;font-size:20px;color:var(--primary);font-weight:300;transition:transform .2s}
+    .faq-item[open] summary::after{content:"−";transform:rotate(0deg)}
+    .faq-item-body{padding:0 18px 16px;font-size:13px;color:var(--text-secondary);line-height:1.65}
+    .faq-item-body p{margin:0 0 8px}
+    .faq-item-body p:last-child{margin-bottom:0}
+    .faq-item-body ul{margin:6px 0 0 18px;padding:0}
+    .faq-item-body li{margin-bottom:4px}
+    .faq-item-body a{color:var(--primary);text-decoration:underline}
     /* Email verification banner */
     .verify-banner{position:fixed;top:0;left:0;right:0;background:#fef3c7;border-bottom:1px solid #fde68a;z-index:150;animation:slideDown .3s ease both}
     @keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
@@ -1275,9 +1289,9 @@
     .footer-grid{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:40px}
     .footer-logo{margin-bottom:12px}
     .footer-desc{font-size:13px;line-height:1.7;color:#64748b;max-width:280px}
-    .footer-social{display:flex;gap:12px;margin-top:16px}
-    .footer-social-icon{color:#64748b;transition:color .2s;cursor:pointer}
-    .footer-social-icon:hover{color:#f97316}
+    .footer-contact{margin-top:16px}
+    .footer-contact-link{display:inline-flex;align-items:center;gap:8px;color:#64748b;font-size:13px;text-decoration:none;transition:color .2s}
+    .footer-contact-link:hover{color:#f97316}
     .footer-title{font-size:13px;font-weight:700;color:#e2e8f0;text-transform:uppercase;letter-spacing:1px;margin-bottom:16px}
     .footer-link{display:block;font-size:13px;color:#64748b;text-decoration:none;padding:4px 0;cursor:pointer;transition:color .2s}
     .footer-link:hover{color:#f97316}
@@ -2880,15 +2894,10 @@
           <span style="font-size:24px;font-weight:800;color:#f97316">Hive</span>
         </div>
         <p class="footer-desc" data-i18n="footerDesc">A plataforma que liga clientes a profissionais de construção em Portugal. Pesquise, compare e contacte — tudo num só lugar.</p>
-        <div class="footer-social">
-          <a href="#" class="footer-social-icon" title="Facebook">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-          </a>
-          <a href="#" class="footer-social-icon" title="Instagram">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-          </a>
-          <a href="#" class="footer-social-icon" title="LinkedIn">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+        <div class="footer-contact">
+          <a href="mailto:suporte@hive.pt" class="footer-contact-link" title="Email">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            <span>suporte@hive.pt</span>
           </a>
         </div>
       </div>
@@ -3703,16 +3712,7 @@
       <h2 class="home-section-title">Suporte ao Cliente</h2>
       <p class="home-section-sub">Estamos aqui para ajudar! Contacte-nos através dos seguintes canais:</p>
 
-      <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 28px;">
-        <div style="background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 28px;">
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-            <div style="font-size: 24px;">💬</div>
-            <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: var(--text);">Chat em Tempo Real</h3>
-          </div>
-          <p style="margin: 0 0 14px 0; font-size: 13px; color: var(--muted);">Contacte-nos instantaneamente através do chat integrado na plataforma.</p>
-          <button style="background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer;">Abrir Chat</button>
-        </div>
-
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 20px; margin-top: 28px;">
         <div style="background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 28px;">
           <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
             <div style="font-size: 24px;">📧</div>
@@ -3720,17 +3720,7 @@
           </div>
           <p style="margin: 0 0 14px 0; font-size: 13px; color: var(--muted);">suporte@hive.pt</p>
           <p style="margin: 0 0 14px 0; font-size: 13px; color: var(--muted);">Resposta em até 24 horas úteis.</p>
-          <button style="background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer;">Enviar Email</button>
-        </div>
-
-        <div style="background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 28px;">
-          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
-            <div style="font-size: 24px;">📞</div>
-            <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: var(--text);">Telefone</h3>
-          </div>
-          <p style="margin: 0 0 14px 0; font-size: 13px; color: var(--muted);">+351 XXX XXX XXX</p>
-          <p style="margin: 0 0 14px 0; font-size: 13px; color: var(--muted);">Seg-Sex: 09h-18h</p>
-          <button style="background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer;">Ligar</button>
+          <button onclick="window.location.href='mailto:suporte@hive.pt'" style="background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer;">Enviar Email</button>
         </div>
 
         <div style="background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 28px;">
@@ -3739,7 +3729,16 @@
             <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: var(--text);">FAQ</h3>
           </div>
           <p style="margin: 0 0 14px 0; font-size: 13px; color: var(--muted);">Encontre respostas às perguntas mais frequentes.</p>
-          <button style="background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer;">Ver FAQ</button>
+          <button onclick="openFaq()" style="background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer;">Ver FAQ</button>
+        </div>
+
+        <div style="background: var(--surface); border: 1.5px solid var(--border); border-radius: 14px; padding: 28px;">
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 16px;">
+            <div style="font-size: 24px;">📋</div>
+            <h3 style="margin: 0; font-size: 15px; font-weight: 800; color: var(--text);">Termos & Privacidade</h3>
+          </div>
+          <p style="margin: 0 0 14px 0; font-size: 13px; color: var(--muted);">Saiba como tratamos os seus dados e quais os termos do serviço.</p>
+          <button onclick="openLegal('privacy')" style="background: var(--primary); color: #fff; border: none; border-radius: 8px; padding: 10px 20px; font-size: 13px; font-weight: 600; cursor: pointer;">Ver políticas</button>
         </div>
       </div>
     </div>
@@ -3785,20 +3784,11 @@
 
     <div class="help-card">
       <div class="help-card-header">
-        <div class="help-card-icon">📞</div>
-        <h3 data-i18n="helpPhoneTitle">Telefone</h3>
-      </div>
-      <p data-i18n="helpPhoneDesc">+351 XXX XXX XXX · Seg-Sex: 09h–18h</p>
-      <button class="btn-help-action" onclick="window.location.href='tel:+351000000000'" data-i18n="helpPhoneBtn">Ligar</button>
-    </div>
-
-    <div class="help-card">
-      <div class="help-card-header">
         <div class="help-card-icon">❓</div>
         <h3 data-i18n="helpFaqTitle">FAQ</h3>
       </div>
       <p data-i18n="helpFaqDesc">Encontre respostas às perguntas mais frequentes.</p>
-      <button class="btn-help-action" data-i18n="helpFaqBtn">Ver FAQ</button>
+      <button class="btn-help-action" onclick="closeHelp();openFaq()" data-i18n="helpFaqBtn">Ver FAQ</button>
     </div>
   </div>
 
@@ -3889,6 +3879,17 @@
       </div>
       <button type="submit" class="btn-submit" id="resetSubmitBtn" style="width:100%;padding:11px;font-size:14px" data-i18n="resetSubmit">Definir palavra-passe</button>
     </form>
+  </div>
+</div>
+
+<!-- ── FAQ MODAL ─────────────────────────────────────────────────────── -->
+<div class="overlay" id="faqOverlay" onclick="if(event.target===this)closeFaq()" role="dialog" aria-modal="true" aria-labelledby="faqTitle">
+  <div class="modal legal-modal">
+    <button class="modal-close" onclick="closeFaq()" aria-label="Fechar">×</button>
+    <h2 id="faqTitle" class="legal-title" data-i18n="faqTitle">Perguntas Frequentes</h2>
+    <div class="legal-meta" data-i18n="faqMeta">Respostas rápidas às dúvidas mais comuns</div>
+    <div class="legal-body" id="faqBody"></div>
+    <div style="text-align:right;margin-top:18px"><button class="btn-submit" onclick="closeFaq()">Fechar</button></div>
   </div>
 </div>
 
@@ -8543,6 +8544,59 @@ document.querySelectorAll('[role="dialog"], .reg-success-overlay').forEach(el =>
   _modalObserver.observe(el, { attributes: true, attributeOldValue: true, attributeFilter: ['class'] });
 });
 
+// ── FAQ MODAL ──────────────────────────────────────────────────────────────
+const FAQ_DOCS = {
+  pt: [
+    { q:'A Hive é gratuita?',
+      a:'Sim. Pesquisar empresas, pedir orçamentos e contactar profissionais é totalmente gratuito para particulares e empresas. As empresas podem optar por planos premium para destaque (em breve).' },
+    { q:'Quanto tempo demora a aprovação do registo da minha empresa?',
+      a:'Em média <strong>até 24h úteis</strong>. Verificamos o código da Certidão Permanente e os dados básicos. Receberá um email assim que estiver aprovada.' },
+    { q:'Como funciona a verificação de empresas?',
+      a:'Toda empresa registada submete o código de acesso à Certidão Permanente do Registo Comercial. A nossa equipa confirma se o código é válido e se os dados (nome, NIPC, atividade) coincidem. Empresas verificadas exibem um selo verde ✓ Verificado.' },
+    { q:'Os meus dados são seguros?',
+      a:'Sim. As palavras-passe são guardadas com bcrypt, a sessão usa um cookie HttpOnly assinado, e o código da Certidão Permanente nunca é exibido publicamente — apenas o próprio dono da empresa e administradores Hive têm acesso. Cumprimos integralmente o RGPD. <a href="#legal/privacy" onclick="closeFaq();openLegal(\'privacy\');return false">Ver Política de Privacidade</a>.' },
+    { q:'Posso editar a minha empresa depois de registada?',
+      a:'Sim. Inicie sessão, abra o menu do avatar e clique em <strong>"O Meu Perfil"</strong>. Encontrará a sua empresa com um botão ✏️ para editar. Algumas alterações podem requerer nova aprovação.' },
+    { q:'Como contacto uma empresa?',
+      a:'Abra o perfil da empresa no mapa ou na pesquisa. Os utilizadores autenticados vêem três opções: <strong>Pedir Orçamento por Email</strong>, <strong>WhatsApp</strong> e <strong>Mensagem direta</strong>. A Hive nunca expõe publicamente o contacto direto da empresa antes de o utilizador iniciar sessão.' },
+    { q:'A minha empresa não aparece no mapa, o que faço?',
+      a:'<ul><li>Verifique se o registo está aprovado (avatar → "Estado do registo").</li><li>Confirme se o raio de pesquisa cobre a localização da empresa.</li><li>Confirme se o sector escolhido na pesquisa corresponde ao da empresa.</li><li>Se nada disto resolver, contacte <a href="mailto:suporte@hive.pt">suporte@hive.pt</a>.</li></ul>' },
+    { q:'Como deixo uma avaliação?',
+      a:'Inicie sessão, abra o perfil da empresa, e clique em <strong>"+ Escrever Avaliação"</strong>. Pode dar de 1 a 5 estrelas e um comentário curto. Cada utilizador pode rever uma empresa uma vez (a avaliação seguinte substitui a anterior).' },
+    { q:'O que significa "Top Rated"?',
+      a:'Empresas com avaliação média igual ou superior a 4,5 estrelas com pelo menos 5 reviews. É um sinal automático que aparece nos cartões e filtros.' },
+    { q:'Posso eliminar a minha conta?',
+      a:'Sim. Envie um pedido para <a href="mailto:privacidade@hive.pt">privacidade@hive.pt</a> identificando o email da conta. Eliminamos os dados em até 30 dias, conforme o RGPD.' },
+  ],
+};
+FAQ_DOCS.en = FAQ_DOCS.fr = FAQ_DOCS.es = FAQ_DOCS.de = FAQ_DOCS.pt;
+
+function openFaq() {
+  const lang = (typeof currentLang !== 'undefined' && currentLang) || 'pt';
+  const items = FAQ_DOCS[lang] || FAQ_DOCS.pt;
+  const body = document.getElementById('faqBody');
+  if (body) {
+    body.innerHTML = items.map(item => `
+      <details class="faq-item">
+        <summary>${item.q}</summary>
+        <div class="faq-item-body"><p>${item.a}</p></div>
+      </details>`).join('');
+  }
+  const ov = document.getElementById('faqOverlay');
+  if (ov) { ov.classList.add('open'); document.body.style.overflow = 'hidden'; }
+  if (history.replaceState) history.replaceState(null, '', '#faq');
+}
+function closeFaq() {
+  const ov = document.getElementById('faqOverlay');
+  if (ov) ov.classList.remove('open');
+  document.body.style.overflow = '';
+  if (location.hash === '#faq' && history.replaceState) history.replaceState(null, '', location.pathname);
+}
+window.openFaq  = openFaq;
+window.closeFaq = closeFaq;
+// Open via deep link /#faq
+(function() { if (location.hash === '#faq') setTimeout(openFaq, 200); })();
+
 // ── LEGAL MODAL (Terms / Privacy / Cookies / RGPD) ─────────────────────────
 // Content lives in JS so it's translated alongside everything else and
 // doesn't need separate static pages.
@@ -9865,6 +9919,7 @@ if (_origRenderSectorFilters) {
           verifyResend:'Reenviar email',
           verifiedTooltip:'Empresa cuja certidão permanente foi confirmada pela equipa Hive — uma camada extra de confiança.',
           mapPinHint:'💡 Toque num pin para ver os detalhes da empresa.',
+          faqTitle:'Perguntas Frequentes', faqMeta:'Respostas rápidas às dúvidas mais comuns',
           forgotTitle:'Recuperar palavra-passe',
           forgotBody:'Indique o seu email e enviaremos um link para definir uma nova palavra-passe.',
           forgotSend:'Enviar link',
@@ -9887,6 +9942,7 @@ if (_origRenderSectorFilters) {
           verifyResend:'Resend email',
           verifiedTooltip:'Company whose Portuguese commercial registry certificate has been confirmed by the Hive team — an extra layer of trust.',
           mapPinHint:'💡 Tap a pin to see company details.',
+          faqTitle:'Frequently Asked Questions', faqMeta:'Quick answers to common questions',
           forgotTitle:'Reset your password',
           forgotBody:'Enter your email and we\'ll send you a link to set a new password.',
           forgotSend:'Send link',
@@ -9909,6 +9965,7 @@ if (_origRenderSectorFilters) {
           verifyResend:'Renvoyer l\'email',
           verifiedTooltip:"Entreprise dont le certificat permanent du registre du commerce portugais a été confirmé par l'équipe Hive.",
           mapPinHint:"💡 Touchez un pin pour voir les détails de l'entreprise.",
+          faqTitle:'Questions fréquentes', faqMeta:'Réponses rapides aux questions courantes',
           forgotTitle:'Réinitialiser le mot de passe',
           forgotBody:'Indiquez votre email et nous vous enverrons un lien pour définir un nouveau mot de passe.',
           forgotSend:'Envoyer le lien',
@@ -9931,6 +9988,7 @@ if (_origRenderSectorFilters) {
           verifyResend:'Reenviar email',
           verifiedTooltip:'Empresa cuya certificación permanente del registro mercantil portugués ha sido confirmada por el equipo Hive.',
           mapPinHint:'💡 Toque un pin para ver los detalles de la empresa.',
+          faqTitle:'Preguntas Frecuentes', faqMeta:'Respuestas rápidas a las dudas más comunes',
           forgotTitle:'Recuperar contraseña',
           forgotBody:'Indique su email y le enviaremos un enlace para establecer una nueva contraseña.',
           forgotSend:'Enviar enlace',
@@ -9953,6 +10011,7 @@ if (_origRenderSectorFilters) {
           verifyResend:'E-Mail erneut senden',
           verifiedTooltip:'Unternehmen, dessen portugiesischer Handelsregisterauszug vom Hive-Team verifiziert wurde — zusätzliche Vertrauensebene.',
           mapPinHint:'💡 Tippen Sie auf einen Pin, um Firmendetails zu sehen.',
+          faqTitle:'Häufige Fragen', faqMeta:'Schnelle Antworten auf gängige Fragen',
           forgotTitle:'Passwort zurücksetzen',
           forgotBody:'Geben Sie Ihre E-Mail-Adresse ein. Wir senden Ihnen einen Link, um ein neues Passwort festzulegen.',
           forgotSend:'Link senden',
