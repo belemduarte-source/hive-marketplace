@@ -10,6 +10,7 @@ const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejec
 const LIST_COLS = `
   id, name, sectors, sector, cae, address, postal_code, city, country, zone,
   email, phone, website, tags, description,
+  founded_year, business_hours, portfolio_images,
   lat, lng, rating, reviews, top_rated, verified, is_new, featured,
   emoji, color, pin_type, status, created_at
 `.trim();
@@ -158,7 +159,8 @@ router.post('/', async (req, res, next) => {
       name, sectors, sector, cae, alvara, certidao_permanente,
       address, postal_code, city, country,
       zone, email, phone, website, tags, description, lat, lng,
-      emoji, color, pin_type
+      emoji, color, pin_type,
+      founded_year, business_hours, portfolio_images,
     } = req.body;
 
     if (!name || lat == null || lng == null || isNaN(Number(lat)) || isNaN(Number(lng))) {
@@ -171,13 +173,19 @@ router.post('/', async (req, res, next) => {
       return res.status(400).json({ error: 'Código da certidão permanente é obrigatório (mínimo 8 caracteres).' });
     }
 
+    // Sanitise founded_year — keep only sensible 4-digit values
+    const yr = founded_year != null ? parseInt(founded_year, 10) : null;
+    const foundedSafe = (yr && yr >= 1800 && yr <= new Date().getFullYear()) ? yr : null;
+
     const { rows } = await pool.query(
       `INSERT INTO companies
         (name, sectors, sector, cae, alvara, certidao_permanente,
          address, postal_code, city, country, zone,
-         email, phone, website, tags, description, lat, lng, emoji, color, pin_type,
+         email, phone, website, tags, description,
+         founded_year, business_hours, portfolio_images,
+         lat, lng, emoji, color, pin_type,
          status, created_by)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,'pending',$22)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,'pending',$25)
        RETURNING *`,
       [
         name,
@@ -196,6 +204,9 @@ router.post('/', async (req, res, next) => {
         website || null,
         tags || [],
         description || null,
+        foundedSafe,
+        business_hours || null,
+        Array.isArray(portfolio_images) ? portfolio_images.slice(0, 12) : [],
         lat,
         lng,
         emoji || '🏢',
@@ -230,8 +241,14 @@ router.put('/:id', requireAuth, async (req, res, next) => {
       name, sectors, sector, cae, alvara, certidao_permanente,
       address, postal_code, city, country,
       zone, email, phone, website, tags, description, lat, lng,
-      emoji, color, pin_type, status
+      emoji, color, pin_type, status,
+      founded_year, business_hours, portfolio_images,
     } = req.body;
+
+    const yr = founded_year != null ? parseInt(founded_year, 10) : null;
+    const foundedSafe = (yr && yr >= 1800 && yr <= new Date().getFullYear()) ? yr
+                      : (founded_year === null ? null : undefined);
+    const photosSafe = Array.isArray(portfolio_images) ? portfolio_images.slice(0, 12) : undefined;
 
     const { rows } = await pool.query(
       `UPDATE companies SET
@@ -257,13 +274,18 @@ router.put('/:id', requireAuth, async (req, res, next) => {
         color = COALESCE($20, color),
         pin_type = COALESCE($21, pin_type),
         status = COALESCE($22, status),
+        founded_year = COALESCE($23, founded_year),
+        business_hours = COALESCE($24, business_hours),
+        portfolio_images = COALESCE($25, portfolio_images),
         updated_at = NOW()
-       WHERE id = $23
+       WHERE id = $26
        RETURNING *`,
       [name, sectors, sector, cae, alvara, certidao_permanente,
        address, postal_code, city, country,
        zone, email, phone, website, tags, description, lat, lng,
-       emoji, color, pin_type, status, req.params.id]
+       emoji, color, pin_type, status,
+       foundedSafe, business_hours, photosSafe,
+       req.params.id]
     );
     res.json(rows[0]);
   } catch (e) {

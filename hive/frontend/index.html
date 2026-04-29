@@ -438,6 +438,16 @@
     .dp-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;cursor:pointer}
     .dp-body::-webkit-scrollbar-thumb:hover{background:var(--text-secondary)}
     .dp-section-title{font-size:12px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+    /* Quick-fact pills (founded year, hours) */
+    .dp-facts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+    .dp-fact{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px;color:var(--text);display:inline-flex;align-items:center;gap:6px;line-height:1.3}
+    .dp-fact-icon{font-size:14px;flex-shrink:0}
+    .dp-fact-label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em;margin-right:2px}
+    .dp-fact-value{font-weight:600}
+    /* Portfolio gallery */
+    .dp-portfolio{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px;margin-bottom:14px}
+    .dp-portfolio img{width:100%;height:96px;object-fit:cover;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;transition:transform .15s,box-shadow .15s;display:block}
+    .dp-portfolio img:hover{transform:scale(1.03);box-shadow:var(--shadow-md)}
     .dp-address{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);background:var(--bg);padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border)}
     .rating-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .rating-axis{background:linear-gradient(135deg,var(--primary-light),#fef9f0);border-radius:var(--radius-sm);padding:12px;border:1.5px solid var(--border)}
@@ -3355,6 +3365,15 @@
       <div class="card-tags" id="dpTags"></div>
     </div>
 
+    <!-- Quick-fact pills (founded year, business hours) — hidden if no data -->
+    <div class="dp-facts" id="dpFacts" style="display:none"></div>
+
+    <!-- Portfolio gallery — hidden if no images -->
+    <div id="dpPortfolioWrap" style="display:none">
+      <div class="dp-section-title"><i data-lucide="image"></i><span data-i18n="detailPortfolio">Galeria de trabalhos</span></div>
+      <div class="dp-portfolio" id="dpPortfolio"></div>
+    </div>
+
     <!-- Gated sections — hidden from guests -->
     <div id="dpGatedSections">
       <div>
@@ -3645,6 +3664,21 @@
       <div class="form-row">
         <label for="regDesc" data-i18n="regDescription">Descrição Breve</label>
         <textarea id="regDesc" data-i18n-ph="regDescPh"></textarea>
+      </div>
+      <div class="form-grid2">
+        <div class="form-row">
+          <label for="regFoundedYear"><span data-i18n="regFoundedYear">Ano de fundação</span> <span style="font-size:11px;color:var(--muted);font-weight:400">(opcional)</span></label>
+          <input type="number" id="regFoundedYear" placeholder="Ex: 2010" min="1800" max="2026" inputmode="numeric"/>
+        </div>
+        <div class="form-row">
+          <label for="regBusinessHours"><span data-i18n="regBusinessHours">Horário</span> <span style="font-size:11px;color:var(--muted);font-weight:400">(opcional)</span></label>
+          <input type="text" id="regBusinessHours" placeholder="Ex: Seg-Sex 09h-18h, Sáb 09h-13h"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <label for="regPortfolioImages"><span data-i18n="regPortfolio">Galeria de trabalhos</span> <span style="font-size:11px;color:var(--muted);font-weight:400">(opcional)</span></label>
+        <input type="text" id="regPortfolioImages" placeholder="URLs separados por vírgula (até 12)"/>
+        <div class="form-hint" data-i18n="regPortfolioHint">Cole URLs de imagens dos seus trabalhos. Para já apenas links externos (ex: Imgur, Unsplash).</div>
       </div>
       <div class="reg-step-nav">
         <button class="btn-step-back" onclick="regGoStep(2)">← <span data-i18n="regStepBack">Anterior</span></button>
@@ -6364,6 +6398,9 @@ function dbRowToCompany(row) {
     phone:     row.phone     || '',
     website:   row.website   || '',
     description: row.description || '',
+    founded_year:     row.founded_year     || null,
+    business_hours:   row.business_hours   || '',
+    portfolio_images: row.portfolio_images || [],
     emoji:     row.emoji     || '🏢',
     color:     row.color     || '#f97316',
     pinType:   row.pin_type  || 'std',
@@ -6667,6 +6704,9 @@ async function saveCompanyToDB(company) {
     website:     company.website     || null,
     tags:        company.tags        || [],
     description: company.description || null,
+    founded_year:     company.founded_year     || null,
+    business_hours:   company.business_hours   || null,
+    portfolio_images: company.portfolio_images || [],
     lat:         company.lat,
     lng:         company.lng,
     emoji:       company.emoji,
@@ -8527,6 +8567,13 @@ function submitRegister() {
   const tagsRaw = document.getElementById('regTags').value.trim();
   const alvara  = document.getElementById('regAlvara')?.value.trim() || '';
   const certidao = (document.getElementById('regCertidao')?.value || '').trim();
+  const foundedYearRaw = document.getElementById('regFoundedYear')?.value.trim() || '';
+  const foundedYear    = foundedYearRaw ? parseInt(foundedYearRaw, 10) : null;
+  const businessHours  = document.getElementById('regBusinessHours')?.value.trim() || '';
+  const portfolioRaw   = document.getElementById('regPortfolioImages')?.value.trim() || '';
+  const portfolioImgs  = portfolioRaw
+    ? portfolioRaw.split(',').map(s => s.trim()).filter(s => /^https?:\/\//.test(s)).slice(0, 12)
+    : [];
 
   // Clear any stale field errors on the registration overlay before re-checking
   if (typeof clearAllFieldErrors === 'function') clearAllFieldErrors(document.getElementById('registerOverlay'));
@@ -8628,6 +8675,9 @@ function submitRegister() {
       cae:         cae || '',
       alvara:      alvara || '',
       certidao_permanente: certidao,
+      founded_year:     foundedYear,
+      business_hours:   businessHours,
+      portfolio_images: portfolioImgs,
       sector,
       sectors,
       rating:      0, reviews: 0,
@@ -8660,6 +8710,9 @@ function submitRegister() {
           address, postal_code: postalCode, city, country,
           email, phone, website: document.getElementById('regWebsite')?.value.trim() || null,
           tags, description: document.getElementById('regDesc')?.value.trim() || null,
+          founded_year:     foundedYear,
+          business_hours:   businessHours || null,
+          portfolio_images: portfolioImgs,
         });
         // Refresh local companies list
         const idx2 = companies.findIndex(x => x.id === editId);
@@ -8667,7 +8720,8 @@ function submitRegister() {
           Object.assign(companies[idx2], { name, sectors, sector: sectors[0] || '', cae, alvara,
             certidao_permanente: certidao,
             address, postal_code: postalCode, city, country, email, phone, tags,
-            description: document.getElementById('regDesc')?.value.trim() || '' });
+            description: document.getElementById('regDesc')?.value.trim() || '',
+            founded_year: foundedYear, business_hours: businessHours, portfolio_images: portfolioImgs });
         }
         window._editingCompanyId = null;
         closeRegister();
@@ -8681,7 +8735,7 @@ function submitRegister() {
       }
 
       // Reset form
-      ['regName','regCae','regAlvara','regCertidao','regAddress','regEmail','regPhone','regWebsite','regTags','regDesc','regPostalCode']
+      ['regName','regCae','regAlvara','regCertidao','regAddress','regEmail','regPhone','regWebsite','regTags','regDesc','regPostalCode','regFoundedYear','regBusinessHours','regPortfolioImages']
         .forEach(fid => { const el = document.getElementById(fid); if(el) el.value = ''; });
       _regSelectedSectors = [];
       renderRegisterSectorSelect();
@@ -8739,6 +8793,44 @@ function openDetail(id) {
     `<span class="tag">${tag}</span>`).join('');
   document.getElementById('chatName').textContent = c.name;
   document.getElementById('dpReviewsSection').style.display = c.isNew ? 'none' : 'block';
+
+  // Quick facts (founded year, business hours) — only render rows we have data for
+  const facts = document.getElementById('dpFacts');
+  if (facts) {
+    const items = [];
+    if (c.founded_year) {
+      const yrs = new Date().getFullYear() - Number(c.founded_year);
+      items.push(`<span class="dp-fact"><span class="dp-fact-icon">📅</span><span class="dp-fact-label">Desde</span><span class="dp-fact-value">${c.founded_year}${yrs > 0 ? ` · ${yrs} ano${yrs===1?'':'s'}` : ''}</span></span>`);
+    }
+    if (c.business_hours) {
+      items.push(`<span class="dp-fact"><span class="dp-fact-icon">🕒</span><span class="dp-fact-label">Horário</span><span class="dp-fact-value">${escHtml(c.business_hours)}</span></span>`);
+    }
+    if (c.verified) {
+      items.push(`<span class="dp-fact" title="${escHtml(t('verifiedTooltip') || '')}"><span class="dp-fact-icon" style="color:#16a34a">✓</span><span class="dp-fact-value" style="color:#166534">Verificada</span></span>`);
+    }
+    if (items.length) {
+      facts.innerHTML = items.join('');
+      facts.style.display = 'flex';
+    } else {
+      facts.style.display = 'none';
+    }
+  }
+
+  // Portfolio gallery — render up to 12 thumbnails. Click opens the image
+  // full-screen via window.open (simple, no extra modal needed).
+  const portfolioWrap = document.getElementById('dpPortfolioWrap');
+  const portfolio     = document.getElementById('dpPortfolio');
+  if (portfolioWrap && portfolio) {
+    const imgs = (c.portfolio_images || []).filter(u => /^https?:\/\//.test(u)).slice(0, 12);
+    if (imgs.length) {
+      portfolio.innerHTML = imgs.map(u =>
+        `<img src="${escHtml(u)}" alt="" loading="lazy" decoding="async" onclick="window.open('${escHtml(u)}','_blank','noopener')" onerror="this.style.display='none'"/>`
+      ).join('');
+      portfolioWrap.style.display = '';
+    } else {
+      portfolioWrap.style.display = 'none';
+    }
+  }
 
   // Auth gate: show contact details only to logged-in users
   const loggedIn = !!JSON.parse(sessionStorage.getItem('hive_user') || 'null');
@@ -10197,6 +10289,12 @@ async function profileEditCompany(companyId) {
     if (websiteEl) websiteEl.value = full.website || '';
     if (tagsEl)    tagsEl.value    = (full.tags || []).join(', ');
     if (descEl)    descEl.value    = full.description || '';
+    const foundedEl   = document.getElementById('regFoundedYear');
+    const hoursEl     = document.getElementById('regBusinessHours');
+    const portfolioEl = document.getElementById('regPortfolioImages');
+    if (foundedEl)   foundedEl.value   = full.founded_year || '';
+    if (hoursEl)     hoursEl.value     = full.business_hours || '';
+    if (portfolioEl) portfolioEl.value = (full.portfolio_images || []).join(', ');
 
     // Store the company id being edited so submitRegister can PUT instead of POST
     window._editingCompanyId = companyId;
@@ -10266,6 +10364,10 @@ if (_origRenderSectorFilters) {
           trust3Desc:'A maioria dos registos é aprovada em <strong>até 24 horas úteis</strong>. Receberá um email assim que estiver visível, e pode acompanhar o estado a qualquer momento no menu da conta.',
           trustFaqLink:'Ver todas as perguntas frequentes →',
           featuredSeeAllBig:'Ver todas as empresas no mapa →',
+          regFoundedYear:'Ano de fundação', regBusinessHours:'Horário', regPortfolio:'Galeria de trabalhos',
+          regPortfolioHint:'Cole URLs de imagens dos seus trabalhos. Para já apenas links externos (ex: Imgur, Unsplash).',
+          detailPortfolio:'Galeria de trabalhos',
+          compareTitle:'Comparar empresas', compareClear:'Limpar', compareGo:'Comparar →',
           forgotTitle:'Recuperar palavra-passe',
           forgotBody:'Indique o seu email e enviaremos um link para definir uma nova palavra-passe.',
           forgotSend:'Enviar link',
@@ -10299,6 +10401,10 @@ if (_origRenderSectorFilters) {
           trust3Desc:'Most registrations are approved within <strong>24 business hours</strong>. You\'ll receive an email as soon as your company is live, and can check status at any time from the account menu.',
           trustFaqLink:'See all frequently asked questions →',
           featuredSeeAllBig:'See all companies on the map →',
+          regFoundedYear:'Founded year', regBusinessHours:'Business hours', regPortfolio:'Work gallery',
+          regPortfolioHint:'Paste image URLs of your work. For now external links only (e.g. Imgur, Unsplash).',
+          detailPortfolio:'Work gallery',
+          compareTitle:'Compare companies', compareClear:'Clear', compareGo:'Compare →',
           forgotTitle:'Reset your password',
           forgotBody:'Enter your email and we\'ll send you a link to set a new password.',
           forgotSend:'Send link',
@@ -10332,6 +10438,10 @@ if (_origRenderSectorFilters) {
           trust3Desc:"La plupart des inscriptions sont approuvées en <strong>moins de 24 heures ouvrables</strong>. Vous recevrez un email dès que votre entreprise sera visible.",
           trustFaqLink:'Voir toutes les questions fréquentes →',
           featuredSeeAllBig:'Voir toutes les entreprises sur la carte →',
+          regFoundedYear:'Année de création', regBusinessHours:'Horaires', regPortfolio:'Galerie de travaux',
+          regPortfolioHint:"Collez les URLs d'images de vos réalisations. Pour l'instant uniquement des liens externes.",
+          detailPortfolio:'Galerie de travaux',
+          compareTitle:'Comparer les entreprises', compareClear:'Effacer', compareGo:'Comparer →',
           forgotTitle:'Réinitialiser le mot de passe',
           forgotBody:'Indiquez votre email et nous vous enverrons un lien pour définir un nouveau mot de passe.',
           forgotSend:'Envoyer le lien',
@@ -10365,6 +10475,10 @@ if (_origRenderSectorFilters) {
           trust3Desc:'La mayoría de los registros se aprueban en <strong>menos de 24 horas hábiles</strong>. Recibirá un email tan pronto como su empresa esté visible.',
           trustFaqLink:'Ver todas las preguntas frecuentes →',
           featuredSeeAllBig:'Ver todas las empresas en el mapa →',
+          regFoundedYear:'Año de fundación', regBusinessHours:'Horario', regPortfolio:'Galería de trabajos',
+          regPortfolioHint:'Pegue URLs de imágenes de sus trabajos. Por ahora solo enlaces externos.',
+          detailPortfolio:'Galería de trabajos',
+          compareTitle:'Comparar empresas', compareClear:'Limpiar', compareGo:'Comparar →',
           forgotTitle:'Recuperar contraseña',
           forgotBody:'Indique su email y le enviaremos un enlace para establecer una nueva contraseña.',
           forgotSend:'Enviar enlace',
@@ -10398,6 +10512,10 @@ if (_origRenderSectorFilters) {
           trust3Desc:'Die meisten Registrierungen werden innerhalb von <strong>24 Werktagsstunden</strong> freigegeben. Sie erhalten eine E-Mail, sobald Ihr Unternehmen sichtbar ist.',
           trustFaqLink:'Alle häufigen Fragen ansehen →',
           featuredSeeAllBig:'Alle Unternehmen auf der Karte ansehen →',
+          regFoundedYear:'Gründungsjahr', regBusinessHours:'Öffnungszeiten', regPortfolio:'Arbeitsgalerie',
+          regPortfolioHint:'Fügen Sie Bild-URLs Ihrer Arbeiten ein. Aktuell nur externe Links.',
+          detailPortfolio:'Arbeitsgalerie',
+          compareTitle:'Unternehmen vergleichen', compareClear:'Löschen', compareGo:'Vergleichen →',
           forgotTitle:'Passwort zurücksetzen',
           forgotBody:'Geben Sie Ihre E-Mail-Adresse ein. Wir senden Ihnen einen Link, um ein neues Passwort festzulegen.',
           forgotSend:'Link senden',

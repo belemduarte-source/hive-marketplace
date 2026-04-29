@@ -53,6 +53,9 @@ CREATE TABLE IF NOT EXISTS companies (
   website     TEXT,
   tags        TEXT[] DEFAULT '{}',
   description TEXT,
+  founded_year     INTEGER,
+  business_hours   TEXT,
+  portfolio_images TEXT[] DEFAULT '{}',
   lat         DOUBLE PRECISION NOT NULL,
   lng         DOUBLE PRECISION NOT NULL,
   rating      DECIMAL(3,1) DEFAULT 0,
@@ -103,6 +106,12 @@ CREATE TABLE IF NOT EXISTS events (
 );
 CREATE INDEX IF NOT EXISTS idx_events_company ON events(company_id);
 CREATE INDEX IF NOT EXISTS idx_events_created ON events(created_at DESC);
+
+-- ── Migrations for existing deployments ──────────────────────────────────────
+-- Idempotent (ADD COLUMN IF NOT EXISTS) so it's safe to re-run on cold start.
+ALTER TABLE companies ADD COLUMN IF NOT EXISTS founded_year     INTEGER;
+ALTER TABLE companies ADD COLUMN IF NOT EXISTS business_hours   TEXT;
+ALTER TABLE companies ADD COLUMN IF NOT EXISTS portfolio_images TEXT[] DEFAULT '{}';
 
 -- ── Migrations for existing databases (safe to re-run) ────────────────────────
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS alvara              TEXT;
