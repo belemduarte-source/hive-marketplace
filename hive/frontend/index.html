@@ -2222,6 +2222,36 @@
     .review-dist-bar{flex:1;height:8px;background:var(--border-light);border-radius:4px;overflow:hidden}
     .review-dist-fill{height:100%;background:linear-gradient(90deg,#fbbf24,#f59e0b);border-radius:4px;transition:width .3s ease}
     .review-dist-count{width:28px;text-align:right;flex-shrink:0;font-weight:600}
+    /* Compare checkbox on each search-list card */
+    .search-list-card{position:relative}
+    .slc-compare{position:absolute;top:10px;right:10px;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;font-weight:600;color:var(--text-secondary);cursor:pointer;transition:all .15s;user-select:none;z-index:2}
+    .slc-compare:hover{background:#fff;border-color:var(--primary);color:var(--primary)}
+    .slc-compare input[type="checkbox"]{margin:0;accent-color:var(--primary);cursor:pointer}
+    /* Sticky compare bar at bottom of viewport */
+    .compare-bar{position:fixed;bottom:0;left:0;right:0;background:#0f172a;color:#fff;border-top:2px solid var(--primary);z-index:9997;animation:slideUp .3s ease both;box-shadow:0 -8px 24px rgba(0,0,0,.18)}
+    .compare-bar-inner{display:flex;align-items:center;gap:14px;padding:12px 18px;max-width:1200px;margin:0 auto;flex-wrap:wrap}
+    .compare-bar-label{font-size:13px;font-weight:700;color:var(--primary);flex-shrink:0}
+    .compare-bar-chips{flex:1;display:flex;gap:6px;flex-wrap:wrap;min-width:0}
+    .compare-bar-chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:14px;padding:4px 10px 4px 12px;font-size:12px;display:inline-flex;align-items:center;gap:6px;max-width:200px}
+    .compare-bar-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .compare-bar-chip button{background:none;border:0;color:rgba(255,255,255,.5);cursor:pointer;font-size:14px;line-height:1;padding:0;flex-shrink:0;transition:color .15s}
+    .compare-bar-chip button:hover{color:#fff}
+    .compare-bar-clear{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18);padding:8px 14px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0}
+    .compare-bar-clear:hover{background:rgba(255,255,255,.14)}
+    .compare-bar-go{background:var(--primary);color:#fff;border:0;padding:8px 18px;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;transition:background .15s}
+    .compare-bar-go:hover{background:var(--primary-dark)}
+    .compare-bar-go:disabled{opacity:.5;cursor:not-allowed}
+    @media(max-width:560px){.compare-bar-inner{padding:10px}.compare-bar-label{flex:1 0 100%;text-align:center}.compare-bar-chips{flex:1 0 100%;justify-content:center}}
+    /* Compare modal — side-by-side table */
+    .compare-modal{max-width:900px}
+    .compare-body{overflow-x:auto;padding-right:4px}
+    .compare-table{width:100%;border-collapse:collapse;min-width:560px}
+    .compare-table th,.compare-table td{padding:10px 12px;text-align:left;border-bottom:1px solid var(--border-light);font-size:13px;vertical-align:top}
+    .compare-table th{background:var(--bg);font-weight:700;color:var(--text-secondary);font-size:11px;text-transform:uppercase;letter-spacing:.04em;width:140px;position:sticky;left:0;z-index:1}
+    .compare-table .compare-co-header{font-weight:800;font-size:14px;color:var(--text);padding-bottom:6px}
+    .compare-table .compare-co-emoji{font-size:22px;margin-right:6px}
+    .compare-table .compare-co-rating{color:var(--gold);font-weight:700}
+    .compare-table tr:last-child td{border-bottom:0}
     .review-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
     .review-card-author{font-weight:700;font-size:13px;color:var(--text)}
     .review-card-date{font-size:11px;color:var(--muted)}
@@ -3888,6 +3918,25 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- ── COMPARE BAR + MODAL ─────────────────────────────────────────────── -->
+<div id="compareBar" class="compare-bar" hidden>
+  <div class="compare-bar-inner">
+    <span class="compare-bar-label" id="compareBarLabel">0 de 3 selecionadas</span>
+    <div class="compare-bar-chips" id="compareBarChips"></div>
+    <button class="compare-bar-clear" onclick="clearCompare()" data-i18n="compareClear">Limpar</button>
+    <button class="compare-bar-go" id="compareBarGo" onclick="openCompareModal()" data-i18n="compareGo">Comparar →</button>
+  </div>
+</div>
+
+<div class="overlay" id="compareOverlay" onclick="if(event.target===this)closeCompareModal()" role="dialog" aria-modal="true" aria-labelledby="compareTitle">
+  <div class="modal compare-modal">
+    <button class="modal-close" onclick="closeCompareModal()" aria-label="Fechar">×</button>
+    <h2 id="compareTitle" class="legal-title" data-i18n="compareTitle">Comparar empresas</h2>
+    <div id="compareBody" class="compare-body"></div>
+    <div style="text-align:right;margin-top:18px"><button class="btn-submit" onclick="closeCompareModal()">Fechar</button></div>
+  </div>
+</div>
 
 <!-- ── EMAIL VERIFICATION BANNER ──────────────────────────────────────── -->
 <div id="emailVerifyBanner" class="verify-banner" hidden>
@@ -6322,6 +6371,129 @@ function computeNextCompanyId(list, current) {
   return nums.length ? Math.max(...nums) + 1 : (current || 1);
 }
 
+// ── COMPARE COMPANIES (up to 3) ────────────────────────────────────────────
+// _compareIds is a Set of company ids the user has ticked for comparison.
+// Persisted in sessionStorage so navigating between tabs keeps the selection.
+const _COMPARE_MAX = 3;
+const _COMPARE_KEY = 'hive_compare_ids';
+let _compareIds = new Set();
+try {
+  const raw = sessionStorage.getItem(_COMPARE_KEY);
+  if (raw) JSON.parse(raw).forEach(id => _compareIds.add(Number(id)));
+} catch (_) {}
+
+function _saveCompare() {
+  try { sessionStorage.setItem(_COMPARE_KEY, JSON.stringify([..._compareIds])); } catch (_) {}
+}
+
+function toggleCompare(id) {
+  id = Number(id);
+  if (_compareIds.has(id)) {
+    _compareIds.delete(id);
+  } else {
+    if (_compareIds.size >= _COMPARE_MAX) {
+      showToast('Pode comparar até ' + _COMPARE_MAX + ' empresas. Remova uma para adicionar outra.');
+      // Re-sync the checkbox visually
+      _renderCompareBar();
+      _syncCompareCheckboxes();
+      return;
+    }
+    _compareIds.add(id);
+  }
+  _saveCompare();
+  _renderCompareBar();
+  _syncCompareCheckboxes();
+}
+
+function clearCompare() {
+  _compareIds.clear();
+  _saveCompare();
+  _renderCompareBar();
+  _syncCompareCheckboxes();
+}
+
+function _syncCompareCheckboxes() {
+  document.querySelectorAll('.search-list-card').forEach(card => {
+    const id = Number(card.dataset.companyId);
+    const cb = card.querySelector('.slc-compare input[type="checkbox"]');
+    if (cb) cb.checked = _compareIds.has(id);
+  });
+}
+
+function _renderCompareBar() {
+  const bar = document.getElementById('compareBar');
+  if (!bar) return;
+  if (_compareIds.size === 0) { bar.hidden = true; return; }
+  bar.hidden = false;
+  document.getElementById('compareBarLabel').textContent =
+    _compareIds.size + ' de ' + _COMPARE_MAX + ' selecionada' + (_compareIds.size === 1 ? '' : 's');
+  const chips = document.getElementById('compareBarChips');
+  chips.innerHTML = '';
+  _compareIds.forEach(id => {
+    const c = companies.find(x => Number(x.id) === id);
+    if (!c) return;
+    const chip = document.createElement('span');
+    chip.className = 'compare-bar-chip';
+    chip.innerHTML = `<span title="${escHtml(c.name)}">${escHtml(c.name)}</span><button onclick="toggleCompare(${id})" aria-label="Remover">×</button>`;
+    chips.appendChild(chip);
+  });
+  const goBtn = document.getElementById('compareBarGo');
+  if (goBtn) goBtn.disabled = _compareIds.size < 2;
+}
+
+function openCompareModal() {
+  if (_compareIds.size < 2) {
+    showToast('Selecione pelo menos 2 empresas para comparar.');
+    return;
+  }
+  const ids = [..._compareIds];
+  const cos = ids.map(id => companies.find(x => Number(x.id) === id)).filter(Boolean);
+  const tr = translations[currentLang] || translations.pt;
+
+  // Build a side-by-side table. First column is the field labels.
+  const fields = [
+    { key:'header',   label:'',                renderer: c => `<div class="compare-co-header"><span class="compare-co-emoji">${c.emoji||'🏢'}</span>${escHtml(c.name)}</div>` },
+    { key:'rating',   label:'Avaliação',       renderer: c => c.rating ? `<span class="compare-co-rating">★ ${c.rating.toFixed(1)}</span> <span style="color:var(--muted)">(${c.reviews||0})</span>` : '<span style="color:var(--muted)">Sem avaliações</span>' },
+    { key:'sector',   label:'Setor principal', renderer: c => escHtml((tr.sectors && tr.sectors[c.sector]) || c.sector || '—') },
+    { key:'sectors',  label:'Áreas',           renderer: c => (c.sectors||[]).map(s => `<span class="tag" style="margin-right:4px">${escHtml((tr.sectors&&tr.sectors[s])||s)}</span>`).join('') || '—' },
+    { key:'city',     label:'Localização',     renderer: c => escHtml(c.city || c.address || '—') },
+    { key:'verified', label:'Verificada',      renderer: c => c.verified ? '<span style="color:#16a34a;font-weight:700">✓ Sim</span>' : '<span style="color:var(--muted)">—</span>' },
+    { key:'phone',    label:'Telefone',        renderer: c => c.phone ? `<a href="tel:${escHtml(c.phone)}">${escHtml(c.phone)}</a>` : '<span style="color:var(--muted)">—</span>' },
+    { key:'email',    label:'Email',           renderer: c => c.email ? `<a href="mailto:${escHtml(c.email)}">${escHtml(c.email)}</a>` : '<span style="color:var(--muted)">—</span>' },
+    { key:'website',  label:'Website',         renderer: c => c.website ? `<a href="${escHtml(c.website)}" target="_blank" rel="noopener">${escHtml(c.website)}</a>` : '<span style="color:var(--muted)">—</span>' },
+    { key:'tags',     label:'Especialidades',  renderer: c => (c.tags||[]).slice(0, 6).map(tag => `<span class="tag" style="margin-right:4px">${escHtml(tag)}</span>`).join('') || '—' },
+    { key:'action',   label:'',                renderer: c => `<button class="btn-submit" style="font-size:12px;padding:8px 14px" onclick="closeCompareModal();setTimeout(()=>openDetail(${c.id}),200)">Ver perfil</button>` },
+  ];
+
+  let html = '<table class="compare-table"><tbody>';
+  fields.forEach(f => {
+    html += '<tr>';
+    html += `<th>${f.label}</th>`;
+    cos.forEach(c => { html += `<td>${f.renderer(c)}</td>`; });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+
+  document.getElementById('compareBody').innerHTML = html;
+  const ov = document.getElementById('compareOverlay');
+  ov.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeCompareModal() {
+  const ov = document.getElementById('compareOverlay');
+  if (ov) ov.classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+window.toggleCompare      = toggleCompare;
+window.clearCompare       = clearCompare;
+window.openCompareModal   = openCompareModal;
+window.closeCompareModal  = closeCompareModal;
+
+// Show the bar on first paint if there's a saved selection
+setTimeout(() => { try { _renderCompareBar(); } catch (_) {} }, 200);
+
 // Load companies from backend API; renders markers when done
 async function loadCompaniesFromDB() {
   companies.length = 0;
@@ -8086,8 +8258,14 @@ function _appendListCards(frag, data, start, end) {
     const phoneFrag = c.phone ? `<a class="slc-phone" href="tel:${c.phone}" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>${c.phone}</a>` : '';
     const div = document.createElement('div');
     div.className = 'search-list-card';
+    div.dataset.companyId = c.id;
     div.onclick = () => { setSearchView('map'); setTimeout(() => openDetail(c.id), 300); };
-    div.innerHTML = `<div class="slc-header">
+    const isCompared = _compareIds && _compareIds.has(c.id);
+    div.innerHTML = `<label class="slc-compare" onclick="event.stopPropagation()" title="Adicionar à comparação">
+        <input type="checkbox" ${isCompared ? 'checked' : ''} onchange="toggleCompare(${c.id})"/>
+        <span>Comparar</span>
+      </label>
+      <div class="slc-header">
         <div class="slc-emoji" style="background:${c.color}22">${c.emoji || '🏢'}</div>
         <div class="slc-info">
           <div class="slc-name">${c.name}</div>
