@@ -2222,11 +2222,23 @@
     .review-dist-bar{flex:1;height:8px;background:var(--border-light);border-radius:4px;overflow:hidden}
     .review-dist-fill{height:100%;background:linear-gradient(90deg,#fbbf24,#f59e0b);border-radius:4px;transition:width .3s ease}
     .review-dist-count{width:28px;text-align:right;flex-shrink:0;font-weight:600}
-    /* Compare checkbox on each search-list card */
+    /* Compare + favourite controls on each search-list card */
     .search-list-card{position:relative}
     .slc-compare{position:absolute;top:10px;right:10px;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;font-weight:600;color:var(--text-secondary);cursor:pointer;transition:all .15s;user-select:none;z-index:2}
     .slc-compare:hover{background:#fff;border-color:var(--primary);color:var(--primary)}
     .slc-compare input[type="checkbox"]{margin:0;accent-color:var(--primary);cursor:pointer}
+    .slc-fav{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);border:1px solid var(--border);width:30px;height:30px;border-radius:50%;font-size:16px;color:var(--muted);cursor:pointer;transition:all .15s;z-index:2;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
+    .slc-fav:hover{color:var(--gold);border-color:var(--gold);transform:scale(1.08)}
+    .slc-fav.is-fav{color:var(--gold);border-color:var(--gold);background:#fef3c7}
+    /* Recently viewed strip on the search tab */
+    .recent-strip{padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);overflow-x:auto;display:flex;gap:8px;white-space:nowrap;-webkit-overflow-scrolling:touch}
+    .recent-strip::-webkit-scrollbar{height:4px}
+    .recent-strip::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
+    .recent-strip-label{display:inline-flex;align-items:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-right:6px;flex-shrink:0}
+    .recent-chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:5px 12px;font-size:12px;color:var(--text);cursor:pointer;transition:all .15s;flex-shrink:0;font-family:inherit}
+    .recent-chip:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-1px)}
+    .recent-chip-emoji{font-size:14px}
+    .recent-chip-name{max-width:160px;overflow:hidden;text-overflow:ellipsis}
     /* Sticky compare bar at bottom of viewport */
     .compare-bar{position:fixed;bottom:0;left:0;right:0;background:#0f172a;color:#fff;border-top:2px solid var(--primary);z-index:9997;animation:slideUp .3s ease both;box-shadow:0 -8px 24px rgba(0,0,0,.18)}
     .compare-bar-inner{display:flex;align-items:center;gap:14px;padding:12px 18px;max-width:1200px;margin:0 auto;flex-wrap:wrap}
@@ -3044,6 +3056,9 @@
   </div>
   <div class="ub-divider"></div>
 </div>
+
+<!-- Recently viewed companies (populated when user opens detail panels) -->
+<div class="recent-strip" id="recentStrip" hidden></div>
 
 <!-- MOBILE FILTER CHIP BAR — compact single row, opens bottom sheet on tap -->
 <div id="mobileSearchPanel">
@@ -6371,6 +6386,88 @@ function computeNextCompanyId(list, current) {
   return nums.length ? Math.max(...nums) + 1 : (current || 1);
 }
 
+// ── FAVOURITES (saved companies) ───────────────────────────────────────────
+// Persisted in localStorage so they survive across sessions. Lightweight v1:
+// just a Set of company ids. UI is the star button on each card.
+const _FAV_KEY = 'hive_favourite_ids';
+let _favIds = new Set();
+try {
+  const raw = localStorage.getItem(_FAV_KEY);
+  if (raw) JSON.parse(raw).forEach(id => _favIds.add(Number(id)));
+} catch (_) {}
+
+function _saveFavs() {
+  try { localStorage.setItem(_FAV_KEY, JSON.stringify([..._favIds])); } catch (_) {}
+}
+
+function toggleFavourite(id) {
+  id = Number(id);
+  if (_favIds.has(id)) {
+    _favIds.delete(id);
+    showToast('Removida dos favoritos');
+  } else {
+    _favIds.add(id);
+    showToast('★ Guardada nos favoritos');
+  }
+  _saveFavs();
+  // Sync any visible cards with the new state
+  document.querySelectorAll('.search-list-card').forEach(card => {
+    if (Number(card.dataset.companyId) !== id) return;
+    const btn = card.querySelector('.slc-fav');
+    if (!btn) return;
+    const fav = _favIds.has(id);
+    btn.classList.toggle('is-fav', fav);
+    btn.textContent = fav ? '★' : '☆';
+  });
+}
+window.toggleFavourite = toggleFavourite;
+
+// ── RECENTLY VIEWED ────────────────────────────────────────────────────────
+// Tracks the last 6 companies the user opened in the detail panel. Stored in
+// localStorage as an array of ids. Rendered as a chip strip above the map.
+const _RECENT_KEY = 'hive_recently_viewed';
+const _RECENT_MAX = 6;
+function _getRecentIds() {
+  try { return JSON.parse(localStorage.getItem(_RECENT_KEY) || '[]').map(Number); }
+  catch (_) { return []; }
+}
+function _pushRecent(id) {
+  id = Number(id);
+  let arr = _getRecentIds().filter(x => x !== id);
+  arr.unshift(id);
+  arr = arr.slice(0, _RECENT_MAX);
+  try { localStorage.setItem(_RECENT_KEY, JSON.stringify(arr)); } catch (_) {}
+  _renderRecentStrip();
+}
+function _renderRecentStrip() {
+  const strip = document.getElementById('recentStrip');
+  if (!strip) return;
+  const ids = _getRecentIds();
+  // Resolve to companies the user can actually click. If `companies` isn't
+  // populated yet (script loads top-down), defer.
+  if (typeof companies === 'undefined' || !companies.length) { strip.hidden = true; return; }
+  const items = ids.map(id => companies.find(c => Number(c.id) === id)).filter(Boolean);
+  if (items.length === 0) { strip.hidden = true; return; }
+  strip.hidden = false;
+  strip.innerHTML =
+    '<span class="recent-strip-label">Vistas recentemente</span>' +
+    items.map(c => `
+      <button type="button" class="recent-chip" onclick="openDetail(${c.id})" title="${escHtml(c.name)}">
+        <span class="recent-chip-emoji">${c.emoji || '🏢'}</span>
+        <span class="recent-chip-name">${escHtml(c.name)}</span>
+      </button>`).join('');
+}
+window._renderRecentStrip = _renderRecentStrip;
+
+// Hook into openDetail so any open recorded a recent. Wrapped here so even
+// later patches (analytics, reviews) keep working — they all forward to the
+// previous reference.
+const _origOpenDetailForRecent = openDetail;
+openDetail = function(id) {
+  _origOpenDetailForRecent(id);
+  _pushRecent(id);
+};
+
 // ── COMPARE COMPANIES (up to 3) ────────────────────────────────────────────
 // _compareIds is a Set of company ids the user has ticked for comparison.
 // Persisted in sessionStorage so navigating between tabs keeps the selection.
@@ -6547,6 +6644,7 @@ async function loadCompaniesFromDB() {
   renderFeaturedCompanies();
   renderTestimonialBanner();
   updateLandingStats();
+  if (typeof _renderRecentStrip === 'function') _renderRecentStrip();
 }
 
 // Save a new company to the backend API; returns the persisted record (with DB id)
@@ -8261,7 +8359,9 @@ function _appendListCards(frag, data, start, end) {
     div.dataset.companyId = c.id;
     div.onclick = () => { setSearchView('map'); setTimeout(() => openDetail(c.id), 300); };
     const isCompared = _compareIds && _compareIds.has(c.id);
-    div.innerHTML = `<label class="slc-compare" onclick="event.stopPropagation()" title="Adicionar à comparação">
+    const isFav = _favIds && _favIds.has(c.id);
+    div.innerHTML = `<button class="slc-fav ${isFav ? 'is-fav' : ''}" onclick="event.stopPropagation();toggleFavourite(${c.id})" aria-label="Guardar favorito" title="Guardar favorito">${isFav ? '★' : '☆'}</button>
+      <label class="slc-compare" onclick="event.stopPropagation()" title="Adicionar à comparação">
         <input type="checkbox" ${isCompared ? 'checked' : ''} onchange="toggleCompare(${c.id})"/>
         <span>Comparar</span>
       </label>
