@@ -223,7 +223,7 @@
     .lang-opt .flag{font-size:16px}
 
     /* ── UNIFIED BAR (Search + Categories in one line) ── */
-    .unified-bar{background:#0c1827;display:flex;align-items:stretch;height:54px;flex-shrink:0;border-bottom:1px solid #1a2e45;position:relative;z-index:150}
+    .unified-bar{background:#0c1827;display:flex;align-items:stretch;height:54px;flex-shrink:0;border-bottom:1px solid #1a2e45;position:sticky;top:0;z-index:150;box-shadow:0 4px 12px rgba(0,0,0,.18)}
     .ub-search{display:flex;align-items:center;gap:6px;padding:6px 10px;flex-shrink:0;min-width:0}
     .ub-input{display:flex;align-items:center;gap:5px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:6px;padding:5px 10px;transition:all .2s}
     .ub-input:focus-within{background:rgba(255,255,255,.18);border-color:var(--primary)}
@@ -1208,6 +1208,8 @@
 
     /* ── Featured Companies ── */
     .lp-featured-section{background:#f9fafb;max-width:100%;padding:60px 0}
+    .lp-see-all-cta{background:var(--primary);color:#fff;border:0;border-radius:12px;padding:14px 32px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;box-shadow:var(--shadow-md);transition:all .2s}
+    .lp-see-all-cta:hover{background:var(--primary-dark);transform:translateY(-2px);box-shadow:var(--shadow-lg)}
     .lp-featured-section > *{max-width:1100px;margin-left:auto;margin-right:auto;padding-left:32px;padding-right:32px}
     @media(max-width:768px){.lp-featured-section > *{padding-left:16px;padding-right:16px}}
     .lp-featured-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
@@ -2828,6 +2830,11 @@
     </div>
     <div class="lp-featured-grid" id="lpFeaturedGrid">
       <!-- rendered by renderFeaturedCompanies() -->
+    </div>
+
+    <!-- Big "see all" CTA below the carousel — easier to find than the small link in the header -->
+    <div style="text-align:center;margin-top:36px">
+      <button class="lp-see-all-cta" onclick="showTab('search')" data-i18n="featuredSeeAllBig">Ver todas as empresas no mapa →</button>
     </div>
 
     <!-- Scrolling testimonial banner -->
@@ -9973,6 +9980,7 @@ if (_origRenderSectorFilters) {
           trust3Title:'Aprovação rápida',
           trust3Desc:'A maioria dos registos é aprovada em <strong>até 24 horas úteis</strong>. Receberá um email assim que estiver visível, e pode acompanhar o estado a qualquer momento no menu da conta.',
           trustFaqLink:'Ver todas as perguntas frequentes →',
+          featuredSeeAllBig:'Ver todas as empresas no mapa →',
           forgotTitle:'Recuperar palavra-passe',
           forgotBody:'Indique o seu email e enviaremos um link para definir uma nova palavra-passe.',
           forgotSend:'Enviar link',
@@ -10005,6 +10013,7 @@ if (_origRenderSectorFilters) {
           trust3Title:'Fast approval',
           trust3Desc:'Most registrations are approved within <strong>24 business hours</strong>. You\'ll receive an email as soon as your company is live, and can check status at any time from the account menu.',
           trustFaqLink:'See all frequently asked questions →',
+          featuredSeeAllBig:'See all companies on the map →',
           forgotTitle:'Reset your password',
           forgotBody:'Enter your email and we\'ll send you a link to set a new password.',
           forgotSend:'Send link',
@@ -10037,6 +10046,7 @@ if (_origRenderSectorFilters) {
           trust3Title:'Approbation rapide',
           trust3Desc:"La plupart des inscriptions sont approuvées en <strong>moins de 24 heures ouvrables</strong>. Vous recevrez un email dès que votre entreprise sera visible.",
           trustFaqLink:'Voir toutes les questions fréquentes →',
+          featuredSeeAllBig:'Voir toutes les entreprises sur la carte →',
           forgotTitle:'Réinitialiser le mot de passe',
           forgotBody:'Indiquez votre email et nous vous enverrons un lien pour définir un nouveau mot de passe.',
           forgotSend:'Envoyer le lien',
@@ -10069,6 +10079,7 @@ if (_origRenderSectorFilters) {
           trust3Title:'Aprobación rápida',
           trust3Desc:'La mayoría de los registros se aprueban en <strong>menos de 24 horas hábiles</strong>. Recibirá un email tan pronto como su empresa esté visible.',
           trustFaqLink:'Ver todas las preguntas frecuentes →',
+          featuredSeeAllBig:'Ver todas las empresas en el mapa →',
           forgotTitle:'Recuperar contraseña',
           forgotBody:'Indique su email y le enviaremos un enlace para establecer una nueva contraseña.',
           forgotSend:'Enviar enlace',
@@ -10101,6 +10112,7 @@ if (_origRenderSectorFilters) {
           trust3Title:'Schnelle Freigabe',
           trust3Desc:'Die meisten Registrierungen werden innerhalb von <strong>24 Werktagsstunden</strong> freigegeben. Sie erhalten eine E-Mail, sobald Ihr Unternehmen sichtbar ist.',
           trustFaqLink:'Alle häufigen Fragen ansehen →',
+          featuredSeeAllBig:'Alle Unternehmen auf der Karte ansehen →',
           forgotTitle:'Passwort zurücksetzen',
           forgotBody:'Geben Sie Ihre E-Mail-Adresse ein. Wir senden Ihnen einen Link, um ein neues Passwort festzulegen.',
           forgotSend:'Link senden',
