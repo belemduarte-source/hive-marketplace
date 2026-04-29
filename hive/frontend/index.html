@@ -2215,6 +2215,13 @@
     /* ── Reviews ── */
     .reviews-list{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
     .review-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px}
+    /* Review-distribution histogram (rendered above the review cards) */
+    .review-dist{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;display:flex;flex-direction:column;gap:6px}
+    .review-dist-row{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-secondary)}
+    .review-dist-label{width:24px;flex-shrink:0;font-weight:700;color:var(--gold)}
+    .review-dist-bar{flex:1;height:8px;background:var(--border-light);border-radius:4px;overflow:hidden}
+    .review-dist-fill{height:100%;background:linear-gradient(90deg,#fbbf24,#f59e0b);border-radius:4px;transition:width .3s ease}
+    .review-dist-count{width:28px;text-align:right;flex-shrink:0;font-weight:600}
     .review-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
     .review-card-author{font-weight:700;font-size:13px;color:var(--text)}
     .review-card-date{font-size:11px;color:var(--muted)}
@@ -10309,7 +10316,29 @@ async function loadReviews(companyId) {
     if (reviews.length === 0) {
       list.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px">Nenhuma avaliação ainda. Seja o primeiro!</div>';
     } else {
-      list.innerHTML = reviews.map(r => {
+      // Build a star-distribution histogram. Same average can come from very
+      // different shapes (4.5 ⭢ all 4-5 vs. half 5★ and half 3★) so this
+      // gives users a much truer picture of the company's reviews.
+      const dist = [0, 0, 0, 0, 0]; // index 0 = 5★, ... index 4 = 1★
+      reviews.forEach(r => {
+        const s = Math.max(1, Math.min(5, Math.round(r.score)));
+        dist[5 - s]++;
+      });
+      const total = reviews.length;
+      const histHtml = `
+        <div class="review-dist">
+          ${dist.map((count, i) => {
+            const stars = 5 - i;
+            const pct = total ? Math.round((count / total) * 100) : 0;
+            return `<div class="review-dist-row">
+              <span class="review-dist-label">${stars}★</span>
+              <div class="review-dist-bar"><div class="review-dist-fill" style="width:${pct}%"></div></div>
+              <span class="review-dist-count">${count}</span>
+            </div>`;
+          }).join('')}
+        </div>`;
+
+      const cardsHtml = reviews.map(r => {
         const stars = '★'.repeat(r.score) + '☆'.repeat(5 - r.score);
         const date  = new Date(r.created_at).toLocaleDateString('pt-PT', { month: 'short', year: 'numeric' });
         return `<div class="review-card">
@@ -10321,6 +10350,8 @@ async function loadReviews(companyId) {
           ${r.comment ? `<div class="review-card-comment">${escHtml(r.comment)}</div>` : ''}
         </div>`;
       }).join('');
+
+      list.innerHTML = histHtml + cardsHtml;
     }
     // Show review form for logged-in users
     const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
