@@ -1247,6 +1247,19 @@
 
     /* ── How It Works (dark) ── */
     .lp-steps-section{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%);padding:72px 32px}
+    /* Trust section (pricing / verification / approval timeline) */
+    .lp-trust-section{background:var(--bg);padding:72px 32px}
+    .lp-trust-section .lp-section-head{max-width:760px;margin:0 auto 44px;text-align:center}
+    .lp-trust-section .lp-section-sub{font-size:14px;color:var(--text-secondary);max-width:560px;margin:14px auto 0;line-height:1.65}
+    .lp-trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1100px;margin:0 auto}
+    .lp-trust-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:32px 28px;text-align:left;transition:transform .2s,box-shadow .2s}
+    .lp-trust-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
+    .lp-trust-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;margin-bottom:18px}
+    .lp-trust-title{font-size:17px;font-weight:800;color:var(--text);margin:0 0 10px}
+    .lp-trust-desc{font-size:13px;color:var(--text-secondary);line-height:1.7;margin:0}
+    .btn-trust-faq{background:none;border:0;color:var(--primary);font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;padding:8px 16px;border-radius:8px;transition:background .15s}
+    .btn-trust-faq:hover{background:var(--orange-light)}
+    @media(max-width:760px){.lp-trust-grid{grid-template-columns:1fr;gap:16px}.lp-trust-section{padding:56px 16px}}
     .lp-steps-grid{max-width:900px;margin:0 auto;display:flex;align-items:flex-start;gap:0}
     .lp-step{flex:1;text-align:center;padding:0 24px}
     .lp-step-num{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 4px 18px rgba(249,115,22,.45)}
@@ -2860,6 +2873,37 @@
         <h3 class="lp-step-title" data-i18n="lpStep3Title">Contacte</h3>
         <p class="lp-step-desc" data-i18n="lpStep3Desc">Peça orçamentos diretamente por email ou chat. Sem intermediários, sem demoras.</p>
       </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════════════════
+       TRUST: pricing + verification + approval timeline
+       ══════════════════════════════════════════════════════════════════════════ -->
+  <div class="lp-trust-section">
+    <div class="lp-section-head">
+      <span class="lp-section-overline" data-i18n="trustOverline">O que esperar</span>
+      <h2 class="lp-section-title" data-i18n="trustTitle">Transparência em três promessas</h2>
+      <p class="lp-section-sub" data-i18n="trustSub">Antes de criar conta, saiba exatamente o que a Hive faz por si — sem letra miudinha.</p>
+    </div>
+    <div class="lp-trust-grid">
+      <div class="lp-trust-card">
+        <div class="lp-trust-icon" style="background:#dcfce7;color:#166534">€0</div>
+        <h3 class="lp-trust-title" data-i18n="trust1Title">Grátis para todos</h3>
+        <p class="lp-trust-desc" data-i18n-html="trust1Desc">Pesquisar, comparar e pedir orçamentos é totalmente gratuito para clientes. Empresas registam-se sem custos. Planos premium para destaque chegam em breve — opcionais.</p>
+      </div>
+      <div class="lp-trust-card">
+        <div class="lp-trust-icon" style="background:#dbeafe;color:#1e40af">✓</div>
+        <h3 class="lp-trust-title" data-i18n="trust2Title">Verificação real</h3>
+        <p class="lp-trust-desc" data-i18n-html="trust2Desc">Toda empresa submete o código da <strong>Certidão Permanente</strong> do Registo Comercial. A nossa equipa confirma o código, o NIPC e a atividade declarada antes de publicar o perfil.</p>
+      </div>
+      <div class="lp-trust-card">
+        <div class="lp-trust-icon" style="background:#fef3c7;color:#a16207">24h</div>
+        <h3 class="lp-trust-title" data-i18n="trust3Title">Aprovação rápida</h3>
+        <p class="lp-trust-desc" data-i18n-html="trust3Desc">A maioria dos registos é aprovada em <strong>até 24 horas úteis</strong>. Receberá um email assim que estiver visível, e pode acompanhar o estado a qualquer momento no menu da conta.</p>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:32px">
+      <button onclick="openFaq()" class="btn-trust-faq" data-i18n="trustFaqLink">Ver todas as perguntas frequentes →</button>
     </div>
   </div>
 
@@ -9920,6 +9964,15 @@ if (_origRenderSectorFilters) {
           verifiedTooltip:'Empresa cuja certidão permanente foi confirmada pela equipa Hive — uma camada extra de confiança.',
           mapPinHint:'💡 Toque num pin para ver os detalhes da empresa.',
           faqTitle:'Perguntas Frequentes', faqMeta:'Respostas rápidas às dúvidas mais comuns',
+          trustOverline:'O que esperar', trustTitle:'Transparência em três promessas',
+          trustSub:'Antes de criar conta, saiba exatamente o que a Hive faz por si — sem letra miudinha.',
+          trust1Title:'Grátis para todos',
+          trust1Desc:'Pesquisar, comparar e pedir orçamentos é totalmente gratuito para clientes. Empresas registam-se sem custos. Planos premium para destaque chegam em breve — opcionais.',
+          trust2Title:'Verificação real',
+          trust2Desc:'Toda empresa submete o código da <strong>Certidão Permanente</strong> do Registo Comercial. A nossa equipa confirma o código, o NIPC e a atividade declarada antes de publicar o perfil.',
+          trust3Title:'Aprovação rápida',
+          trust3Desc:'A maioria dos registos é aprovada em <strong>até 24 horas úteis</strong>. Receberá um email assim que estiver visível, e pode acompanhar o estado a qualquer momento no menu da conta.',
+          trustFaqLink:'Ver todas as perguntas frequentes →',
           forgotTitle:'Recuperar palavra-passe',
           forgotBody:'Indique o seu email e enviaremos um link para definir uma nova palavra-passe.',
           forgotSend:'Enviar link',
@@ -9943,6 +9996,15 @@ if (_origRenderSectorFilters) {
           verifiedTooltip:'Company whose Portuguese commercial registry certificate has been confirmed by the Hive team — an extra layer of trust.',
           mapPinHint:'💡 Tap a pin to see company details.',
           faqTitle:'Frequently Asked Questions', faqMeta:'Quick answers to common questions',
+          trustOverline:'What to expect', trustTitle:'Three transparent promises',
+          trustSub:"Before you sign up, know exactly what Hive does for you — no fine print.",
+          trust1Title:'Free for everyone',
+          trust1Desc:'Searching, comparing and requesting quotes is free for clients. Companies register at no cost. Premium plans for featured placement are coming soon — entirely optional.',
+          trust2Title:'Real verification',
+          trust2Desc:'Every company submits its <strong>Portuguese Commercial Registry Certificate</strong> access code. Our team verifies the code, the company tax number and the declared activity before publishing the profile.',
+          trust3Title:'Fast approval',
+          trust3Desc:'Most registrations are approved within <strong>24 business hours</strong>. You\'ll receive an email as soon as your company is live, and can check status at any time from the account menu.',
+          trustFaqLink:'See all frequently asked questions →',
           forgotTitle:'Reset your password',
           forgotBody:'Enter your email and we\'ll send you a link to set a new password.',
           forgotSend:'Send link',
@@ -9966,6 +10028,15 @@ if (_origRenderSectorFilters) {
           verifiedTooltip:"Entreprise dont le certificat permanent du registre du commerce portugais a été confirmé par l'équipe Hive.",
           mapPinHint:"💡 Touchez un pin pour voir les détails de l'entreprise.",
           faqTitle:'Questions fréquentes', faqMeta:'Réponses rapides aux questions courantes',
+          trustOverline:'À quoi vous attendre', trustTitle:'Trois promesses transparentes',
+          trustSub:"Avant de créer un compte, sachez exactement ce que Hive fait pour vous — sans petits caractères.",
+          trust1Title:'Gratuit pour tous',
+          trust1Desc:"Rechercher, comparer et demander des devis est entièrement gratuit pour les clients. Les entreprises s'inscrivent gratuitement. Des plans premium arriveront bientôt — entièrement optionnels.",
+          trust2Title:'Vérification réelle',
+          trust2Desc:"Chaque entreprise soumet son code d'accès au <strong>Registre du Commerce</strong> portugais. Notre équipe vérifie le code, le numéro fiscal et l'activité déclarée avant publication.",
+          trust3Title:'Approbation rapide',
+          trust3Desc:"La plupart des inscriptions sont approuvées en <strong>moins de 24 heures ouvrables</strong>. Vous recevrez un email dès que votre entreprise sera visible.",
+          trustFaqLink:'Voir toutes les questions fréquentes →',
           forgotTitle:'Réinitialiser le mot de passe',
           forgotBody:'Indiquez votre email et nous vous enverrons un lien pour définir un nouveau mot de passe.',
           forgotSend:'Envoyer le lien',
@@ -9989,6 +10060,15 @@ if (_origRenderSectorFilters) {
           verifiedTooltip:'Empresa cuya certificación permanente del registro mercantil portugués ha sido confirmada por el equipo Hive.',
           mapPinHint:'💡 Toque un pin para ver los detalles de la empresa.',
           faqTitle:'Preguntas Frecuentes', faqMeta:'Respuestas rápidas a las dudas más comunes',
+          trustOverline:'Qué esperar', trustTitle:'Tres promesas transparentes',
+          trustSub:'Antes de crear cuenta, sepa exactamente qué hace Hive por usted — sin letra pequeña.',
+          trust1Title:'Gratis para todos',
+          trust1Desc:'Buscar, comparar y solicitar presupuestos es totalmente gratis para clientes. Las empresas se registran sin costo. Los planes premium llegarán pronto — totalmente opcionales.',
+          trust2Title:'Verificación real',
+          trust2Desc:'Toda empresa envía el código del <strong>Registro Mercantil</strong> portugués. Nuestro equipo verifica el código, el NIF y la actividad antes de publicar el perfil.',
+          trust3Title:'Aprobación rápida',
+          trust3Desc:'La mayoría de los registros se aprueban en <strong>menos de 24 horas hábiles</strong>. Recibirá un email tan pronto como su empresa esté visible.',
+          trustFaqLink:'Ver todas las preguntas frecuentes →',
           forgotTitle:'Recuperar contraseña',
           forgotBody:'Indique su email y le enviaremos un enlace para establecer una nueva contraseña.',
           forgotSend:'Enviar enlace',
@@ -10012,6 +10092,15 @@ if (_origRenderSectorFilters) {
           verifiedTooltip:'Unternehmen, dessen portugiesischer Handelsregisterauszug vom Hive-Team verifiziert wurde — zusätzliche Vertrauensebene.',
           mapPinHint:'💡 Tippen Sie auf einen Pin, um Firmendetails zu sehen.',
           faqTitle:'Häufige Fragen', faqMeta:'Schnelle Antworten auf gängige Fragen',
+          trustOverline:'Was Sie erwartet', trustTitle:'Drei transparente Versprechen',
+          trustSub:'Bevor Sie ein Konto erstellen, wissen Sie genau, was Hive für Sie tut — ohne Kleingedrucktes.',
+          trust1Title:'Kostenlos für alle',
+          trust1Desc:'Suchen, vergleichen und Angebote anfordern ist für Kunden völlig kostenlos. Unternehmen registrieren sich gebührenfrei. Premium-Pläne kommen bald — vollständig optional.',
+          trust2Title:'Echte Verifizierung',
+          trust2Desc:'Jedes Unternehmen reicht den Zugangscode zum <strong>portugiesischen Handelsregister</strong> ein. Unser Team prüft Code, Steuernummer und angegebene Tätigkeit vor der Veröffentlichung.',
+          trust3Title:'Schnelle Freigabe',
+          trust3Desc:'Die meisten Registrierungen werden innerhalb von <strong>24 Werktagsstunden</strong> freigegeben. Sie erhalten eine E-Mail, sobald Ihr Unternehmen sichtbar ist.',
+          trustFaqLink:'Alle häufigen Fragen ansehen →',
           forgotTitle:'Passwort zurücksetzen',
           forgotBody:'Geben Sie Ihre E-Mail-Adresse ein. Wir senden Ihnen einen Link, um ein neues Passwort festzulegen.',
           forgotSend:'Link senden',
