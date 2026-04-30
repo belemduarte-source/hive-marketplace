@@ -49,6 +49,13 @@ const api = {
       body: { score, comment },
     });
   },
+  // Company owner replies to a single review
+  replyToReview(companyId, reviewId, reply) {
+    return apiFetch('/companies/' + companyId + '/reviews/' + reviewId + '/reply', {
+      method: 'POST',
+      body: { reply },
+    });
+  },
 
   // ── Contact form relay ─────────────────────────────────────────────────────
   contactCompany(companyId, message) {

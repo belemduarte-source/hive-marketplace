@@ -86,14 +86,18 @@ CREATE INDEX IF NOT EXISTS idx_companies_created_by ON companies(created_by);
 
 -- ── Reviews ───────────────────────────────────────────────────────────────────
 CREATE TABLE IF NOT EXISTS reviews (
-  id          BIGSERIAL PRIMARY KEY,
-  company_id  BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
-  user_id     BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  score       SMALLINT NOT NULL CHECK (score BETWEEN 1 AND 5),
-  comment     TEXT,
-  created_at  TIMESTAMPTZ DEFAULT NOW(),
+  id            BIGSERIAL PRIMARY KEY,
+  company_id    BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+  user_id       BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  score         SMALLINT NOT NULL CHECK (score BETWEEN 1 AND 5),
+  comment       TEXT,
+  reply         TEXT,
+  reply_at      TIMESTAMPTZ,
+  created_at    TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(company_id, user_id)  -- one review per user per company
 );
+ALTER TABLE reviews ADD COLUMN IF NOT EXISTS reply    TEXT;
+ALTER TABLE reviews ADD COLUMN IF NOT EXISTS reply_at TIMESTAMPTZ;
 CREATE INDEX IF NOT EXISTS idx_reviews_company ON reviews(company_id);
 CREATE INDEX IF NOT EXISTS idx_reviews_user    ON reviews(user_id);
 

@@ -7,7 +7,7 @@ const { requireAuth } = require('../middleware/auth');
 router.get('/', async (req, res, next) => {
   try {
     const { rows } = await pool.query(
-      `SELECT r.id, r.score, r.comment, r.created_at,
+      `SELECT r.id, r.score, r.comment, r.reply, r.reply_at, r.created_at,
               u.name AS author_name
          FROM reviews r
          JOIN users u ON u.id = r.user_id
@@ -17,6 +17,37 @@ router.get('/', async (req, res, next) => {
       [req.params.id]
     );
     res.json(rows);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// POST /api/companies/:id/reviews/:reviewId/reply — only the company owner
+// (or an admin) may reply to a review on their company.
+router.post('/:reviewId/reply', requireAuth, async (req, res, next) => {
+  try {
+    const reply = (req.body?.reply || '').trim();
+    if (!reply) return res.status(400).json({ error: 'A resposta não pode estar vazia' });
+    if (reply.length > 1000) return res.status(400).json({ error: 'Resposta demasiado longa (máximo 1000 caracteres)' });
+
+    // Confirm the review belongs to a company owned by the caller
+    const { rows: r } = await pool.query(
+      `SELECT r.id, c.created_by
+         FROM reviews r
+         JOIN companies c ON c.id = r.company_id
+        WHERE r.id = $1 AND r.company_id = $2`,
+      [req.params.reviewId, req.params.id]
+    );
+    if (!r[0]) return res.status(404).json({ error: 'Avaliação não encontrada' });
+    if (!req.user.is_admin && r[0].created_by !== req.user.id) {
+      return res.status(403).json({ error: 'Apenas o dono da empresa pode responder' });
+    }
+
+    const { rows } = await pool.query(
+      `UPDATE reviews SET reply = $1, reply_at = NOW() WHERE id = $2 RETURNING *`,
+      [reply, req.params.reviewId]
+    );
+    res.json(rows[0]);
   } catch (e) {
     next(e);
   }

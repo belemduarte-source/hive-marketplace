@@ -12,7 +12,7 @@ const LIST_COLS = `
   email, phone, website, tags, description,
   founded_year, business_hours, portfolio_images,
   lat, lng, rating, reviews, top_rated, verified, is_new, featured,
-  emoji, color, pin_type, status, created_at
+  emoji, color, pin_type, status, created_by, created_at
 `.trim();
 
 router.get('/', async (req, res, next) => {

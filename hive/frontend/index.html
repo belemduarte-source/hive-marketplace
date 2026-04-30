@@ -657,6 +657,17 @@
     .avatar-menu-item.danger{color:var(--red)}
     .avatar-menu-item.danger svg{color:var(--red)}
     .avatar-menu-divider{height:1px;background:var(--border);margin:0}
+    .avatar-menu-badge{margin-left:auto;background:var(--primary);color:#fff;font-size:10px;font-weight:800;border-radius:10px;padding:1px 7px;line-height:1.5}
+    /* Generic mini-list inside a modal (used by Favourites) */
+    .mini-list{display:flex;flex-direction:column;gap:6px;max-height:60vh;overflow-y:auto;padding-right:6px}
+    .mini-list-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:10px;cursor:pointer;transition:all .15s}
+    .mini-list-item:hover{border-color:var(--primary);background:var(--surface);transform:translateY(-1px)}
+    .mini-list-emoji{font-size:20px;width:32px;text-align:center}
+    .mini-list-text{flex:1;min-width:0}
+    .mini-list-name{font-weight:700;color:var(--text);font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .mini-list-sub{font-size:11px;color:var(--muted);margin-top:2px}
+    .mini-list-action{background:none;border:0;color:var(--muted);font-size:18px;cursor:pointer;padding:4px 8px;border-radius:6px}
+    .mini-list-action:hover{color:var(--red);background:var(--red-light)}
 
     /* ── TOAST ── */
     .toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:var(--nav);color:#fff;padding:9px 20px;border-radius:28px;font-size:13px;font-weight:500;box-shadow:var(--shadow-lg);display:none;z-index:500;animation:fadeUp .3s ease;max-width:calc(100vw - 32px);text-align:center}
@@ -2242,6 +2253,17 @@
     /* ── Reviews ── */
     .reviews-list{display:flex;flex-direction:column;gap:12px;margin-bottom:16px}
     .review-card{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px}
+    /* Owner reply published below a review */
+    .review-reply{margin-top:10px;padding:10px 12px;background:#fef3c7;border-left:3px solid #f59e0b;border-radius:6px}
+    .review-reply-head{font-size:11px;font-weight:700;color:#78350f;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px}
+    .review-reply-date{color:#92400e;font-weight:500}
+    .review-reply-body{font-size:13px;color:#1f2937;line-height:1.55;white-space:pre-wrap}
+    /* Owner-only reply form */
+    .review-reply-form{margin-top:10px;background:#fff;border:1px solid var(--border);border-radius:8px;padding:10px}
+    .review-reply-form textarea{width:100%;border:1px solid var(--border);border-radius:6px;padding:8px;font-size:13px;font-family:inherit;resize:vertical;min-height:60px}
+    .review-reply-form textarea:focus{outline:2px solid var(--primary);outline-offset:1px}
+    .review-reply-btn{background:none;border:0;color:var(--primary);font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;padding:4px 0}
+    .review-reply-btn:hover{text-decoration:underline}
     /* Review-distribution histogram (rendered above the review cards) */
     .review-dist{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:12px;display:flex;flex-direction:column;gap:6px}
     .review-dist-row{display:flex;align-items:center;gap:10px;font-size:12px;color:var(--text-secondary)}
@@ -4061,6 +4083,15 @@
       </div>
       <button type="submit" class="btn-submit" id="resetSubmitBtn" style="width:100%;padding:11px;font-size:14px" data-i18n="resetSubmit">Definir palavra-passe</button>
     </form>
+  </div>
+</div>
+
+<!-- ── FAVOURITES MODAL ─────────────────────────────────────────────── -->
+<div class="overlay" id="favOverlay" onclick="if(event.target===this)closeMyFavourites()" role="dialog" aria-modal="true" aria-labelledby="favTitle">
+  <div class="modal" style="width:480px;max-width:92vw">
+    <button class="modal-close" onclick="closeMyFavourites()" aria-label="Fechar" style="position:absolute;top:14px;right:14px;background:none;border:0;font-size:22px;color:var(--muted);cursor:pointer">×</button>
+    <h2 id="favTitle" style="font-size:20px;font-weight:800;margin:0 0 14px;color:var(--text)" data-i18n="favTitle">★ Empresas favoritas</h2>
+    <div id="favBody" class="mini-list"></div>
   </div>
 </div>
 
@@ -6435,6 +6466,7 @@ function dbRowToCompany(row) {
     address:   row.address   || '',
     city:      row.city      || '',
     country:   row.country   || 'pt',
+    created_by: row.created_by || null,
     axes: [
       {l:'Qualidade',v:0},{l:'Pontualidade',v:0},
       {l:'Atendimento',v:0},{l:'Preço',v:0}
@@ -6482,8 +6514,48 @@ function toggleFavourite(id) {
     btn.classList.toggle('is-fav', fav);
     btn.textContent = fav ? '★' : '☆';
   });
+  _updateFavBadge();
 }
-window.toggleFavourite = toggleFavourite;
+function _updateFavBadge() {
+  const badge = document.getElementById('avMenuFavCount');
+  if (!badge) return;
+  if (_favIds.size > 0) { badge.textContent = _favIds.size; badge.hidden = false; }
+  else { badge.hidden = true; }
+}
+
+function openMyFavourites() {
+  const ov = document.getElementById('favOverlay');
+  if (!ov) return;
+  const body = document.getElementById('favBody');
+  if (!body) return;
+  const ids = [..._favIds];
+  if (ids.length === 0) {
+    body.innerHTML = '<div style="text-align:center;color:var(--muted);padding:32px 12px;font-size:13px">Nenhuma empresa guardada ainda.<br><span style="font-size:12px">Toque na ☆ de uma empresa na pesquisa para a guardar aqui.</span></div>';
+  } else {
+    const items = ids.map(id => companies.find(c => Number(c.id) === id)).filter(Boolean);
+    body.innerHTML = items.map(c => `
+      <div class="mini-list-item" onclick="closeMyFavourites();openDetail(${c.id})">
+        <div class="mini-list-emoji">${c.emoji || '🏢'}</div>
+        <div class="mini-list-text">
+          <div class="mini-list-name">${escHtml(c.name)}</div>
+          <div class="mini-list-sub">${c.rating ? '★ ' + c.rating.toFixed(1) + ' · ' : ''}${escHtml(c.city || c.address || '—')}</div>
+        </div>
+        <button class="mini-list-action" onclick="event.stopPropagation();toggleFavourite(${c.id});openMyFavourites()" title="Remover">×</button>
+      </div>`).join('');
+  }
+  ov.classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMyFavourites() {
+  const ov = document.getElementById('favOverlay');
+  if (ov) ov.classList.remove('open');
+  document.body.style.overflow = '';
+}
+window.toggleFavourite   = toggleFavourite;
+window.openMyFavourites  = openMyFavourites;
+window.closeMyFavourites = closeMyFavourites;
+// Initialise the badge when the page first paints
+setTimeout(() => { try { _updateFavBadge(); } catch (_) {} }, 300);
 
 // ── RECENTLY VIEWED ────────────────────────────────────────────────────────
 // Tracks the last 6 companies the user opened in the detail panel. Stored in
@@ -9758,6 +9830,11 @@ function updateNavAuth() {
           </div>
           ${user.type === 'empresa' ? '<div class="avatar-menu-item" onclick="openRegister();closeAvatarMenu()"><i data-lucide="building-2"></i>' + t('avatarRegisterCompany') + '</div>' : ''}
           <div class="avatar-menu-item" onclick="openProfilePanel();closeAvatarMenu()"><i data-lucide="user"></i>O Meu Perfil</div>
+          <div class="avatar-menu-item" onclick="openMyFavourites();closeAvatarMenu()"><i data-lucide="star"></i>Favoritos <span class="avatar-menu-badge" id="avMenuFavCount" hidden></span></div>
+          <div class="avatar-menu-item" onclick="openStatusModal();closeAvatarMenu()"><i data-lucide="clipboard-list"></i>Estado dos registos</div>
+          <div class="avatar-menu-divider"></div>
+          <div class="avatar-menu-item" onclick="closeAvatarMenu();openFaq()"><i data-lucide="help-circle"></i>FAQ & Ajuda</div>
+          <div class="avatar-menu-item" onclick="closeAvatarMenu();openLegal('privacy')"><i data-lucide="shield"></i>Privacidade</div>
           <div class="avatar-menu-divider"></div>
           <div class="avatar-menu-item danger" onclick="doLogout()"><i data-lucide="log-out"></i>Terminar Sessão</div>
         </div>
@@ -10810,16 +10887,38 @@ async function loadReviews(companyId) {
           }).join('')}
         </div>`;
 
+      // Is the logged-in user the owner of this company? If so, expose a
+      // "Responder" link on reviews that don't yet have a reply.
+      const company = companies.find(x => x.id === companyId);
+      const me = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+      const isOwner = !!(me && company && (me.is_admin || (company.created_by && company.created_by === me.id)));
+
       const cardsHtml = reviews.map(r => {
         const stars = '★'.repeat(r.score) + '☆'.repeat(5 - r.score);
         const date  = new Date(r.created_at).toLocaleDateString('pt-PT', { month: 'short', year: 'numeric' });
-        return `<div class="review-card">
+        const replyDate = r.reply_at ? new Date(r.reply_at).toLocaleDateString('pt-PT', { month: 'short', year: 'numeric' }) : '';
+        return `<div class="review-card" id="rc-${r.id}">
           <div class="review-card-top">
             <span class="review-card-author">${escHtml(r.author_name)}</span>
             <span class="review-card-date">${date}</span>
           </div>
           <div class="review-card-stars">${stars}</div>
           ${r.comment ? `<div class="review-card-comment">${escHtml(r.comment)}</div>` : ''}
+          ${r.reply ? `
+            <div class="review-reply">
+              <div class="review-reply-head">↳ Resposta da empresa · <span class="review-reply-date">${replyDate}</span></div>
+              <div class="review-reply-body">${escHtml(r.reply)}</div>
+            </div>` : ''}
+          ${isOwner && !r.reply ? `
+            <div class="review-reply-form" id="rrf-${r.id}" style="display:none">
+              <textarea id="rrt-${r.id}" placeholder="Escreva uma resposta pública…" rows="3" maxlength="1000"></textarea>
+              <div style="display:flex;gap:8px;margin-top:8px;justify-content:flex-end">
+                <button class="btn-cancel" onclick="document.getElementById('rrf-${r.id}').style.display='none'">Cancelar</button>
+                <button class="btn-submit" onclick="submitReviewReply(${companyId}, ${r.id})">Publicar resposta</button>
+              </div>
+            </div>
+            <div style="margin-top:8px"><button class="review-reply-btn" onclick="document.getElementById('rrf-${r.id}').style.display='block';this.style.display='none'">↳ Responder</button></div>
+          ` : ''}
         </div>`;
       }).join('');
 
@@ -10855,6 +10954,22 @@ async function submitReview() {
     if (btn) btn.disabled = false;
   }
 }
+
+// Submit a public reply to a review — only the company owner can call this
+// (backend enforces the same; the UI just hides the form for non-owners).
+async function submitReviewReply(companyId, reviewId) {
+  const ta = document.getElementById('rrt-' + reviewId);
+  const reply = (ta?.value || '').trim();
+  if (!reply) { showToast('Escreva uma resposta'); return; }
+  try {
+    await api.replyToReview(companyId, reviewId, reply);
+    showToast('✅ Resposta publicada');
+    loadReviews(companyId);
+  } catch (e) {
+    showToast(e.message || 'Não foi possível publicar a resposta');
+  }
+}
+window.submitReviewReply = submitReviewReply;
 
 // Patch openDetail to load real reviews
 const _openDetailForReviews = openDetail;
