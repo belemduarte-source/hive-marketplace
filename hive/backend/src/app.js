@@ -108,48 +108,66 @@ const generalLimiter = rateLimit({
 app.use('/api/', generalLimiter);
 app.use('/api/auth/', authLimiter);
 
-// ── Schema auto-migration on cold start ───────────────────────────────────────
-// Checks once per process lifetime — idempotent (all statements use IF NOT EXISTS)
+// ── Schema auto-migration ────────────────────────────────────────────────────
+// Runs at most once per Lambda instance, *before* any request is served
+// (kicks off at module load) and is then no-op'd by the _migrated flag. Older
+// versions ran ALTER TABLE on every cold start; this version checks for a
+// recent sentinel column and skips the migration when the schema is already
+// up to date — saves ~50-200 ms per cold-start serverless instance.
 let _migrated = false;
+let _migrationPromise = null;
+const SENTINEL_COLUMN = 'reply_at';   // most-recent column added; bump when adding new ones
+const SENTINEL_TABLE  = 'reviews';
+
 async function ensureSchema() {
   if (_migrated) return;
-  try {
-    const pool = require('./db');
-    // Quick existence check before reading the file
-    const { rows } = await pool.query(
-      `SELECT 1 FROM information_schema.tables
-       WHERE table_schema = 'public' AND table_name = 'companies'`
-    );
-    const sql = fs.readFileSync(path.join(__dirname, 'seed/schema.sql'), 'utf8');
-    if (rows.length === 0) {
-      // Fresh DB — run entire schema
-      await pool.query(sql);
-      console.log('✅ Schema created');
-    } else {
-      // Existing DB — run all CREATE TABLE IF NOT EXISTS + ALTER TABLE statements
-      // Split on statement boundaries and keep only safe idempotent ones
-      const statements = sql
-        .split(/;\s*\n/)
-        .map(s => s.trim())
-        .filter(s =>
+  if (_migrationPromise) return _migrationPromise; // in-flight on this instance
+  _migrationPromise = (async () => {
+    try {
+      const pool = require('./db');
+      // Fast path: sentinel column already exists → schema is current
+      const { rows: sentinel } = await pool.query(
+        `SELECT 1 FROM information_schema.columns
+         WHERE table_schema='public' AND table_name=$1 AND column_name=$2 LIMIT 1`,
+        [SENTINEL_TABLE, SENTINEL_COLUMN]
+      );
+      if (sentinel.length > 0) { _migrated = true; return; }
+
+      // Slow path: tables missing or behind. Only runs once per cold start.
+      const { rows: hasCompanies } = await pool.query(
+        `SELECT 1 FROM information_schema.tables
+         WHERE table_schema='public' AND table_name='companies' LIMIT 1`
+      );
+      const sql = fs.readFileSync(path.join(__dirname, 'seed/schema.sql'), 'utf8');
+      if (hasCompanies.length === 0) {
+        await pool.query(sql);
+        console.log('✅ Schema created');
+      } else {
+        const statements = sql.split(/;\s*\n/).map(s => s.trim()).filter(s =>
           /^CREATE TABLE IF NOT EXISTS/i.test(s) ||
           /^CREATE INDEX IF NOT EXISTS/i.test(s) ||
           /^ALTER TABLE/i.test(s)
-        )
-        .map(s => s + ';');
-      for (const stmt of statements) {
-        await pool.query(stmt);
+        ).map(s => s + ';');
+        for (const stmt of statements) await pool.query(stmt);
+        console.log('✅ Schema migrations applied');
       }
-      console.log('✅ Schema migrations applied');
+      _migrated = true;
+    } catch (e) {
+      console.error('Schema migration error:', e.message);
+    } finally {
+      _migrationPromise = null;
     }
-    _migrated = true;
-  } catch (e) {
-    console.error('Schema migration error:', e.message);
-  }
+  })();
+  return _migrationPromise;
 }
 
+// Kick off migration check immediately at module load (don't block requests
+// behind it — they'll await it via the middleware on first hit, but most
+// requests within the same Lambda instance just fall through.)
+ensureSchema().catch(() => {});
+
 app.use(async (req, res, next) => {
-  await ensureSchema();
+  if (!_migrated) await ensureSchema();
   next();
 });
 

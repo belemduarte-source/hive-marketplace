@@ -43,6 +43,12 @@ router.get('/', async (req, res, next) => {
        ORDER BY created_at DESC`,
       params
     );
+
+    // Edge-cache the public listing on Vercel: serve from CDN for 60 s,
+    // serve stale for up to 5 minutes while revalidating in the background.
+    // Browsers don't cache (max-age=0) so a logged-in user editing their
+    // own company doesn't see a stale version after a hard refresh.
+    res.set('Cache-Control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=300');
     res.json(rows);
   } catch (e) {
     next(e);

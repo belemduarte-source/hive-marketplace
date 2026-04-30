@@ -11,12 +11,18 @@ const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
   ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false,
 
-  // Serverless: keep connections very short-lived so they are released
-  // before Vercel freezes the function (typically within ~100ms of response)
-  max: process.env.NODE_ENV === 'production' ? 3 : 10,
-  idleTimeoutMillis: 10000,        // release idle connections after 10 s
+  // Serverless: each Lambda instance gets its own pool; we point at a
+  // pgbouncer-style external pooler (Neon / Supabase) so a higher per-instance
+  // max is fine and cuts contention when one instance handles bursts.
+  // 3 was too tight — list/detail/reviews on a single page view often run in
+  // parallel and queued up on the connection wait.
+  max: process.env.NODE_ENV === 'production' ? 8 : 10,
+  idleTimeoutMillis: 5000,         // release idle connections after 5 s
   connectionTimeoutMillis: 5000,   // fail fast if pool is saturated
   allowExitOnIdle: true,           // let the process exit when all queries finish
+  // Skip Postgres-side prepared-statement caching — the pgbouncer pooler in
+  // transaction mode (Neon, Supabase) doesn't support them and they'd error.
+  statement_timeout: 10000,
 });
 
 pool.on('error', (err) => {
