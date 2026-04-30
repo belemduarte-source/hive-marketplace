@@ -5532,6 +5532,9 @@ function t(key) {
 
 // ── TAB NAVIGATION ─────────────────────────────────────────────────────────────
 function showTab(name) {
+  // Notify listeners (e.g. casa animation, IO observers) so they can pause
+  // work when the tab they care about is hidden.
+  try { document.dispatchEvent(new CustomEvent('hive:tab-change', { detail: name })); } catch (_) {}
   const home   = document.getElementById('tab-home');
   const search = document.getElementById('tab-search');
   const about  = document.getElementById('tab-about');
@@ -5555,12 +5558,20 @@ function showTab(name) {
   // Show selected tab
   if (name === 'home') {
     home.style.display = 'flex';
+    // Hero (above the fold) must render synchronously so first paint is fast.
     populateHeroServiceDropdown();
     renderHeroCats();
-    renderFeaturedCompanies();
-    renderTestimonialBanner();
     updateLandingStats();
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+    // Defer below-the-fold work to the next idle slot. The featured carousel
+    // already shows skeleton placeholders so users see structure immediately;
+    // populating it 50–200 ms later is invisible while the user is still on
+    // the hero. Same for the testimonial banner.
+    const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 80));
+    idle(() => { try { renderFeaturedCompanies(); } catch (_) {} }, { timeout: 1000 });
+    idle(() => { try { renderTestimonialBanner();  } catch (_) {} }, { timeout: 1500 });
+    idle(() => {
+      if (typeof lucide !== 'undefined') { try { lucide.createIcons(); } catch (_) {} }
+    }, { timeout: 1500 });
   } else if (name === 'search') {
     search.style.display = 'flex';
 
@@ -6217,67 +6228,85 @@ function cycleLang() {
   setLanguage(next);
 }
 
+// ── i18n DOM cache ──────────────────────────────────────────────────────────
+// querySelectorAll over a 700 KB DOM is one of the slowest things we do, and
+// applyI18n() used to do it 4 times per call. Cache the four element lists
+// once and refresh when dynamic content (sector filters, register tabs, etc.)
+// is re-rendered. Refresh is O(elements-with-data-i18n*), still 4 selectors
+// total but all of them on the same painted DOM and amortised across many
+// language switches and tab changes.
+const _i18nCache = { text: null, html: null, ph: null, val: null, dirty: true };
+function _i18nMarkDirty()  { _i18nCache.dirty = true; }
+function _i18nRefreshLists() {
+  _i18nCache.text = document.querySelectorAll('[data-i18n]');
+  _i18nCache.html = document.querySelectorAll('[data-i18n-html]');
+  _i18nCache.ph   = document.querySelectorAll('[data-i18n-ph]');
+  _i18nCache.val  = document.querySelectorAll('[data-i18n-val]');
+  _i18nCache.dirty = false;
+}
+
 function applyI18n() {
   const tr = translations[currentLang];
+  if (_i18nCache.dirty) _i18nRefreshLists();
 
-  // 1. Static text via data-i18n
-  document.querySelectorAll('[data-i18n]').forEach(el => {
-    const key = el.getAttribute('data-i18n');
-    if (tr[key] !== undefined) el.textContent = tr[key];
-  });
+  for (const el of _i18nCache.text) {
+    const k = el.getAttribute('data-i18n');
+    if (tr[k] !== undefined) el.textContent = tr[k];
+  }
+  for (const el of _i18nCache.html) {
+    const k = el.getAttribute('data-i18n-html');
+    if (tr[k] !== undefined) el.innerHTML = tr[k];
+  }
+  for (const el of _i18nCache.ph) {
+    const k = el.getAttribute('data-i18n-ph');
+    if (tr[k] !== undefined) el.placeholder = tr[k];
+  }
+  for (const el of _i18nCache.val) {
+    const k = el.getAttribute('data-i18n-val');
+    if (tr[k] !== undefined) el.value = tr[k];
+  }
 
-  // 1b. HTML content via data-i18n-html (allows embedded HTML like <span> and <br>)
-  document.querySelectorAll('[data-i18n-html]').forEach(el => {
-    const key = el.getAttribute('data-i18n-html');
-    if (tr[key] !== undefined) el.innerHTML = tr[key];
-  });
-
-  // 2. Placeholders via data-i18n-ph
-  document.querySelectorAll('[data-i18n-ph]').forEach(el => {
-    const key = el.getAttribute('data-i18n-ph');
-    if (tr[key] !== undefined) el.placeholder = tr[key];
-  });
-
-  // 3. Values (inputs/textareas) via data-i18n-val
-  document.querySelectorAll('[data-i18n-val]').forEach(el => {
-    const key = el.getAttribute('data-i18n-val');
-    if (tr[key] !== undefined) el.value = tr[key];
-  });
-
-  // 4. Search button — text handled by data-i18n span inside the button
-
-  // 5. Unified search placeholder
+  // Unified search placeholder (one element, no querySelectorAll cost)
   const _uniEl = document.getElementById('searchUnified');
   if (_uniEl) _uniEl.placeholder = {
     pt: 'Cidade, empresa ou atividade...',
     en: 'City, company or activity...',
-    fr: 'Ville, entreprise ou activité...'
-  }[currentLang];
+    fr: 'Ville, entreprise ou activité...',
+    es: 'Ciudad, empresa o actividad...',
+    de: 'Stadt, Firma oder Tätigkeit...'
+  }[currentLang] || 'Cidade, empresa ou atividade...';
 
-  // 7. Chat input placeholder
-  const _chatIn = document.getElementById('chatInput'); if (_chatIn) _chatIn.placeholder = tr.chatPlaceholder;
+  // Chat input placeholder (lone element)
+  const _chatIn = document.getElementById('chatInput');
+  if (_chatIn) _chatIn.placeholder = tr.chatPlaceholder;
 
-  // 8. Re-render dynamic sectors & zones
-  renderRegisterSectorSelect();
+  // Re-render *only* the dynamic sections that hold their own translations.
+  // Mark the cache dirty so the freshly-rendered nodes get translated next
+  // time round.
+  renderRegisterSectorSelect(); _i18nMarkDirty();
   renderRegisterZoneSelect();
   renderEmailTypeSelect();
   renderSectorFilters();
   renderTagCloud();
-
-  // 9. Page title
   document.title = 'Hive – B2B Marketplace';
-
-  // 10. Refresh count label (number stays, text updates)
   applyFilters.now();
 
-  // 11. Landing page dynamic content — always re-render so language change applies even from other tabs
-  renderHeroCats();
-  renderFeaturedCompanies();
-  renderTestimonialBanner();
-  updateLandingStats();
+  // Skip home-page-only renders when the user isn't looking at the home tab.
+  // showTab('home') will re-fire them on next nav, so this saves real work.
+  if (isHomeTabActive()) {
+    renderHeroCats();
+    renderFeaturedCompanies();
+    renderTestimonialBanner();
+    updateLandingStats();
+  }
 
-  // 12. Re-initialize all Lucide icons after dynamic content
-  if (typeof lucide !== 'undefined') lucide.createIcons();
+  // Defer Lucide icon re-init to the next idle slot so it doesn't compete
+  // with paint of the just-translated DOM.
+  if (typeof lucide !== 'undefined') {
+    (window.requestIdleCallback || setTimeout)(() => {
+      try { lucide.createIcons(); } catch (_) {}
+    }, { timeout: 500 });
+  }
 }
 
 // ── SPECIALTY ILLUSTRATIONS ────────────────────────────────────────────────────
@@ -10075,6 +10104,11 @@ function closeMobileFilter() {
   }
 
   function startCasa() {
+    // Don't waste cycles when nobody can see this animation:
+    //  • the document is hidden (background tab) → defer
+    //  • the home tab isn't the active tab → defer
+    if (document.hidden) return;
+    if (typeof isHomeTabActive === 'function' && !isHomeTabActive()) return;
     stopCasa();
     let i = 0;
     casaTimer = setInterval(() => {
@@ -10093,7 +10127,18 @@ function closeMobileFilter() {
     }, 380);
   }
 
-  // Auto-start casa animation
+  // Re-evaluate visibility when the user switches tabs/windows or app tabs.
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stopCasa();
+    else startCasa();
+  });
+  // Re-start when the user navigates to the home tab; stop when they leave.
+  document.addEventListener('hive:tab-change', e => {
+    if (e.detail === 'home') startCasa();
+    else stopCasa();
+  });
+
+  // Auto-start casa animation if on the home tab
   startCasa();
   if (slides.length > 1) {
     let idx = 0;
