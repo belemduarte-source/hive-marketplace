@@ -121,3 +121,13 @@ ALTER TABLE companies ADD COLUMN IF NOT EXISTS portfolio_images TEXT[] DEFAULT '
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS alvara              TEXT;
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS certidao_permanente TEXT;
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS featured            BOOLEAN DEFAULT FALSE;
+
+-- ── User favourites ──────────────────────────────────────────────────────────
+-- Per-user saved companies. Composite PK so the same user can't double-add.
+CREATE TABLE IF NOT EXISTS user_favourites (
+  user_id     BIGINT NOT NULL REFERENCES users(id)     ON DELETE CASCADE,
+  company_id  BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+  created_at  TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (user_id, company_id)
+);
+CREATE INDEX IF NOT EXISTS idx_user_favourites_user ON user_favourites(user_id);

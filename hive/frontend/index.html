@@ -396,8 +396,12 @@
     @media(max-width:768px){.map-legend{display:none !important}}
     .map-empty-hint{position:absolute;bottom:16px;right:16px;transform:none;z-index:1000;pointer-events:none;display:flex;flex-direction:row;align-items:center;gap:10px;background:rgba(6,14,28,.85);border:1px solid rgba(249,115,22,.25);border-radius:12px;padding:12px 18px;backdrop-filter:blur(6px);text-align:left}
     .map-empty-hint svg{width:22px;height:22px;flex-shrink:0}
-    .map-empty-hint p{margin:0;color:#fff;font-size:13px;font-weight:600;line-height:1.4}
-    .map-empty-hint p span{font-size:11px;font-weight:400;color:#94a3b8}
+    .map-empty-hint #mapEmptyHintText{margin:0;color:#fff;font-size:13px;font-weight:600;line-height:1.4}
+    .map-empty-hint #mapEmptyHintText > span{font-size:11px;font-weight:400;color:#94a3b8}
+    /* Buttons inside the hint must receive clicks even though the container
+       itself is pointer-events:none (so the user can still pan the map under
+       the hint when there are no actions). */
+    .map-empty-hint button{pointer-events:auto;cursor:pointer}
     .map-empty-hint.hidden{display:none}
     .btn-my-location{position:absolute;top:12px;right:12px;z-index:1001;background:#fff;border:none;border-radius:50%;width:40px;height:40px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 10px rgba(0,0,0,.18);cursor:pointer;transition:all .2s;color:#1e3a8a}
     .btn-my-location:hover{background:#f97316;color:#fff;box-shadow:0 4px 16px rgba(249,115,22,.4);transform:scale(1.08)}
@@ -427,7 +431,16 @@
     .dp-info{flex:1}
     .dp-close{background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
     .dp-close:hover{background:rgba(255,255,255,.2);transform:rotate(90deg)}
+    .dp-fav-btn{font-size:18px;color:rgba(255,255,255,.6);transition:color .15s,transform .15s}
+    .dp-fav-btn:hover{color:#fbbf24;transform:scale(1.12)}
+    .dp-fav-btn.is-fav{color:#fbbf24}
     .dp-quote-bar{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(249,115,22,.04)}
+    /* Mobile: bigger thumb-friendly tap targets, slightly tighter gap */
+    @media (max-width:768px){
+      .dp-quote-bar{gap:6px;padding:10px 12px}
+      .btn-quote-secondary{width:48px !important;height:48px !important;border-radius:12px !important}
+      .btn-dp-contact{padding:13px 12px !important;font-size:14px !important;min-height:48px}
+    }
     .btn-request-quote{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;font-size:14px;font-weight:700;padding:12px 20px;border-radius:10px;border:none;cursor:pointer;transition:all .2s;font-family:inherit;box-shadow:0 4px 12px rgba(249,115,22,.3)}
     .btn-request-quote:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(249,115,22,.4)}
     .btn-quote-secondary{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s}
@@ -932,6 +945,10 @@
       .nav-link svg{width:20px !important;height:20px !important}
       .nav-link.active{box-shadow:inset 0 3px 0 #f97316 !important;background:rgba(249,115,22,.1) !important}
       .nav-link svg{width:20px !important;height:20px !important}
+      /* Bottom-nav language switcher — half the width of a normal tab */
+      .nav-link.nav-lang{display:flex !important;flex:0.5 !important;font-weight:800 !important;color:#cbd5e1 !important;letter-spacing:.04em}
+      .nav-link.nav-lang:active{background:rgba(249,115,22,.18) !important;color:#fff !important}
+      .nav-link.nav-lang #navLangCode{font-size:11px}
       /* Push tab content above the bottom bar */
       .tab-home{padding-bottom:64px !important}
       .tab-search{padding-bottom:64px !important}
@@ -946,16 +963,40 @@
       .logo-v{font-size:32px !important}
       /* Hide desktop auth buttons on mobile — accessible via hamburger drawer */
       .nav-right{display:none !important}
-      /* Mobile top-nav action cluster (auth + lang) */
-      .mobile-top-actions{display:flex !important;align-items:center;gap:6px;margin-left:auto;flex-shrink:0}
-      /* Compact login button in mobile top nav */
-      .mobile-top-login{display:flex;align-items:center;gap:5px;background:rgba(249,115,22,.18);border:1.5px solid rgba(249,115,22,.5);color:#fb923c;border-radius:8px;padding:7px 11px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;transition:background .15s}
-      .mobile-top-login:active{background:rgba(249,115,22,.35) !important}
+      /* Allow the nav to wrap onto a second row so the right-side actions
+         (login + lang + hamburger) are never pushed off-screen on narrow
+         phones. */
+      nav{flex-wrap:wrap !important}
+      /* The logo wrapper would otherwise refuse to shrink (flex-shrink:0
+         on .banner-content + on the inline-styled inner div), pushing the
+         mobile-top-actions and hamburger off-screen on small phones. */
+      .nav-banner,.banner-content{flex-shrink:1 !important;min-width:0 !important}
+      .nav-banner .banner-content > div{flex-shrink:1 !important;min-width:0 !important;margin-right:8px !important}
+      /* Mobile top-nav action cluster (auth + lang + register).
+         flex-shrink:1 + flex-wrap so the buttons themselves wrap if they
+         really don't fit. */
+      .mobile-top-actions{display:flex !important;align-items:center;gap:6px;margin-left:auto;flex-shrink:1;flex-wrap:wrap;justify-content:flex-end}
+      /* Compact login button — solid white-on-dark so it's clearly visible
+         next to the orange Register icon. */
+      .mobile-top-login{display:flex;align-items:center;gap:6px;background:#1e293b;border:1.5px solid rgba(255,255,255,.25);color:#fff;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:800;cursor:pointer;white-space:nowrap;font-family:inherit;transition:background .15s;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.25)}
+      .mobile-top-login:hover{background:#334155}
+      .mobile-top-login:active{background:rgba(249,115,22,.85) !important;border-color:rgba(249,115,22,.85) !important}
+      .mobile-top-login svg{width:14px;height:14px;color:#fb923c}
+      /* Register Company icon-button — kept compact at all mobile widths so
+         it never crowds out Login and the language flag. The full
+         "Registar a sua Empresa" CTA lives in the home-page hero. */
+      .mobile-top-register{display:flex;align-items:center;justify-content:center;width:36px;height:36px;background:linear-gradient(135deg,#ea580c,#f97316);border:none;color:#fff;border-radius:8px;padding:0;cursor:pointer;font-family:inherit;box-shadow:0 2px 10px rgba(234,88,12,.3);flex-shrink:0}
+      .mobile-top-register:active{transform:scale(.97)}
+      .mobile-top-register svg{width:18px;height:18px}
+      .mobile-top-register span{display:none}
       /* Compact avatar for mobile top nav when logged in */
-      .mobile-top-avatar{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:800;cursor:pointer;border:none;font-family:inherit}
-      /* Mobile language button — flag icon */
-      .mobile-lang-btn{display:flex !important;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);cursor:pointer;font-size:16px;line-height:1;flex-shrink:0;transition:background .15s}
-      .mobile-lang-btn:active{background:rgba(249,115,22,.25) !important}
+      .mobile-top-avatar{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;background:var(--primary);color:#fff;font-size:12px;font-weight:800;cursor:pointer;border:none;font-family:inherit;flex-shrink:0}
+      /* Mobile language switcher — flag + code so it's obvious it's a
+         language toggle (a bare flag isn't read as one by most users). */
+      .mobile-lang-btn{display:flex !important;align-items:center;justify-content:center;gap:5px;height:36px;padding:0 10px;border-radius:8px;background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.25);color:#fff;cursor:pointer;font-size:13px;font-weight:800;line-height:1;flex-shrink:0;font-family:inherit;transition:background .15s}
+      .mobile-lang-btn:active{background:rgba(249,115,22,.25) !important;border-color:rgba(249,115,22,.5) !important}
+      .mobile-lang-btn #mobileLangFlag{font-size:16px;line-height:1}
+      .mobile-lang-btn #mobileLangCode{letter-spacing:.04em}
       /* Filtros button inside ub-search row — mobile only */
       .ub-filtros-btn{display:flex !important;align-items:center;gap:5px;background:rgba(249,115,22,.18);border:1.5px solid rgba(249,115,22,.5);color:#fb923c;border-radius:8px;padding:7px 12px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;font-family:inherit;transition:background .15s}
       .ub-filtros-btn:active{background:rgba(249,115,22,.35) !important}
@@ -991,6 +1032,8 @@
       .nav-banner{flex-direction:row !important;align-items:center !important;gap:8px !important;padding:6px 8px !important}
       .nav-banner svg{width:44px !important;height:44px !important}
       .logo-tagline{display:none !important}
+      /* Drop the wordmark letters on tiny phones so the top bar fits */
+      .logo-l{display:none !important}
       .logo-l,.logo-e{font-size:26px !important}
       .logo-h{font-size:30px !important}
       .logo-i{font-size:22px !important}
@@ -1149,6 +1192,18 @@
     .hs-option-all{display:flex;align-items:center;gap:10px;padding:13px 16px;font-size:13.5px;font-weight:700;color:#1f2937;cursor:pointer;border-bottom:1px solid #f3f4f6;transition:background .1s}
     .hs-option-all:hover{background:#f9fafb}
 
+    /* ── Hero "Register your Company" CTA — under the search bar ── */
+    .lp-hero-register{display:flex;flex-direction:column;align-items:center;gap:10px;margin:22px 0 36px;position:relative;z-index:2;width:100%;max-width:560px}
+    .lp-hero-register-hint{font-size:13px;color:rgba(255,255,255,.65);text-align:center;letter-spacing:.2px}
+    .lp-hero-register-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(135deg,#ea580c 0%,#f97316 50%,#fb923c 100%);color:#fff;border:none;border-radius:14px;padding:13px 32px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.02em;box-shadow:0 6px 24px rgba(234,88,12,.45),inset 0 1px 0 rgba(255,255,255,.18);transition:transform .15s,box-shadow .15s}
+    .lp-hero-register-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(234,88,12,.6),inset 0 1px 0 rgba(255,255,255,.22)}
+    .lp-hero-register-btn:active{transform:translateY(0)}
+    .lp-hero-register-btn svg{flex-shrink:0}
+    .lp-hero-login{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;font-size:13px;color:rgba(255,255,255,.7);flex-wrap:wrap}
+    .lp-hero-login-link{display:inline-flex;align-items:center;gap:5px;background:transparent;border:1.5px solid rgba(255,255,255,.3);color:#fb923c;border-radius:10px;padding:7px 16px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;transition:background .15s,border-color .15s}
+    .lp-hero-login-link:hover{background:rgba(249,115,22,.12);border-color:rgba(249,115,22,.6);color:#fff}
+    .lp-hero-login-link:active{background:rgba(249,115,22,.25)}
+
     /* ── Hero quick-category strip — 2 rows × 4 grid ── */
     .lp-hero-cats-label{font-size:20px;color:#ffffff;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;position:relative;z-index:2}
     .lp-hero-cats{
@@ -1288,18 +1343,6 @@
     /* ── How It Works (dark) ── */
     .lp-steps-section{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%);padding:72px 32px}
     /* Trust section (pricing / verification / approval timeline) */
-    .lp-trust-section{background:var(--bg);padding:72px 32px}
-    .lp-trust-section .lp-section-head{max-width:760px;margin:0 auto 44px;text-align:center}
-    .lp-trust-section .lp-section-sub{font-size:14px;color:var(--text-secondary);max-width:560px;margin:14px auto 0;line-height:1.65}
-    .lp-trust-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;max-width:1100px;margin:0 auto}
-    .lp-trust-card{background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:32px 28px;text-align:left;transition:transform .2s,box-shadow .2s}
-    .lp-trust-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md)}
-    .lp-trust-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:900;margin-bottom:18px}
-    .lp-trust-title{font-size:17px;font-weight:800;color:var(--text);margin:0 0 10px}
-    .lp-trust-desc{font-size:13px;color:var(--text-secondary);line-height:1.7;margin:0}
-    .btn-trust-faq{background:none;border:0;color:var(--primary);font-weight:700;font-size:14px;cursor:pointer;font-family:inherit;padding:8px 16px;border-radius:8px;transition:background .15s}
-    .btn-trust-faq:hover{background:var(--orange-light)}
-    @media(max-width:760px){.lp-trust-grid{grid-template-columns:1fr;gap:16px}.lp-trust-section{padding:56px 16px}}
     .lp-steps-grid{max-width:900px;margin:0 auto;display:flex;align-items:flex-start;gap:0}
     .lp-step{flex:1;text-align:center;padding:0 24px}
     .lp-step-num{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 4px 18px rgba(249,115,22,.45)}
@@ -1371,6 +1414,10 @@
       .lp-search-wrap[data-mode="activity"] .lp-searchbar{border-radius:16px 0 16px 16px}
       .lp-sb-field{padding:16px 18px}
       .lp-sb-btn{width:100%;justify-content:center;min-height:54px;border-radius:0 0 16px 16px}
+      /* Register CTA — full width, chunkier on mobile */
+      .lp-hero-register{margin:18px 0 28px}
+      .lp-hero-register-btn{width:100%;padding:14px 20px;font-size:15px}
+      .lp-hero-register-hint{font-size:12px;padding:0 8px}
       /* Keep hero cats 4-col on mobile — same as desktop, just shorter */
       .lp-hero-cats{grid-template-columns:repeat(4,1fr) !important;gap:10px !important}
       .lp-hero-cat{height:110px !important}
@@ -1508,6 +1555,7 @@
     .mobile-filter-btn { display: none; }   /* shown only via media query */
     .mobile-lang-btn { display: none; }    /* shown only on mobile */
     .mobile-top-actions { display: none; } /* shown only on mobile */
+    .nav-link.nav-lang { display: none; }  /* shown only on mobile (bottom bar) */
     .ub-filtros-btn { display: none; }     /* shown only on mobile */
     .ub-sectors-label { display: none; }  /* shown only on mobile */
 
@@ -1673,8 +1721,8 @@
         border-radius: 10px !important;
         font-size: 12px !important;
       }
-      .map-empty-hint p { font-size: 12px !important; }
-      .map-empty-hint p span { font-size: 10px !important; }
+      .map-empty-hint #mapEmptyHintText { font-size: 12px !important; }
+      .map-empty-hint #mapEmptyHintText > span { font-size: 10px !important; }
       .map-empty-hint svg { width: 18px !important; height: 18px !important; }
 
       /* Compact search bar on mobile */
@@ -1771,8 +1819,8 @@
         padding: 8px 12px !important;
         gap: 8px !important;
       }
-      .map-empty-hint p { font-size: 11px !important; }
-      .map-empty-hint p span { font-size: 9px !important; }
+      .map-empty-hint #mapEmptyHintText { font-size: 11px !important; }
+      .map-empty-hint #mapEmptyHintText > span { font-size: 9px !important; }
 
       /* Compact search — tighter on phones */
       .lp-search-compact .lp-sb-field { padding: 10px 14px !important; }
@@ -1999,6 +2047,9 @@
         border-bottom: 1px solid var(--border);
         flex-shrink: 0;
       }
+      #mobileSearchPanel {
+        position: relative;
+      }
       #mspChipBar {
         display: flex;
         align-items: center;
@@ -2007,8 +2058,20 @@
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
         scrollbar-width: none;
+        scroll-snap-type: x proximity;
       }
+      #mspChipBar > * { scroll-snap-align: start; }
       #mspChipBar::-webkit-scrollbar { display: none; }
+      /* Visible right-edge gradient fade so users see there's more to scroll */
+      #mobileSearchPanel::after {
+        content: '';
+        position: absolute;
+        top: 0; right: 0; bottom: 0;
+        width: 36px;
+        background: linear-gradient(to right, transparent, var(--surface) 60%);
+        pointer-events: none;
+        z-index: 2;
+      }
       .msp-chip {
         display: inline-flex;
         align-items: center;
@@ -2414,7 +2477,7 @@
         <div style="display:flex;align-items:center;gap:14px">
 
         <!-- Icon Mark — honeycomb: 7 hex cells, breathing animation -->
-        <svg width="100" height="100" viewBox="0 0 64 64" style="flex-shrink:0;filter:drop-shadow(0 2px 32px rgba(234,88,12,.6))">
+        <svg id="logoHexSvg" width="100" height="100" viewBox="0 0 64 64" style="flex-shrink:0;filter:drop-shadow(0 2px 32px rgba(234,88,12,.6))">
           <defs>
             <linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#0e1f3a"/>
@@ -2524,9 +2587,18 @@
       <span data-i18n="navSearch">Pesquisa</span>
       <span id="filterBadge" style="display:none;position:absolute;top:4px;right:6px;background:#f97316;color:#fff;border-radius:10px;font-size:10px;font-weight:800;padding:1px 5px;line-height:1.5;min-width:16px;text-align:center"></span>
     </button>
+    <!-- Bottom-nav language switcher — mobile only, half-width of the tabs -->
+    <button class="nav-link nav-lang" id="navLangBtn" onclick="cycleLang()" aria-label="Idioma / Language">
+      <span id="navLangFlag" style="font-size:20px;line-height:1">🇵🇹</span>
+      <span id="navLangCode">PT</span>
+    </button>
   </div>
-  <!-- Mobile top-nav auth + lang — visible only on mobile -->
+  <!-- Mobile top-nav auth + register + lang — visible only on mobile -->
   <div class="mobile-top-actions">
+    <button class="mobile-top-register" onclick="openRegister()" aria-label="Registar Empresa">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span data-i18n="navRegister">Registar Empresa</span>
+    </button>
     <div id="mobileTopAuth">
       <!-- populated by updateNavAuth() -->
       <button class="mobile-top-login" onclick="openLogin()">
@@ -2534,8 +2606,9 @@
         <span data-i18n="navLogin">Entrar</span>
       </button>
     </div>
-    <button class="mobile-lang-btn" id="mobileLangBtn" onclick="cycleLang()" aria-label="Idioma">
+    <button class="mobile-lang-btn" id="mobileLangBtn" onclick="cycleLang()" aria-label="Idioma / Language">
       <span id="mobileLangFlag">🇵🇹</span>
+      <span id="mobileLangCode">PT</span>
     </button>
   </div>
 
@@ -2652,6 +2725,14 @@
     <button class="mobile-nav-link" onclick="openStatusModal();closeMobileNavPanel()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <span>Estado do Registo</span>
+    </button>
+    <button class="mobile-nav-link" onclick="openFaq();closeMobileNavPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      <span data-i18n="navFaq">FAQ</span>
+    </button>
+    <button class="mobile-nav-link" onclick="openLegal('privacy');closeMobileNavPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      <span data-i18n="navPrivacy">Privacidade</span>
     </button>
     <div class="mobile-nav-divider"></div>
     <button class="mobile-nav-link" onclick="setLanguage('pt');closeMobileNavPanel()">🇵🇹 <span>Português</span></button>
@@ -2842,6 +2923,22 @@
       </div><!-- /lp-searchbar -->
     </div><!-- /lp-search-wrap -->
 
+    <!-- ── REGISTER COMPANY CTA + LOGIN LINK — visible on both desktop and mobile ── -->
+    <div class="lp-hero-register">
+      <span class="lp-hero-register-hint" data-i18n="lpHeroRegisterHint">É uma empresa? Apareça no mapa em minutos.</span>
+      <button class="lp-hero-register-btn" onclick="openRegister()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span data-i18n="lpHeroRegisterCta">Registe a sua Empresa</span>
+      </button>
+      <div class="lp-hero-login">
+        <span data-i18n="lpHeroLoginHint">Já tem conta?</span>
+        <button class="lp-hero-login-link" onclick="openLogin()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+          <span data-i18n="lpHeroLoginLink">Entrar</span>
+        </button>
+      </div>
+    </div>
+
     <!-- ── HERO CATEGORY STRIP ── -->
     <p class="lp-hero-cats-label" data-i18n="lpHeroCatsLabel">O que procura?</p>
     <div class="lp-hero-cats" id="lpHeroCats">
@@ -2981,37 +3078,6 @@
         <h3 class="lp-step-title" data-i18n="lpStep3Title">Contacte</h3>
         <p class="lp-step-desc" data-i18n="lpStep3Desc">Peça orçamentos diretamente por email ou chat. Sem intermediários, sem demoras.</p>
       </div>
-    </div>
-  </div>
-
-  <!-- ══════════════════════════════════════════════════════════════════════════
-       TRUST: pricing + verification + approval timeline
-       ══════════════════════════════════════════════════════════════════════════ -->
-  <div class="lp-trust-section">
-    <div class="lp-section-head">
-      <span class="lp-section-overline" data-i18n="trustOverline">O que esperar</span>
-      <h2 class="lp-section-title" data-i18n="trustTitle">Transparência em três promessas</h2>
-      <p class="lp-section-sub" data-i18n="trustSub">Antes de criar conta, saiba exatamente o que a Hive faz por si — sem letra miudinha.</p>
-    </div>
-    <div class="lp-trust-grid">
-      <div class="lp-trust-card">
-        <div class="lp-trust-icon" style="background:#dcfce7;color:#166534">€0</div>
-        <h3 class="lp-trust-title" data-i18n="trust1Title">Grátis para todos</h3>
-        <p class="lp-trust-desc" data-i18n-html="trust1Desc">Pesquisar, comparar e pedir orçamentos é totalmente gratuito para clientes. Empresas registam-se sem custos. Planos premium para destaque chegam em breve — opcionais.</p>
-      </div>
-      <div class="lp-trust-card">
-        <div class="lp-trust-icon" style="background:#dbeafe;color:#1e40af">✓</div>
-        <h3 class="lp-trust-title" data-i18n="trust2Title">Verificação real</h3>
-        <p class="lp-trust-desc" data-i18n-html="trust2Desc">Toda empresa submete o código da <strong>Certidão Permanente</strong> do Registo Comercial. A nossa equipa confirma o código, o NIPC e a atividade declarada antes de publicar o perfil.</p>
-      </div>
-      <div class="lp-trust-card">
-        <div class="lp-trust-icon" style="background:#fef3c7;color:#a16207">24h</div>
-        <h3 class="lp-trust-title" data-i18n="trust3Title">Aprovação rápida</h3>
-        <p class="lp-trust-desc" data-i18n-html="trust3Desc">A maioria dos registos é aprovada em <strong>até 24 horas úteis</strong>. Receberá um email assim que estiver visível, e pode acompanhar o estado a qualquer momento no menu da conta.</p>
-      </div>
-    </div>
-    <div style="text-align:center;margin-top:32px">
-      <button onclick="openFaq()" class="btn-trust-faq" data-i18n="trustFaqLink">Ver todas as perguntas frequentes →</button>
     </div>
   </div>
 
@@ -3321,7 +3387,7 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 6h18M3 12h18M3 18h18"/><circle cx="19" cy="6" r="3" fill="#f97316" stroke="none"/>
       </svg>
-      <p id="mapEmptyHintText">Selecione uma área de atividade<br><span>para ver empresas no mapa</span></p>
+      <div id="mapEmptyHintText" style="margin:0;color:#fff;font-size:13px;font-weight:600;line-height:1.4">Selecione uma área de atividade<br><span style="font-size:11px;font-weight:400;color:#94a3b8">para ver empresas no mapa</span></div>
     </div>
 
     <div class="map-info-box">
@@ -3373,6 +3439,7 @@
       <div class="dp-name" id="dpName"></div>
       <div class="dp-sub" id="dpSub"></div>
     </div>
+    <button class="dp-close dp-fav-btn" id="dpFavBtn" onclick="dpToggleFav()" title="Guardar nos favoritos" aria-label="Guardar nos favoritos">☆</button>
     <button class="dp-close" id="dpEditBtn" style="display:none" onclick="openEditCompany()" title="Editar" aria-label="Editar empresa">✎</button>
     <button class="dp-close" onclick="closeDetail()" aria-label="Fechar detalhes">✕</button>
   </div>
@@ -3512,7 +3579,7 @@
           </div>
           <div class="caps-hint" id="loginCapsHint" hidden>⚠️ Caps Lock está ativado</div>
         </div>
-        <div style="text-align:right;margin-bottom:12px"><a href="#" onclick="openForgotPassword();return false" style="font-size:11px;color:var(--primary);text-decoration:none" data-i18n="forgotPwd">Esqueceu a palavra-passe?</a></div>
+        <div style="text-align:right;margin-bottom:14px"><a href="#" onclick="openForgotPassword();return false" style="display:inline-block;font-size:13px;font-weight:700;color:var(--primary);text-decoration:underline;text-underline-offset:3px;padding:6px 2px" data-i18n="forgotPwd">Esqueceu a palavra-passe?</a></div>
         <button type="submit" class="btn-submit" id="loginSubmitBtn" style="width:100%;padding:11px;font-size:14px">Entrar</button>
       </form>
       <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">Ainda não tem conta? <button type="button" onclick="switchLoginTab('register')" style="background:none;border:0;color:var(--primary);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0">Criar Conta</button></div>
@@ -4041,6 +4108,7 @@
     <span class="verify-banner-icon">📧</span>
     <span class="verify-banner-text" data-i18n="verifyBannerText">Confirme o seu email para desbloquear todas as funcionalidades.</span>
     <button type="button" id="verifyResendBtn" class="verify-banner-btn" onclick="resendVerification()" data-i18n="verifyResend">Reenviar email</button>
+    <button type="button" id="verifyConfirmedBtn" class="verify-banner-btn" onclick="checkVerified()" data-i18n="verifyConfirmed" style="background:rgba(34,197,94,.18);color:#86efac;border-color:rgba(34,197,94,.4)">Já confirmei</button>
     <button type="button" class="verify-banner-close" onclick="dismissVerifyBanner()" aria-label="Fechar">×</button>
   </div>
 </div>
@@ -4310,6 +4378,9 @@ const translations = {
     helpMissionTitle:'🎯 Missão', helpMissionDesc:'Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.',
     helpVisionTitle:'👁️ Visão', helpVisionDesc:'Ser a plataforma de referência em Portugal para conectar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.',
     navLogin:'Entrar', navHelp:'Ajuda',
+    navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidade',
+    lpHeroRegisterCta:'Registe a sua Empresa', lpHeroRegisterHint:'É uma empresa? Apareça no mapa em minutos.',
+    lpHeroLoginHint:'Já tem conta?', lpHeroLoginLink:'Entrar',
     lpHeroTitle:'Encontre os melhores<br><span class="hero-accent">profissionais</span> de construção',
     lpHeroSub:'Pesquise por localização e tipo de serviço. Compare avaliações e peça orçamentos — tudo numa só plataforma.',
     lpTabLocation:'Por Localização', lpTabActivity:'Por Atividade',
@@ -4590,6 +4661,9 @@ const translations = {
     helpMissionTitle:'🎯 Mission', helpMissionDesc:'To simplify and democratise access to quality professional services, creating a transparent ecosystem where companies and professionals can grow together, without unnecessary intermediaries.',
     helpVisionTitle:'👁️ Vision', helpVisionDesc:'To be the reference platform in Portugal for connecting companies and professionals, promoting economic growth and creating opportunities for all.',
     navLogin:'Login', navHelp:'Help',
+    navFavourites:'Favourites', navFaq:'FAQ', navPrivacy:'Privacy',
+    lpHeroRegisterCta:'Register your Company', lpHeroRegisterHint:'Are you a company? Get on the map in minutes.',
+    lpHeroLoginHint:'Already have an account?', lpHeroLoginLink:'Sign in',
     lpHeroTitle:'Find the best<br><span class="hero-accent">construction</span> professionals',
     lpHeroSub:'Search by location and service type. Compare reviews and request quotes — all on one platform.',
     lpTabLocation:'By Location', lpTabActivity:'By Activity',
@@ -4873,6 +4947,9 @@ const translations = {
     helpMissionTitle:'🎯 Mission', helpMissionDesc:"Simplifier et démocratiser l'accès à des services professionnels de qualité, en créant un écosystème transparent où entreprises et professionnels peuvent grandir ensemble, sans intermédiaires inutiles.",
     helpVisionTitle:'👁️ Vision', helpVisionDesc:'Être la plateforme de référence au Portugal pour connecter entreprises et professionnels, en favorisant la croissance économique et en créant des opportunités pour tous.',
     navLogin:'Connexion', navHelp:'Aide',
+    navFavourites:'Favoris', navFaq:'FAQ', navPrivacy:'Confidentialité',
+    lpHeroRegisterCta:'Inscrivez votre Entreprise', lpHeroRegisterHint:"Vous êtes une entreprise ? Apparaissez sur la carte en quelques minutes.",
+    lpHeroLoginHint:'Vous avez déjà un compte ?', lpHeroLoginLink:'Connexion',
     lpHeroTitle:'Trouvez les meilleurs<br><span class="hero-accent">professionnels</span> du bâtiment',
     lpHeroSub:'Recherchez par lieu et type de service. Comparez les avis et demandez des devis — tout sur une seule plateforme.',
     lpTabLocation:'Par Lieu', lpTabActivity:'Par Activité',
@@ -5152,6 +5229,9 @@ const translations = {
     helpMissionTitle:'🎯 Misión', helpMissionDesc:'Simplificar y democratizar el acceso a servicios profesionales de calidad, creando un ecosistema transparente donde empresas y profesionales puedan crecer juntos.',
     helpVisionTitle:'👁️ Visión', helpVisionDesc:'Ser la plataforma de referencia en Portugal para conectar empresas y profesionales, fomentando el crecimiento económico y creando oportunidades para todos.',
     navLogin:'Entrar', navHelp:'Ayuda',
+    navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidad',
+    lpHeroRegisterCta:'Registre su Empresa', lpHeroRegisterHint:'¿Es una empresa? Aparezca en el mapa en minutos.',
+    lpHeroLoginHint:'¿Ya tiene cuenta?', lpHeroLoginLink:'Entrar',
     lpHeroTitle:'Encuentre los mejores<br><span class="hero-accent">profesionales</span> de la construcción',
     lpHeroSub:'Busque por ubicación y tipo de servicio. Compare valoraciones y solicite presupuestos — todo en una sola plataforma.',
     lpTabLocation:'Por Ubicación', lpTabActivity:'Por Actividad',
@@ -5422,6 +5502,9 @@ const translations = {
     helpMissionTitle:'🎯 Mission', helpMissionDesc:'Den Zugang zu hochwertigen Fachleistungen vereinfachen und demokratisieren – ein transparentes Ökosystem schaffen, in dem Unternehmen und Fachleute gemeinsam wachsen können, ohne unnötige Zwischenhändler.',
     helpVisionTitle:'👁️ Vision', helpVisionDesc:'Die führende Plattform in Portugal zur Vernetzung von Unternehmen und Fachleuten werden, Wirtschaftswachstum fördern und Chancen für alle schaffen.',
     navLogin:'Anmelden', navHelp:'Hilfe',
+    navFavourites:'Favoriten', navFaq:'FAQ', navPrivacy:'Datenschutz',
+    lpHeroRegisterCta:'Unternehmen registrieren', lpHeroRegisterHint:'Sind Sie ein Unternehmen? In Minuten auf der Karte erscheinen.',
+    lpHeroLoginHint:'Schon ein Konto?', lpHeroLoginLink:'Anmelden',
     lpHeroTitle:'Die besten<br><span class="hero-accent">Baufachleute</span> finden',
     lpHeroSub:'Nach Standort und Leistungsart suchen. Bewertungen vergleichen und Angebote anfragen – alles auf einer Plattform.',
     lpTabLocation:'Nach Standort', lpTabActivity:'Nach Tätigkeit',
@@ -5530,6 +5613,25 @@ function t(key) {
   return translations[currentLang][key] || translations.pt[key] || key;
 }
 
+// Locale-aware name collator — built once. Intl.Collator.compare is a
+// pre-compiled comparator and is meaningfully faster than calling
+// String.prototype.localeCompare per pair during a sort.
+const _nameCollator = new Intl.Collator('pt', { sensitivity: 'base', numeric: true });
+
+// ── LUCIDE ICON REFRESH (debounced) ───────────────────────────────────────────
+// lucide.createIcons() scans the entire DOM for [data-lucide] every call.
+// Coalesce multiple consecutive callers into a single rAF/idle scan.
+let _lucidePending = false;
+function refreshLucide() {
+  if (_lucidePending || typeof lucide === 'undefined') return;
+  _lucidePending = true;
+  const run = () => {
+    _lucidePending = false;
+    try { lucide.createIcons(); } catch (_) {}
+  };
+  (window.requestIdleCallback || ((cb) => requestAnimationFrame(cb)))(run, { timeout: 500 });
+}
+
 // ── TAB NAVIGATION ─────────────────────────────────────────────────────────────
 function showTab(name) {
   // Notify listeners (e.g. casa animation, IO observers) so they can pause
@@ -5569,9 +5671,7 @@ function showTab(name) {
     const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 80));
     idle(() => { try { renderFeaturedCompanies(); } catch (_) {} }, { timeout: 1000 });
     idle(() => { try { renderTestimonialBanner();  } catch (_) {} }, { timeout: 1500 });
-    idle(() => {
-      if (typeof lucide !== 'undefined') { try { lucide.createIcons(); } catch (_) {} }
-    }, { timeout: 1500 });
+    idle(() => { refreshLucide(); }, { timeout: 1500 });
   } else if (name === 'search') {
     search.style.display = 'flex';
 
@@ -5613,7 +5713,7 @@ function showTab(name) {
     });
   } else if (name === 'about') {
     if (about) about.style.display = 'flex';
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+    refreshLucide();
   }
 
   document.querySelectorAll('.nav-link[data-tab]').forEach(el => {
@@ -6207,6 +6307,12 @@ function setLanguage(lang) {
   document.getElementById('langCode').textContent = codes[lang];
   const mobileFlag = document.getElementById('mobileLangFlag');
   if (mobileFlag) mobileFlag.textContent = flags[lang];
+  const mobileCode = document.getElementById('mobileLangCode');
+  if (mobileCode) mobileCode.textContent = codes[lang];
+  const navLangFlag = document.getElementById('navLangFlag');
+  if (navLangFlag) navLangFlag.textContent = flags[lang];
+  const navLangCode = document.getElementById('navLangCode');
+  if (navLangCode) navLangCode.textContent = codes[lang];
 
   // Highlight active option
   document.querySelectorAll('.lang-opt').forEach(opt => {
@@ -6286,7 +6392,7 @@ function applyI18n() {
   renderRegisterSectorSelect(); _i18nMarkDirty();
   renderRegisterZoneSelect();
   renderEmailTypeSelect();
-  renderSectorFilters();
+  refreshSectorFilterLabels();
   renderTagCloud();
   document.title = 'Hive – B2B Marketplace';
   applyFilters.now();
@@ -6302,11 +6408,7 @@ function applyI18n() {
 
   // Defer Lucide icon re-init to the next idle slot so it doesn't compete
   // with paint of the just-translated DOM.
-  if (typeof lucide !== 'undefined') {
-    (window.requestIdleCallback || setTimeout)(() => {
-      try { lucide.createIcons(); } catch (_) {}
-    }, { timeout: 500 });
-  }
+  refreshLucide();
 }
 
 // ── SPECIALTY ILLUSTRATIONS ────────────────────────────────────────────────────
@@ -6511,8 +6613,13 @@ function computeNextCompanyId(list, current) {
 }
 
 // ── FAVOURITES (saved companies) ───────────────────────────────────────────
-// Persisted in localStorage so they survive across sessions. Lightweight v1:
-// just a Set of company ids. UI is the star button on each card.
+// Two-tier persistence:
+//   • Logged-in users: stored in user_favourites table on the server, fetched
+//     on session start, every toggle calls the API. Same set is reachable
+//     from any device.
+//   • Logged-out users: localStorage only (anonymous). When the user later
+//     logs in we lift the localStorage set to the server with bulkAdd, so the
+//     companies they saved while browsing logged-out aren't lost.
 const _FAV_KEY = 'hive_favourite_ids';
 let _favIds = new Set();
 try {
@@ -6520,13 +6627,50 @@ try {
   if (raw) JSON.parse(raw).forEach(id => _favIds.add(Number(id)));
 } catch (_) {}
 
+function _isLoggedIn() {
+  try { return !!JSON.parse(sessionStorage.getItem('hive_user') || 'null'); }
+  catch (_) { return false; }
+}
 function _saveFavs() {
   try { localStorage.setItem(_FAV_KEY, JSON.stringify([..._favIds])); } catch (_) {}
 }
 
+// Pull the user's server-side favourites and reconcile with anything saved
+// locally. Called once after login (and on page load if a session is already
+// active). Safe to call repeatedly.
+async function syncFavouritesFromServer() {
+  if (!_isLoggedIn()) return;
+  try {
+    // If there are local-only favourites, push them up first so we don't
+    // lose them after the GET overwrites _favIds.
+    const local = [..._favIds];
+    if (local.length > 0) {
+      try { await api.bulkAddFavourites(local); } catch (_) {}
+    }
+    const remote = await api.getFavourites();
+    _favIds = new Set((remote || []).map(Number));
+    _saveFavs();
+    // Refresh any visible UI
+    document.querySelectorAll('.slc-fav').forEach(btn => {
+      const card = btn.closest('.search-list-card');
+      const id = card && Number(card.dataset.companyId);
+      if (!id) return;
+      const fav = _favIds.has(id);
+      btn.classList.toggle('is-fav', fav);
+      btn.textContent = fav ? '★' : '☆';
+    });
+    _updateFavBadge();
+  } catch (e) {
+    // 401 = session expired; silently fall back to local state
+    if (e && e.status !== 401) console.warn('favourites sync failed:', e.message);
+  }
+}
+window.syncFavouritesFromServer = syncFavouritesFromServer;
+
 function toggleFavourite(id) {
   id = Number(id);
-  if (_favIds.has(id)) {
+  const wasFav = _favIds.has(id);
+  if (wasFav) {
     _favIds.delete(id);
     showToast('Removida dos favoritos');
   } else {
@@ -6534,6 +6678,17 @@ function toggleFavourite(id) {
     showToast('★ Guardada nos favoritos');
   }
   _saveFavs();
+  // Fire the server call in the background when logged in. Failure rolls
+  // back the local change so the UI reflects reality.
+  if (_isLoggedIn()) {
+    const call = wasFav ? api.removeFavourite(id) : api.addFavourite(id);
+    call.catch(e => {
+      if (wasFav) _favIds.add(id); else _favIds.delete(id);
+      _saveFavs();
+      _updateFavBadge();
+      showToast(e.message || 'Erro ao guardar favorito');
+    });
+  }
   // Sync any visible cards with the new state
   document.querySelectorAll('.search-list-card').forEach(card => {
     if (Number(card.dataset.companyId) !== id) return;
@@ -6543,6 +6698,10 @@ function toggleFavourite(id) {
     btn.classList.toggle('is-fav', fav);
     btn.textContent = fav ? '★' : '☆';
   });
+  // Sync the detail panel star if the same company is currently open
+  if (typeof selectedId !== 'undefined' && Number(selectedId) === id) {
+    try { _refreshDpFavBtn(); } catch (_) {}
+  }
   _updateFavBadge();
 }
 function _updateFavBadge() {
@@ -7676,12 +7835,12 @@ function renderSectorFilters() {
 
     Object.entries(group.categories).forEach(([catKey, cat]) => {
       const catLabel = sg[catKey] || cat.label;
-      dropdownHTML += `<div class="cat-dd-head">${catLabel}</div>`;
+      dropdownHTML += `<div class="cat-dd-head" data-cat="${catKey}">${catLabel}</div>`;
       Object.entries(cat.subcategories).forEach(([subKey, subLabel]) => {
         const isActive = activeSectors.has(subKey) ? ' active' : '';
         const tLabel = sc[subKey] || subLabel;
         const cnt = subCounts[subKey] || 0;
-        dropdownHTML += `<div class="cat-dd-item${isActive}" data-sector="${subKey}">${tLabel}${cnt > 0 ? ` <span style="opacity:.5;font-size:9px">(${cnt})</span>` : ''}</div>`;
+        dropdownHTML += `<div class="cat-dd-item${isActive}" data-sector="${subKey}"><span class="cat-dd-label">${tLabel}</span>${cnt > 0 ? ` <span style="opacity:.5;font-size:9px">(${cnt})</span>` : ''}</div>`;
       });
     });
     dropdownHTML += `</div>`;
@@ -7786,12 +7945,63 @@ function renderSectorFilters() {
     });
   }
 
-  if (typeof lucide !== 'undefined') lucide.createIcons();
+  refreshLucide();
 }
 
+// Lightweight: only swap translated text in the already-rendered sector
+// filters. Avoids the full DOM rebuild + listener re-attach that
+// renderSectorFilters() does on every language change.
+function refreshSectorFilterLabels() {
+  const container = document.getElementById('sectorFilters');
+  if (!container || !container.children.length) {
+    renderSectorFilters();
+    return;
+  }
+  const tr = translations[currentLang] || translations.pt;
+  const sg = tr.sectorGroups || {};
+  const sc = tr.sectors || {};
+  container.querySelectorAll('.cat-item[data-group]').forEach(item => {
+    const key = item.dataset.group;
+    const group = SECTOR_HIERARCHY[key];
+    if (!group) return;
+    const label = sg[key] || group.label;
+    const labelEl = item.querySelector('.cat-label');
+    if (labelEl) labelEl.textContent = label;
+    const all = item.querySelector('.cat-dd-all');
+    if (all) all.textContent = '☰ ' + label;
+  });
+  container.querySelectorAll('.cat-dd-head[data-cat]').forEach(h => {
+    const cat = h.dataset.cat;
+    h.textContent = sg[cat] || h.textContent;
+  });
+  container.querySelectorAll('.cat-dd-item[data-sector]').forEach(it => {
+    const labelEl = it.querySelector('.cat-dd-label');
+    if (!labelEl) return;
+    const sub = it.dataset.sector;
+    if (sc[sub]) labelEl.textContent = sc[sub];
+  });
+}
+
+// Memoized: only rebuild when the underlying tag set changes, otherwise just
+// flip the .active class on existing pills.
+let _tagCloudKey = null;
+let _tagCloudActive = null;
 function renderTagCloud() {
   const container = document.getElementById('tagsCloud');
-  const allTags   = [...new Set(companies.flatMap(c => c.tags))].sort();
+  if (!container) return;
+  const allTags = [...new Set(companies.flatMap(c => c.tags))].sort();
+  const key = allTags.join('|');
+  if (key === _tagCloudKey) {
+    if (activeTag !== _tagCloudActive) {
+      container.querySelectorAll('.tag-pill').forEach(p => {
+        p.classList.toggle('active', p.textContent === activeTag);
+      });
+      _tagCloudActive = activeTag;
+    }
+    return;
+  }
+  _tagCloudKey = key;
+  _tagCloudActive = activeTag;
   container.innerHTML = '';
   allTags.forEach(tag => {
     const span = document.createElement('span');
@@ -7890,8 +8100,7 @@ function mspOpenSheet(type) {
           const checked = activeSectors.has(subKey) ? 'checked' : '';
           html += `<label class="msp-sub-item">
             <input type="checkbox" ${checked}
-              onchange="if(this.checked)activeSectors.add('${subKey}');else activeSectors.delete('${subKey}');
-                        updateSectorActiveStates();applyFilters();mspUpdateChips();mspRefreshAreaSheet();">
+              onchange="mspOnSubToggle('${subKey}','${groupKey}')">
             ${sc[subKey]||subLabel}
           </label>`;
         });
@@ -7983,6 +8192,39 @@ function mspOpenSheet(type) {
   sheet.classList.add('open');
 }
 
+// Per-group active state cache so a checkbox toggle that doesn't transition
+// the group's state can skip the full rebuild.
+function _mspGroupActiveSet() {
+  const s = new Set();
+  Object.entries(SECTOR_HIERARCHY).forEach(([groupKey, group]) => {
+    Object.values(group.categories).forEach(cat => {
+      for (const k of Object.keys(cat.subcategories)) {
+        if (activeSectors.has(k)) { s.add(groupKey); return; }
+      }
+    });
+  });
+  return s;
+}
+
+// Called from inline checkbox onchange — does only the work that's needed.
+function mspOnSubToggle(subKey, groupKey) {
+  const before = _mspGroupActiveSet();
+  if (activeSectors.has(subKey)) activeSectors.delete(subKey); else activeSectors.add(subKey);
+  const after = _mspGroupActiveSet();
+  updateSectorActiveStates();
+  applyFilters();
+  mspUpdateChips();
+  // Fast path: if this group's active state didn't transition (still has /
+  // still empty), the only thing that changed is one checkbox — already in
+  // the right state from the user's click. No rebuild needed.
+  if (before.has(groupKey) === after.has(groupKey)) {
+    const btn = document.querySelector(`#mspSheetBody .msp-sheet-btn[data-group="${groupKey}"]`);
+    if (btn) btn.classList.toggle('active', after.has(groupKey));
+    return;
+  }
+  mspRefreshAreaSheet();
+}
+
 function mspRefreshAreaSheet() {
   // Re-render just the area sheet body in place (keeps sheet open)
   if (_mspActiveSheet !== 'area') return;
@@ -8015,8 +8257,7 @@ function mspRefreshAreaSheet() {
         const checked = activeSectors.has(subKey) ? 'checked' : '';
         html += `<label class="msp-sub-item">
           <input type="checkbox" ${checked}
-            onchange="if(this.checked)activeSectors.add('${subKey}');else activeSectors.delete('${subKey}');
-                      updateSectorActiveStates();applyFilters();mspUpdateChips();mspRefreshAreaSheet();">
+            onchange="mspOnSubToggle('${subKey}','${groupKey}')">
           ${sc[subKey]||subLabel}
         </label>`;
       });
@@ -8383,21 +8624,31 @@ function getFiltered() {
     res.push(c);
   }
 
-  if (sort === 'rating') res.sort((a,b) => b.rating - a.rating);
-  else if (sort === 'reviews') res.sort((a,b) => (b.reviews||0) - (a.reviews||0));
-  else if (sort === 'name') res.sort((a,b) => a.name.localeCompare(b.name));
-  else res.sort((a,b) => b.rating - a.rating);
+  // Sort only when something will actually consume the order. The marker
+  // cluster groups spatially, so it ignores order entirely. The list view
+  // is the only consumer that relies on it — skip the sort when it's hidden.
+  const listEl = document.getElementById('searchListView');
+  const listVisible = listEl && listEl.style.display !== 'none';
+  if (listVisible) {
+    if (sort === 'rating') res.sort((a,b) => b.rating - a.rating);
+    else if (sort === 'reviews') res.sort((a,b) => (b.reviews||0) - (a.reviews||0));
+    else if (sort === 'name') {
+      const cmp = _nameCollator.compare;
+      res.sort((a,b) => cmp(a.name, b.name));
+    }
+    else res.sort((a,b) => b.rating - a.rating);
+  }
 
   return res;
 }
 
 // ── DEBOUNCED applyFilters ─────────────────────────────────────────────────────
 // All filter UI calls go through here — rapid changes (slider, typing) are
-// coalesced into a single run 80 ms after the last event, eliminating jank.
+// coalesced into a single run 150 ms after the last event, eliminating jank.
 let _afTimer = null;
 function applyFilters() {
   clearTimeout(_afTimer);
-  _afTimer = setTimeout(_runApplyFilters, 80);
+  _afTimer = setTimeout(_runApplyFilters, 150);
 }
 // Call .now() when an immediate run is needed (init, clear-all, language change)
 applyFilters.now = function() { clearTimeout(_afTimer); _runApplyFilters(); };
@@ -8433,19 +8684,23 @@ function _runApplyFilters() {
       hintText.innerHTML = html;
     }
   }
-  // Filter badge count
+  // Filter badge count — single-pass DOM read, then arithmetic on locals
   const clearBtn = document.getElementById('ubClearBtn');
   const filterBadge = document.getElementById('filterBadge');
   {
-    let filterCount = 0;
-    if (activeSectors.size > 0) filterCount += activeSectors.size;
+    const fTop = document.getElementById('filterTopRated');
+    const fVer = document.getElementById('filterVerified');
+    const fNew = document.getElementById('filterNew');
+    const rAny = document.getElementById('ratingAny');
+    const rSld = document.getElementById('radiusSlider');
+    let filterCount = activeSectors.size;
     if (activeTag) filterCount++;
-    if (document.getElementById('filterTopRated')?.checked) filterCount++;
-    if (document.getElementById('filterVerified')?.checked) filterCount++;
-    if (document.getElementById('filterNew')?.checked) filterCount++;
-    if (!document.getElementById('ratingAny')?.checked) filterCount++;
+    if (fTop && fTop.checked) filterCount++;
+    if (fVer && fVer.checked) filterCount++;
+    if (fNew && fNew.checked) filterCount++;
+    if (rAny && !rAny.checked) filterCount++;
     if (_keywordFilter !== '') filterCount++;
-    if (parseInt(document.getElementById('radiusSlider')?.value || 100) < 100) filterCount++;
+    if (rSld && parseInt(rSld.value, 10) < 100) filterCount++;
     const hasFilters = filterCount > 0;
     if (clearBtn) clearBtn.dataset.active = hasFilters ? 'true' : 'false';
     if (filterBadge) {
@@ -8537,7 +8792,26 @@ function renderSearchList(filtered) {
   _listRenderedCount = 0;
 
   if (data.length === 0) {
-    listEl.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)"><p style="font-size:18px;margin-bottom:8px">' + t('searchListEmpty') + '</p><p style="font-size:13px">' + t('searchListEmptySub') + '</p></div>';
+    // Mirror the expand-radius CTAs from the map empty hint, so the list
+    // view also gives the user a way out when their filters are too tight.
+    const slider = document.getElementById('radiusSlider');
+    const sliderVal = parseInt(slider?.value || 100, 10);
+    const km = (typeof sliderToKm === 'function') ? sliderToKm(sliderVal) : sliderVal;
+    const showActions = sliderVal < 100;
+    let actionsHtml = '';
+    if (showActions) {
+      const wantKm = Math.min(600, km * 2);
+      const wantSlider = wantKm >= 600 ? 100 : Math.round(100 * Math.log(wantKm / 5) / Math.log(120));
+      actionsHtml = `<div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+        <button onclick="_expandRadiusTo(${wantSlider})" class="lp-see-all-cta" style="padding:10px 18px;font-size:13px">📍 Aumentar para ${wantKm} km</button>
+        <button onclick="_expandRadiusTo(100)" class="lp-see-all-cta" style="padding:10px 18px;font-size:13px;background:transparent;color:var(--primary);border:1px solid var(--primary);box-shadow:none">🇵🇹 Todo o país</button>
+      </div>`;
+    }
+    listEl.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--muted)">' +
+      '<p style="font-size:18px;margin-bottom:8px;color:var(--text)">' + t('searchListEmpty') + '</p>' +
+      '<p style="font-size:13px">' + t('searchListEmptySub') + '</p>' +
+      actionsHtml +
+      '</div>';
     return;
   }
 
@@ -8941,7 +9215,7 @@ function submitRegister() {
       // of a useless generic "Erro ao guardar".
       showToast(e.message || t('toastRegisterError'));
     } finally {
-      if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = '<i data-lucide="check-circle"></i> ' + t('regSubmit'); lucide.createIcons(); }
+      if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = '<i data-lucide="check-circle"></i> ' + t('regSubmit'); refreshLucide(); }
     }
   }
 }
@@ -9034,10 +9308,31 @@ function openDetail(id) {
 
   document.getElementById('detailPanel').classList.add('open');
   updateAdminUI();
+  _refreshDpFavBtn();
   if (map) map.flyTo([c.lat, c.lng], 15, { animate: true, duration: 1.2 });
 
   setTimeout(() => markerMap[c.id]?.openPopup(), 1300);
 }
+
+// Toggles the favourite state for the currently-open company in the detail
+// panel. Goes through the normal toggleFavourite() so it reuses the
+// localStorage + server-sync paths.
+function dpToggleFav() {
+  if (!selectedId) return;
+  toggleFavourite(selectedId);
+  _refreshDpFavBtn();
+}
+function _refreshDpFavBtn() {
+  const btn = document.getElementById('dpFavBtn');
+  if (!btn || !selectedId) return;
+  const fav = _favIds && _favIds.has(Number(selectedId));
+  btn.classList.toggle('is-fav', !!fav);
+  btn.textContent = fav ? '★' : '☆';
+  btn.setAttribute('aria-label', fav ? 'Remover dos favoritos' : 'Guardar nos favoritos');
+  btn.title = fav ? 'Remover dos favoritos' : 'Guardar nos favoritos';
+}
+window.dpToggleFav = dpToggleFav;
+window._refreshDpFavBtn = _refreshDpFavBtn;
 
 function closeDetail() {
   document.getElementById('detailPanel').classList.remove('open');
@@ -9748,6 +10043,7 @@ async function doLogin() {
     isAdminMode = user.is_admin === true;
     closeLogin();
     updateNavAuth();
+    syncFavouritesFromServer();
     showToast('Bem-vindo, ' + user.name + '!');
     if (selectedId) openDetail(selectedId);
     document.getElementById('loginEmail').value = '';
@@ -9776,6 +10072,7 @@ async function doRegister() {
     isAdminMode = user.is_admin === true;
     closeLogin();
     updateNavAuth();
+    syncFavouritesFromServer();
     if (regUserType === 'empresa') {
       showToast('Conta criada! Pode agora registar a sua empresa.');
       setTimeout(() => openRegister(), 800);
@@ -9869,6 +10166,7 @@ async function _onGoogleCredential(response) {
     isAdminMode = user.is_admin === true;
     closeLogin();
     updateNavAuth();
+    syncFavouritesFromServer();
     showToast('Bem-vindo, ' + user.name + '!');
     if (selectedId) openDetail(selectedId);
   } catch (e) {
@@ -9908,10 +10206,10 @@ function updateNavAuth() {
           <div class="avatar-menu-item danger" onclick="doLogout()"><i data-lucide="log-out"></i>Terminar Sessão</div>
         </div>
       </div>`;
-    if (mobileArea) mobileArea.innerHTML = `<button class="mobile-nav-link" onclick="openProfilePanel();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>${user.name}</span></button><button class="mobile-nav-link" style="color:#ef4444" onclick="doLogout();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Terminar Sessão</span></button>`;
+    if (mobileArea) mobileArea.innerHTML = `<button class="mobile-nav-link" onclick="openProfilePanel();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>${user.name}</span></button><button class="mobile-nav-link" onclick="openMyFavourites();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span data-i18n="navFavourites">Favoritos</span></button><button class="mobile-nav-link" style="color:#ef4444" onclick="doLogout();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Terminar Sessão</span></button>`;
     if (mobileTopAuth) mobileTopAuth.innerHTML = `<button class="mobile-top-avatar" onclick="toggleMobileNav()" title="${user.name}">${initials}</button>`;
   }
-  if (typeof lucide !== 'undefined') lucide.createIcons();
+  refreshLucide();
   updateVerifyBanner();
 }
 
@@ -9953,6 +10251,28 @@ async function resendVerification() {
     setBusy(btn, false);
   }
 }
+// "Já confirmei" — re-fetches the user from the server. If the email is now
+// confirmed, sessionStorage is updated and the banner disappears without a
+// manual page reload.
+async function checkVerified() {
+  const btn = document.getElementById('verifyConfirmedBtn');
+  setBusy(btn, true);
+  try {
+    const me = await api.getMe();
+    if (me && me.user) sessionStorage.setItem('hive_user', JSON.stringify(me.user));
+    if (me && me.user && (me.user.email_verified || me.user.emailVerified)) {
+      showToast('✅ Email confirmado!');
+      updateVerifyBanner();
+    } else {
+      showToast('Ainda não recebemos a confirmação. Verifique o email e clique no link.');
+    }
+  } catch (e) {
+    showToast(e.message || 'Não foi possível verificar o estado.');
+  } finally {
+    setBusy(btn, false);
+  }
+}
+window.checkVerified = checkVerified;
 window.dismissVerifyBanner = dismissVerifyBanner;
 window.resendVerification  = resendVerification;
 function toggleAvatarMenu(e) {
@@ -9984,6 +10304,10 @@ try {
   try { renderMobileSearchPanel(); } catch(e) { console.warn('Init skip: renderMobileSearchPanel', e); }
   try { renderTagCloud(); } catch(e) { console.warn('Init skip: renderTagCloud', e); }
   try { updateNavAuth(); } catch(e) { console.warn('Init skip: updateNavAuth', e); }
+  // If a session is already active on page load (return visit), pull the
+  // user's saved favourites from the server. Fire-and-forget, doesn't block
+  // first paint.
+  try { setTimeout(syncFavouritesFromServer, 50); } catch(_) {}
   try { applyI18n(); } catch(e) { console.warn('Init skip: applyI18n', e); }
   if (typeof lucide !== 'undefined') { try { lucide.createIcons(); } catch(e) { console.warn('Init skip: lucide', e); } }
 } catch(e) { console.error('Init error:', e); }
@@ -10049,9 +10373,10 @@ function isHomeTabActive() {
 
   function _applyNavScroll(y) {
     if (!nav || isHomeTabActive()) return;
-    if (y > lastY + 4 && y > 40) {
+    // Larger thresholds = fewer class toggles = fewer style recalcs on mobile.
+    if (y > lastY + 16 && y > 40) {
       nav.classList.add('scrolled');
-    } else if (y < lastY - 8) {
+    } else if (y < lastY - 24) {
       nav.classList.remove('scrolled');
     }
     lastY = y;
@@ -10068,6 +10393,29 @@ function isHomeTabActive() {
   window.addEventListener('scroll',     _onScroll, { passive: true });
   window.addEventListener('touchmove',  _onScroll, { passive: true });
 }
+
+// ── PAUSE HERO LOGO SMIL ANIMATIONS WHEN OFFSCREEN ───────────────────────────
+// SVG <animate>/<animateTransform> keep firing repaints even when the logo is
+// scrolled off-screen or its tab is hidden. Pause via the SVG DOM API.
+(function() {
+  const logo = document.getElementById('logoHexSvg');
+  if (!logo || typeof logo.pauseAnimations !== 'function') return;
+  let paused = false;
+  const setPaused = (p) => {
+    if (p === paused) return;
+    paused = p;
+    try { p ? logo.pauseAnimations() : logo.unpauseAnimations(); } catch(_) {}
+  };
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(entries => {
+      setPaused(!entries[0].isIntersecting);
+    }, { rootMargin: '0px' }).observe(logo);
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) setPaused(true);
+    else if ('IntersectionObserver' in window === false) setPaused(false);
+  });
+})();
 
 // Sticky home-page CTA: appears when the hero scrolls off-screen on the home tab.
 // IntersectionObserver on the hero gives us a single, cheap signal.
@@ -10401,7 +10749,7 @@ openRegister = function() {
   setTimeout(() => {
     const submitBtn = document.querySelector('#registerOverlay .btn-step-next[onclick*="submitRegister"]');
     if (submitBtn) submitBtn.innerHTML = '<i data-lucide="check-circle"></i> <span data-i18n="regSubmit">Registar Empresa</span>';
-    if (typeof lucide !== 'undefined') lucide.createIcons();
+    refreshLucide();
   }, 50);
   _origOpenRegister();
   regGoStep(1);
@@ -10468,7 +10816,7 @@ function openProfilePanel() {
     </div>
   `;
   document.getElementById('profilePanelOverlay').classList.add('open');
-  if (typeof lucide !== 'undefined') lucide.createIcons();
+  refreshLucide();
 }
 
 function closeProfilePanel(e) {
@@ -10588,19 +10936,10 @@ if (_origRenderSectorFilters) {
           successClose:'Continuar a Navegar',
           forgotPwd:'Esqueceu a palavra-passe?',
           verifyBannerText:'Confirme o seu email para desbloquear todas as funcionalidades.',
-          verifyResend:'Reenviar email',
+          verifyResend:'Reenviar email', verifyConfirmed:'Já confirmei',
           verifiedTooltip:'Empresa cuja certidão permanente foi confirmada pela equipa Hive — uma camada extra de confiança.',
           mapPinHint:'💡 Toque num pin para ver os detalhes da empresa.',
           faqTitle:'Perguntas Frequentes', faqMeta:'Respostas rápidas às dúvidas mais comuns',
-          trustOverline:'O que esperar', trustTitle:'Transparência em três promessas',
-          trustSub:'Antes de criar conta, saiba exatamente o que a Hive faz por si — sem letra miudinha.',
-          trust1Title:'Grátis para todos',
-          trust1Desc:'Pesquisar, comparar e pedir orçamentos é totalmente gratuito para clientes. Empresas registam-se sem custos. Planos premium para destaque chegam em breve — opcionais.',
-          trust2Title:'Verificação real',
-          trust2Desc:'Toda empresa submete o código da <strong>Certidão Permanente</strong> do Registo Comercial. A nossa equipa confirma o código, o NIPC e a atividade declarada antes de publicar o perfil.',
-          trust3Title:'Aprovação rápida',
-          trust3Desc:'A maioria dos registos é aprovada em <strong>até 24 horas úteis</strong>. Receberá um email assim que estiver visível, e pode acompanhar o estado a qualquer momento no menu da conta.',
-          trustFaqLink:'Ver todas as perguntas frequentes →',
           featuredSeeAllBig:'Ver todas as empresas no mapa →',
           regFoundedYear:'Ano de fundação', regBusinessHours:'Horário', regPortfolio:'Galeria de trabalhos',
           regPortfolioHint:'Cole URLs de imagens dos seus trabalhos. Para já apenas links externos (ex: Imgur, Unsplash).',
@@ -10625,19 +10964,10 @@ if (_origRenderSectorFilters) {
           successClose:'Keep Browsing',
           forgotPwd:'Forgot your password?',
           verifyBannerText:'Confirm your email to unlock all features.',
-          verifyResend:'Resend email',
+          verifyResend:'Resend email', verifyConfirmed:"I've confirmed",
           verifiedTooltip:'Company whose Portuguese commercial registry certificate has been confirmed by the Hive team — an extra layer of trust.',
           mapPinHint:'💡 Tap a pin to see company details.',
           faqTitle:'Frequently Asked Questions', faqMeta:'Quick answers to common questions',
-          trustOverline:'What to expect', trustTitle:'Three transparent promises',
-          trustSub:"Before you sign up, know exactly what Hive does for you — no fine print.",
-          trust1Title:'Free for everyone',
-          trust1Desc:'Searching, comparing and requesting quotes is free for clients. Companies register at no cost. Premium plans for featured placement are coming soon — entirely optional.',
-          trust2Title:'Real verification',
-          trust2Desc:'Every company submits its <strong>Portuguese Commercial Registry Certificate</strong> access code. Our team verifies the code, the company tax number and the declared activity before publishing the profile.',
-          trust3Title:'Fast approval',
-          trust3Desc:'Most registrations are approved within <strong>24 business hours</strong>. You\'ll receive an email as soon as your company is live, and can check status at any time from the account menu.',
-          trustFaqLink:'See all frequently asked questions →',
           featuredSeeAllBig:'See all companies on the map →',
           regFoundedYear:'Founded year', regBusinessHours:'Business hours', regPortfolio:'Work gallery',
           regPortfolioHint:'Paste image URLs of your work. For now external links only (e.g. Imgur, Unsplash).',
@@ -10662,19 +10992,10 @@ if (_origRenderSectorFilters) {
           successClose:'Continuer à Naviguer',
           forgotPwd:'Mot de passe oublié ?',
           verifyBannerText:'Confirmez votre email pour débloquer toutes les fonctionnalités.',
-          verifyResend:'Renvoyer l\'email',
+          verifyResend:'Renvoyer l\'email', verifyConfirmed:'J\'ai confirmé',
           verifiedTooltip:"Entreprise dont le certificat permanent du registre du commerce portugais a été confirmé par l'équipe Hive.",
           mapPinHint:"💡 Touchez un pin pour voir les détails de l'entreprise.",
           faqTitle:'Questions fréquentes', faqMeta:'Réponses rapides aux questions courantes',
-          trustOverline:'À quoi vous attendre', trustTitle:'Trois promesses transparentes',
-          trustSub:"Avant de créer un compte, sachez exactement ce que Hive fait pour vous — sans petits caractères.",
-          trust1Title:'Gratuit pour tous',
-          trust1Desc:"Rechercher, comparer et demander des devis est entièrement gratuit pour les clients. Les entreprises s'inscrivent gratuitement. Des plans premium arriveront bientôt — entièrement optionnels.",
-          trust2Title:'Vérification réelle',
-          trust2Desc:"Chaque entreprise soumet son code d'accès au <strong>Registre du Commerce</strong> portugais. Notre équipe vérifie le code, le numéro fiscal et l'activité déclarée avant publication.",
-          trust3Title:'Approbation rapide',
-          trust3Desc:"La plupart des inscriptions sont approuvées en <strong>moins de 24 heures ouvrables</strong>. Vous recevrez un email dès que votre entreprise sera visible.",
-          trustFaqLink:'Voir toutes les questions fréquentes →',
           featuredSeeAllBig:'Voir toutes les entreprises sur la carte →',
           regFoundedYear:'Année de création', regBusinessHours:'Horaires', regPortfolio:'Galerie de travaux',
           regPortfolioHint:"Collez les URLs d'images de vos réalisations. Pour l'instant uniquement des liens externes.",
@@ -10698,20 +11019,11 @@ if (_origRenderSectorFilters) {
           successTitle:'¡Solicitud Enviada!', successSub:'Su solicitud ha sido recibida y está pendiente de validación. Recibirá un email de confirmación una vez aprobada la empresa.',
           successClose:'Seguir Navegando',
           forgotPwd:'¿Olvidó la contraseña?',
-          verifyBannerText:'Confirme su email para desbloquear todas las funcionalidades.',
+          verifyBannerText:'Confirme su email para desbloquear todas las funcionalidades.', verifyConfirmed:'Ya confirmé',
           verifyResend:'Reenviar email',
           verifiedTooltip:'Empresa cuya certificación permanente del registro mercantil portugués ha sido confirmada por el equipo Hive.',
           mapPinHint:'💡 Toque un pin para ver los detalles de la empresa.',
           faqTitle:'Preguntas Frecuentes', faqMeta:'Respuestas rápidas a las dudas más comunes',
-          trustOverline:'Qué esperar', trustTitle:'Tres promesas transparentes',
-          trustSub:'Antes de crear cuenta, sepa exactamente qué hace Hive por usted — sin letra pequeña.',
-          trust1Title:'Gratis para todos',
-          trust1Desc:'Buscar, comparar y solicitar presupuestos es totalmente gratis para clientes. Las empresas se registran sin costo. Los planes premium llegarán pronto — totalmente opcionales.',
-          trust2Title:'Verificación real',
-          trust2Desc:'Toda empresa envía el código del <strong>Registro Mercantil</strong> portugués. Nuestro equipo verifica el código, el NIF y la actividad antes de publicar el perfil.',
-          trust3Title:'Aprobación rápida',
-          trust3Desc:'La mayoría de los registros se aprueban en <strong>menos de 24 horas hábiles</strong>. Recibirá un email tan pronto como su empresa esté visible.',
-          trustFaqLink:'Ver todas las preguntas frecuentes →',
           featuredSeeAllBig:'Ver todas las empresas en el mapa →',
           regFoundedYear:'Año de fundación', regBusinessHours:'Horario', regPortfolio:'Galería de trabajos',
           regPortfolioHint:'Pegue URLs de imágenes de sus trabajos. Por ahora solo enlaces externos.',
@@ -10735,20 +11047,11 @@ if (_origRenderSectorFilters) {
           successTitle:'Anfrage gesendet!', successSub:'Ihre Anfrage wurde empfangen und wird geprüft. Sie erhalten eine Bestätigungs-E-Mail, sobald das Unternehmen freigegeben wurde.',
           successClose:'Weiter browsen',
           forgotPwd:'Passwort vergessen?',
-          verifyBannerText:'Bestätigen Sie Ihre E-Mail, um alle Funktionen freizuschalten.',
+          verifyBannerText:'Bestätigen Sie Ihre E-Mail, um alle Funktionen freizuschalten.', verifyConfirmed:'Ich habe bestätigt',
           verifyResend:'E-Mail erneut senden',
           verifiedTooltip:'Unternehmen, dessen portugiesischer Handelsregisterauszug vom Hive-Team verifiziert wurde — zusätzliche Vertrauensebene.',
           mapPinHint:'💡 Tippen Sie auf einen Pin, um Firmendetails zu sehen.',
           faqTitle:'Häufige Fragen', faqMeta:'Schnelle Antworten auf gängige Fragen',
-          trustOverline:'Was Sie erwartet', trustTitle:'Drei transparente Versprechen',
-          trustSub:'Bevor Sie ein Konto erstellen, wissen Sie genau, was Hive für Sie tut — ohne Kleingedrucktes.',
-          trust1Title:'Kostenlos für alle',
-          trust1Desc:'Suchen, vergleichen und Angebote anfordern ist für Kunden völlig kostenlos. Unternehmen registrieren sich gebührenfrei. Premium-Pläne kommen bald — vollständig optional.',
-          trust2Title:'Echte Verifizierung',
-          trust2Desc:'Jedes Unternehmen reicht den Zugangscode zum <strong>portugiesischen Handelsregister</strong> ein. Unser Team prüft Code, Steuernummer und angegebene Tätigkeit vor der Veröffentlichung.',
-          trust3Title:'Schnelle Freigabe',
-          trust3Desc:'Die meisten Registrierungen werden innerhalb von <strong>24 Werktagsstunden</strong> freigegeben. Sie erhalten eine E-Mail, sobald Ihr Unternehmen sichtbar ist.',
-          trustFaqLink:'Alle häufigen Fragen ansehen →',
           featuredSeeAllBig:'Alle Unternehmen auf der Karte ansehen →',
           regFoundedYear:'Gründungsjahr', regBusinessHours:'Öffnungszeiten', regPortfolio:'Arbeitsgalerie',
           regPortfolioHint:'Fügen Sie Bild-URLs Ihrer Arbeiten ein. Aktuell nur externe Links.',
@@ -11275,6 +11578,16 @@ updateNavAuth = function() {
         divider.before(adminBtn);
       }
     }
+    // Mirror to mobile drawer
+    const mobileArea = document.getElementById('mobileAuthArea');
+    if (mobileArea && !mobileArea.querySelector('.admin-mobile-link')) {
+      const mAdminBtn = document.createElement('button');
+      mAdminBtn.className = 'mobile-nav-link admin-mobile-link';
+      mAdminBtn.style.color = '#f59e0b';
+      mAdminBtn.onclick = () => { openAdminPanel(); closeMobileNavPanel(); };
+      mAdminBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg><span>Painel Admin</span>';
+      mobileArea.appendChild(mAdminBtn);
+    }
   }
 };
 
@@ -11406,6 +11719,85 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
       statusBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Estado do Registo</span>';
       helpBtn.after(statusBtn);
     }
+  }
+})();
+
+// ── PWA INSTALL PROMPT ──────────────────────────────────────────────────────
+// Captures the beforeinstallprompt event (Chrome/Edge/Android) and shows a
+// small toast-style banner so users can pin Hive to their home screen. iOS
+// Safari doesn't fire this event but supports add-to-home-screen via the
+// share sheet; we surface a one-time hint there too.
+(function() {
+  const DISMISSED_KEY = 'hive_install_dismissed';
+  let deferredPrompt = null;
+
+  function alreadyInstalled() {
+    return window.matchMedia('(display-mode: standalone)').matches ||
+           window.navigator.standalone === true;
+  }
+  function dismissed() {
+    try { return localStorage.getItem(DISMISSED_KEY) === '1'; } catch (_) { return false; }
+  }
+  function rememberDismiss() {
+    try { localStorage.setItem(DISMISSED_KEY, '1'); } catch (_) {}
+  }
+
+  function buildBanner(html, onAction) {
+    const el = document.createElement('div');
+    el.id = 'pwaInstallBanner';
+    el.style.cssText = 'position:fixed;left:12px;right:12px;bottom:calc(72px + env(safe-area-inset-bottom));z-index:1400;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);border:1.5px solid rgba(249,115,22,.5);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 12px 32px rgba(0,0,0,.4);font-family:inherit;animation:pwaSlideUp .35s cubic-bezier(.4,0,.2,1) both';
+    el.innerHTML = html;
+    document.body.appendChild(el);
+    const action = el.querySelector('[data-action]');
+    const close  = el.querySelector('[data-close]');
+    if (action) action.onclick = onAction;
+    if (close)  close.onclick  = () => { rememberDismiss(); el.remove(); };
+    if (!document.getElementById('pwaInstallStyles')) {
+      const s = document.createElement('style');
+      s.id = 'pwaInstallStyles';
+      s.textContent = '@keyframes pwaSlideUp{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}#pwaInstallBanner button{font-family:inherit}';
+      document.head.appendChild(s);
+    }
+  }
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (alreadyInstalled() || dismissed()) return;
+    // Wait until the user has had a moment with the page
+    setTimeout(() => {
+      if (alreadyInstalled() || dismissed() || !deferredPrompt) return;
+      buildBanner(
+        '<div style="font-size:24px;flex-shrink:0">📲</div>' +
+        '<div style="flex:1;min-width:0"><div style="color:#fff;font-size:13px;font-weight:800;line-height:1.3">Instalar Hive no telemóvel</div><div style="color:#94a3b8;font-size:11px;line-height:1.4;margin-top:2px">Acesso rápido como uma app nativa</div></div>' +
+        '<button data-action style="background:linear-gradient(135deg,#ea580c,#f97316);color:#fff;border:0;border-radius:8px;padding:8px 14px;font-size:12px;font-weight:800;cursor:pointer;flex-shrink:0">Instalar</button>' +
+        '<button data-close aria-label="Fechar" style="background:none;border:0;color:#94a3b8;font-size:22px;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0">×</button>',
+        async () => {
+          const banner = document.getElementById('pwaInstallBanner');
+          if (banner) banner.remove();
+          if (!deferredPrompt) return;
+          deferredPrompt.prompt();
+          try { await deferredPrompt.userChoice; } catch (_) {}
+          deferredPrompt = null;
+          rememberDismiss();
+        }
+      );
+    }, 4000);
+  });
+
+  // iOS Safari path — no beforeinstallprompt, but the user can use Share → Add to Home Screen.
+  // Show a one-time hint after they've spent ~6 seconds on the site.
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  if (isIOS && !alreadyInstalled() && !dismissed()) {
+    setTimeout(() => {
+      if (alreadyInstalled() || dismissed()) return;
+      buildBanner(
+        '<div style="font-size:24px;flex-shrink:0">📲</div>' +
+        '<div style="flex:1;min-width:0"><div style="color:#fff;font-size:13px;font-weight:800;line-height:1.3">Adicionar Hive ao ecrã inicial</div><div style="color:#94a3b8;font-size:11px;line-height:1.4;margin-top:2px">Toque em <span style="display:inline-flex;width:14px;height:14px;background:#0f172a;border:1px solid #94a3b8;border-radius:3px;vertical-align:middle;justify-content:center;align-items:center;font-size:10px;color:#94a3b8">↑</span> e depois "Adicionar ao ecrã inicial"</div></div>' +
+        '<button data-close aria-label="Fechar" style="background:none;border:0;color:#94a3b8;font-size:22px;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0">×</button>',
+        () => {}
+      );
+    }, 6000);
   }
 })();
 </script>

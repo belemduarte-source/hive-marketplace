@@ -28,6 +28,7 @@ const path = require('path');
 const companiesRouter = require('./routes/companies');
 const authRouter = require('./routes/auth');
 const adminRouter = require('./routes/admin');
+const favouritesRouter = require('./routes/favourites');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -116,8 +117,11 @@ app.use('/api/auth/', authLimiter);
 // up to date — saves ~50-200 ms per cold-start serverless instance.
 let _migrated = false;
 let _migrationPromise = null;
-const SENTINEL_COLUMN = 'reply_at';   // most-recent column added; bump when adding new ones
-const SENTINEL_TABLE  = 'reviews';
+// Use a marker that's unique to the latest schema. Existing instances whose
+// schema is older than this row will fall through to the slow migration path
+// once per Lambda cold start, then fast-path forever.
+const SENTINEL_COLUMN = 'user_id';
+const SENTINEL_TABLE  = 'user_favourites';
 
 async function ensureSchema() {
   if (_migrated) return;
@@ -176,6 +180,7 @@ app.post('/api/companies', registerLimiter);  // registration spam guard (POST o
 app.use('/api/companies', companiesRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/favourites', favouritesRouter);
 
 // Health check
 app.get('/api/health', (req, res) => res.json({ ok: true, ts: new Date().toISOString() }));

@@ -130,6 +130,24 @@ const api = {
   resendEmailVerification() {
     return apiFetch('/auth/resend-verification', { method: 'POST' });
   },
+
+  // ── Favourites (per-user, server-persisted) ──────────────────────────────
+  // All four require a valid session cookie; logged-out callers get 401.
+  getFavourites() {
+    return apiFetch('/favourites');
+  },
+  addFavourite(companyId) {
+    return apiFetch('/favourites/' + companyId, { method: 'POST' });
+  },
+  removeFavourite(companyId) {
+    return apiFetch('/favourites/' + companyId, { method: 'DELETE' });
+  },
+  // Used at login time to lift any localStorage favourites into the user's
+  // server-side list. ids is an array of company ids; the server merges them
+  // with ON CONFLICT DO NOTHING so it's safe to call multiple times.
+  bulkAddFavourites(ids) {
+    return apiFetch('/favourites/bulk', { method: 'POST', body: { ids } });
+  },
 };
 
 window.api = api;

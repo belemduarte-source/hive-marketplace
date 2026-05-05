@@ -5,3 +5,7 @@ backend/.env
 .env
 
 .vercel
+
+# local dev logs
+*.log
+*.log.err
