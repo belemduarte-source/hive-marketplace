@@ -2593,19 +2593,11 @@
       <span id="navLangCode">PT</span>
     </button>
   </div>
-  <!-- Mobile top-nav auth + register + lang — visible only on mobile -->
+  <!-- Mobile top-nav lang — visible only on mobile.
+       Login/Register buttons removed by user request; auth still reachable
+       via hero CTA on home and the avatar menu once logged in. -->
   <div class="mobile-top-actions">
-    <button class="mobile-top-register" onclick="openRegister()" aria-label="Registar Empresa">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span data-i18n="navRegister">Registar Empresa</span>
-    </button>
-    <div id="mobileTopAuth">
-      <!-- populated by updateNavAuth() -->
-      <button class="mobile-top-login" onclick="openLogin()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-        <span data-i18n="navLogin">Entrar</span>
-      </button>
-    </div>
+    <div id="mobileTopAuth"><!-- populated by updateNavAuth() when logged in --></div>
     <button class="mobile-lang-btn" id="mobileLangBtn" onclick="cycleLang()" aria-label="Idioma / Language">
       <span id="mobileLangFlag">🇵🇹</span>
       <span id="mobileLangCode">PT</span>
@@ -2644,16 +2636,10 @@
   </div>
 
   <div class="nav-right">
-    <!-- 1. ENTRAR -->
-    <div id="authArea">
-      <button class="btn-nav btn-login" onclick="openLogin()" style="justify-content:center"><span data-i18n="navLogin">Entrar</span></button>
-    </div>
-
-    <!-- 2. REGISTAR EMPRESA -->
-    <button class="btn-pro btn-pro-cta" id="btnRegisterNav" onclick="openRegister()">
-      <svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span data-i18n="navRegister">Registar Empresa</span>
-    </button>
+    <!-- Login/Register top-nav buttons removed by user request.
+         #authArea stays so updateNavAuth() can mount the avatar menu when
+         the user is logged in (via Google one-tap or hero CTA). -->
+    <div id="authArea"></div>
 
     <!-- 3 & 4. PT + AJUDA side by side -->
     <div class="nav-right-bottom">
@@ -10179,9 +10165,12 @@ function updateNavAuth() {
   const mobileTopAuth = document.getElementById('mobileTopAuth');
   const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
   if (!user) {
-    if (area) area.innerHTML = '<button class="btn-nav btn-login" onclick="openLogin()" style="justify-content:center"><span data-i18n="navLogin">Entrar</span></button>';
+    // Top-nav login button removed by user request — leave authArea/mobileTopAuth empty.
+    // The hamburger drawer (mobileArea) keeps its Entrar entry so mobile users still
+    // have a path to log in from anywhere on the site.
+    if (area) area.innerHTML = '';
     if (mobileArea) mobileArea.innerHTML = '<button class="mobile-nav-link" onclick="openLogin();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span data-i18n="navLogin">Entrar</span></button>';
-    if (mobileTopAuth) mobileTopAuth.innerHTML = '<button class="mobile-top-login" onclick="openLogin()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span data-i18n="navLogin">Entrar</span></button>';
+    if (mobileTopAuth) mobileTopAuth.innerHTML = '';
   } else {
     const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
     const typeClass = user.type === 'empresa' ? 'empresa' : 'cliente';
