@@ -2347,10 +2347,14 @@
     .recent-strip::-webkit-scrollbar{height:4px}
     .recent-strip::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
     .recent-strip-label{display:inline-flex;align-items:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-right:6px;flex-shrink:0}
-    .recent-chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:5px 12px;font-size:12px;color:var(--text);cursor:pointer;transition:all .15s;flex-shrink:0;font-family:inherit}
+    .recent-chip{display:inline-flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:5px 6px 5px 12px;font-size:12px;color:var(--text);cursor:pointer;transition:all .15s;flex-shrink:0;font-family:inherit}
     .recent-chip:hover{border-color:var(--primary);color:var(--primary);transform:translateY(-1px)}
     .recent-chip-emoji{font-size:14px}
     .recent-chip-name{max-width:160px;overflow:hidden;text-overflow:ellipsis}
+    .recent-chip-x{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;border-radius:50%;border:0;background:transparent;color:var(--muted);font-size:14px;line-height:1;cursor:pointer;font-family:inherit;padding:0;margin-left:2px;transition:all .15s}
+    .recent-chip-x:hover{background:var(--red-light);color:var(--red)}
+    .recent-clear-btn{display:inline-flex;align-items:center;gap:4px;background:transparent;border:1px dashed var(--border);border-radius:14px;padding:4px 10px;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s;flex-shrink:0;font-family:inherit;font-weight:600}
+    .recent-clear-btn:hover{border-color:var(--red);color:var(--red);background:var(--red-light)}
     /* Sticky compare bar at bottom of viewport */
     .compare-bar{position:fixed;bottom:0;left:0;right:0;background:#0f172a;color:#fff;border-top:2px solid var(--primary);z-index:9997;animation:slideUp .3s ease both;box-shadow:0 -8px 24px rgba(0,0,0,.18)}
     .compare-bar-inner{display:flex;align-items:center;gap:14px;padding:12px 18px;max-width:1200px;margin:0 auto;flex-wrap:wrap}
@@ -6764,12 +6768,28 @@ function _renderRecentStrip() {
   strip.innerHTML =
     '<span class="recent-strip-label">Vistas recentemente</span>' +
     items.map(c => `
-      <button type="button" class="recent-chip" onclick="openDetail(${c.id})" title="${escHtml(c.name)}">
-        <span class="recent-chip-emoji">${c.emoji || '🏢'}</span>
-        <span class="recent-chip-name">${escHtml(c.name)}</span>
-      </button>`).join('');
+      <span class="recent-chip" title="${escHtml(c.name)}">
+        <span style="display:inline-flex;align-items:center;gap:6px;cursor:pointer" onclick="openDetail(${c.id})">
+          <span class="recent-chip-emoji">${c.emoji || '🏢'}</span>
+          <span class="recent-chip-name">${escHtml(c.name)}</span>
+        </span>
+        <button type="button" class="recent-chip-x" aria-label="Remover" title="Remover" onclick="event.stopPropagation();_removeRecent(${c.id})">×</button>
+      </span>`).join('') +
+    `<button type="button" class="recent-clear-btn" onclick="_clearRecent()" title="Limpar todas">🗑️ Limpar</button>`;
+}
+function _removeRecent(id) {
+  id = Number(id);
+  const arr = _getRecentIds().filter(x => x !== id);
+  try { localStorage.setItem(_RECENT_KEY, JSON.stringify(arr)); } catch (_) {}
+  _renderRecentStrip();
+}
+function _clearRecent() {
+  try { localStorage.removeItem(_RECENT_KEY); } catch (_) {}
+  _renderRecentStrip();
 }
 window._renderRecentStrip = _renderRecentStrip;
+window._removeRecent     = _removeRecent;
+window._clearRecent      = _clearRecent;
 
 // Hook into openDetail so any open recorded a recent. Wrapped here so even
 // later patches (analytics, reviews) keep working — they all forward to the
@@ -7568,7 +7588,12 @@ document.addEventListener('DOMContentLoaded', async () => {
         openGeoHelp();
 
       } else {
-        // 'prompt' — don't auto-call without a gesture; pulse the button
+        // 'prompt' — trigger the browser's native permission prompt on first
+        // visit so the radius can be centered on the user. If they accept, the
+        // map flies to their location and the radius narrows to ~50 km. If they
+        // deny, we silently fall back to the default Lisbon-centered view.
+        detectUserLocation(true);
+        // Also pulse the locate button as a visual hint while the prompt shows
         const b = document.getElementById('btnLocate');
         if (b) { b.classList.add('pulse-hint'); setTimeout(() => b.classList.remove('pulse-hint'), 5000); }
       }
@@ -9815,9 +9840,13 @@ function detectUserLocation(auto = false) {
     if (!_geoCleanup(myGen)) return; // stale
 
     if (err.code === 1) {
-      // PERMISSION_DENIED — open the help modal with platform-specific instructions.
-      // This applies for both auto and manual: the user (or the system) blocked us.
-      openGeoHelp();
+      // PERMISSION_DENIED — only nag on manual taps. Auto-prompts that the user
+      // intentionally dismissed should fall back silently to the default view.
+      if (!auto) openGeoHelp();
+      else if (btn) {
+        btn.classList.add('pulse-hint');
+        setTimeout(() => btn.classList.remove('pulse-hint'), 5000);
+      }
       return;
     }
 
