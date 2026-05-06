@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches-ignore: [main]
+  workflow_dispatch:
+
+jobs:
+  syntax-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Validate vercel.json
+        working-directory: hive
+        run: node -e "JSON.parse(require('fs').readFileSync('vercel.json','utf8'))"
+
+      - name: Parse-check backend JS
+        working-directory: hive/backend
+        run: |
+          for f in $(find src -name '*.js'); do
+            node --check "$f" || exit 1
+          done
+
+      - name: Parse-check frontend JS files
+        working-directory: hive/frontend
+        run: |
+          for f in api.js audit.js serve.js sw.js; do
+            [ -f "$f" ] && node --check "$f"
+          done
+
+      - name: Parse-check inline scripts in index.html
+        working-directory: hive/frontend
+        run: |
+          node -e "
+            const fs = require('fs');
+            const html = fs.readFileSync('index.html', 'utf8');
+            const re = /<script([^>]*)>([\s\S]*?)<\/script>/g;
+            let m, blocks = [];
+            while ((m = re.exec(html))) {
+              const attrs = m[1] || '';
+              if (/src=/.test(attrs)) continue;
+              if (/type\s*=\s*['\"](?!text\/javascript|application\/javascript)/i.test(attrs)) continue;
+              blocks.push(m[2]);
+            }
+            fs.writeFileSync('_inline_check.js', blocks.join('\n;\n'));
+            console.log('Extracted', blocks.length, 'inline script blocks');
+          "
+          node --check _inline_check.js
+          rm _inline_check.js
