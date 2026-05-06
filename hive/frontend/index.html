@@ -8615,6 +8615,11 @@ function getFiltered() {
   const sort = document.querySelector('input[name="sort"]:checked')?.value || 'all';
   const hasSectorFilter = activeSectors.size > 0;
 
+  // Show nothing until the user picks at least one area of activity. The
+  // marketplace can list ~thousands of companies — surfacing all of them by
+  // default is noise, not signal.
+  if (!hasSectorFilter) return [];
+
   // Single-pass filter (no intermediate array copies)
   const res = [];
   for (let i = 0; i < companies.length; i++) {
@@ -8680,23 +8685,31 @@ function _runApplyFilters() {
       hint.classList.add('hidden');
     } else {
       hint.classList.remove('hidden');
-      // If the only thing pruning results is the radius, suggest expanding it.
-      const slider = document.getElementById('radiusSlider');
-      const sliderVal = parseInt(slider?.value || 100, 10);
-      const km = (typeof sliderToKm === 'function') ? sliderToKm(sliderVal) : sliderVal;
-      const showRadiusActions = sliderVal < 100; // not already "all of Portugal"
-      let html = t('mapHintNoResults') + '<br><span>' + t('mapHintNoResultsSub') + '</span>';
-      if (showRadiusActions) {
-        // Aim for ~2x the current radius and a "all country" fallback.
-        // Translate that target km back into a slider value (inverse of sliderToKm).
-        const wantKm = Math.min(600, km * 2);
-        const wantSlider = wantKm >= 600 ? 100 : Math.round(100 * Math.log(wantKm / 5) / Math.log(120));
-        html += `<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
-          <button onclick="_expandRadiusTo(${wantSlider})" class="lp-see-all-cta" style="padding:8px 14px;font-size:12px">📍 Aumentar para ${wantKm} km</button>
-          <button onclick="_expandRadiusTo(100)" class="lp-see-all-cta" style="padding:8px 14px;font-size:12px;background:transparent;color:var(--primary);border:1px solid var(--primary);box-shadow:none">🇵🇹 Todo o país</button>
-        </div>`;
+      // No sectors picked → guide the user to choose one rather than offering
+      // to widen the radius (which won't help).
+      if (activeSectors.size === 0) {
+        hintText.innerHTML =
+          '<strong>Selecione uma área de atividade</strong><br>' +
+          '<span>Escolha um ou mais setores acima para ver as empresas disponíveis.</span>';
+      } else {
+        // If the only thing pruning results is the radius, suggest expanding it.
+        const slider = document.getElementById('radiusSlider');
+        const sliderVal = parseInt(slider?.value || 100, 10);
+        const km = (typeof sliderToKm === 'function') ? sliderToKm(sliderVal) : sliderVal;
+        const showRadiusActions = sliderVal < 100; // not already "all of Portugal"
+        let html = t('mapHintNoResults') + '<br><span>' + t('mapHintNoResultsSub') + '</span>';
+        if (showRadiusActions) {
+          // Aim for ~2x the current radius and a "all country" fallback.
+          // Translate that target km back into a slider value (inverse of sliderToKm).
+          const wantKm = Math.min(600, km * 2);
+          const wantSlider = wantKm >= 600 ? 100 : Math.round(100 * Math.log(wantKm / 5) / Math.log(120));
+          html += `<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
+            <button onclick="_expandRadiusTo(${wantSlider})" class="lp-see-all-cta" style="padding:8px 14px;font-size:12px">📍 Aumentar para ${wantKm} km</button>
+            <button onclick="_expandRadiusTo(100)" class="lp-see-all-cta" style="padding:8px 14px;font-size:12px;background:transparent;color:var(--primary);border:1px solid var(--primary);box-shadow:none">🇵🇹 Todo o país</button>
+          </div>`;
+        }
+        hintText.innerHTML = html;
       }
-      hintText.innerHTML = html;
     }
   }
   // Filter badge count — single-pass DOM read, then arithmetic on locals
