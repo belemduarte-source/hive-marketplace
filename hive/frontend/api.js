@@ -65,6 +65,14 @@ const api = {
     });
   },
 
+  // ── Reporting ──────────────────────────────────────────────────────────────
+  reportCompany(companyId, reason, details) {
+    return apiFetch('/companies/' + companyId + '/report', {
+      method: 'POST',
+      body: { reason, details },
+    });
+  },
+
   // ── Analytics ──────────────────────────────────────────────────────────────
   trackEvent(companyId, type) {
     // Fire-and-forget — never throws
@@ -96,6 +104,13 @@ const api = {
   },
   adminDeleteReview(id) {
     return apiFetch('/admin/reviews/' + id, { method: 'DELETE' });
+  },
+  adminReports(params) {
+    const qs = params ? '?' + new URLSearchParams(params).toString() : '';
+    return apiFetch('/admin/reports' + qs);
+  },
+  adminSetReportStatus(id, status) {
+    return apiFetch('/admin/reports/' + id + '/status', { method: 'PUT', body: { status } });
   },
 
   // ── Auth ───────────────────────────────────────────────────────────────────

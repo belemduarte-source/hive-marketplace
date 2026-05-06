@@ -2693,17 +2693,9 @@
       <span data-i18n="navSearch">Pesquisa</span>
     </button>
     <div class="mobile-nav-divider"></div>
-    <!-- Auth area: updated dynamically by updateNavAuth() -->
-    <div id="mobileAuthArea">
-      <button class="mobile-nav-link" onclick="openLogin();closeMobileNavPanel()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-        <span data-i18n="navLogin">Entrar</span>
-      </button>
-    </div>
-    <button class="mobile-nav-link" onclick="openRegister();closeMobileNavPanel()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-      <span data-i18n="navRegister">Registar Empresa</span>
-    </button>
+    <!-- Auth area: populated dynamically by updateNavAuth() when logged in.
+         Logged-out users use the single login button in the top-right of the nav. -->
+    <div id="mobileAuthArea"></div>
     <button class="mobile-nav-link" onclick="openHelp();closeMobileNavPanel()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       <span data-i18n="navHelp">Ajuda</span>
@@ -2799,6 +2791,7 @@
       <div class="admin-tab active" onclick="adminSwitchTab('stats')">📊 Estatísticas</div>
       <div class="admin-tab" onclick="adminSwitchTab('pending')">⏳ Pendentes</div>
       <div class="admin-tab" onclick="adminSwitchTab('all')">🏢 Todas</div>
+      <div class="admin-tab" onclick="adminSwitchTab('reports')">🚩 Reportes</div>
     </div>
     <div class="admin-body" id="adminBody">
       <div style="text-align:center;padding:48px;color:var(--muted)">A carregar...</div>
@@ -2908,22 +2901,6 @@
 
       </div><!-- /lp-searchbar -->
     </div><!-- /lp-search-wrap -->
-
-    <!-- ── REGISTER COMPANY CTA + LOGIN LINK — visible on both desktop and mobile ── -->
-    <div class="lp-hero-register">
-      <span class="lp-hero-register-hint" data-i18n="lpHeroRegisterHint">É uma empresa? Apareça no mapa em minutos.</span>
-      <button class="lp-hero-register-btn" onclick="openRegister()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        <span data-i18n="lpHeroRegisterCta">Registe a sua Empresa</span>
-      </button>
-      <div class="lp-hero-login">
-        <span data-i18n="lpHeroLoginHint">Já tem conta?</span>
-        <button class="lp-hero-login-link" onclick="openLogin()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="14" height="14"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
-          <span data-i18n="lpHeroLoginLink">Entrar</span>
-        </button>
-      </div>
-    </div>
 
     <!-- ── HERO CATEGORY STRIP ── -->
     <p class="lp-hero-cats-label" data-i18n="lpHeroCatsLabel">O que procura?</p>
@@ -3080,10 +3057,6 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
           <span data-i18n="heroBtnSearch">Explorar Empresas</span>
         </button>
-        <button class="lp-cta-btn-secondary" onclick="openRegister()">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          <span data-i18n="heroBtnRegister">Registar a minha Empresa</span>
-        </button>
       </div>
     </div>
   </div>
@@ -3109,7 +3082,6 @@
         <h4 class="footer-title" data-i18n="footerNav">Navegação</h4>
         <a class="footer-link" onclick="showTab('home')" data-i18n="navHome">Início</a>
         <a class="footer-link" onclick="showTab('search')" data-i18n="navSearch">Pesquisa</a>
-        <a class="footer-link" onclick="openRegister()" data-i18n="navRegister">Registar Empresa</a>
       </div>
       <div class="footer-col">
         <h4 class="footer-title" data-i18n="footerLegal">Legal</h4>
@@ -3441,6 +3413,9 @@
     <button class="btn-quote-secondary" onclick="shareCompany()" title="Partilhar">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
     </button>
+    <button class="btn-quote-secondary" onclick="openReportModal()" title="Reportar listagem">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+    </button>
   </div>
 
   <!-- LOGIN GATE — shown to guests instead of contact details -->
@@ -3573,65 +3548,88 @@
 
     <!-- REGISTER TAB -->
     <div class="auth-panel" id="authRegister" style="display:none">
-      <!-- Step 1: Choose user type -->
-      <div id="regStep1">
-        <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:12px;text-align:center">Como pretende utilizar a Hive?</div>
-        <div class="auth-type-cards">
-          <div class="auth-type-card" role="button" tabindex="0" onclick="selectUserType('empresa', this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectUserType('empresa', this)}">
-            <div class="auth-type-icon">🏢</div>
-            <div class="auth-type-title">Sou Empresa</div>
-            <div class="auth-type-desc">Quero registar a minha empresa e aparecer no marketplace</div>
-          </div>
-          <div class="auth-type-card" role="button" tabindex="0" onclick="selectUserType('cliente', this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectUserType('cliente', this)}">
-            <div class="auth-type-icon">🔍</div>
-            <div class="auth-type-title">Procuro Serviços</div>
-            <div class="auth-type-desc">Quero pesquisar e encontrar empresas e profissionais</div>
-          </div>
+      <div id="googleRegisterSlot" class="google-btn-slot"></div>
+      <div id="googleRegisterDivider" class="auth-divider" style="display:none"><span>ou preencha os dados</span></div>
+      <form id="registerForm" onsubmit="event.preventDefault();doRegister()" novalidate>
+        <div class="form-row">
+          <label for="regAuthName"><span data-i18n="regAuthNameLabel">Nome completo</span> <span class="req">*</span></label>
+          <input type="text" id="regAuthName" name="name" placeholder="O seu nome" data-i18n-ph="regAuthNamePh" autocomplete="name" required aria-required="true"/>
         </div>
-      </div>
-      <!-- Step 2: Registration form (shown after type selection) -->
-      <div id="regStep2" style="display:none">
-        <div style="display:flex;align-items:center;gap:8px;margin-bottom:14px">
-          <button type="button" class="auth-back" onclick="regGoBack()" aria-label="Voltar">←</button>
-          <div id="regTypeLabel" style="font-size:13px;font-weight:700;color:var(--text)"></div>
+        <div class="form-row">
+          <label for="regAuthEmail">Email <span class="req">*</span></label>
+          <input type="email" id="regAuthEmail" name="email" placeholder="email@exemplo.com" autocomplete="email" inputmode="email" required aria-required="true"/>
         </div>
-        <div id="googleRegisterSlot" class="google-btn-slot"></div>
-        <div id="googleRegisterDivider" class="auth-divider" style="display:none"><span>ou preencha os dados</span></div>
-        <form id="registerForm" onsubmit="event.preventDefault();doRegister()" novalidate>
-          <div class="form-row">
-            <label for="regAuthName"><span data-i18n="regAuthNameLabel">Nome completo</span> <span class="req">*</span></label>
-            <input type="text" id="regAuthName" name="name" placeholder="O seu nome" data-i18n-ph="regAuthNamePh" autocomplete="name" required aria-required="true"/>
+        <div class="form-row">
+          <label for="regAuthPass">Palavra-passe <span class="req">*</span></label>
+          <div class="pwd-wrap">
+            <input type="password" id="regAuthPass" name="new-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required minlength="6" aria-required="true" aria-describedby="regAuthPassHint"/>
+            <button type="button" class="pwd-toggle" aria-label="Mostrar/ocultar palavra-passe" onclick="togglePassword('regAuthPass', this)" tabindex="-1">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
           </div>
-          <!-- Company name - only for empresa -->
-          <div class="form-row" id="regCompanyRow" style="display:none">
-            <label for="regAuthCompany"><span data-i18n="regAuthCompanyLabel">Nome da empresa</span> <span class="req">*</span></label>
-            <input type="text" id="regAuthCompany" name="organization" placeholder="Nome da empresa" data-i18n-ph="regAuthCompanyPh" autocomplete="organization"/>
-          </div>
-          <div class="form-row">
-            <label for="regAuthEmail">Email <span class="req">*</span></label>
-            <input type="email" id="regAuthEmail" name="email" placeholder="email@exemplo.com" autocomplete="email" inputmode="email" required aria-required="true"/>
-          </div>
-          <div class="form-row">
-            <label for="regAuthPass">Palavra-passe <span class="req">*</span></label>
-            <div class="pwd-wrap">
-              <input type="password" id="regAuthPass" name="new-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required minlength="6" aria-required="true" aria-describedby="regAuthPassHint"/>
-              <button type="button" class="pwd-toggle" aria-label="Mostrar/ocultar palavra-passe" onclick="togglePassword('regAuthPass', this)" tabindex="-1">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-              </button>
-            </div>
-            <div class="caps-hint" id="regCapsHint" hidden>⚠️ Caps Lock está ativado</div>
-            <div class="form-hint" id="regAuthPassHint">Mínimo 6 caracteres.</div>
-          </div>
-          <!-- Phone - only for empresa -->
-          <div class="form-row" id="regPhoneRow" style="display:none">
-            <label for="regAuthPhone" data-i18n="regAuthPhoneLabel">Telefone</label>
-            <input type="tel" id="regAuthPhone" name="tel" placeholder="+351 912 345 678" autocomplete="tel" inputmode="tel"/>
-          </div>
-          <button type="submit" class="btn-submit" id="registerSubmitBtn" style="width:100%;padding:11px;font-size:14px;margin-top:6px">Criar Conta</button>
-        </form>
-      </div>
+          <div class="caps-hint" id="regCapsHint" hidden>⚠️ Caps Lock está ativado</div>
+          <div class="form-hint" id="regAuthPassHint">Mínimo 6 caracteres.</div>
+        </div>
+        <button type="submit" class="btn-submit" id="registerSubmitBtn" style="width:100%;padding:11px;font-size:14px;margin-top:6px">Criar Conta</button>
+      </form>
       <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">Já tem conta? <button type="button" onclick="switchLoginTab('login')" style="background:none;border:0;color:var(--primary);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0">Entrar</button></div>
     </div>
+  </div>
+</div>
+
+<!-- REPORT LISTING MODAL — lets logged-in users flag a company for moderation. -->
+<div class="overlay" id="reportOverlay" onclick="if(event.target===this)closeReportModal()" role="dialog" aria-modal="true" aria-label="Reportar listagem">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-title" style="justify-content:center;text-align:center"><span>🚩 Reportar listagem</span></div>
+    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:14px">Os reportes são revistos pela nossa equipa de moderação.</div>
+    <form onsubmit="event.preventDefault();submitReport()">
+      <div class="form-row">
+        <label for="reportReason">Motivo <span class="req">*</span></label>
+        <select id="reportReason" required>
+          <option value="">Selecionar motivo…</option>
+          <option value="fake">Empresa falsa ou inexistente</option>
+          <option value="inappropriate">Conteúdo impróprio</option>
+          <option value="duplicate">Listagem duplicada</option>
+          <option value="wrong_info">Informação incorreta</option>
+          <option value="spam">Spam</option>
+          <option value="other">Outro</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label for="reportDetails">Detalhes (opcional)</label>
+        <textarea id="reportDetails" rows="4" maxlength="500" placeholder="Descreva o problema (até 500 caracteres)"></textarea>
+      </div>
+      <div style="display:flex;gap:8px;margin-top:6px">
+        <button type="button" class="btn-cancel" onclick="closeReportModal()" style="flex:1">Cancelar</button>
+        <button type="submit" class="btn-submit" id="reportSubmitBtn" style="flex:1">Enviar reporte</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- POST-REGISTER CHOICE MODAL — shown to a brand-new user to ask whether
+     they want to advertise their company or just browse the marketplace. -->
+<div class="overlay" id="postRegisterOverlay" onclick="if(event.target===this)closePostRegister()" role="dialog" aria-modal="true" aria-label="Próximos passos">
+  <div class="modal" style="max-width:440px">
+    <div class="modal-title" style="justify-content:center;text-align:center"><span id="postRegisterWelcome">Bem-vindo à Hive!</span></div>
+    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:18px">O que pretende fazer?</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <button type="button" onclick="postRegisterAdvertise()" style="display:flex;align-items:center;gap:14px;text-align:left;padding:16px;border-radius:12px;cursor:pointer;background:var(--bg);border:2px solid var(--border);font-family:inherit;transition:border-color .15s,background .15s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:32px;flex-shrink:0">🏢</div>
+        <div>
+          <div style="font-weight:800;color:var(--text);font-size:14px">Anunciar a minha empresa</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">Registar a minha empresa e aparecer no marketplace</div>
+        </div>
+      </button>
+      <button type="button" onclick="postRegisterBrowse()" style="display:flex;align-items:center;gap:14px;text-align:left;padding:16px;border-radius:12px;cursor:pointer;background:var(--bg);border:2px solid var(--border);font-family:inherit;transition:border-color .15s,background .15s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
+        <div style="font-size:32px;flex-shrink:0">🔍</div>
+        <div>
+          <div style="font-weight:800;color:var(--text);font-size:14px">Apenas pesquisar empresas</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px">Explorar o marketplace para encontrar profissionais</div>
+        </div>
+      </button>
+    </div>
+    <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">Pode anunciar a sua empresa mais tarde a partir do menu da conta.</div>
   </div>
 </div>
 
@@ -3661,6 +3659,11 @@
       <div class="form-row">
         <label for="regName"><span data-i18n="regCompanyName">Nome da Empresa</span> <span class="req">*</span></label>
         <input type="text" id="regName" data-i18n-ph="regNamePh" autocomplete="organization" required aria-required="true"/>
+      </div>
+      <div class="form-row">
+        <label for="regNif"><span>NIF / NIPC</span> <span class="req">*</span></label>
+        <input type="text" id="regNif" placeholder="123456789" inputmode="numeric" pattern="[0-9]{9}" maxlength="11" autocomplete="off"/>
+        <div class="form-hint" id="regNifHint">9 dígitos. Validamos o formato e o dígito de controlo.</div>
       </div>
       <div class="form-row">
         <label><span data-i18n="regSectorLabel">Setor de Atividade</span> <span class="req">*</span></label>
@@ -4066,7 +4069,6 @@
 <!-- Sticky CTA pill — only shows on the home tab when scrolled past the hero -->
 <div class="home-sticky-cta" id="homeStickyCta" hidden>
   <button class="hs-search" onclick="showTab('search')" data-i18n="navSearch">Pesquisar</button>
-  <button class="hs-register" onclick="openLogin();switchLoginTab('register')" data-i18n="heroBtnRegister">Registar Empresa</button>
 </div>
 
 <!-- ── COMPARE BAR + MODAL ─────────────────────────────────────────────── -->
@@ -6556,6 +6558,7 @@ function dbRowToCompany(row) {
   return {
     id:        row.id,
     name:      row.name,
+    nif:       row.nif       || '',
     cae:       row.cae       || '',
     alvara:    row.alvara    || '',
     certidao_permanente: row.certidao_permanente || '',
@@ -6963,6 +6966,7 @@ async function saveCompanyToDB(company) {
     name:        company.name,
     sectors:     company.sectors,
     sector:      company.sector,
+    nif:                 company.nif                 || null,
     cae:                 company.cae                 || null,
     alvara:              company.alvara              || null,
     certidao_permanente: company.certidao_permanente || null,
@@ -9004,10 +9008,25 @@ function renderRegisterCitySelect(country) {
     cities.map(c => `<option value="${c}">${c}</option>`).join('');
 }
 
+// Portuguese NIF (Número de Identificação Fiscal) checksum check — mirrors
+// the backend so we catch typos before submitting. 9 digits, mod-11 checksum.
+function isValidPortugueseNIF(input) {
+  if (input == null) return false;
+  const nif = String(input).replace(/\s+/g, '');
+  if (!/^\d{9}$/.test(nif)) return false;
+  if (!'123568945'.includes(nif[0])) return false;
+  let sum = 0;
+  for (let i = 0; i < 8; i++) sum += parseInt(nif[i], 10) * (9 - i);
+  const remainder = sum % 11;
+  const check = remainder < 2 ? 0 : 11 - remainder;
+  return check === parseInt(nif[8], 10);
+}
+
 function submitRegister() {
   const name    = document.getElementById('regName').value.trim();
   const sectors = _regSelectedSectors.slice(); // multi-select values
   const sector  = sectors[0] || '';            // primary sector (backward compat)
+  const nif     = (document.getElementById('regNif')?.value || '').replace(/\s+/g, '');
   const cae     = document.getElementById('regCae').value.trim();
   const address = document.getElementById('regAddress').value.trim();
   const country = document.getElementById('regCountry').value;
@@ -9031,6 +9050,12 @@ function submitRegister() {
 
   if (!name)           { failField('regName',       t('valName'));    return; }
   if (sectors.length === 0) { showToast(t('valSector'));  return; }
+  // NIF is mandatory for PT companies and must pass the checksum.
+  const ccLower = (document.getElementById('regCountry').value || 'pt').toLowerCase();
+  if (ccLower === 'pt') {
+    if (!nif) { failField('regNif', 'Introduza o NIF da empresa.'); return; }
+    if (!isValidPortugueseNIF(nif)) { failField('regNif', 'NIF inválido. Verifique os 9 dígitos.'); return; }
+  }
   if (!certidao)       { failField('regCertidao',   t('valCertidao')); return; }
   if (certidao.replace(/[\s-]/g, '').length < 8) { failField('regCertidao', t('valCertidaoFormat')); return; }
   if (!country)        { failField('regCountry',    'Selecione um país'); return; }
@@ -9123,6 +9148,7 @@ function submitRegister() {
     const newCompany = {
       id:          nextCompanyId++,
       name,
+      nif:         nif || '',
       cae:         cae || '',
       alvara:      alvara || '',
       certidao_permanente: certidao,
@@ -9156,7 +9182,8 @@ function submitRegister() {
       if (editId) {
         // PUT — update existing company
         await api.updateCompany(editId, {
-          name, sectors, sector: sectors[0] || '', cae: cae || null,
+          name, sectors, sector: sectors[0] || '', nif: nif || null,
+          cae: cae || null,
           alvara: alvara || null, certidao_permanente: certidao || null,
           address, postal_code: postalCode, city, country,
           email, phone, website: document.getElementById('regWebsite')?.value.trim() || null,
@@ -9168,7 +9195,7 @@ function submitRegister() {
         // Refresh local companies list
         const idx2 = companies.findIndex(x => x.id === editId);
         if (idx2 >= 0) {
-          Object.assign(companies[idx2], { name, sectors, sector: sectors[0] || '', cae, alvara,
+          Object.assign(companies[idx2], { name, sectors, sector: sectors[0] || '', nif, cae, alvara,
             certidao_permanente: certidao,
             address, postal_code: postalCode, city, country, email, phone, tags,
             description: document.getElementById('regDesc')?.value.trim() || '',
@@ -9186,7 +9213,7 @@ function submitRegister() {
       }
 
       // Reset form
-      ['regName','regCae','regAlvara','regCertidao','regAddress','regEmail','regPhone','regWebsite','regTags','regDesc','regPostalCode','regFoundedYear','regBusinessHours','regPortfolioImages']
+      ['regName','regNif','regCae','regAlvara','regCertidao','regAddress','regEmail','regPhone','regWebsite','regTags','regDesc','regPostalCode','regFoundedYear','regBusinessHours','regPortfolioImages']
         .forEach(fid => { const el = document.getElementById(fid); if(el) el.value = ''; });
       _regSelectedSectors = [];
       renderRegisterSectorSelect();
@@ -9876,28 +9903,61 @@ function switchLoginTab(tab) {
   document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
   document.getElementById('authLogin').style.display = tab === 'login' ? 'block' : 'none';
   document.getElementById('authRegister').style.display = tab === 'register' ? 'block' : 'none';
-  if (tab === 'register') { document.getElementById('regStep1').style.display = 'block'; document.getElementById('regStep2').style.display = 'none'; }
+  if (typeof _renderGoogleButtons === 'function') _renderGoogleButtons();
 }
-let regUserType = '';
-function selectUserType(type, el) {
-  regUserType = type;
-  document.querySelectorAll('.auth-type-card').forEach(c => c.classList.remove('selected'));
-  if (el) el.classList.add('selected');
-  setTimeout(() => {
-    document.getElementById('regStep1').style.display = 'none';
-    document.getElementById('regStep2').style.display = 'block';
-    document.getElementById('regCompanyRow').style.display = type === 'empresa' ? 'block' : 'none';
-    document.getElementById('regPhoneRow').style.display = type === 'empresa' ? 'block' : 'none';
-    document.getElementById('regTypeLabel').textContent = type === 'empresa' ? t('regTypeCompany') : t('regTypeClient');
-    // Google button is now visible inside the register panel
-    if (typeof _renderGoogleButtons === 'function') _renderGoogleButtons();
-  }, 200);
+
+// ── POST-REGISTER CHOICE ──────────────────────────────────────────────────
+// Shown to a brand-new user (after email or Google signup) so they can choose
+// to advertise their company or just browse. The "advertise" path opens the
+// existing company-registration overlay; "browse" simply dismisses the modal.
+function openPostRegisterChoice(name) {
+  const ov = document.getElementById('postRegisterOverlay');
+  if (!ov) return;
+  const welcome = document.getElementById('postRegisterWelcome');
+  if (welcome) welcome.textContent = name ? ('Bem-vindo à Hive, ' + name + '!') : 'Bem-vindo à Hive!';
+  ov.classList.add('open');
 }
-function regGoBack() {
-  document.getElementById('regStep2').style.display = 'none';
-  document.getElementById('regStep1').style.display = 'block';
-  regUserType = '';
-  document.querySelectorAll('.auth-type-card').forEach(c => c.classList.remove('selected'));
+function closePostRegister() {
+  const ov = document.getElementById('postRegisterOverlay');
+  if (ov) ov.classList.remove('open');
+}
+function postRegisterAdvertise() {
+  closePostRegister();
+  setTimeout(() => openRegister(), 200);
+}
+function postRegisterBrowse() {
+  closePostRegister();
+  if (typeof selectedId !== 'undefined' && selectedId) openDetail(selectedId);
+}
+
+// ── REPORT LISTING ────────────────────────────────────────────────────────
+function openReportModal() {
+  const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  if (!user) { showToast('Inicie sessão para reportar uma listagem.'); openLogin(); return; }
+  if (!selectedId) return;
+  document.getElementById('reportReason').value = '';
+  document.getElementById('reportDetails').value = '';
+  document.getElementById('reportOverlay').classList.add('open');
+}
+function closeReportModal() {
+  document.getElementById('reportOverlay').classList.remove('open');
+}
+async function submitReport() {
+  const reason  = document.getElementById('reportReason').value;
+  const details = document.getElementById('reportDetails').value.trim();
+  if (!reason) { showToast('Selecione um motivo.'); return; }
+  if (!selectedId) { closeReportModal(); return; }
+  const btn = document.getElementById('reportSubmitBtn');
+  setBusy(btn, true);
+  try {
+    await api.reportCompany(selectedId, reason, details);
+    closeReportModal();
+    showToast('Reporte enviado. Obrigado por nos ajudar a manter a plataforma segura.');
+  } catch (e) {
+    showToast(e.message || 'Não foi possível enviar o reporte.');
+  } finally {
+    setBusy(btn, false);
+  }
 }
 // ── Password recovery (forgot + reset) ─────────────────────────────────────
 function openForgotPassword() {
@@ -10045,32 +10105,23 @@ async function doRegister() {
   const name = document.getElementById('regAuthName').value.trim();
   const email = document.getElementById('regAuthEmail').value.trim();
   const pass = document.getElementById('regAuthPass').value;
-  const company = document.getElementById('regAuthCompany').value.trim();
-  const phone = document.getElementById('regAuthPhone').value.trim();
   const btn = document.getElementById('registerSubmitBtn');
   if (!name || !email || !pass) { showToast('Preencha os campos obrigatórios'); return; }
   if (pass.length < 6) { showToast('A palavra-passe deve ter pelo menos 6 caracteres'); return; }
-  if (regUserType === 'empresa' && !company) { showToast('Preencha o nome da empresa'); return; }
   setBusy(btn, true);
   try {
-    const { user } = await api.register({ name, email, password: pass, type: regUserType, company: company || '', phone: phone || '' });
+    // All new accounts start as 'cliente'. The user upgrades their account by
+    // registering a company afterwards via the post-register choice modal.
+    const { user } = await api.register({ name, email, password: pass, type: 'cliente' });
     sessionStorage.setItem('hive_user', JSON.stringify(user));
     isAdminMode = user.is_admin === true;
     closeLogin();
     updateNavAuth();
     syncFavouritesFromServer();
-    if (regUserType === 'empresa') {
-      showToast('Conta criada! Pode agora registar a sua empresa.');
-      setTimeout(() => openRegister(), 800);
-    } else {
-      showToast('Bem-vindo à Hive, ' + name + '!');
-      if (selectedId) openDetail(selectedId);
-    }
     document.getElementById('regAuthName').value = '';
     document.getElementById('regAuthEmail').value = '';
     document.getElementById('regAuthPass').value = '';
-    document.getElementById('regAuthCompany').value = '';
-    document.getElementById('regAuthPhone').value = '';
+    openPostRegisterChoice(user.name || name);
   } catch(e) {
     showToast(e.message || 'Erro ao criar conta');
   } finally {
@@ -10145,16 +10196,21 @@ async function _onGoogleCredential(response) {
   try {
     const idToken = response && response.credential;
     if (!idToken) throw new Error('Sem credencial Google');
-    // regUserType is populated when a registering user picked a role;
-    // otherwise the backend defaults to 'cliente'.
-    const { user } = await api.loginWithGoogle(idToken, regUserType || undefined);
+    // Detect whether the user clicked Google from the register tab — if so,
+    // we offer the post-register choice (advertise vs browse) once auth completes.
+    const fromRegisterTab = document.querySelector('.auth-tab.active')?.dataset.tab === 'register';
+    const { user } = await api.loginWithGoogle(idToken);
     sessionStorage.setItem('hive_user', JSON.stringify(user));
     isAdminMode = user.is_admin === true;
     closeLogin();
     updateNavAuth();
     syncFavouritesFromServer();
-    showToast('Bem-vindo, ' + user.name + '!');
-    if (selectedId) openDetail(selectedId);
+    if (fromRegisterTab) {
+      openPostRegisterChoice(user.name);
+    } else {
+      showToast('Bem-vindo, ' + user.name + '!');
+      if (selectedId) openDetail(selectedId);
+    }
   } catch (e) {
     showToast(e.message || 'Falha ao iniciar sessão com Google');
   }
@@ -10165,12 +10221,10 @@ function updateNavAuth() {
   const mobileTopAuth = document.getElementById('mobileTopAuth');
   const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
   if (!user) {
-    // Top-nav login button removed by user request — leave authArea/mobileTopAuth empty.
-    // The hamburger drawer (mobileArea) keeps its Entrar entry so mobile users still
-    // have a path to log in from anywhere on the site.
-    if (area) area.innerHTML = '';
-    if (mobileArea) mobileArea.innerHTML = '<button class="mobile-nav-link" onclick="openLogin();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span data-i18n="navLogin">Entrar</span></button>';
-    if (mobileTopAuth) mobileTopAuth.innerHTML = '';
+    // Single auth entry point lives in the top-right of the nav (desktop + mobile).
+    if (area) area.innerHTML = '<button class="btn-login" onclick="openLogin()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span data-i18n="navLogin">Entrar</span></button>';
+    if (mobileArea) mobileArea.innerHTML = '';
+    if (mobileTopAuth) mobileTopAuth.innerHTML = '<button class="mobile-top-login" onclick="openLogin()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span data-i18n="navLogin">Entrar</span></button>';
   } else {
     const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
     const typeClass = user.type === 'empresa' ? 'empresa' : 'cliente';
@@ -10184,7 +10238,7 @@ function updateNavAuth() {
             <div class="avatar-menu-email">${user.email}</div>
             <div class="avatar-menu-type ${typeClass}">${typeLabel}</div>
           </div>
-          ${user.type === 'empresa' ? '<div class="avatar-menu-item" onclick="openRegister();closeAvatarMenu()"><i data-lucide="building-2"></i>' + t('avatarRegisterCompany') + '</div>' : ''}
+          <div class="avatar-menu-item" onclick="openRegister();closeAvatarMenu()"><i data-lucide="building-2"></i>${t('avatarRegisterCompany')}</div>
           <div class="avatar-menu-item" onclick="openProfilePanel();closeAvatarMenu()"><i data-lucide="user"></i>O Meu Perfil</div>
           <div class="avatar-menu-item" onclick="openMyFavourites();closeAvatarMenu()"><i data-lucide="star"></i>Favoritos <span class="avatar-menu-badge" id="avMenuFavCount" hidden></span></div>
           <div class="avatar-menu-item" onclick="openStatusModal();closeAvatarMenu()"><i data-lucide="clipboard-list"></i>Estado dos registos</div>
@@ -10833,10 +10887,12 @@ async function profileEditCompany(companyId) {
   setTimeout(() => {
     // Pre-fill identity fields
     const nameEl = document.getElementById('regName');
+    const nifEl  = document.getElementById('regNif');
     const caeEl  = document.getElementById('regCae');
     const alvaraEl = document.getElementById('regAlvara');
     const certidaoEl = document.getElementById('regCertidao');
     if (nameEl)     nameEl.value     = full.name || '';
+    if (nifEl)      nifEl.value      = full.nif  || '';
     if (caeEl)      caeEl.value      = full.cae  || '';
     if (alvaraEl)   alvaraEl.value   = full.alvara || '';
     if (certidaoEl) certidaoEl.value = full.certidao_permanente || '';
@@ -11421,11 +11477,66 @@ function closeAdminPanel() {
 function adminSwitchTab(tab) {
   _adminCurrentTab = tab;
   document.querySelectorAll('.admin-tab').forEach((el, i) => {
-    el.classList.toggle('active', ['stats','pending','all'][i] === tab);
+    el.classList.toggle('active', ['stats','pending','all','reports'][i] === tab);
   });
   if (tab === 'stats') adminLoadStats();
   else if (tab === 'pending') adminLoadCompanies('pending');
+  else if (tab === 'reports') adminLoadReports('pending');
   else adminLoadCompanies();
+}
+
+// ── ADMIN REPORTS QUEUE ───────────────────────────────────────────────────
+async function adminLoadReports(status) {
+  const body = document.getElementById('adminBody');
+  body.innerHTML = `
+    <div class="admin-search-bar">
+      <select id="reportStatusFilter" onchange="adminLoadReports(this.value)">
+        <option value="pending" ${status==='pending'?'selected':''}>Pendentes</option>
+        <option value="reviewed" ${status==='reviewed'?'selected':''}>Revistos</option>
+        <option value="dismissed" ${status==='dismissed'?'selected':''}>Descartados</option>
+        <option value="" ${!status?'selected':''}>Todos</option>
+      </select>
+    </div>
+    <div id="adminReportsList"><div style="text-align:center;padding:32px;color:var(--muted)">A carregar...</div></div>`;
+  try {
+    const rows = await api.adminReports(status ? { status } : {});
+    const list = document.getElementById('adminReportsList');
+    if (!rows.length) { list.innerHTML = '<div style="text-align:center;padding:32px;color:var(--muted)">Nenhum reporte.</div>'; return; }
+    const reasonLabel = {
+      fake: 'Empresa falsa', inappropriate: 'Conteúdo impróprio',
+      duplicate: 'Duplicada', wrong_info: 'Informação incorreta',
+      spam: 'Spam', other: 'Outro',
+    };
+    list.innerHTML = rows.map(r => `
+      <div class="admin-company-row" id="reportRow${r.id}" style="flex-direction:column;align-items:stretch;gap:8px">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap">
+          <div style="font-weight:800;font-size:14px">${escHtml(r.company_name)} <span style="font-size:11px;color:var(--muted);font-weight:400">#${r.company_id}</span></div>
+          <span class="admin-status-badge ${r.status==='pending'?'pending':r.status==='reviewed'?'approved':'rejected'}">${r.status}</span>
+        </div>
+        <div style="font-size:13px"><strong>${escHtml(reasonLabel[r.reason]||r.reason)}</strong>${r.details?` — ${escHtml(r.details)}`:''}</div>
+        <div style="font-size:11px;color:var(--muted)">
+          Reportado por ${escHtml(r.reporter_name||'anónimo')} (${escHtml(r.reporter_email||'')}) · ${new Date(r.created_at).toLocaleString('pt-PT')}
+        </div>
+        <div style="display:flex;gap:6px;flex-wrap:wrap">
+          <button class="admin-action-btn" onclick="adminViewReportedCompany(${r.company_id})">Ver empresa</button>
+          ${r.status==='pending' ? `<button class="admin-action-btn" onclick="adminSetReportStatus(${r.id},'reviewed')">Marcar como revisto</button>` : ''}
+          ${r.status==='pending' ? `<button class="admin-action-btn danger" onclick="adminSetReportStatus(${r.id},'dismissed')">Descartar</button>` : ''}
+        </div>
+      </div>`).join('');
+  } catch(e) {
+    document.getElementById('adminReportsList').innerHTML = '<div style="color:var(--red);padding:20px">' + (e.message||'Erro') + '</div>';
+  }
+}
+async function adminSetReportStatus(id, status) {
+  try {
+    await api.adminSetReportStatus(id, status);
+    showToast('Reporte atualizado');
+    adminLoadReports(document.getElementById('reportStatusFilter')?.value || 'pending');
+  } catch(e) { showToast(e.message||'Erro'); }
+}
+function adminViewReportedCompany(id) {
+  closeAdminPanel();
+  openDetail(id);
 }
 
 async function adminLoadStats() {

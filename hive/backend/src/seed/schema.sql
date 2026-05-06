@@ -40,6 +40,7 @@ CREATE TABLE IF NOT EXISTS companies (
   name        TEXT NOT NULL,
   sectors     TEXT[] NOT NULL DEFAULT '{}',
   sector      TEXT,
+  nif                  TEXT,
   cae                  TEXT,
   alvara               TEXT,
   certidao_permanente  TEXT,
@@ -121,6 +122,24 @@ ALTER TABLE companies ADD COLUMN IF NOT EXISTS portfolio_images TEXT[] DEFAULT '
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS alvara              TEXT;
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS certidao_permanente TEXT;
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS featured            BOOLEAN DEFAULT FALSE;
+ALTER TABLE companies ADD COLUMN IF NOT EXISTS nif                 TEXT;
+CREATE INDEX IF NOT EXISTS idx_companies_nif ON companies(nif);
+
+-- ── Listing reports (user-flagged content) ────────────────────────────────────
+CREATE TABLE IF NOT EXISTS reports (
+  id          BIGSERIAL PRIMARY KEY,
+  company_id  BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+  user_id     BIGINT REFERENCES users(id) ON DELETE SET NULL,
+  reason      TEXT NOT NULL,
+  details     TEXT,
+  status      TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','reviewed','dismissed')),
+  created_at  TIMESTAMPTZ DEFAULT NOW(),
+  reviewed_at TIMESTAMPTZ,
+  reviewed_by BIGINT REFERENCES users(id) ON DELETE SET NULL
+);
+CREATE INDEX IF NOT EXISTS idx_reports_company ON reports(company_id);
+CREATE INDEX IF NOT EXISTS idx_reports_status  ON reports(status);
+CREATE INDEX IF NOT EXISTS idx_reports_created ON reports(created_at DESC);
 
 -- ── User favourites ──────────────────────────────────────────────────────────
 -- Per-user saved companies. Composite PK so the same user can't double-add.

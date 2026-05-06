@@ -5,10 +5,27 @@ const { requireAuth, requireAdmin, optionalAuth } = require('../middleware/auth'
 const reviewsRouter = require('./reviews');
 const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail, sendContactEmail } = require('../email');
 
+// Portuguese NIF (Número de Identificação Fiscal): 9 digits with a checksum.
+// First digit identifies the entity type — only valid prefixes are accepted.
+// The checksum follows the modulo-11 algorithm published by the AT.
+function isValidPortugueseNIF(input) {
+  if (input == null) return false;
+  const nif = String(input).replace(/\s+/g, '');
+  if (!/^\d{9}$/.test(nif)) return false;
+  // Valid leading digits per AT (1,2,3 = singular; 5 = collective; 6 = public;
+  // 8 = empresário em nome individual; 9 = condomínios/heranças/IRC)
+  if (!'123568945'.includes(nif[0])) return false;
+  let sum = 0;
+  for (let i = 0; i < 8; i++) sum += parseInt(nif[i], 10) * (9 - i);
+  const remainder = sum % 11;
+  const check = remainder < 2 ? 0 : 11 - remainder;
+  return check === parseInt(nif[8], 10);
+}
+
 // GET /api/companies — public, returns all approved companies
 // Supports: ?country=pt  ?q=search_text  ?sector=Construção
 const LIST_COLS = `
-  id, name, sectors, sector, cae, address, postal_code, city, country, zone,
+  id, name, sectors, sector, nif, cae, address, postal_code, city, country, zone,
   email, phone, website, tags, description,
   founded_year, business_hours, portfolio_images,
   lat, lng, rating, reviews, top_rated, verified, is_new, featured,
@@ -162,7 +179,7 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const {
-      name, sectors, sector, cae, alvara, certidao_permanente,
+      name, sectors, sector, nif, cae, alvara, certidao_permanente,
       address, postal_code, city, country,
       zone, email, phone, website, tags, description, lat, lng,
       emoji, color, pin_type,
@@ -171,6 +188,16 @@ router.post('/', async (req, res, next) => {
 
     if (!name || lat == null || lng == null || isNaN(Number(lat)) || isNaN(Number(lng))) {
       return res.status(400).json({ error: 'name, lat e lng são obrigatórios' });
+    }
+    // NIF (Portuguese tax ID) is mandatory for PT companies and is checksum-
+    // validated. Foreign companies (country != 'pt') skip this check.
+    const cc = (country || 'pt').toLowerCase();
+    const nifClean = nif != null ? String(nif).replace(/\s+/g, '') : '';
+    if (cc === 'pt') {
+      if (!nifClean) return res.status(400).json({ error: 'NIF é obrigatório.' });
+      if (!isValidPortugueseNIF(nifClean)) {
+        return res.status(400).json({ error: 'NIF inválido. Verifique os 9 dígitos.' });
+      }
     }
     // Certidão Permanente is mandatory at registration to prove the company is
     // a real, registered Portuguese commercial entity.
@@ -185,18 +212,19 @@ router.post('/', async (req, res, next) => {
 
     const { rows } = await pool.query(
       `INSERT INTO companies
-        (name, sectors, sector, cae, alvara, certidao_permanente,
+        (name, sectors, sector, nif, cae, alvara, certidao_permanente,
          address, postal_code, city, country, zone,
          email, phone, website, tags, description,
          founded_year, business_hours, portfolio_images,
          lat, lng, emoji, color, pin_type,
          status, created_by)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,'pending',$25)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,'pending',$26)
        RETURNING *`,
       [
         name,
         sectors || (sector ? [sector] : []),
         sector || (sectors && sectors[0]) || null,
+        nifClean || null,
         cae || null,
         alvara || null,
         certidao,
@@ -326,6 +354,29 @@ router.post('/:id/contact', requireAuth, async (req, res, next) => {
     ).catch(() => {});
 
     res.json({ ok: true });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// POST /api/companies/:id/report — flag a listing for review. Auth required so
+// admins can follow up with the reporter, and to make spam-flagging traceable.
+router.post('/:id/report', requireAuth, async (req, res, next) => {
+  try {
+    const { reason, details } = req.body;
+    const allowed = ['inappropriate', 'fake', 'duplicate', 'wrong_info', 'spam', 'other'];
+    if (!reason || !allowed.includes(String(reason))) {
+      return res.status(400).json({ error: 'Motivo inválido.' });
+    }
+    const detailsTrim = (details || '').trim().slice(0, 500);
+    const { rows: co } = await pool.query('SELECT id FROM companies WHERE id = $1', [req.params.id]);
+    if (!co[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
+
+    await pool.query(
+      `INSERT INTO reports (company_id, user_id, reason, details) VALUES ($1, $2, $3, $4)`,
+      [req.params.id, req.user.id, reason, detailsTrim || null]
+    );
+    res.status(201).json({ ok: true });
   } catch (e) {
     next(e);
   }

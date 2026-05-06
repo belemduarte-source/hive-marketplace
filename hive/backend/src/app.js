@@ -120,8 +120,11 @@ let _migrationPromise = null;
 // Use a marker that's unique to the latest schema. Existing instances whose
 // schema is older than this row will fall through to the slow migration path
 // once per Lambda cold start, then fast-path forever.
-const SENTINEL_COLUMN = 'user_id';
-const SENTINEL_TABLE  = 'user_favourites';
+// Sentinel detects the latest schema. Bumped when adding the `reports` table
+// and the `companies.nif` column — older instances fall through to the slow
+// migration path once per Lambda cold start, then fast-path forever.
+const SENTINEL_COLUMN = 'reason';
+const SENTINEL_TABLE  = 'reports';
 
 async function ensureSchema() {
   if (_migrated) return;

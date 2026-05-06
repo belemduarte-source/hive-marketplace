@@ -110,6 +110,52 @@ router.put('/companies/:id/verified', async (req, res, next) => {
   }
 });
 
+// GET /api/admin/reports?status=pending — list user-flagged listings
+router.get('/reports', async (req, res, next) => {
+  try {
+    const { status } = req.query;
+    const params = [];
+    const where = [];
+    if (status && ['pending', 'reviewed', 'dismissed'].includes(String(status))) {
+      params.push(status);
+      where.push(`r.status = $${params.length}`);
+    }
+    const sql = `
+      SELECT r.id, r.company_id, r.reason, r.details, r.status, r.created_at,
+             r.reviewed_at, c.name AS company_name, c.email AS company_email,
+             c.status AS company_status,
+             u.name AS reporter_name, u.email AS reporter_email
+        FROM reports r
+        JOIN companies c ON c.id = r.company_id
+        LEFT JOIN users u ON u.id = r.user_id
+        ${where.length ? 'WHERE ' + where.join(' AND ') : ''}
+        ORDER BY r.created_at DESC
+        LIMIT 200`;
+    const { rows } = await pool.query(sql, params);
+    res.json(rows);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// PUT /api/admin/reports/:id/status — mark a report as reviewed or dismissed
+router.put('/reports/:id/status', async (req, res, next) => {
+  try {
+    const { status } = req.body;
+    if (!['reviewed', 'dismissed', 'pending'].includes(String(status))) {
+      return res.status(400).json({ error: 'status inválido' });
+    }
+    const { rows } = await pool.query(
+      `UPDATE reports SET status = $1, reviewed_at = NOW(), reviewed_by = $2 WHERE id = $3 RETURNING *`,
+      [status, req.user.id, req.params.id]
+    );
+    if (!rows[0]) return res.status(404).json({ error: 'Reporte não encontrado' });
+    res.json(rows[0]);
+  } catch (e) {
+    next(e);
+  }
+});
+
 // DELETE /api/admin/reviews/:id — remove abusive review
 router.delete('/reviews/:id', async (req, res, next) => {
   try {
