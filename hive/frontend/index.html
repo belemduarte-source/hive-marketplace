@@ -2344,6 +2344,7 @@
     .slc-fav.is-fav{color:var(--gold);border-color:var(--gold);background:#fef3c7}
     /* Recently viewed strip on the search tab */
     .recent-strip{padding:10px 16px;background:var(--bg);border-bottom:1px solid var(--border);overflow-x:auto;display:flex;gap:8px;white-space:nowrap;-webkit-overflow-scrolling:touch}
+    .recent-strip[hidden]{display:none !important}
     .recent-strip::-webkit-scrollbar{height:4px}
     .recent-strip::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px}
     .recent-strip-label{display:inline-flex;align-items:center;font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-right:6px;flex-shrink:0}
@@ -6761,9 +6762,9 @@ function _renderRecentStrip() {
   const ids = _getRecentIds();
   // Resolve to companies the user can actually click. If `companies` isn't
   // populated yet (script loads top-down), defer.
-  if (typeof companies === 'undefined' || !companies.length) { strip.hidden = true; return; }
+  if (typeof companies === 'undefined' || !companies.length) { strip.innerHTML = ''; strip.hidden = true; return; }
   const items = ids.map(id => companies.find(c => Number(c.id) === id)).filter(Boolean);
-  if (items.length === 0) { strip.hidden = true; return; }
+  if (items.length === 0) { strip.innerHTML = ''; strip.hidden = true; return; }
   strip.hidden = false;
   strip.innerHTML =
     '<span class="recent-strip-label">Vistas recentemente</span>' +
