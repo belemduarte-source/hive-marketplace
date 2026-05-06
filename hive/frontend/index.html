@@ -9314,6 +9314,19 @@ function openDetail(id) {
   const tr = translations[currentLang];
   selectedId = id;
 
+  // Sync URL ?company=<id> so the panel is shareable + browser-back works.
+  // _suppressCompanyHistory is flipped by the popstate listener and the
+  // initial-load handler so we don't double-push.
+  if (!window._suppressCompanyHistory) {
+    try {
+      const url = new URL(window.location.href);
+      if (String(url.searchParams.get('company')) !== String(id)) {
+        url.searchParams.set('company', String(id));
+        history.pushState({ company: Number(id) }, '', url.toString());
+      }
+    } catch (_) {}
+  }
+
   document.getElementById('dpLogo').textContent        = c.emoji;
   document.getElementById('dpLogo').style.background   = c.color;
   document.getElementById('dpName').textContent        = c.name;
@@ -9424,6 +9437,16 @@ window._refreshDpFavBtn = _refreshDpFavBtn;
 function closeDetail() {
   document.getElementById('detailPanel').classList.remove('open');
   selectedId = null;
+  // Drop ?company from the URL unless the close was triggered by popstate.
+  if (!window._suppressCompanyHistory) {
+    try {
+      const url = new URL(window.location.href);
+      if (url.searchParams.has('company')) {
+        url.searchParams.delete('company');
+        history.pushState({ company: null }, '', url.toString());
+      }
+    } catch (_) {}
+  }
   // Return to the location user was viewing
   if (map) map.flyTo(currentMapCenter, 12, { animate: true, duration: 1 });
 }
@@ -11321,10 +11344,46 @@ if (_origLoadCompanies) {
   loadCompaniesFromDB = async function() {
     await _origLoadCompanies();
     setTimeout(_handleHashRoute, 600);
+    // Deep-link: open the company referenced by ?company=<id>
+    setTimeout(_openCompanyFromUrl, 650);
   };
 }
 // Also try on DOMContentLoaded in case companies are already loaded
 document.addEventListener('DOMContentLoaded', () => setTimeout(_handleHashRoute, 1200));
+
+// ── DEEP-LINK ROUTING FOR COMPANY DETAIL ─────────────────────────────────────
+// Reads ?company=<id> on initial load and on browser back/forward, opening
+// or closing the detail panel without pushing redundant history entries.
+function _openCompanyFromUrl() {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const raw = params.get('company');
+    if (!raw) return;
+    const id = Number(raw);
+    if (!Number.isFinite(id)) return;
+    if (typeof companies === 'undefined' || !companies.find(c => c.id === id)) return;
+    // Replace state so the user's first back press leaves the panel rather than
+    // landing on an identical URL.
+    history.replaceState({ company: id }, '', window.location.href);
+    window._suppressCompanyHistory = true;
+    try { openDetail(id); } finally { window._suppressCompanyHistory = false; }
+  } catch (_) {}
+}
+window.addEventListener('popstate', () => {
+  const params = new URLSearchParams(window.location.search);
+  const raw = params.get('company');
+  const id  = raw ? Number(raw) : null;
+  window._suppressCompanyHistory = true;
+  try {
+    if (id && Number.isFinite(id) && id !== selectedId) {
+      openDetail(id);
+    } else if (!id && selectedId != null) {
+      closeDetail();
+    }
+  } finally {
+    window._suppressCompanyHistory = false;
+  }
+});
 
 // FEATURE: Featured pins — styling is baked into createMarkerIcon() above,
 // which applies a gold ring and ⭐ badge when c.featured === true.
