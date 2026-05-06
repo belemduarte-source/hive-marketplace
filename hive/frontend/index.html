@@ -1205,6 +1205,20 @@
     .lp-hero-login-link:active{background:rgba(249,115,22,.25)}
 
     /* ── Hero quick-category strip — 2 rows × 4 grid ── */
+    /* Logged-in hero CTA — only displayed via JS once a session is active */
+    .lp-hero-userCta{display:flex;align-items:center;gap:14px;justify-content:center;flex-wrap:wrap;background:linear-gradient(135deg,rgba(249,115,22,.16),rgba(249,115,22,.06));border:1.5px solid rgba(249,115,22,.4);border-radius:14px;padding:14px 22px;margin:0 auto 26px;max-width:640px;position:relative;z-index:2;box-shadow:0 4px 18px rgba(0,0,0,.18)}
+    .lp-hero-userCta[hidden]{display:none !important}
+    .lp-hero-userCta-text{display:flex;flex-direction:column;text-align:left;color:#fff;line-height:1.35}
+    .lp-hero-userCta-text strong{font-size:14px;font-weight:800;color:#fb923c}
+    .lp-hero-userCta-text span{font-size:13px;color:rgba(255,255,255,.85)}
+    .lp-hero-userCta-btn{display:inline-flex;align-items:center;gap:7px;background:linear-gradient(135deg,#ea580c,#f97316);color:#fff;border:none;border-radius:10px;padding:10px 18px;font-size:13px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.02em;box-shadow:0 4px 14px rgba(234,88,12,.4);transition:transform .15s,box-shadow .15s;flex-shrink:0;white-space:nowrap}
+    .lp-hero-userCta-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(234,88,12,.55)}
+    .lp-hero-userCta-btn:active{transform:translateY(0)}
+    @media(max-width:520px){
+      .lp-hero-userCta{padding:12px 14px}
+      .lp-hero-userCta-text{text-align:center;align-items:center}
+      .lp-hero-userCta-btn{width:100%;justify-content:center}
+    }
     .lp-hero-cats-label{font-size:20px;color:#ffffff;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;position:relative;z-index:2}
     .lp-hero-cats{
       display:grid;
@@ -2905,6 +2919,18 @@
 
       </div><!-- /lp-searchbar -->
     </div><!-- /lp-search-wrap -->
+
+    <!-- ── LOGGED-IN HERO CTA — show registered users a quick path to advertise -->
+    <div class="lp-hero-userCta" id="lpHeroUserCta" hidden>
+      <div class="lp-hero-userCta-text">
+        <strong id="lpHeroUserCtaGreeting">Olá!</strong>
+        <span>Quer anunciar a sua empresa no marketplace?</span>
+      </div>
+      <button type="button" class="lp-hero-userCta-btn" onclick="openRegister()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        <span>Anunciar Empresa</span>
+      </button>
+    </div>
 
     <!-- ── HERO CATEGORY STRIP ── -->
     <p class="lp-hero-cats-label" data-i18n="lpHeroCatsLabel">O que procura?</p>
@@ -10261,12 +10287,15 @@ function updateNavAuth() {
   const area = document.getElementById('authArea');
   const mobileArea = document.getElementById('mobileAuthArea');
   const mobileTopAuth = document.getElementById('mobileTopAuth');
+  const heroCta = document.getElementById('lpHeroUserCta');
+  const heroCtaGreeting = document.getElementById('lpHeroUserCtaGreeting');
   const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
   if (!user) {
     // Single auth entry point lives in the top-right of the nav (desktop + mobile).
     if (area) area.innerHTML = '<button class="btn-login" onclick="openLogin()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span data-i18n="navLogin">Entrar</span></button>';
     if (mobileArea) mobileArea.innerHTML = '';
     if (mobileTopAuth) mobileTopAuth.innerHTML = '<button class="mobile-top-login" onclick="openLogin()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span data-i18n="navLogin">Entrar</span></button>';
+    if (heroCta) heroCta.hidden = true;
   } else {
     const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
     const typeClass = user.type === 'empresa' ? 'empresa' : 'cliente';
@@ -10293,6 +10322,11 @@ function updateNavAuth() {
       </div>`;
     if (mobileArea) mobileArea.innerHTML = `<button class="mobile-nav-link" onclick="openProfilePanel();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>${user.name}</span></button><button class="mobile-nav-link" onclick="openMyFavourites();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span data-i18n="navFavourites">Favoritos</span></button><button class="mobile-nav-link" style="color:#ef4444" onclick="doLogout();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Terminar Sessão</span></button>`;
     if (mobileTopAuth) mobileTopAuth.innerHTML = `<button class="mobile-top-avatar" onclick="toggleMobileNav()" title="${user.name}">${initials}</button>`;
+    if (heroCta) {
+      heroCta.hidden = false;
+      const firstName = (user.name || '').split(' ')[0];
+      if (heroCtaGreeting) heroCtaGreeting.textContent = firstName ? ('Olá, ' + firstName + '!') : 'Olá!';
+    }
   }
   refreshLucide();
   updateVerifyBanner();
