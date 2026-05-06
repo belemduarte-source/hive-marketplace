@@ -2742,14 +2742,14 @@
 <!-- REGISTRATION SUCCESS SCREEN -->
 <div class="reg-success-overlay" id="regSuccessOverlay">
   <div class="reg-success-card">
-    <div class="reg-success-icon">📩</div>
-    <div class="reg-success-title" data-i18n="successTitle">Pedido Enviado!</div>
+    <div class="reg-success-icon">🎉</div>
+    <div class="reg-success-title">Empresa Publicada!</div>
     <div class="reg-success-name" id="regSuccessName"></div>
-    <div class="reg-success-sub" data-i18n="successSub">O seu pedido foi recebido e está a aguardar validação. Receberá um email de confirmação assim que a empresa for aprovada.</div>
-    <ul class="reg-success-steps" data-i18n-list="successNextSteps">
-      <li>📧 Validação tipicamente em <strong>até 24h úteis</strong>.</li>
-      <li>✅ Receberá email de confirmação assim que aprovada.</li>
-      <li>🔍 Pode acompanhar o estado a qualquer momento.</li>
+    <div class="reg-success-sub">A sua empresa já está visível no mapa. Pode editar os detalhes (morada, alvará, certidão permanente, contactos) a qualquer momento a partir do seu perfil.</div>
+    <ul class="reg-success-steps">
+      <li>✅ Visível no mapa <strong>imediatamente</strong>.</li>
+      <li>✏️ Edite os detalhes a partir do <strong>O Meu Perfil</strong>.</li>
+      <li>🚩 A nossa equipa pode rever e moderar caso seja reportada.</li>
     </ul>
     <div class="reg-success-actions">
       <button class="btn-success-close" onclick="closeRegSuccess(false)" data-i18n="successClose">Continuar a Navegar</button>
@@ -7049,26 +7049,26 @@ let isAdminMode = (function() {
 
 function updateAdminUI() {
   const editBtn = document.getElementById('dpEditBtn');
-  if (editBtn && selectedId) {
-    editBtn.style.display = isAdminMode ? 'flex' : 'none';
-  }
+  if (!editBtn || !selectedId) return;
+  // Show the edit button when the viewer is an admin OR the owner of this listing.
+  const me = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  const c  = companies.find(x => x.id === selectedId);
+  const isOwner = !!(me && c && (c.created_by === me.id || c.createdBy === me.id));
+  editBtn.style.display = (isAdminMode || isOwner) ? 'flex' : 'none';
 }
 
 function openEditCompany() {
-  if (!isAdminMode || !selectedId) return;
-  const c = companies.find(x => x.id === selectedId);
-  if (!c) return;
-
-  // For now, show company info in alert (can be enhanced with proper modal)
-  const editData = `Editar Empresa: ${c.name}
-
-Setor: ${c.sector}
-Avaliação: ${c.rating}
-Morada: ${c.address}
-
-Nota: Edição detalhada pode ser implementada em um modal dedicado.`;
-
-  showToast('✎ Modo de edição - pressione F12 para aceder ao console');
+  if (!selectedId) return;
+  const me = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  const c  = companies.find(x => x.id === selectedId);
+  const isOwner = !!(me && c && (c.created_by === me.id || c.createdBy === me.id));
+  if (!isAdminMode && !isOwner) {
+    showToast('Sem permissão para editar esta empresa.');
+    return;
+  }
+  // Reuse the full pre-filled-form flow already used from the profile panel.
+  closeDetail();
+  if (typeof profileEditCompany === 'function') profileEditCompany(selectedId);
 }
 
 // ── CONSTANTS ─────────────────────────────────────────────────────────────────
@@ -9269,9 +9269,19 @@ function submitRegister() {
         closeRegister();
         showToast('✅ Empresa atualizada com sucesso!');
       } else {
-        // POST — new company (pending approval)
-        await saveCompanyToDB(newCompany);
-        _lastRegisteredCompany = newCompany;
+        // POST — new company (auto-approved). Push the persisted record into
+        // the in-memory list and add a marker so it appears on the map without
+        // a full page reload.
+        const saved = await saveCompanyToDB(newCompany);
+        if (saved) {
+          saved._searchIndex = [saved.name, saved.cae, ...(saved.tags || [])].join(' ').toLowerCase();
+          companies.push(saved);
+          if (typeof addCompanyMarker === 'function') addCompanyMarker(saved);
+          if (typeof applyFilters === 'function') applyFilters();
+          _lastRegisteredCompany = saved;
+        } else {
+          _lastRegisteredCompany = newCompany;
+        }
         document.getElementById('regSuccessName').textContent = name;
         document.getElementById('regSuccessOverlay').classList.add('open');
       }
