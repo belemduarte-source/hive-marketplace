@@ -4439,6 +4439,7 @@ const translations = {
     regTypeClient:'🔍 Registo Cliente',
     typeCompanyLabel:'Empresa',
     typeClientLabel:'Cliente',
+    typeAdvertiserLabel:'Anunciante',
     avatarRegisterCompany:'Registar Empresa',
     regAuthNameLabel:'Nome completo',
     regAuthNamePh:'O seu nome',
@@ -4720,6 +4721,7 @@ const translations = {
     regTypeClient:'🔍 Client Registration',
     typeCompanyLabel:'Company',
     typeClientLabel:'Client',
+    typeAdvertiserLabel:'Advertiser',
     avatarRegisterCompany:'Register Company',
     regAuthNameLabel:'Full name',
     regAuthNamePh:'Your name',
@@ -5004,6 +5006,7 @@ const translations = {
     regTypeClient:'🔍 Inscription Client',
     typeCompanyLabel:'Entreprise',
     typeClientLabel:'Client',
+    typeAdvertiserLabel:'Annonceur',
     avatarRegisterCompany:'Enregistrer Entreprise',
     regAuthNameLabel:'Nom complet',
     regAuthNamePh:'Votre nom',
@@ -5283,6 +5286,7 @@ const translations = {
     regTypeClient:'🔍 Registro Cliente',
     typeCompanyLabel:'Empresa',
     typeClientLabel:'Cliente',
+    typeAdvertiserLabel:'Anunciante',
     avatarRegisterCompany:'Registrar Empresa',
     regAuthNameLabel:'Nombre completo',
     regAuthNamePh:'Su nombre',
@@ -5554,6 +5558,7 @@ const translations = {
     regTypeClient:'🔍 Kundenregistrierung',
     typeCompanyLabel:'Unternehmen',
     typeClientLabel:'Kunde',
+    typeAdvertiserLabel:'Inserent',
     avatarRegisterCompany:'Unternehmen registrieren',
     regAuthNameLabel:'Vollständiger Name',
     regAuthNamePh:'Ihr Name',
@@ -9317,6 +9322,9 @@ function submitRegister() {
         } else {
           _lastRegisteredCompany = newCompany;
         }
+        // Re-render the avatar menu so the new "Anunciante" badge appears now
+        // that the user owns at least one listing.
+        if (typeof updateNavAuth === 'function') updateNavAuth();
         document.getElementById('regSuccessName').textContent = name;
         document.getElementById('regSuccessOverlay').classList.add('open');
       }
@@ -10366,8 +10374,16 @@ function updateNavAuth() {
     if (heroCta) heroCta.hidden = true;
   } else {
     const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0, 2);
-    const typeClass = user.type === 'empresa' ? 'empresa' : 'cliente';
-    const typeLabel = user.type === 'empresa' ? t('typeCompanyLabel') : t('typeClientLabel');
+    // Show an "Anunciante" badge only when the user actually owns a listing.
+    // The legacy empresa/cliente split lost meaning once registration was
+    // unified — every new account starts as 'cliente' and graduates by
+    // registering a company.
+    const ownsCompany = Array.isArray(companies) && companies.some(c =>
+      (c.created_by && c.created_by === user.id) || (c.createdBy && c.createdBy === user.id)
+    );
+    const badgeHtml = ownsCompany
+      ? `<div class="avatar-menu-type empresa">🏢 ${t('typeAdvertiserLabel')}</div>`
+      : '';
     if (area) area.innerHTML = `
       <div class="avatar-wrap" onclick="toggleAvatarMenu(event)">
         <div class="avatar">${initials}</div>
@@ -10375,7 +10391,7 @@ function updateNavAuth() {
           <div class="avatar-menu-header">
             <div class="avatar-menu-name">${user.name}</div>
             <div class="avatar-menu-email">${user.email}</div>
-            <div class="avatar-menu-type ${typeClass}">${typeLabel}</div>
+            ${badgeHtml}
           </div>
           <div class="avatar-menu-item" onclick="openRegister();closeAvatarMenu()"><i data-lucide="building-2"></i>${t('avatarRegisterCompany')}</div>
           <div class="avatar-menu-item" onclick="openProfilePanel();closeAvatarMenu()"><i data-lucide="user"></i>O Meu Perfil</div>
@@ -11357,6 +11373,9 @@ const _origLoadCompanies = typeof loadCompaniesFromDB === 'function' ? loadCompa
 if (_origLoadCompanies) {
   loadCompaniesFromDB = async function() {
     await _origLoadCompanies();
+    // Now that the companies list is available, re-render the avatar menu so
+    // the "Anunciante" badge picks up any listings owned by the current user.
+    if (typeof updateNavAuth === 'function') updateNavAuth();
     setTimeout(_handleHashRoute, 600);
     // Deep-link: open the company referenced by ?company=<id>
     setTimeout(_openCompanyFromUrl, 650);
