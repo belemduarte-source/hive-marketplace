@@ -7580,7 +7580,8 @@ try {
     zoomAnimation: true,
     markerZoomAnimation: false,   // marker positions tween over zoom — pricey
   });
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+  // CartoDB Voyager: light land, soft-blue sea — better contrast than light_all
+  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
     maxZoom: 19,
     // Only request @2x tiles when the device actually has a high-DPR screen
