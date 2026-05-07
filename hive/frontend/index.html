@@ -3103,8 +3103,8 @@
       </div>
       <div class="footer-col">
         <h4 class="footer-title" data-i18n="footerNav">Navegação</h4>
-        <a class="footer-link" onclick="showTab('home')" data-i18n="navHome">Início</a>
-        <a class="footer-link" onclick="showTab('search')" data-i18n="navSearch">Pesquisa</a>
+        <a class="footer-link" href="#" onclick="showTab('home');return false" data-i18n="navHome">Início</a>
+        <a class="footer-link" href="#" onclick="showTab('search');return false" data-i18n="navSearch">Pesquisa</a>
       </div>
       <div class="footer-col">
         <h4 class="footer-title" data-i18n="footerLegal">Legal</h4>
@@ -6803,14 +6803,32 @@ window._renderRecentStrip = _renderRecentStrip;
 window._removeRecent     = _removeRecent;
 window._clearRecent      = _clearRecent;
 
-// Hook into openDetail so any open recorded a recent. Wrapped here so even
-// later patches (analytics, reviews) keep working — they all forward to the
-// previous reference.
-const _origOpenDetailForRecent = openDetail;
+// ── openDetail / closeDetail hook registry ─────────────────────────────────
+// Anything that should fire when a company detail panel opens/closes registers
+// itself here instead of wrapping the function. Replaces 4 layered overrides
+// of openDetail (recently-viewed, title, analytics, reviews) and 1 of
+// closeDetail (title) — easier to reason about, easier to add new hooks.
+const _openDetailHooks  = [];
+const _closeDetailHooks = [];
+function _addOpenDetailHook(fn)  { if (typeof fn === 'function') _openDetailHooks.push(fn); }
+function _addCloseDetailHook(fn) { if (typeof fn === 'function') _closeDetailHooks.push(fn); }
+const _baseOpenDetail  = openDetail;
+const _baseCloseDetail = closeDetail;
 openDetail = function(id) {
-  _origOpenDetailForRecent(id);
-  _pushRecent(id);
+  _baseOpenDetail(id);
+  for (const hook of _openDetailHooks) {
+    try { hook(id); } catch (err) { console.error('openDetail hook failed:', err); }
+  }
 };
+closeDetail = function() {
+  _baseCloseDetail();
+  for (const hook of _closeDetailHooks) {
+    try { hook(); } catch (err) { console.error('closeDetail hook failed:', err); }
+  }
+};
+
+// Hook 1: track recently-viewed companies in the homepage strip
+_addOpenDetailHook((id) => { _pushRecent(id); });
 
 // ── COMPARE COMPANIES (up to 3) ────────────────────────────────────────────
 // _compareIds is a Set of company ids the user has ticked for comparison.
@@ -11308,20 +11326,14 @@ function _handleHashRoute() {
 
 window.addEventListener('hashchange', _handleHashRoute);
 
-// Update document.title when opening/closing a company. The URL itself is
-// owned by the base openDetail/closeDetail (see ?company=<id> deep-link
+// Hook 2: update document.title when opening/closing a company. The URL
+// itself is owned by the base open/closeDetail (see ?company=<id> deep-link
 // routing) — we deliberately do NOT push a competing hash here.
-const _origOpenDetail = openDetail;
-openDetail = function(id) {
-  _origOpenDetail(id);
+_addOpenDetailHook((id) => {
   const c = companies.find(x => x.id === id);
   if (c) document.title = c.name + ' — Hive B2B Marketplace';
-};
-const _origCloseDetail = closeDetail;
-closeDetail = function() {
-  _origCloseDetail();
-  document.title = 'Hive – B2B Marketplace';
-};
+});
+_addCloseDetailHook(() => { document.title = 'Hive – B2B Marketplace'; });
 
 // Sector landing page
 function openSectorLanding(sector) {
@@ -11394,12 +11406,10 @@ window.addEventListener('popstate', () => {
 // ═══════════════════════════════════════════════════════════════════════════════
 // FEATURE: Analytics event tracking
 // ═══════════════════════════════════════════════════════════════════════════════
-// Track view when opening detail
-const _origOpenDetailForAnalytics = openDetail;
-openDetail = function(id) {
-  _origOpenDetailForAnalytics(id);
+// Hook 3: fire-and-forget view event whenever a detail panel opens
+_addOpenDetailHook((id) => {
   if (typeof api !== 'undefined') api.trackEvent(id, 'view');
-};
+});
 
 // Track website click
 const _origOpenWebsite = typeof openWebsite === 'function' ? openWebsite : null;
@@ -11551,21 +11561,18 @@ async function submitReviewReply(companyId, reviewId) {
 }
 window.submitReviewReply = submitReviewReply;
 
-// Patch openDetail to load real reviews
-const _openDetailForReviews = openDetail;
-openDetail = function(id) {
-  _openDetailForReviews(id);
-  // Reset review section
+// Hook 4: reset the reviews section and (for logged-in users) load real
+// reviews when the detail panel opens.
+_addOpenDetailHook((id) => {
   const list   = document.getElementById('dpReviewsList');
   const form   = document.getElementById('dpReviewForm');
   const toggle = document.getElementById('dpReviewFormToggle');
   if (list)   list.innerHTML = '';
   if (form)   form.style.display = 'none';
   if (toggle) toggle.style.display = 'none';
-  // Load real reviews for logged-in users
   const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
   if (user) loadReviews(id);
-};
+});
 
 function escHtml(str) {
   return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');

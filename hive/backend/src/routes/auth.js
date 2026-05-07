@@ -35,7 +35,7 @@ function signToken(user) {
 function safeUser(user) {
   return {
     id: user.id, name: user.name, email: user.email, type: user.type,
-    company: user.company, phone: user.phone, is_admin: user.is_admin,
+    is_admin: user.is_admin,
     picture: user.picture || null,
     email_verified: !!user.email_verified,
   };
@@ -44,7 +44,7 @@ function safeUser(user) {
 // POST /api/auth/register
 router.post('/register', async (req, res, next) => {
   try {
-    const { name, email, password, type, company, phone } = req.body;
+    const { name, email, password, type } = req.body;
     if (!name || !email || !password) return res.status(400).json({ error: 'name, email e password são obrigatórios' });
     if (password.length < 6) return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 6 caracteres' });
     if (!['empresa', 'cliente'].includes(type)) return res.status(400).json({ error: 'type deve ser empresa ou cliente' });
@@ -56,12 +56,14 @@ router.post('/register', async (req, res, next) => {
     const verifyToken  = crypto.randomBytes(32).toString('hex');
     const verifyExp    = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
 
+    // company/phone columns kept in the schema for legacy users but no longer
+    // collected at signup — they're populated via the company-registration flow.
     const { rows } = await pool.query(
-      `INSERT INTO users (name, email, password_hash, type, company, phone,
+      `INSERT INTO users (name, email, password_hash, type,
                           email_verification_token, email_verification_expires_at)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+       VALUES ($1, $2, $3, $4, $5, $6)
        RETURNING *`,
-      [name, email.toLowerCase(), passwordHash, type, company || '', phone || '', verifyToken, verifyExp]
+      [name, email.toLowerCase(), passwordHash, type, verifyToken, verifyExp]
     );
     const user = rows[0];
 

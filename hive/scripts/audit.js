@@ -1,9 +1,11 @@
 /**
- * Hive frontend static audit
- * Run: node audit.js  (from hive/frontend/)
+ * Hive frontend static audit (dev tool \u2014 not served to clients)
+ * Run from anywhere: node hive/scripts/audit.js
  */
-const fs = require('fs');
-const html = fs.readFileSync('index.html', 'utf8');
+const fs   = require('fs');
+const path = require('path');
+const FRONTEND = path.join(__dirname, '..', 'frontend');
+const html = fs.readFileSync(path.join(FRONTEND, 'index.html'), 'utf8');
 
 // Extract all inline JS
 const scripts = [];
@@ -19,7 +21,7 @@ function ok(label, cond) {
 }
 const has    = pat => pat.test(js);
 const inHtml = pat => pat.test(html);
-const sw     = fs.readFileSync('sw.js', 'utf8');
+const sw     = fs.readFileSync(path.join(FRONTEND, 'sw.js'), 'utf8');
 
 // ── 1. Core functions exist ───────────────────────────────────────────────────
 console.log('\n[1] Core functions');
