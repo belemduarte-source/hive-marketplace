@@ -2694,10 +2694,6 @@
         <span data-i18n="navHelp">Ajuda</span>
       </button>
     </div>
-    <button class="btn-nav" onclick="openStatusModal()" style="font-size:12px;padding:7px 12px;border-radius:8px;width:100%">
-      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      Estado do Registo
-    </button>
   </div>
 </nav>
 
@@ -2721,10 +2717,6 @@
     <button class="mobile-nav-link" onclick="openHelp();closeMobileNavPanel()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       <span data-i18n="navHelp">Ajuda</span>
-    </button>
-    <button class="mobile-nav-link" onclick="openStatusModal();closeMobileNavPanel()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      <span>Estado do Registo</span>
     </button>
     <button class="mobile-nav-link" onclick="openFaq();closeMobileNavPanel()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
@@ -2756,10 +2748,7 @@
       <li>🚩 A nossa equipa pode rever e moderar caso seja reportada.</li>
     </ul>
     <div class="reg-success-actions">
-      <button class="btn-success-close" onclick="closeRegSuccess(false)" data-i18n="successClose">Continuar a Navegar</button>
-    </div>
-    <div style="text-align:center;margin-top:12px">
-      <button onclick="closeRegSuccess();openStatusModal()" style="background:none;border:none;color:var(--primary);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;text-decoration:underline">Verificar estado do registo →</button>
+      <button class="btn-success-close" onclick="closeRegSuccess()" data-i18n="successClose">Continuar a Navegar</button>
     </div>
   </div>
 </div>
@@ -3814,7 +3803,7 @@
       </div>
       <div class="reg-step-nav">
         <button class="btn-step-back" onclick="regGoStep(2)">← <span data-i18n="regStepBack">Anterior</span></button>
-        <button class="btn-step-next" onclick="submitRegister()"><i data-lucide="check-circle"></i> <span data-i18n="regSubmit">Registar Empresa</span></button>
+        <button id="regSubmitBtn" class="btn-step-next" onclick="submitRegister()"><i data-lucide="check-circle"></i> <span data-i18n="regSubmit">Registar Empresa</span></button>
       </div>
     </div>
 
@@ -4230,6 +4219,7 @@
 const translations = {
   pt: {
     navHome:'Início', navSearch:'Pesquisa', navAbout:'Sobre', navRegister:'Registar Empresa',
+    recentlyViewed:'Vistas recentemente', recentRemove:'Remover', recentClear:'Limpar',
     searchUpdated:'Pesquisa atualizada!',
     importOSM:'Importar Empresas OSM',
     filterTitle:'Filtros', clearAll:'Limpar Tudo', companiesFound:'empresas encontradas',
@@ -4452,9 +4442,6 @@ const translations = {
     avatarRegisterCompany:'Registar Empresa',
     regAuthNameLabel:'Nome completo',
     regAuthNamePh:'O seu nome',
-    regAuthCompanyLabel:'Nome da empresa',
-    regAuthCompanyPh:'Nome da empresa',
-    regAuthPhoneLabel:'Telefone',
     lpTabCompany:'Por Empresa',
     lpCompanyLabel:'Nome da Empresa',
     lpCompanyPh:'Ex: Construções Ribeiro, ElectroLux...',
@@ -4512,6 +4499,7 @@ const translations = {
   },
   en: {
     navHome:'Home', navSearch:'Search', navBuyer:'Buyer Panel',
+    recentlyViewed:'Recently viewed', recentRemove:'Remove', recentClear:'Clear',
     navSupplier:'Supplier Panel', navAbout:'About', navRegister:'Register Company',
     searchUpdated:'Search updated!',
     importOSM:'Import OSM Companies',
@@ -4735,9 +4723,6 @@ const translations = {
     avatarRegisterCompany:'Register Company',
     regAuthNameLabel:'Full name',
     regAuthNamePh:'Your name',
-    regAuthCompanyLabel:'Company name',
-    regAuthCompanyPh:'Company name',
-    regAuthPhoneLabel:'Phone',
     lpTabCompany:'By Company',
     lpCompanyLabel:'Company Name',
     lpCompanyPh:'E.g.: Construções Ribeiro, ElectroLux...',
@@ -4795,6 +4780,7 @@ const translations = {
   },
   fr: {
     navHome:'Accueil', navSearch:'Recherche', navBuyer:'Espace Acheteur',
+    recentlyViewed:'Vues récemment', recentRemove:'Retirer', recentClear:'Effacer',
     navSupplier:'Espace Fournisseur', navAbout:'À propos', navRegister:'Enregistrer Entreprise',
     searchUpdated:'Recherche mise à jour !',
     importOSM:'Importer Entreprises OSM',
@@ -5021,9 +5007,6 @@ const translations = {
     avatarRegisterCompany:'Enregistrer Entreprise',
     regAuthNameLabel:'Nom complet',
     regAuthNamePh:'Votre nom',
-    regAuthCompanyLabel:"Nom de l'entreprise",
-    regAuthCompanyPh:"Nom de l'entreprise",
-    regAuthPhoneLabel:'Téléphone',
     lpTabCompany:'Par Entreprise',
     lpCompanyLabel:"Nom de l'Entreprise",
     lpCompanyPh:'Ex : Construções Ribeiro, ElectroLux...',
@@ -5082,6 +5065,7 @@ const translations = {
 
   es: {
     navHome:'Inicio', navSearch:'Búsqueda', navAbout:'Sobre', navRegister:'Registrar Empresa',
+    recentlyViewed:'Vistas recientemente', recentRemove:'Quitar', recentClear:'Limpiar',
     searchUpdated:'¡Búsqueda actualizada!',
     filterTitle:'Filtros', clearAll:'Borrar Todo', companiesFound:'empresas encontradas',
     sortBy:'Ordenar Por', sortRating:'Mejor Valoradas', sortReviews:'Más Valoradas', sortName:'Nombre A–Z',
@@ -5302,9 +5286,6 @@ const translations = {
     avatarRegisterCompany:'Registrar Empresa',
     regAuthNameLabel:'Nombre completo',
     regAuthNamePh:'Su nombre',
-    regAuthCompanyLabel:'Nombre de la empresa',
-    regAuthCompanyPh:'Nombre de la empresa',
-    regAuthPhoneLabel:'Teléfono',
     lpTabCompany:'Por Empresa',
     lpCompanyLabel:'Nombre de la Empresa',
     lpCompanyPh:'Ej: Construcciones García, ElectroTech...',
@@ -5355,6 +5336,7 @@ const translations = {
 
   de: {
     navHome:'Start', navSearch:'Suche', navAbout:'Über uns', navRegister:'Unternehmen registrieren',
+    recentlyViewed:'Kürzlich angesehen', recentRemove:'Entfernen', recentClear:'Leeren',
     searchUpdated:'Suche aktualisiert!',
     filterTitle:'Filter', clearAll:'Alle löschen', companiesFound:'Unternehmen',
     sortBy:'Sortieren nach', sortRating:'Beste Bewertung', sortReviews:'Meiste Bewertungen', sortName:'Name A–Z',
@@ -5575,9 +5557,6 @@ const translations = {
     avatarRegisterCompany:'Unternehmen registrieren',
     regAuthNameLabel:'Vollständiger Name',
     regAuthNamePh:'Ihr Name',
-    regAuthCompanyLabel:'Unternehmensname',
-    regAuthCompanyPh:'Firmenname',
-    regAuthPhoneLabel:'Telefon',
     lpTabCompany:'Nach Unternehmen',
     lpCompanyLabel:'Unternehmensname',
     lpCompanyPh:'z. B. Musterbau GmbH...',
@@ -6795,17 +6774,20 @@ function _renderRecentStrip() {
   const items = ids.map(id => companies.find(c => Number(c.id) === id)).filter(Boolean);
   if (items.length === 0) { strip.innerHTML = ''; strip.hidden = true; return; }
   strip.hidden = false;
+  const labelTxt  = (typeof t === 'function') ? t('recentlyViewed') : 'Vistas recentemente';
+  const removeTxt = (typeof t === 'function') ? t('recentRemove')   : 'Remover';
+  const clearTxt  = (typeof t === 'function') ? t('recentClear')    : 'Limpar';
   strip.innerHTML =
-    '<span class="recent-strip-label">Vistas recentemente</span>' +
+    '<span class="recent-strip-label">' + labelTxt + '</span>' +
     items.map(c => `
       <span class="recent-chip" title="${escHtml(c.name)}">
         <span style="display:inline-flex;align-items:center;gap:6px;cursor:pointer" onclick="openDetail(${c.id})">
           <span class="recent-chip-emoji">${c.emoji || '🏢'}</span>
           <span class="recent-chip-name">${escHtml(c.name)}</span>
         </span>
-        <button type="button" class="recent-chip-x" aria-label="Remover" title="Remover" onclick="event.stopPropagation();_removeRecent(${c.id})">×</button>
+        <button type="button" class="recent-chip-x" aria-label="${removeTxt}" title="${removeTxt}" onclick="event.stopPropagation();_removeRecent(${c.id})">×</button>
       </span>`).join('') +
-    `<button type="button" class="recent-clear-btn" onclick="_clearRecent()" title="Limpar todas">🗑️ Limpar</button>`;
+    `<button type="button" class="recent-clear-btn" onclick="_clearRecent()" title="${clearTxt}">🗑️ ${clearTxt}</button>`;
 }
 function _removeRecent(id) {
   id = Number(id);
@@ -9577,7 +9559,7 @@ document.addEventListener('keydown', function(e) {
     else if (!e.shiftKey && document.activeElement === last) { first.focus(); e.preventDefault(); }
   } else if (e.key === 'Escape') {
     // Close in priority order; each close-fn no-ops if already shut.
-    const closers = ['closeLegal','closeContactModal','closeAdminPanel','closeStatusModal','closeGeoHelp','closeEmail','closeRegister','closeLogin','closeHelp'];
+    const closers = ['closeReportModal','closeRegSuccess','closePostRegister','closeForgotPassword','closeProfilePanel','closeLegal','closeContactModal','closeAdminPanel','closeStatusModal','closeGeoHelp','closeEmail','closeRegister','closeLogin','closeHelp'];
     for (const fn of closers) {
       if (typeof window[fn] === 'function') { try { window[fn](); } catch(_) {} }
     }
@@ -10380,7 +10362,6 @@ function updateNavAuth() {
           <div class="avatar-menu-item" onclick="openRegister();closeAvatarMenu()"><i data-lucide="building-2"></i>${t('avatarRegisterCompany')}</div>
           <div class="avatar-menu-item" onclick="openProfilePanel();closeAvatarMenu()"><i data-lucide="user"></i>O Meu Perfil</div>
           <div class="avatar-menu-item" onclick="openMyFavourites();closeAvatarMenu()"><i data-lucide="star"></i>Favoritos <span class="avatar-menu-badge" id="avMenuFavCount" hidden></span></div>
-          <div class="avatar-menu-item" onclick="openStatusModal();closeAvatarMenu()"><i data-lucide="clipboard-list"></i>Estado dos registos</div>
           <div class="avatar-menu-divider"></div>
           <div class="avatar-menu-item" onclick="closeAvatarMenu();openFaq()"><i data-lucide="help-circle"></i>FAQ & Ajuda</div>
           <div class="avatar-menu-item" onclick="closeAvatarMenu();openLegal('privacy')"><i data-lucide="shield"></i>Privacidade</div>
@@ -10934,7 +10915,7 @@ openRegister = function() {
   window._editingCompanyId = null;
   // Restore submit button label
   setTimeout(() => {
-    const submitBtn = document.querySelector('#registerOverlay .btn-step-next[onclick*="submitRegister"]');
+    const submitBtn = document.getElementById('regSubmitBtn');
     if (submitBtn) submitBtn.innerHTML = '<i data-lucide="check-circle"></i> <span data-i18n="regSubmit">Registar Empresa</span>';
     refreshLucide();
   }, 50);
@@ -11011,7 +10992,9 @@ function closeProfilePanel(e) {
   document.getElementById('profilePanelOverlay').classList.remove('open');
 }
 
-// Open the register modal pre-filled for editing an existing company
+// Open the register modal pre-filled for editing an existing company.
+// We fetch the full record FIRST, prefill the (still hidden) form, and
+// only then open the modal — avoids a flash of empty form.
 async function profileEditCompany(companyId) {
   const c = companies.find(x => x.id === companyId);
   if (!c) return;
@@ -11026,60 +11009,48 @@ async function profileEditCompany(companyId) {
     if (fresh) full = { ...c, ...fresh };
   } catch (_) { /* fall back to list snapshot */ }
 
-  // Open the register modal and pre-fill step 1 fields after a brief delay
+  // Helpers
+  const setVal = (id, v) => { const el = document.getElementById(id); if (el) el.value = v == null ? '' : v; };
+
+  // Pre-fill identity fields
+  setVal('regName',      full.name);
+  setVal('regNif',       full.nif);
+  setVal('regCae',       full.cae);
+  setVal('regAlvara',    full.alvara);
+  setVal('regCertidao',  full.certidao_permanente);
+
+  // Pre-select sectors
+  _regSelectedSectors = (full.sectors || (full.sector ? [full.sector] : [])).slice();
+  if (typeof renderRegisterSectorSelect === 'function') renderRegisterSectorSelect();
+
+  // Pre-fill location
+  const countryEl = document.getElementById('regCountry');
+  if (countryEl) { countryEl.value = full.country || 'pt'; countryEl.dispatchEvent(new Event('change')); }
+  setVal('regPostalCode', full.postal_code);
+  setVal('regAddress',    full.address);
+
+  // Pre-fill contacts + meta
+  setVal('regEmail',           full.email);
+  setVal('regPhone',           full.phone);
+  setVal('regWebsite',         full.website);
+  setVal('regTags',            (full.tags || []).join(', '));
+  setVal('regDesc',            full.description);
+  setVal('regFoundedYear',     full.founded_year);
+  setVal('regBusinessHours',   full.business_hours);
+  setVal('regPortfolioImages', (full.portfolio_images || []).join(', '));
+
+  // Open the modal — already pre-populated, no flicker
   openRegister();
+
+  // openRegister's wrapper synchronously resets _editingCompanyId to null and
+  // schedules a label restore (~50 ms). Set the edit state AFTER, and queue
+  // the label update so it lands after the wrapper's restore.
+  window._editingCompanyId = companyId;
   setTimeout(() => {
-    // Pre-fill identity fields
-    const nameEl = document.getElementById('regName');
-    const nifEl  = document.getElementById('regNif');
-    const caeEl  = document.getElementById('regCae');
-    const alvaraEl = document.getElementById('regAlvara');
-    const certidaoEl = document.getElementById('regCertidao');
-    if (nameEl)     nameEl.value     = full.name || '';
-    if (nifEl)      nifEl.value      = full.nif  || '';
-    if (caeEl)      caeEl.value      = full.cae  || '';
-    if (alvaraEl)   alvaraEl.value   = full.alvara || '';
-    if (certidaoEl) certidaoEl.value = full.certidao_permanente || '';
-
-    // Pre-select sectors
-    _regSelectedSectors = (full.sectors || (full.sector ? [full.sector] : [])).slice();
-    if (typeof renderRegisterSectorSelect === 'function') renderRegisterSectorSelect();
-
-    // Pre-fill step 2 location
-    const countryEl = document.getElementById('regCountry');
-    const postalEl  = document.getElementById('regPostalCode');
-    const addressEl = document.getElementById('regAddress');
-    if (countryEl) { countryEl.value = full.country || 'pt'; countryEl.dispatchEvent(new Event('change')); }
-    if (postalEl)  postalEl.value  = full.postal_code || '';
-    if (addressEl) addressEl.value = full.address || '';
-
-    // Pre-fill step 3 contacts
-    const emailEl  = document.getElementById('regEmail');
-    const phoneEl  = document.getElementById('regPhone');
-    const websiteEl= document.getElementById('regWebsite');
-    const tagsEl   = document.getElementById('regTags');
-    const descEl   = document.getElementById('regDesc');
-    if (emailEl)   emailEl.value   = full.email   || '';
-    if (phoneEl)   phoneEl.value   = full.phone   || '';
-    if (websiteEl) websiteEl.value = full.website || '';
-    if (tagsEl)    tagsEl.value    = (full.tags || []).join(', ');
-    if (descEl)    descEl.value    = full.description || '';
-    const foundedEl   = document.getElementById('regFoundedYear');
-    const hoursEl     = document.getElementById('regBusinessHours');
-    const portfolioEl = document.getElementById('regPortfolioImages');
-    if (foundedEl)   foundedEl.value   = full.founded_year || '';
-    if (hoursEl)     hoursEl.value     = full.business_hours || '';
-    if (portfolioEl) portfolioEl.value = (full.portfolio_images || []).join(', ');
-
-    // Store the company id being edited so submitRegister can PUT instead of POST
-    window._editingCompanyId = companyId;
-
-    // Update the submit button label
-    const submitBtn = document.querySelector('#registerOverlay .btn-step-next[onclick*="submitRegister"]');
+    const submitBtn = document.getElementById('regSubmitBtn');
     if (submitBtn) submitBtn.innerHTML = '<i data-lucide="save"></i> <span>Guardar Alterações</span>';
-
-    showToast('Formulário pré-preenchido — edite e submeta para guardar.');
-  }, 350);
+    if (typeof refreshLucide === 'function') refreshLucide();
+  }, 80);
 }
 
 // ── IMPROVEMENT 9: Keyboard nav for sector multi-select ──────────────────────
@@ -11337,22 +11308,18 @@ function _handleHashRoute() {
 
 window.addEventListener('hashchange', _handleHashRoute);
 
-// Update URL hash when opening a company (for sharing + SEO)
+// Update document.title when opening/closing a company. The URL itself is
+// owned by the base openDetail/closeDetail (see ?company=<id> deep-link
+// routing) — we deliberately do NOT push a competing hash here.
 const _origOpenDetail = openDetail;
 openDetail = function(id) {
   _origOpenDetail(id);
   const c = companies.find(x => x.id === id);
-  if (c) {
-    const slug = c.id;
-    history.replaceState(null, '', '#empresa/' + slug);
-    // Update page title for SEO/sharing
-    document.title = c.name + ' — Hive B2B Marketplace';
-  }
+  if (c) document.title = c.name + ' — Hive B2B Marketplace';
 };
 const _origCloseDetail = closeDetail;
 closeDetail = function() {
   _origCloseDetail();
-  history.replaceState(null, '', location.pathname);
   document.title = 'Hive – B2B Marketplace';
 };
 
@@ -11986,21 +11953,6 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
   el.addEventListener('click', () => openSectorLanding(el.dataset.sectorLink));
 });
 
-// Add "Verificar Estado" in nav drawer for non-logged users
-(function() {
-  const mobileDrawer = document.querySelector('.mobile-nav-drawer-content');
-  if (mobileDrawer) {
-    // inject after the help button if it exists
-    const helpBtn = Array.from(mobileDrawer.querySelectorAll('button')).find(b => b.textContent.includes('Ajuda'));
-    if (helpBtn) {
-      const statusBtn = document.createElement('button');
-      statusBtn.className = 'mobile-nav-link';
-      statusBtn.onclick = () => { openStatusModal(); closeMobileNavPanel(); };
-      statusBtn.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="20" height="20"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span>Estado do Registo</span>';
-      helpBtn.after(statusBtn);
-    }
-  }
-})();
 
 // ── PWA INSTALL PROMPT ──────────────────────────────────────────────────────
 // Captures the beforeinstallprompt event (Chrome/Edge/Android) and shows a
