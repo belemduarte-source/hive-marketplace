@@ -164,8 +164,8 @@
     .banner-text{color:#fff;max-width:180px}
     /* ── AD BANNER ── */
     .ad-banner-home{max-width:1100px;margin:0 auto;padding:0 32px}
-    .ad-banner-home .ad-banner{width:100%;margin:0;border-radius:16px;min-height:140px}
-    .ad-banner{flex:1;position:relative;border-radius:10px;overflow:hidden;margin:0;min-height:140px;background:#0a0f1a}
+    .ad-banner-home .ad-banner{width:100%;margin:0;border-radius:16px;min-height:280px}
+    .ad-banner{flex:1;position:relative;border-radius:10px;overflow:hidden;margin:0;min-height:280px;background:#0a0f1a}
     .ad-video{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;opacity:.35}
     .ad-fallback{position:absolute;top:0;left:0;width:100%;height:100%;background:linear-gradient(-45deg,#0f172a,#1e3a8a,#7c2d12,#0f172a);background-size:400% 400%;animation:adGrad 12s ease infinite;opacity:.7}
     @keyframes adGrad{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
@@ -174,23 +174,23 @@
     .ad-slide{display:none;animation:adFadeIn .6s ease}
     .ad-slide.active{display:block}
     @keyframes adFadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-    .ad-badge{display:inline-block;background:rgba(249,115,22,.9);color:#fff;font-size:10px;font-weight:800;padding:3px 12px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:5px}
-    .ad-title{color:#fff;font-size:24px;font-weight:800;line-height:1.2;text-shadow:0 2px 8px rgba(0,0,0,.5)}
-    .ad-sub{color:#cbd5e1;font-size:14px;margin-top:5px;text-shadow:0 1px 4px rgba(0,0,0,.4)}
+    .ad-badge{display:inline-block;background:rgba(249,115,22,.9);color:#fff;font-size:11px;font-weight:800;padding:4px 14px;border-radius:20px;text-transform:uppercase;letter-spacing:.8px;margin-bottom:8px}
+    .ad-title{color:#fff;font-size:30px;font-weight:800;line-height:1.2;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+    .ad-sub{color:#cbd5e1;font-size:16px;margin-top:8px;text-shadow:0 1px 4px rgba(0,0,0,.4)}
     .ad-mute{position:absolute;bottom:6px;right:8px;background:rgba(0,0,0,.5);border:none;color:#fff;font-size:12px;border-radius:50%;width:24px;height:24px;cursor:pointer;z-index:3;display:flex;align-items:center;justify-content:center;transition:background .2s}
     .ad-mute:hover{background:rgba(0,0,0,.7)}
     /* ── AD SLIDE CASA ── */
-    .ad-slide-casa .ad-casa-inner{display:flex;align-items:center;gap:20px;width:100%}
-    .ad-casa-left{flex-shrink:0;text-align:left;min-width:140px}
-    .ad-casa-left .ad-title{font-size:22px}
-    .ad-casa-left .ad-sub{font-size:14px}
-    .ad-casa-steps{display:flex;flex-wrap:wrap;gap:6px;flex:1;align-items:center;justify-content:center}
-    .ad-step{display:flex;align-items:center;gap:6px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:20px;padding:8px 18px;font-size:15px;color:rgba(255,255,255,.5);transition:all .35s ease;white-space:nowrap}
+    .ad-slide-casa .ad-casa-inner{display:flex;align-items:center;gap:28px;width:100%}
+    .ad-casa-left{flex-shrink:0;text-align:left;min-width:180px}
+    .ad-casa-left .ad-title{font-size:28px}
+    .ad-casa-left .ad-sub{font-size:16px}
+    .ad-casa-steps{display:flex;flex-wrap:wrap;gap:8px;flex:1;align-items:center;justify-content:center}
+    .ad-step{display:flex;align-items:center;gap:7px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);border-radius:22px;padding:10px 22px;font-size:16px;color:rgba(255,255,255,.5);transition:all .35s ease;white-space:nowrap}
     .ad-step.lit{background:rgba(249,115,22,.22);border-color:rgba(249,115,22,.55);color:#fff;transform:scale(1.07);box-shadow:0 0 12px rgba(249,115,22,.3)}
     .ad-step.done{background:rgba(16,185,129,.15);border-color:rgba(16,185,129,.4);color:#6ee7b7}
-    .ad-casa-cta{flex-shrink:0;text-align:center;min-width:90px}
-    .ad-cta-label{color:#f97316;font-size:14px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:6px}
-    .ad-cta-ring{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;border:2px solid #f97316;color:#f97316;font-size:24px;animation:ringPulse 1.4s ease-in-out infinite}
+    .ad-casa-cta{flex-shrink:0;text-align:center;min-width:110px}
+    .ad-cta-label{color:#f97316;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.6px;margin-bottom:8px}
+    .ad-cta-ring{display:inline-flex;align-items:center;justify-content:center;width:60px;height:60px;border-radius:50%;border:2.5px solid #f97316;color:#f97316;font-size:28px;animation:ringPulse 1.4s ease-in-out infinite}
     @keyframes ringPulse{0%,100%{box-shadow:0 0 0 0 rgba(249,115,22,.5)}60%{box-shadow:0 0 0 7px rgba(249,115,22,0)}}
     /* ── ENTRAR (login) ── */
     .btn-nav{background:linear-gradient(135deg,#ea580c,#f97316);color:#fff;border:1px solid rgba(249,115,22,.4);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;transition:all .22s;display:flex;align-items:center;gap:6px;box-shadow:0 2px 10px rgba(249,115,22,.35)}
