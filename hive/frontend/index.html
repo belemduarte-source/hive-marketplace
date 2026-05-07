@@ -7075,8 +7075,11 @@ function updateAdminUI() {
 
 function openEditCompany() {
   if (!selectedId) return;
+  // Capture the id BEFORE closeDetail() — that function nulls selectedId, so
+  // passing `selectedId` after close means profileEditCompany(null) → no-op.
+  const id = selectedId;
   const me = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
-  const c  = companies.find(x => x.id === selectedId);
+  const c  = companies.find(x => x.id === id);
   const isOwner = !!(me && c && (c.created_by === me.id || c.createdBy === me.id));
   if (!isAdminMode && !isOwner) {
     showToast('Sem permissão para editar esta empresa.');
@@ -7084,7 +7087,7 @@ function openEditCompany() {
   }
   // Reuse the full pre-filled-form flow already used from the profile panel.
   closeDetail();
-  if (typeof profileEditCompany === 'function') profileEditCompany(selectedId);
+  if (typeof profileEditCompany === 'function') profileEditCompany(id);
 }
 
 // ── CONSTANTS ─────────────────────────────────────────────────────────────────
