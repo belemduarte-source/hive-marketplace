@@ -22,8 +22,6 @@ const cookieParser = require('cookie-parser');
 const helmet = require('helmet');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
-const fs = require('fs');
-const path = require('path');
 
 const companiesRouter = require('./routes/companies');
 const authRouter = require('./routes/auth');
@@ -117,13 +115,162 @@ app.use('/api/auth/', authLimiter);
 // up to date — saves ~50-200 ms per cold-start serverless instance.
 let _migrated = false;
 let _migrationPromise = null;
-// Use a marker that's unique to the latest schema. Existing instances whose
-// schema is older than this row will fall through to the slow migration path
-// once per Lambda cold start, then fast-path forever.
-// Sentinel detects the latest schema. Bumped when adding the
-// `companies.removed_at` column + expanded status CHECK constraint —
-// older instances fall through to the slow migration path once per
-// Lambda cold start, then fast-path forever.
+
+// Migrations are inlined here (not read from seed/schema.sql) because Vercel
+// only bundles files reachable via require/import — fs.readFileSync would
+// throw ENOENT in production and the catch below would swallow it silently,
+// leaving the database without recently-added columns.
+//
+// Each statement uses `IF NOT EXISTS` and runs in its own try/catch so one
+// failure (e.g. an unrelated unique-constraint conflict) doesn't abort the
+// rest. The sentinel column at the end gates the fast path on cold start.
+const MIGRATIONS = [
+  // Initial schema for fresh deployments (idempotent — IF NOT EXISTS)
+  `CREATE TABLE IF NOT EXISTS users (
+     id BIGSERIAL PRIMARY KEY,
+     name TEXT NOT NULL,
+     email TEXT NOT NULL UNIQUE,
+     password_hash TEXT,
+     google_id TEXT UNIQUE,
+     picture TEXT,
+     type TEXT NOT NULL CHECK (type IN ('empresa','cliente')),
+     company TEXT DEFAULT '',
+     phone   TEXT DEFAULT '',
+     is_admin BOOLEAN DEFAULT FALSE,
+     email_verified BOOLEAN DEFAULT FALSE,
+     email_verification_token TEXT,
+     email_verification_expires_at TIMESTAMPTZ,
+     password_reset_token TEXT,
+     password_reset_expires_at TIMESTAMPTZ,
+     created_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`,
+  `CREATE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id)`,
+  `ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id TEXT UNIQUE`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS picture TEXT`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT FALSE`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verification_token TEXT`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verification_expires_at TIMESTAMPTZ`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS password_reset_token TEXT`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS password_reset_expires_at TIMESTAMPTZ`,
+  `CREATE INDEX IF NOT EXISTS idx_users_email_verification_token ON users(email_verification_token)`,
+  `CREATE INDEX IF NOT EXISTS idx_users_password_reset_token ON users(password_reset_token)`,
+
+  `CREATE TABLE IF NOT EXISTS companies (
+     id BIGSERIAL PRIMARY KEY,
+     name TEXT NOT NULL,
+     sectors TEXT[] NOT NULL DEFAULT '{}',
+     sector TEXT,
+     nif TEXT,
+     cae TEXT,
+     alvara TEXT,
+     certidao_permanente TEXT,
+     address TEXT,
+     postal_code TEXT,
+     city TEXT,
+     country TEXT DEFAULT 'pt',
+     zone TEXT,
+     email TEXT NOT NULL DEFAULT '',
+     phone TEXT NOT NULL DEFAULT '',
+     website TEXT,
+     tags TEXT[] DEFAULT '{}',
+     description TEXT,
+     founded_year INTEGER,
+     business_hours TEXT,
+     portfolio_images TEXT[] DEFAULT '{}',
+     lat DOUBLE PRECISION NOT NULL,
+     lng DOUBLE PRECISION NOT NULL,
+     rating DECIMAL(3,1) DEFAULT 0,
+     reviews INTEGER DEFAULT 0,
+     top_rated BOOLEAN DEFAULT FALSE,
+     verified BOOLEAN DEFAULT FALSE,
+     is_new BOOLEAN DEFAULT TRUE,
+     emoji TEXT DEFAULT '🏢',
+     color TEXT DEFAULT '#f97316',
+     pin_type TEXT DEFAULT 'std',
+     status TEXT DEFAULT 'approved' CHECK (status IN ('approved','pending','rejected','removed')),
+     removed_at TIMESTAMPTZ,
+     created_by BIGINT REFERENCES users(id) ON DELETE SET NULL,
+     created_at TIMESTAMPTZ DEFAULT NOW(),
+     updated_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_companies_sector  ON companies(sector)`,
+  `CREATE INDEX IF NOT EXISTS idx_companies_sectors ON companies USING GIN(sectors)`,
+  `CREATE INDEX IF NOT EXISTS idx_companies_tags    ON companies USING GIN(tags)`,
+  `CREATE INDEX IF NOT EXISTS idx_companies_status  ON companies(status)`,
+  `CREATE INDEX IF NOT EXISTS idx_companies_lat_lng ON companies(lat, lng)`,
+  `CREATE INDEX IF NOT EXISTS idx_companies_rating  ON companies(rating DESC)`,
+  `CREATE INDEX IF NOT EXISTS idx_companies_country ON companies(country)`,
+  `CREATE INDEX IF NOT EXISTS idx_companies_status_country_created ON companies(status, country, created_at DESC)`,
+  `CREATE INDEX IF NOT EXISTS idx_companies_created_by ON companies(created_by)`,
+  // Migrations for existing deployments
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS founded_year     INTEGER`,
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS business_hours   TEXT`,
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS portfolio_images TEXT[] DEFAULT '{}'`,
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS alvara              TEXT`,
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS certidao_permanente TEXT`,
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS featured            BOOLEAN DEFAULT FALSE`,
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS nif                 TEXT`,
+  `CREATE INDEX IF NOT EXISTS idx_companies_nif ON companies(nif)`,
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS removed_at TIMESTAMPTZ`,
+  // Status CHECK constraint — drop the old (more restrictive) one and re-add
+  // with 'removed' allowed. ALTER TABLE ADD CONSTRAINT IF NOT EXISTS isn't a
+  // thing in PG, hence the explicit DROP+ADD. PG names inline column CHECKs
+  // as <table>_<col>_check by default.
+  `ALTER TABLE companies DROP CONSTRAINT IF EXISTS companies_status_check`,
+  `ALTER TABLE companies ADD CONSTRAINT companies_status_check CHECK (status IN ('approved','pending','rejected','removed'))`,
+
+  `CREATE TABLE IF NOT EXISTS reviews (
+     id BIGSERIAL PRIMARY KEY,
+     company_id BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+     user_id    BIGINT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+     score   SMALLINT NOT NULL CHECK (score BETWEEN 1 AND 5),
+     comment TEXT,
+     reply   TEXT,
+     reply_at   TIMESTAMPTZ,
+     created_at TIMESTAMPTZ DEFAULT NOW(),
+     UNIQUE(company_id, user_id)
+   )`,
+  `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS reply    TEXT`,
+  `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS reply_at TIMESTAMPTZ`,
+  `CREATE INDEX IF NOT EXISTS idx_reviews_company ON reviews(company_id)`,
+  `CREATE INDEX IF NOT EXISTS idx_reviews_user    ON reviews(user_id)`,
+
+  `CREATE TABLE IF NOT EXISTS events (
+     id BIGSERIAL PRIMARY KEY,
+     company_id BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+     event_type TEXT NOT NULL CHECK (event_type IN ('view','contact','website_click','whatsapp')),
+     created_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_events_company ON events(company_id)`,
+  `CREATE INDEX IF NOT EXISTS idx_events_created ON events(created_at DESC)`,
+
+  `CREATE TABLE IF NOT EXISTS user_favourites (
+     user_id    BIGINT NOT NULL REFERENCES users(id)     ON DELETE CASCADE,
+     company_id BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+     created_at TIMESTAMPTZ DEFAULT NOW(),
+     PRIMARY KEY (user_id, company_id)
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_user_favourites_user ON user_favourites(user_id)`,
+
+  `CREATE TABLE IF NOT EXISTS reports (
+     id BIGSERIAL PRIMARY KEY,
+     company_id BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+     user_id    BIGINT REFERENCES users(id) ON DELETE SET NULL,
+     reason  TEXT NOT NULL,
+     details TEXT,
+     status  TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','reviewed','dismissed')),
+     created_at  TIMESTAMPTZ DEFAULT NOW(),
+     reviewed_at TIMESTAMPTZ,
+     reviewed_by BIGINT REFERENCES users(id) ON DELETE SET NULL
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_reports_company ON reports(company_id)`,
+  `CREATE INDEX IF NOT EXISTS idx_reports_status  ON reports(status)`,
+  `CREATE INDEX IF NOT EXISTS idx_reports_created ON reports(created_at DESC)`,
+];
+
+// Sentinel detects the latest schema. Bumped when adding companies.removed_at.
 const SENTINEL_COLUMN = 'removed_at';
 const SENTINEL_TABLE  = 'companies';
 
@@ -141,25 +288,34 @@ async function ensureSchema() {
       );
       if (sentinel.length > 0) { _migrated = true; return; }
 
-      // Slow path: tables missing or behind. Only runs once per cold start.
-      const { rows: hasCompanies } = await pool.query(
-        `SELECT 1 FROM information_schema.tables
-         WHERE table_schema='public' AND table_name='companies' LIMIT 1`
-      );
-      const sql = fs.readFileSync(path.join(__dirname, 'seed/schema.sql'), 'utf8');
-      if (hasCompanies.length === 0) {
-        await pool.query(sql);
-        console.log('✅ Schema created');
-      } else {
-        const statements = sql.split(/;\s*\n/).map(s => s.trim()).filter(s =>
-          /^CREATE TABLE IF NOT EXISTS/i.test(s) ||
-          /^CREATE INDEX IF NOT EXISTS/i.test(s) ||
-          /^ALTER TABLE/i.test(s)
-        ).map(s => s + ';');
-        for (const stmt of statements) await pool.query(stmt);
-        console.log('✅ Schema migrations applied');
+      // Slow path: run every migration. Each in its own try/catch so a single
+      // failure (e.g. constraint name mismatch on an old deployment) doesn't
+      // block the rest from applying.
+      let okCount = 0, failCount = 0;
+      for (const stmt of MIGRATIONS) {
+        try {
+          await pool.query(stmt);
+          okCount++;
+        } catch (err) {
+          failCount++;
+          console.error('Migration step failed:', err.message, '\n  →', stmt.slice(0, 120));
+        }
       }
-      _migrated = true;
+      console.log(`Schema migrations: ${okCount} OK, ${failCount} failed`);
+
+      // Verify the sentinel column actually got added before flipping the
+      // fast-path flag. If it's still missing, leave _migrated=false so the
+      // next request retries.
+      const { rows: check } = await pool.query(
+        `SELECT 1 FROM information_schema.columns
+         WHERE table_schema='public' AND table_name=$1 AND column_name=$2 LIMIT 1`,
+        [SENTINEL_TABLE, SENTINEL_COLUMN]
+      );
+      if (check.length > 0) {
+        _migrated = true;
+      } else {
+        console.error('Sentinel column still missing after migration run — will retry on next request');
+      }
     } catch (e) {
       console.error('Schema migration error:', e.message);
     } finally {
