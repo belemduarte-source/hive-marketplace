@@ -6572,10 +6572,14 @@ const DEMO_COMPANIES = [
 
 // ── STORAGE ──────────────────────────────────────────────────────────────────
 
-// Convert a Supabase DB row to the internal company object format
+// Convert a DB row to the internal company object format. The Postgres `pg`
+// client returns BIGINT as a string, but inline onclick="fn(${c.id})" template
+// literals inject the number form — so any `companies.find(x => x.id === id)`
+// comparison would fail with "1" === 1. Coerce here at the boundary so every
+// downstream comparison is between numbers and works.
 function dbRowToCompany(row) {
   return {
-    id:        row.id,
+    id:        Number(row.id),
     name:      row.name,
     nif:       row.nif       || '',
     cae:       row.cae       || '',
@@ -6605,7 +6609,8 @@ function dbRowToCompany(row) {
     address:   row.address   || '',
     city:      row.city      || '',
     country:   row.country   || 'pt',
-    created_by: row.created_by || null,
+    // Same coercion as id above so isOwner checks (created_by === user.id) match.
+    created_by: row.created_by != null ? Number(row.created_by) : null,
     axes: [
       {l:'Qualidade',v:0},{l:'Pontualidade',v:0},
       {l:'Atendimento',v:0},{l:'Preço',v:0}
@@ -7069,7 +7074,10 @@ function updateAdminUI() {
   // Show the edit button when the viewer is an admin OR the owner of this listing.
   const me = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
   const c  = companies.find(x => x.id === selectedId);
-  const isOwner = !!(me && c && (c.created_by === me.id || c.createdBy === me.id));
+  // me.id arrives from sessionStorage as a string (BIGINT-safe round-trip);
+  // c.created_by is a number after dbRowToCompany. Coerce both sides.
+  const myId = me ? Number(me.id) : null;
+  const isOwner = !!(me && c && c.created_by != null && c.created_by === myId);
   editBtn.style.display = (isAdminMode || isOwner) ? 'flex' : 'none';
 }
 
@@ -7080,7 +7088,8 @@ function openEditCompany() {
   const id = selectedId;
   const me = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
   const c  = companies.find(x => x.id === id);
-  const isOwner = !!(me && c && (c.created_by === me.id || c.createdBy === me.id));
+  const myId = me ? Number(me.id) : null;
+  const isOwner = !!(me && c && c.created_by != null && c.created_by === myId);
   if (!isAdminMode && !isOwner) {
     showToast('Sem permissão para editar esta empresa.');
     return;
@@ -10388,8 +10397,9 @@ function updateNavAuth() {
     // The legacy empresa/cliente split lost meaning once registration was
     // unified — every new account starts as 'cliente' and graduates by
     // registering a company.
+    const myId = Number(user.id);
     const ownsCompany = Array.isArray(companies) && companies.some(c =>
-      (c.created_by && c.created_by === user.id) || (c.createdBy && c.createdBy === user.id)
+      c.created_by != null && c.created_by === myId
     );
     const badgeHtml = ownsCompany
       ? `<div class="avatar-menu-type empresa">🏢 ${t('typeAdvertiserLabel')}</div>`
@@ -10988,7 +10998,10 @@ function openProfilePanel() {
   const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
   if (!user) { openLogin(); return; }
   const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
-  const myCompanies = companies.filter(c => (c.createdBy === user.id || c.created_by === user.id));
+  // user.id is a string (BIGINT JSON-roundtrip); c.created_by is a number after
+  // dbRowToCompany. Coerce both sides so the filter actually matches.
+  const myId = Number(user.id);
+  const myCompanies = companies.filter(c => c.created_by != null && c.created_by === myId);
 
   const companyCards = myCompanies.length > 0
     ? myCompanies.map(c => `
