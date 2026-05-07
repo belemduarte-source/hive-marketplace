@@ -88,9 +88,14 @@
     /* Cross-device baseline */
     html{
       overflow-x:hidden;
+      overflow-y:hidden;
       -webkit-text-size-adjust:100%;
       -moz-text-size-adjust:100%;
       text-size-adjust:100%;
+      /* Stop iOS rubber-band scroll and Android pull-to-refresh from moving
+         the page when the user touches an empty area or scrolls past the edge. */
+      overscroll-behavior:none;
+      -webkit-overflow-scrolling:auto;
       /* iOS safe-area padding so content clears the notch / home indicator */
       padding-top:env(safe-area-inset-top);
       padding-bottom:env(safe-area-inset-bottom);
@@ -116,7 +121,10 @@
       --shadow-lg:0 8px 32px rgba(0,0,0,.12);
       --orange-light:#fff7ed;--orange-mid:#ffedd5;--orange-border:#fed7aa
     }
-    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;display:flex;flex-direction:column;overflow:hidden}
+    /* height:100dvh adapts when the mobile address bar collapses/expands;
+       100vh fallback for older browsers. overscroll-behavior:none keeps
+       gestures from bouncing the page off-screen. */
+    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;overscroll-behavior:none}
 
     /* ── NAV ── */
     nav{background:var(--nav);padding:0;display:flex;align-items:center;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3);position:relative;z-index:200;transition:transform 0.3s ease;overflow:visible;will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden}
