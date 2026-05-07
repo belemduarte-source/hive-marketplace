@@ -4,14 +4,33 @@
 const API_BASE = window.API_BASE || '/api';
 
 async function apiFetch(path, options = {}) {
-  const res = await fetch(API_BASE + path, {
-    credentials: 'include',
-    headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
-    ...options,
-    body: options.body ? JSON.stringify(options.body) : undefined,
-  });
-  const data = await res.json().catch(() => ({}));
-  if (!res.ok) throw Object.assign(new Error(data.error || 'Erro de servidor'), { status: res.status });
+  let res;
+  try {
+    res = await fetch(API_BASE + path, {
+      credentials: 'include',
+      headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
+      ...options,
+      body: options.body ? JSON.stringify(options.body) : undefined,
+    });
+  } catch (netErr) {
+    // fetch only throws on actual network failure — DNS, offline, CORS, etc.
+    // Tag with status:0 so callers can distinguish from server-side errors.
+    const e = new Error('Sem ligação ao servidor');
+    e.status = 0;
+    e.cause  = netErr;
+    throw e;
+  }
+  // Read body as text first so non-JSON 5xx responses still surface usefully.
+  const raw = await res.text();
+  let data = {};
+  try { data = raw ? JSON.parse(raw) : {}; } catch (_) { /* keep data={} */ }
+  if (!res.ok) {
+    const msg = data.error || `Erro do servidor (${res.status})`;
+    const err = new Error(msg);
+    err.status = res.status;
+    err.body   = raw.slice(0, 200);
+    throw err;
+  }
   return data;
 }
 

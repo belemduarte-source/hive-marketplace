@@ -61,11 +61,14 @@ router.get('/', async (req, res, next) => {
       params
     );
 
-    // Edge-cache the public listing on Vercel: serve from CDN for 60 s,
-    // serve stale for up to 5 minutes while revalidating in the background.
-    // Browsers don't cache (max-age=0) so a logged-in user editing their
-    // own company doesn't see a stale version after a hard refresh.
-    res.set('Cache-Control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=300');
+    // Logged-in users (especially owners who just edited their listing) bypass
+    // the edge cache entirely and always see fresh data. Anonymous traffic
+    // still benefits from a 60 s edge cache + 5 min SWR.
+    if (req.cookies && req.cookies.hive_token) {
+      res.set('Cache-Control', 'private, max-age=0, no-store');
+    } else {
+      res.set('Cache-Control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=300');
+    }
     res.json(rows);
   } catch (e) {
     next(e);

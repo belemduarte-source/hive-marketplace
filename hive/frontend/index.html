@@ -6971,7 +6971,13 @@ async function loadCompaniesFromDB() {
       nextCompanyId = computeNextCompanyId(companies, nextCompanyId);
     }
   } catch(e) {
-    showToast('Sem ligação ao servidor — a mostrar dados de demonstração');
+    // Distinguish between actual network failure (no connection) and a server
+    // error response — the latter is much more actionable to debug.
+    const msg = (e.status === 0 || e.status === undefined)
+      ? 'Sem ligação ao servidor — a mostrar dados de demonstração'
+      : `Erro do servidor (${e.status}) — a mostrar dados de demonstração`;
+    showToast(msg);
+    if (e.status && e.status >= 500) console.error('Companies API error:', e.message, e.body || '');
     // Graceful fallback: load DEMO_COMPANIES so map is never empty
     DEMO_COMPANIES.forEach(d => {
       companies.push({
