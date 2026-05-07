@@ -8,6 +8,19 @@ if (_missing.length) {
   process.exit(1);
 }
 
+// ── Optional-integration banner ──────────────────────────────────────────────
+// Logs at cold start so Vercel function logs make the deployment posture
+// obvious — which integrations are wired up, which fall back to no-ops.
+function _hasEnv(...keys) { return keys.every(k => !!process.env[k]); }
+const INTEGRATION_STATUS = {
+  google_signin:  _hasEnv('GOOGLE_CLIENT_ID'),
+  email_smtp:     _hasEnv('SMTP_USER', 'SMTP_PASS'),
+  admin_token:    _hasEnv('ADMIN_TOKEN'),
+  admin_email:    _hasEnv('ADMIN_EMAIL'),
+  app_url:        _hasEnv('APP_URL'),
+};
+console.log('Hive backend boot — integrations:', JSON.stringify(INTEGRATION_STATUS));
+
 // ── Global error safety net ───────────────────────────────────────────────────
 process.on('unhandledRejection', (reason) => {
   console.error('Unhandled promise rejection:', reason);
@@ -106,6 +119,34 @@ const generalLimiter = rateLimit({
 
 app.use('/api/', generalLimiter);
 app.use('/api/auth/', authLimiter);
+
+// ── Observability: log slow / failing requests ───────────────────────────────
+// Cheap structured log line on >= 1.5 s requests or any 5xx response. Keeps
+// Vercel function logs useful for debugging without spamming on every hit.
+// Also tracks a small in-memory ring of recent 5xx errors for the
+// /api/admin/diagnostics endpoint.
+const RECENT_ERRORS_MAX = 25;
+const recentErrors = [];
+app.use((req, res, next) => {
+  const t0 = Date.now();
+  res.on('finish', () => {
+    const ms = Date.now() - t0;
+    const slow = ms >= 1500;
+    const failed = res.statusCode >= 500;
+    if (slow || failed) {
+      const line = JSON.stringify({
+        ts: new Date().toISOString(),
+        method: req.method, path: req.path, status: res.statusCode, ms,
+      });
+      (failed ? console.error : console.warn)(line);
+    }
+    if (failed) {
+      recentErrors.push({ ts: Date.now(), method: req.method, path: req.path, status: res.statusCode, ms });
+      if (recentErrors.length > RECENT_ERRORS_MAX) recentErrors.shift();
+    }
+  });
+  next();
+});
 
 // ── Schema auto-migration ────────────────────────────────────────────────────
 // Runs at most once per Lambda instance, *before* any request is served
@@ -342,8 +383,54 @@ app.use('/api/auth', authRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/favourites', favouritesRouter);
 
-// Health check
-app.get('/api/health', (req, res) => res.json({ ok: true, ts: new Date().toISOString() }));
+// ── Health check ─────────────────────────────────────────────────────────────
+// Returns 200 only if the DB is actually reachable; uptime monitors should
+// hit this URL. Keeps response payload small so it's cheap to poll.
+app.get('/api/health', async (req, res) => {
+  try {
+    const pool = require('./db');
+    const t0 = Date.now();
+    await pool.query('SELECT 1');
+    res.json({ ok: true, db_ms: Date.now() - t0, migrated: _migrated, ts: new Date().toISOString() });
+  } catch (e) {
+    res.status(503).json({ ok: false, error: 'database_unreachable', ts: new Date().toISOString() });
+  }
+});
+
+// ── Admin diagnostics ────────────────────────────────────────────────────────
+// Deep status snapshot for an authenticated admin: integration env-var
+// presence, DB row counts, migration sentinel, and the recent 5xx ring.
+// Returns booleans for env vars rather than the values themselves so the
+// endpoint never leaks secrets.
+const { requireAdmin } = require('./middleware/auth');
+app.get('/api/admin/diagnostics', requireAdmin, async (req, res, next) => {
+  try {
+    const pool = require('./db');
+    const [users, companies, reports, events] = await Promise.all([
+      pool.query('SELECT COUNT(*)::int AS c FROM users'),
+      pool.query("SELECT COUNT(*) FILTER (WHERE status='approved')::int AS approved, COUNT(*) FILTER (WHERE status='pending')::int AS pending, COUNT(*) FILTER (WHERE status='rejected')::int AS rejected, COUNT(*) FILTER (WHERE status='removed')::int AS removed FROM companies"),
+      pool.query("SELECT COUNT(*) FILTER (WHERE status='pending')::int AS pending FROM reports"),
+      pool.query("SELECT COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '24 hours')::int AS day, COUNT(*) FILTER (WHERE created_at > NOW() - INTERVAL '7 days')::int AS week FROM events"),
+    ]);
+    res.json({
+      ts: new Date().toISOString(),
+      uptime_s: Math.round(process.uptime()),
+      node_env: process.env.NODE_ENV || 'unset',
+      vercel_region: process.env.VERCEL_REGION || null,
+      integrations: INTEGRATION_STATUS,
+      schema: { migrated: _migrated, sentinel_col: SENTINEL_COLUMN, sentinel_table: SENTINEL_TABLE },
+      counts: {
+        users: users.rows[0].c,
+        companies: companies.rows[0],
+        pending_reports: reports.rows[0].pending,
+        events: events.rows[0],
+      },
+      recent_5xx: recentErrors.slice(-10).reverse(),
+    });
+  } catch (e) {
+    next(e);
+  }
+});
 
 app.use(errorHandler);
 
