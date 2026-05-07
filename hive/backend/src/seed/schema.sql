@@ -67,7 +67,8 @@ CREATE TABLE IF NOT EXISTS companies (
   emoji       TEXT DEFAULT '🏢',
   color       TEXT DEFAULT '#f97316',
   pin_type    TEXT DEFAULT 'std',
-  status      TEXT DEFAULT 'approved' CHECK (status IN ('approved','pending','rejected')),
+  status      TEXT DEFAULT 'approved' CHECK (status IN ('approved','pending','rejected','removed')),
+  removed_at  TIMESTAMPTZ,
   created_by  BIGINT REFERENCES users(id) ON DELETE SET NULL,
   created_at  TIMESTAMPTZ DEFAULT NOW(),
   updated_at  TIMESTAMPTZ DEFAULT NOW()
@@ -124,6 +125,13 @@ ALTER TABLE companies ADD COLUMN IF NOT EXISTS certidao_permanente TEXT;
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS featured            BOOLEAN DEFAULT FALSE;
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS nif                 TEXT;
 CREATE INDEX IF NOT EXISTS idx_companies_nif ON companies(nif);
+
+-- 'removed' status (admin soft-delete after a listing was already published)
+-- is distinct from 'rejected' (admin declined to publish at submit time).
+ALTER TABLE companies ADD COLUMN IF NOT EXISTS removed_at TIMESTAMPTZ;
+ALTER TABLE companies DROP CONSTRAINT IF EXISTS companies_status_check;
+ALTER TABLE companies ADD CONSTRAINT companies_status_check
+  CHECK (status IN ('approved','pending','rejected','removed'));
 
 -- ── Listing reports (user-flagged content) ────────────────────────────────────
 CREATE TABLE IF NOT EXISTS reports (

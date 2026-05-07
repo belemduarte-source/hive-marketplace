@@ -62,15 +62,21 @@ router.get('/companies', async (req, res, next) => {
   }
 });
 
-// PUT /api/admin/companies/:id/status — approve/reject/pending
+// PUT /api/admin/companies/:id/status — approve/reject/pending/removed.
+// 'rejected' = declined to publish at submit time.
+// 'removed'  = taken down after the listing was already public.
 router.put('/companies/:id/status', async (req, res, next) => {
   try {
     const { status } = req.body;
-    if (!['approved', 'pending', 'rejected'].includes(status)) {
+    if (!['approved', 'pending', 'rejected', 'removed'].includes(status)) {
       return res.status(400).json({ error: 'status inválido' });
     }
+    // Set removed_at when transitioning to 'removed'; clear it when the
+    // listing is restored to any other status.
+    const removedAt = status === 'removed' ? 'NOW()' : 'NULL';
     const { rows } = await pool.query(
-      `UPDATE companies SET status = $1, updated_at = NOW() WHERE id = $2 RETURNING *`,
+      `UPDATE companies SET status = $1, removed_at = ${removedAt}, updated_at = NOW()
+       WHERE id = $2 RETURNING *`,
       [status, req.params.id]
     );
     if (!rows[0]) return res.status(404).json({ error: 'Empresa não encontrada' });

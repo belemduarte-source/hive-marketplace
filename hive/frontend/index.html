@@ -2438,6 +2438,7 @@
     .admin-status-badge.approved{background:var(--green-light);color:#065f46}
     .admin-status-badge.pending{background:#fef3c7;color:#92400e}
     .admin-status-badge.rejected{background:var(--red-light);color:#991b1b}
+    .admin-status-badge.removed{background:#f3f4f6;color:#374151}
     .admin-action-btn{font-size:11px;font-weight:700;padding:5px 10px;border-radius:6px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;font-family:inherit;transition:all .15s;white-space:nowrap;flex-shrink:0}
     .admin-action-btn:hover{background:var(--bg);border-color:var(--primary);color:var(--primary)}
     .admin-action-btn.danger:hover{border-color:var(--red);color:var(--red)}
@@ -10986,7 +10987,7 @@ function openProfilePanel() {
           <div class="profile-company-emoji" style="background:${c.color}22;cursor:pointer" onclick="closeProfilePanel();showTab('search');setTimeout(()=>openDetail(${c.id}),300)">${c.emoji||'🏢'}</div>
           <div class="profile-company-info" style="cursor:pointer;flex:1" onclick="closeProfilePanel();showTab('search');setTimeout(()=>openDetail(${c.id}),300)">
             <div class="profile-company-name">${c.name}</div>
-            <div class="profile-company-city">📍 ${c.city||'Portugal'} · <span style="color:${c.status==='approved'?'var(--green)':c.status==='pending'?'#f59e0b':'var(--red)'};font-weight:700;font-size:11px">${c.status==='approved'?'✅ Aprovada':c.status==='pending'?'⏳ Pendente':'❌ Rejeitada'}</span></div>
+            <div class="profile-company-city">📍 ${c.city||'Portugal'} · <span style="color:${c.status==='approved'?'var(--green)':c.status==='pending'?'#f59e0b':c.status==='removed'?'var(--muted)':'var(--red)'};font-weight:700;font-size:11px">${c.status==='approved'?'✅ Aprovada':c.status==='pending'?'⏳ Pendente':c.status==='removed'?'🗑️ Removida':'❌ Rejeitada'}</span></div>
           </div>
           <button onclick="profileEditCompany(${c.id})" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;color:var(--text-secondary);cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0" title="Editar empresa">✏️</button>
         </div>`).join('')
@@ -11746,8 +11747,9 @@ async function adminLoadCompanies(status) {
       <select id="adminStatusFilter" onchange="adminReloadWithStatus(this.value)">
         <option value="">Todos</option>
         <option value="pending" ${status==='pending'?'selected':''}>Pendentes</option>
-        <option value="approved">Aprovadas</option>
-        <option value="rejected">Rejeitadas</option>
+        <option value="approved" ${status==='approved'?'selected':''}>Aprovadas</option>
+        <option value="rejected" ${status==='rejected'?'selected':''}>Rejeitadas</option>
+        <option value="removed"  ${status==='removed' ?'selected':''}>Removidas</option>
       </select>
     </div>
     <div id="adminCompaniesList"><div style="text-align:center;padding:32px;color:var(--muted)">A carregar...</div></div>`;
@@ -11788,9 +11790,14 @@ function renderAdminRows(rows) {
           ${r.created_at ? new Date(r.created_at).toLocaleDateString('pt-PT') : ''} · ${escHtml(r.owner_name||'sem conta')}
         </div>
       </div>
-      <span class="admin-status-badge ${r.status}">${r.status==='approved'?'✅ Aprovada':r.status==='pending'?'⏳ Pendente':'❌ Rejeitada'}</span>
-      ${r.status !== 'approved' ? `<button class="admin-action-btn" onclick="adminApprove(${r.id})">Aprovar</button>` : ''}
-      ${r.status !== 'rejected' ? `<button class="admin-action-btn danger" onclick="adminReject(${r.id})">Rejeitar</button>` : ''}
+      <span class="admin-status-badge ${r.status}">${
+        r.status==='approved' ? '✅ Aprovada' :
+        r.status==='pending'  ? '⏳ Pendente' :
+        r.status==='rejected' ? '❌ Rejeitada' :
+        r.status==='removed'  ? '🗑️ Removida'  : r.status
+      }</span>
+      ${r.status !== 'approved' ? `<button class="admin-action-btn" onclick="adminApprove(${r.id})">${r.status === 'removed' ? 'Restaurar' : 'Aprovar'}</button>` : ''}
+      ${r.status !== 'rejected' && r.status !== 'removed' ? `<button class="admin-action-btn danger" onclick="adminRemove(${r.id})">Remover</button>` : ''}
       <button class="admin-action-btn" onclick="adminToggleFeatured(${r.id},${!r.featured})" title="${r.featured?'Remover destaque':'Destacar'}">
         ${r.featured ? '⭐ Remover' : '☆ Destacar'}
       </button>
@@ -11817,6 +11824,24 @@ async function adminReject(id) {
     if (row) row.status = 'rejected';
     renderAdminRows(_adminRows);
     showToast('Empresa rejeitada');
+  } catch(e) { showToast(e.message||'Erro'); }
+}
+
+// Soft-delete a listing that was already published. Backend uses status
+// 'removed' (distinct from 'rejected') and stamps removed_at.
+async function adminRemove(id) {
+  try {
+    await api.adminSetStatus(id, 'removed');
+    const row = _adminRows.find(r => r.id === id);
+    if (row) row.status = 'removed';
+    renderAdminRows(_adminRows);
+    // Drop from the visible companies list and the map
+    const idx = companies.findIndex(x => x.id === id);
+    if (idx >= 0) {
+      companies.splice(idx, 1);
+      if (typeof applyFilters === 'function') applyFilters();
+    }
+    showToast('🗑️ Empresa removida');
   } catch(e) { showToast(e.message||'Erro'); }
 }
 

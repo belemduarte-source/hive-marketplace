@@ -429,11 +429,12 @@ router.get('/:id/analytics', requireAuth, async (req, res, next) => {
   }
 });
 
-// DELETE /api/companies/:id — admin only (soft delete)
+// DELETE /api/companies/:id — admin only (soft delete after publication).
+// Distinct from 'rejected' which means "we declined to publish at submit time".
 router.delete('/:id', requireAdmin, async (req, res, next) => {
   try {
     await pool.query(
-      `UPDATE companies SET status = 'rejected', updated_at = NOW() WHERE id = $1`,
+      `UPDATE companies SET status = 'removed', removed_at = NOW(), updated_at = NOW() WHERE id = $1`,
       [req.params.id]
     );
     res.json({ ok: true });
