@@ -879,6 +879,10 @@
     .cat-item:last-child{border-right:none}
     .cat-item:hover{background:rgba(249,115,22,.15);color:#fff}
     .cat-item.active{background:rgba(249,115,22,.22);color:#f97316;outline:2px solid #f97316;outline-offset:-2px;border-radius:4px}
+    /* Master "Todas as áreas" toggle — distinguished from per-area chips */
+    .cat-item-master{flex:0 0 auto;font-weight:800;background:rgba(255,255,255,.06);border-radius:6px;border-right:1px solid rgba(255,255,255,.18) !important;padding:0 12px}
+    .cat-item-master:hover{background:rgba(249,115,22,.2)}
+    .cat-item-master.active{background:rgba(249,115,22,.3);color:#fff;outline:2px solid #f97316;outline-offset:-2px}
     .cat-item.open{background:rgba(249,115,22,.12);color:#fff}
     .cat-item .cat-icon{display:flex;align-items:center;justify-content:center;opacity:1;flex-shrink:0}
     .cat-item:hover .cat-icon,.cat-item.active .cat-icon,.cat-item.open .cat-icon{opacity:1}
@@ -7846,6 +7850,37 @@ function renderSectorFilters() {
   const tr = translations[currentLang] || translations.pt;
   const sg = tr.sectorGroups || {};
   const sc = tr.sectors || {};
+
+  // Collect every subcategory key across every group — used by the master
+  // "select all areas" toggle below.
+  const _allSubKeysGlobal = [];
+  Object.values(SECTOR_HIERARCHY).forEach(group => {
+    Object.values(group.categories).forEach(cat => {
+      Object.keys(cat.subcategories).forEach(k => _allSubKeysGlobal.push(k));
+    });
+  });
+  const _allSelected = _allSubKeysGlobal.length > 0 && _allSubKeysGlobal.every(k => activeSectors.has(k));
+
+  // Master toggle: select all activities across all areas in one click.
+  const allBtn = document.createElement('button');
+  allBtn.type = 'button';
+  allBtn.className = 'cat-item cat-item-master' + (_allSelected ? ' active' : '');
+  allBtn.title = _allSelected ? 'Desmarcar todas as áreas' : 'Selecionar todas as áreas';
+  allBtn.innerHTML = `
+    <span class="cat-icon" style="font-size:18px;line-height:1">${_allSelected ? '✓' : '☰'}</span>
+    <span class="cat-label">Todas as áreas</span>
+  `;
+  allBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    if (_allSubKeysGlobal.every(k => activeSectors.has(k))) {
+      _allSubKeysGlobal.forEach(k => activeSectors.delete(k));
+    } else {
+      _allSubKeysGlobal.forEach(k => activeSectors.add(k));
+    }
+    renderSectorFilters();
+    applyFilters();
+  });
+  container.appendChild(allBtn);
 
   // Company count per subcategory — total count regardless of radius
   const subCounts = {};
