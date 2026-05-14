@@ -210,6 +210,14 @@ router.post('/', async (req, res, next) => {
         return res.status(400).json({ error: 'NIF inválido. Verifique os 9 dígitos.' });
       }
     }
+    // One company per NIF — give a clean 409 instead of letting the unique
+    // index throw a raw constraint error (also catches double-submits).
+    if (nifClean) {
+      const dupe = await pool.query('SELECT id FROM companies WHERE nif = $1', [nifClean]);
+      if (dupe.rows.length > 0) {
+        return res.status(409).json({ error: 'Esta empresa já está registada (NIF duplicado).' });
+      }
+    }
     // Certidão Permanente is mandatory at registration to prove the company is
     // a real, registered Portuguese commercial entity.
     const certidao = certidao_permanente && String(certidao_permanente).trim();

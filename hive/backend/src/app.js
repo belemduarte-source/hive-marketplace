@@ -252,6 +252,9 @@ const MIGRATIONS = [
   `ALTER TABLE companies ADD COLUMN IF NOT EXISTS featured            BOOLEAN DEFAULT FALSE`,
   `ALTER TABLE companies ADD COLUMN IF NOT EXISTS nif                 TEXT`,
   `CREATE INDEX IF NOT EXISTS idx_companies_nif ON companies(nif)`,
+  // One company per NIF — blocks duplicate registrations of the same entity.
+  // Partial: rows without a NIF (foreign companies, legacy imports) are exempt.
+  `CREATE UNIQUE INDEX IF NOT EXISTS idx_companies_nif_unique ON companies(nif) WHERE nif IS NOT NULL AND nif <> ''`,
   `ALTER TABLE companies ADD COLUMN IF NOT EXISTS removed_at TIMESTAMPTZ`,
   // Status CHECK constraint — drop the old (more restrictive) one and re-add
   // with 'removed' allowed. ALTER TABLE ADD CONSTRAINT IF NOT EXISTS isn't a

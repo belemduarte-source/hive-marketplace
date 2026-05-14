@@ -124,6 +124,10 @@ ALTER TABLE companies ADD COLUMN IF NOT EXISTS certidao_permanente TEXT;
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS featured            BOOLEAN DEFAULT FALSE;
 ALTER TABLE companies ADD COLUMN IF NOT EXISTS nif                 TEXT;
 CREATE INDEX IF NOT EXISTS idx_companies_nif ON companies(nif);
+-- One company per NIF — blocks duplicate registrations of the same entity.
+-- Partial: rows without a NIF (foreign companies, legacy imports) are exempt.
+CREATE UNIQUE INDEX IF NOT EXISTS idx_companies_nif_unique
+  ON companies(nif) WHERE nif IS NOT NULL AND nif <> '';
 
 -- 'removed' status (admin soft-delete after a listing was already published)
 -- is distinct from 'rejected' (admin declined to publish at submit time).
