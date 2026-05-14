@@ -2753,13 +2753,13 @@
 <div class="reg-success-overlay" id="regSuccessOverlay">
   <div class="reg-success-card">
     <div class="reg-success-icon">🎉</div>
-    <div class="reg-success-title">Empresa Publicada!</div>
+    <div class="reg-success-title" data-i18n="regSuccessTitle">Empresa Publicada!</div>
     <div class="reg-success-name" id="regSuccessName"></div>
-    <div class="reg-success-sub">A sua empresa já está visível no mapa. Pode editar os detalhes (morada, alvará, certidão permanente, contactos) a qualquer momento a partir do seu perfil.</div>
+    <div class="reg-success-sub" data-i18n="regSuccessSub">A sua empresa já está visível no mapa. Pode editar os detalhes (morada, alvará, certidão permanente, contactos) a qualquer momento a partir do seu perfil.</div>
     <ul class="reg-success-steps">
-      <li>✅ Visível no mapa <strong>imediatamente</strong>.</li>
-      <li>✏️ Edite os detalhes a partir do <strong>O Meu Perfil</strong>.</li>
-      <li>🚩 A nossa equipa pode rever e moderar caso seja reportada.</li>
+      <li data-i18n-html="regSuccessStep1">✅ Visível no mapa <strong>imediatamente</strong>.</li>
+      <li data-i18n-html="regSuccessStep2">✏️ Edite os detalhes a partir do <strong>O Meu Perfil</strong>.</li>
+      <li data-i18n-html="regSuccessStep3">🚩 A nossa equipa pode rever e moderar caso seja reportada.</li>
     </ul>
     <div class="reg-success-actions">
       <button class="btn-success-close" onclick="closeRegSuccess()" data-i18n="successClose">Continuar a Navegar</button>
@@ -2930,12 +2930,12 @@
     <!-- ── LOGGED-IN HERO CTA — show registered users a quick path to advertise -->
     <div class="lp-hero-userCta" id="lpHeroUserCta" hidden>
       <div class="lp-hero-userCta-text">
-        <strong id="lpHeroUserCtaGreeting">Olá!</strong>
-        <span>Quer anunciar a sua empresa no marketplace?</span>
+        <strong id="lpHeroUserCtaGreeting" data-i18n="heroUserGreeting">Olá!</strong>
+        <span data-i18n="heroUserTagline">Quer anunciar a sua empresa no marketplace?</span>
       </div>
       <button type="button" class="lp-hero-userCta-btn" onclick="openRegister()">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" width="16" height="16"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        <span>Anunciar Empresa</span>
+        <span data-i18n="heroUserCta">Anunciar Empresa</span>
       </button>
     </div>
 
@@ -3382,7 +3382,7 @@
       <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M3 6h18M3 12h18M3 18h18"/><circle cx="19" cy="6" r="3" fill="#f97316" stroke="none"/>
       </svg>
-      <div id="mapEmptyHintText" style="margin:0;color:#fff;font-size:13px;font-weight:600;line-height:1.4">Selecione uma área de atividade<br><span style="font-size:11px;font-weight:400;color:#94a3b8">para ver empresas no mapa</span></div>
+      <div id="mapEmptyHintText" style="margin:0;color:#fff;font-size:13px;font-weight:600;line-height:1.4"><span data-i18n="emptySectorTitle">Selecione uma área de atividade</span><br><span style="font-size:11px;font-weight:400;color:#94a3b8" data-i18n="emptySectorSub">Escolha um ou mais setores acima para ver as empresas disponíveis.</span></div>
     </div>
 
     <div class="map-info-box">
@@ -3434,9 +3434,9 @@
       <div class="dp-name" id="dpName"></div>
       <div class="dp-sub" id="dpSub"></div>
     </div>
-    <button class="dp-close dp-fav-btn" id="dpFavBtn" onclick="dpToggleFav()" title="Guardar nos favoritos" aria-label="Guardar nos favoritos">☆</button>
-    <button class="dp-close" id="dpEditBtn" style="display:none" onclick="openEditCompany()" title="Editar" aria-label="Editar empresa">✎</button>
-    <button class="dp-close" onclick="closeDetail()" aria-label="Fechar detalhes">✕</button>
+    <button class="dp-close dp-fav-btn" id="dpFavBtn" onclick="dpToggleFav()" data-i18n-title="dpFavTitle" data-i18n-aria="dpFavTitle" title="Guardar nos favoritos" aria-label="Guardar nos favoritos">☆</button>
+    <button class="dp-close" id="dpEditBtn" style="display:none" onclick="openEditCompany()" data-i18n-title="dpEditTitle" data-i18n-aria="dpEditAria" title="Editar" aria-label="Editar empresa">✎</button>
+    <button class="dp-close" onclick="closeDetail()" data-i18n-aria="dpCloseAria" aria-label="Fechar detalhes">✕</button>
   </div>
   <!-- ACTION BAR — visible only when logged in -->
   <div class="dp-quote-bar" id="dpQuoteBar">
@@ -3450,7 +3450,7 @@
     <button class="btn-quote-secondary" onclick="shareCompany()" title="Partilhar">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
     </button>
-    <button class="btn-quote-secondary" onclick="openReportModal()" title="Reportar listagem">
+    <button class="btn-quote-secondary" onclick="openReportModal()" data-i18n-title="dpReportTitle" title="Reportar listagem">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
     </button>
   </div>
@@ -3546,99 +3546,99 @@
 </div>
 
 <!-- LOGIN / REGISTER MODAL -->
-<div class="overlay" id="loginOverlay" onclick="if(event.target===this)closeLogin()" role="dialog" aria-modal="true" aria-label="Iniciar sessão ou criar conta">
+<div class="overlay" id="loginOverlay" onclick="if(event.target===this)closeLogin()" role="dialog" aria-modal="true" data-i18n-aria="authAria">
   <div class="modal" style="width:440px">
     <div style="text-align:center;margin-bottom:18px">
-      <div style="font-size:22px;font-weight:800;color:var(--text)">Bem-vindo à <span style="color:var(--primary)">Hive</span></div>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px">A maior rede B2B de Portugal</div>
+      <div style="font-size:22px;font-weight:800;color:var(--text)"><span data-i18n="authWelcome">Bem-vindo à Hive</span></div>
+      <div style="font-size:12px;color:var(--muted);margin-top:4px" data-i18n="authTagline">A maior rede B2B de Portugal</div>
     </div>
     <!-- Tabs -->
     <div class="auth-tabs">
-      <div class="auth-tab active" data-tab="login" onclick="switchLoginTab('login')">Entrar</div>
-      <div class="auth-tab" data-tab="register" onclick="switchLoginTab('register')">Criar Conta</div>
+      <div class="auth-tab active" data-tab="login" onclick="switchLoginTab('login')" data-i18n="authTabLogin">Entrar</div>
+      <div class="auth-tab" data-tab="register" onclick="switchLoginTab('register')" data-i18n="authTabRegister">Criar Conta</div>
     </div>
 
     <!-- LOGIN TAB -->
     <div class="auth-panel" id="authLogin">
       <div id="googleLoginSlot" class="google-btn-slot"></div>
-      <div id="googleLoginDivider" class="auth-divider" style="display:none"><span>ou continue com email</span></div>
+      <div id="googleLoginDivider" class="auth-divider" style="display:none"><span data-i18n="authDividerEmail">ou continue com email</span></div>
       <form id="loginForm" onsubmit="event.preventDefault();doLogin()" novalidate>
         <div class="form-row">
-          <label for="loginEmail">Email</label>
+          <label for="loginEmail" data-i18n="authEmailLabel">Email</label>
           <input type="email" id="loginEmail" name="email" placeholder="email@exemplo.com" autocomplete="email" inputmode="email" required aria-required="true"/>
         </div>
         <div class="form-row">
-          <label for="loginPass">Palavra-passe</label>
+          <label for="loginPass" data-i18n="authPasswordLabel">Palavra-passe</label>
           <div class="pwd-wrap">
             <input type="password" id="loginPass" name="current-password" autocomplete="current-password" required aria-required="true"/>
-            <button type="button" class="pwd-toggle" aria-label="Mostrar/ocultar palavra-passe" onclick="togglePassword('loginPass', this)" tabindex="-1">
+            <button type="button" class="pwd-toggle" data-i18n-aria="pwdToggleAria" aria-label="Mostrar/ocultar palavra-passe" onclick="togglePassword('loginPass', this)" tabindex="-1">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
-          <div class="caps-hint" id="loginCapsHint" hidden>⚠️ Caps Lock está ativado</div>
+          <div class="caps-hint" id="loginCapsHint" hidden data-i18n="capsLockOn">⚠️ Caps Lock está ativado</div>
         </div>
         <div style="text-align:right;margin-bottom:14px"><a href="#" onclick="openForgotPassword();return false" style="display:inline-block;font-size:13px;font-weight:700;color:var(--primary);text-decoration:underline;text-underline-offset:3px;padding:6px 2px" data-i18n="forgotPwd">Esqueceu a palavra-passe?</a></div>
-        <button type="submit" class="btn-submit" id="loginSubmitBtn" style="width:100%;padding:11px;font-size:14px">Entrar</button>
+        <button type="submit" class="btn-submit" id="loginSubmitBtn" style="width:100%;padding:11px;font-size:14px" data-i18n="authLoginSubmit">Entrar</button>
       </form>
-      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">Ainda não tem conta? <button type="button" onclick="switchLoginTab('register')" style="background:none;border:0;color:var(--primary);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0">Criar Conta</button></div>
+      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)"><span data-i18n="authNoAccount">Ainda não tem conta?</span> <button type="button" onclick="switchLoginTab('register')" style="background:none;border:0;color:var(--primary);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0" data-i18n="authTabRegister">Criar Conta</button></div>
     </div>
 
     <!-- REGISTER TAB -->
     <div class="auth-panel" id="authRegister" style="display:none">
       <div id="googleRegisterSlot" class="google-btn-slot"></div>
-      <div id="googleRegisterDivider" class="auth-divider" style="display:none"><span>ou preencha os dados</span></div>
+      <div id="googleRegisterDivider" class="auth-divider" style="display:none"><span data-i18n="authDividerData">ou preencha os dados</span></div>
       <form id="registerForm" onsubmit="event.preventDefault();doRegister()" novalidate>
         <div class="form-row">
           <label for="regAuthName"><span data-i18n="regAuthNameLabel">Nome completo</span> <span class="req">*</span></label>
           <input type="text" id="regAuthName" name="name" placeholder="O seu nome" data-i18n-ph="regAuthNamePh" autocomplete="name" required aria-required="true"/>
         </div>
         <div class="form-row">
-          <label for="regAuthEmail">Email <span class="req">*</span></label>
+          <label for="regAuthEmail"><span data-i18n="authEmailLabel">Email</span> <span class="req">*</span></label>
           <input type="email" id="regAuthEmail" name="email" placeholder="email@exemplo.com" autocomplete="email" inputmode="email" required aria-required="true"/>
         </div>
         <div class="form-row">
-          <label for="regAuthPass">Palavra-passe <span class="req">*</span></label>
+          <label for="regAuthPass"><span data-i18n="authPasswordLabel">Palavra-passe</span> <span class="req">*</span></label>
           <div class="pwd-wrap">
-            <input type="password" id="regAuthPass" name="new-password" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required minlength="6" aria-required="true" aria-describedby="regAuthPassHint"/>
-            <button type="button" class="pwd-toggle" aria-label="Mostrar/ocultar palavra-passe" onclick="togglePassword('regAuthPass', this)" tabindex="-1">
+            <input type="password" id="regAuthPass" name="new-password" data-i18n-ph="authPasswordPh" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required minlength="6" aria-required="true" aria-describedby="regAuthPassHint"/>
+            <button type="button" class="pwd-toggle" data-i18n-aria="pwdToggleAria" aria-label="Mostrar/ocultar palavra-passe" onclick="togglePassword('regAuthPass', this)" tabindex="-1">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
-          <div class="caps-hint" id="regCapsHint" hidden>⚠️ Caps Lock está ativado</div>
-          <div class="form-hint" id="regAuthPassHint">Mínimo 6 caracteres.</div>
+          <div class="caps-hint" id="regCapsHint" hidden data-i18n="capsLockOn">⚠️ Caps Lock está ativado</div>
+          <div class="form-hint" id="regAuthPassHint" data-i18n="authPasswordHint">Mínimo 6 caracteres.</div>
         </div>
-        <button type="submit" class="btn-submit" id="registerSubmitBtn" style="width:100%;padding:11px;font-size:14px;margin-top:6px">Criar Conta</button>
+        <button type="submit" class="btn-submit" id="registerSubmitBtn" style="width:100%;padding:11px;font-size:14px;margin-top:6px" data-i18n="authRegisterSubmit">Criar Conta</button>
       </form>
-      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">Já tem conta? <button type="button" onclick="switchLoginTab('login')" style="background:none;border:0;color:var(--primary);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0">Entrar</button></div>
+      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)"><span data-i18n="authHasAccount">Já tem conta?</span> <button type="button" onclick="switchLoginTab('login')" style="background:none;border:0;color:var(--primary);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0" data-i18n="authTabLogin">Entrar</button></div>
     </div>
   </div>
 </div>
 
 <!-- REPORT LISTING MODAL — lets logged-in users flag a company for moderation. -->
-<div class="overlay" id="reportOverlay" onclick="if(event.target===this)closeReportModal()" role="dialog" aria-modal="true" aria-label="Reportar listagem">
+<div class="overlay" id="reportOverlay" onclick="if(event.target===this)closeReportModal()" role="dialog" aria-modal="true" data-i18n-aria="reportAria">
   <div class="modal" style="max-width:440px">
-    <div class="modal-title" style="justify-content:center;text-align:center"><span>🚩 Reportar listagem</span></div>
-    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:14px">Os reportes são revistos pela nossa equipa de moderação.</div>
+    <div class="modal-title" style="justify-content:center;text-align:center"><span data-i18n="reportTitle">🚩 Reportar listagem</span></div>
+    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:14px" data-i18n="reportSubtitle">Os reportes são revistos pela nossa equipa de moderação.</div>
     <form onsubmit="event.preventDefault();submitReport()">
       <div class="form-row">
-        <label for="reportReason">Motivo <span class="req">*</span></label>
+        <label for="reportReason"><span data-i18n="reportReasonLabel">Motivo</span> <span class="req">*</span></label>
         <select id="reportReason" required>
-          <option value="">Selecionar motivo…</option>
-          <option value="fake">Empresa falsa ou inexistente</option>
-          <option value="inappropriate">Conteúdo impróprio</option>
-          <option value="duplicate">Listagem duplicada</option>
-          <option value="wrong_info">Informação incorreta</option>
-          <option value="spam">Spam</option>
-          <option value="other">Outro</option>
+          <option value="" data-i18n="reportReasonPh">Selecionar motivo…</option>
+          <option value="fake" data-i18n="reportReasonFake">Empresa falsa ou inexistente</option>
+          <option value="inappropriate" data-i18n="reportReasonInappropriate">Conteúdo impróprio</option>
+          <option value="duplicate" data-i18n="reportReasonDuplicate">Listagem duplicada</option>
+          <option value="wrong_info" data-i18n="reportReasonWrongInfo">Informação incorreta</option>
+          <option value="spam" data-i18n="reportReasonSpam">Spam</option>
+          <option value="other" data-i18n="reportReasonOther">Outro</option>
         </select>
       </div>
       <div class="form-row">
-        <label for="reportDetails">Detalhes (opcional)</label>
-        <textarea id="reportDetails" rows="4" maxlength="500" placeholder="Descreva o problema (até 500 caracteres)"></textarea>
+        <label for="reportDetails" data-i18n="reportDetailsLabel">Detalhes (opcional)</label>
+        <textarea id="reportDetails" rows="4" maxlength="500" data-i18n-ph="reportDetailsPh" placeholder="Descreva o problema (até 500 caracteres)"></textarea>
       </div>
       <div style="display:flex;gap:8px;margin-top:6px">
-        <button type="button" class="btn-cancel" onclick="closeReportModal()" style="flex:1">Cancelar</button>
-        <button type="submit" class="btn-submit" id="reportSubmitBtn" style="flex:1">Enviar reporte</button>
+        <button type="button" class="btn-cancel" onclick="closeReportModal()" style="flex:1" data-i18n="btnCancel">Cancelar</button>
+        <button type="submit" class="btn-submit" id="reportSubmitBtn" style="flex:1" data-i18n="reportSubmit">Enviar reporte</button>
       </div>
     </form>
   </div>
@@ -3646,27 +3646,27 @@
 
 <!-- POST-REGISTER CHOICE MODAL — shown to a brand-new user to ask whether
      they want to advertise their company or just browse the marketplace. -->
-<div class="overlay" id="postRegisterOverlay" onclick="if(event.target===this)closePostRegister()" role="dialog" aria-modal="true" aria-label="Próximos passos">
+<div class="overlay" id="postRegisterOverlay" onclick="if(event.target===this)closePostRegister()" role="dialog" aria-modal="true" data-i18n-aria="postRegAria">
   <div class="modal" style="max-width:440px">
-    <div class="modal-title" style="justify-content:center;text-align:center"><span id="postRegisterWelcome">Bem-vindo à Hive!</span></div>
-    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:18px">O que pretende fazer?</div>
+    <div class="modal-title" style="justify-content:center;text-align:center"><span id="postRegisterWelcome" data-i18n="postRegWelcome">Bem-vindo à Hive!</span></div>
+    <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:18px" data-i18n="postRegPrompt">O que pretende fazer?</div>
     <div style="display:flex;flex-direction:column;gap:10px">
       <button type="button" onclick="postRegisterAdvertise()" style="display:flex;align-items:center;gap:14px;text-align:left;padding:16px;border-radius:12px;cursor:pointer;background:var(--bg);border:2px solid var(--border);font-family:inherit;transition:border-color .15s,background .15s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
         <div style="font-size:32px;flex-shrink:0">🏢</div>
         <div>
-          <div style="font-weight:800;color:var(--text);font-size:14px">Anunciar a minha empresa</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:3px">Registar a minha empresa e aparecer no marketplace</div>
+          <div style="font-weight:800;color:var(--text);font-size:14px" data-i18n="postRegAdvertiseTitle">Anunciar a minha empresa</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px" data-i18n="postRegAdvertiseDesc">Registar a minha empresa e aparecer no marketplace</div>
         </div>
       </button>
       <button type="button" onclick="postRegisterBrowse()" style="display:flex;align-items:center;gap:14px;text-align:left;padding:16px;border-radius:12px;cursor:pointer;background:var(--bg);border:2px solid var(--border);font-family:inherit;transition:border-color .15s,background .15s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
         <div style="font-size:32px;flex-shrink:0">🔍</div>
         <div>
-          <div style="font-weight:800;color:var(--text);font-size:14px">Apenas pesquisar empresas</div>
-          <div style="font-size:12px;color:var(--muted);margin-top:3px">Explorar o marketplace para encontrar profissionais</div>
+          <div style="font-weight:800;color:var(--text);font-size:14px" data-i18n="postRegBrowseTitle">Apenas pesquisar empresas</div>
+          <div style="font-size:12px;color:var(--muted);margin-top:3px" data-i18n="postRegBrowseDesc">Explorar o marketplace para encontrar profissionais</div>
         </div>
       </button>
     </div>
-    <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">Pode anunciar a sua empresa mais tarde a partir do menu da conta.</div>
+    <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)" data-i18n="postRegFooterHint">Pode anunciar a sua empresa mais tarde a partir do menu da conta.</div>
   </div>
 </div>
 
@@ -4455,6 +4455,73 @@ const translations = {
     typeClientLabel:'Cliente',
     typeAdvertiserLabel:'Anunciante',
     avatarRegisterCompany:'Registar Empresa',
+    // Status badges (used in admin row, profile companies, owner banner)
+    statusApproved:'✅ Aprovada', statusPending:'⏳ Pendente', statusRejected:'❌ Rejeitada', statusRemoved:'🗑️ Removida',
+    // Post-register choice modal
+    postRegAria:'Próximos passos',
+    postRegWelcome:'Bem-vindo à Hive!', postRegWelcomeNamed:'Bem-vindo à Hive, {name}!',
+    postRegPrompt:'O que pretende fazer?',
+    postRegAdvertiseTitle:'Anunciar a minha empresa',
+    postRegAdvertiseDesc:'Registar a minha empresa e aparecer no marketplace',
+    postRegBrowseTitle:'Apenas pesquisar empresas',
+    postRegBrowseDesc:'Explorar o marketplace para encontrar profissionais',
+    postRegFooterHint:'Pode anunciar a sua empresa mais tarde a partir do menu da conta.',
+    // Report listing modal
+    reportAria:'Reportar listagem', reportTitle:'🚩 Reportar listagem',
+    reportSubtitle:'Os reportes são revistos pela nossa equipa de moderação.',
+    reportReasonLabel:'Motivo', reportReasonPh:'Selecionar motivo…',
+    reportReasonFake:'Empresa falsa ou inexistente', reportReasonInappropriate:'Conteúdo impróprio',
+    reportReasonDuplicate:'Listagem duplicada', reportReasonWrongInfo:'Informação incorreta',
+    reportReasonSpam:'Spam', reportReasonOther:'Outro',
+    reportDetailsLabel:'Detalhes (opcional)', reportDetailsPh:'Descreva o problema (até 500 caracteres)',
+    reportSubmit:'Enviar reporte', btnCancel:'Cancelar',
+    // Auto-publish success overlay
+    regSuccessTitle:'Empresa Publicada!',
+    regSuccessSub:'A sua empresa já está visível no mapa. Pode editar os detalhes (morada, alvará, certidão permanente, contactos) a qualquer momento a partir do seu perfil.',
+    regSuccessStep1:'✅ Visível no mapa <strong>imediatamente</strong>.',
+    regSuccessStep2:'✏️ Edite os detalhes a partir do <strong>O Meu Perfil</strong>.',
+    regSuccessStep3:'🚩 A nossa equipa pode rever e moderar caso seja reportada.',
+    // Logged-in hero CTA
+    heroUserGreeting:'Olá!', heroUserGreetingNamed:'Olá, {name}!',
+    heroUserTagline:'Quer anunciar a sua empresa no marketplace?',
+    heroUserCta:'Anunciar Empresa',
+    // Master sector toggle
+    sectorAllLabel:'Todas as áreas',
+    sectorAllSelectAll:'Selecionar todas as áreas',
+    sectorAllDeselectAll:'Desmarcar todas as áreas',
+    // Empty-state hint when no sector selected
+    emptySectorTitle:'Selecione uma área de atividade',
+    emptySectorSub:'Escolha um ou mais setores acima para ver as empresas disponíveis.',
+    // Detail panel button tooltips
+    dpFavTitle:'Guardar nos favoritos', dpEditTitle:'Editar', dpEditAria:'Editar empresa',
+    dpCloseAria:'Fechar detalhes', dpReportTitle:'Reportar listagem',
+    // Auth modal extras (login + register tabs)
+    authWelcome:'Bem-vindo à Hive', authTagline:'A maior rede B2B de Portugal',
+    authTabLogin:'Entrar', authTabRegister:'Criar Conta',
+    authDividerEmail:'ou continue com email', authDividerData:'ou preencha os dados',
+    authEmailLabel:'Email', authPasswordLabel:'Palavra-passe',
+    authPasswordPh:'Mínimo 6 caracteres', authPasswordHint:'Mínimo 6 caracteres.',
+    authLoginSubmit:'Entrar', authRegisterSubmit:'Criar Conta',
+    authNoAccount:'Ainda não tem conta?', authHasAccount:'Já tem conta?',
+    capsLockOn:'⚠️ Caps Lock está ativado', pwdToggleAria:'Mostrar/ocultar palavra-passe',
+    authAria:'Iniciar sessão ou criar conta',
+    // Top user-visible toasts
+    toastFavRemoved:'Removida dos favoritos', toastFavAdded:'★ Guardada nos favoritos',
+    toastNoEditPermission:'Sem permissão para editar esta empresa.',
+    toastCompanyUpdated:'✅ Empresa atualizada com sucesso!',
+    toastReportLoginRequired:'Inicie sessão para reportar uma listagem.',
+    toastReportSelectReason:'Selecione um motivo.',
+    toastReportSent:'Reporte enviado. Obrigado por nos ajudar a manter a plataforma segura.',
+    toastReportFailed:'Não foi possível enviar o reporte.',
+    toastFillFields:'Preencha todos os campos',
+    toastFillRequired:'Preencha os campos obrigatórios',
+    toastBadCredentials:'Email ou palavra-passe incorretos',
+    toastTooManyAttempts:'Demasiadas tentativas. Tente mais tarde.',
+    toastWelcomeUser:'Bem-vindo, {name}!',
+    toastLoggedOut:'Sessão terminada',
+    toastGoogleFailed:'Falha ao iniciar sessão com Google',
+    toastRegisterFailed:'Erro ao criar conta',
+    toastPasswordTooShort:'A palavra-passe deve ter pelo menos 6 caracteres',
     regAuthNameLabel:'Nome completo',
     regAuthNamePh:'O seu nome',
     lpTabCompany:'Por Empresa',
@@ -4737,6 +4804,63 @@ const translations = {
     typeClientLabel:'Client',
     typeAdvertiserLabel:'Advertiser',
     avatarRegisterCompany:'Register Company',
+    statusApproved:'✅ Approved', statusPending:'⏳ Pending', statusRejected:'❌ Rejected', statusRemoved:'🗑️ Removed',
+    postRegAria:'Next steps',
+    postRegWelcome:'Welcome to Hive!', postRegWelcomeNamed:'Welcome to Hive, {name}!',
+    postRegPrompt:'What would you like to do?',
+    postRegAdvertiseTitle:'Advertise my company',
+    postRegAdvertiseDesc:'Register my company and appear in the marketplace',
+    postRegBrowseTitle:'Just browse companies',
+    postRegBrowseDesc:'Explore the marketplace to find professionals',
+    postRegFooterHint:'You can advertise your company later from the account menu.',
+    reportAria:'Report listing', reportTitle:'🚩 Report listing',
+    reportSubtitle:'Reports are reviewed by our moderation team.',
+    reportReasonLabel:'Reason', reportReasonPh:'Select a reason…',
+    reportReasonFake:'Fake or non-existent company', reportReasonInappropriate:'Inappropriate content',
+    reportReasonDuplicate:'Duplicate listing', reportReasonWrongInfo:'Incorrect information',
+    reportReasonSpam:'Spam', reportReasonOther:'Other',
+    reportDetailsLabel:'Details (optional)', reportDetailsPh:'Describe the problem (up to 500 characters)',
+    reportSubmit:'Send report', btnCancel:'Cancel',
+    regSuccessTitle:'Company Published!',
+    regSuccessSub:'Your company is now visible on the map. You can edit the details (address, alvará, certidão permanente, contacts) at any time from your profile.',
+    regSuccessStep1:'✅ Visible on the map <strong>immediately</strong>.',
+    regSuccessStep2:'✏️ Edit details from <strong>My Profile</strong>.',
+    regSuccessStep3:'🚩 Our team may review and moderate if reported.',
+    heroUserGreeting:'Hello!', heroUserGreetingNamed:'Hello, {name}!',
+    heroUserTagline:'Want to advertise your company on the marketplace?',
+    heroUserCta:'Advertise Company',
+    sectorAllLabel:'All areas',
+    sectorAllSelectAll:'Select all areas',
+    sectorAllDeselectAll:'Deselect all areas',
+    emptySectorTitle:'Select an area of activity',
+    emptySectorSub:'Pick one or more sectors above to see available companies.',
+    dpFavTitle:'Save to favourites', dpEditTitle:'Edit', dpEditAria:'Edit company',
+    dpCloseAria:'Close details', dpReportTitle:'Report listing',
+    authWelcome:'Welcome to Hive', authTagline:'Portugal’s largest B2B network',
+    authTabLogin:'Log in', authTabRegister:'Create Account',
+    authDividerEmail:'or continue with email', authDividerData:'or fill in your details',
+    authEmailLabel:'Email', authPasswordLabel:'Password',
+    authPasswordPh:'At least 6 characters', authPasswordHint:'At least 6 characters.',
+    authLoginSubmit:'Log in', authRegisterSubmit:'Create Account',
+    authNoAccount:'Don’t have an account yet?', authHasAccount:'Already have an account?',
+    capsLockOn:'⚠️ Caps Lock is on', pwdToggleAria:'Show/hide password',
+    authAria:'Sign in or create an account',
+    toastFavRemoved:'Removed from favourites', toastFavAdded:'★ Saved to favourites',
+    toastNoEditPermission:'You don’t have permission to edit this company.',
+    toastCompanyUpdated:'✅ Company updated successfully!',
+    toastReportLoginRequired:'Log in to report a listing.',
+    toastReportSelectReason:'Select a reason.',
+    toastReportSent:'Report sent. Thank you for helping keep the platform safe.',
+    toastReportFailed:'Could not send the report.',
+    toastFillFields:'Fill in all fields',
+    toastFillRequired:'Fill in the required fields',
+    toastBadCredentials:'Wrong email or password',
+    toastTooManyAttempts:'Too many attempts. Try again later.',
+    toastWelcomeUser:'Welcome, {name}!',
+    toastLoggedOut:'Signed out',
+    toastGoogleFailed:'Google sign-in failed',
+    toastRegisterFailed:'Account creation failed',
+    toastPasswordTooShort:'Password must be at least 6 characters',
     regAuthNameLabel:'Full name',
     regAuthNamePh:'Your name',
     lpTabCompany:'By Company',
@@ -5022,6 +5146,63 @@ const translations = {
     typeClientLabel:'Client',
     typeAdvertiserLabel:'Annonceur',
     avatarRegisterCompany:'Enregistrer Entreprise',
+    statusApproved:'✅ Approuvée', statusPending:'⏳ En attente', statusRejected:'❌ Rejetée', statusRemoved:'🗑️ Supprimée',
+    postRegAria:'Prochaines étapes',
+    postRegWelcome:'Bienvenue sur Hive !', postRegWelcomeNamed:'Bienvenue sur Hive, {name} !',
+    postRegPrompt:'Que souhaitez-vous faire ?',
+    postRegAdvertiseTitle:'Annoncer mon entreprise',
+    postRegAdvertiseDesc:'Enregistrer mon entreprise et apparaître sur le marketplace',
+    postRegBrowseTitle:'Parcourir les entreprises',
+    postRegBrowseDesc:'Explorer le marketplace pour trouver des professionnels',
+    postRegFooterHint:'Vous pourrez annoncer votre entreprise plus tard depuis le menu du compte.',
+    reportAria:'Signaler une annonce', reportTitle:'🚩 Signaler une annonce',
+    reportSubtitle:'Les signalements sont examinés par notre équipe de modération.',
+    reportReasonLabel:'Motif', reportReasonPh:'Sélectionner un motif…',
+    reportReasonFake:'Entreprise fictive ou inexistante', reportReasonInappropriate:'Contenu inapproprié',
+    reportReasonDuplicate:'Annonce en double', reportReasonWrongInfo:'Informations incorrectes',
+    reportReasonSpam:'Spam', reportReasonOther:'Autre',
+    reportDetailsLabel:'Détails (facultatif)', reportDetailsPh:'Décrivez le problème (jusqu’à 500 caractères)',
+    reportSubmit:'Envoyer le signalement', btnCancel:'Annuler',
+    regSuccessTitle:'Entreprise publiée !',
+    regSuccessSub:"Votre entreprise est désormais visible sur la carte. Vous pouvez modifier les détails (adresse, alvará, certidão permanente, contacts) à tout moment depuis votre profil.",
+    regSuccessStep1:'✅ Visible sur la carte <strong>immédiatement</strong>.',
+    regSuccessStep2:'✏️ Modifiez les détails depuis <strong>Mon Profil</strong>.',
+    regSuccessStep3:'🚩 Notre équipe peut examiner et modérer en cas de signalement.',
+    heroUserGreeting:'Bonjour !', heroUserGreetingNamed:'Bonjour, {name} !',
+    heroUserTagline:'Vous souhaitez annoncer votre entreprise sur le marketplace ?',
+    heroUserCta:'Annoncer Entreprise',
+    sectorAllLabel:'Tous les domaines',
+    sectorAllSelectAll:'Sélectionner tous les domaines',
+    sectorAllDeselectAll:'Désélectionner tous les domaines',
+    emptySectorTitle:'Sélectionnez un domaine d’activité',
+    emptySectorSub:'Choisissez un ou plusieurs secteurs ci-dessus pour voir les entreprises disponibles.',
+    dpFavTitle:'Enregistrer dans les favoris', dpEditTitle:'Modifier', dpEditAria:'Modifier l’entreprise',
+    dpCloseAria:'Fermer les détails', dpReportTitle:'Signaler l’annonce',
+    authWelcome:'Bienvenue sur Hive', authTagline:'Le plus grand réseau B2B du Portugal',
+    authTabLogin:'Connexion', authTabRegister:'Créer un compte',
+    authDividerEmail:'ou continuer avec un email', authDividerData:'ou remplissez les informations',
+    authEmailLabel:'Email', authPasswordLabel:'Mot de passe',
+    authPasswordPh:'Au moins 6 caractères', authPasswordHint:'Au moins 6 caractères.',
+    authLoginSubmit:'Connexion', authRegisterSubmit:'Créer un compte',
+    authNoAccount:'Pas encore de compte ?', authHasAccount:'Vous avez déjà un compte ?',
+    capsLockOn:'⚠️ Verr. Maj est activée', pwdToggleAria:'Afficher/masquer le mot de passe',
+    authAria:'Se connecter ou créer un compte',
+    toastFavRemoved:'Retiré des favoris', toastFavAdded:'★ Ajouté aux favoris',
+    toastNoEditPermission:"Vous n'êtes pas autorisé à modifier cette entreprise.",
+    toastCompanyUpdated:'✅ Entreprise mise à jour avec succès !',
+    toastReportLoginRequired:'Connectez-vous pour signaler une annonce.',
+    toastReportSelectReason:'Sélectionnez un motif.',
+    toastReportSent:'Signalement envoyé. Merci de nous aider à garder la plateforme sûre.',
+    toastReportFailed:"Impossible d'envoyer le signalement.",
+    toastFillFields:'Remplissez tous les champs',
+    toastFillRequired:'Remplissez les champs obligatoires',
+    toastBadCredentials:'Email ou mot de passe incorrect',
+    toastTooManyAttempts:'Trop de tentatives. Réessayez plus tard.',
+    toastWelcomeUser:'Bienvenue, {name} !',
+    toastLoggedOut:'Déconnecté',
+    toastGoogleFailed:'Échec de la connexion Google',
+    toastRegisterFailed:'Échec de la création du compte',
+    toastPasswordTooShort:'Le mot de passe doit contenir au moins 6 caractères',
     regAuthNameLabel:'Nom complet',
     regAuthNamePh:'Votre nom',
     lpTabCompany:'Par Entreprise',
@@ -5302,6 +5483,63 @@ const translations = {
     typeClientLabel:'Cliente',
     typeAdvertiserLabel:'Anunciante',
     avatarRegisterCompany:'Registrar Empresa',
+    statusApproved:'✅ Aprobada', statusPending:'⏳ Pendiente', statusRejected:'❌ Rechazada', statusRemoved:'🗑️ Eliminada',
+    postRegAria:'Próximos pasos',
+    postRegWelcome:'¡Bienvenido a Hive!', postRegWelcomeNamed:'¡Bienvenido a Hive, {name}!',
+    postRegPrompt:'¿Qué desea hacer?',
+    postRegAdvertiseTitle:'Anunciar mi empresa',
+    postRegAdvertiseDesc:'Registrar mi empresa y aparecer en el marketplace',
+    postRegBrowseTitle:'Solo buscar empresas',
+    postRegBrowseDesc:'Explorar el marketplace para encontrar profesionales',
+    postRegFooterHint:'Puede anunciar su empresa más tarde desde el menú de la cuenta.',
+    reportAria:'Reportar anuncio', reportTitle:'🚩 Reportar anuncio',
+    reportSubtitle:'Los reportes son revisados por nuestro equipo de moderación.',
+    reportReasonLabel:'Motivo', reportReasonPh:'Seleccionar motivo…',
+    reportReasonFake:'Empresa falsa o inexistente', reportReasonInappropriate:'Contenido inapropiado',
+    reportReasonDuplicate:'Anuncio duplicado', reportReasonWrongInfo:'Información incorrecta',
+    reportReasonSpam:'Spam', reportReasonOther:'Otro',
+    reportDetailsLabel:'Detalles (opcional)', reportDetailsPh:'Describa el problema (hasta 500 caracteres)',
+    reportSubmit:'Enviar reporte', btnCancel:'Cancelar',
+    regSuccessTitle:'¡Empresa Publicada!',
+    regSuccessSub:'Su empresa ya está visible en el mapa. Puede editar los detalles (dirección, alvará, certidão permanente, contactos) en cualquier momento desde su perfil.',
+    regSuccessStep1:'✅ Visible en el mapa <strong>inmediatamente</strong>.',
+    regSuccessStep2:'✏️ Edite los detalles desde <strong>Mi Perfil</strong>.',
+    regSuccessStep3:'🚩 Nuestro equipo puede revisar y moderar si es reportada.',
+    heroUserGreeting:'¡Hola!', heroUserGreetingNamed:'¡Hola, {name}!',
+    heroUserTagline:'¿Quiere anunciar su empresa en el marketplace?',
+    heroUserCta:'Anunciar Empresa',
+    sectorAllLabel:'Todas las áreas',
+    sectorAllSelectAll:'Seleccionar todas las áreas',
+    sectorAllDeselectAll:'Deseleccionar todas las áreas',
+    emptySectorTitle:'Seleccione un área de actividad',
+    emptySectorSub:'Elija uno o más sectores arriba para ver las empresas disponibles.',
+    dpFavTitle:'Guardar en favoritos', dpEditTitle:'Editar', dpEditAria:'Editar empresa',
+    dpCloseAria:'Cerrar detalles', dpReportTitle:'Reportar anuncio',
+    authWelcome:'Bienvenido a Hive', authTagline:'La mayor red B2B de Portugal',
+    authTabLogin:'Entrar', authTabRegister:'Crear Cuenta',
+    authDividerEmail:'o continúa con email', authDividerData:'o rellene los datos',
+    authEmailLabel:'Email', authPasswordLabel:'Contraseña',
+    authPasswordPh:'Mínimo 6 caracteres', authPasswordHint:'Mínimo 6 caracteres.',
+    authLoginSubmit:'Entrar', authRegisterSubmit:'Crear Cuenta',
+    authNoAccount:'¿Aún no tienes cuenta?', authHasAccount:'¿Ya tienes cuenta?',
+    capsLockOn:'⚠️ Bloq Mayús está activado', pwdToggleAria:'Mostrar/ocultar contraseña',
+    authAria:'Iniciar sesión o crear cuenta',
+    toastFavRemoved:'Eliminada de favoritos', toastFavAdded:'★ Guardada en favoritos',
+    toastNoEditPermission:'No tiene permiso para editar esta empresa.',
+    toastCompanyUpdated:'✅ ¡Empresa actualizada con éxito!',
+    toastReportLoginRequired:'Inicie sesión para reportar un anuncio.',
+    toastReportSelectReason:'Seleccione un motivo.',
+    toastReportSent:'Reporte enviado. Gracias por ayudar a mantener la plataforma segura.',
+    toastReportFailed:'No se pudo enviar el reporte.',
+    toastFillFields:'Rellene todos los campos',
+    toastFillRequired:'Rellene los campos obligatorios',
+    toastBadCredentials:'Email o contraseña incorrectos',
+    toastTooManyAttempts:'Demasiados intentos. Inténtelo más tarde.',
+    toastWelcomeUser:'¡Bienvenido, {name}!',
+    toastLoggedOut:'Sesión finalizada',
+    toastGoogleFailed:'Error al iniciar sesión con Google',
+    toastRegisterFailed:'Error al crear la cuenta',
+    toastPasswordTooShort:'La contraseña debe tener al menos 6 caracteres',
     regAuthNameLabel:'Nombre completo',
     regAuthNamePh:'Su nombre',
     lpTabCompany:'Por Empresa',
@@ -5573,6 +5811,63 @@ const translations = {
     typeCompanyLabel:'Unternehmen',
     typeClientLabel:'Kunde',
     typeAdvertiserLabel:'Inserent',
+    statusApproved:'✅ Genehmigt', statusPending:'⏳ Ausstehend', statusRejected:'❌ Abgelehnt', statusRemoved:'🗑️ Entfernt',
+    postRegAria:'Nächste Schritte',
+    postRegWelcome:'Willkommen bei Hive!', postRegWelcomeNamed:'Willkommen bei Hive, {name}!',
+    postRegPrompt:'Was möchten Sie tun?',
+    postRegAdvertiseTitle:'Mein Unternehmen inserieren',
+    postRegAdvertiseDesc:'Mein Unternehmen registrieren und im Marketplace erscheinen',
+    postRegBrowseTitle:'Nur Unternehmen suchen',
+    postRegBrowseDesc:'Marketplace erkunden und Fachleute finden',
+    postRegFooterHint:'Sie können Ihr Unternehmen später über das Kontomenü inserieren.',
+    reportAria:'Eintrag melden', reportTitle:'🚩 Eintrag melden',
+    reportSubtitle:'Meldungen werden von unserem Moderationsteam geprüft.',
+    reportReasonLabel:'Grund', reportReasonPh:'Grund auswählen…',
+    reportReasonFake:'Falsches oder nicht existierendes Unternehmen', reportReasonInappropriate:'Unangemessener Inhalt',
+    reportReasonDuplicate:'Doppelter Eintrag', reportReasonWrongInfo:'Falsche Informationen',
+    reportReasonSpam:'Spam', reportReasonOther:'Sonstiges',
+    reportDetailsLabel:'Details (optional)', reportDetailsPh:'Problem beschreiben (bis zu 500 Zeichen)',
+    reportSubmit:'Meldung senden', btnCancel:'Abbrechen',
+    regSuccessTitle:'Unternehmen veröffentlicht!',
+    regSuccessSub:'Ihr Unternehmen ist nun auf der Karte sichtbar. Sie können die Details (Adresse, alvará, certidão permanente, Kontakte) jederzeit in Ihrem Profil bearbeiten.',
+    regSuccessStep1:'✅ <strong>Sofort</strong> auf der Karte sichtbar.',
+    regSuccessStep2:'✏️ Details unter <strong>Mein Profil</strong> bearbeiten.',
+    regSuccessStep3:'🚩 Unser Team kann bei Meldung prüfen und moderieren.',
+    heroUserGreeting:'Hallo!', heroUserGreetingNamed:'Hallo, {name}!',
+    heroUserTagline:'Möchten Sie Ihr Unternehmen im Marketplace inserieren?',
+    heroUserCta:'Unternehmen inserieren',
+    sectorAllLabel:'Alle Bereiche',
+    sectorAllSelectAll:'Alle Bereiche auswählen',
+    sectorAllDeselectAll:'Auswahl aller Bereiche aufheben',
+    emptySectorTitle:'Wählen Sie einen Tätigkeitsbereich',
+    emptySectorSub:'Wählen Sie oben einen oder mehrere Bereiche, um verfügbare Unternehmen anzuzeigen.',
+    dpFavTitle:'In Favoriten speichern', dpEditTitle:'Bearbeiten', dpEditAria:'Unternehmen bearbeiten',
+    dpCloseAria:'Details schließen', dpReportTitle:'Eintrag melden',
+    authWelcome:'Willkommen bei Hive', authTagline:'Das größte B2B-Netzwerk Portugals',
+    authTabLogin:'Anmelden', authTabRegister:'Konto erstellen',
+    authDividerEmail:'oder mit E-Mail fortfahren', authDividerData:'oder Daten eingeben',
+    authEmailLabel:'E-Mail', authPasswordLabel:'Passwort',
+    authPasswordPh:'Mindestens 6 Zeichen', authPasswordHint:'Mindestens 6 Zeichen.',
+    authLoginSubmit:'Anmelden', authRegisterSubmit:'Konto erstellen',
+    authNoAccount:'Noch kein Konto?', authHasAccount:'Sie haben bereits ein Konto?',
+    capsLockOn:'⚠️ Feststelltaste ist aktiviert', pwdToggleAria:'Passwort ein-/ausblenden',
+    authAria:'Anmelden oder Konto erstellen',
+    toastFavRemoved:'Aus Favoriten entfernt', toastFavAdded:'★ Zu Favoriten hinzugefügt',
+    toastNoEditPermission:'Keine Berechtigung, dieses Unternehmen zu bearbeiten.',
+    toastCompanyUpdated:'✅ Unternehmen erfolgreich aktualisiert!',
+    toastReportLoginRequired:'Bitte anmelden, um einen Eintrag zu melden.',
+    toastReportSelectReason:'Bitte einen Grund auswählen.',
+    toastReportSent:'Meldung gesendet. Danke, dass Sie helfen, die Plattform sicher zu halten.',
+    toastReportFailed:'Meldung konnte nicht gesendet werden.',
+    toastFillFields:'Bitte alle Felder ausfüllen',
+    toastFillRequired:'Bitte die Pflichtfelder ausfüllen',
+    toastBadCredentials:'Falsche E-Mail oder falsches Passwort',
+    toastTooManyAttempts:'Zu viele Versuche. Bitte später erneut versuchen.',
+    toastWelcomeUser:'Willkommen, {name}!',
+    toastLoggedOut:'Abgemeldet',
+    toastGoogleFailed:'Google-Anmeldung fehlgeschlagen',
+    toastRegisterFailed:'Konto konnte nicht erstellt werden',
+    toastPasswordTooShort:'Das Passwort muss mindestens 6 Zeichen lang sein',
     avatarRegisterCompany:'Unternehmen registrieren',
     regAuthNameLabel:'Vollständiger Name',
     regAuthNamePh:'Ihr Name',
@@ -6361,13 +6656,15 @@ function cycleLang() {
 // is re-rendered. Refresh is O(elements-with-data-i18n*), still 4 selectors
 // total but all of them on the same painted DOM and amortised across many
 // language switches and tab changes.
-const _i18nCache = { text: null, html: null, ph: null, val: null, dirty: true };
+const _i18nCache = { text: null, html: null, ph: null, val: null, title: null, aria: null, dirty: true };
 function _i18nMarkDirty()  { _i18nCache.dirty = true; }
 function _i18nRefreshLists() {
-  _i18nCache.text = document.querySelectorAll('[data-i18n]');
-  _i18nCache.html = document.querySelectorAll('[data-i18n-html]');
-  _i18nCache.ph   = document.querySelectorAll('[data-i18n-ph]');
-  _i18nCache.val  = document.querySelectorAll('[data-i18n-val]');
+  _i18nCache.text  = document.querySelectorAll('[data-i18n]');
+  _i18nCache.html  = document.querySelectorAll('[data-i18n-html]');
+  _i18nCache.ph    = document.querySelectorAll('[data-i18n-ph]');
+  _i18nCache.val   = document.querySelectorAll('[data-i18n-val]');
+  _i18nCache.title = document.querySelectorAll('[data-i18n-title]');
+  _i18nCache.aria  = document.querySelectorAll('[data-i18n-aria]');
   _i18nCache.dirty = false;
 }
 
@@ -6390,6 +6687,14 @@ function applyI18n() {
   for (const el of _i18nCache.val) {
     const k = el.getAttribute('data-i18n-val');
     if (tr[k] !== undefined) el.value = tr[k];
+  }
+  for (const el of _i18nCache.title) {
+    const k = el.getAttribute('data-i18n-title');
+    if (tr[k] !== undefined) el.title = tr[k];
+  }
+  for (const el of _i18nCache.aria) {
+    const k = el.getAttribute('data-i18n-aria');
+    if (tr[k] !== undefined) el.setAttribute('aria-label', tr[k]);
   }
 
   // Unified search placeholder (one element, no querySelectorAll cost)
@@ -6698,10 +7003,10 @@ function toggleFavourite(id) {
   const wasFav = _favIds.has(id);
   if (wasFav) {
     _favIds.delete(id);
-    showToast('Removida dos favoritos');
+    showToast(t('toastFavRemoved'));
   } else {
     _favIds.add(id);
-    showToast('★ Guardada nos favoritos');
+    showToast(t('toastFavAdded'));
   }
   _saveFavs();
   // Fire the server call in the background when logged in. Failure rolls
@@ -7104,7 +7409,7 @@ function openEditCompany() {
   const myId = me ? Number(me.id) : null;
   const isOwner = !!(me && c && c.created_by != null && c.created_by === myId);
   if (!isAdminMode && !isOwner) {
-    showToast('Sem permissão para editar esta empresa.');
+    showToast(t('toastNoEditPermission'));
     return;
   }
   // Reuse the full pre-filled-form flow already used from the profile panel.
@@ -7903,10 +8208,10 @@ function renderSectorFilters() {
   const allBtn = document.createElement('button');
   allBtn.type = 'button';
   allBtn.className = 'cat-item cat-item-master' + (_allSelected ? ' active' : '');
-  allBtn.title = _allSelected ? 'Desmarcar todas as áreas' : 'Selecionar todas as áreas';
+  allBtn.title = _allSelected ? t('sectorAllDeselectAll') : t('sectorAllSelectAll');
   allBtn.innerHTML = `
     <span class="cat-icon" style="font-size:18px;line-height:1">${_allSelected ? '✓' : '☰'}</span>
-    <span class="cat-label">Todas as áreas</span>
+    <span class="cat-label">${t('sectorAllLabel')}</span>
   `;
   allBtn.addEventListener('click', (e) => {
     e.stopPropagation();
@@ -8788,8 +9093,8 @@ function _runApplyFilters() {
       // to widen the radius (which won't help).
       if (activeSectors.size === 0) {
         hintText.innerHTML =
-          '<strong>Selecione uma área de atividade</strong><br>' +
-          '<span>Escolha um ou mais setores acima para ver as empresas disponíveis.</span>';
+          '<strong>' + t('emptySectorTitle') + '</strong><br>' +
+          '<span>' + t('emptySectorSub') + '</span>';
       } else {
         // If the only thing pruning results is the radius, suggest expanding it.
         const slider = document.getElementById('radiusSlider');
@@ -9340,7 +9645,7 @@ function submitRegister() {
         }
         window._editingCompanyId = null;
         closeRegister();
-        showToast('✅ Empresa atualizada com sucesso!');
+        showToast(t('toastCompanyUpdated'));
       } else {
         // POST — new company (auto-approved). Push the persisted record into
         // the in-memory list and add a marker so it appears on the map without
@@ -10091,7 +10396,7 @@ function openPostRegisterChoice(name) {
   const ov = document.getElementById('postRegisterOverlay');
   if (!ov) return;
   const welcome = document.getElementById('postRegisterWelcome');
-  if (welcome) welcome.textContent = name ? ('Bem-vindo à Hive, ' + name + '!') : 'Bem-vindo à Hive!';
+  if (welcome) welcome.textContent = name ? t('postRegWelcomeNamed').replace('{name}', name) : t('postRegWelcome');
   ov.classList.add('open');
 }
 function closePostRegister() {
@@ -10110,7 +10415,7 @@ function postRegisterBrowse() {
 // ── REPORT LISTING ────────────────────────────────────────────────────────
 function openReportModal() {
   const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
-  if (!user) { showToast('Inicie sessão para reportar uma listagem.'); openLogin(); return; }
+  if (!user) { showToast(t('toastReportLoginRequired')); openLogin(); return; }
   if (!selectedId) return;
   document.getElementById('reportReason').value = '';
   document.getElementById('reportDetails').value = '';
@@ -10122,16 +10427,16 @@ function closeReportModal() {
 async function submitReport() {
   const reason  = document.getElementById('reportReason').value;
   const details = document.getElementById('reportDetails').value.trim();
-  if (!reason) { showToast('Selecione um motivo.'); return; }
+  if (!reason) { showToast(t('toastReportSelectReason')); return; }
   if (!selectedId) { closeReportModal(); return; }
   const btn = document.getElementById('reportSubmitBtn');
   setBusy(btn, true);
   try {
     await api.reportCompany(selectedId, reason, details);
     closeReportModal();
-    showToast('Reporte enviado. Obrigado por nos ajudar a manter a plataforma segura.');
+    showToast(t('toastReportSent'));
   } catch (e) {
-    showToast(e.message || 'Não foi possível enviar o reporte.');
+    showToast(e.message || t('toastReportFailed'));
   } finally {
     setBusy(btn, false);
   }
@@ -10180,7 +10485,7 @@ async function submitResetPassword() {
   const token = document.getElementById('resetToken').value;
   const pass  = document.getElementById('resetPass').value;
   const btn   = document.getElementById('resetSubmitBtn');
-  if (!pass || pass.length < 6) { showToast('A palavra-passe deve ter pelo menos 6 caracteres'); return; }
+  if (!pass || pass.length < 6) { showToast(t('toastPasswordTooShort')); return; }
   setBusy(btn, true);
   try {
     await api.resetPassword(token, pass);
@@ -10258,7 +10563,7 @@ async function doLogin() {
   const email = document.getElementById('loginEmail').value.trim();
   const pass = document.getElementById('loginPass').value;
   const btn  = document.getElementById('loginSubmitBtn');
-  if (!email || !pass) { showToast('Preencha todos os campos'); return; }
+  if (!email || !pass) { showToast(t('toastFillFields')); return; }
   setBusy(btn, true);
   try {
     const { user } = await api.login(email, pass);
@@ -10267,13 +10572,13 @@ async function doLogin() {
     closeLogin();
     updateNavAuth();
     syncFavouritesFromServer();
-    showToast('Bem-vindo, ' + user.name + '!');
+    showToast(t('toastWelcomeUser').replace('{name}', user.name));
     if (selectedId) openDetail(selectedId);
     document.getElementById('loginEmail').value = '';
     document.getElementById('loginPass').value = '';
   } catch(e) {
     // 429 from the auth rate-limiter has its own message; surface it.
-    showToast(e.status === 429 ? (e.message || 'Demasiadas tentativas. Tente mais tarde.') : 'Email ou palavra-passe incorretos');
+    showToast(e.status === 429 ? (e.message || t('toastTooManyAttempts')) : t('toastBadCredentials'));
   } finally {
     setBusy(btn, false);
   }
@@ -10283,8 +10588,8 @@ async function doRegister() {
   const email = document.getElementById('regAuthEmail').value.trim();
   const pass = document.getElementById('regAuthPass').value;
   const btn = document.getElementById('registerSubmitBtn');
-  if (!name || !email || !pass) { showToast('Preencha os campos obrigatórios'); return; }
-  if (pass.length < 6) { showToast('A palavra-passe deve ter pelo menos 6 caracteres'); return; }
+  if (!name || !email || !pass) { showToast(t('toastFillRequired')); return; }
+  if (pass.length < 6) { showToast(t('toastPasswordTooShort')); return; }
   setBusy(btn, true);
   try {
     // All new accounts start as 'cliente'. The user upgrades their account by
@@ -10300,7 +10605,7 @@ async function doRegister() {
     document.getElementById('regAuthPass').value = '';
     openPostRegisterChoice(user.name || name);
   } catch(e) {
-    showToast(e.message || 'Erro ao criar conta');
+    showToast(e.message || t('toastRegisterFailed'));
   } finally {
     setBusy(btn, false);
   }
@@ -10310,7 +10615,7 @@ async function doLogout() {
   sessionStorage.removeItem('hive_user');
   isAdminMode = false;
   updateNavAuth();
-  showToast('Sessão terminada');
+  showToast(t('toastLoggedOut'));
   closeAvatarMenu();
   // Stop Google from auto-signing the user back in next visit
   try { if (window.google && google.accounts && google.accounts.id) google.accounts.id.disableAutoSelect(); } catch(_) {}
@@ -10385,11 +10690,11 @@ async function _onGoogleCredential(response) {
     if (fromRegisterTab) {
       openPostRegisterChoice(user.name);
     } else {
-      showToast('Bem-vindo, ' + user.name + '!');
+      showToast(t('toastWelcomeUser').replace('{name}', user.name));
       if (selectedId) openDetail(selectedId);
     }
   } catch (e) {
-    showToast(e.message || 'Falha ao iniciar sessão com Google');
+    showToast(e.message || t('toastGoogleFailed'));
   }
 }
 function updateNavAuth() {
@@ -10442,7 +10747,7 @@ function updateNavAuth() {
     if (heroCta) {
       heroCta.hidden = false;
       const firstName = (user.name || '').split(' ')[0];
-      if (heroCtaGreeting) heroCtaGreeting.textContent = firstName ? ('Olá, ' + firstName + '!') : 'Olá!';
+      if (heroCtaGreeting) heroCtaGreeting.textContent = firstName ? t('heroUserGreetingNamed').replace('{name}', firstName) : t('heroUserGreeting');
     }
   }
   refreshLucide();
@@ -11023,7 +11328,7 @@ function openProfilePanel() {
           <div class="profile-company-emoji" style="background:${c.color}22;cursor:pointer" onclick="closeProfilePanel();showTab('search');setTimeout(()=>openDetail(${c.id}),300)">${c.emoji||'🏢'}</div>
           <div class="profile-company-info" style="cursor:pointer;flex:1" onclick="closeProfilePanel();showTab('search');setTimeout(()=>openDetail(${c.id}),300)">
             <div class="profile-company-name">${c.name}</div>
-            <div class="profile-company-city">📍 ${c.city||'Portugal'} · <span style="color:${c.status==='approved'?'var(--green)':c.status==='pending'?'#f59e0b':c.status==='removed'?'var(--muted)':'var(--red)'};font-weight:700;font-size:11px">${c.status==='approved'?'✅ Aprovada':c.status==='pending'?'⏳ Pendente':c.status==='removed'?'🗑️ Removida':'❌ Rejeitada'}</span></div>
+            <div class="profile-company-city">📍 ${c.city||'Portugal'} · <span style="color:${c.status==='approved'?'var(--green)':c.status==='pending'?'#f59e0b':c.status==='removed'?'var(--muted)':'var(--red)'};font-weight:700;font-size:11px">${c.status==='approved'?t('statusApproved'):c.status==='pending'?t('statusPending'):c.status==='removed'?t('statusRemoved'):t('statusRejected')}</span></div>
           </div>
           <button onclick="profileEditCompany(${c.id})" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;color:var(--text-secondary);cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0" title="Editar empresa">✏️</button>
         </div>`).join('')
@@ -11827,10 +12132,10 @@ function renderAdminRows(rows) {
         </div>
       </div>
       <span class="admin-status-badge ${r.status}">${
-        r.status==='approved' ? '✅ Aprovada' :
-        r.status==='pending'  ? '⏳ Pendente' :
-        r.status==='rejected' ? '❌ Rejeitada' :
-        r.status==='removed'  ? '🗑️ Removida'  : r.status
+        r.status==='approved' ? t('statusApproved') :
+        r.status==='pending'  ? t('statusPending') :
+        r.status==='rejected' ? t('statusRejected') :
+        r.status==='removed'  ? t('statusRemoved')  : r.status
       }</span>
       ${r.status !== 'approved' ? `<button class="admin-action-btn" onclick="adminApprove(${r.id})">${r.status === 'removed' ? 'Restaurar' : 'Aprovar'}</button>` : ''}
       ${r.status !== 'rejected' && r.status !== 'removed' ? `<button class="admin-action-btn danger" onclick="adminRemove(${r.id})">Remover</button>` : ''}
