@@ -3493,14 +3493,14 @@
   </div>
 
   <div class="dp-body">
-    <!-- Always visible: specialties -->
-    <div>
+    <!-- Quick-fact pills (founded year, business hours) — hidden if no data -->
+    <div class="dp-facts" id="dpFacts" style="display:none"></div>
+
+    <!-- Specialties — hidden when the company has no tags -->
+    <div id="dpSpecialtiesSection">
       <div class="dp-section-title"><i data-lucide="tag"></i><span data-i18n="detailSpecialties">Especialidades</span></div>
       <div class="card-tags" id="dpTags"></div>
     </div>
-
-    <!-- Quick-fact pills (founded year, business hours) — hidden if no data -->
-    <div class="dp-facts" id="dpFacts" style="display:none"></div>
 
     <!-- Credenciais & Áreas de Atividade -->
     <div class="dp-section-title"><i data-lucide="shield-check"></i><span data-i18n="detailCredentials">Credenciais & Áreas de Atividade</span></div>
@@ -3543,21 +3543,13 @@
         <div class="dp-section-title"><i data-lucide="map-pin"></i><span data-i18n="detailLocation">Localização</span></div>
         <div class="dp-address" id="dpAddress"></div>
       </div>
-      <div>
+      <div id="dpRatingSection">
         <div class="dp-section-title"><i data-lucide="bar-chart-2"></i><span data-i18n="detailRating">Avaliação Multidimensional</span></div>
         <div class="rating-grid" id="dpRatings"></div>
       </div>
       <div>
         <div class="dp-section-title"><i data-lucide="phone-call"></i><span data-i18n="detailContact">Canais de Contacto</span></div>
         <div class="channel-grid">
-          <div class="channel-btn wa" onclick="showToast(t('toastWhatsapp'))">
-            <div class="ch-icon"><i data-lucide="message-circle"></i></div>
-            <div class="ch-info">
-              <div class="ch-name" data-i18n="waName">WhatsApp Direct</div>
-              <div class="ch-desc" data-i18n="waDesc">Mensagem pré-preenchida com contexto</div>
-            </div>
-            <i data-lucide="arrow-up-right" class="ch-arrow"></i>
-          </div>
           <div class="channel-btn chat" onclick="openWhatsAppContact()">
             <div class="ch-icon"><i data-lucide="message-square"></i></div>
             <div class="ch-info">
@@ -9873,31 +9865,42 @@ function openDetail(id) {
   document.getElementById('dpLogo').style.background   = c.color;
   document.getElementById('dpName').textContent        = c.name;
 
-  // Display rating as stars (0-5) or "Sem avaliações"
-  let starsDisplay = '';
-  if (c.rating > 0) {
-    const fullStars = Math.floor(c.rating);
-    const hasHalf = c.rating % 1 !== 0;
-    starsDisplay = '★'.repeat(fullStars) + (hasHalf ? '½' : '') + '☆'.repeat(5 - Math.ceil(c.rating));
-    document.getElementById('dpSub').textContent = `${c.cae} · ${starsDisplay} ${c.rating} (${c.reviews} ${tr.reviews})`;
-  } else {
-    document.getElementById('dpSub').textContent = `${c.cae} · ☆☆☆☆☆ ${tr.noRatings}`;
-  }
+  // Sub-line: primary activity + city, plus a compact rating when present.
+  // The raw CAE classification code is intentionally dropped — it carries no
+  // value for someone browsing the marketplace.
+  const _sectorLabels = (tr && tr.sectors) || {};
+  const _primarySector = c.sector ? (_sectorLabels[c.sector] || c.sector)
+    : (c.sectors && c.sectors[0] ? (_sectorLabels[c.sectors[0]] || c.sectors[0]) : '');
+  const _subParts = [];
+  if (_primarySector) _subParts.push(_primarySector);
+  if (c.city) _subParts.push(c.city);
+  if (c.rating > 0) _subParts.push(`★ ${c.rating.toFixed(1)} (${c.reviews})`);
+  document.getElementById('dpSub').textContent = _subParts.join('  ·  ');
   document.getElementById('dpAddress').textContent = c.address;
 
-  document.getElementById('dpRatings').innerHTML = c.axes.map(a => {
-    const axisKeyMap = {'Qualidade':'quality','Pontualidade':'deadlines','Atendimento':'communication','Preço':'price'};
-    const label = tr.axisLabels[axisKeyMap[a.l]] || a.l;
-    const percentage = (a.v / 5) * 100; // Convert 0-5 scale to 0-100 percentage
-    return `<div class="rating-axis">
-      <div class="axis-label">${label}</div>
-      <div class="axis-bar"><div class="axis-fill" style="width:${percentage}%"></div></div>
-      <div class="axis-val">${a.v > 0 ? a.v.toFixed(1)+' / 5.0' : 'N/A'}</div>
-    </div>`;
-  }).join('');
+  // Multidimensional rating — only meaningful once the company has scored
+  // axes. Hide the whole section when there's nothing but N/A to show.
+  const _hasAxisData = (c.axes || []).some(a => a.v > 0);
+  const ratingSection = document.getElementById('dpRatingSection');
+  if (ratingSection) ratingSection.style.display = _hasAxisData ? '' : 'none';
+  if (_hasAxisData) {
+    document.getElementById('dpRatings').innerHTML = c.axes.map(a => {
+      const axisKeyMap = {'Qualidade':'quality','Pontualidade':'deadlines','Atendimento':'communication','Preço':'price'};
+      const label = tr.axisLabels[axisKeyMap[a.l]] || a.l;
+      const percentage = (a.v / 5) * 100; // Convert 0-5 scale to 0-100 percentage
+      return `<div class="rating-axis">
+        <div class="axis-label">${label}</div>
+        <div class="axis-bar"><div class="axis-fill" style="width:${percentage}%"></div></div>
+        <div class="axis-val">${a.v.toFixed(1)} / 5.0</div>
+      </div>`;
+    }).join('');
+  }
 
+  // Specialties (free-form tags) — hidden entirely when the company has none.
   document.getElementById('dpTags').innerHTML = c.tags.map(tag =>
-    `<span class="tag">${tag}</span>`).join('');
+    `<span class="tag">${escHtml(tag)}</span>`).join('');
+  const specialtiesSection = document.getElementById('dpSpecialtiesSection');
+  if (specialtiesSection) specialtiesSection.style.display = (c.tags && c.tags.length) ? '' : 'none';
 
   // Credenciais & Áreas de Atividade — sectors are public; the alvará and
   // certidão permanente are private credentials the backend only returns to
