@@ -28,8 +28,8 @@ self.addEventListener('activate', e => {
   })());
 });
 
-// Fetch: HTML network-first with cached fallback; assets cache-first with
-// background refresh; API requests bypass the SW entirely.
+// Fetch: HTML and assets are both network-first with a cached fallback;
+// API requests bypass the SW entirely.
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   if (e.request.url.includes('/api/')) return;
