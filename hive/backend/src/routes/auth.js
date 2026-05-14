@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const pool = require('../db');
 const { requireAuth } = require('../middleware/auth');
-const { sendPasswordResetEmail, sendEmailVerification } = require('../email');
+const { sendPasswordResetEmail } = require('../email');
 
 const COOKIE_OPTS = {
   httpOnly: true,
@@ -37,7 +37,6 @@ function safeUser(user) {
     id: user.id, name: user.name, email: user.email, type: user.type,
     is_admin: user.is_admin,
     picture: user.picture || null,
-    email_verified: !!user.email_verified,
   };
 }
 
@@ -46,33 +45,23 @@ router.post('/register', async (req, res, next) => {
   try {
     const { name, email, password, type } = req.body;
     if (!name || !email || !password) return res.status(400).json({ error: 'name, email e password são obrigatórios' });
-    if (password.length < 6) return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 6 caracteres' });
+    if (password.length < 8) return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 8 caracteres' });
     if (!['empresa', 'cliente'].includes(type)) return res.status(400).json({ error: 'type deve ser empresa ou cliente' });
 
     const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email.toLowerCase()]);
     if (existing.rows.length > 0) return res.status(409).json({ error: 'Este email já está registado' });
 
     const passwordHash = await bcrypt.hash(password, 10);
-    const verifyToken  = crypto.randomBytes(32).toString('hex');
-    const verifyExp    = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
 
     // company/phone columns kept in the schema for legacy users but no longer
     // collected at signup — they're populated via the company-registration flow.
     const { rows } = await pool.query(
-      `INSERT INTO users (name, email, password_hash, type,
-                          email_verification_token, email_verification_expires_at)
-       VALUES ($1, $2, $3, $4, $5, $6)
+      `INSERT INTO users (name, email, password_hash, type)
+       VALUES ($1, $2, $3, $4)
        RETURNING *`,
-      [name, email.toLowerCase(), passwordHash, type, verifyToken, verifyExp]
+      [name, email.toLowerCase(), passwordHash, type]
     );
     const user = rows[0];
-
-    // Fire-and-forget verification email
-    const appUrl    = (process.env.APP_URL || '').replace(/\/$/, '');
-    const verifyUrl = `${appUrl}/api/auth/verify-email?token=${verifyToken}`;
-    sendEmailVerification(user, verifyUrl).catch(err =>
-      console.error('[email] verification at signup failed:', err.message)
-    );
 
     const token = signToken(user);
     res.cookie('hive_token', token, COOKIE_OPTS);
@@ -182,24 +171,15 @@ router.post('/google', async (req, res, next) => {
       }
     }
 
-    // 3. Else create a new user (default type = cliente). Google guarantees
-    //    email verification via the email_verified claim, so we mark verified.
+    // 3. Else create a new user (default type = cliente).
     if (!user) {
       const { rows: created } = await pool.query(
-        `INSERT INTO users (name, email, google_id, picture, type, company, phone, email_verified)
-         VALUES ($1, $2, $3, $4, $5, '', '', TRUE)
+        `INSERT INTO users (name, email, google_id, picture, type, company, phone)
+         VALUES ($1, $2, $3, $4, $5, '', '')
          RETURNING *`,
         [name, email, googleId, picture, type || 'cliente']
       );
       user = created[0];
-    }
-    // Existing accounts that just linked Google can be considered verified too
-    if (user && !user.email_verified) {
-      const { rows: updated } = await pool.query(
-        'UPDATE users SET email_verified = TRUE WHERE id = $1 RETURNING *',
-        [user.id]
-      );
-      user = updated[0] || user;
     }
 
     const token = signToken(user);
@@ -250,7 +230,7 @@ router.post('/reset-password', async (req, res, next) => {
   try {
     const { token, password } = req.body || {};
     if (!token || !password) return res.status(400).json({ error: 'token e password são obrigatórios' });
-    if (password.length < 6) return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 6 caracteres' });
+    if (password.length < 8) return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 8 caracteres' });
 
     const { rows } = await pool.query(
       'SELECT id FROM users WHERE password_reset_token = $1 AND password_reset_expires_at > NOW()',
@@ -268,74 +248,5 @@ router.post('/reset-password', async (req, res, next) => {
     next(e);
   }
 });
-
-// ── Email verification ────────────────────────────────────────────────────
-// GET /api/auth/verify-email?token=...  (one-shot, idempotent)
-router.get('/verify-email', async (req, res, next) => {
-  try {
-    const token = String(req.query?.token || '');
-    if (!token) return res.status(400).send(verifyHtml('❌ Token em falta', 'A hiperligação de verificação está incompleta.', '#dc2626'));
-
-    const { rows } = await pool.query(
-      `UPDATE users SET email_verified = TRUE,
-                       email_verification_token = NULL,
-                       email_verification_expires_at = NULL
-        WHERE email_verification_token = $1
-          AND email_verification_expires_at > NOW()
-        RETURNING id, name, email`,
-      [token]
-    );
-    if (!rows[0]) return res.status(400).send(verifyHtml('⚠️ Hiperligação inválida', 'O link expirou ou já foi usado. Inicie sessão e peça um novo email de verificação.', '#dc2626'));
-
-    res.send(verifyHtml('✅ Email confirmado!', `O email <strong>${rows[0].email.replace(/[<>]/g, '')}</strong> foi confirmado com sucesso. Já pode fechar esta página.`, '#16a34a'));
-  } catch (e) {
-    next(e);
-  }
-});
-
-// POST /api/auth/resend-verification — for the logged-in user
-router.post('/resend-verification', requireAuth, async (req, res, next) => {
-  try {
-    const { rows } = await pool.query('SELECT id, name, email, email_verified FROM users WHERE id = $1', [req.user.id]);
-    const user = rows[0];
-    if (!user) return res.status(404).json({ error: 'Utilizador não encontrado' });
-    if (user.email_verified) return res.json({ ok: true, alreadyVerified: true });
-
-    const token = crypto.randomBytes(32).toString('hex');
-    const expires = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // 7 days
-    await pool.query(
-      'UPDATE users SET email_verification_token = $1, email_verification_expires_at = $2 WHERE id = $3',
-      [token, expires, user.id]
-    );
-
-    const appUrl = (process.env.APP_URL || '').replace(/\/$/, '');
-    const verifyUrl = `${appUrl}/api/auth/verify-email?token=${token}`;
-    sendEmailVerification(user, verifyUrl).catch(err =>
-      console.error('[email] verification resend failed:', err.message)
-    );
-    res.json({ ok: true });
-  } catch (e) {
-    next(e);
-  }
-});
-
-// Tiny standalone HTML page for the verify-email landing
-function verifyHtml(title, body, color) {
-  return `<!DOCTYPE html><html lang="pt"><head><meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${title} — Hive</title>
-<style>
-  body{font-family:Arial,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f9fafb}
-  .card{background:#fff;border-radius:12px;padding:48px 40px;max-width:520px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.1)}
-  h1{color:${color};font-size:28px;margin:0 0 16px}
-  p{color:#374151;font-size:16px;line-height:1.6;margin:0 0 24px}
-  a{display:inline-block;background:${color};color:#fff;padding:12px 28px;border-radius:8px;text-decoration:none;font-weight:700}
-</style></head>
-<body><div class="card">
-  <h1>${title}</h1>
-  <p>${body}</p>
-  <a href="/">Voltar ao Hive</a>
-</div></body></html>`;
-}
 
 module.exports = router;

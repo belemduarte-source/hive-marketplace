@@ -160,10 +160,6 @@ const api = {
   resetPassword(token, password) {
     return apiFetch('/auth/reset-password', { method: 'POST', body: { token, password } });
   },
-  // Email verification
-  resendEmailVerification() {
-    return apiFetch('/auth/resend-verification', { method: 'POST' });
-  },
 
   // ── Favourites (per-user, server-persisted) ──────────────────────────────
   // All four require a valid session cookie; logged-out callers get 401.

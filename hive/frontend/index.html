@@ -474,13 +474,6 @@
        a single wrapper that wasn't a flex container — so the inner sections
        sat flush against each other. Match the .dp-body 16 px gap. */
     #dpGatedSections{display:flex;flex-direction:column;gap:16px}
-    .rating-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .rating-axis{background:linear-gradient(135deg,var(--primary-light),#fef9f0);border-radius:var(--radius-sm);padding:12px;border:1.5px solid var(--border)}
-    .axis-label{font-size:12px;color:var(--text);margin-bottom:8px;font-weight:700}
-    .axis-bar{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:6px;box-shadow:inset 0 1px 2px rgba(0,0,0,.05)}
-    .axis-fill{height:100%;border-radius:4px;background:linear-gradient(90deg,var(--primary),var(--primary-dark));transition:width .3s ease}
-    .axis-val{font-size:14px;font-weight:800;color:var(--primary);display:flex;align-items:center;gap:4px}
-    .axis-val::before{content:'⭐';font-size:13px}
     .channel-grid{display:flex;flex-direction:column;gap:10px}
     .channel-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:1.5px solid transparent;cursor:pointer;transition:all .2s}
     .ch-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;font-weight:700}
@@ -657,18 +650,6 @@
     .faq-item-body ul{margin:6px 0 0 18px;padding:0}
     .faq-item-body li{margin-bottom:4px}
     .faq-item-body a{color:var(--primary);text-decoration:underline}
-    /* Email verification banner */
-    .verify-banner{position:fixed;top:0;left:0;right:0;background:#fef3c7;border-bottom:1px solid #fde68a;z-index:150;animation:slideDown .3s ease both}
-    @keyframes slideDown{from{transform:translateY(-100%)}to{transform:translateY(0)}}
-    .verify-banner-inner{display:flex;align-items:center;gap:12px;max-width:1200px;margin:0 auto;padding:10px 16px}
-    .verify-banner-icon{font-size:18px;flex-shrink:0}
-    .verify-banner-text{flex:1;font-size:13px;color:#78350f;line-height:1.4;font-weight:500}
-    .verify-banner-btn{background:#f97316;color:#fff;border:0;padding:7px 14px;border-radius:6px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;flex-shrink:0;transition:background .15s}
-    .verify-banner-btn:hover{background:#ea580c}
-    .verify-banner-btn:disabled{opacity:.6;cursor:not-allowed}
-    .verify-banner-close{background:none;border:0;font-size:20px;color:#78350f;opacity:.6;cursor:pointer;padding:4px 8px;flex-shrink:0;line-height:1}
-    .verify-banner-close:hover{opacity:1}
-    @media(max-width:560px){.verify-banner-inner{flex-wrap:wrap}.verify-banner-text{flex:1 0 100%;order:2}.verify-banner-btn{order:3}}
     /* Cookie consent banner */
     .cookie-banner{position:fixed;bottom:16px;left:16px;right:16px;background:#0f172a;color:#fff;border-radius:14px;box-shadow:0 12px 32px rgba(0,0,0,.25);z-index:9998;padding:0;animation:slideUp .4s ease both}
     @keyframes slideUp{from{transform:translateY(120%);opacity:0}to{transform:translateY(0);opacity:1}}
@@ -3509,6 +3490,10 @@
         <div class="dp-cred-label"><i data-lucide="briefcase"></i><span data-i18n="detailActivities">Áreas de Atividade</span></div>
         <div class="dp-cred-activities" id="dpActivities"></div>
       </div>
+      <div class="dp-cred-block" id="dpNifBlock">
+        <div class="dp-cred-label"><i data-lucide="hash"></i><span>NIF</span></div>
+        <div class="dp-cred-doc-value" id="dpNif"></div>
+      </div>
       <div class="dp-cred-block">
         <div class="dp-cred-row">
           <div class="dp-cred-doc">
@@ -3542,10 +3527,6 @@
       <div>
         <div class="dp-section-title"><i data-lucide="map-pin"></i><span data-i18n="detailLocation">Localização</span></div>
         <div class="dp-address" id="dpAddress"></div>
-      </div>
-      <div id="dpRatingSection">
-        <div class="dp-section-title"><i data-lucide="bar-chart-2"></i><span data-i18n="detailRating">Avaliação Multidimensional</span></div>
-        <div class="rating-grid" id="dpRatings"></div>
       </div>
       <div>
         <div class="dp-section-title"><i data-lucide="phone-call"></i><span data-i18n="detailContact">Canais de Contacto</span></div>
@@ -3647,13 +3628,13 @@
         <div class="form-row">
           <label for="regAuthPass"><span data-i18n="authPasswordLabel">Palavra-passe</span> <span class="req">*</span></label>
           <div class="pwd-wrap">
-            <input type="password" id="regAuthPass" name="new-password" data-i18n-ph="authPasswordPh" placeholder="Mínimo 6 caracteres" autocomplete="new-password" required minlength="6" aria-required="true" aria-describedby="regAuthPassHint"/>
+            <input type="password" id="regAuthPass" name="new-password" data-i18n-ph="authPasswordPh" placeholder="Mínimo 8 caracteres" autocomplete="new-password" required minlength="8" aria-required="true" aria-describedby="regAuthPassHint"/>
             <button type="button" class="pwd-toggle" data-i18n-aria="pwdToggleAria" aria-label="Mostrar/ocultar palavra-passe" onclick="togglePassword('regAuthPass', this)" tabindex="-1">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
           </div>
           <div class="caps-hint" id="regCapsHint" hidden data-i18n="capsLockOn">⚠️ Caps Lock está ativado</div>
-          <div class="form-hint" id="regAuthPassHint" data-i18n="authPasswordHint">Mínimo 6 caracteres.</div>
+          <div class="form-hint" id="regAuthPassHint" data-i18n="authPasswordHint">Mínimo 8 caracteres.</div>
         </div>
         <button type="submit" class="btn-submit" id="registerSubmitBtn" style="width:100%;padding:11px;font-size:14px;margin-top:6px" data-i18n="authRegisterSubmit">Criar Conta</button>
       </form>
@@ -4175,17 +4156,6 @@
   </div>
 </div>
 
-<!-- ── EMAIL VERIFICATION BANNER ──────────────────────────────────────── -->
-<div id="emailVerifyBanner" class="verify-banner" hidden>
-  <div class="verify-banner-inner">
-    <span class="verify-banner-icon">📧</span>
-    <span class="verify-banner-text" data-i18n="verifyBannerText">Confirme o seu email para desbloquear todas as funcionalidades.</span>
-    <button type="button" id="verifyResendBtn" class="verify-banner-btn" onclick="resendVerification()" data-i18n="verifyResend">Reenviar email</button>
-    <button type="button" id="verifyConfirmedBtn" class="verify-banner-btn" onclick="checkVerified()" data-i18n="verifyConfirmed" style="background:rgba(34,197,94,.18);color:#86efac;border-color:rgba(34,197,94,.4)">Já confirmei</button>
-    <button type="button" class="verify-banner-close" onclick="dismissVerifyBanner()" aria-label="Fechar">×</button>
-  </div>
-</div>
-
 <!-- ── PASSWORD RECOVERY (request + reset) ──────────────────────────────── -->
 <div class="overlay" id="forgotOverlay" onclick="if(event.target===this)closeForgotPassword()" role="dialog" aria-modal="true" aria-labelledby="forgotTitle">
   <div class="modal" style="width:420px">
@@ -4209,18 +4179,18 @@
 <div class="overlay" id="resetOverlay" onclick="if(event.target===this)closeResetPassword()" role="dialog" aria-modal="true" aria-labelledby="resetTitle">
   <div class="modal" style="width:420px">
     <h2 id="resetTitle" style="font-size:20px;font-weight:800;margin:0 0 6px;color:var(--text)" data-i18n="resetTitle">Definir nova palavra-passe</h2>
-    <p style="font-size:13px;color:var(--muted);margin:0 0 16px;line-height:1.5" data-i18n="resetBody">Escolha uma nova palavra-passe (mínimo 6 caracteres).</p>
+    <p style="font-size:13px;color:var(--muted);margin:0 0 16px;line-height:1.5" data-i18n="resetBody">Escolha uma nova palavra-passe (mínimo 8 caracteres).</p>
     <form id="resetForm" onsubmit="event.preventDefault();submitResetPassword()" novalidate>
       <input type="hidden" id="resetToken"/>
       <div class="form-row">
         <label for="resetPass">Nova palavra-passe</label>
         <div class="pwd-wrap">
-          <input type="password" id="resetPass" name="new-password" autocomplete="new-password" minlength="6" required aria-required="true"/>
+          <input type="password" id="resetPass" name="new-password" autocomplete="new-password" minlength="8" required aria-required="true"/>
           <button type="button" class="pwd-toggle" aria-label="Mostrar/ocultar palavra-passe" onclick="togglePassword('resetPass', this)" tabindex="-1">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
           </button>
         </div>
-        <div class="form-hint">Mínimo 6 caracteres.</div>
+        <div class="form-hint">Mínimo 8 caracteres.</div>
       </div>
       <button type="submit" class="btn-submit" id="resetSubmitBtn" style="width:100%;padding:11px;font-size:14px" data-i18n="resetSubmit">Definir palavra-passe</button>
     </form>
@@ -4295,7 +4265,7 @@ const translations = {
     emptyTitle:'Nenhuma empresa registada',
     emptyMsg:'O mapa está vazio. Registe a primeira empresa para que apareça aqui como marcador.',
     emptyBtn:'Registar Empresa',
-    detailLocation:'Localização', detailRating:'Avaliação Multidimensional',
+    detailLocation:'Localização',
     detailContact:'Canais de Contacto',
     waName:'WhatsApp Direct', waDesc:'Mensagem pré-preenchida com contexto',
     chatChannelName:'WhatsApp / Mensagem', chatChannelDesc:'Contacto directo via WhatsApp ou SMS',
@@ -4311,7 +4281,6 @@ const translations = {
     noRatings:'Sem avaliações', reviews:'reviews',
     review1:'"Excelente parceiro, entregou dentro do prazo e com qualidade acima do esperado."',
     review2:'"Boa comunicação e preços competitivos. Recomendado para projetos de médio prazo."',
-    axisLabels:{quality:'Qualidade', deadlines:'Prazos', communication:'Comunicação', price:'Preço'},
     sectors:{
       pedreiros:'Pedreiros / Trolhas', escavacao:'Escavação & Terraplanagem', betao_cimento:'Betão & Cimento',
       estruturas_metalicas:'Estruturas Metálicas', demolicao:'Demolição', alvenaria:'Alvenaria',
@@ -4555,7 +4524,7 @@ const translations = {
     authTabLogin:'Entrar', authTabRegister:'Criar Conta',
     authDividerEmail:'ou continue com email', authDividerData:'ou preencha os dados',
     authEmailLabel:'Email', authPasswordLabel:'Palavra-passe',
-    authPasswordPh:'Mínimo 6 caracteres', authPasswordHint:'Mínimo 6 caracteres.',
+    authPasswordPh:'Mínimo 8 caracteres', authPasswordHint:'Mínimo 8 caracteres.',
     authLoginSubmit:'Entrar', authRegisterSubmit:'Criar Conta',
     authNoAccount:'Ainda não tem conta?', authHasAccount:'Já tem conta?',
     capsLockOn:'⚠️ Caps Lock está ativado', pwdToggleAria:'Mostrar/ocultar palavra-passe',
@@ -4576,7 +4545,7 @@ const translations = {
     toastLoggedOut:'Sessão terminada',
     toastGoogleFailed:'Falha ao iniciar sessão com Google',
     toastRegisterFailed:'Erro ao criar conta',
-    toastPasswordTooShort:'A palavra-passe deve ter pelo menos 6 caracteres',
+    toastPasswordTooShort:'A palavra-passe deve ter pelo menos 8 caracteres',
     regAuthNameLabel:'Nome completo',
     regAuthNamePh:'O seu nome',
     lpTabCompany:'Por Empresa',
@@ -4651,7 +4620,7 @@ const translations = {
     emptyTitle:'No companies registered',
     emptyMsg:'The map is empty. Register the first company so it appears here as a marker.',
     emptyBtn:'Register Company',
-    detailLocation:'Location', detailRating:'Multidimensional Rating',
+    detailLocation:'Location',
     detailContact:'Contact Channels',
     waName:'WhatsApp Direct', waDesc:'Pre-filled message with context',
     chatChannelName:'WhatsApp / Message', chatChannelDesc:'Direct contact via WhatsApp or SMS',
@@ -4667,7 +4636,6 @@ const translations = {
     noRatings:'No reviews', reviews:'reviews',
     review1:'"Excellent partner, delivered on time and with quality above expectations."',
     review2:'"Good communication and competitive prices. Recommended for medium-term projects."',
-    axisLabels:{quality:'Quality', deadlines:'Deadlines', communication:'Communication', price:'Price'},
     sectors:{
       pedreiros:'Bricklayers & Masons', escavacao:'Excavation & Earthworks', betao_cimento:'Concrete & Cement Work',
       estruturas_metalicas:'Steel Frame Structures', demolicao:'Demolition', alvenaria:'Masonry',
@@ -4902,7 +4870,7 @@ const translations = {
     authTabLogin:'Log in', authTabRegister:'Create Account',
     authDividerEmail:'or continue with email', authDividerData:'or fill in your details',
     authEmailLabel:'Email', authPasswordLabel:'Password',
-    authPasswordPh:'At least 6 characters', authPasswordHint:'At least 6 characters.',
+    authPasswordPh:'At least 8 characters', authPasswordHint:'At least 8 characters.',
     authLoginSubmit:'Log in', authRegisterSubmit:'Create Account',
     authNoAccount:'Don’t have an account yet?', authHasAccount:'Already have an account?',
     capsLockOn:'⚠️ Caps Lock is on', pwdToggleAria:'Show/hide password',
@@ -4922,7 +4890,7 @@ const translations = {
     toastLoggedOut:'Signed out',
     toastGoogleFailed:'Google sign-in failed',
     toastRegisterFailed:'Account creation failed',
-    toastPasswordTooShort:'Password must be at least 6 characters',
+    toastPasswordTooShort:'Password must be at least 8 characters',
     regAuthNameLabel:'Full name',
     regAuthNamePh:'Your name',
     lpTabCompany:'By Company',
@@ -4997,7 +4965,7 @@ const translations = {
     emptyTitle:'Aucune entreprise enregistrée',
     emptyMsg:"La carte est vide. Enregistrez la première entreprise pour qu'elle apparaisse ici comme marqueur.",
     emptyBtn:'Enregistrer Entreprise',
-    detailLocation:'Localisation', detailRating:'Évaluation Multidimensionnelle',
+    detailLocation:'Localisation',
     detailContact:'Canaux de Contact',
     waName:'WhatsApp Direct', waDesc:'Message pré-rempli avec contexte',
     chatChannelName:'WhatsApp / Message', chatChannelDesc:'Contact direct via WhatsApp ou SMS',
@@ -5013,7 +4981,6 @@ const translations = {
     noRatings:'Sans avis', reviews:'avis',
     review1:'"Excellent partenaire, livré dans les délais et avec une qualité supérieure aux attentes."',
     review2:'"Bonne communication et prix compétitifs. Recommandé pour des projets à moyen terme."',
-    axisLabels:{quality:'Qualité', deadlines:'Délais', communication:'Communication', price:'Prix'},
     sectors:{
       pedreiros:'Maçons & Briqueteurs', escavacao:'Terrassement & Excavation', betao_cimento:'Béton & Ciment',
       estruturas_metalicas:'Charpente & Structures Métalliques', demolicao:'Démolition', alvenaria:'Maçonnerie',
@@ -5251,7 +5218,7 @@ const translations = {
     authTabLogin:'Connexion', authTabRegister:'Créer un compte',
     authDividerEmail:'ou continuer avec un email', authDividerData:'ou remplissez les informations',
     authEmailLabel:'Email', authPasswordLabel:'Mot de passe',
-    authPasswordPh:'Au moins 6 caractères', authPasswordHint:'Au moins 6 caractères.',
+    authPasswordPh:'Au moins 8 caractères', authPasswordHint:'Au moins 8 caractères.',
     authLoginSubmit:'Connexion', authRegisterSubmit:'Créer un compte',
     authNoAccount:'Pas encore de compte ?', authHasAccount:'Vous avez déjà un compte ?',
     capsLockOn:'⚠️ Verr. Maj est activée', pwdToggleAria:'Afficher/masquer le mot de passe',
@@ -5271,7 +5238,7 @@ const translations = {
     toastLoggedOut:'Déconnecté',
     toastGoogleFailed:'Échec de la connexion Google',
     toastRegisterFailed:'Échec de la création du compte',
-    toastPasswordTooShort:'Le mot de passe doit contenir au moins 6 caractères',
+    toastPasswordTooShort:'Le mot de passe doit contenir au moins 8 caractères',
     regAuthNameLabel:'Nom complet',
     regAuthNamePh:'Votre nom',
     lpTabCompany:'Par Entreprise',
@@ -5345,7 +5312,7 @@ const translations = {
     emptyTitle:'Ninguna empresa registrada',
     emptyMsg:'El mapa está vacío. Registre la primera empresa para que aparezca aquí.',
     emptyBtn:'Registrar Empresa',
-    detailLocation:'Ubicación', detailRating:'Valoración Multidimensional',
+    detailLocation:'Ubicación',
     detailContact:'Canales de Contacto',
     waName:'WhatsApp Directo', waDesc:'Mensaje pre-rellenado con contexto',
     chatChannelName:'WhatsApp / Mensaje', chatChannelDesc:'Contacto directo por WhatsApp o SMS',
@@ -5361,7 +5328,6 @@ const translations = {
     noRatings:'Sin valoraciones', reviews:'reseñas',
     review1:'"Excelente socio, entregó a tiempo y con calidad superior a lo esperado."',
     review2:'"Buena comunicación y precios competitivos. Recomendado para proyectos a medio plazo."',
-    axisLabels:{quality:'Calidad', deadlines:'Plazos', communication:'Comunicación', price:'Precio'},
     sectors:{
       pedreiros:'Albañiles', escavacao:'Movimiento de Tierras & Excavación', betao_cimento:'Hormigón & Cemento',
       estruturas_metalicas:'Estructuras Metálicas', demolicao:'Demolición', alvenaria:'Albañilería & Mampostería',
@@ -5595,7 +5561,7 @@ const translations = {
     authTabLogin:'Entrar', authTabRegister:'Crear Cuenta',
     authDividerEmail:'o continúa con email', authDividerData:'o rellene los datos',
     authEmailLabel:'Email', authPasswordLabel:'Contraseña',
-    authPasswordPh:'Mínimo 6 caracteres', authPasswordHint:'Mínimo 6 caracteres.',
+    authPasswordPh:'Mínimo 8 caracteres', authPasswordHint:'Mínimo 8 caracteres.',
     authLoginSubmit:'Entrar', authRegisterSubmit:'Crear Cuenta',
     authNoAccount:'¿Aún no tienes cuenta?', authHasAccount:'¿Ya tienes cuenta?',
     capsLockOn:'⚠️ Bloq Mayús está activado', pwdToggleAria:'Mostrar/ocultar contraseña',
@@ -5615,7 +5581,7 @@ const translations = {
     toastLoggedOut:'Sesión finalizada',
     toastGoogleFailed:'Error al iniciar sesión con Google',
     toastRegisterFailed:'Error al crear la cuenta',
-    toastPasswordTooShort:'La contraseña debe tener al menos 6 caracteres',
+    toastPasswordTooShort:'La contraseña debe tener al menos 8 caracteres',
     regAuthNameLabel:'Nombre completo',
     regAuthNamePh:'Su nombre',
     lpTabCompany:'Por Empresa',
@@ -5681,7 +5647,7 @@ const translations = {
     emptyTitle:'Keine Unternehmen registriert',
     emptyMsg:'Die Karte ist leer. Registrieren Sie das erste Unternehmen, damit es auf der Karte erscheint.',
     emptyBtn:'Unternehmen registrieren',
-    detailLocation:'Standort', detailRating:'Bewertungsübersicht',
+    detailLocation:'Standort',
     detailContact:'Kontaktkanäle',
     waName:'WhatsApp-Direktkontakt', waDesc:'Vorausgefüllte Kontextinformationen',
     chatChannelName:'WhatsApp / Nachricht', chatChannelDesc:'Direktkontakt per WhatsApp oder SMS',
@@ -5697,7 +5663,6 @@ const translations = {
     noRatings:'Noch keine Bewertungen', reviews:'Bewertungen',
     review1:'"Ausgezeichneter Partner – pünktliche Lieferung, Qualität hat unsere Erwartungen übertroffen."',
     review2:'"Gute Kommunikation, wettbewerbsfähige Preise. Empfehlenswert für mittlere Projekte."',
-    axisLabels:{quality:'Qualität', deadlines:'Termintreue', communication:'Kommunikation', price:'Preis'},
     sectors:{
       pedreiros:'Maurer & Verputzer', escavacao:'Erdarbeiten & Baugrubenaushub', betao_cimento:'Betonbau',
       estruturas_metalicas:'Stahlbau & Tragkonstruktionen', demolicao:'Abbrucharbeiten', alvenaria:'Mauerwerk & Ziegelarbeiten',
@@ -5930,7 +5895,7 @@ const translations = {
     authTabLogin:'Anmelden', authTabRegister:'Konto erstellen',
     authDividerEmail:'oder mit E-Mail fortfahren', authDividerData:'oder Daten eingeben',
     authEmailLabel:'E-Mail', authPasswordLabel:'Passwort',
-    authPasswordPh:'Mindestens 6 Zeichen', authPasswordHint:'Mindestens 6 Zeichen.',
+    authPasswordPh:'Mindestens 8 Zeichen', authPasswordHint:'Mindestens 8 Zeichen.',
     authLoginSubmit:'Anmelden', authRegisterSubmit:'Konto erstellen',
     authNoAccount:'Noch kein Konto?', authHasAccount:'Sie haben bereits ein Konto?',
     capsLockOn:'⚠️ Feststelltaste ist aktiviert', pwdToggleAria:'Passwort ein-/ausblenden',
@@ -5950,7 +5915,7 @@ const translations = {
     toastLoggedOut:'Abgemeldet',
     toastGoogleFailed:'Google-Anmeldung fehlgeschlagen',
     toastRegisterFailed:'Konto konnte nicht erstellt werden',
-    toastPasswordTooShort:'Das Passwort muss mindestens 6 Zeichen lang sein',
+    toastPasswordTooShort:'Das Passwort muss mindestens 8 Zeichen lang sein',
     avatarRegisterCompany:'Unternehmen registrieren',
     regAuthNameLabel:'Vollständiger Name',
     regAuthNamePh:'Ihr Name',
@@ -7012,10 +6977,6 @@ function dbRowToCompany(row) {
     country:   row.country   || 'pt',
     // Same coercion as id above so isOwner checks (created_by === user.id) match.
     created_by: row.created_by != null ? Number(row.created_by) : null,
-    axes: [
-      {l:'Qualidade',v:0},{l:'Pontualidade',v:0},
-      {l:'Atendimento',v:0},{l:'Preço',v:0}
-    ]
   };
 }
 
@@ -7084,7 +7045,7 @@ try {
 } catch (_) {}
 
 function _isLoggedIn() {
-  try { return !!JSON.parse(sessionStorage.getItem('hive_user') || 'null'); }
+  try { return !!JSON.parse(localStorage.getItem('hive_user') || 'null'); }
   catch (_) { return false; }
 }
 function _saveFavs() {
@@ -7438,7 +7399,6 @@ async function loadCompaniesFromDB() {
         emoji: d.emoji || '🏢', color: d.color || '#f97316',
         pinType: d.pinType || 'std', lat: d.lat, lng: d.lng,
         address: d.address || '', city: d.city || '', country: d.country || 'pt',
-        axes: [{l:'Qualidade',v:Math.min(5,d.rating||0)},{l:'Pontualidade',v:Math.min(5,Math.max(0,(d.rating||0)-0.2))},{l:'Atendimento',v:Math.min(5,Math.max(0,(d.rating||0)+0.1))},{l:'Preço',v:Math.min(5,Math.max(0,(d.rating||0)-0.3))}]
       });
     });
     if (companies.length > 0) nextCompanyId = computeNextCompanyId(companies, nextCompanyId);
@@ -7514,7 +7474,7 @@ async function saveCompanyToDB(company) {
 // Admin status is server-authoritative — derived from JWT user claim
 let isAdminMode = (function() {
   try {
-    const u = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+    const u = JSON.parse(localStorage.getItem('hive_user') || 'null');
     return u && u.is_admin === true;
   } catch { return false; }
 })();
@@ -7523,7 +7483,7 @@ function updateAdminUI() {
   const editBtn = document.getElementById('dpEditBtn');
   if (!editBtn || !selectedId) return;
   // Show the edit button when the viewer is an admin OR the owner of this listing.
-  const me = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  const me = JSON.parse(localStorage.getItem('hive_user') || 'null');
   const c  = companies.find(x => x.id === selectedId);
   // me.id arrives from sessionStorage as a string (BIGINT-safe round-trip);
   // c.created_by is a number after dbRowToCompany. Coerce both sides.
@@ -7537,7 +7497,7 @@ function openEditCompany() {
   // Capture the id BEFORE closeDetail() — that function nulls selectedId, so
   // passing `selectedId` after close means profileEditCompany(null) → no-op.
   const id = selectedId;
-  const me = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  const me = JSON.parse(localStorage.getItem('hive_user') || 'null');
   const c  = companies.find(x => x.id === id);
   const myId = me ? Number(me.id) : null;
   const isOwner = !!(me && c && c.created_by != null && c.created_by === myId);
@@ -9762,10 +9722,6 @@ function submitRegister() {
       lat, lng,
       address:     fullAddress,
       postalCode, city, country, zone,
-      axes: [
-        {l:'Qualidade',v:0},{l:'Pontualidade',v:0},
-        {l:'Atendimento',v:0},{l:'Preço',v:0}
-      ]
     };
 
     // Show a saving indicator
@@ -9842,10 +9798,9 @@ function submitRegister() {
 }
 
 // ── DETAIL PANEL ──────────────────────────────────────────────────────────────
-function openDetail(id) {
+async function openDetail(id) {
   const c  = companies.find(x => x.id === id);
   if (!c) return;
-  const tr = translations[currentLang];
   selectedId = id;
 
   // Sync URL ?company=<id> so the panel is shareable + browser-back works.
@@ -9861,6 +9816,29 @@ function openDetail(id) {
     } catch (_) {}
   }
 
+  // Paint immediately from the cached list data so the panel feels instant,
+  // then fetch the authoritative record — full detail fields, any edits, and
+  // credentials gated for this viewer — and re-render.
+  _renderDetailPanel(c);
+  document.getElementById('detailPanel').classList.add('open');
+  if (map) map.flyTo([c.lat, c.lng], 15, { animate: true, duration: 1.2 });
+  setTimeout(() => markerMap[c.id]?.openPopup(), 1300);
+
+  try {
+    const fresh = await api.getCompany(id);
+    if (fresh && String(fresh.id) === String(id) && selectedId === id) {
+      const merged = dbRowToCompany(fresh);
+      // Keep any sectors/tags the dedup step merged in from duplicate records.
+      merged.sectors = Array.from(new Set([...(c.sectors || []), ...(merged.sectors || [])]));
+      merged.tags    = Array.from(new Set([...(c.tags || []), ...(merged.tags || [])]));
+      Object.assign(c, merged);
+      if (selectedId === id) _renderDetailPanel(c);
+    }
+  } catch (_) { /* keep the cached render */ }
+}
+
+function _renderDetailPanel(c) {
+  const tr = translations[currentLang];
   document.getElementById('dpLogo').textContent        = c.emoji;
   document.getElementById('dpLogo').style.background   = c.color;
   document.getElementById('dpName').textContent        = c.name;
@@ -9878,24 +9856,6 @@ function openDetail(id) {
   document.getElementById('dpSub').textContent = _subParts.join('  ·  ');
   document.getElementById('dpAddress').textContent = c.address;
 
-  // Multidimensional rating — only meaningful once the company has scored
-  // axes. Hide the whole section when there's nothing but N/A to show.
-  const _hasAxisData = (c.axes || []).some(a => a.v > 0);
-  const ratingSection = document.getElementById('dpRatingSection');
-  if (ratingSection) ratingSection.style.display = _hasAxisData ? '' : 'none';
-  if (_hasAxisData) {
-    document.getElementById('dpRatings').innerHTML = c.axes.map(a => {
-      const axisKeyMap = {'Qualidade':'quality','Pontualidade':'deadlines','Atendimento':'communication','Preço':'price'};
-      const label = tr.axisLabels[axisKeyMap[a.l]] || a.l;
-      const percentage = (a.v / 5) * 100; // Convert 0-5 scale to 0-100 percentage
-      return `<div class="rating-axis">
-        <div class="axis-label">${label}</div>
-        <div class="axis-bar"><div class="axis-fill" style="width:${percentage}%"></div></div>
-        <div class="axis-val">${a.v.toFixed(1)} / 5.0</div>
-      </div>`;
-    }).join('');
-  }
-
   // Specialties (free-form tags) — hidden entirely when the company has none.
   document.getElementById('dpTags').innerHTML = c.tags.map(tag =>
     `<span class="tag">${escHtml(tag)}</span>`).join('');
@@ -9912,6 +9872,17 @@ function openDetail(id) {
     dpActivities.innerHTML = sectorsArr.length
       ? sectorsArr.map(s => `<span class="dp-cred-chip">${escHtml(sc[s] || s)}</span>`).join('')
       : `<span class="dp-cred-empty">${escHtml((tr && tr.detailNoActivities) || '—')}</span>`;
+  }
+  // NIF — public registry identifier, shown to everyone; hidden only when absent.
+  const dpNifBlock = document.getElementById('dpNifBlock');
+  const dpNif = document.getElementById('dpNif');
+  if (dpNifBlock && dpNif) {
+    if (c.nif) {
+      dpNifBlock.style.display = '';
+      dpNif.textContent = c.nif;
+    } else {
+      dpNifBlock.style.display = 'none';
+    }
   }
   const _fillCredential = (el, value, emptyText) => {
     if (!el) return;
@@ -9974,7 +9945,7 @@ function openDetail(id) {
   }
 
   // Auth gate: show contact details only to logged-in users
-  const loggedIn = !!JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  const loggedIn = !!JSON.parse(localStorage.getItem('hive_user') || 'null');
   const quoteBar = document.getElementById('dpQuoteBar');
   const loginGate = document.getElementById('dpLoginGate');
   const gatedSections = document.getElementById('dpGatedSections');
@@ -9982,12 +9953,8 @@ function openDetail(id) {
   if (loginGate) loginGate.style.display = loggedIn ? 'none' : '';
   if (gatedSections) gatedSections.style.display = loggedIn ? '' : 'none';
 
-  document.getElementById('detailPanel').classList.add('open');
   updateAdminUI();
   _refreshDpFavBtn();
-  if (map) map.flyTo([c.lat, c.lng], 15, { animate: true, duration: 1.2 });
-
-  setTimeout(() => markerMap[c.id]?.openPopup(), 1300);
 }
 
 // Toggles the favourite state for the currently-open company in the detail
@@ -10609,7 +10576,7 @@ function postRegisterBrowse() {
 
 // ── REPORT LISTING ────────────────────────────────────────────────────────
 function openReportModal() {
-  const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  const user = JSON.parse(localStorage.getItem('hive_user') || 'null');
   if (!user) { showToast(t('toastReportLoginRequired')); openLogin(); return; }
   if (!selectedId) return;
   document.getElementById('reportReason').value = '';
@@ -10680,7 +10647,7 @@ async function submitResetPassword() {
   const token = document.getElementById('resetToken').value;
   const pass  = document.getElementById('resetPass').value;
   const btn   = document.getElementById('resetSubmitBtn');
-  if (!pass || pass.length < 6) { showToast(t('toastPasswordTooShort')); return; }
+  if (!pass || pass.length < 8) { showToast(t('toastPasswordTooShort')); return; }
   setBusy(btn, true);
   try {
     await api.resetPassword(token, pass);
@@ -10762,7 +10729,7 @@ async function doLogin() {
   setBusy(btn, true);
   try {
     const { user } = await api.login(email, pass);
-    sessionStorage.setItem('hive_user', JSON.stringify(user));
+    localStorage.setItem('hive_user', JSON.stringify(user));
     isAdminMode = user.is_admin === true;
     closeLogin();
     updateNavAuth();
@@ -10784,13 +10751,13 @@ async function doRegister() {
   const pass = document.getElementById('regAuthPass').value;
   const btn = document.getElementById('registerSubmitBtn');
   if (!name || !email || !pass) { showToast(t('toastFillRequired')); return; }
-  if (pass.length < 6) { showToast(t('toastPasswordTooShort')); return; }
+  if (pass.length < 8) { showToast(t('toastPasswordTooShort')); return; }
   setBusy(btn, true);
   try {
     // All new accounts start as 'cliente'. The user upgrades their account by
     // registering a company afterwards via the post-register choice modal.
     const { user } = await api.register({ name, email, password: pass, type: 'cliente' });
-    sessionStorage.setItem('hive_user', JSON.stringify(user));
+    localStorage.setItem('hive_user', JSON.stringify(user));
     isAdminMode = user.is_admin === true;
     closeLogin();
     updateNavAuth();
@@ -10807,7 +10774,7 @@ async function doRegister() {
 }
 async function doLogout() {
   await api.logout().catch(() => {});
-  sessionStorage.removeItem('hive_user');
+  localStorage.removeItem('hive_user');
   isAdminMode = false;
   updateNavAuth();
   showToast(t('toastLoggedOut'));
@@ -10877,7 +10844,7 @@ async function _onGoogleCredential(response) {
     // we offer the post-register choice (advertise vs browse) once auth completes.
     const fromRegisterTab = document.querySelector('.auth-tab.active')?.dataset.tab === 'register';
     const { user } = await api.loginWithGoogle(idToken);
-    sessionStorage.setItem('hive_user', JSON.stringify(user));
+    localStorage.setItem('hive_user', JSON.stringify(user));
     isAdminMode = user.is_admin === true;
     closeLogin();
     updateNavAuth();
@@ -10892,13 +10859,32 @@ async function _onGoogleCredential(response) {
     showToast(e.message || t('toastGoogleFailed'));
   }
 }
+// Reconcile the locally-stored session with the server on page load. The JWT
+// cookie lives for 7 days, so a return visitor stays logged in even though the
+// in-memory marker may be gone — and a stale marker whose cookie has expired
+// gets cleared. Runs async after the synchronous updateNavAuth() so there is
+// no flash of logged-out UI for valid sessions.
+async function rehydrateSession() {
+  try {
+    const me = await api.getMe();
+    if (me && me.user) localStorage.setItem('hive_user', JSON.stringify(me.user));
+    else localStorage.removeItem('hive_user');
+  } catch (e) {
+    // 401 → cookie missing/expired, clear stale state. Network blip → leave as-is.
+    if (e && e.status === 401) localStorage.removeItem('hive_user');
+    else return;
+  }
+  try { updateNavAuth(); } catch (_) {}
+  try { _refreshDpFavBtn(); } catch (_) {}
+}
+
 function updateNavAuth() {
   const area = document.getElementById('authArea');
   const mobileArea = document.getElementById('mobileAuthArea');
   const mobileTopAuth = document.getElementById('mobileTopAuth');
   const heroCta = document.getElementById('lpHeroUserCta');
   const heroCtaGreeting = document.getElementById('lpHeroUserCtaGreeting');
-  const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  const user = JSON.parse(localStorage.getItem('hive_user') || 'null');
   if (!user) {
     // Single auth entry point lives in the top-right of the nav (desktop + mobile).
     if (area) area.innerHTML = '<button class="btn-login" onclick="openLogin()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span data-i18n="navLogin">Entrar</span></button>';
@@ -10946,71 +10932,8 @@ function updateNavAuth() {
     }
   }
   refreshLucide();
-  updateVerifyBanner();
 }
 
-// ── EMAIL VERIFY BANNER ──────────────────────────────────────────────────
-// Shows a small dismissable banner at the top of the page when the logged-in
-// user hasn't yet confirmed their email. Dismissal lasts the session.
-const VERIFY_BANNER_DISMISS_KEY = 'hive_verify_banner_dismissed';
-function updateVerifyBanner() {
-  const banner = document.getElementById('emailVerifyBanner');
-  if (!banner) return;
-  const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
-  const dismissed = sessionStorage.getItem(VERIFY_BANNER_DISMISS_KEY) === '1';
-  const shouldShow = user && user.email_verified === false && !dismissed;
-  banner.hidden = !shouldShow;
-}
-function dismissVerifyBanner() {
-  sessionStorage.setItem(VERIFY_BANNER_DISMISS_KEY, '1');
-  updateVerifyBanner();
-}
-async function resendVerification() {
-  const btn = document.getElementById('verifyResendBtn');
-  setBusy(btn, true);
-  try {
-    const r = await api.resendEmailVerification();
-    if (r && r.alreadyVerified) {
-      showToast('Email já confirmado. Atualize a página.');
-      // Sync local state and hide banner
-      try {
-        const me = await api.getMe();
-        if (me && me.user) sessionStorage.setItem('hive_user', JSON.stringify(me.user));
-      } catch (_) {}
-      updateVerifyBanner();
-    } else {
-      showToast('📧 Email de confirmação enviado. Verifique a sua caixa de entrada.');
-    }
-  } catch (e) {
-    showToast(e.message || 'Não foi possível enviar o email.');
-  } finally {
-    setBusy(btn, false);
-  }
-}
-// "Já confirmei" — re-fetches the user from the server. If the email is now
-// confirmed, sessionStorage is updated and the banner disappears without a
-// manual page reload.
-async function checkVerified() {
-  const btn = document.getElementById('verifyConfirmedBtn');
-  setBusy(btn, true);
-  try {
-    const me = await api.getMe();
-    if (me && me.user) sessionStorage.setItem('hive_user', JSON.stringify(me.user));
-    if (me && me.user && (me.user.email_verified || me.user.emailVerified)) {
-      showToast('✅ Email confirmado!');
-      updateVerifyBanner();
-    } else {
-      showToast('Ainda não recebemos a confirmação. Verifique o email e clique no link.');
-    }
-  } catch (e) {
-    showToast(e.message || 'Não foi possível verificar o estado.');
-  } finally {
-    setBusy(btn, false);
-  }
-}
-window.checkVerified = checkVerified;
-window.dismissVerifyBanner = dismissVerifyBanner;
-window.resendVerification  = resendVerification;
 function toggleAvatarMenu(e) {
   e.stopPropagation();
   const menu = document.getElementById('avatarMenu');
@@ -11040,6 +10963,8 @@ try {
   try { renderMobileSearchPanel(); } catch(e) { console.warn('Init skip: renderMobileSearchPanel', e); }
   try { renderTagCloud(); } catch(e) { console.warn('Init skip: renderTagCloud', e); }
   try { updateNavAuth(); } catch(e) { console.warn('Init skip: updateNavAuth', e); }
+  // Reconcile the stored session with the server cookie (fire-and-forget).
+  try { rehydrateSession(); } catch(e) { console.warn('Init skip: rehydrateSession', e); }
   // If a session is already active on page load (return visit), pull the
   // user's saved favourites from the server. Fire-and-forget, doesn't block
   // first paint.
@@ -11509,7 +11434,7 @@ function closeRegSuccess() {
 
 // ── IMPROVEMENT 7: Profile panel ────────────────────────────────────────────
 function openProfilePanel() {
-  const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  const user = JSON.parse(localStorage.getItem('hive_user') || 'null');
   if (!user) { openLogin(); return; }
   const initials = user.name.split(' ').map(w => w[0]).join('').toUpperCase().slice(0,2);
   // user.id is a string (BIGINT JSON-roundtrip); c.created_by is a number after
@@ -11666,8 +11591,6 @@ if (_origRenderSectorFilters) {
           successTitle:'Pedido Enviado!', successSub:'O seu pedido foi recebido e está a aguardar validação. Receberá um email de confirmação assim que a empresa for aprovada.',
           successClose:'Continuar a Navegar',
           forgotPwd:'Esqueceu a palavra-passe?',
-          verifyBannerText:'Confirme o seu email para desbloquear todas as funcionalidades.',
-          verifyResend:'Reenviar email', verifyConfirmed:'Já confirmei',
           verifiedTooltip:'Empresa cuja certidão permanente foi confirmada pela equipa Hive — uma camada extra de confiança.',
           mapPinHint:'💡 Toque num pin para ver os detalhes da empresa.',
           faqTitle:'Perguntas Frequentes', faqMeta:'Respostas rápidas às dúvidas mais comuns',
@@ -11680,7 +11603,7 @@ if (_origRenderSectorFilters) {
           forgotBody:'Indique o seu email e enviaremos um link para definir uma nova palavra-passe.',
           forgotSend:'Enviar link',
           resetTitle:'Definir nova palavra-passe',
-          resetBody:'Escolha uma nova palavra-passe (mínimo 6 caracteres).',
+          resetBody:'Escolha uma nova palavra-passe (mínimo 8 caracteres).',
           resetSubmit:'Definir palavra-passe',
           cookieTitle:'🍪 Privacidade e cookies',
           cookieBody:'Usamos cookies estritamente necessários para o funcionamento da plataforma (autenticação e preferência de idioma). Cookies analíticos só são ativados se aceitar.',
@@ -11694,8 +11617,6 @@ if (_origRenderSectorFilters) {
           successTitle:'Request Submitted!', successSub:'Your request has been received and is pending validation. You will receive a confirmation email once the company is approved.',
           successClose:'Keep Browsing',
           forgotPwd:'Forgot your password?',
-          verifyBannerText:'Confirm your email to unlock all features.',
-          verifyResend:'Resend email', verifyConfirmed:"I've confirmed",
           verifiedTooltip:'Company whose Portuguese commercial registry certificate has been confirmed by the Hive team — an extra layer of trust.',
           mapPinHint:'💡 Tap a pin to see company details.',
           faqTitle:'Frequently Asked Questions', faqMeta:'Quick answers to common questions',
@@ -11708,7 +11629,7 @@ if (_origRenderSectorFilters) {
           forgotBody:'Enter your email and we\'ll send you a link to set a new password.',
           forgotSend:'Send link',
           resetTitle:'Set a new password',
-          resetBody:'Choose a new password (at least 6 characters).',
+          resetBody:'Choose a new password (at least 8 characters).',
           resetSubmit:'Set password',
           cookieTitle:'🍪 Privacy and cookies',
           cookieBody:'We use strictly-necessary cookies (authentication, language preference). Analytics cookies are only enabled if you accept.',
@@ -11722,8 +11643,6 @@ if (_origRenderSectorFilters) {
           successTitle:'Demande Envoyée !', successSub:"Votre demande a été reçue et est en attente de validation. Vous recevrez un email de confirmation dès que l'entreprise sera approuvée.",
           successClose:'Continuer à Naviguer',
           forgotPwd:'Mot de passe oublié ?',
-          verifyBannerText:'Confirmez votre email pour débloquer toutes les fonctionnalités.',
-          verifyResend:'Renvoyer l\'email', verifyConfirmed:'J\'ai confirmé',
           verifiedTooltip:"Entreprise dont le certificat permanent du registre du commerce portugais a été confirmé par l'équipe Hive.",
           mapPinHint:"💡 Touchez un pin pour voir les détails de l'entreprise.",
           faqTitle:'Questions fréquentes', faqMeta:'Réponses rapides aux questions courantes',
@@ -11736,7 +11655,7 @@ if (_origRenderSectorFilters) {
           forgotBody:'Indiquez votre email et nous vous enverrons un lien pour définir un nouveau mot de passe.',
           forgotSend:'Envoyer le lien',
           resetTitle:'Définir un nouveau mot de passe',
-          resetBody:'Choisissez un nouveau mot de passe (minimum 6 caractères).',
+          resetBody:'Choisissez un nouveau mot de passe (minimum 8 caractères).',
           resetSubmit:'Définir le mot de passe',
           cookieTitle:'🍪 Confidentialité et cookies',
           cookieBody:'Nous utilisons des cookies strictement nécessaires (authentification, préférence de langue). Les cookies analytiques ne sont activés que si vous acceptez.',
@@ -11750,8 +11669,6 @@ if (_origRenderSectorFilters) {
           successTitle:'¡Solicitud Enviada!', successSub:'Su solicitud ha sido recibida y está pendiente de validación. Recibirá un email de confirmación una vez aprobada la empresa.',
           successClose:'Seguir Navegando',
           forgotPwd:'¿Olvidó la contraseña?',
-          verifyBannerText:'Confirme su email para desbloquear todas las funcionalidades.', verifyConfirmed:'Ya confirmé',
-          verifyResend:'Reenviar email',
           verifiedTooltip:'Empresa cuya certificación permanente del registro mercantil portugués ha sido confirmada por el equipo Hive.',
           mapPinHint:'💡 Toque un pin para ver los detalles de la empresa.',
           faqTitle:'Preguntas Frecuentes', faqMeta:'Respuestas rápidas a las dudas más comunes',
@@ -11764,7 +11681,7 @@ if (_origRenderSectorFilters) {
           forgotBody:'Indique su email y le enviaremos un enlace para establecer una nueva contraseña.',
           forgotSend:'Enviar enlace',
           resetTitle:'Establecer nueva contraseña',
-          resetBody:'Elija una nueva contraseña (mínimo 6 caracteres).',
+          resetBody:'Elija una nueva contraseña (mínimo 8 caracteres).',
           resetSubmit:'Establecer contraseña',
           cookieTitle:'🍪 Privacidad y cookies',
           cookieBody:'Usamos cookies estrictamente necesarios (autenticación, preferencia de idioma). Las cookies analíticas solo se activan si las acepta.',
@@ -11778,8 +11695,6 @@ if (_origRenderSectorFilters) {
           successTitle:'Anfrage gesendet!', successSub:'Ihre Anfrage wurde empfangen und wird geprüft. Sie erhalten eine Bestätigungs-E-Mail, sobald das Unternehmen freigegeben wurde.',
           successClose:'Weiter browsen',
           forgotPwd:'Passwort vergessen?',
-          verifyBannerText:'Bestätigen Sie Ihre E-Mail, um alle Funktionen freizuschalten.', verifyConfirmed:'Ich habe bestätigt',
-          verifyResend:'E-Mail erneut senden',
           verifiedTooltip:'Unternehmen, dessen portugiesischer Handelsregisterauszug vom Hive-Team verifiziert wurde — zusätzliche Vertrauensebene.',
           mapPinHint:'💡 Tippen Sie auf einen Pin, um Firmendetails zu sehen.',
           faqTitle:'Häufige Fragen', faqMeta:'Schnelle Antworten auf gängige Fragen',
@@ -11792,7 +11707,7 @@ if (_origRenderSectorFilters) {
           forgotBody:'Geben Sie Ihre E-Mail-Adresse ein. Wir senden Ihnen einen Link, um ein neues Passwort festzulegen.',
           forgotSend:'Link senden',
           resetTitle:'Neues Passwort festlegen',
-          resetBody:'Wählen Sie ein neues Passwort (mindestens 6 Zeichen).',
+          resetBody:'Wählen Sie ein neues Passwort (mindestens 8 Zeichen).',
           resetSubmit:'Passwort festlegen',
           cookieTitle:'🍪 Datenschutz und Cookies',
           cookieBody:'Wir verwenden ausschließlich notwendige Cookies (Authentifizierung, Spracheinstellung). Analyse-Cookies werden nur nach Ihrer Zustimmung aktiviert.',
@@ -12036,7 +11951,7 @@ async function loadReviews(companyId) {
       // Is the logged-in user the owner of this company? If so, expose a
       // "Responder" link on reviews that don't yet have a reply.
       const company = companies.find(x => x.id === companyId);
-      const me = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+      const me = JSON.parse(localStorage.getItem('hive_user') || 'null');
       const isOwner = !!(me && company && (me.is_admin || (company.created_by && company.created_by === me.id)));
 
       const cardsHtml = reviews.map(r => {
@@ -12071,7 +11986,7 @@ async function loadReviews(companyId) {
       list.innerHTML = histHtml + cardsHtml;
     }
     // Show review form for logged-in users
-    const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+    const user = JSON.parse(localStorage.getItem('hive_user') || 'null');
     if (user && toggle) toggle.style.display = 'block';
   } catch(e) {
     list.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px">Não foi possível carregar as avaliações.</div>';
@@ -12126,7 +12041,7 @@ _addOpenDetailHook((id) => {
   if (list)   list.innerHTML = '';
   if (form)   form.style.display = 'none';
   if (toggle) toggle.style.display = 'none';
-  const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  const user = JSON.parse(localStorage.getItem('hive_user') || 'null');
   if (user) loadReviews(id);
 });
 
@@ -12138,7 +12053,7 @@ function escHtml(str) {
 // FEATURE: Contact Form Modal
 // ═══════════════════════════════════════════════════════════════════════════════
 function openContactModal() {
-  const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  const user = JSON.parse(localStorage.getItem('hive_user') || 'null');
   if (!user) { openLogin(); return; }
   const c = companies.find(x => x.id === selectedId);
   if (!c) return;
@@ -12398,7 +12313,7 @@ async function adminToggleFeatured(id, featured) {
 const _origUpdateNavAuth = updateNavAuth;
 updateNavAuth = function() {
   _origUpdateNavAuth();
-  const user = JSON.parse(sessionStorage.getItem('hive_user') || 'null');
+  const user = JSON.parse(localStorage.getItem('hive_user') || 'null');
   if (user && user.is_admin) {
     const menu = document.getElementById('avatarMenu');
     if (menu && !menu.querySelector('.admin-menu-item')) {

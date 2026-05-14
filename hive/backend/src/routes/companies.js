@@ -24,11 +24,14 @@ function isValidPortugueseNIF(input) {
 
 // GET /api/companies — public, returns all approved companies
 // Supports: ?country=pt  ?q=search_text  ?sector=Construção
+// Columns needed to draw pins, popups, run search/filters and dedup. Heavy
+// detail-only fields (description, portfolio_images, business_hours,
+// founded_year) are intentionally excluded — the detail panel fetches the
+// full record via GET /api/companies/:id on demand.
 const LIST_COLS = `
   id, name, sectors, sector, nif, cae, alvara, certidao_permanente,
   address, postal_code, city, country, zone,
-  email, phone, website, tags, description,
-  founded_year, business_hours, portfolio_images,
+  email, phone, website, tags,
   lat, lng, rating, reviews, top_rated, verified, is_new, featured,
   emoji, color, pin_type, status, created_by, created_at
 `.trim();

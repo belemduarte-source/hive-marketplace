@@ -6,3 +6,5 @@ hive/backend/node_modules/
 hive/node_modules/
 *.log
 .vercel/
+
+.vercel

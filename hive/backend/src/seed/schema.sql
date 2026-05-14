@@ -13,9 +13,6 @@ CREATE TABLE IF NOT EXISTS users (
   company                       TEXT DEFAULT '',
   phone                         TEXT DEFAULT '',
   is_admin                      BOOLEAN DEFAULT FALSE,
-  email_verified                BOOLEAN DEFAULT FALSE,
-  email_verification_token      TEXT,
-  email_verification_expires_at TIMESTAMPTZ,
   password_reset_token          TEXT,
   password_reset_expires_at     TIMESTAMPTZ,
   created_at                    TIMESTAMPTZ DEFAULT NOW()
@@ -27,13 +24,15 @@ CREATE INDEX IF NOT EXISTS idx_users_google_id ON users(google_id);
 ALTER TABLE users ALTER COLUMN password_hash DROP NOT NULL;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS google_id TEXT UNIQUE;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS picture TEXT;
-ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN DEFAULT FALSE;
-ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verification_token TEXT;
-ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verification_expires_at TIMESTAMPTZ;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS password_reset_token TEXT;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS password_reset_expires_at TIMESTAMPTZ;
-CREATE INDEX IF NOT EXISTS idx_users_email_verification_token ON users(email_verification_token);
 CREATE INDEX IF NOT EXISTS idx_users_password_reset_token ON users(password_reset_token);
+
+-- Email verification was removed — drop the now-unused columns/index if present.
+DROP INDEX IF EXISTS idx_users_email_verification_token;
+ALTER TABLE users DROP COLUMN IF EXISTS email_verified;
+ALTER TABLE users DROP COLUMN IF EXISTS email_verification_token;
+ALTER TABLE users DROP COLUMN IF EXISTS email_verification_expires_at;
 
 CREATE TABLE IF NOT EXISTS companies (
   id          BIGSERIAL PRIMARY KEY,

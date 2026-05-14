@@ -290,48 +290,6 @@ async function sendPasswordResetEmail(user, resetUrl) {
   });
 }
 
-/**
- * Email-verification link sent on signup.
- */
-async function sendEmailVerification(user, verifyUrl) {
-  const transporter = createTransporter();
-  if (!transporter || !user.email) return;
-
-  const html = `
-<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
-  <div style="background:#f97316;padding:24px 32px">
-    <h1 style="margin:0;color:#fff;font-size:22px">🐝 Hive — Confirme o seu email</h1>
-  </div>
-  <div style="padding:28px 32px">
-    <p style="margin-top:0;color:#374151;font-size:16px">Olá, ${esc(user.name || '')}.</p>
-    <p style="color:#374151;font-size:16px">
-      Bem-vindo à Hive! Para concluir o registo e confirmar que o email é seu, clique no botão abaixo. A hiperligação é válida durante <strong>7 dias</strong>.
-    </p>
-    <div style="text-align:center;margin:32px 0">
-      <a href="${verifyUrl}" style="display:inline-block;background:#16a34a;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:16px">
-        ✓ Confirmar o meu email
-      </a>
-    </div>
-    <p style="color:#6b7280;font-size:13px">
-      Se o botão não funcionar, copie e cole esta hiperligação no navegador:<br>
-      <span style="word-break:break-all;color:#374151">${esc(verifyUrl)}</span>
-    </p>
-    <hr style="border:none;border-top:1px solid #e5e7eb;margin:28px 0">
-    <p style="color:#6b7280;font-size:13px;margin:0">
-      Se não criou uma conta na Hive, pode ignorar este email com segurança.<br><br>
-      Equipa Hive Marketplace
-    </p>
-  </div>
-</div>`;
-
-  await transporter.sendMail({
-    from:    `"Hive Marketplace" <${process.env.SMTP_USER}>`,
-    to:      user.email,
-    subject: '🐝 Hive — Confirme o seu email',
-    html,
-  });
-}
-
 // Minimal HTML escaping
 function esc(str) {
   return String(str)
@@ -343,5 +301,5 @@ function esc(str) {
 
 module.exports = {
   sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail,
-  sendContactEmail, sendPasswordResetEmail, sendEmailVerification,
+  sendContactEmail, sendPasswordResetEmail,
 };
