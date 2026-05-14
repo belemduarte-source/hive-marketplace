@@ -25,14 +25,15 @@ function isValidPortugueseNIF(input) {
 // GET /api/companies — public, returns all approved companies
 // Supports: ?country=pt  ?q=search_text  ?sector=Construção
 const LIST_COLS = `
-  id, name, sectors, sector, nif, cae, address, postal_code, city, country, zone,
+  id, name, sectors, sector, nif, cae, alvara, certidao_permanente,
+  address, postal_code, city, country, zone,
   email, phone, website, tags, description,
   founded_year, business_hours, portfolio_images,
   lat, lng, rating, reviews, top_rated, verified, is_new, featured,
   emoji, color, pin_type, status, created_by, created_at
 `.trim();
 
-router.get('/', async (req, res, next) => {
+router.get('/', optionalAuth, async (req, res, next) => {
   try {
     const { country, q, sector } = req.query;
     const params = [];
@@ -61,12 +62,18 @@ router.get('/', async (req, res, next) => {
       params
     );
 
-    // Logged-in users (especially owners who just edited their listing) bypass
-    // the edge cache entirely and always see fresh data. Anonymous traffic
-    // still benefits from a 60 s edge cache + 5 min SWR.
-    if (req.cookies && req.cookies.hive_token) {
+    // Alvará and certidão permanente are private credentials — visible only to
+    // authenticated users. Anonymous traffic gets them redacted, and only that
+    // redacted response is ever edge-cached.
+    if (req.user) {
+      // Logged-in users (especially owners who just edited their listing) bypass
+      // the edge cache entirely and always see fresh, credential-bearing data.
       res.set('Cache-Control', 'private, max-age=0, no-store');
     } else {
+      for (const row of rows) {
+        delete row.alvara;
+        delete row.certidao_permanente;
+      }
       res.set('Cache-Control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=300');
     }
     res.json(rows);
@@ -156,8 +163,8 @@ router.get('/:id/reject', async (req, res, next) => {
 });
 
 // GET /api/companies/:id — public, only approved.
-// Private credentials (certidão permanente, alvará) are redacted unless the
-// caller is the company owner or an admin.
+// Private credentials (certidão permanente, alvará) are redacted for anonymous
+// visitors — any authenticated user can see them.
 router.get('/:id', optionalAuth, async (req, res, next) => {
   try {
     const { rows } = await pool.query(
@@ -166,9 +173,7 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
     );
     if (!rows[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
     const company = rows[0];
-    const isOwner = req.user && req.user.id === company.created_by;
-    const isAdmin = req.user && req.user.is_admin;
-    if (!isOwner && !isAdmin) {
+    if (!req.user) {
       delete company.certidao_permanente;
       delete company.alvara;
     }

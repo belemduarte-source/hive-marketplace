@@ -506,6 +506,33 @@
     .card-tags{display:flex;flex-wrap:wrap;gap:4px}
     .tag{background:var(--orange-light);color:#c2410c;font-size:10.5px;font-weight:500;padding:2px 7px;border-radius:20px}
 
+    /* ── Credenciais & Áreas de Atividade ── */
+    .dp-credentials{background:linear-gradient(180deg,#ffffff 0%,#fafbfc 100%);border:1.5px solid var(--border);border-radius:14px;padding:16px 18px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
+    .dp-cred-block{margin-bottom:14px}
+    .dp-cred-block:last-child{margin-bottom:0}
+    .dp-cred-label{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+    .dp-cred-label [data-lucide]{width:13px;height:13px;color:var(--primary)}
+    .dp-cred-activities{display:flex;flex-wrap:wrap;gap:6px}
+    .dp-cred-chip{display:inline-flex;align-items:center;gap:5px;background:var(--orange-light);color:#9a3412;font-size:12px;font-weight:600;padding:5px 10px;border-radius:8px;border:1px solid rgba(249,115,22,.18);line-height:1.2}
+    .dp-cred-chip::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--primary);flex-shrink:0}
+    .dp-cred-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    @media (max-width:480px){.dp-cred-row{grid-template-columns:1fr}}
+    .dp-cred-doc{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;min-width:0;transition:border-color .2s}
+    .dp-cred-doc:hover{border-color:rgba(249,115,22,.35)}
+    .dp-cred-doc-head{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .dp-cred-doc-head [data-lucide]{width:14px;height:14px;color:var(--primary);flex-shrink:0}
+    .dp-cred-doc-name{font-size:12px;font-weight:700;color:var(--text)}
+    .dp-cred-required,.dp-cred-optional{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:2px 6px;border-radius:5px;margin-left:auto}
+    .dp-cred-required{background:#dcfce7;color:#166534}
+    .dp-cred-optional{background:#f1f5f9;color:#64748b}
+    .dp-cred-doc-value{font-family:'JetBrains Mono','SF Mono','Menlo',Consolas,monospace;font-size:12px;color:var(--text);font-weight:600;word-break:break-all;line-height:1.4}
+    .dp-cred-doc-value.empty{font-family:inherit;color:var(--muted);font-style:italic;font-weight:500}
+    .dp-cred-doc-value.locked{font-family:inherit}
+    .dp-cred-lock{display:inline-flex;align-items:center;gap:5px;background:none;border:0;padding:0;margin:0;font-family:inherit;font-size:12px;font-weight:600;color:var(--primary);cursor:pointer;line-height:1.3}
+    .dp-cred-lock span{text-decoration:underline;text-underline-offset:2px}
+    .dp-cred-lock:hover span{text-decoration:none}
+    .dp-cred-empty{font-size:12px;color:var(--muted);font-style:italic}
+
     /* chat widget removed */
 
     /* ── MODALS ── */
@@ -3475,6 +3502,35 @@
     <!-- Quick-fact pills (founded year, business hours) — hidden if no data -->
     <div class="dp-facts" id="dpFacts" style="display:none"></div>
 
+    <!-- Credenciais & Áreas de Atividade -->
+    <div class="dp-section-title"><i data-lucide="shield-check"></i><span data-i18n="detailCredentials">Credenciais & Áreas de Atividade</span></div>
+    <div class="dp-credentials" id="dpCredentials">
+      <div class="dp-cred-block">
+        <div class="dp-cred-label"><i data-lucide="briefcase"></i><span data-i18n="detailActivities">Áreas de Atividade</span></div>
+        <div class="dp-cred-activities" id="dpActivities"></div>
+      </div>
+      <div class="dp-cred-block">
+        <div class="dp-cred-row">
+          <div class="dp-cred-doc">
+            <div class="dp-cred-doc-head">
+              <i data-lucide="file-check"></i>
+              <span class="dp-cred-doc-name" data-i18n="detailCertidao">Certidão Permanente</span>
+              <span class="dp-cred-required" data-i18n="credRequired">Obrigatória</span>
+            </div>
+            <div class="dp-cred-doc-value" id="dpCertidao"></div>
+          </div>
+          <div class="dp-cred-doc">
+            <div class="dp-cred-doc-head">
+              <i data-lucide="award"></i>
+              <span class="dp-cred-doc-name" data-i18n="detailAlvara">Alvará</span>
+              <span class="dp-cred-optional" data-i18n="credOptional">Opcional</span>
+            </div>
+            <div class="dp-cred-doc-value" id="dpAlvara"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- Portfolio gallery — hidden if no images -->
     <div id="dpPortfolioWrap" style="display:none">
       <div class="dp-section-title"><i data-lucide="image"></i><span data-i18n="detailPortfolio">Galeria de trabalhos</span></div>
@@ -4253,6 +4309,13 @@ const translations = {
     chatChannelName:'WhatsApp / Mensagem', chatChannelDesc:'Contacto directo via WhatsApp ou SMS',
     emailChannelName:'E-mail Gateway', emailChannelDesc:'Pedido formal direto ao fornecedor',
     detailSpecialties:'Especialidades', detailReviews:'Avaliações Verificadas',
+    detailCredentials:'Credenciais & Áreas de Atividade',
+    detailActivities:'Áreas de Atividade', detailAlvara:'Alvará', detailCertidao:'Certidão Permanente',
+    detailNoActivities:'Sem áreas de atividade indicadas',
+    credRequired:'Obrigatória', credOptional:'Opcional',
+    credLoginToView:'Inicie sessão para ver',
+    alvaraNotApplicable:'Não aplicável', certidaoPending:'Em verificação',
+    popupCertOk:'Certidão registada', popupAlvaraOk:'Alvará',
     noRatings:'Sem avaliações', reviews:'reviews',
     review1:'"Excelente parceiro, entregou dentro do prazo e com qualidade acima do esperado."',
     review2:'"Boa comunicação e preços competitivos. Recomendado para projetos de médio prazo."',
@@ -4602,6 +4665,13 @@ const translations = {
     chatChannelName:'WhatsApp / Message', chatChannelDesc:'Direct contact via WhatsApp or SMS',
     emailChannelName:'E-mail Gateway', emailChannelDesc:'Formal request directly to the supplier',
     detailSpecialties:'Specialties', detailReviews:'Verified Reviews',
+    detailCredentials:'Credentials & Areas of Activity',
+    detailActivities:'Areas of Activity', detailAlvara:'Alvará (Licence)', detailCertidao:'Permanent Certificate',
+    detailNoActivities:'No areas of activity listed',
+    credRequired:'Required', credOptional:'Optional',
+    credLoginToView:'Sign in to view',
+    alvaraNotApplicable:'Not applicable', certidaoPending:'Pending verification',
+    popupCertOk:'Certificate on file', popupAlvaraOk:'Licence',
     noRatings:'No reviews', reviews:'reviews',
     review1:'"Excellent partner, delivered on time and with quality above expectations."',
     review2:'"Good communication and competitive prices. Recommended for medium-term projects."',
@@ -4941,6 +5011,13 @@ const translations = {
     chatChannelName:'WhatsApp / Message', chatChannelDesc:'Contact direct via WhatsApp ou SMS',
     emailChannelName:'Passerelle E-mail', emailChannelDesc:'Demande formelle directement au fournisseur',
     detailSpecialties:'Spécialités', detailReviews:'Avis Vérifiés',
+    detailCredentials:'Accréditations & Domaines d\'activité',
+    detailActivities:'Domaines d\'activité', detailAlvara:'Alvará (Licence)', detailCertidao:'Certificat Permanent',
+    detailNoActivities:'Aucun domaine d\'activité indiqué',
+    credRequired:'Obligatoire', credOptional:'Facultatif',
+    credLoginToView:'Connectez-vous pour voir',
+    alvaraNotApplicable:'Non applicable', certidaoPending:'En vérification',
+    popupCertOk:'Certificat enregistré', popupAlvaraOk:'Licence',
     noRatings:'Sans avis', reviews:'avis',
     review1:'"Excellent partenaire, livré dans les délais et avec une qualité supérieure aux attentes."',
     review2:'"Bonne communication et prix compétitifs. Recommandé pour des projets à moyen terme."',
@@ -5282,6 +5359,13 @@ const translations = {
     chatChannelName:'WhatsApp / Mensaje', chatChannelDesc:'Contacto directo por WhatsApp o SMS',
     emailChannelName:'E-mail Gateway', emailChannelDesc:'Solicitud formal directa al proveedor',
     detailSpecialties:'Especialidades', detailReviews:'Valoraciones Verificadas',
+    detailCredentials:'Credenciales y Áreas de Actividad',
+    detailActivities:'Áreas de Actividad', detailAlvara:'Alvará (Licencia)', detailCertidao:'Certificado Permanente',
+    detailNoActivities:'Sin áreas de actividad indicadas',
+    credRequired:'Obligatorio', credOptional:'Opcional',
+    credLoginToView:'Inicia sesión para ver',
+    alvaraNotApplicable:'No aplicable', certidaoPending:'En verificación',
+    popupCertOk:'Certificado registrado', popupAlvaraOk:'Licencia',
     noRatings:'Sin valoraciones', reviews:'reseñas',
     review1:'"Excelente socio, entregó a tiempo y con calidad superior a lo esperado."',
     review2:'"Buena comunicación y precios competitivos. Recomendado para proyectos a medio plazo."',
@@ -5611,6 +5695,13 @@ const translations = {
     chatChannelName:'WhatsApp / Nachricht', chatChannelDesc:'Direktkontakt per WhatsApp oder SMS',
     emailChannelName:'E-Mail', emailChannelDesc:'Formelle Anfragen direkt an den Anbieter',
     detailSpecialties:'Fachbereiche', detailReviews:'Verifizierte Bewertungen',
+    detailCredentials:'Nachweise & Tätigkeitsbereiche',
+    detailActivities:'Tätigkeitsbereiche', detailAlvara:'Alvará (Lizenz)', detailCertidao:'Handelsregisterauszug',
+    detailNoActivities:'Keine Tätigkeitsbereiche angegeben',
+    credRequired:'Erforderlich', credOptional:'Optional',
+    credLoginToView:'Zum Anzeigen anmelden',
+    alvaraNotApplicable:'Nicht zutreffend', certidaoPending:'In Prüfung',
+    popupCertOk:'Auszug hinterlegt', popupAlvaraOk:'Lizenz',
     noRatings:'Noch keine Bewertungen', reviews:'Bewertungen',
     review1:'"Ausgezeichneter Partner – pünktliche Lieferung, Qualität hat unsere Erwartungen übertroffen."',
     review2:'"Gute Kommunikation, wettbewerbsfähige Preise. Empfehlenswert für mittlere Projekte."',
@@ -6943,6 +7034,48 @@ function computeNextCompanyId(list, current) {
   return nums.length ? Math.max(...nums) + 1 : (current || 1);
 }
 
+// Collapse duplicate company records into one entry so each real business
+// gets exactly one pin, no matter how many times it was registered/seeded or
+// how many activities it lists. Two records are "the same company" when they
+// share a NIF, or (lacking that) the same name at the same coordinates.
+// Merged records keep the union of their sectors + tags, and backfill any
+// empty field (credentials, contacts, description) from their duplicates.
+function dedupeCompanies(list) {
+  const _norm = s => String(s || '').trim().toLowerCase().replace(/\s+/g, ' ');
+  const identity = c => {
+    const nif = String(c.nif || '').replace(/\s+/g, '');
+    if (nif) return 'nif:' + nif;
+    // ~1m precision — same name pinned at the same spot is the same business
+    return 'loc:' + _norm(c.name) + '|' + Number(c.lat).toFixed(5) + '|' + Number(c.lng).toFixed(5);
+  };
+  const _union = (a, b) => Array.from(new Set([...(a || []), ...(b || [])]));
+  const byKey = new Map();
+  for (const c of list) {
+    const key = identity(c);
+    const kept = byKey.get(key);
+    if (!kept) { byKey.set(key, c); continue; }
+    // Merge this duplicate into the record we're keeping.
+    kept.sectors = _union(kept.sectors, c.sectors);
+    kept.tags    = _union(kept.tags, c.tags);
+    if (!kept.sector && c.sector) kept.sector = c.sector;
+    for (const f of ['alvara', 'certidao_permanente', 'cae', 'nif', 'email',
+                     'phone', 'website', 'description', 'address', 'city',
+                     'business_hours', 'founded_year']) {
+      if (!kept[f] && c[f]) kept[f] = c[f];
+    }
+    if ((c.portfolio_images || []).length && !(kept.portfolio_images || []).length) {
+      kept.portfolio_images = c.portfolio_images;
+    }
+    // Prefer the strongest trust signals across the duplicates.
+    kept.rating   = Math.max(kept.rating || 0, c.rating || 0);
+    kept.reviews  = Math.max(kept.reviews || 0, c.reviews || 0);
+    kept.featured = kept.featured || c.featured;
+    kept.verified = kept.verified || c.verified;
+    kept.topRated = kept.topRated || c.topRated;
+  }
+  return Array.from(byKey.values());
+}
+
 // ── FAVOURITES (saved companies) ───────────────────────────────────────────
 // Two-tier persistence:
 //   • Logged-in users: stored in user_favourites table on the server, fetched
@@ -7327,6 +7460,14 @@ async function loadCompaniesFromDB() {
   }
   for (const id in markerMap) delete markerMap[id];
   if (typeof _visibleMarkerIds !== 'undefined') _visibleMarkerIds = new Set();
+
+  // Collapse duplicate records so each business is a single pin. Mutate the
+  // shared `companies` array in place (it's a const used elsewhere by reference).
+  const _deduped = dedupeCompanies(companies);
+  if (_deduped.length !== companies.length) {
+    companies.length = 0;
+    _deduped.forEach(c => companies.push(c));
+  }
 
   // Render
   // Pre-compute a lowercase search index per company so fuzzySearch
@@ -8028,12 +8169,32 @@ function buildPopupHtml(c) {
   } else {
     starsHtml = `<div style="font-size:11px;color:#64748b;margin-bottom:3px">☆☆☆☆☆ ${tr.popupNoRatings}</div>`;
   }
-  return `<div style="min-width:180px">
-    <div style="font-size:14px;font-weight:700;margin-bottom:3px">${c.emoji} ${c.name}</div>
-    <div style="font-size:11.5px;color:#64748b;margin-bottom:5px">${c.cae}</div>
+  const sc = (tr && tr.sectors) || {};
+  const sectorsArr = (c.sectors && c.sectors.length) ? c.sectors : (c.sector ? [c.sector] : []);
+  const shown = sectorsArr.slice(0, 3);
+  const extra = Math.max(0, sectorsArr.length - shown.length);
+  const sectorsHtml = sectorsArr.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin:5px 0 6px">
+    ${shown.map(s => `<span style="background:#fff7ed;color:#9a3412;font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:6px;border:1px solid rgba(249,115,22,.18);line-height:1.3">${escHtml(sc[s] || s)}</span>`).join('')}
+    ${extra > 0 ? `<span style="font-size:10.5px;color:#64748b;font-weight:700;padding:2px 4px;align-self:center">+${extra}</span>` : ''}
+  </div>` : '';
+  // Credentials are only present on the company object for logged-in users
+  // (the backend redacts them for anonymous traffic).
+  const certBadge = c.certidao_permanente
+    ? `<span style="font-size:10px;color:#166534;background:#dcfce7;border-radius:4px;padding:2px 6px;display:inline-flex;align-items:center;gap:3px;font-weight:700">✓ ${escHtml(tr.popupCertOk || 'Certidão registada')}</span>`
+    : '';
+  const alvaraBadge = c.alvara
+    ? `<span style="font-size:10px;color:#9a3412;background:#fff7ed;border:1px solid rgba(249,115,22,.25);border-radius:4px;padding:2px 6px;display:inline-flex;align-items:center;gap:3px;font-weight:700">⚒ ${escHtml(tr.popupAlvaraOk || 'Alvará')}</span>`
+    : '';
+  const newBadge = c.isNew
+    ? `<span style="font-size:10px;color:#166534;background:#dcfce7;border-radius:4px;padding:2px 6px;display:inline-flex;align-items:center;font-weight:700">${escHtml(tr.popupNewBadge)}</span>`
+    : '';
+  const badges = [certBadge, alvaraBadge, newBadge].filter(Boolean).join('');
+  return `<div style="min-width:200px;max-width:260px">
+    <div style="font-size:14px;font-weight:700;color:#1e293b;margin-bottom:3px">${c.emoji} ${escHtml(c.name)}</div>
+    ${sectorsHtml}
     ${starsHtml}
-    <div style="font-size:11px;color:#64748b">📍 ${c.address}</div>
-    ${c.isNew ? `<div style="font-size:10px;color:#166534;background:#dcfce7;border-radius:4px;padding:2px 6px;margin-top:5px;display:inline-block">${tr.popupNewBadge}</div>` : ''}
+    ${c.address ? `<div style="font-size:11px;color:#64748b">📍 ${escHtml(c.address)}</div>` : ''}
+    ${badges ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px">${badges}</div>` : ''}
   </div>`;
 }
 
@@ -9737,6 +9898,37 @@ function openDetail(id) {
 
   document.getElementById('dpTags').innerHTML = c.tags.map(tag =>
     `<span class="tag">${tag}</span>`).join('');
+
+  // Credenciais & Áreas de Atividade — sectors are public; the alvará and
+  // certidão permanente are private credentials the backend only returns to
+  // authenticated users, so anonymous visitors get a "sign in to view" prompt.
+  const dpActivities = document.getElementById('dpActivities');
+  if (dpActivities) {
+    const sc = (tr && tr.sectors) || {};
+    const sectorsArr = (c.sectors && c.sectors.length) ? c.sectors : (c.sector ? [c.sector] : []);
+    dpActivities.innerHTML = sectorsArr.length
+      ? sectorsArr.map(s => `<span class="dp-cred-chip">${escHtml(sc[s] || s)}</span>`).join('')
+      : `<span class="dp-cred-empty">${escHtml((tr && tr.detailNoActivities) || '—')}</span>`;
+  }
+  const _fillCredential = (el, value, emptyText) => {
+    if (!el) return;
+    el.classList.remove('empty', 'locked');
+    if (!_isLoggedIn()) {
+      el.classList.add('locked');
+      el.innerHTML = `<button type="button" class="dp-cred-lock" onclick="closeDetail();openLogin()">`
+        + `🔒 <span>${escHtml((tr && tr.credLoginToView) || 'Inicie sessão para ver')}</span></button>`;
+    } else if (value) {
+      el.textContent = value;
+    } else {
+      el.classList.add('empty');
+      el.textContent = emptyText;
+    }
+  };
+  _fillCredential(document.getElementById('dpCertidao'), c.certidao_permanente,
+    (tr && tr.certidaoPending) || 'Em verificação');
+  _fillCredential(document.getElementById('dpAlvara'), c.alvara,
+    (tr && tr.alvaraNotApplicable) || 'Não aplicável');
+
   document.getElementById('chatName').textContent = c.name;
   document.getElementById('dpReviewsSection').style.display = c.isNew ? 'none' : 'block';
 
