@@ -40,6 +40,17 @@ function safeUser(user) {
   };
 }
 
+// Practical email-format check — not RFC-perfect, but rejects the obvious
+// garbage at the door (no @, no dot, embedded whitespace).
+const _EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+function normalizeEmail(input) {
+  return String(input || '').trim().toLowerCase();
+}
+function isValidEmail(input) {
+  const e = normalizeEmail(input);
+  return e.length >= 5 && e.length <= 254 && _EMAIL_RE.test(e);
+}
+
 // Very-common-password floor. The 8-character minimum still admits '12345678'
 // and similar trivials — block the worst offenders explicitly.
 const _COMMON_PASSWORDS = new Set([
@@ -76,8 +87,10 @@ async function verifyTurnstile(token, ip) {
 // POST /api/auth/register
 router.post('/register', async (req, res, next) => {
   try {
-    const { name, email, password, turnstileToken } = req.body;
+    const { name, password, turnstileToken } = req.body;
+    const email = normalizeEmail(req.body && req.body.email);
     if (!name || !email || !password) return res.status(400).json({ error: 'name, email e password são obrigatórios' });
+    if (!isValidEmail(email)) return res.status(400).json({ error: 'Email inválido' });
     if (password.length < 8) return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 8 caracteres' });
     if (passwordTooWeak(password)) return res.status(400).json({ error: 'Esta palavra-passe é demasiado comum. Escolha outra.' });
 
@@ -110,10 +123,11 @@ router.post('/register', async (req, res, next) => {
 // POST /api/auth/login
 router.post('/login', async (req, res, next) => {
   try {
-    const { email, password } = req.body;
+    const { password } = req.body;
+    const email = normalizeEmail(req.body && req.body.email);
     if (!email || !password) return res.status(400).json({ error: 'email e password são obrigatórios' });
 
-    const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email.toLowerCase()]);
+    const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     if (!rows[0]) return res.status(401).json({ error: 'Email ou palavra-passe incorretos' });
 
     const match = await bcrypt.compare(password, rows[0].password_hash);
@@ -233,8 +247,9 @@ router.post('/google', async (req, res, next) => {
 // real user, a reset token is generated and emailed.
 router.post('/forgot-password', async (req, res, next) => {
   try {
-    const email = String(req.body?.email || '').toLowerCase().trim();
+    const email = normalizeEmail(req.body && req.body.email);
     if (!email) return res.status(400).json({ error: 'email é obrigatório' });
+    if (!isValidEmail(email)) return res.status(400).json({ error: 'Email inválido' });
 
     // Don't leak whether the address is registered
     const generic = { ok: true, message: 'Se o email estiver registado, receberá em breve um link de recuperação.' };
