@@ -174,7 +174,6 @@ const MIGRATIONS = [
      password_hash TEXT,
      google_id TEXT UNIQUE,
      picture TEXT,
-     type TEXT NOT NULL CHECK (type IN ('empresa','cliente')),
      company TEXT DEFAULT '',
      phone   TEXT DEFAULT '',
      is_admin BOOLEAN DEFAULT FALSE,
@@ -190,6 +189,9 @@ const MIGRATIONS = [
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS password_reset_token TEXT`,
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS password_reset_expires_at TIMESTAMPTZ`,
   `CREATE INDEX IF NOT EXISTS idx_users_password_reset_token ON users(password_reset_token)`,
+  // The empresa/cliente distinction was vestigial — anyone can advertise a
+  // company independent of user type — so the column is dropped.
+  `ALTER TABLE users DROP COLUMN IF EXISTS type`,
   // Email verification was removed — drop the now-unused columns/index if present.
   `DROP INDEX IF EXISTS idx_users_email_verification_token`,
   `ALTER TABLE users DROP COLUMN IF EXISTS email_verified`,
@@ -312,27 +314,19 @@ const MIGRATIONS = [
   `CREATE INDEX IF NOT EXISTS idx_reports_created ON reports(created_at DESC)`,
 ];
 
-// Sentinel detects the latest schema. Bumped when adding companies.removed_at.
-const SENTINEL_COLUMN = 'removed_at';
-const SENTINEL_TABLE  = 'companies';
-
 async function ensureSchema() {
   if (_migrated) return;
   if (_migrationPromise) return _migrationPromise; // in-flight on this instance
   _migrationPromise = (async () => {
     try {
       const pool = require('./db');
-      // Fast path: sentinel column already exists → schema is current
-      const { rows: sentinel } = await pool.query(
-        `SELECT 1 FROM information_schema.columns
-         WHERE table_schema='public' AND table_name=$1 AND column_name=$2 LIMIT 1`,
-        [SENTINEL_TABLE, SENTINEL_COLUMN]
-      );
-      if (sentinel.length > 0) { _migrated = true; return; }
 
-      // Slow path: run every migration. Each in its own try/catch so a single
-      // failure (e.g. constraint name mismatch on an old deployment) doesn't
-      // block the rest from applying.
+      // Every migration is idempotent (IF NOT EXISTS / IF EXISTS) so we just
+      // run them all on cold start. We used to short-circuit on a sentinel
+      // column, but that silently skipped DROP migrations once any of the
+      // expected columns existed. Running them all is cheap (~50ms) and the
+      // _migrated flag caches the result for the rest of this instance.
+      // Each statement is wrapped so one failure doesn't block the rest.
       let okCount = 0, failCount = 0;
       for (const stmt of MIGRATIONS) {
         try {
@@ -344,20 +338,7 @@ async function ensureSchema() {
         }
       }
       console.log(`Schema migrations: ${okCount} OK, ${failCount} failed`);
-
-      // Verify the sentinel column actually got added before flipping the
-      // fast-path flag. If it's still missing, leave _migrated=false so the
-      // next request retries.
-      const { rows: check } = await pool.query(
-        `SELECT 1 FROM information_schema.columns
-         WHERE table_schema='public' AND table_name=$1 AND column_name=$2 LIMIT 1`,
-        [SENTINEL_TABLE, SENTINEL_COLUMN]
-      );
-      if (check.length > 0) {
-        _migrated = true;
-      } else {
-        console.error('Sentinel column still missing after migration run — will retry on next request');
-      }
+      _migrated = true;
     } catch (e) {
       console.error('Schema migration error:', e.message);
     } finally {

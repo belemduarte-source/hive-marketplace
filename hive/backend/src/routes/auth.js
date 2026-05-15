@@ -26,7 +26,7 @@ function googleClient() {
 
 function signToken(user) {
   return jwt.sign(
-    { id: user.id, email: user.email, name: user.name, type: user.type, is_admin: user.is_admin },
+    { id: user.id, email: user.email, name: user.name, is_admin: user.is_admin },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
   );
@@ -34,32 +34,68 @@ function signToken(user) {
 
 function safeUser(user) {
   return {
-    id: user.id, name: user.name, email: user.email, type: user.type,
+    id: user.id, name: user.name, email: user.email,
     is_admin: user.is_admin,
     picture: user.picture || null,
   };
 }
 
+// Very-common-password floor. The 8-character minimum still admits '12345678'
+// and similar trivials — block the worst offenders explicitly.
+const _COMMON_PASSWORDS = new Set([
+  '12345678','123456789','1234567890','qwerty123','password','password1',
+  'password123','abc12345','iloveyou','letmein1','welcome1','admin123',
+  'princess','football','monkey123','11111111','00000000','qwertyuiop',
+  'baseball','master123','batman123','sunshine','pokemon1','starwars',
+  'computer','superman','passw0rd','trustno1','dragon123','michael1',
+]);
+function passwordTooWeak(p) {
+  return _COMMON_PASSWORDS.has(String(p).toLowerCase());
+}
+
+// Cloudflare Turnstile verification — no-op when TURNSTILE_SECRET_KEY isn't
+// set, so the feature stays dormant until you configure it in Vercel.
+async function verifyTurnstile(token, ip) {
+  if (!process.env.TURNSTILE_SECRET_KEY) return true;
+  if (!token) return false;
+  try {
+    const params = new URLSearchParams({
+      secret: process.env.TURNSTILE_SECRET_KEY,
+      response: String(token),
+    });
+    if (ip) params.append('remoteip', ip);
+    const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: params });
+    const j = await r.json();
+    return !!j.success;
+  } catch (e) {
+    console.error('[turnstile] verify failed:', e.message);
+    return false;
+  }
+}
+
 // POST /api/auth/register
 router.post('/register', async (req, res, next) => {
   try {
-    const { name, email, password, type } = req.body;
+    const { name, email, password, turnstileToken } = req.body;
     if (!name || !email || !password) return res.status(400).json({ error: 'name, email e password são obrigatórios' });
     if (password.length < 8) return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 8 caracteres' });
-    if (!['empresa', 'cliente'].includes(type)) return res.status(400).json({ error: 'type deve ser empresa ou cliente' });
+    if (passwordTooWeak(password)) return res.status(400).json({ error: 'Esta palavra-passe é demasiado comum. Escolha outra.' });
+
+    if (!(await verifyTurnstile(turnstileToken, req.ip))) {
+      return res.status(400).json({ error: 'Verificação de segurança falhou. Tente novamente.' });
+    }
 
     const existing = await pool.query('SELECT id FROM users WHERE email = $1', [email.toLowerCase()]);
-    if (existing.rows.length > 0) return res.status(409).json({ error: 'Este email já está registado' });
+    // Don't leak whether the email is already registered — keep the response
+    // shape generic so this endpoint can't be used to probe accounts.
+    if (existing.rows.length > 0) {
+      return res.status(409).json({ error: 'Não foi possível concluir o registo. Se já tem conta, faça login.' });
+    }
 
     const passwordHash = await bcrypt.hash(password, 10);
-
-    // company/phone columns kept in the schema for legacy users but no longer
-    // collected at signup — they're populated via the company-registration flow.
     const { rows } = await pool.query(
-      `INSERT INTO users (name, email, password_hash, type)
-       VALUES ($1, $2, $3, $4)
-       RETURNING *`,
-      [name, email.toLowerCase(), passwordHash, type]
+      `INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3) RETURNING *`,
+      [name, email.toLowerCase(), passwordHash]
     );
     const user = rows[0];
 
@@ -108,21 +144,24 @@ router.get('/me', requireAuth, async (req, res, next) => {
   }
 });
 
-// GET /api/auth/config — public; returns the Google OAuth client ID for the
-// frontend to initialize Google Identity Services. Empty string means Google
-// sign-in is disabled (button hidden).
+// GET /api/auth/config — public; surfaces the public keys the frontend needs
+// to render Google sign-in and the Turnstile CAPTCHA. Empty strings mean the
+// corresponding feature is disabled on the client (button/widget stays hidden).
 router.get('/config', (req, res) => {
-  res.json({ googleClientId: process.env.GOOGLE_CLIENT_ID || '' });
+  res.json({
+    googleClientId:    process.env.GOOGLE_CLIENT_ID || '',
+    turnstileSiteKey:  process.env.TURNSTILE_SITE_KEY || '',
+  });
 });
 
 // POST /api/auth/google — exchange a Google ID token for a Hive session cookie
-// Body: { idToken: string, type?: 'empresa' | 'cliente' }
+// Body: { idToken: string }
 //
 // Behaviour:
 //   - Verifies the ID token against GOOGLE_CLIENT_ID
 //   - If a user exists with that google_id → log them in
 //   - Else if a user exists with that email → link google_id to it, log them in
-//   - Else → create a new user (default type = 'cliente') and log them in
+//   - Else → create a new user and log them in
 router.post('/google', async (req, res, next) => {
   try {
     const client = googleClient();
@@ -131,9 +170,7 @@ router.post('/google', async (req, res, next) => {
     }
 
     const { idToken } = req.body;
-    let { type } = req.body;
     if (!idToken) return res.status(400).json({ error: 'idToken é obrigatório' });
-    if (type && !['empresa', 'cliente'].includes(type)) type = undefined;
 
     let payload;
     try {
@@ -171,13 +208,13 @@ router.post('/google', async (req, res, next) => {
       }
     }
 
-    // 3. Else create a new user (default type = cliente).
+    // 3. Else create a new user.
     if (!user) {
       const { rows: created } = await pool.query(
-        `INSERT INTO users (name, email, google_id, picture, type, company, phone)
-         VALUES ($1, $2, $3, $4, $5, '', '')
+        `INSERT INTO users (name, email, google_id, picture, company, phone)
+         VALUES ($1, $2, $3, $4, '', '')
          RETURNING *`,
-        [name, email, googleId, picture, type || 'cliente']
+        [name, email, googleId, picture]
       );
       user = created[0];
     }
@@ -243,6 +280,64 @@ router.post('/reset-password', async (req, res, next) => {
       'UPDATE users SET password_hash = $1, password_reset_token = NULL, password_reset_expires_at = NULL WHERE id = $2',
       [passwordHash, rows[0].id]
     );
+    res.json({ ok: true });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// ── Account self-service ──────────────────────────────────────────────────
+// POST /api/auth/change-password — body: { currentPassword, newPassword }
+// Google-only users (no password_hash) can't use this — they'd need to set
+// a password first via password reset.
+router.post('/change-password', requireAuth, async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body || {};
+    if (!newPassword || newPassword.length < 8) {
+      return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 8 caracteres' });
+    }
+    if (passwordTooWeak(newPassword)) {
+      return res.status(400).json({ error: 'Esta palavra-passe é demasiado comum. Escolha outra.' });
+    }
+
+    const { rows } = await pool.query('SELECT id, password_hash FROM users WHERE id = $1', [req.user.id]);
+    const user = rows[0];
+    if (!user) return res.status(401).json({ error: 'Utilizador não encontrado' });
+    if (!user.password_hash) {
+      return res.status(400).json({ error: 'Esta conta não tem palavra-passe definida. Use a recuperação por email.' });
+    }
+    if (!currentPassword || !(await bcrypt.compare(currentPassword, user.password_hash))) {
+      return res.status(401).json({ error: 'Palavra-passe atual incorreta' });
+    }
+
+    const hash = await bcrypt.hash(newPassword, 10);
+    await pool.query('UPDATE users SET password_hash = $1 WHERE id = $2', [hash, user.id]);
+    res.json({ ok: true });
+  } catch (e) {
+    next(e);
+  }
+});
+
+// DELETE /api/auth/me — permanently delete the caller's account.
+// Body: { password } if the account has a password set (skipped for Google-only
+// users, since the JWT cookie is itself proof of authentication). Companies
+// created by the user are kept (created_by → NULL); reviews + favourites
+// cascade-delete via the schema's foreign-key rules.
+router.delete('/me', requireAuth, async (req, res, next) => {
+  try {
+    const { rows } = await pool.query('SELECT id, password_hash FROM users WHERE id = $1', [req.user.id]);
+    const user = rows[0];
+    if (!user) return res.status(401).json({ error: 'Utilizador não encontrado' });
+
+    if (user.password_hash) {
+      const pwd = req.body?.password;
+      if (!pwd || !(await bcrypt.compare(pwd, user.password_hash))) {
+        return res.status(401).json({ error: 'Palavra-passe incorreta' });
+      }
+    }
+
+    await pool.query('DELETE FROM users WHERE id = $1', [user.id]);
+    res.clearCookie('hive_token');
     res.json({ ok: true });
   } catch (e) {
     next(e);

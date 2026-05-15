@@ -160,6 +160,13 @@ const api = {
   resetPassword(token, password) {
     return apiFetch('/auth/reset-password', { method: 'POST', body: { token, password } });
   },
+  // Account self-service
+  changePassword(currentPassword, newPassword) {
+    return apiFetch('/auth/change-password', { method: 'POST', body: { currentPassword, newPassword } });
+  },
+  deleteAccount(password) {
+    return apiFetch('/auth/me', { method: 'DELETE', body: { password } });
+  },
 
   // ── Favourites (per-user, server-persisted) ──────────────────────────────
   // All four require a valid session cookie; logged-out callers get 401.

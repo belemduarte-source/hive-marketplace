@@ -617,6 +617,13 @@
     .pwd-toggle:focus-visible{outline:2px solid var(--primary);outline-offset:1px}
     .caps-hint{font-size:11px;color:#b45309;background:#fef3c7;border:1px solid #fde68a;border-radius:6px;padding:4px 8px;margin-top:4px;display:inline-block}
     .caps-hint[hidden]{display:none !important}
+    .pwd-strength{margin-top:6px;display:flex;align-items:center;gap:8px}
+    .pwd-strength[hidden]{display:none !important}
+    .pwd-strength-bar{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden}
+    .pwd-strength-fill{height:100%;width:0;border-radius:2px;transition:width .2s ease,background-color .2s ease;background:#ef4444}
+    .pwd-strength-fill.medium{background:#f59e0b}
+    .pwd-strength-fill.strong{background:#16a34a}
+    .pwd-strength-label{font-size:11px;font-weight:700;color:var(--muted);min-width:48px;text-align:right}
     /* Inline form-field error state */
     .form-row input[aria-invalid="true"],.form-row select[aria-invalid="true"],.form-row textarea[aria-invalid="true"]{border-color:var(--red)!important;background:#fff5f5}
     .field-error{color:var(--red);font-size:11px;margin-top:4px;display:none}
@@ -3635,7 +3642,12 @@
           </div>
           <div class="caps-hint" id="regCapsHint" hidden data-i18n="capsLockOn">⚠️ Caps Lock está ativado</div>
           <div class="form-hint" id="regAuthPassHint" data-i18n="authPasswordHint">Mínimo 8 caracteres.</div>
+          <div class="pwd-strength" id="regPwdStrength" hidden>
+            <div class="pwd-strength-bar"><div class="pwd-strength-fill" id="regPwdStrengthFill"></div></div>
+            <div class="pwd-strength-label" id="regPwdStrengthLabel"></div>
+          </div>
         </div>
+        <div id="turnstileWidget" style="display:flex;justify-content:center;margin:8px 0 4px;min-height:0"></div>
         <button type="submit" class="btn-submit" id="registerSubmitBtn" style="width:100%;padding:11px;font-size:14px;margin-top:6px" data-i18n="authRegisterSubmit">Criar Conta</button>
       </form>
       <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)"><span data-i18n="authHasAccount">Já tem conta?</span> <button type="button" onclick="switchLoginTab('login')" style="background:none;border:0;color:var(--primary);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0" data-i18n="authTabLogin">Entrar</button></div>
@@ -4193,6 +4205,50 @@
         <div class="form-hint">Mínimo 8 caracteres.</div>
       </div>
       <button type="submit" class="btn-submit" id="resetSubmitBtn" style="width:100%;padding:11px;font-size:14px" data-i18n="resetSubmit">Definir palavra-passe</button>
+    </form>
+  </div>
+</div>
+
+<!-- ── CHANGE PASSWORD MODAL ────────────────────────────────────────── -->
+<div class="overlay" id="changePasswordOverlay" onclick="if(event.target===this)closeChangePassword()" role="dialog" aria-modal="true" aria-labelledby="changePwdTitle">
+  <div class="modal" style="width:420px">
+    <button class="modal-close" onclick="closeChangePassword()" aria-label="Fechar" style="position:absolute;top:14px;right:14px;background:none;border:0;font-size:22px;color:var(--muted);cursor:pointer">×</button>
+    <h2 id="changePwdTitle" style="font-size:20px;font-weight:800;margin:0 0 6px;color:var(--text)">Alterar palavra-passe</h2>
+    <p style="font-size:13px;color:var(--muted);margin:0 0 16px;line-height:1.5">Introduza a sua palavra-passe atual e depois a nova (mínimo 8 caracteres).</p>
+    <form id="changePwdForm" onsubmit="event.preventDefault();submitChangePassword()" novalidate>
+      <div class="form-row">
+        <label for="cpCurrent">Palavra-passe atual</label>
+        <input type="password" id="cpCurrent" autocomplete="current-password" required aria-required="true"/>
+      </div>
+      <div class="form-row">
+        <label for="cpNew">Nova palavra-passe</label>
+        <input type="password" id="cpNew" autocomplete="new-password" minlength="8" required aria-required="true"/>
+        <div class="form-hint">Mínimo 8 caracteres.</div>
+      </div>
+      <button type="submit" class="btn-submit" id="cpSubmitBtn" style="width:100%;padding:11px;font-size:14px">Alterar palavra-passe</button>
+    </form>
+  </div>
+</div>
+
+<!-- ── DELETE ACCOUNT MODAL ─────────────────────────────────────────── -->
+<div class="overlay" id="deleteAccountOverlay" onclick="if(event.target===this)closeDeleteAccount()" role="dialog" aria-modal="true" aria-labelledby="delAccTitle">
+  <div class="modal" style="width:440px">
+    <button class="modal-close" onclick="closeDeleteAccount()" aria-label="Fechar" style="position:absolute;top:14px;right:14px;background:none;border:0;font-size:22px;color:var(--muted);cursor:pointer">×</button>
+    <h2 id="delAccTitle" style="font-size:20px;font-weight:800;margin:0 0 6px;color:#b91c1c">Eliminar conta</h2>
+    <div style="background:#fef2f2;border:1px solid #fecaca;border-radius:10px;padding:12px 14px;margin-bottom:14px">
+      <p style="font-size:13px;color:#7f1d1d;margin:0;line-height:1.5">
+        Esta ação é <strong>permanente</strong>. As suas avaliações e favoritos serão removidos. As empresas que registou permanecem na plataforma, mas sem dono associado.
+      </p>
+    </div>
+    <form id="delAccForm" onsubmit="event.preventDefault();submitDeleteAccount()" novalidate>
+      <div class="form-row" id="delAccPwdRow">
+        <label for="delAccPwd">Confirme a palavra-passe</label>
+        <input type="password" id="delAccPwd" autocomplete="current-password" aria-required="true"/>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button type="button" class="btn-cancel" onclick="closeDeleteAccount()" style="flex:1;padding:11px;font-size:14px">Cancelar</button>
+        <button type="submit" class="btn-submit" id="delAccSubmitBtn" style="flex:1;padding:11px;font-size:14px;background:#dc2626">Eliminar definitivamente</button>
+      </div>
     </form>
   </div>
 </div>
@@ -10538,6 +10594,12 @@ function openLogin() {
   if (ov) { ov.classList.add('open'); switchLoginTab('login'); }
   // Re-render the Google button now the slot is visible
   if (typeof _renderGoogleButtons === 'function') _renderGoogleButtons();
+  // Focus the email input on a small delay so the modal-open transition
+  // doesn't fight the focus on mobile.
+  setTimeout(() => {
+    const el = document.getElementById('loginEmail');
+    if (el) try { el.focus(); } catch (_) {}
+  }, 60);
 }
 function closeLogin() {
   const ov = document.getElementById('loginOverlay');
@@ -10548,7 +10610,44 @@ function switchLoginTab(tab) {
   document.getElementById('authLogin').style.display = tab === 'login' ? 'block' : 'none';
   document.getElementById('authRegister').style.display = tab === 'register' ? 'block' : 'none';
   if (typeof _renderGoogleButtons === 'function') _renderGoogleButtons();
+  if (tab === 'register' && typeof _renderTurnstile === 'function') _renderTurnstile();
 }
+
+// Lightweight password-strength meter. Not a security gate (the backend
+// enforces length + the common-password blocklist) — purely UX feedback so
+// the user can see when their choice is weak.
+function _scorePassword(p) {
+  if (!p) return 0;
+  let s = 0;
+  if (p.length >= 8)  s++;
+  if (p.length >= 12) s++;
+  if (/[a-z]/.test(p) && /[A-Z]/.test(p)) s++;
+  if (/\d/.test(p))   s++;
+  if (/[^A-Za-z0-9]/.test(p)) s++;
+  return Math.min(s, 4); // 0..4
+}
+function _updateRegPwdStrength() {
+  const input = document.getElementById('regAuthPass');
+  const wrap  = document.getElementById('regPwdStrength');
+  const fill  = document.getElementById('regPwdStrengthFill');
+  const label = document.getElementById('regPwdStrengthLabel');
+  if (!input || !wrap || !fill || !label) return;
+  const v = input.value || '';
+  if (!v) { wrap.hidden = true; return; }
+  wrap.hidden = false;
+  const score = _scorePassword(v);
+  const pct = (score / 4) * 100;
+  fill.style.width = pct + '%';
+  fill.classList.remove('medium', 'strong');
+  let text = 'Fraca';
+  if (score >= 3) { fill.classList.add('strong'); text = 'Forte'; }
+  else if (score >= 2) { fill.classList.add('medium'); text = 'Média'; }
+  label.textContent = text;
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const input = document.getElementById('regAuthPass');
+  if (input) input.addEventListener('input', _updateRegPwdStrength);
+});
 
 // ── POST-REGISTER CHOICE ──────────────────────────────────────────────────
 // Shown to a brand-new user (after email or Google signup) so they can choose
@@ -10752,11 +10851,14 @@ async function doRegister() {
   const btn = document.getElementById('registerSubmitBtn');
   if (!name || !email || !pass) { showToast(t('toastFillRequired')); return; }
   if (pass.length < 8) { showToast(t('toastPasswordTooShort')); return; }
+  // Pull a Turnstile token if the widget is active; backend treats missing
+  // tokens as failures only when TURNSTILE_SECRET_KEY is configured.
+  const turnstileToken = (window.turnstile && _turnstileWidgetId != null)
+    ? (window.turnstile.getResponse(_turnstileWidgetId) || '')
+    : '';
   setBusy(btn, true);
   try {
-    // All new accounts start as 'cliente'. The user upgrades their account by
-    // registering a company afterwards via the post-register choice modal.
-    const { user } = await api.register({ name, email, password: pass, type: 'cliente' });
+    const { user } = await api.register({ name, email, password: pass, turnstileToken });
     localStorage.setItem('hive_user', JSON.stringify(user));
     isAdminMode = user.is_admin === true;
     closeLogin();
@@ -10783,18 +10885,20 @@ async function doLogout() {
   try { if (window.google && google.accounts && google.accounts.id) google.accounts.id.disableAutoSelect(); } catch(_) {}
 }
 
-// ── GOOGLE SIGN-IN ───────────────────────────────────────────────────────────
-// Loads the OAuth client ID from /api/auth/config, initializes Google Identity
-// Services, and renders the "Continue with Google" button into the login and
-// register panels. If GOOGLE_CLIENT_ID is unset on the backend, the buttons
-// stay hidden and the rest of the auth UI keeps working.
+// ── GOOGLE SIGN-IN + TURNSTILE CAPTCHA ───────────────────────────────────────
+// Loads public auth config (Google client ID, Turnstile site key) from
+// /api/auth/config, then initializes whichever features are enabled. Each
+// integration stays dormant when its key isn't set — buttons/widgets just
+// don't render and the rest of the auth UI keeps working.
 let _googleConfig = null;
 let _googleReady  = false;
+let _turnstileWidgetId = null;
 
-(async function _loadGoogleConfig() {
+(async function _loadAuthConfig() {
   try { _googleConfig = await api.getAuthConfig(); }
-  catch (_) { _googleConfig = { googleClientId: '' }; }
+  catch (_) { _googleConfig = { googleClientId: '', turnstileSiteKey: '' }; }
   _initGoogleSignIn();
+  _initTurnstile();
 })();
 
 function _initGoogleSignIn() {
@@ -10810,9 +10914,37 @@ function _initGoogleSignIn() {
     callback:  _onGoogleCredential,
     ux_mode:   'popup',
     auto_select: false,
+    // FedCM uses the browser's native account chooser, which is more reliable
+    // than the legacy popup on mobile Chrome/Safari.
+    use_fedcm_for_prompt: true,
+    use_fedcm_for_button: true,
   });
   _googleReady = true;
   _renderGoogleButtons();
+}
+
+// Cloudflare Turnstile — dormant unless turnstileSiteKey is exposed by the
+// backend. The widget renders into the register tab the first time the user
+// opens it; the token is read off the widget at submit time.
+function _initTurnstile() {
+  if (!_googleConfig || !_googleConfig.turnstileSiteKey) return;
+  if (document.querySelector('script[data-turnstile]')) return;
+  const s = document.createElement('script');
+  s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
+  s.async = true; s.defer = true;
+  s.dataset.turnstile = '1';
+  document.head.appendChild(s);
+}
+function _renderTurnstile() {
+  if (_turnstileWidgetId != null) return;
+  if (!_googleConfig || !_googleConfig.turnstileSiteKey) return;
+  if (typeof window.turnstile === 'undefined') { setTimeout(_renderTurnstile, 200); return; }
+  const slot = document.getElementById('turnstileWidget');
+  if (!slot) return;
+  _turnstileWidgetId = window.turnstile.render(slot, {
+    sitekey: _googleConfig.turnstileSiteKey,
+    theme: 'light',
+  });
 }
 
 function _renderGoogleButtons() {
@@ -11460,7 +11592,6 @@ function openProfilePanel() {
       <div class="profile-user-info">
         <div class="profile-user-name">${user.name}</div>
         <div class="profile-user-email">${user.email}</div>
-        <div style="font-size:11px;color:var(--muted);margin-top:2px">${user.type === 'empresa' ? '🏢 Empresa' : '🔍 Cliente'}</div>
       </div>
     </div>
 
@@ -11478,6 +11609,20 @@ function openProfilePanel() {
         <button onclick="closeProfilePanel();openRegister()" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;width:100%">Registar Empresa</button>
       </div>`}
     </div>
+
+    <div class="profile-account-section" style="margin-top:24px;padding-top:18px;border-top:1px solid var(--border)">
+      <div class="profile-section-title" style="margin:0 0 12px">Conta</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button type="button" onclick="openChangePassword()" class="profile-account-btn" style="display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;font-family:inherit;text-align:left;width:100%">
+          <span style="display:flex;align-items:center;gap:8px">🔑 <span>Alterar palavra-passe</span></span>
+          <span style="color:var(--muted)">›</span>
+        </button>
+        <button type="button" onclick="openDeleteAccount()" class="profile-account-btn" style="display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--bg);border:1px solid #fecaca;border-radius:10px;padding:12px 14px;font-size:13px;font-weight:600;color:#b91c1c;cursor:pointer;font-family:inherit;text-align:left;width:100%">
+          <span style="display:flex;align-items:center;gap:8px">🗑️ <span>Eliminar conta</span></span>
+          <span style="color:#fca5a5">›</span>
+        </button>
+      </div>
+    </div>
   `;
   document.getElementById('profilePanelOverlay').classList.add('open');
   refreshLucide();
@@ -11487,6 +11632,76 @@ function closeProfilePanel(e) {
   if (e && e.target && !e.target.classList.contains('profile-panel-overlay')) return;
   document.getElementById('profilePanelOverlay').classList.remove('open');
 }
+
+// ── ACCOUNT SELF-SERVICE ────────────────────────────────────────────────
+function openChangePassword() {
+  closeProfilePanel();
+  const ov = document.getElementById('changePasswordOverlay');
+  if (!ov) return;
+  document.getElementById('cpCurrent').value = '';
+  document.getElementById('cpNew').value = '';
+  ov.classList.add('open');
+  setTimeout(() => document.getElementById('cpCurrent').focus(), 30);
+}
+function closeChangePassword() {
+  document.getElementById('changePasswordOverlay').classList.remove('open');
+}
+async function submitChangePassword() {
+  const current = document.getElementById('cpCurrent').value;
+  const next    = document.getElementById('cpNew').value;
+  const btn     = document.getElementById('cpSubmitBtn');
+  if (!current || !next) { showToast(t('toastFillRequired')); return; }
+  if (next.length < 8)   { showToast(t('toastPasswordTooShort')); return; }
+  setBusy(btn, true);
+  try {
+    await api.changePassword(current, next);
+    closeChangePassword();
+    showToast('✅ Palavra-passe alterada.');
+  } catch (e) {
+    showToast(e.message || 'Não foi possível alterar a palavra-passe.');
+  } finally {
+    setBusy(btn, false);
+  }
+}
+
+function openDeleteAccount() {
+  closeProfilePanel();
+  const ov = document.getElementById('deleteAccountOverlay');
+  if (!ov) return;
+  const me = JSON.parse(localStorage.getItem('hive_user') || 'null');
+  // Google-only users (no password) skip the password confirmation.
+  const hasPwd = !(me && me.picture && !me.password_hash_known);
+  const pwdRow = document.getElementById('delAccPwdRow');
+  if (pwdRow) pwdRow.style.display = hasPwd ? '' : 'none';
+  document.getElementById('delAccPwd').value = '';
+  ov.classList.add('open');
+}
+function closeDeleteAccount() {
+  document.getElementById('deleteAccountOverlay').classList.remove('open');
+}
+async function submitDeleteAccount() {
+  const pwd = document.getElementById('delAccPwd').value;
+  const btn = document.getElementById('delAccSubmitBtn');
+  if (!confirm('Tem a certeza? Esta ação é permanente e não pode ser desfeita.')) return;
+  setBusy(btn, true);
+  try {
+    await api.deleteAccount(pwd);
+    localStorage.removeItem('hive_user');
+    closeDeleteAccount();
+    updateNavAuth();
+    showToast('Conta eliminada.');
+  } catch (e) {
+    showToast(e.message || 'Não foi possível eliminar a conta.');
+  } finally {
+    setBusy(btn, false);
+  }
+}
+window.openChangePassword = openChangePassword;
+window.closeChangePassword = closeChangePassword;
+window.submitChangePassword = submitChangePassword;
+window.openDeleteAccount = openDeleteAccount;
+window.closeDeleteAccount = closeDeleteAccount;
+window.submitDeleteAccount = submitDeleteAccount;
 
 // Open the register modal pre-filled for editing an existing company.
 // We fetch the full record FIRST, prefill the (still hidden) form, and

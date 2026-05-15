@@ -9,7 +9,6 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash                 TEXT,
   google_id                     TEXT UNIQUE,
   picture                       TEXT,
-  type                          TEXT NOT NULL CHECK (type IN ('empresa', 'cliente')),
   company                       TEXT DEFAULT '',
   phone                         TEXT DEFAULT '',
   is_admin                      BOOLEAN DEFAULT FALSE,
@@ -33,6 +32,10 @@ DROP INDEX IF EXISTS idx_users_email_verification_token;
 ALTER TABLE users DROP COLUMN IF EXISTS email_verified;
 ALTER TABLE users DROP COLUMN IF EXISTS email_verification_token;
 ALTER TABLE users DROP COLUMN IF EXISTS email_verification_expires_at;
+
+-- The empresa/cliente user distinction was vestigial (the company-registration
+-- flow is open to anyone, not tied to user type), so drop the column.
+ALTER TABLE users DROP COLUMN IF EXISTS type;
 
 CREATE TABLE IF NOT EXISTS companies (
   id          BIGSERIAL PRIMARY KEY,
