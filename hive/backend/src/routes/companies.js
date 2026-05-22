@@ -186,8 +186,10 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
   }
 });
 
-// POST /api/companies — public; anyone can submit a company (starts as pending, requires admin approval)
-router.post('/', async (req, res, next) => {
+// POST /api/companies — authenticated users submit a company; status defaults
+// to 'approved' so the listing is live immediately. The auth gate keeps
+// anonymous bots out (we still also rate-limit at the app level).
+router.post('/', requireAuth, async (req, res, next) => {
   try {
     const {
       name, sectors, sector, nif, cae, alvara, certidao_permanente,
@@ -265,7 +267,7 @@ router.post('/', async (req, res, next) => {
         emoji || '🏢',
         color || '#f97316',
         pin_type || 'std',
-        req.user?.id || null,   // null when submitted by a non-authenticated visitor
+        req.user.id,   // requireAuth guarantees req.user
       ]
     );
 
