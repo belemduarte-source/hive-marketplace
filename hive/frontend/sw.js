@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hive-v50';
+const CACHE_NAME = 'hive-v51';
 const HTML_FALLBACK = '/index.html';
 const ASSETS = [
   '/manifest.json',
@@ -29,12 +29,19 @@ self.addEventListener('activate', e => {
 });
 
 // Fetch: HTML and assets are both network-first with a cached fallback;
-// API requests bypass the SW entirely.
+// API requests bypass the SW entirely. Cross-origin requests (Unsplash images,
+// map tiles, CDN scripts, etc.) also bypass — the previous behaviour wrapped
+// every cross-origin GET, and on a flaky mobile network a transient fetch
+// failure would hard-fail the resource because opaque responses are never
+// cached, so the cache-fallback returned undefined. Letting the browser handle
+// these directly keeps images and tiles loading even on bad signal.
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
   if (e.request.url.includes('/api/')) return;
 
   const url = new URL(e.request.url);
+  if (url.origin !== self.location.origin) return;
+
   const isHtml = url.pathname === '/' || url.pathname.endsWith('.html') ||
                  e.request.mode === 'navigate';
 
