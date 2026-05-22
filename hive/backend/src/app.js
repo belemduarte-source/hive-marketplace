@@ -400,7 +400,7 @@ app.get('/api/admin/diagnostics', requireAdmin, async (req, res, next) => {
       node_env: process.env.NODE_ENV || 'unset',
       vercel_region: process.env.VERCEL_REGION || null,
       integrations: INTEGRATION_STATUS,
-      schema: { migrated: _migrated, sentinel_col: SENTINEL_COLUMN, sentinel_table: SENTINEL_TABLE },
+      schema: { migrated: _migrated },
       counts: {
         users: users.rows[0].c,
         companies: companies.rows[0],
