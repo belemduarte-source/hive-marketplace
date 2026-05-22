@@ -12,15 +12,17 @@
   <meta name="keywords" content="marketplace construção, empresas construção Portugal, orçamento construção, B2B construção, profissionais verificados, Hive"/>
   <meta name="author" content="Hive"/>
   <meta name="robots" content="index,follow"/>
-  <link rel="canonical" href="https://hive.pt/"/>
+  <link rel="canonical" href="https://hive-marketplace-three.vercel.app/"/>
 
   <!-- Open Graph -->
   <meta property="og:type" content="website"/>
   <meta property="og:site_name" content="Hive"/>
   <meta property="og:title" content="Hive – Marketplace B2B & B2C de Construção em Portugal"/>
   <meta property="og:description" content="Ligue-se aos melhores profissionais de construção em Portugal. Avaliações verificadas, contacto direto, sem intermediários."/>
-  <meta property="og:url" content="https://hive.pt/"/>
-  <meta property="og:image" content="https://hive.pt/icon-180.png"/>
+  <meta property="og:url" content="https://hive-marketplace-three.vercel.app/"/>
+  <meta property="og:image" content="https://hive-marketplace-three.vercel.app/icon-180.png"/>
+  <meta property="og:image:width" content="180"/>
+  <meta property="og:image:height" content="180"/>
   <meta property="og:locale" content="pt_PT"/>
   <meta property="og:locale:alternate" content="en_US"/>
   <meta property="og:locale:alternate" content="fr_FR"/>
@@ -31,7 +33,7 @@
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="Hive – Marketplace B2B & B2C de Construção em Portugal"/>
   <meta name="twitter:description" content="Ligue-se aos melhores profissionais de construção em Portugal. Avaliações verificadas, contacto direto."/>
-  <meta name="twitter:image" content="https://hive.pt/icon-180.png"/>
+  <meta name="twitter:image" content="https://hive-marketplace-three.vercel.app/icon-180.png"/>
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json"/>
@@ -75,8 +77,8 @@
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Hive",
-    "url": "https://hive.pt/",
-    "logo": "https://hive.pt/icon-180.png",
+    "url": "https://hive-marketplace-three.vercel.app/",
+    "logo": "https://hive-marketplace-three.vercel.app/icon-180.png",
     "description": "Marketplace português que liga empresas e particulares aos melhores profissionais de construção.",
     "areaServed": {
       "@type": "Country",
@@ -554,9 +556,10 @@
        ══════════════════════════════════════════════════════════════════════════ -->
   <div class="ad-banner-home">
     <div class="ad-banner" id="adBanner">
-      <video class="ad-video" id="adVideo" autoplay muted loop playsinline>
-        <source src="https://cdn.coverr.co/videos/coverr-typing-on-a-laptop-2531/1080p.mp4" type="video/mp4"/>
-      </video>
+      <!-- Hero ad-banner background. The original coverr.co source 404'd, so
+           the <video> is empty and the JS handler immediately swaps in the
+           gradient fallback. Swap a working .mp4 into <source> when ready. -->
+      <video class="ad-video" id="adVideo" autoplay muted loop playsinline></video>
       <div class="ad-fallback" id="adFallback"></div>
       <div class="ad-overlay">
         <div class="ad-slides" id="adSlides">

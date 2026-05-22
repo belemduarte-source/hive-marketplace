@@ -4,4 +4,4 @@ Disallow: /api/
 Disallow: /admin
 Disallow: /reset-password
 
-Sitemap: https://hive.pt/sitemap.xml
+Sitemap: https://hive-marketplace-three.vercel.app/sitemap.xml

@@ -44,6 +44,14 @@ const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
 
+// ── Trust the first proxy hop ────────────────────────────────────────────────
+// Vercel terminates TLS and forwards to the function via its edge. Without
+// this, req.ip resolves to the edge proxy and express-rate-limit keys every
+// request as if it came from the same IP — one bot exhausts the budget for
+// everyone, and v8 logs a noisy validation warning. Trusting exactly one hop
+// is the safe default behind Vercel.
+app.set('trust proxy', 1);
+
 // ── Security headers ──────────────────────────────────────────────────────────
 app.use(helmet({
   crossOriginResourcePolicy: { policy: 'cross-origin' },
