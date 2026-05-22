@@ -452,6 +452,13 @@
        ══════════════════════════════════════════════════════════════════════════ -->
   <div class="home-hero lp-hero">
 
+    <!-- Early-access banner: shown only when the catalog is small. Auto-hides
+         once enough companies have registered (handled in updateLandingStats). -->
+    <div id="lpEarlyAccessBanner" class="lp-early-access" hidden>
+      <span class="lp-early-access-emoji" aria-hidden="true">🚀</span>
+      <span data-i18n="lpEarlyAccessText">Marketplace em crescimento — registe a sua empresa e seja dos primeiros.</span>
+    </div>
+
     <h1 class="lp-hero-title" data-i18n-html="lpHeroTitle">
       Encontre os melhores<br>
       <span class="hero-accent">profissionais</span> de construção
@@ -2084,6 +2091,7 @@ const translations = {
     lpHeroLoginHint:'Já tem conta?', lpHeroLoginLink:'Entrar',
     lpHeroTitle:'Encontre os melhores<br><span class="hero-accent">profissionais</span> de construção',
     lpHeroSub:'Pesquise por localização e tipo de serviço. Compare avaliações e peça orçamentos — tudo numa só plataforma.',
+    lpEarlyAccessText:'Marketplace em crescimento — registe a sua empresa e seja dos primeiros.',
     lpTabLocation:'Por Localização', lpTabActivity:'Por Atividade',
     lpLocationLabel:'Localização', lpLocationPh:'Lisboa, Porto, Braga...',
     lpActivityLabel:'Área de Atividade / Serviço', lpSelectActivity:'Selecione uma atividade...',
@@ -2439,6 +2447,7 @@ const translations = {
     lpHeroLoginHint:'Already have an account?', lpHeroLoginLink:'Sign in',
     lpHeroTitle:'Find the best<br><span class="hero-accent">construction</span> professionals',
     lpHeroSub:'Search by location and service type. Compare reviews and request quotes — all on one platform.',
+    lpEarlyAccessText:'Early access — register your company and be among the first.',
     lpTabLocation:'By Location', lpTabActivity:'By Activity',
     lpLocationLabel:'Location', lpLocationPh:'Lisbon, Porto, Braga...',
     lpActivityLabel:'Activity Area / Service', lpSelectActivity:'Select an activity...',
@@ -2787,6 +2796,7 @@ const translations = {
     lpHeroLoginHint:'Vous avez déjà un compte ?', lpHeroLoginLink:'Connexion',
     lpHeroTitle:'Trouvez les meilleurs<br><span class="hero-accent">professionnels</span> du bâtiment',
     lpHeroSub:'Recherchez par lieu et type de service. Comparez les avis et demandez des devis — tout sur une seule plateforme.',
+    lpEarlyAccessText:"Accès anticipé — inscrivez votre entreprise et faites partie des premiers.",
     lpTabLocation:'Par Lieu', lpTabActivity:'Par Activité',
     lpLocationLabel:'Localisation', lpLocationPh:'Lisbonne, Porto, Braga...',
     lpActivityLabel:"Domaine d'Activité / Service", lpSelectActivity:'Sélectionnez une activité...',
@@ -3131,6 +3141,7 @@ const translations = {
     lpHeroLoginHint:'¿Ya tiene cuenta?', lpHeroLoginLink:'Entrar',
     lpHeroTitle:'Encuentre los mejores<br><span class="hero-accent">profesionales</span> de la construcción',
     lpHeroSub:'Busque por ubicación y tipo de servicio. Compare valoraciones y solicite presupuestos — todo en una sola plataforma.',
+    lpEarlyAccessText:'Acceso anticipado — registre su empresa y sea de los primeros.',
     lpTabLocation:'Por Ubicación', lpTabActivity:'Por Actividad',
     lpLocationLabel:'Ubicación', lpLocationPh:'Lisboa, Porto, Braga...',
     lpActivityLabel:'Área de Actividad / Servicio', lpSelectActivity:'Seleccione una actividad...',
@@ -3466,6 +3477,7 @@ const translations = {
     lpHeroLoginHint:'Schon ein Konto?', lpHeroLoginLink:'Anmelden',
     lpHeroTitle:'Die besten<br><span class="hero-accent">Baufachleute</span> finden',
     lpHeroSub:'Nach Standort und Leistungsart suchen. Bewertungen vergleichen und Angebote anfragen – alles auf einer Plattform.',
+    lpEarlyAccessText:'Early Access – registrieren Sie Ihr Unternehmen und gehören Sie zu den Ersten.',
     lpTabLocation:'Nach Standort', lpTabActivity:'Nach Tätigkeit',
     lpLocationLabel:'Standort', lpLocationPh:'Lissabon, Porto, Braga...',
     lpActivityLabel:'Tätigkeitsbereich / Leistung', lpSelectActivity:'Tätigkeit auswählen...',
@@ -4265,6 +4277,11 @@ function updateLandingStats() {
   // Empresas registadas — real count
   const elCompanies = document.getElementById('lpStatCompanies');
   if (elCompanies) elCompanies.textContent = companies.length;
+
+  // Early-access banner — shown while the catalog is still bootstrapping.
+  // 10 is a soft threshold; raise/lower without redeploying via a follow-up.
+  const banner = document.getElementById('lpEarlyAccessBanner');
+  if (banner) banner.hidden = companies.length > 10;
 
   // Áreas de atividade — count the top-level groups in SECTOR_HIERARCHY
   const elAreas = document.getElementById('lpStatAreas');

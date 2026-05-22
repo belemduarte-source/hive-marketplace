@@ -1169,6 +1169,9 @@
       .lp-hero-userCta-text{text-align:center;align-items:center}
       .lp-hero-userCta-btn{width:100%;justify-content:center}
     }
+    .lp-early-access{display:inline-flex;align-items:center;gap:8px;background:rgba(249,115,22,.16);border:1px solid rgba(249,115,22,.4);color:#fed7aa;border-radius:999px;padding:7px 16px;font-size:13px;font-weight:700;letter-spacing:.2px;margin-bottom:20px;position:relative;z-index:2;max-width:92vw;line-height:1.35}
+    .lp-early-access-emoji{font-size:14px}
+    @media (max-width:480px){.lp-early-access{font-size:11px;padding:6px 12px;gap:6px}}
     .lp-hero-cats-label{font-size:20px;color:#ffffff;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;position:relative;z-index:2}
     .lp-hero-cats{
       display:grid;
