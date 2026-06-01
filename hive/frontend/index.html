@@ -245,7 +245,7 @@
   </div>
 
   <!-- Hamburger — visible only on mobile -->
-  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Menu">
+  <button class="hamburger" id="hamburgerBtn" onclick="toggleMobileNav()" aria-label="Menu" aria-expanded="false" aria-controls="mobileNavDrawer">
     <span></span><span></span><span></span>
   </button>
 
@@ -471,15 +471,15 @@
 
       <!-- Toggle tabs -->
       <div class="lp-sb-tabs">
-        <button class="lp-sb-tab active" id="tabBtnLocation" onclick="heroSetMode('location')">
+        <button class="lp-sb-tab active" id="tabBtnLocation" onclick="heroSetMode('location')" aria-pressed="true">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <span data-i18n="lpTabLocation">Por Localização</span>
         </button>
-        <button class="lp-sb-tab" id="tabBtnActivity" onclick="heroSetMode('activity')">
+        <button class="lp-sb-tab" id="tabBtnActivity" onclick="heroSetMode('activity')" aria-pressed="false">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
           <span data-i18n="lpTabActivity">Por Atividade</span>
         </button>
-        <button class="lp-sb-tab" id="tabBtnCompany" onclick="heroSetMode('company')">
+        <button class="lp-sb-tab" id="tabBtnCompany" onclick="heroSetMode('company')" aria-pressed="false">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
           <span data-i18n="lpTabCompany">Por Empresa</span>
         </button>
@@ -747,7 +747,7 @@
       </div>
     </div>
     <div class="footer-bottom">
-      <p data-i18n="footerRights">© 2026 Hive — Todos os direitos reservados</p>
+      <p>© <span id="copyYear">2026</span> <span data-i18n="footerRights">Hive — Todos os direitos reservados</span></p>
     </div>
   </footer>
 
@@ -768,7 +768,7 @@
       <i data-lucide="search"></i><span data-i18n="btnSearch">Pesquisar</span>
     </button>
     <!-- Mobile-only Filtros button inside the search row -->
-    <button class="ub-filtros-btn" id="ubFiltrosBtn" onclick="toggleMobileFilter()">
+    <button class="ub-filtros-btn" id="ubFiltrosBtn" onclick="toggleMobileFilter()" aria-expanded="false">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></svg>
       <span data-i18n="filterTitle">Filtros</span>
     </button>
@@ -1020,7 +1020,7 @@
       </div>
     </div>
     <!-- Floating filter button — visible only on mobile (CSS hides it on desktop) -->
-    <button class="mobile-filter-btn" id="mobileFilterBtn" onclick="toggleMobileFilter()">
+    <button class="mobile-filter-btn" id="mobileFilterBtn" onclick="toggleMobileFilter()" aria-expanded="false">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></svg>
       <span data-i18n="filterTitle">Filtros</span>
     </button>
@@ -2239,7 +2239,8 @@ const translations = {
     footerTerms:'Termos de Serviço',
     footerPrivacy:'Política de Privacidade',
     footerCookies:'Cookies',
-    footerRights:'© 2026 Hive — Todos os direitos reservados',
+    footerRights:'Hive — Todos os direitos reservados',
+    factSince:'Desde', factHours:'Horário', factVerified:'Verificada', factYear:'ano', factYears:'anos',
     review1Author:'TechCorp Lda.',
     review2Author:'Ibérica Solutions SA',
     logoTagline:'Profissionais de Construção em Portugal',
@@ -2585,7 +2586,8 @@ const translations = {
     footerTerms:'Terms of Service',
     footerPrivacy:'Privacy Policy',
     footerCookies:'Cookies',
-    footerRights:'© 2026 Hive — All rights reserved',
+    footerRights:'Hive — All rights reserved',
+    factSince:'Since', factHours:'Hours', factVerified:'Verified', factYear:'year', factYears:'years',
     review1Author:'TechCorp Ltd.',
     review2Author:'Ibérica Solutions SA',
     logoTagline:'Construction Professionals in Portugal',
@@ -2934,7 +2936,8 @@ const translations = {
     footerTerms:'Conditions de Service',
     footerPrivacy:'Politique de Confidentialité',
     footerCookies:'Cookies',
-    footerRights:'© 2026 Hive — Tous droits réservés',
+    footerRights:'Hive — Tous droits réservés',
+    factSince:'Depuis', factHours:'Horaires', factVerified:'Vérifiée', factYear:'an', factYears:'ans',
     review1Author:'TechCorp Sarl',
     review2Author:'Ibérica Solutions SA',
     logoTagline:'Professionnels du Bâtiment au Portugal',
@@ -3278,7 +3281,14 @@ const translations = {
     footerTerms:'Términos de Servicio',
     footerPrivacy:'Política de Privacidad',
     footerCookies:'Cookies',
-    footerRights:'© 2026 Hive — Todos los derechos reservados',
+    footerRights:'Hive — Todos los derechos reservados',
+    factSince:'Desde', factHours:'Horario', factVerified:'Verificada', factYear:'año', factYears:'años',
+    importOSM:'Importar Empresas OSM',
+    successTitle:'¡Solicitud Enviada!',
+    successSub:'Su solicitud ha sido recibida y está a la espera de validación. Recibirá un correo de confirmación cuando la empresa sea aprobada.',
+    successClose:'Cerrar',
+    regStep1Label:'Identidad', regStep2Label:'Ubicación', regStep3Label:'Detalles',
+    regStepNext:'Siguiente', regStepBack:'Atrás',
     review1Author:'TechCorp SL',
     review2Author:'Ibérica Solutions SA',
     logoTagline:'Profesionales de Construcción en Portugal',
@@ -3614,7 +3624,8 @@ const translations = {
     footerTerms:'Nutzungsbedingungen',
     footerPrivacy:'Datenschutzerklärung',
     footerCookies:'Cookies',
-    footerRights:'© 2026 Hive – Alle Rechte vorbehalten',
+    footerRights:'Hive – Alle Rechte vorbehalten',
+    factSince:'Seit', factHours:'Öffnungszeiten', factVerified:'Verifiziert', factYear:'Jahr', factYears:'Jahre',
     review1Author:'TechCorp GmbH',
     review2Author:'Ibérica Solutions SA',
     logoTagline:'Baufachleute in Portugal',
@@ -3775,19 +3786,27 @@ function heroSetMode(mode) {
   tabLoc.classList.remove('active');
   tabAct.classList.remove('active');
   if (tabComp) tabComp.classList.remove('active');
+  tabLoc.setAttribute('aria-pressed', 'false');
+  tabAct.setAttribute('aria-pressed', 'false');
+  if (tabComp) tabComp.setAttribute('aria-pressed', 'false');
   field.classList.remove('open');
 
   if (mode === 'location') {
     locWrap.style.display = 'flex';
     tabLoc.classList.add('active');
+    tabLoc.setAttribute('aria-pressed', 'true');
     setTimeout(() => document.getElementById('heroLocation')?.focus(), 50);
   } else if (mode === 'activity') {
     actWrap.style.display = 'flex';
     tabAct.classList.add('active');
+    tabAct.setAttribute('aria-pressed', 'true');
     setTimeout(() => field.classList.add('open'), 80);
   } else if (mode === 'company') {
     if (compWrap) compWrap.style.display = 'flex';
-    if (tabComp) tabComp.classList.add('active');
+    if (tabComp) {
+      tabComp.classList.add('active');
+      tabComp.setAttribute('aria-pressed', 'true');
+    }
     setTimeout(() => document.getElementById('heroCompanyName')?.focus(), 50);
   }
 }
@@ -7580,13 +7599,14 @@ function _renderDetailPanel(c) {
     const items = [];
     if (c.founded_year) {
       const yrs = new Date().getFullYear() - Number(c.founded_year);
-      items.push(`<span class="dp-fact"><span class="dp-fact-icon">📅</span><span class="dp-fact-label">Desde</span><span class="dp-fact-value">${c.founded_year}${yrs > 0 ? ` · ${yrs} ano${yrs===1?'':'s'}` : ''}</span></span>`);
+      const yrLabel = yrs === 1 ? t('factYear') : t('factYears');
+      items.push(`<span class="dp-fact"><span class="dp-fact-icon">📅</span><span class="dp-fact-label">${t('factSince')}</span><span class="dp-fact-value">${c.founded_year}${yrs > 0 ? ` · ${yrs} ${yrLabel}` : ''}</span></span>`);
     }
     if (c.business_hours) {
-      items.push(`<span class="dp-fact"><span class="dp-fact-icon">🕒</span><span class="dp-fact-label">Horário</span><span class="dp-fact-value">${escHtml(c.business_hours)}</span></span>`);
+      items.push(`<span class="dp-fact"><span class="dp-fact-icon">🕒</span><span class="dp-fact-label">${t('factHours')}</span><span class="dp-fact-value">${escHtml(c.business_hours)}</span></span>`);
     }
     if (c.verified) {
-      items.push(`<span class="dp-fact" title="${escHtml(t('verifiedTooltip') || '')}"><span class="dp-fact-icon" style="color:#16a34a">✓</span><span class="dp-fact-value" style="color:#166534">Verificada</span></span>`);
+      items.push(`<span class="dp-fact" title="${escHtml(t('verifiedTooltip') || '')}"><span class="dp-fact-icon" style="color:#16a34a">✓</span><span class="dp-fact-value" style="color:#166534">${t('factVerified')}</span></span>`);
     }
     if (items.length) {
       facts.innerHTML = items.join('');
@@ -8768,6 +8788,7 @@ try {
   // first paint.
   try { setTimeout(syncFavouritesFromServer, 50); } catch(_) {}
   try { applyI18n(); } catch(e) { console.warn('Init skip: applyI18n', e); }
+  try { const _yr = document.getElementById('copyYear'); if (_yr) _yr.textContent = new Date().getFullYear(); } catch(_) {}
   if (typeof lucide !== 'undefined') { try { lucide.createIcons(); } catch(e) { console.warn('Init skip: lucide', e); } }
 } catch(e) { console.error('Init error:', e); }
 
@@ -8913,9 +8934,9 @@ function toggleMobileFilter() {
     closeMobileFilter();
   } else {
     sidebar.classList.add('mobile-open');
-    if (btn)      btn.classList.add('active');
+    if (btn)      { btn.classList.add('active'); btn.setAttribute('aria-expanded', 'true'); }
     const ubBtn = document.getElementById('ubFiltrosBtn');
-    if (ubBtn)    ubBtn.classList.add('active');
+    if (ubBtn)    { ubBtn.classList.add('active'); ubBtn.setAttribute('aria-expanded', 'true'); }
     if (backdrop) backdrop.classList.add('visible');
     // Resize map after drawer animation so tiles fill correctly
     if (typeof map !== 'undefined' && map) {
@@ -8929,9 +8950,9 @@ function closeMobileFilter() {
   const btn      = document.getElementById('mobileFilterBtn');
   const backdrop = document.getElementById('filterBackdrop');
   if (sidebar)  sidebar.classList.remove('mobile-open');
-  if (btn)      btn.classList.remove('active');
+  if (btn)      { btn.classList.remove('active'); btn.setAttribute('aria-expanded', 'false'); }
   const ubBtn = document.getElementById('ubFiltrosBtn');
-  if (ubBtn)    ubBtn.classList.remove('active');
+  if (ubBtn)    { ubBtn.classList.remove('active'); ubBtn.setAttribute('aria-expanded', 'false'); }
   if (backdrop) backdrop.classList.remove('visible');
   if (typeof map !== 'undefined' && map) {
     setTimeout(() => map.invalidateSize({ animate: false }), 360);
@@ -9079,7 +9100,10 @@ function toggleMobileNav() {
   const btn = document.getElementById('hamburgerBtn');
   if (!drawer) return;
   const open = drawer.classList.toggle('open');
-  if (btn) btn.classList.toggle('open', open);
+  if (btn) {
+    btn.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', String(open));
+  }
 }
 function closeMobileNav(e) {
   if (e && e.target !== document.querySelector('.mobile-nav-backdrop') && !e.target.closest('.mobile-nav-backdrop')) return;
@@ -9089,7 +9113,10 @@ function closeMobileNavPanel() {
   const drawer = document.getElementById('mobileNavDrawer');
   const btn = document.getElementById('hamburgerBtn');
   if (drawer) drawer.classList.remove('open');
-  if (btn) btn.classList.remove('open');
+  if (btn) {
+    btn.classList.remove('open');
+    btn.setAttribute('aria-expanded', 'false');
+  }
 }
 // Sync mobile nav active state with tab switches
 const _origShowTab = showTab;
