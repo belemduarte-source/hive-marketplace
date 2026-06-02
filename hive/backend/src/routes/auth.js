@@ -66,12 +66,16 @@ function passwordTooWeak(p) {
 
 // Cloudflare Turnstile verification — no-op when TURNSTILE_SECRET_KEY isn't
 // set, so the feature stays dormant until you configure it in Vercel.
+// Strip BOM/zero-width and surrounding whitespace from the secret — pasted
+// values often pick up a U+FEFF and Cloudflare returns success:false silently.
 async function verifyTurnstile(token, ip) {
-  if (!process.env.TURNSTILE_SECRET_KEY) return true;
+  const cleanEnv = (v) => (v == null ? '' : String(v)).replace(/^[﻿​\s]+|[﻿​\s]+$/g, '');
+  const secret = cleanEnv(process.env.TURNSTILE_SECRET_KEY);
+  if (!secret) return true;
   if (!token) return false;
   try {
     const params = new URLSearchParams({
-      secret: process.env.TURNSTILE_SECRET_KEY,
+      secret,
       response: String(token),
     });
     if (ip) params.append('remoteip', ip);
