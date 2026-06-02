@@ -8514,6 +8514,12 @@ async function doLogin() {
     if (selectedId) openDetail(selectedId);
     document.getElementById('loginEmail').value = '';
     document.getElementById('loginPass').value = '';
+    // Resume company-registration flow if the user arrived at login from
+    // the "Registar Empresa" CTA.
+    if (window._pendingCompanyRegister) {
+      window._pendingCompanyRegister = false;
+      setTimeout(() => openRegister(), 150);
+    }
   } catch(e) {
     // 429 from the auth rate-limiter has its own message; surface it.
     if (e.status === 429) {
@@ -8554,6 +8560,9 @@ async function doRegister() {
     document.getElementById('regAuthName').value = '';
     document.getElementById('regAuthEmail').value = '';
     document.getElementById('regAuthPass').value = '';
+    // Clear any pending-company-register flag — the post-register choice
+    // covers the "advertise" path explicitly.
+    window._pendingCompanyRegister = false;
     openPostRegisterChoice(user.name || name);
   } catch(e) {
     // Map server-side validation errors to the most relevant field. Anything
@@ -8680,6 +8689,12 @@ async function _onGoogleCredential(response) {
     } else {
       showToast(t('toastWelcomeUser').replace('{name}', user.name));
       if (selectedId) openDetail(selectedId);
+    }
+    // Resume company-registration flow if the user arrived at login from
+    // the "Registar Empresa" CTA (works for both register and login tabs).
+    if (window._pendingCompanyRegister) {
+      window._pendingCompanyRegister = false;
+      if (!fromRegisterTab) setTimeout(() => openRegister(), 150);
     }
   } catch (e) {
     showToast(e.message || t('toastGoogleFailed'));
@@ -9253,6 +9268,20 @@ function regNextStep(fromStep) {
 // Reset step state and editing flag when opening or closing the register modal
 const _origOpenRegister = openRegister;
 openRegister = function() {
+  // Gate company registration behind login — backend already requires auth
+  // (POST /api/companies returns 401), but blocking here avoids the user
+  // filling out a multi-step form just to fail on submit. Sets a pending
+  // flag so a successful login auto-resumes the flow.
+  const _user = JSON.parse(localStorage.getItem('hive_user') || 'null');
+  if (!_user) {
+    if (typeof showToast === 'function') {
+      showToast('Inicie sessão para registar a sua empresa.');
+    }
+    window._pendingCompanyRegister = true;
+    if (typeof openLogin === 'function') openLogin();
+    return;
+  }
+
   window._editingCompanyId = null;
   // Restore submit button label
   setTimeout(() => {
