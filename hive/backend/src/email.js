@@ -2,14 +2,21 @@ const nodemailer = require('nodemailer');
 
 // Build a transporter lazily so missing env vars don't crash startup
 function createTransporter() {
-  const { SMTP_HOST, SMTP_PORT, SMTP_USER, SMTP_PASS } = process.env;
-  if (!SMTP_USER || !SMTP_PASS) return null;
+  // Strip BOM/zero-width chars and surrounding whitespace — common when env values
+  // are pasted from docs or copied through tools that prefix a U+FEFF marker.
+  const clean = (v) => (v == null ? '' : String(v)).replace(/^[﻿​\s]+|[﻿​\s]+$/g, '');
+  const host = clean(process.env.SMTP_HOST) || 'smtp.gmail.com';
+  const portStr = clean(process.env.SMTP_PORT) || '465';
+  const user = clean(process.env.SMTP_USER);
+  const pass = clean(process.env.SMTP_PASS);
+  if (!user || !pass) return null;
 
+  const port = parseInt(portStr, 10);
   return nodemailer.createTransport({
-    host:   SMTP_HOST  || 'smtp.gmail.com',
-    port:   parseInt(SMTP_PORT || '465', 10),
-    secure: parseInt(SMTP_PORT || '465', 10) === 465,
-    auth: { user: SMTP_USER, pass: SMTP_PASS },
+    host,
+    port,
+    secure: port === 465,
+    auth: { user, pass },
   });
 }
 

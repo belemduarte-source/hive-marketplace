@@ -267,9 +267,9 @@ router.post('/forgot-password', async (req, res, next) => {
 
     const appUrl = (process.env.APP_URL || '').replace(/\/$/, '');
     const resetUrl = `${appUrl}/#reset-password/${token}`;
-    sendPasswordResetEmail(user, resetUrl).catch(err =>
-      console.error('[email] password reset failed:', err.message)
-    );
+    sendPasswordResetEmail(user, resetUrl)
+      .then(() => console.log('[email] password reset sent to', user.email))
+      .catch(err => console.error('[email] password reset failed:', err && (err.stack || err.message || err)));
 
     res.json(generic);
   } catch (e) {
