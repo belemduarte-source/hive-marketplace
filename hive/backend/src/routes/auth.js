@@ -32,6 +32,31 @@ function signToken(user) {
   );
 }
 
+// First-admin bootstrap: any user whose email is listed in the ADMIN_USERS
+// env var (comma-separated) is promoted to is_admin=true on next login. Lets
+// you grant admin without manual SQL. Returns the user (possibly with the
+// flag flipped) so the caller can sign a token reflecting the new state.
+async function maybeBootstrapAdmin(user) {
+  if (!user || user.is_admin) return user;
+  const list = (process.env.ADMIN_USERS || '')
+    .split(',')
+    .map(s => s.trim().toLowerCase())
+    .filter(Boolean);
+  if (list.length === 0) return user;
+  if (!list.includes(String(user.email || '').toLowerCase())) return user;
+  try {
+    const { rows } = await pool.query(
+      'UPDATE users SET is_admin = TRUE WHERE id = $1 RETURNING *',
+      [user.id]
+    );
+    console.log('[auth] promoted to admin via ADMIN_USERS:', user.email);
+    return rows[0] || user;
+  } catch (e) {
+    console.error('[auth] admin bootstrap failed for', user.email, e.message);
+    return user;
+  }
+}
+
 function safeUser(user) {
   return {
     id: user.id, name: user.name, email: user.email,
@@ -137,9 +162,10 @@ router.post('/login', async (req, res, next) => {
     const match = await bcrypt.compare(password, rows[0].password_hash);
     if (!match) return res.status(401).json({ error: 'Email ou palavra-passe incorretos' });
 
-    const token = signToken(rows[0]);
+    const user = await maybeBootstrapAdmin(rows[0]);
+    const token = signToken(user);
     res.cookie('hive_token', token, COOKIE_OPTS);
-    res.json({ user: safeUser(rows[0]) });
+    res.json({ user: safeUser(user) });
   } catch (e) {
     next(e);
   }
@@ -237,6 +263,7 @@ router.post('/google', async (req, res, next) => {
       user = created[0];
     }
 
+    user = await maybeBootstrapAdmin(user);
     const token = signToken(user);
     res.cookie('hive_token', token, COOKIE_OPTS);
     res.json({ user: safeUser(user) });
