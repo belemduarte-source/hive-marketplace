@@ -118,10 +118,13 @@ router.get('/:id/approve', async (req, res, next) => {
       return res.status(404).send(htmlPage('❌ Não encontrada', 'Empresa não encontrada na base de dados.', '#dc2626'));
     }
 
-    // Send confirmation email to the company (fire-and-forget)
-    sendCompanyApprovalEmail(rows[0]).catch(err =>
-      console.error('[email] Failed to send approval email to company:', err.message)
-    );
+    // Await so the email actually sends before the lambda is paused.
+    try {
+      await sendCompanyApprovalEmail(rows[0]);
+      console.log('[email] approval email sent to company', rows[0].id, rows[0].email);
+    } catch (err) {
+      console.error('[email] Failed to send approval email to company:', err && (err.stack || err.message || err));
+    }
 
     res.send(htmlPage(
       '✅ Empresa aprovada!',
@@ -150,10 +153,13 @@ router.get('/:id/reject', async (req, res, next) => {
       return res.status(404).send(htmlPage('❌ Não encontrada', 'Empresa não encontrada na base de dados.', '#dc2626'));
     }
 
-    // Optionally notify the company (fire-and-forget)
-    sendCompanyRejectionEmail(rows[0]).catch(err =>
-      console.error('[email] Failed to send rejection email to company:', err.message)
-    );
+    // Await so the email actually sends before the lambda is paused.
+    try {
+      await sendCompanyRejectionEmail(rows[0]);
+      console.log('[email] rejection email sent to company', rows[0].id, rows[0].email);
+    } catch (err) {
+      console.error('[email] Failed to send rejection email to company:', err && (err.stack || err.message || err));
+    }
 
     res.send(htmlPage(
       '🚫 Empresa rejeitada',
@@ -271,10 +277,14 @@ router.post('/', requireAuth, async (req, res, next) => {
       ]
     );
 
-    // Fire-and-forget admin notification with approve/reject links
-    sendRegistrationNotification(rows[0]).catch(err =>
-      console.error('[email] Failed to send registration notification:', err.message)
-    );
+    // Await before responding so the lambda doesn't freeze mid-send.
+    // (Vercel functions can be paused after res is flushed.)
+    try {
+      await sendRegistrationNotification(rows[0]);
+      console.log('[email] registration notification sent for company', rows[0].id, rows[0].name);
+    } catch (err) {
+      console.error('[email] Failed to send registration notification:', err && (err.stack || err.message || err));
+    }
 
     res.status(201).json(rows[0]);
   } catch (e) {
@@ -364,9 +374,13 @@ router.post('/:id/contact', requireAuth, async (req, res, next) => {
     if (!rows[0].email) return res.status(422).json({ error: 'Esta empresa não tem email configurado' });
 
     const sender = { name: req.user.name, email: req.user.email };
-    sendContactEmail(rows[0], sender, message.trim()).catch(err =>
-      console.error('[email] Contact relay failed:', err.message)
-    );
+    // Await so the email actually sends before the lambda is paused.
+    try {
+      await sendContactEmail(rows[0], sender, message.trim());
+      console.log('[email] contact relay sent to company', rows[0].id);
+    } catch (err) {
+      console.error('[email] Contact relay failed:', err && (err.stack || err.message || err));
+    }
 
     // Track as contact event
     pool.query(
