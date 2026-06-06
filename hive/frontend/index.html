@@ -118,7 +118,7 @@
         <div style="display:flex;align-items:center;gap:14px">
 
         <!-- Icon Mark — honeycomb: 7 hex cells, breathing animation -->
-        <svg id="logoHexSvg" width="100" height="100" viewBox="0 0 64 64" style="flex-shrink:0;filter:drop-shadow(0 2px 32px rgba(234,88,12,.6))">
+        <svg id="logoHexSvg" width="140" height="140" viewBox="0 0 64 64" style="flex-shrink:0;filter:drop-shadow(0 2px 32px rgba(234,88,12,.6))">
           <defs>
             <linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#0e1f3a"/>
@@ -6023,7 +6023,7 @@ function renderSectorFilters() {
   allBtn.className = 'cat-item cat-item-master' + (_allSelected ? ' active' : '');
   allBtn.title = _allSelected ? t('sectorAllDeselectAll') : t('sectorAllSelectAll');
   allBtn.innerHTML = `
-    <span class="cat-icon" style="font-size:26px;line-height:1">${_allSelected ? '✓' : '☰'}</span>
+    <span class="cat-icon" style="font-size:36px;line-height:1">${_allSelected ? '✓' : '☰'}</span>
     <span class="cat-label">${t('sectorAllLabel')}</span>
   `;
   allBtn.addEventListener('click', (e) => {
@@ -6091,7 +6091,7 @@ function renderSectorFilters() {
     const emoji = sectorEmojis[groupKey] || '📦';
 
     catItem.innerHTML = `
-      <span class="cat-icon" style="font-size:26px;line-height:1">${emoji}</span>
+      <span class="cat-icon" style="font-size:36px;line-height:1">${emoji}</span>
       <span class="cat-label">${shortName}</span>
       <span class="cat-arrow">▾</span>
       ${dropdownHTML}
