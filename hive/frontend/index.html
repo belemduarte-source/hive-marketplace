@@ -882,7 +882,7 @@
     <!-- filters (always accessible — sector selection shows companies on the map) -->
     <div id="filtersLayer2">
 
-    <!-- SORT -->
+    <!-- SORT + FEATURED (combined) -->
     <div class="filter-section">
       <div class="filter-section-title"><i data-lucide="arrow-up-down"></i><span data-i18n="sortBy">Ordenar Por</span></div>
       <div class="sort-opt">
@@ -900,6 +900,23 @@
       <div class="sort-opt">
         <input type="radio" name="sort" id="sortName" value="name" onchange="applyFilters()">
         <label for="sortName" data-i18n="sortName">Nome A–Z</label>
+      </div>
+      <!-- Featured subsection — kept in the same filter-section as Sort By
+           so the two related controls live together visually. -->
+      <div class="filter-subsection-title" style="display:flex;align-items:center;gap:4px;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06);font-size:11px;font-weight:700;color:#cbd5e1;text-transform:uppercase;letter-spacing:.04em">
+        <i data-lucide="award" style="width:11px;height:11px"></i><span data-i18n="featured">Destaque</span>
+      </div>
+      <div class="filter-opt">
+        <input type="checkbox" id="filterTopRated" onchange="applyFilters()"/>
+        <label for="filterTopRated" data-i18n="topRated">Top Rated</label>
+      </div>
+      <div class="filter-opt">
+        <input type="checkbox" id="filterVerified" onchange="applyFilters()"/>
+        <label for="filterVerified" data-i18n="verified">Verificado</label>
+      </div>
+      <div class="filter-opt">
+        <input type="checkbox" id="filterNew" onchange="applyFilters()"/>
+        <label for="filterNew" data-i18n="newEntry">🆕 Novo Registo</label>
       </div>
     </div>
 
@@ -930,14 +947,6 @@
         <input type="radio" name="minRating" id="rating30" value="3.0" onchange="applyFilters()"/>
         <label for="rating30"><span class="rating-stars-f">★★★☆☆</span> 3.0 <span data-i18n="ratingOrMore">ou mais</span></label>
       </div>
-      <div class="filter-opt">
-        <input type="radio" name="minRating" id="rating20" value="2.0" onchange="applyFilters()"/>
-        <label for="rating20"><span class="rating-stars-f">★★☆☆☆</span> 2.0 <span data-i18n="ratingOrMore">ou mais</span></label>
-      </div>
-      <div class="filter-opt">
-        <input type="radio" name="minRating" id="rating10" value="1.0" onchange="applyFilters()"/>
-        <label for="rating10"><span class="rating-stars-f">★☆☆☆☆</span> 1.0 <span data-i18n="ratingOrMore">ou mais</span></label>
-      </div>
     </div>
 
     <!-- RADIUS -->
@@ -956,22 +965,7 @@
       </div>
     </div>
 
-    <!-- STATUS -->
-    <div class="filter-section">
-      <div class="filter-section-title"><i data-lucide="award"></i><span data-i18n="featured">Destaque</span></div>
-      <div class="filter-opt">
-        <input type="checkbox" id="filterTopRated" onchange="applyFilters()"/>
-        <label for="filterTopRated" data-i18n="topRated">Top Rated</label>
-      </div>
-      <div class="filter-opt">
-        <input type="checkbox" id="filterVerified" onchange="applyFilters()"/>
-        <label for="filterVerified" data-i18n="verified">Verificado</label>
-      </div>
-      <div class="filter-opt">
-        <input type="checkbox" id="filterNew" onchange="applyFilters()"/>
-        <label for="filterNew" data-i18n="newEntry">🆕 Novo Registo</label>
-      </div>
-    </div>
+    <!-- (Featured/Destaque has been merged into the Sort By section above) -->
 
     <!-- TAGS (hidden) -->
     <div class="tags-section" style="display:none">
@@ -6029,7 +6023,7 @@ function renderSectorFilters() {
   allBtn.className = 'cat-item cat-item-master' + (_allSelected ? ' active' : '');
   allBtn.title = _allSelected ? t('sectorAllDeselectAll') : t('sectorAllSelectAll');
   allBtn.innerHTML = `
-    <span class="cat-icon" style="font-size:18px;line-height:1">${_allSelected ? '✓' : '☰'}</span>
+    <span class="cat-icon" style="font-size:26px;line-height:1">${_allSelected ? '✓' : '☰'}</span>
     <span class="cat-label">${t('sectorAllLabel')}</span>
   `;
   allBtn.addEventListener('click', (e) => {
@@ -6097,7 +6091,7 @@ function renderSectorFilters() {
     const emoji = sectorEmojis[groupKey] || '📦';
 
     catItem.innerHTML = `
-      <span class="cat-icon" style="font-size:18px;line-height:1">${emoji}</span>
+      <span class="cat-icon" style="font-size:26px;line-height:1">${emoji}</span>
       <span class="cat-label">${shortName}</span>
       <span class="cat-arrow">▾</span>
       ${dropdownHTML}
