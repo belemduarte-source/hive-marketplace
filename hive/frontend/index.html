@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v51.css"/>
+  <link rel="stylesheet" href="app.v52.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -6303,7 +6303,7 @@ function renderSectorFilters() {
   allBtn.className = 'cat-item cat-item-master' + (_allSelected ? ' active' : '');
   allBtn.title = _allSelected ? t('sectorAllDeselectAll') : t('sectorAllSelectAll');
   allBtn.innerHTML = `
-    <span class="cat-icon" style="font-size:36px;line-height:1">${_allSelected ? '✓' : '☰'}</span>
+    ${_allSelected ? '<span class="cat-icon" style="font-size:34px;line-height:1">✓</span>' : ''}
     <span class="cat-label">${t('sectorAllLabel')}</span>
   `;
   allBtn.addEventListener('click', (e) => {
@@ -6371,7 +6371,7 @@ function renderSectorFilters() {
     const emoji = sectorEmojis[groupKey] || '📦';
 
     catItem.innerHTML = `
-      <span class="cat-icon" style="font-size:36px;line-height:1">${emoji}</span>
+      <span class="cat-icon" style="font-size:48px;line-height:1">${emoji}</span>
       <span class="cat-label">${shortName}</span>
       <span class="cat-arrow">▾</span>
       ${dropdownHTML}
@@ -11579,6 +11579,33 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
       keepalive: true
     }).catch(function(){});
   }catch(_){}
+})();
+</script>
+
+<!-- Auto-fit: scale the top nav to the viewport so the whole header fits any
+     screen without the user having to zoom. The nav is designed for large
+     monitors; on smaller desktops we scale it down smoothly (floor kept high so
+     the top buttons stay large). Mobile/tablet (≤1024px) keep their own CSS
+     layout and are left at zoom 1. The map content is never zoomed (it would
+     break Leaflet tiles). -->
+<script>
+(function(){
+  var BASE = 1600;   // width at which the nav looks ideal at zoom 1
+  var FLOOR = 0.80;  // never shrink below this — keeps top buttons big/legible
+  function fitToScreen(){
+    var nav = document.querySelector('nav');
+    if (!nav) return;
+    var w = window.innerWidth;
+    if (w <= 1024) { nav.style.zoom = ''; return; }      // mobile/tablet: CSS handles it
+    var z = Math.min(1, Math.max(FLOOR, w / BASE));
+    nav.style.zoom = z.toFixed(3);
+  }
+  window.addEventListener('resize', fitToScreen, { passive: true });
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', fitToScreen);
+  } else {
+    fitToScreen();
+  }
 })();
 </script>
 

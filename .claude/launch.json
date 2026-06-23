@@ -2,6 +2,13 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "hive-frontend",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["serve.js"],
+      "cwd": "hive/frontend",
+      "port": 9091
+    },
+    {
       "name": "hive-server",
       "runtimeExecutable": "powershell.exe",
       "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "C:\\Users\\35191\\Desktop\\Claude\\hive-deploy\\server.ps1"],

@@ -226,7 +226,19 @@
       "Bash(grep:*)",
       "Bash(npx vercel@latest env add ADMIN_TOKEN production)",
       "Bash(npx vercel@latest env add APP_URL production)",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(nslookup hivex.pt)",
+      "Bash(nslookup www.hivex.pt)",
+      "PowerShell(npm i -g vercel 2>&1)",
+      "PowerShell(vercel whoami)",
+      "PowerShell($ErrorActionPreference='SilentlyContinue')",
+      "PowerShell(vercel link --yes --cwd \"C:\\\\Users\\\\35191\\\\Desktop\\\\Claude\\\\hive\" 2>&1)",
+      "PowerShell(vercel domains ls 2>&1)",
+      "PowerShell(vercel redirect --help 2>&1)",
+      "PowerShell(\"=== domains ls ===\")",
+      "PowerShell(\"=== redirect help ===\")",
+      "Bash(vercel domains *)",
+      "Bash(git mv *)"
     ]
   }
 }
