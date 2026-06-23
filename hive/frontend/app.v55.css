@@ -1198,7 +1198,7 @@
     .lp-sb-btn{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:0 30px;min-height:76px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap;border-radius:0 16px 16px 0}
     .lp-sb-btn:hover{background:linear-gradient(135deg,#fb923c,#f97316);box-shadow:inset 0 0 0 100px rgba(0,0,0,.06)}
     .lp-sb-btn svg{flex-shrink:0}
-    .lp-sb-btn-small{padding:0 28px;min-height:62px !important;font-size:18px;border-radius:0 12px 12px 0}
+    .lp-sb-btn-small{padding:0 38px;min-height:74px !important;font-size:23px;border-radius:0 12px 12px 0}
     /* Compact search bar */
     .lp-search-compact{max-width:760px}
     .lp-search-compact .lp-sb-tab{padding:11px 20px;font-size:18px}
@@ -1208,7 +1208,7 @@
     .lp-search-compact .lp-sb-label{font-size:14px}
     .lp-search-compact .lp-sb-inner input,
     .lp-search-compact .hs-trigger-input{font-size:21px}
-    .lp-search-compact .lp-sb-btn{min-height:62px;font-size:18px;padding:0 28px}
+    .lp-search-compact .lp-sb-btn{min-height:74px;font-size:23px;padding:0 38px}
 
     /* ── Mode panels inside the field ── */
     /* Location mode: plain text input — always rendered, shown/hidden by JS */
@@ -1269,7 +1269,7 @@
     .lp-hero-register{display:flex;flex-direction:column;align-items:center;gap:10px;margin:22px 0 36px;position:relative;z-index:2;width:100%;max-width:560px}
     .lp-hero-register[hidden]{display:none !important}
     .lp-hero-register-hint{font-size:13px;color:rgba(255,255,255,.65);text-align:center;letter-spacing:.2px}
-    .lp-hero-register-btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;background:linear-gradient(135deg,#ea580c 0%,#f97316 50%,#fb923c 100%);color:#fff;border:none;border-radius:14px;padding:13px 32px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.02em;box-shadow:0 6px 24px rgba(234,88,12,.45),inset 0 1px 0 rgba(255,255,255,.18);transition:transform .15s,box-shadow .15s}
+    .lp-hero-register-btn{display:inline-flex;align-items:center;justify-content:center;gap:11px;background:linear-gradient(135deg,#ea580c 0%,#f97316 50%,#fb923c 100%);color:#fff;border:none;border-radius:14px;padding:18px 42px;font-size:21px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.02em;box-shadow:0 6px 24px rgba(234,88,12,.45),inset 0 1px 0 rgba(255,255,255,.18);transition:transform .15s,box-shadow .15s}
     .lp-hero-register-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(234,88,12,.6),inset 0 1px 0 rgba(255,255,255,.22)}
     .lp-hero-register-btn:active{transform:translateY(0)}
     .lp-hero-register-btn svg{flex-shrink:0}
@@ -2653,9 +2653,16 @@
     @media (min-width:1025px){
       .unified-bar{flex-direction:column;align-items:stretch;min-height:0;flex-wrap:nowrap}
       .unified-bar > .ub-divider{display:none}
-      .ub-search{width:100%;justify-content:flex-start;gap:10px;padding:8px 12px}
-      .ub-flex1{flex:0 1 220px;min-width:180px}          /* half-size search box */
-      .ub-sectors-label{display:block;width:100%;padding:0 12px 2px;font-size:13px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em}
-      .ub-sectors-wrap{width:100%;flex:0 0 auto}
+      /* Row 1: half-width search box + Pesquisar, centred under the Início/Mapa tabs */
+      .ub-search{width:100%;justify-content:center;gap:12px;padding:10px 12px}
+      .ub-flex1{flex:0 1 240px;min-width:180px}          /* half-size search box */
+      /* Row 2: full-width Áreas de Atividade, with a clear gap above the map */
+      .ub-sectors-label{display:block;width:100%;padding:4px 16px 4px;font-size:15px;font-weight:800;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em}
+      .ub-sectors-wrap{width:100%;flex:0 0 auto;padding:0 8px 14px}
       .ub-sectors{width:100%}
+      .ub-sectors-fade,.ub-sectors-scroll-hint{display:none}      /* not needed in full-width layout */
+      .ub-sectors .sector-filter-container{align-items:stretch}
+      /* Taller activity buttons so the bigger icon + label are vertically centred
+         and never spill onto the map below */
+      .ub-sectors .cat-item{min-height:64px;padding:10px 14px;align-items:center}
     }
