@@ -2644,3 +2644,18 @@
       .nav-ad-fallback,.nav-ad-cta-ring,.story-arrow.on,.skeleton{animation:none !important}
       *{scroll-behavior:auto !important}
     }
+
+    /* ── Map page: stack the search row above a full-width activity bar ──
+       On desktop the unified bar becomes two rows: row 1 is a half-width search
+       box + the Pesquisar button (top, just under the Início/Mapa nav); row 2 is
+       the Áreas de Atividade icons spanning the full page width. Scoped to
+       ≥1025px so the mobile layout (its own wrap rules) is untouched. */
+    @media (min-width:1025px){
+      .unified-bar{flex-direction:column;align-items:stretch;min-height:0;flex-wrap:nowrap}
+      .unified-bar > .ub-divider{display:none}
+      .ub-search{width:100%;justify-content:flex-start;gap:10px;padding:8px 12px}
+      .ub-flex1{flex:0 1 220px;min-width:180px}          /* half-size search box */
+      .ub-sectors-label{display:block;width:100%;padding:0 12px 2px;font-size:13px;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.06em}
+      .ub-sectors-wrap{width:100%;flex:0 0 auto}
+      .ub-sectors{width:100%}
+    }
