@@ -1,4 +1,4 @@
-// Hive API client — replaces Supabase SDK
+// Hivex API client — replaces Supabase SDK
 // All requests use credentials: 'include' so the httpOnly JWT cookie is sent automatically
 
 const API_BASE = window.API_BASE || '/api';
@@ -145,7 +145,7 @@ const api = {
   getMe() {
     return apiFetch('/auth/me');
   },
-  // Google sign-in: exchanges a Google ID token for a Hive session cookie
+  // Google sign-in: exchanges a Google ID token for a Hivex session cookie
   loginWithGoogle(idToken, type) {
     return apiFetch('/auth/google', { method: 'POST', body: { idToken, type } });
   },

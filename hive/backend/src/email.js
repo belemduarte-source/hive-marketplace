@@ -43,7 +43,7 @@ async function sendRegistrationNotification(company) {
   const html = `
 <div style="font-family:Arial,sans-serif;max-width:660px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
   <div style="background:#f97316;padding:24px 32px">
-    <h1 style="margin:0;color:#fff;font-size:22px">🐝 Hive — Nova empresa a aguardar validação</h1>
+    <h1 style="margin:0;color:#fff;font-size:22px">🐝 Hivex — Nova empresa a aguardar validação</h1>
   </div>
   <div style="padding:28px 32px">
     <p style="margin-top:0;color:#374151">Uma nova empresa submeteu o registo e aguarda a sua aprovação.</p>
@@ -118,15 +118,15 @@ async function sendRegistrationNotification(company) {
     </table>
 
     <p style="color:#6b7280;font-size:13px;border-top:1px solid #e5e7eb;padding-top:16px;margin-bottom:0">
-      Este email foi gerado automaticamente pelo sistema Hive Marketplace.
+      Este email foi gerado automaticamente pelo sistema Hivex Marketplace.
     </p>
   </div>
 </div>`;
 
   await transporter.sendMail({
-    from:    `"Hive Marketplace" <${process.env.SMTP_USER}>`,
+    from:    `"Hivex Marketplace" <${process.env.SMTP_USER}>`,
     to:      adminEmail,
-    subject: `[Hive] ⏳ Nova empresa para validar: ${company.name}`,
+    subject: `[Hivex] ⏳ Nova empresa para validar: ${company.name}`,
     html,
   });
 }
@@ -143,31 +143,31 @@ async function sendCompanyApprovalEmail(company) {
   const html = `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
   <div style="background:#f97316;padding:24px 32px">
-    <h1 style="margin:0;color:#fff;font-size:22px">🐝 Bem-vindo à Hive!</h1>
+    <h1 style="margin:0;color:#fff;font-size:22px">🐝 Bem-vindo à Hivex!</h1>
   </div>
   <div style="padding:28px 32px">
     <p style="margin-top:0;color:#374151;font-size:16px">Olá, equipa da <strong>${esc(company.name)}</strong>,</p>
     <p style="color:#374151;font-size:16px">
-      A vossa empresa foi <strong style="color:#16a34a">aprovada</strong> e já está visível na plataforma Hive!
+      A vossa empresa foi <strong style="color:#16a34a">aprovada</strong> e já está visível na plataforma Hivex!
       Clientes e parceiros podem agora encontrar-vos no mapa e contactar-vos directamente.
     </p>
     <div style="text-align:center;margin:32px 0">
       <a href="${appUrl}" style="display:inline-block;background:#f97316;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:16px">
-        Ver a minha empresa no Hive →
+        Ver a minha empresa no Hivex →
       </a>
     </div>
     <hr style="border:none;border-top:1px solid #e5e7eb;margin:28px 0">
     <p style="color:#6b7280;font-size:13px;margin:0">
       Se tiverem alguma questão, respondam a este email ou contactem-nos em <a href="mailto:${esc(process.env.ADMIN_EMAIL || process.env.SMTP_USER)}" style="color:#f97316">${esc(process.env.ADMIN_EMAIL || process.env.SMTP_USER || '')}</a>.<br><br>
-      Equipa Hive Marketplace
+      Equipa Hivex Marketplace
     </p>
   </div>
 </div>`;
 
   await transporter.sendMail({
-    from:    `"Hive Marketplace" <${process.env.SMTP_USER}>`,
+    from:    `"Hivex Marketplace" <${process.env.SMTP_USER}>`,
     to:      company.email,
-    subject: `✅ ${company.name} — Registo aprovado na Hive!`,
+    subject: `✅ ${company.name} — Registo aprovado na Hivex!`,
     html,
   });
 }
@@ -182,12 +182,12 @@ async function sendCompanyRejectionEmail(company) {
   const html = `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
   <div style="background:#6b7280;padding:24px 32px">
-    <h1 style="margin:0;color:#fff;font-size:22px">🐝 Hive — Pedido de registo</h1>
+    <h1 style="margin:0;color:#fff;font-size:22px">🐝 Hivex — Pedido de registo</h1>
   </div>
   <div style="padding:28px 32px">
     <p style="margin-top:0;color:#374151;font-size:16px">Olá, equipa da <strong>${esc(company.name)}</strong>,</p>
     <p style="color:#374151;font-size:16px">
-      Após análise, não foi possível aprovar o vosso registo na plataforma Hive neste momento.
+      Após análise, não foi possível aprovar o vosso registo na plataforma Hivex neste momento.
     </p>
     <p style="color:#374151;font-size:16px">
       Para mais informações ou para corrigir os dados submetidos, por favor contactem-nos directamente.
@@ -195,15 +195,15 @@ async function sendCompanyRejectionEmail(company) {
     <hr style="border:none;border-top:1px solid #e5e7eb;margin:28px 0">
     <p style="color:#6b7280;font-size:13px;margin:0">
       Contacto: <a href="mailto:${esc(process.env.ADMIN_EMAIL || process.env.SMTP_USER)}" style="color:#f97316">${esc(process.env.ADMIN_EMAIL || process.env.SMTP_USER || '')}</a><br><br>
-      Equipa Hive Marketplace
+      Equipa Hivex Marketplace
     </p>
   </div>
 </div>`;
 
   await transporter.sendMail({
-    from:    `"Hive Marketplace" <${process.env.SMTP_USER}>`,
+    from:    `"Hivex Marketplace" <${process.env.SMTP_USER}>`,
     to:      company.email,
-    subject: `Hive — Pedido de registo de ${company.name}`,
+    subject: `Hivex — Pedido de registo de ${company.name}`,
     html,
   });
 }
@@ -220,11 +220,11 @@ async function sendContactEmail(company, sender, message) {
   const html = `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
   <div style="background:#f97316;padding:24px 32px">
-    <h1 style="margin:0;color:#fff;font-size:20px">🐝 Hive — Nova mensagem de contacto</h1>
+    <h1 style="margin:0;color:#fff;font-size:20px">🐝 Hivex — Nova mensagem de contacto</h1>
   </div>
   <div style="padding:28px 32px">
     <p style="margin-top:0;color:#374151;font-size:15px">
-      Recebeu uma mensagem através da plataforma <strong>Hive Marketplace</strong>:
+      Recebeu uma mensagem através da plataforma <strong>Hivex Marketplace</strong>:
     </p>
     <table style="width:100%;border-collapse:collapse;margin-bottom:20px">
       <tr style="background:#f9fafb">
@@ -241,16 +241,16 @@ async function sendContactEmail(company, sender, message) {
     </div>
     <p style="color:#6b7280;font-size:13px;margin:0">
       Para responder, contacte directamente: <a href="mailto:${esc(sender.email)}" style="color:#f97316">${esc(sender.email)}</a><br><br>
-      Equipa Hive Marketplace
+      Equipa Hivex Marketplace
     </p>
   </div>
 </div>`;
 
   await transporter.sendMail({
-    from:    `"Hive Marketplace" <${process.env.SMTP_USER}>`,
+    from:    `"Hivex Marketplace" <${process.env.SMTP_USER}>`,
     to:      company.email,
     replyTo: sender.email,
-    subject: `[Hive] Mensagem de ${sender.name} para ${company.name}`,
+    subject: `[Hivex] Mensagem de ${sender.name} para ${company.name}`,
     html,
   });
 }
@@ -265,12 +265,12 @@ async function sendPasswordResetEmail(user, resetUrl) {
   const html = `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
   <div style="background:#f97316;padding:24px 32px">
-    <h1 style="margin:0;color:#fff;font-size:22px">🐝 Hive — Recuperação de palavra-passe</h1>
+    <h1 style="margin:0;color:#fff;font-size:22px">🐝 Hivex — Recuperação de palavra-passe</h1>
   </div>
   <div style="padding:28px 32px">
     <p style="margin-top:0;color:#374151;font-size:16px">Olá, ${esc(user.name || '')}.</p>
     <p style="color:#374151;font-size:16px">
-      Recebemos um pedido para redefinir a sua palavra-passe na Hive. Clique no botão abaixo para escolher uma nova palavra-passe — a hiperligação é válida durante <strong>60 minutos</strong>.
+      Recebemos um pedido para redefinir a sua palavra-passe na Hivex. Clique no botão abaixo para escolher uma nova palavra-passe — a hiperligação é válida durante <strong>60 minutos</strong>.
     </p>
     <div style="text-align:center;margin:32px 0">
       <a href="${resetUrl}" style="display:inline-block;background:#f97316;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:16px">
@@ -284,15 +284,15 @@ async function sendPasswordResetEmail(user, resetUrl) {
     <hr style="border:none;border-top:1px solid #e5e7eb;margin:28px 0">
     <p style="color:#6b7280;font-size:13px;margin:0">
       Se não foi você que pediu esta recuperação, pode ignorar este email — a sua palavra-passe não será alterada.<br><br>
-      Equipa Hive Marketplace
+      Equipa Hivex Marketplace
     </p>
   </div>
 </div>`;
 
   await transporter.sendMail({
-    from:    `"Hive Marketplace" <${process.env.SMTP_USER}>`,
+    from:    `"Hivex Marketplace" <${process.env.SMTP_USER}>`,
     to:      user.email,
-    subject: '🔑 Hive — Recuperação de palavra-passe',
+    subject: '🔑 Hivex — Recuperação de palavra-passe',
     html,
   });
 }

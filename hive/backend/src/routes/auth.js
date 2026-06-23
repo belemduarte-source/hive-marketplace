@@ -103,9 +103,12 @@ async function verifyTurnstile(token, ip) {
       secret,
       response: String(token),
     });
-    if (ip) params.append('remoteip', ip);
+    // remoteip intentionally omitted: on serverless/proxied requests (Vercel) the
+    // observed IP often differs from the one that solved the challenge, which makes
+    // Cloudflare return success:false with "remoteip-mismatch".
     const r = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', { method: 'POST', body: params });
     const j = await r.json();
+    if (!j.success) console.error('[turnstile] not verified, error-codes:', JSON.stringify(j['error-codes'] || j));
     return !!j.success;
   } catch (e) {
     console.error('[turnstile] verify failed:', e.message);
@@ -145,6 +148,11 @@ router.post('/register', async (req, res, next) => {
     res.cookie('hive_token', token, COOKIE_OPTS);
     res.status(201).json({ user: safeUser(user) });
   } catch (e) {
+    // Concurrent duplicate email that slipped past the existence check → the
+    // UNIQUE constraint fires. Return the same generic 409 (no enumeration).
+    if (e && e.code === '23505') {
+      return res.status(409).json({ error: 'Não foi possível concluir o registo. Se já tem conta, faça login.' });
+    }
     next(e);
   }
 });
@@ -195,10 +203,11 @@ router.get('/config', (req, res) => {
   res.json({
     googleClientId:    process.env.GOOGLE_CLIENT_ID || '',
     turnstileSiteKey:  process.env.TURNSTILE_SITE_KEY || '',
+    assistantEnabled:  !!(process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN),
   });
 });
 
-// POST /api/auth/google — exchange a Google ID token for a Hive session cookie
+// POST /api/auth/google — exchange a Google ID token for a Hivex session cookie
 // Body: { idToken: string }
 //
 // Behaviour:

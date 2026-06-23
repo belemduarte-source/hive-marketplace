@@ -186,4 +186,39 @@ router.delete('/reviews/:id', async (req, res, next) => {
   }
 });
 
+// GET /api/admin/visits?period=day|week|month — site visit stats + time series.
+// The series is grouped by day (last 30d), week (last 12w) or month (last 12m).
+router.get('/visits', async (req, res, next) => {
+  try {
+    // Whitelist period → no SQL injection (values come from this fixed map).
+    const CFG = {
+      day:   { trunc: 'day',   interval: '30 days',   fmt: 'YYYY-MM-DD' },
+      week:  { trunc: 'week',  interval: '12 weeks',  fmt: 'YYYY-MM-DD' },
+      month: { trunc: 'month', interval: '12 months', fmt: 'YYYY-MM' },
+    };
+    const period = CFG[req.query.period] ? req.query.period : 'day';
+    const cfg = CFG[period];
+
+    const [agg, series] = await Promise.all([
+      pool.query(`
+        SELECT
+          (SELECT COUNT(*) FROM site_visits WHERE created_at >= date_trunc('day', now()))::int          AS today,
+          (SELECT COUNT(*) FROM site_visits WHERE created_at > now() - interval '7 days')::int           AS last7,
+          (SELECT COUNT(*) FROM site_visits WHERE created_at > now() - interval '30 days')::int          AS last30,
+          (SELECT COUNT(*) FROM site_visits)::int                                                        AS total,
+          (SELECT COUNT(DISTINCT visitor) FROM site_visits WHERE created_at > now() - interval '30 days')::int AS unique30
+      `),
+      pool.query(`
+        SELECT to_char(date_trunc('${cfg.trunc}', created_at), '${cfg.fmt}') AS label, COUNT(*)::int AS visits
+          FROM site_visits
+         WHERE created_at > now() - interval '${cfg.interval}'
+         GROUP BY 1 ORDER BY 1
+      `),
+    ]);
+    res.json({ ...agg.rows[0], period, series: series.rows });
+  } catch (e) {
+    next(e);
+  }
+});
+
 module.exports = router;

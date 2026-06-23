@@ -7,7 +7,8 @@ const { requireAuth } = require('../middleware/auth');
 router.get('/', async (req, res, next) => {
   try {
     const { rows } = await pool.query(
-      `SELECT r.id, r.score, r.comment, r.reply, r.reply_at, r.created_at,
+      `SELECT r.id, r.score, r.score_quality, r.score_speed, r.score_communication, r.score_value,
+              r.comment, r.reply, r.reply_at, r.created_at,
               u.name AS author_name
          FROM reviews r
          JOIN users u ON u.id = r.user_id
@@ -56,9 +57,20 @@ router.post('/:reviewId/reply', requireAuth, async (req, res, next) => {
 // POST /api/companies/:id/reviews — authenticated
 router.post('/', requireAuth, async (req, res, next) => {
   try {
-    const { score, comment } = req.body;
-    if (!score || score < 1 || score > 5) {
-      return res.status(400).json({ error: 'score deve ser entre 1 e 5' });
+    const { score, comment, score_quality, score_speed, score_communication, score_value } = req.body;
+
+    // Normalise the per-criterion scores (each optional, but each must be 1-5 if sent).
+    const norm = (v) => { const n = Number(v); return (Number.isFinite(n) && n >= 1 && n <= 5) ? Math.round(n) : null; };
+    const sq = norm(score_quality), sp = norm(score_speed), scm = norm(score_communication), sv = norm(score_value);
+    const crit = [sq, sp, scm, sv].filter(n => n != null);
+
+    // Overall = average of the criteria provided; fall back to a plain `score`
+    // for backward compatibility with older clients.
+    let overall;
+    if (crit.length) overall = Math.round(crit.reduce((a, b) => a + b, 0) / crit.length);
+    else overall = norm(score);
+    if (overall == null) {
+      return res.status(400).json({ error: 'Indique pelo menos uma classificação (1 a 5).' });
     }
 
     // Verify company exists and is approved
@@ -70,12 +82,17 @@ router.post('/', requireAuth, async (req, res, next) => {
 
     // Upsert: update if user already reviewed this company
     const { rows } = await pool.query(
-      `INSERT INTO reviews (company_id, user_id, score, comment)
-       VALUES ($1, $2, $3, $4)
+      `INSERT INTO reviews (company_id, user_id, score, score_quality, score_speed, score_communication, score_value, comment)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
        ON CONFLICT (company_id, user_id)
-       DO UPDATE SET score = EXCLUDED.score, comment = EXCLUDED.comment, created_at = NOW()
+       DO UPDATE SET score = EXCLUDED.score,
+                     score_quality = EXCLUDED.score_quality,
+                     score_speed = EXCLUDED.score_speed,
+                     score_communication = EXCLUDED.score_communication,
+                     score_value = EXCLUDED.score_value,
+                     comment = EXCLUDED.comment, created_at = NOW()
        RETURNING *`,
-      [req.params.id, req.user.id, score, comment || null]
+      [req.params.id, req.user.id, overall, sq, sp, scm, sv, comment || null]
     );
 
     // Recalculate company rating

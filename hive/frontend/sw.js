@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hive-v51';
+const CACHE_NAME = 'hive-v77';
 const HTML_FALLBACK = '/index.html';
 const ASSETS = [
   '/manifest.json',
@@ -58,7 +58,7 @@ self.addEventListener('fetch', e => {
         const cached = await caches.match(HTML_FALLBACK);
         if (cached) return cached;
         return new Response(
-          '<!doctype html><meta charset=utf-8><title>Hive</title>' +
+          '<!doctype html><meta charset=utf-8><title>Hivex</title>' +
           '<body style="font-family:system-ui;padding:40px;text-align:center;background:#0f172a;color:#e2e8f0">' +
           '<h1>Sem ligação</h1><p>Verifique a sua ligação à internet e tente novamente.</p>' +
           '<button onclick="location.reload()" style="margin-top:16px;padding:10px 20px;background:#f97316;color:#fff;border:0;border-radius:8px;font-weight:700;cursor:pointer">Tentar de novo</button></body>',

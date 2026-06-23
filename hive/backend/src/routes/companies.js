@@ -31,7 +31,7 @@ function isValidPortugueseNIF(input) {
 const LIST_COLS = `
   id, name, sectors, sector, nif, cae, alvara, certidao_permanente,
   address, postal_code, city, country, zone,
-  email, phone, website, tags,
+  email, phone, website, facebook, instagram, linkedin, tags,
   lat, lng, rating, reviews, top_rated, verified, is_new, featured,
   emoji, color, pin_type, status, created_by, created_at
 `.trim();
@@ -128,7 +128,7 @@ router.get('/:id/approve', async (req, res, next) => {
 
     res.send(htmlPage(
       '✅ Empresa aprovada!',
-      `<strong>${escHtml(rows[0].name)}</strong> foi aprovada e já está visível na plataforma Hive.<br><br>Foi enviado um email de confirmação para <strong>${escHtml(rows[0].email || '(sem email)')}</strong>.`,
+      `<strong>${escHtml(rows[0].name)}</strong> foi aprovada e já está visível na plataforma Hivex.<br><br>Foi enviado um email de confirmação para <strong>${escHtml(rows[0].email || '(sem email)')}</strong>.`,
       '#16a34a'
     ));
   } catch (e) {
@@ -171,6 +171,20 @@ router.get('/:id/reject', async (req, res, next) => {
   }
 });
 
+// GET /api/companies/check-nif?nif=XXXXXXXXX — real-time duplicate check used by
+// the registration form so the user is warned before filling the whole form.
+// Must be declared BEFORE '/:id' or Express would treat "check-nif" as an id.
+router.get('/check-nif', requireAuth, async (req, res, next) => {
+  try {
+    const nif = String(req.query.nif || '').replace(/\s+/g, '');
+    if (!/^\d{9}$/.test(nif)) return res.json({ exists: false });
+    const { rows } = await pool.query('SELECT 1 FROM companies WHERE nif = $1 LIMIT 1', [nif]);
+    res.json({ exists: rows.length > 0 });
+  } catch (e) {
+    next(e);
+  }
+});
+
 // GET /api/companies/:id — public, only approved.
 // Private credentials (certidão permanente, alvará) are redacted for anonymous
 // visitors — any authenticated user can see them.
@@ -192,15 +206,16 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
   }
 });
 
-// POST /api/companies — authenticated users submit a company; status defaults
-// to 'approved' so the listing is live immediately. The auth gate keeps
-// anonymous bots out (we still also rate-limit at the app level).
+// POST /api/companies — authenticated users submit a company; status starts as
+// 'pending' so an admin must approve it (via the email Approve link or the
+// Pending tab) before it goes live. The auth gate keeps anonymous bots out
+// (we still also rate-limit at the app level).
 router.post('/', requireAuth, async (req, res, next) => {
   try {
     const {
       name, sectors, sector, nif, cae, alvara, certidao_permanente,
       address, postal_code, city, country,
-      zone, email, phone, website, tags, description, lat, lng,
+      zone, email, phone, website, facebook, instagram, linkedin, tags, description, lat, lng,
       emoji, color, pin_type,
       founded_year, business_hours, portfolio_images,
     } = req.body;
@@ -241,11 +256,11 @@ router.post('/', requireAuth, async (req, res, next) => {
       `INSERT INTO companies
         (name, sectors, sector, nif, cae, alvara, certidao_permanente,
          address, postal_code, city, country, zone,
-         email, phone, website, tags, description,
+         email, phone, website, facebook, instagram, linkedin, tags, description,
          founded_year, business_hours, portfolio_images,
          lat, lng, emoji, color, pin_type,
          status, created_by)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,'approved',$26)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,'pending',$29)
        RETURNING *`,
       [
         name,
@@ -263,6 +278,9 @@ router.post('/', requireAuth, async (req, res, next) => {
         email || '',
         phone || '',
         website || null,
+        facebook || null,
+        instagram || null,
+        linkedin || null,
         tags || [],
         description || null,
         foundedSafe,
@@ -288,6 +306,11 @@ router.post('/', requireAuth, async (req, res, next) => {
 
     res.status(201).json(rows[0]);
   } catch (e) {
+    // Unique-violation (concurrent double-submit of the same NIF that slipped past
+    // the pre-check SELECT) → clean 409 instead of a generic 500.
+    if (e && e.code === '23505') {
+      return res.status(409).json({ error: 'Esta empresa já está registada (NIF duplicado).' });
+    }
     next(e);
   }
 });
@@ -305,7 +328,7 @@ router.put('/:id', requireAuth, async (req, res, next) => {
     const {
       name, sectors, sector, cae, alvara, certidao_permanente,
       address, postal_code, city, country,
-      zone, email, phone, website, tags, description, lat, lng,
+      zone, email, phone, website, facebook, instagram, linkedin, tags, description, lat, lng,
       emoji, color, pin_type, status,
       founded_year, business_hours, portfolio_images,
     } = req.body;
@@ -342,14 +365,18 @@ router.put('/:id', requireAuth, async (req, res, next) => {
         founded_year = COALESCE($23, founded_year),
         business_hours = COALESCE($24, business_hours),
         portfolio_images = COALESCE($25, portfolio_images),
+        facebook = COALESCE($26, facebook),
+        instagram = COALESCE($27, instagram),
+        linkedin = COALESCE($28, linkedin),
         updated_at = NOW()
-       WHERE id = $26
+       WHERE id = $29
        RETURNING *`,
       [name, sectors, sector, cae, alvara, certidao_permanente,
        address, postal_code, city, country,
        zone, email, phone, website, tags, description, lat, lng,
        emoji, color, pin_type, status,
        foundedSafe, business_hours, photosSafe,
+       facebook, instagram, linkedin,
        req.params.id]
     );
     res.json(rows[0]);
@@ -494,7 +521,7 @@ function escHtml(str) {
 function htmlPage(title, body, color = '#f97316') {
   return `<!DOCTYPE html><html lang="pt"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${title} — Hive</title>
+<title>${title} — Hivex</title>
 <style>
   body{font-family:Arial,sans-serif;display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;background:#f9fafb}
   .card{background:#fff;border-radius:12px;padding:48px 40px;max-width:520px;text-align:center;box-shadow:0 4px 24px rgba(0,0,0,.1)}
@@ -505,7 +532,7 @@ function htmlPage(title, body, color = '#f97316') {
 <body><div class="card">
   <h1>${title}</h1>
   <p>${body}</p>
-  <a href="/">Voltar ao Hive</a>
+  <a href="/">Voltar ao Hivex</a>
 </div></body></html>`;
 }
 

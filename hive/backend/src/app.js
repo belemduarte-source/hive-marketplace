@@ -19,7 +19,7 @@ const INTEGRATION_STATUS = {
   admin_email:    _hasEnv('ADMIN_EMAIL'),
   app_url:        _hasEnv('APP_URL'),
 };
-console.log('Hive backend boot — integrations:', JSON.stringify(INTEGRATION_STATUS));
+console.log('Hivex backend boot — integrations:', JSON.stringify(INTEGRATION_STATUS));
 
 // ── Global error safety net ───────────────────────────────────────────────────
 process.on('unhandledRejection', (reason) => {
@@ -73,6 +73,9 @@ const _vercelOrigins = [
 const allowedOrigins = [
   ...(process.env.CORS_ORIGIN || 'http://localhost:9091').split(',').map(s => s.trim()),
   ..._vercelOrigins,
+  // Custom production domain (Hivex) — not a *.vercel.app URL, so add explicitly.
+  'https://hivex.pt',
+  'https://www.hivex.pt',
 ];
 
 const corsOptions = {
@@ -266,6 +269,10 @@ const MIGRATIONS = [
   // Partial: rows without a NIF (foreign companies, legacy imports) are exempt.
   `CREATE UNIQUE INDEX IF NOT EXISTS idx_companies_nif_unique ON companies(nif) WHERE nif IS NOT NULL AND nif <> ''`,
   `ALTER TABLE companies ADD COLUMN IF NOT EXISTS removed_at TIMESTAMPTZ`,
+  // Optional social network links shown on the company profile.
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS facebook  TEXT`,
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS instagram TEXT`,
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS linkedin  TEXT`,
   // Status CHECK constraint — drop the old (more restrictive) one and re-add
   // with 'removed' allowed. ALTER TABLE ADD CONSTRAINT IF NOT EXISTS isn't a
   // thing in PG, hence the explicit DROP+ADD. PG names inline column CHECKs
@@ -286,6 +293,12 @@ const MIGRATIONS = [
    )`,
   `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS reply    TEXT`,
   `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS reply_at TIMESTAMPTZ`,
+  // Multi-criteria ratings (each 1-5). The overall `score` column holds the
+  // rounded average of whatever criteria the reviewer set.
+  `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS score_quality       SMALLINT CHECK (score_quality       BETWEEN 1 AND 5)`,
+  `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS score_speed         SMALLINT CHECK (score_speed         BETWEEN 1 AND 5)`,
+  `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS score_communication SMALLINT CHECK (score_communication BETWEEN 1 AND 5)`,
+  `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS score_value         SMALLINT CHECK (score_value         BETWEEN 1 AND 5)`,
   `CREATE INDEX IF NOT EXISTS idx_reviews_company ON reviews(company_id)`,
   `CREATE INDEX IF NOT EXISTS idx_reviews_user    ON reviews(user_id)`,
 
@@ -320,6 +333,15 @@ const MIGRATIONS = [
   `CREATE INDEX IF NOT EXISTS idx_reports_company ON reports(company_id)`,
   `CREATE INDEX IF NOT EXISTS idx_reports_status  ON reports(status)`,
   `CREATE INDEX IF NOT EXISTS idx_reports_created ON reports(created_at DESC)`,
+
+  // Site-wide visit tracking (page-level analytics for the admin dashboard).
+  `CREATE TABLE IF NOT EXISTS site_visits (
+     id BIGSERIAL PRIMARY KEY,
+     visitor TEXT,
+     path TEXT,
+     created_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_site_visits_created ON site_visits(created_at DESC)`,
 ];
 
 async function ensureSchema() {
@@ -419,6 +441,139 @@ app.get('/api/admin/diagnostics', requireAdmin, async (req, res, next) => {
     });
   } catch (e) {
     next(e);
+  }
+});
+
+// ── Site visit tracking (public, fire-and-forget) ────────────────────────────
+// Records one row per page-visit; the frontend de-dupes to one call per browser
+// session. Never errors the client — analytics must not break the page.
+app.post('/api/visits', async (req, res) => {
+  try {
+    const pool = require('./db');
+    const clip = v => (typeof v === 'string' && v ? v.slice(0, 200) : null);
+    await pool.query(
+      'INSERT INTO site_visits (visitor, path) VALUES ($1, $2)',
+      [clip(req.body && req.body.visitor), clip(req.body && req.body.path)]
+    );
+  } catch (_) { /* swallow — tracking is best-effort */ }
+  res.json({ ok: true });
+});
+
+// ── AI assistant — helps customers find companies for their job ───────────────
+// Tool-calling agent via the Vercel AI Gateway (OpenAI-compatible HTTP API, so no
+// SDK dependency). Dormant unless AI_GATEWAY_API_KEY is set. Public but rate-limited.
+const assistantLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 15,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados pedidos ao assistente. Aguarde um momento.' },
+  skip: () => process.env.NODE_ENV !== 'production',
+});
+
+app.post('/api/assistant', assistantLimiter, async (req, res) => {
+  // Auth: explicit gateway key if set, otherwise the Vercel OIDC token that the
+  // platform auto-injects into functions (uses the team's free Gateway credits,
+  // no manual key needed).
+  const key = process.env.AI_GATEWAY_API_KEY || process.env.VERCEL_OIDC_TOKEN;
+  if (!key) return res.status(503).json({ error: 'O assistente não está configurado.' });
+  try {
+    const pool = require('./db');
+    const incoming = Array.isArray(req.body && req.body.messages) ? req.body.messages.slice(-12) : [];
+    const msgs = incoming
+      .filter(m => m && (m.role === 'user' || m.role === 'assistant') && typeof m.content === 'string')
+      .map(m => ({ role: m.role, content: String(m.content).slice(0, 2000) }));
+    if (!msgs.length) return res.status(400).json({ error: 'Sem mensagem.' });
+
+    const system = {
+      role: 'system',
+      content:
+        'És o assistente da Hivex, um marketplace de profissionais de construção em Portugal. ' +
+        'Ajudas o cliente a encontrar empresas para o trabalho que precisa de fazer. ' +
+        'Faz perguntas curtas para perceber o tipo de trabalho e a localização (cidade/zona). ' +
+        'Usa a ferramenta search_companies para procurar empresas aprovadas e apresenta as melhores opções (nome, cidade, avaliação). ' +
+        'Sê breve, simpático e responde sempre no idioma do utilizador. Se não houver resultados, sugere alargar a zona ou outra área. ' +
+        'Exemplos de áreas: pedreiros, eletricistas, canalização/picheleiros, pintura, carpintaria, escavação, AVAC/climatização, telhados, pavimentos, isolamento, serralharia.',
+    };
+
+    const tools = [{
+      type: 'function',
+      function: {
+        name: 'search_companies',
+        description: 'Procura empresas de construção aprovadas no marketplace Hivex por palavra-chave (tipo de serviço) e, opcionalmente, cidade/zona.',
+        parameters: {
+          type: 'object',
+          properties: {
+            query: { type: 'string', description: 'Tipo de serviço ou área (ex.: "pedreiro", "eletricista", "pintura")' },
+            city: { type: 'string', description: 'Cidade ou zona (opcional)' },
+          },
+          required: ['query'],
+        },
+      },
+    }];
+
+    async function searchCompanies({ query, city }) {
+      const params = [];
+      const conds = [`status = 'approved'`];
+      if (query) {
+        params.push('%' + String(query).slice(0, 60) + '%');
+        const p = '$' + params.length;
+        conds.push(`(name ILIKE ${p} OR sector ILIKE ${p} OR description ILIKE ${p} OR array_to_string(sectors,' ') ILIKE ${p} OR array_to_string(tags,' ') ILIKE ${p})`);
+      }
+      if (city) {
+        params.push('%' + String(city).slice(0, 40) + '%');
+        const p = '$' + params.length;
+        conds.push(`(city ILIKE ${p} OR zone ILIKE ${p})`);
+      }
+      const { rows } = await pool.query(
+        `SELECT id, name, sector, sectors, city, zone, rating, reviews, website, phone
+           FROM companies WHERE ${conds.join(' AND ')}
+           ORDER BY verified DESC, rating DESC, reviews DESC LIMIT 8`,
+        params
+      );
+      return rows;
+    }
+
+    const GW = (process.env.AI_GATEWAY_URL || 'https://ai-gateway.vercel.sh/v1') + '/chat/completions';
+    const model = process.env.AI_MODEL || 'anthropic/claude-haiku-4.5';
+    const convo = [system, ...msgs];
+    let foundCompanies = [];
+
+    for (let i = 0; i < 3; i++) {
+      const r = await fetch(GW, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + key },
+        body: JSON.stringify({ model, messages: convo, tools, temperature: 0.3, max_tokens: 700 }),
+      });
+      if (!r.ok) {
+        const txt = await r.text().catch(() => '');
+        console.error('[assistant] gateway error', r.status, txt.slice(0, 300));
+        return res.status(502).json({ error: 'O assistente está indisponível de momento.' });
+      }
+      const data = await r.json();
+      const m = data.choices && data.choices[0] && data.choices[0].message;
+      if (!m) return res.status(502).json({ error: 'Resposta inválida do assistente.' });
+      convo.push(m);
+      const toolCalls = m.tool_calls || [];
+      if (toolCalls.length) {
+        for (const tc of toolCalls) {
+          let args = {};
+          try { args = JSON.parse((tc.function && tc.function.arguments) || '{}'); } catch (_) {}
+          let result = [];
+          if (tc.function && tc.function.name === 'search_companies') {
+            result = await searchCompanies(args);
+            foundCompanies = result;
+          }
+          convo.push({ role: 'tool', tool_call_id: tc.id, content: JSON.stringify(result) });
+        }
+        continue;
+      }
+      return res.json({ reply: m.content || '', companies: foundCompanies });
+    }
+    return res.json({ reply: 'Não consegui concluir o pedido. Pode reformular?', companies: foundCompanies });
+  } catch (e) {
+    console.error('[assistant] error', e && (e.stack || e.message || e));
+    res.status(500).json({ error: 'Erro no assistente.' });
   }
 });
 

@@ -1,4 +1,4 @@
--- Hive B2B Marketplace — PostgreSQL Schema
+-- Hivex B2B Marketplace — PostgreSQL Schema
 -- Run via: psql $DATABASE_URL -f schema.sql
 -- Or via seed.js which executes this file automatically
 
