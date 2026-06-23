@@ -2,33 +2,33 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
         xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>https://hive-marketplace-three.vercel.app/</loc>
+    <loc>https://www.hivex.pt/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="pt" href="https://hive-marketplace-three.vercel.app/"/>
-    <xhtml:link rel="alternate" hreflang="en" href="https://hive-marketplace-three.vercel.app/?lang=en"/>
-    <xhtml:link rel="alternate" hreflang="fr" href="https://hive-marketplace-three.vercel.app/?lang=fr"/>
-    <xhtml:link rel="alternate" hreflang="es" href="https://hive-marketplace-three.vercel.app/?lang=es"/>
-    <xhtml:link rel="alternate" hreflang="de" href="https://hive-marketplace-three.vercel.app/?lang=de"/>
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://hive-marketplace-three.vercel.app/"/>
+    <xhtml:link rel="alternate" hreflang="pt" href="https://www.hivex.pt/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://www.hivex.pt/?lang=en"/>
+    <xhtml:link rel="alternate" hreflang="fr" href="https://www.hivex.pt/?lang=fr"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://www.hivex.pt/?lang=es"/>
+    <xhtml:link rel="alternate" hreflang="de" href="https://www.hivex.pt/?lang=de"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://www.hivex.pt/"/>
   </url>
   <url>
-    <loc>https://hive-marketplace-three.vercel.app/#legal/terms</loc>
+    <loc>https://www.hivex.pt/#legal/terms</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://hive-marketplace-three.vercel.app/#legal/privacy</loc>
+    <loc>https://www.hivex.pt/#legal/privacy</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://hive-marketplace-three.vercel.app/#legal/cookies</loc>
+    <loc>https://www.hivex.pt/#legal/cookies</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
   <url>
-    <loc>https://hive-marketplace-three.vercel.app/#legal/rgpd</loc>
+    <loc>https://www.hivex.pt/#legal/rgpd</loc>
     <changefreq>monthly</changefreq>
     <priority>0.3</priority>
   </url>
