@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v55.css"/>
+  <link rel="stylesheet" href="app.v56.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -4007,7 +4007,58 @@ function showTab(name) {
   document.querySelectorAll('.nav-link[data-tab]').forEach(el => {
     el.classList.toggle('active', el.dataset.tab === name);
   });
+
+  // On the Map page (desktop only), dock the search box + Pesquisar into the
+  // nav, stacked directly under the Início/Mapa tabs and to the left of the
+  // publicity banner. On Home/About or on mobile they return to the search bar.
+  try { dockMapSearchControls(name === 'search'); } catch (_) {}
 }
+
+// Move the unified search controls (.ub-search = input box + Pesquisar) between
+// two homes: their normal spot at the top of the .unified-bar, or docked inside
+// the nav under the Início/Mapa tabs. Docking only happens on the Map page and
+// only on desktop (>1024px); everywhere else they sit in the unified bar.
+function dockMapSearchControls(active) {
+  const nav        = document.querySelector('nav');
+  const navLinks   = nav && nav.querySelector('.nav-links');
+  const ubSearch   = document.querySelector('.ub-search');
+  const unifiedBar = document.querySelector('.unified-bar');
+  if (!nav || !navLinks || !ubSearch || !unifiedBar) return;
+  const isDesktop = window.innerWidth > 1024;
+
+  if (active && isDesktop) {
+    // Build (once) a vertical column that wraps the tabs, then drop the search
+    // controls beneath them.
+    let stack = document.getElementById('navMidStack');
+    if (!stack) {
+      stack = document.createElement('div');
+      stack.id = 'navMidStack';
+      navLinks.parentNode.insertBefore(stack, navLinks);
+      stack.appendChild(navLinks);
+    }
+    if (ubSearch.parentNode !== stack) stack.appendChild(ubSearch);
+    ubSearch.classList.add('ub-search-docked');
+  } else {
+    // Undock: return the search controls to the top of the unified bar…
+    if (ubSearch.classList.contains('ub-search-docked')) {
+      unifiedBar.insertBefore(ubSearch, unifiedBar.firstChild);
+      ubSearch.classList.remove('ub-search-docked');
+    }
+    // …and unwrap the tabs back into the nav.
+    const stack = document.getElementById('navMidStack');
+    if (stack) {
+      nav.insertBefore(navLinks, stack);
+      stack.remove();
+    }
+  }
+}
+
+// Re-evaluate docking when crossing the desktop/mobile boundary while on the map.
+window.addEventListener('resize', () => {
+  const onMap = document.getElementById('tab-search') &&
+                getComputedStyle(document.getElementById('tab-search')).display !== 'none';
+  try { dockMapSearchControls(onMap); } catch (_) {}
+}, { passive: true });
 
 // ── LANDING PAGE SEARCH ────────────────────────────────────────────────────────
 

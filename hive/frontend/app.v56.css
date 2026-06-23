@@ -2653,10 +2653,16 @@
     @media (min-width:1025px){
       .unified-bar{flex-direction:column;align-items:stretch;min-height:0;flex-wrap:nowrap}
       .unified-bar > .ub-divider{display:none}
-      /* Row 1: half-width search box + Pesquisar, centred under the Início/Mapa tabs */
-      .ub-search{width:100%;justify-content:center;gap:12px;padding:10px 12px}
+      /* The search box + Pesquisar are docked into the nav (see #navMidStack),
+         so the unified bar holds only the full-width activity bar. */
       .ub-flex1{flex:0 1 240px;min-width:180px}          /* half-size search box */
-      /* Row 2: full-width Áreas de Atividade, with a clear gap above the map */
+      /* Docked column inside the nav: Início/Mapa tabs on top, search box +
+         Pesquisar directly beneath, sitting to the LEFT of the publicity banner. */
+      #navMidStack{display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:12px;flex:0 1 auto;min-width:0;padding:0 10px}
+      #navMidStack .nav-links{flex:0 0 auto}
+      .ub-search-docked{display:flex;width:100%;justify-content:flex-start;align-items:center;gap:10px;padding:0}
+      .ub-search-docked .ub-flex1{flex:0 1 240px;min-width:160px}
+      /* full-width Áreas de Atividade row, with a clear gap above the map */
       .ub-sectors-label{display:block;width:100%;padding:4px 16px 4px;font-size:15px;font-weight:800;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.06em}
       .ub-sectors-wrap{width:100%;flex:0 0 auto;padding:0 8px 14px}
       .ub-sectors{width:100%}
