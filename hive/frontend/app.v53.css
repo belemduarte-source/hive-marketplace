@@ -48,8 +48,8 @@
     nav{background:var(--nav);padding:0;display:flex;align-items:center;flex-wrap:wrap;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3);position:relative;z-index:200;transition:transform 0.3s ease;overflow:visible;will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden}
     nav.scrolled{transform:translateY(-100%);}
     .nav-links{display:flex;gap:4px;padding:4px 12px;align-items:center;background:var(--nav)}
-    .nav-link{display:inline-flex;align-items:center;justify-content:center;gap:10px;color:#ffffff;font-size:23px;font-weight:700;padding:15px 30px;border-radius:10px;cursor:pointer;text-decoration:none;transition:all .25s;white-space:nowrap;border:none;background:transparent;font-family:inherit;letter-spacing:.02em;position:relative;flex:1}
-    .nav-link svg{width:26px;height:26px;opacity:.6;transition:opacity .25s}
+    .nav-link{display:inline-flex;align-items:center;justify-content:center;gap:11px;color:#ffffff;font-size:28px;font-weight:700;padding:17px 34px;border-radius:10px;cursor:pointer;text-decoration:none;transition:all .25s;white-space:nowrap;border:none;background:transparent;font-family:inherit;letter-spacing:.02em;position:relative;flex:1}
+    .nav-link svg{width:32px;height:32px;opacity:.6;transition:opacity .25s}
     .nav-link:hover{color:#e2e8f0;background:rgba(255,255,255,.06)}
     .nav-link:hover svg{opacity:1}
     .nav-link.active{color:#fff;background:rgba(249,115,22,.15);box-shadow:inset 0 -3px 0 #f97316}
@@ -203,8 +203,9 @@
     /* ── UNIFIED BAR (Search + Categories in one line) ── */
     .unified-bar{background:#0c1827;display:flex;align-items:stretch;flex-wrap:wrap;min-height:96px;flex-shrink:0;border-bottom:1px solid #1a2e45;position:sticky;top:0;z-index:150;box-shadow:0 4px 12px rgba(0,0,0,.18)}
     .ub-search{display:flex;align-items:center;gap:6px;padding:6px 10px;flex-shrink:0;min-width:0}
-    .ub-input{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:9px;padding:11px 16px;transition:all .2s}
+    .ub-input{display:flex;align-items:center;gap:8px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:9px;padding:13px 18px;transition:all .2s}
     .ub-input:focus-within{background:rgba(255,255,255,.18);border-color:var(--primary)}
+    .ub-input input{font-size:17px}
     .ub-flex1{flex:0 1 440px;min-width:300px}
     .ub-search .ub-input:not(.ub-flex1){flex:0 1 110px;min-width:60px}
     .ub-input input{border:none;background:transparent;outline:none;font-size:19px;color:#fff;width:100%;font-family:inherit;font-weight:500}
@@ -215,8 +216,8 @@
     /* Pulse animation shown when auto-detect fails — tells user to tap the button */
     @keyframes locatePulse{0%,100%{color:#8899aa;transform:scale(1)}50%{color:#f97316;transform:scale(1.25)}}
     .btn-locate.pulse-hint{animation:locatePulse 1.2s ease-in-out 3}
-    .ub-btn{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:8px 15px;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;display:flex;align-items:center;gap:6px}
-    .ub-btn svg{width:16px;height:16px}
+    .ub-btn{background:var(--primary);color:#fff;border:none;border-radius:8px;padding:11px 20px;font-size:17px;font-weight:700;cursor:pointer;white-space:nowrap;transition:all .2s;display:flex;align-items:center;gap:7px}
+    .ub-btn svg{width:19px;height:19px}
     .ub-btn:hover{background:var(--primary-dark)}
     .ub-divider{width:1px;background:rgba(255,255,255,.15);margin:8px 0;flex-shrink:0}
     .ub-sectors{display:flex;align-items:stretch;overflow:visible;flex:1;min-width:0;padding:0 4px}
@@ -383,7 +384,7 @@
 
     /* ── MAP ── */
     .view-toggle-bar{position:absolute;top:12px;left:50%;transform:translateX(-50%);z-index:150;display:flex;align-items:center;gap:4px;background:var(--surface);border-radius:10px;padding:4px;box-shadow:0 2px 12px rgba(0,0,0,.15);border:1px solid var(--border)}
-    .view-toggle-btn{display:flex;align-items:center;gap:7px;padding:10px 22px;border:none;border-radius:8px;font-size:16px;font-weight:600;cursor:pointer;transition:all .2s;background:transparent;color:var(--text-secondary);font-family:inherit}
+    .view-toggle-btn{display:flex;align-items:center;gap:8px;padding:12px 26px;border:none;border-radius:8px;font-size:19px;font-weight:600;cursor:pointer;transition:all .2s;background:transparent;color:var(--text-secondary);font-family:inherit}
     .view-toggle-btn svg{width:17px;height:17px}
     .view-toggle-btn.active{background:var(--primary);color:#fff;box-shadow:0 2px 8px rgba(249,115,22,.3)}
     .view-toggle-btn:not(.active):hover{background:var(--border-light);color:var(--text)}
@@ -938,7 +939,7 @@
     .cat-item .cat-icon{display:flex;align-items:center;justify-content:center;opacity:1;flex-shrink:0}
     .cat-item:hover .cat-icon,.cat-item.active .cat-icon,.cat-item.open .cat-icon{opacity:1}
     .cat-item .cat-icon[data-lucide]{width:18px;height:18px;stroke:currentColor;fill:none;flex-shrink:0}
-    .cat-item .cat-label{font-size:21px;font-weight:700;line-height:1.1;color:#fff}
+    .cat-item .cat-label{font-size:23px;font-weight:700;line-height:1.1;color:#fff}
     .cat-item .cat-arrow{font-size:10px;opacity:.4;margin-left:2px;transition:transform .15s}
     .cat-item.open .cat-arrow{transform:rotate(180deg);opacity:.8}
     /* ── CLEAR-ALL FILTERS BUTTON (right of sector bar) ── */
@@ -1147,9 +1148,9 @@
     /* Toggle tabs above the card */
     .lp-sb-tabs{display:flex;gap:0;margin-bottom:-1px;position:relative;z-index:1}
     .lp-sb-tab{
-      display:flex;align-items:center;gap:7px;
-      padding:10px 22px;
-      font-size:13px;font-weight:700;
+      display:flex;align-items:center;gap:8px;
+      padding:13px 26px;
+      font-size:16px;font-weight:700;
       border:1px solid rgba(255,255,255,.18);
       border-bottom:none;
       border-radius:12px 12px 0 0;
@@ -1197,7 +1198,7 @@
     .lp-sb-btn{flex-shrink:0;display:flex;align-items:center;gap:8px;padding:0 30px;min-height:76px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;font-size:15px;font-weight:700;cursor:pointer;transition:all .2s;font-family:inherit;white-space:nowrap;border-radius:0 16px 16px 0}
     .lp-sb-btn:hover{background:linear-gradient(135deg,#fb923c,#f97316);box-shadow:inset 0 0 0 100px rgba(0,0,0,.06)}
     .lp-sb-btn svg{flex-shrink:0}
-    .lp-sb-btn-small{padding:0 18px;min-height:48px !important;font-size:13px;border-radius:0 12px 12px 0}
+    .lp-sb-btn-small{padding:0 28px;min-height:62px !important;font-size:18px;border-radius:0 12px 12px 0}
     /* Compact search bar */
     .lp-search-compact{max-width:760px}
     .lp-search-compact .lp-sb-tab{padding:11px 20px;font-size:18px}
@@ -1207,7 +1208,7 @@
     .lp-search-compact .lp-sb-label{font-size:14px}
     .lp-search-compact .lp-sb-inner input,
     .lp-search-compact .hs-trigger-input{font-size:21px}
-    .lp-search-compact .lp-sb-btn{min-height:52px;font-size:13px;padding:0 20px}
+    .lp-search-compact .lp-sb-btn{min-height:62px;font-size:18px;padding:0 28px}
 
     /* ── Mode panels inside the field ── */
     /* Location mode: plain text input — always rendered, shown/hidden by JS */
@@ -1241,7 +1242,7 @@
     .hs-search-input:focus{border-color:#f97316;background-color:#fff}
     .hs-search-input::placeholder{color:#9ca3af}
     .hs-no-results{padding:20px;text-align:center;color:#9ca3af;font-size:14px}
-    .hs-trigger-input{background:transparent;border:none;font-size:16px;font-weight:600;color:#1f2937;outline:none;font-family:inherit;width:100%;padding:0;flex:1;min-width:0}
+    .hs-trigger-input{background:transparent;border:none;font-size:19px;font-weight:600;color:#1f2937;outline:none;font-family:inherit;width:100%;padding:0;flex:1;min-width:0}
     .hs-trigger-input::placeholder{color:#9ca3af;font-weight:400}
     .lp-sb-field.open .hs-panel{display:block}
     .hs-panel::-webkit-scrollbar{width:5px}
