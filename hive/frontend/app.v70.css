@@ -2665,28 +2665,28 @@
       /* logo (tier 1, left) */
       .nav-banner{order:1;margin-right:0 !important;flex-shrink:0;align-self:center}
       .nav-banner > div[onclick]{flex-direction:row !important;gap:12px !important;margin-right:0 !important}
-      #logoHexSvg{width:50px !important;height:50px !important}
-      .logo-h{font-size:32px}.logo-i{font-size:24px}.logo-v{font-size:28px}
-      .logo-e{font-size:33px}.logo-x{font-size:29px}
+      #logoHexSvg{width:42px !important;height:42px !important}
+      .logo-h{font-size:27px}.logo-i{font-size:20px}.logo-v{font-size:24px}
+      .logo-e{font-size:28px}.logo-x{font-size:25px}
       .logo-slogan,.logo-tagline{display:none !important}
 
       /* tabs (tier 1, left) — clear primary nav */
-      .nav-links{order:2;flex:0 0 auto;gap:8px;align-self:center}
-      .nav-link{flex:0 0 auto;font-size:var(--fs-lg);padding:11px 22px;border-radius:var(--rad-md)}
-      .nav-link svg{width:23px;height:23px}
+      .nav-links{order:2;flex:0 0 auto;gap:6px;align-self:center}
+      .nav-link{flex:0 0 auto;font-size:var(--fs-md);padding:9px 16px;border-radius:var(--rad-md)}
+      .nav-link svg{width:21px;height:21px}
 
       /* auth (tier 1, right) — a single horizontal row, right-aligned */
-      .nav-right{order:3;margin-left:auto;flex-direction:row !important;align-items:center;justify-content:flex-end;gap:10px;width:auto;min-width:0 !important;padding:0 !important;flex:0 1 auto;align-self:center}
+      .nav-right{order:3;margin-left:auto;flex-direction:row !important;align-items:center;justify-content:flex-end;gap:8px;width:auto;min-width:0 !important;padding:0 !important;flex:0 1 auto;align-self:center}
       .nav-right .authArea{display:flex}
-      .btn-login{width:auto;font-size:var(--fs-md);font-weight:700;padding:11px 24px;justify-content:center;border-radius:var(--rad-md)}
-      .nav-right-bottom{flex-direction:row !important;align-items:center;gap:8px !important;width:auto !important;flex:0 0 auto}
+      .btn-login{width:auto;font-size:var(--fs-sm);font-weight:700;padding:10px 18px;justify-content:center;border-radius:var(--rad-md)}
+      .nav-right-bottom{flex-direction:row !important;align-items:center;gap:6px !important;width:auto !important;flex:0 0 auto}
       .nav-right-bottom > .lang-switcher{display:flex}
       .nav-right .lang-btn,
       .nav-right .btn-ajuda,
       .nav-right .theme-toggle{
-        height:44px;padding:0 14px !important;width:auto !important;
-        flex-direction:row !important;align-items:center;justify-content:center;gap:6px;
-        font-size:var(--fs-sm) !important;font-weight:700;white-space:nowrap;border-radius:var(--rad-md);
+        height:40px;padding:0 11px !important;width:auto !important;
+        flex-direction:row !important;align-items:center;justify-content:center;gap:5px;
+        font-size:var(--fs-xs) !important;font-weight:700;white-space:nowrap;border-radius:var(--rad-md);
       }
       .nav-right .btn-ajuda [data-lucide],
       .nav-right .btn-ajuda svg{width:16px;height:16px}
@@ -2705,6 +2705,28 @@
       .ub-sectors-fade,.ub-sectors-scroll-hint{display:none}
       .ub-sectors .sector-filter-container{align-items:stretch}
       .ub-sectors .cat-item{min-height:60px;padding:10px 14px;align-items:center}
+
+      /* ── MAP-PAGE HEADER GRID (added by JS as nav.nav-map-grid) ──
+         logo + tabs (top-left) · search (under them) · banner (wide centre) ·
+         auth (top-right). The wide centre means the banner never clips. */
+      nav.nav-map-grid{
+        display:grid !important;
+        grid-template-columns:auto auto minmax(0,1fr) auto;
+        grid-template-rows:76px 56px;       /* fixed → deterministic header height */
+        grid-template-areas:
+          "logo tabs banner auth"
+          "search search banner .";
+        align-items:center;
+        column-gap:16px;row-gap:6px;
+        padding:10px 26px;
+      }
+      nav.nav-map-grid > .nav-banner{grid-area:logo;margin:0 !important;align-self:center}
+      nav.nav-map-grid > .nav-links{grid-area:tabs;margin:0 !important;align-self:center}
+      nav.nav-map-grid > .nav-right{grid-area:auth;margin:0 !important;align-self:center;justify-self:end}
+      nav.nav-map-grid > .nav-ad{grid-area:banner;width:100%;height:100%;min-height:0;max-height:none;margin:0;align-self:stretch;overflow:hidden}
+      nav.nav-map-grid > .ub-search-in-nav{grid-area:search;display:flex;align-items:center;gap:10px;width:100%;padding:0}
+      nav.nav-map-grid > .ub-search-in-nav .ub-flex1{flex:1 1 auto;min-width:0}
+      nav.nav-map-grid > .ub-search-in-nav .ub-filtros-btn{display:none !important}
     }
 
     /* ═══════════════════════════════════════════════════════════════════════

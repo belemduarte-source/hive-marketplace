@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v69.css"/>
+  <link rel="stylesheet" href="app.v70.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -4012,54 +4012,40 @@ function showTab(name) {
     el.classList.toggle('active', el.dataset.tab === name);
   });
 
-  // Two-tier header: the banner is its own full-width tier and the search lives
-  // in the bar directly beneath it, so the controls stay in the unified bar.
-  try { dockMapSearchControls(false); } catch (_) {}
+  // Map page (desktop): lay the header out as a grid — logo+tabs (top-left),
+  // search (under them), banner (wide centre), auth (top-right).
+  try { dockMapSearchControls(name === 'search'); } catch (_) {}
 }
 
-// Move the unified search controls (.ub-search = input box + Pesquisar) between
-// two homes: their normal spot at the top of the .unified-bar, or docked up into
-// the header — in a centre column directly beneath the publicity banner. Docking
-// only happens on the Map page and only on desktop (>1024px); on Home/About or
-// on mobile they return to the unified bar.
+// On the Map page (desktop) move the search controls (.ub-search) up into the
+// header as a grid item (under the logo/tabs) and switch the nav to its grid
+// layout. On Home/About or on mobile, the search returns to the unified bar and
+// the nav uses its normal (two-tier) layout.
 function dockMapSearchControls(active) {
   const nav        = document.querySelector('nav');
-  const navAd      = nav && nav.querySelector('.nav-ad');
   const ubSearch   = document.querySelector('.ub-search');
   const unifiedBar = document.querySelector('.unified-bar');
-  if (!nav || !navAd || !ubSearch || !unifiedBar) return;
+  if (!nav || !ubSearch || !unifiedBar) return;
   const isDesktop = window.innerWidth > 1024;
 
   if (active && isDesktop) {
-    // Build (once) a vertical column around the banner, then drop the search
-    // controls in beneath it.
-    let col = document.getElementById('navCenterCol');
-    if (!col) {
-      col = document.createElement('div');
-      col.id = 'navCenterCol';
-      navAd.parentNode.insertBefore(col, navAd);
-      col.appendChild(navAd);
-    }
-    if (ubSearch.parentNode !== col) col.appendChild(ubSearch);
+    if (ubSearch.parentNode !== nav) nav.appendChild(ubSearch);
     ubSearch.classList.add('ub-search-in-nav');
+    nav.classList.add('nav-map-grid');
   } else {
-    // Undock: return the search controls to the top of the unified bar…
     if (ubSearch.classList.contains('ub-search-in-nav')) {
       unifiedBar.insertBefore(ubSearch, unifiedBar.firstChild);
       ubSearch.classList.remove('ub-search-in-nav');
     }
-    // …and unwrap the banner back into the nav.
-    const col = document.getElementById('navCenterCol');
-    if (col) {
-      nav.insertBefore(navAd, col);
-      col.remove();
-    }
+    nav.classList.remove('nav-map-grid');
   }
 }
 
-// Keep the search controls in their bar (undocked) across resizes.
+// Re-evaluate the header layout when crossing the desktop/mobile boundary on the map.
 window.addEventListener('resize', () => {
-  try { dockMapSearchControls(false); } catch (_) {}
+  const onMap = document.getElementById('tab-search') &&
+                getComputedStyle(document.getElementById('tab-search')).display !== 'none';
+  try { dockMapSearchControls(onMap); } catch (_) {}
 }, { passive: true });
 
 // ── LANDING PAGE SEARCH ────────────────────────────────────────────────────────
