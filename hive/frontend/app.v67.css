@@ -2649,30 +2649,30 @@
        (≤1024px) keeps its own layout and is untouched.
        ═══════════════════════════════════════════════════════════════════════ */
     @media (min-width:1025px){
-      nav{min-height:312px;flex-wrap:nowrap;align-items:center;justify-content:flex-start;gap:18px;padding:10px 26px;overflow:visible}
+      nav{min-height:312px;flex-wrap:nowrap;align-items:flex-start;justify-content:flex-start;gap:18px;padding:18px 26px;overflow:visible}
 
       .mobile-top-actions,.hamburger{display:none !important}
       .ad-banner-home{display:none !important}   /* banner lives in the nav, not the body */
 
-      /* logo — larger to match the taller header */
-      .nav-banner{margin-right:0 !important;flex-shrink:0;align-self:center}
+      /* logo — larger to match the taller header; top-aligned with the other sections */
+      .nav-banner{margin-right:0 !important;flex-shrink:0;align-self:flex-start}
       .nav-banner > div[onclick]{flex-direction:row !important;gap:14px !important;margin-right:0 !important}
       #logoHexSvg{width:64px !important;height:64px !important}
       .logo-h{font-size:42px}.logo-i{font-size:32px}.logo-v{font-size:37px}
       .logo-e{font-size:43px}.logo-x{font-size:38px}
       .logo-slogan,.logo-tagline{display:none !important}
 
-      /* tabs — MUCH bigger primary nav, left side, vertically centred */
-      .nav-links{flex:0 0 auto;gap:10px;align-self:center}
+      /* tabs — MUCH bigger primary nav, left side, top-aligned */
+      .nav-links{flex:0 0 auto;gap:10px;align-self:flex-start}
       .nav-link{flex:0 0 auto;font-size:27px;padding:14px 28px;border-radius:12px}
       .nav-link svg{width:28px;height:28px}
 
       /* publicity banner — centre, fills the space between the tabs and auth */
-      .nav-ad{display:flex !important;align-self:center;flex:1 1 auto;min-width:0;height:288px;max-height:288px;min-height:0;margin:0 6px}
+      .nav-ad{display:flex !important;align-self:flex-start;flex:1 1 auto;min-width:0;height:288px;max-height:288px;min-height:0;margin:0 6px}
 
       /* Map page: the search bar + Pesquisar dock UP into the header — a centre
          column with the banner on top and the search row directly beneath it. */
-      #navCenterCol{display:flex;flex-direction:column;flex:1 1 auto;min-width:0;align-self:center;gap:8px;margin:0 6px}
+      #navCenterCol{display:flex;flex-direction:column;flex:1 1 auto;min-width:0;align-self:flex-start;gap:8px;margin:0 6px}
       #navCenterCol .nav-ad{flex:0 0 auto;width:100%;height:250px;max-height:250px;margin:0}
       .ub-search-in-nav{display:flex !important;width:100%;align-items:center;gap:8px;padding:0;flex:0 0 auto}
       .ub-search-in-nav .ub-flex1{flex:1 1 auto;min-width:0}
@@ -2684,17 +2684,23 @@
          action spanning the top, three EQUAL utility buttons in a row beneath,
          all sharing one baseline. Fixed width keeps it compact and frees the
          banner beside it. */
-      .nav-right{flex-direction:column !important;align-items:stretch;justify-content:center;gap:10px;width:288px;min-width:0 !important;padding:0 !important;flex:0 0 auto;align-self:center}
+      .nav-right{flex-direction:column !important;align-items:stretch;justify-content:flex-start;gap:10px;width:288px;min-width:0 !important;padding:0 !important;flex:0 0 auto;align-self:flex-start}
       .nav-right .authArea{display:flex;width:100%}
       /* Entrar: primary action, spans the cluster width */
       .btn-login{width:100%;font-size:20px;font-weight:700;padding:13px 0;justify-content:center;border-radius:10px}
-      /* PT · Ajuda · Escuro: equal-width uniform pills, icon+label inline */
+      /* PT · Ajuda · Escuro: equal-width uniform pills on one baseline.
+         The three flex items in the row are .lang-switcher (wraps PT), .btn-ajuda
+         and .theme-toggle — equalise THOSE; the PT button then fills its wrapper. */
       .nav-right-bottom{flex-direction:row !important;align-items:stretch;gap:8px !important;width:100%;flex:0 0 auto}
+      .nav-right-bottom > .lang-switcher,
+      .nav-right-bottom > .btn-ajuda,
+      .nav-right-bottom > .theme-toggle{flex:1 1 0 !important;min-width:0 !important;width:auto !important}
+      .nav-right .lang-switcher{display:flex}
+      .nav-right .lang-switcher .lang-btn{width:100% !important}
       .nav-right .lang-btn,
       .nav-right .btn-ajuda,
       .nav-right .theme-toggle{
-        flex:1 1 0 !important;width:auto !important;
-        height:46px;padding:0 6px !important;
+        height:46px;padding:0 8px !important;
         flex-direction:row !important;align-items:center;justify-content:center;gap:6px;
         font-size:15px !important;font-weight:700;white-space:nowrap;border-radius:10px;
       }
