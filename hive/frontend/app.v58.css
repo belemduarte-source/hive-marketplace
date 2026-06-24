@@ -55,22 +55,22 @@
     .nav-link.active{color:#fff;background:rgba(249,115,22,.15);box-shadow:inset 0 -3px 0 #f97316}
     .nav-link.active svg{opacity:1;color:#f97316}
     /* ── NAV AD BANNER ── */
-    .nav-ad{flex:1;min-width:0;align-self:center;position:relative;border-radius:14px;overflow:hidden;margin:8px 12px;background:#ffffff;border:1px solid #e5e7eb;box-shadow:0 2px 12px rgba(0,0,0,.15);min-height:168px;max-height:290px;height:290px;display:flex}
+    .nav-ad{flex:1;min-width:0;align-self:center;position:relative;border-radius:14px;overflow:hidden;margin:8px 12px;background:#ffffff;border:1px solid #e5e7eb;box-shadow:0 2px 12px rgba(0,0,0,.15);min-height:150px;max-height:316px;display:flex}
     .nav-ad-fallback{position:absolute;inset:0;background:linear-gradient(-45deg,#ffffff,#fff7ed,#ffffff,#fff3e6);background-size:400% 400%;animation:adGrad 28s ease infinite;opacity:1}
-    .nav-ad-content{position:relative;z-index:1;display:flex;align-items:center;gap:22px;padding:10px 26px;height:100%;width:100%;box-sizing:border-box}
-    .nav-ad-left{flex-shrink:0;min-width:150px}
-    .nav-ad-badge{display:inline-block;background:#f97316;color:#fff;font-size:13px;font-weight:800;padding:4px 12px;border-radius:14px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
-    .nav-ad-title{display:block;color:#0f172a;font-size:21px;font-weight:800;line-height:1.2}
-    .nav-ad-sub{display:block;color:#64748b;font-size:15px;margin-top:4px}
+    .nav-ad-content{position:relative;z-index:1;display:flex;align-items:center;gap:16px;padding:8px 18px;height:100%;width:100%;box-sizing:border-box}
+    .nav-ad-left{flex-shrink:0;min-width:110px}
+    .nav-ad-badge{display:inline-block;background:#f97316;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:14px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+    .nav-ad-title{display:block;color:#0f172a;font-size:18px;font-weight:800;line-height:1.2}
+    .nav-ad-sub{display:block;color:#64748b;font-size:13px;margin-top:3px}
     .nav-ad-steps{display:flex;flex-wrap:wrap;gap:8px;flex:1;align-items:center;justify-content:center}
-    .nav-ad-step{display:inline-flex;align-items:center;gap:9px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:22px;padding:9px 14px;font-size:28px;color:#334155;white-space:nowrap;transition:all .3s}
-    .nav-ad-step span{font-size:15px;font-weight:700}
+    .nav-ad-step{display:inline-flex;align-items:center;gap:6px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:16px;padding:4px 9px;font-size:15px;color:#334155;white-space:nowrap;transition:all .3s}
+    .nav-ad-step span{font-size:12px;font-weight:700}
     .nav-ad-step.lit{background:rgba(249,115,22,.12);border-color:#f97316;color:#9a3412;transform:scale(1.02);box-shadow:0 0 6px rgba(249,115,22,.18)}
     .nav-ad-step.done{background:rgba(16,185,129,.14);border-color:#10b981;color:#047857}
     .nav-ad-cta{flex-shrink:0;text-align:center;cursor:pointer;transition:transform .2s}
     .nav-ad-cta:hover{transform:scale(1.08)}
-    .nav-ad-cta-text{display:block;color:#f97316;font-size:15px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:6px}
-    .nav-ad-cta-ring{display:inline-flex;align-items:center;justify-content:center;width:54px;height:54px;border-radius:50%;border:2.5px solid #f97316;color:#f97316;font-size:24px;animation:ringPulse 2.8s ease-in-out infinite}
+    .nav-ad-cta-text{display:block;color:#f97316;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+    .nav-ad-cta-ring{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:2.5px solid #f97316;color:#f97316;font-size:18px;animation:ringPulse 2.8s ease-in-out infinite}
     /* Nav-ad rotating slides (Example ↔ Hivex) */
     .nav-ad .nav-ad-slide{display:none}
     .nav-ad .nav-ad-slide.active{display:flex}

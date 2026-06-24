@@ -238,7 +238,9 @@
       "PowerShell(\"=== domains ls ===\")",
       "PowerShell(\"=== redirect help ===\")",
       "Bash(vercel domains *)",
-      "Bash(git mv *)"
+      "Bash(git mv *)",
+      "PowerShell(Stop-Process -Id 23164 -Force -ErrorAction SilentlyContinue)",
+      "PowerShell(\"killed\")"
     ]
   }
 }
