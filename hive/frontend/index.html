@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v67.css"/>
+  <link rel="stylesheet" href="app.v68.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -4012,9 +4012,9 @@ function showTab(name) {
     el.classList.toggle('active', el.dataset.tab === name);
   });
 
-  // On the Map page (desktop), dock the search controls up into the header,
-  // stacked beneath the publicity banner in the centre column.
-  try { dockMapSearchControls(name === 'search'); } catch (_) {}
+  // Two-tier header: the banner is its own full-width tier and the search lives
+  // in the bar directly beneath it, so the controls stay in the unified bar.
+  try { dockMapSearchControls(false); } catch (_) {}
 }
 
 // Move the unified search controls (.ub-search = input box + Pesquisar) between
@@ -4057,11 +4057,9 @@ function dockMapSearchControls(active) {
   }
 }
 
-// Re-evaluate docking when crossing the desktop/mobile boundary while on the map.
+// Keep the search controls in their bar (undocked) across resizes.
 window.addEventListener('resize', () => {
-  const onMap = document.getElementById('tab-search') &&
-                getComputedStyle(document.getElementById('tab-search')).display !== 'none';
-  try { dockMapSearchControls(onMap); } catch (_) {}
+  try { dockMapSearchControls(false); } catch (_) {}
 }, { passive: true });
 
 // ── LANDING PAGE SEARCH ────────────────────────────────────────────────────────

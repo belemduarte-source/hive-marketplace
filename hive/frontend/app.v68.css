@@ -37,7 +37,13 @@
       --shadow:0 1px 3px rgba(0,0,0,.1);
       --shadow-md:0 4px 12px rgba(0,0,0,.08);
       --shadow-lg:0 8px 32px rgba(0,0,0,.12);
-      --orange-light:#fff7ed;--orange-mid:#ffedd5;--orange-border:#fed7aa
+      --orange-light:#fff7ed;--orange-mid:#ffedd5;--orange-border:#fed7aa;
+      /* ── Type scale (consistent steps) ── */
+      --fs-xs:13px;--fs-sm:15px;--fs-md:17px;--fs-lg:22px;--fs-xl:28px;--fs-2xl:36px;
+      /* ── Spacing scale (4px grid) ── */
+      --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:20px;--sp-6:24px;--sp-8:32px;
+      /* ── Radius scale ── */
+      --rad-sm:8px;--rad-md:10px;--rad-lg:14px
     }
     /* height:100dvh adapts when the mobile address bar collapses/expands;
        100vh fallback for older browsers. overscroll-behavior:none keeps
@@ -2642,84 +2648,63 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
-       TALL DESKTOP HEADER (≥1025px) — logo + big tabs (left) · publicity banner
-       (centre, between the Mapa tab and Entrar) · big auth (right). The banner
-       has a FIXED height + align-self:center so the header height is
-       deterministic and cannot balloon (the old circular-flex bug). Mobile
-       (≤1024px) keeps its own layout and is untouched.
+       TWO-TIER DESKTOP HEADER (≥1025px)
+       Tier 1 — a slim top bar: logo · Início/Mapa tabs (left) · auth (right).
+       Tier 2 — the publicity banner, a FULL-WIDTH band that wraps to its own
+       line (so it never clips) directly above the page content.
+       Sizing uses the shared type/space scale (see :root --fs-* / --sp-*).
+       Mobile (≤1024px) keeps its own layout and is untouched.
        ═══════════════════════════════════════════════════════════════════════ */
     @media (min-width:1025px){
-      nav{min-height:312px;flex-wrap:nowrap;align-items:flex-start;justify-content:flex-start;gap:18px;padding:18px 26px;overflow:visible}
+      nav{flex-wrap:wrap;align-items:center;justify-content:flex-start;gap:14px 18px;padding:12px 28px;overflow:visible}
 
       .mobile-top-actions,.hamburger{display:none !important}
-      .ad-banner-home{display:none !important}   /* banner lives in the nav, not the body */
+      .ad-banner-home{display:none !important}   /* banner is the nav's tier-2 band */
+      #navCenterCol{display:contents}            /* docking is off; never wrap the banner */
 
-      /* logo — larger to match the taller header; top-aligned with the other sections */
-      .nav-banner{margin-right:0 !important;flex-shrink:0;align-self:flex-start}
-      .nav-banner > div[onclick]{flex-direction:row !important;gap:14px !important;margin-right:0 !important}
-      #logoHexSvg{width:64px !important;height:64px !important}
-      .logo-h{font-size:42px}.logo-i{font-size:32px}.logo-v{font-size:37px}
-      .logo-e{font-size:43px}.logo-x{font-size:38px}
+      /* logo (tier 1, left) */
+      .nav-banner{order:1;margin-right:0 !important;flex-shrink:0;align-self:center}
+      .nav-banner > div[onclick]{flex-direction:row !important;gap:12px !important;margin-right:0 !important}
+      #logoHexSvg{width:50px !important;height:50px !important}
+      .logo-h{font-size:32px}.logo-i{font-size:24px}.logo-v{font-size:28px}
+      .logo-e{font-size:33px}.logo-x{font-size:29px}
       .logo-slogan,.logo-tagline{display:none !important}
 
-      /* tabs — MUCH bigger primary nav, left side, top-aligned */
-      .nav-links{flex:0 0 auto;gap:10px;align-self:flex-start}
-      .nav-link{flex:0 0 auto;font-size:27px;padding:14px 28px;border-radius:12px}
-      .nav-link svg{width:28px;height:28px}
+      /* tabs (tier 1, left) — clear primary nav */
+      .nav-links{order:2;flex:0 0 auto;gap:8px;align-self:center}
+      .nav-link{flex:0 0 auto;font-size:var(--fs-lg);padding:11px 22px;border-radius:var(--rad-md)}
+      .nav-link svg{width:23px;height:23px}
 
-      /* publicity banner — centre, fills the space between the tabs and auth */
-      .nav-ad{display:flex !important;align-self:flex-start;flex:1 1 auto;min-width:0;height:288px;max-height:288px;min-height:0;margin:0 6px}
-
-      /* Map page: the search bar + Pesquisar dock UP into the header — a centre
-         column with the banner on top and the search row directly beneath it. */
-      #navCenterCol{display:flex;flex-direction:column;flex:1 1 auto;min-width:0;align-self:flex-start;gap:8px;margin:0 6px}
-      #navCenterCol .nav-ad{flex:0 0 auto;width:100%;height:250px;max-height:250px;margin:0}
-      .ub-search-in-nav{display:flex !important;width:100%;align-items:center;gap:8px;padding:0;flex:0 0 auto}
-      .ub-search-in-nav .ub-flex1{flex:1 1 auto;min-width:0}
-      .ub-search-in-nav .ub-input{padding:9px 14px}
-      .ub-search-in-nav .ub-btn{padding:9px 16px;font-size:16px}
-      .ub-search-in-nav .ub-filtros-btn{display:none !important}
-
-      /* auth cluster (right) — a tidy fixed-width block: Entrar as the primary
-         action spanning the top, three EQUAL utility buttons in a row beneath,
-         all sharing one baseline. Fixed width keeps it compact and frees the
-         banner beside it. */
-      .nav-right{flex-direction:column !important;align-items:stretch;justify-content:flex-start;gap:10px;width:288px;min-width:0 !important;padding:0 !important;flex:0 0 auto;align-self:flex-start}
-      .nav-right .authArea{display:flex;width:100%}
-      /* Entrar: primary action, spans the cluster width */
-      .btn-login{width:100%;font-size:20px;font-weight:700;padding:13px 0;justify-content:center;border-radius:10px}
-      /* PT · Ajuda · Escuro: equal-width uniform pills on one baseline.
-         The three flex items in the row are .lang-switcher (wraps PT), .btn-ajuda
-         and .theme-toggle — equalise THOSE; the PT button then fills its wrapper. */
-      .nav-right-bottom{flex-direction:row !important;align-items:stretch;gap:8px !important;width:100%;flex:0 0 auto}
-      .nav-right-bottom > .lang-switcher,
-      .nav-right-bottom > .btn-ajuda,
-      .nav-right-bottom > .theme-toggle{flex:1 1 0 !important;min-width:0 !important;width:auto !important}
-      .nav-right .lang-switcher{display:flex}
-      .nav-right .lang-switcher .lang-btn{width:100% !important}
+      /* auth (tier 1, right) — a single horizontal row, right-aligned */
+      .nav-right{order:3;margin-left:auto;flex-direction:row !important;align-items:center;justify-content:flex-end;gap:10px;width:auto;min-width:0 !important;padding:0 !important;flex:0 1 auto;align-self:center}
+      .nav-right .authArea{display:flex}
+      .btn-login{width:auto;font-size:var(--fs-md);font-weight:700;padding:11px 24px;justify-content:center;border-radius:var(--rad-md)}
+      .nav-right-bottom{flex-direction:row !important;align-items:center;gap:8px !important;width:auto !important;flex:0 0 auto}
+      .nav-right-bottom > .lang-switcher{display:flex}
       .nav-right .lang-btn,
       .nav-right .btn-ajuda,
       .nav-right .theme-toggle{
-        height:46px;padding:0 8px !important;
+        height:44px;padding:0 14px !important;width:auto !important;
         flex-direction:row !important;align-items:center;justify-content:center;gap:6px;
-        font-size:15px !important;font-weight:700;white-space:nowrap;border-radius:10px;
+        font-size:var(--fs-sm) !important;font-weight:700;white-space:nowrap;border-radius:var(--rad-md);
       }
       .nav-right .btn-ajuda [data-lucide],
       .nav-right .btn-ajuda svg{width:16px;height:16px}
 
-      /* ── Map page search/activity bar (search no longer docked in nav) ──
-         Two clean rows in the unified bar: search row on top, full-width
-         Áreas de Atividade below, with a gap before the map. */
+      /* tier 2 — publicity banner: full-width band on its own line, never clipped */
+      .nav-ad{order:4;display:flex !important;flex:0 0 100%;width:100%;height:150px;max-height:150px;min-height:0;margin:6px 0 0;align-self:stretch}
+
+      /* ── Map page bar (beneath the banner): search row + full-width filters ── */
       .unified-bar{flex-direction:column;align-items:stretch;min-height:0;flex-wrap:nowrap}
       .unified-bar > .ub-divider{display:none}
       .ub-search{width:100%;justify-content:flex-start;align-items:center;gap:12px;padding:10px 16px}
-      .ub-flex1{flex:0 1 380px;min-width:240px}
-      .ub-sectors-label{display:block;width:100%;padding:2px 16px 4px;font-size:14px;font-weight:800;color:rgba(255,255,255,.55);text-transform:uppercase;letter-spacing:.06em}
+      .ub-flex1{flex:0 1 420px;min-width:260px}
+      .ub-sectors-label{display:block;width:100%;padding:2px 16px 4px;font-size:var(--fs-xs);font-weight:800;color:rgba(255,255,255,.62);text-transform:uppercase;letter-spacing:.06em}
       .ub-sectors-wrap{width:100%;flex:0 0 auto;padding:0 8px 12px}
       .ub-sectors{width:100%}
       .ub-sectors-fade,.ub-sectors-scroll-hint{display:none}
       .ub-sectors .sector-filter-container{align-items:stretch}
-      .ub-sectors .cat-item{min-height:62px;padding:10px 14px;align-items:center}
+      .ub-sectors .cat-item{min-height:60px;padding:10px 14px;align-items:center}
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
