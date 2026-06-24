@@ -2727,3 +2727,31 @@
     /* Home activity photo cards: keep the lift snappy and add a clear ring on the
        focused/selected card for keyboard + visual consistency. */
     .lp-hero-cat{transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease}
+
+    /* ── Map-page promo strip (desktop only) ──
+       Hidden by default; shown as a slim band on desktop. Lives in #tab-search
+       so it only appears on the Map page, under the activity filters. */
+    .map-promo{display:none}
+    @media (min-width:1025px){
+      .map-promo{
+        display:flex;align-items:center;gap:12px;flex-shrink:0;
+        padding:9px 20px;
+        background:linear-gradient(90deg,rgba(249,115,22,.16),rgba(249,115,22,.05));
+        border-bottom:1px solid rgba(249,115,22,.22);
+        color:#e2e8f0;font-size:15px;
+      }
+      .map-promo-ico{font-size:20px;line-height:1;flex-shrink:0}
+      .map-promo-text strong{color:#fb923c;font-weight:800}
+      .map-promo-cta{
+        margin-left:auto;flex-shrink:0;
+        background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;
+        border-radius:8px;padding:7px 16px;font-size:14px;font-weight:700;
+        cursor:pointer;font-family:inherit;transition:filter .15s,transform .12s;white-space:nowrap;
+      }
+      .map-promo-cta:hover{filter:brightness(1.07);transform:translateY(-1px)}
+      .map-promo-close{
+        flex-shrink:0;background:transparent;border:none;color:rgba(255,255,255,.5);
+        font-size:15px;cursor:pointer;padding:4px 6px;line-height:1;transition:color .15s;
+      }
+      .map-promo-close:hover{color:#fff}
+    }

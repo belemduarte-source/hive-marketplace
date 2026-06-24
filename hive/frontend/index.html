@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v61.css"/>
+  <link rel="stylesheet" href="app.v62.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -864,6 +864,16 @@
     <div class="ub-sectors-fade" id="sectorFade"></div>
   </div>
   <div class="ub-divider"></div>
+</div>
+
+<!-- Map-page promo strip — slim, dismissible value-prop band under the activity
+     filters (desktop only). Keeps the map full-size while still surfacing the
+     "one platform, all areas" message without crowding the task. -->
+<div class="map-promo" id="mapPromo">
+  <span class="map-promo-ico" aria-hidden="true">🏠</span>
+  <span class="map-promo-text"><strong data-i18n="adTitle">Construir uma casa?</strong> · <span data-i18n="adMainSub">8 áreas, 1 plataforma</span></span>
+  <button class="map-promo-cta" onclick="showTab('home')"><span data-i18n="mapPromoCta">Saiba mais</span> →</button>
+  <button class="map-promo-close" id="mapPromoClose" aria-label="Fechar" onclick="dismissMapPromo()">✕</button>
 </div>
 
 <!-- Recently viewed companies (populated when user opens detail panels) -->
@@ -11644,6 +11654,21 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
   } else {
     clearNavZoom();
   }
+})();
+
+// Map-page promo strip: dismiss for the session.
+function dismissMapPromo(){
+  var el = document.getElementById('mapPromo');
+  if (el) el.style.display = 'none';
+  try { sessionStorage.setItem('hivex_map_promo_dismissed','1'); } catch(_) {}
+}
+(function(){
+  try {
+    if (sessionStorage.getItem('hivex_map_promo_dismissed')) {
+      var el = document.getElementById('mapPromo');
+      if (el) el.style.display = 'none';
+    }
+  } catch(_) {}
 })();
 </script>
 
