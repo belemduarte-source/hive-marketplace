@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v68.css"/>
+  <link rel="stylesheet" href="app.v69.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -317,7 +317,7 @@
     <!-- 3 & 4. PT + AJUDA side by side -->
     <div class="nav-right-bottom">
       <div class="lang-switcher" id="langSwitcher">
-        <button class="lang-btn" id="langBtn" onclick="toggleLangMenu()">
+        <button class="lang-btn" id="langBtn" onclick="toggleLangMenu()" aria-label="Idioma / Language" aria-haspopup="true">
           <img id="langFlag" class="lang-flag" src="https://flagcdn.com/pt.svg" alt="PT"/>
           <span id="langCode">PT</span>
           <span class="arrow">▾</span>
@@ -662,7 +662,7 @@
           </div>
         </div>
       </div>
-      <button class="ad-mute" id="adMute" onclick="toggleAdSound()" title="Som">🔇</button>
+      <button class="ad-mute" id="adMute" onclick="toggleAdSound()" title="Som" aria-label="Ligar ou desligar o som">🔇</button>
     </div>
   </div>
 
@@ -846,7 +846,7 @@
     <div class="ub-input ub-flex1">
       <i data-lucide="search" class="ub-ico"></i>
       <input id="searchUnified" type="text" placeholder="Cidade, empresa ou atividade..." oninput="handleUnifiedSearch(this.value)"/>
-      <button class="btn-locate" id="btnLocate" onclick="detectUserLocation()" title="Usar localização atual"><i data-lucide="crosshair"></i></button>
+      <button class="btn-locate" id="btnLocate" onclick="detectUserLocation()" title="Usar localização atual" aria-label="Usar a minha localização atual"><i data-lucide="crosshair" aria-hidden="true"></i></button>
     </div>
     <button class="ub-btn" id="btnSearch" onclick="applyFilters();showToast(t('searchUpdated'))">
       <i data-lucide="search"></i><span data-i18n="btnSearch">Pesquisar</span>
