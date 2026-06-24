@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v62.css"/>
+  <link rel="stylesheet" href="app.v63.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -866,15 +866,9 @@
   <div class="ub-divider"></div>
 </div>
 
-<!-- Map-page promo strip — slim, dismissible value-prop band under the activity
-     filters (desktop only). Keeps the map full-size while still surfacing the
-     "one platform, all areas" message without crowding the task. -->
-<div class="map-promo" id="mapPromo">
-  <span class="map-promo-ico" aria-hidden="true">🏠</span>
-  <span class="map-promo-text"><strong data-i18n="adTitle">Construir uma casa?</strong> · <span data-i18n="adMainSub">8 áreas, 1 plataforma</span></span>
-  <button class="map-promo-cta" onclick="showTab('home')"><span data-i18n="mapPromoCta">Saiba mais</span> →</button>
-  <button class="map-promo-close" id="mapPromoClose" aria-label="Fechar" onclick="dismissMapPromo()">✕</button>
-</div>
+<!-- The publicity banner (.ad-banner-home) is relocated here, right under the
+     activity filters, by JS on load — so it lives on the Map page instead of
+     Início. See the relocation script near </body>. -->
 
 <!-- Recently viewed companies (populated when user opens detail panels) -->
 <div class="recent-strip" id="recentStrip" hidden></div>
@@ -9887,13 +9881,14 @@ function closeMobileFilter() {
     if (document.hidden) stopCasa();
     else startCasa();
   });
-  // Re-start when the user navigates to the home tab; stop when they leave.
+  // The banner now lives on the Map (search) tab — animate its casa steps while
+  // that tab is visible; pause elsewhere.
   document.addEventListener('hive:tab-change', e => {
-    if (e.detail === 'home') startCasa();
+    if (e.detail === 'search') startCasa();
     else stopCasa();
   });
 
-  // Auto-start casa animation if on the home tab
+  // Auto-start casa animation (banner shows on the search tab)
   startCasa();
   if (slides.length > 1) {
     let idx = 0;
@@ -11656,19 +11651,24 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
   }
 })();
 
-// Map-page promo strip: dismiss for the session.
-function dismissMapPromo(){
-  var el = document.getElementById('mapPromo');
-  if (el) el.style.display = 'none';
-  try { sessionStorage.setItem('hivex_map_promo_dismissed','1'); } catch(_) {}
-}
+// Relocate the publicity banner onto the Map page: move .ad-banner-home out of
+// the home tab and into #tab-search, right after the activity-filter bar. This
+// removes it from Início and shows it on the Map page (where #tab-search is the
+// only visible tab on that route).
 (function(){
-  try {
-    if (sessionStorage.getItem('hivex_map_promo_dismissed')) {
-      var el = document.getElementById('mapPromo');
-      if (el) el.style.display = 'none';
+  function relocateBanner(){
+    var banner = document.querySelector('.ad-banner-home');
+    var searchTab = document.getElementById('tab-search');
+    var unified = searchTab && searchTab.querySelector('.unified-bar');
+    if (banner && unified && banner.parentElement !== searchTab) {
+      unified.insertAdjacentElement('afterend', banner);
     }
-  } catch(_) {}
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', relocateBanner);
+  } else {
+    relocateBanner();
+  }
 })();
 </script>
 
