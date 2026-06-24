@@ -240,7 +240,9 @@
       "Bash(vercel domains *)",
       "Bash(git mv *)",
       "PowerShell(Stop-Process -Id 23164 -Force -ErrorAction SilentlyContinue)",
-      "PowerShell(\"killed\")"
+      "PowerShell(\"killed\")",
+      "Bash(ls app.v6*.css)",
+      "Bash(ls app.v59.css)"
     ]
   }
 }

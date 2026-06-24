@@ -2648,31 +2648,36 @@
        layout (≤1024px) keeps its own rules and is untouched.
        ═══════════════════════════════════════════════════════════════════════ */
     @media (min-width:1025px){
-      nav{height:84px;min-height:84px;flex-wrap:nowrap;align-items:center;justify-content:flex-start;gap:22px;padding:0 28px;overflow:visible}
+      nav{height:96px;min-height:96px;flex-wrap:nowrap;align-items:center;justify-content:flex-start;gap:22px;padding:0 30px;overflow:visible}
 
-      /* the publicity banner no longer lives in the nav on desktop */
+      /* the publicity banner no longer lives in the nav on desktop — it now
+         shows in the page body (see .ad-banner-home re-enabled below) */
       .nav-ad{display:none !important}
       .mobile-top-actions,.hamburger{display:none !important}
 
       /* compact logo: small hex mark + wordmark, no slogan/tagline in the bar */
       .nav-banner{margin-right:0 !important;flex-shrink:0}
-      .nav-banner > div[onclick]{flex-direction:row !important;gap:11px !important;margin-right:0 !important}
-      #logoHexSvg{width:46px !important;height:46px !important}
-      .logo-h{font-size:30px}.logo-i{font-size:23px}.logo-v{font-size:27px}
-      .logo-e{font-size:31px}.logo-x{font-size:28px}
+      .nav-banner > div[onclick]{flex-direction:row !important;gap:12px !important;margin-right:0 !important}
+      #logoHexSvg{width:52px !important;height:52px !important}
+      .logo-h{font-size:34px}.logo-i{font-size:26px}.logo-v{font-size:30px}
+      .logo-e{font-size:35px}.logo-x{font-size:31px}
       .logo-slogan,.logo-tagline{display:none !important}
 
-      /* tabs grouped with the logo on the left */
-      .nav-links{flex:0 0 auto;gap:6px;margin-right:auto}
-      .nav-link{flex:0 0 auto;font-size:17px;padding:10px 18px}
-      .nav-link svg{width:20px;height:20px}
+      /* tabs grouped with the logo on the left — larger so they read as primary nav */
+      .nav-links{flex:0 0 auto;gap:8px;margin-right:auto}
+      .nav-link{flex:0 0 auto;font-size:21px;padding:12px 24px;border-radius:11px}
+      .nav-link svg{width:24px;height:24px}
 
-      /* auth + utilities: a single compact row on the right */
-      .nav-right{flex-direction:row !important;align-items:center;gap:10px;min-width:0 !important;padding:0 !important;flex:0 0 auto}
-      .nav-right-bottom{flex-direction:row !important;align-items:center;gap:10px !important;width:auto !important;flex:0 0 auto}
-      .nav-right .btn-ajuda,.nav-right .lang-btn{flex:0 0 auto !important;font-size:14px !important;padding:8px 13px !important;width:auto !important}
-      .btn-login{width:auto;font-size:14px;padding:9px 18px}
-      .theme-toggle{width:auto;font-size:14px;padding:8px 12px}
+      /* auth + utilities: a single row on the right, bigger/clearer for the user */
+      .nav-right{flex-direction:row !important;align-items:center;gap:12px;min-width:0 !important;padding:0 !important;flex:0 0 auto}
+      .nav-right-bottom{flex-direction:row !important;align-items:center;gap:12px !important;width:auto !important;flex:0 0 auto}
+      .nav-right .btn-ajuda,.nav-right .lang-btn{flex:0 0 auto !important;font-size:18px !important;padding:11px 18px !important;width:auto !important}
+      .btn-login{width:auto;font-size:18px;padding:12px 24px}
+      .theme-toggle{width:auto;font-size:18px;padding:11px 16px}
+
+      /* ── Publicity banner, back in the page body (home) as a centred strip ── */
+      .ad-banner-home{display:block !important;width:100%;max-width:1180px;margin:8px auto 0;padding:0 30px;align-self:center;box-sizing:border-box}
+      .ad-banner-home .ad-banner{width:100%;min-height:200px}
 
       /* ── Map page search/activity bar (search no longer docked in nav) ──
          Two clean rows in the unified bar: search row on top, full-width
