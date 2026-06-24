@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v58.css"/>
+  <link rel="stylesheet" href="app.v59.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -4008,10 +4008,9 @@ function showTab(name) {
     el.classList.toggle('active', el.dataset.tab === name);
   });
 
-  // On the Map page (desktop only), dock the search box + Pesquisar into the
-  // nav, stacked directly under the Início/Mapa tabs and to the left of the
-  // publicity banner. On Home/About or on mobile they return to the search bar.
-  try { dockMapSearchControls(name === 'search'); } catch (_) {}
+  // The header is now slim, so the search controls live in their normal search
+  // bar on the Map page (no longer docked into the nav). Always keep them undocked.
+  try { dockMapSearchControls(false); } catch (_) {}
 }
 
 // Move the unified search controls (.ub-search = input box + Pesquisar) between
@@ -4053,11 +4052,9 @@ function dockMapSearchControls(active) {
   }
 }
 
-// Re-evaluate docking when crossing the desktop/mobile boundary while on the map.
+// Keep the search controls in their normal bar (undocked) across resizes.
 window.addEventListener('resize', () => {
-  const onMap = document.getElementById('tab-search') &&
-                getComputedStyle(document.getElementById('tab-search')).display !== 'none';
-  try { dockMapSearchControls(onMap); } catch (_) {}
+  try { dockMapSearchControls(false); } catch (_) {}
 }, { passive: true });
 
 // ── LANDING PAGE SEARCH ────────────────────────────────────────────────────────
@@ -11633,29 +11630,19 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
 })();
 </script>
 
-<!-- Auto-fit: scale the top nav to the viewport so the whole header fits any
-     screen without the user having to zoom. The nav is designed for large
-     monitors; on smaller desktops we scale it down smoothly (floor kept high so
-     the top buttons stay large). Mobile/tablet (≤1024px) keep their own CSS
-     layout and are left at zoom 1. The map content is never zoomed (it would
-     break Leaflet tiles). -->
+<!-- The header is now a slim, fixed-height bar, so the old viewport-scaling
+     hack is no longer needed. Clear any previously-applied inline zoom (e.g.
+     left over in a cached session) so the slim CSS layout governs the nav. -->
 <script>
 (function(){
-  var BASE = 1500;   // width at which the nav looks ideal at zoom 1
-  var FLOOR = 0.88;  // never shrink below this — keeps top buttons big/legible
-  function fitToScreen(){
+  function clearNavZoom(){
     var nav = document.querySelector('nav');
-    if (!nav) return;
-    var w = window.innerWidth;
-    if (w <= 1024) { nav.style.zoom = ''; return; }      // mobile/tablet: CSS handles it
-    var z = Math.min(1, Math.max(FLOOR, w / BASE));
-    nav.style.zoom = z.toFixed(3);
+    if (nav && nav.style.zoom) nav.style.zoom = '';
   }
-  window.addEventListener('resize', fitToScreen, { passive: true });
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', fitToScreen);
+    document.addEventListener('DOMContentLoaded', clearNavZoom);
   } else {
-    fitToScreen();
+    clearNavZoom();
   }
 })();
 </script>
