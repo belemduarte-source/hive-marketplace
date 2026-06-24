@@ -2693,3 +2693,37 @@
       .ub-sectors .sector-filter-container{align-items:stretch}
       .ub-sectors .cat-item{min-height:62px;padding:10px 14px;align-items:center}
     }
+
+    /* ═══════════════════════════════════════════════════════════════════════
+       REDESIGN PHASE 3+4 — polish: clearer interactions + accessibility
+       ═══════════════════════════════════════════════════════════════════════ */
+
+    /* Keyboard focus ring — visible only for keyboard users (not on mouse click),
+       so the whole UI is navigable and accessible without disturbing pointer UX. */
+    a:focus-visible,
+    button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    textarea:focus-visible,
+    [tabindex]:focus-visible,
+    .nav-link:focus-visible,
+    .cat-item:focus-visible,
+    .lp-hero-cat:focus-visible,
+    .lp-sb-tab:focus-visible{
+      outline:3px solid rgba(249,115,22,.65);
+      outline-offset:2px;
+      border-radius:8px;
+    }
+
+    /* Map activity filters: make the SELECTED area unmistakable (solid orange
+       chip) and give a subtle hover lift — the core "find by activity" action. */
+    @media (min-width:1025px){
+      .ub-sectors .cat-item{border-radius:10px;transition:background .15s ease,transform .12s ease,box-shadow .15s ease,color .15s ease}
+      .ub-sectors .cat-item:hover{background:rgba(249,115,22,.16);transform:translateY(-1px)}
+      .ub-sectors .cat-item.active{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;outline:none;box-shadow:0 4px 14px rgba(249,115,22,.4)}
+      .ub-sectors .cat-item.active .cat-label{color:#fff}
+    }
+
+    /* Home activity photo cards: keep the lift snappy and add a clear ring on the
+       focused/selected card for keyboard + visual consistency. */
+    .lp-hero-cat{transition:transform .2s cubic-bezier(.34,1.56,.64,1),box-shadow .2s ease}
