@@ -2642,43 +2642,40 @@
     }
 
     /* ═══════════════════════════════════════════════════════════════════════
-       SLIM DESKTOP HEADER (redesign) — desktop only (≥1025px).
-       A conventional fixed-height bar: compact logo · tabs · auth, so content
-       sits above the fold and the layout stops fighting itself. The mobile
-       layout (≤1024px) keeps its own rules and is untouched.
+       TALL DESKTOP HEADER (≥1025px) — logo + big tabs (left) · publicity banner
+       (centre, between the Mapa tab and Entrar) · big auth (right). The banner
+       has a FIXED height + align-self:center so the header height is
+       deterministic and cannot balloon (the old circular-flex bug). Mobile
+       (≤1024px) keeps its own layout and is untouched.
        ═══════════════════════════════════════════════════════════════════════ */
     @media (min-width:1025px){
-      nav{height:96px;min-height:96px;flex-wrap:nowrap;align-items:center;justify-content:flex-start;gap:22px;padding:0 30px;overflow:visible}
+      nav{min-height:312px;flex-wrap:nowrap;align-items:center;justify-content:flex-start;gap:18px;padding:10px 26px;overflow:visible}
 
-      /* the publicity banner no longer lives in the nav on desktop — it now
-         shows in the page body (see .ad-banner-home re-enabled below) */
-      .nav-ad{display:none !important}
       .mobile-top-actions,.hamburger{display:none !important}
+      .ad-banner-home{display:none !important}   /* banner lives in the nav, not the body */
 
-      /* compact logo: small hex mark + wordmark, no slogan/tagline in the bar */
-      .nav-banner{margin-right:0 !important;flex-shrink:0}
-      .nav-banner > div[onclick]{flex-direction:row !important;gap:12px !important;margin-right:0 !important}
-      #logoHexSvg{width:52px !important;height:52px !important}
-      .logo-h{font-size:34px}.logo-i{font-size:26px}.logo-v{font-size:30px}
-      .logo-e{font-size:35px}.logo-x{font-size:31px}
+      /* logo — larger to match the taller header */
+      .nav-banner{margin-right:0 !important;flex-shrink:0;align-self:center}
+      .nav-banner > div[onclick]{flex-direction:row !important;gap:14px !important;margin-right:0 !important}
+      #logoHexSvg{width:64px !important;height:64px !important}
+      .logo-h{font-size:42px}.logo-i{font-size:32px}.logo-v{font-size:37px}
+      .logo-e{font-size:43px}.logo-x{font-size:38px}
       .logo-slogan,.logo-tagline{display:none !important}
 
-      /* tabs grouped with the logo on the left — larger so they read as primary nav */
-      .nav-links{flex:0 0 auto;gap:8px;margin-right:auto}
-      .nav-link{flex:0 0 auto;font-size:21px;padding:12px 24px;border-radius:11px}
-      .nav-link svg{width:24px;height:24px}
+      /* tabs — MUCH bigger primary nav, left side, vertically centred */
+      .nav-links{flex:0 0 auto;gap:10px;align-self:center}
+      .nav-link{flex:0 0 auto;font-size:27px;padding:14px 28px;border-radius:12px}
+      .nav-link svg{width:28px;height:28px}
 
-      /* auth + utilities: a single row on the right, bigger/clearer for the user */
-      .nav-right{flex-direction:row !important;align-items:center;gap:12px;min-width:0 !important;padding:0 !important;flex:0 0 auto}
-      .nav-right-bottom{flex-direction:row !important;align-items:center;gap:12px !important;width:auto !important;flex:0 0 auto}
-      .nav-right .btn-ajuda,.nav-right .lang-btn{flex:0 0 auto !important;font-size:18px !important;padding:11px 18px !important;width:auto !important}
-      .btn-login{width:auto;font-size:18px;padding:12px 24px}
-      .theme-toggle{width:auto;font-size:18px;padding:11px 16px}
+      /* publicity banner — centre, fills the space between the tabs and auth */
+      .nav-ad{display:flex !important;align-self:center;flex:1 1 auto;min-width:0;height:288px;max-height:288px;min-height:0;margin:0 6px}
 
-      /* ── Publicity banner — relocated onto the Map page, full-width strip just
-         under the activity filters. Height-capped so the map keeps room. ── */
-      .ad-banner-home{display:block !important;width:100%;max-width:none;margin:0;padding:8px 12px 4px;box-sizing:border-box;flex-shrink:0}
-      .ad-banner-home .ad-banner{width:100%;min-height:120px;max-height:150px}
+      /* auth — MUCH bigger; Entrar on top, utilities row beneath (right side) */
+      .nav-right{flex-direction:column !important;align-items:stretch;justify-content:center;gap:12px;min-width:210px !important;padding:0 !important;flex:0 0 auto;align-self:center}
+      .nav-right-bottom{flex-direction:row !important;align-items:center;gap:10px !important;width:auto !important;flex:0 0 auto}
+      .btn-login{width:100%;font-size:23px;padding:15px 24px}
+      .nav-right .btn-ajuda,.nav-right .lang-btn{flex:1 1 auto !important;font-size:18px !important;padding:12px 14px !important;width:auto !important}
+      .theme-toggle{width:100%;font-size:18px;padding:12px 16px}
 
       /* ── Map page search/activity bar (search no longer docked in nav) ──
          Two clean rows in the unified bar: search row on top, full-width

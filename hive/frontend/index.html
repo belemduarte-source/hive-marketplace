@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v63.css"/>
+  <link rel="stylesheet" href="app.v64.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -9881,14 +9881,13 @@ function closeMobileFilter() {
     if (document.hidden) stopCasa();
     else startCasa();
   });
-  // The banner now lives on the Map (search) tab — animate its casa steps while
-  // that tab is visible; pause elsewhere.
+  // Re-start when the user navigates to the home tab; stop when they leave.
   document.addEventListener('hive:tab-change', e => {
-    if (e.detail === 'search') startCasa();
+    if (e.detail === 'home') startCasa();
     else stopCasa();
   });
 
-  // Auto-start casa animation (banner shows on the search tab)
+  // Auto-start casa animation if on the home tab
   startCasa();
   if (slides.length > 1) {
     let idx = 0;
@@ -11651,25 +11650,6 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
   }
 })();
 
-// Relocate the publicity banner onto the Map page: move .ad-banner-home out of
-// the home tab and into #tab-search, right after the activity-filter bar. This
-// removes it from Início and shows it on the Map page (where #tab-search is the
-// only visible tab on that route).
-(function(){
-  function relocateBanner(){
-    var banner = document.querySelector('.ad-banner-home');
-    var searchTab = document.getElementById('tab-search');
-    var unified = searchTab && searchTab.querySelector('.unified-bar');
-    if (banner && unified && banner.parentElement !== searchTab) {
-      unified.insertAdjacentElement('afterend', banner);
-    }
-  }
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', relocateBanner);
-  } else {
-    relocateBanner();
-  }
-})();
 </script>
 
 </body>

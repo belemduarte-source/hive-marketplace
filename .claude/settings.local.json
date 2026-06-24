@@ -242,7 +242,8 @@
       "PowerShell(Stop-Process -Id 23164 -Force -ErrorAction SilentlyContinue)",
       "PowerShell(\"killed\")",
       "Bash(ls app.v6*.css)",
-      "Bash(ls app.v59.css)"
+      "Bash(ls app.v59.css)",
+      "mcp__visualize__show_widget"
     ]
   }
 }
