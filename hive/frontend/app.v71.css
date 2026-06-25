@@ -2753,8 +2753,11 @@
     /* Map activity filters: make the SELECTED area unmistakable (solid orange
        chip) and give a subtle hover lift — the core "find by activity" action. */
     @media (min-width:1025px){
-      .ub-sectors .cat-item{border-radius:10px;transition:background .15s ease,transform .12s ease,box-shadow .15s ease,color .15s ease}
-      .ub-sectors .cat-item:hover{background:rgba(249,115,22,.16);transform:translateY(-1px)}
+      /* NOTE: never put `transform` on .cat-item — its activity dropdown is
+         position:fixed and a CHILD, so a transform makes the chip the dropdown's
+         containing block and the list jumps/flickers. Hover via background only. */
+      .ub-sectors .cat-item{border-radius:10px;transition:background .15s ease,box-shadow .15s ease,color .15s ease}
+      .ub-sectors .cat-item:hover{background:rgba(249,115,22,.16)}
       .ub-sectors .cat-item.active{background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;outline:none;box-shadow:0 4px 14px rgba(249,115,22,.4)}
       .ub-sectors .cat-item.active .cat-label{color:#fff}
     }
