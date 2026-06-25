@@ -1326,8 +1326,8 @@
       display:flex;flex-direction:column;align-items:center;justify-content:flex-end;
       padding:0 10px 16px;gap:6px;
     }
-    .lp-hero-cat-emoji{font-size:50px;filter:drop-shadow(0 1px 6px rgba(0,0,0,.6))}
-    .lp-hero-cat-name{font-size:18px;font-weight:800;color:#fff;text-align:center;line-height:1.2;text-shadow:0 1px 4px rgba(0,0,0,.7)}
+    .lp-hero-cat-emoji{font-size:66px;filter:drop-shadow(0 1px 6px rgba(0,0,0,.6))}
+    .lp-hero-cat-name{font-size:24px;font-weight:800;color:#fff;text-align:center;line-height:1.2;text-shadow:0 1px 4px rgba(0,0,0,.7)}
 
     /* ── Stats Bar ── */
     /* White stats bar removed by user request. */
@@ -1517,8 +1517,8 @@
       /* Keep hero cats 4-col on mobile — same as desktop, just shorter */
       .lp-hero-cats{grid-template-columns:repeat(4,1fr) !important;gap:11px !important}
       .lp-hero-cat{height:140px !important}
-      .lp-hero-cat-emoji{font-size:30px !important}
-      .lp-hero-cat-name{font-size:12px !important}
+      .lp-hero-cat-emoji{font-size:38px !important}
+      .lp-hero-cat-name{font-size:14px !important}
       /* Keep featured grid 2-col on mobile */
       .lp-featured-grid{grid-template-columns:repeat(2,1fr)}
       .lp-company-card{padding:16px}
