@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v71.css"/>
+  <link rel="stylesheet" href="app.v72.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -4017,10 +4017,11 @@ function showTab(name) {
   try { dockMapSearchControls(name === 'search'); } catch (_) {}
 }
 
-// On the Map page (desktop) move the search controls (.ub-search) up into the
-// header as a grid item (under the logo/tabs) and switch the nav to its grid
-// layout. On Home/About or on mobile, the search returns to the unified bar and
-// the nav uses its normal (two-tier) layout.
+// Desktop header grid: the banner sits in the wide centre on EVERY page (Home
+// and Map), so the publicity banner is in the same position throughout. The
+// search controls (.ub-search) additionally dock under the logo/tabs only on
+// the Map page (where they exist). On mobile, the nav uses its normal layout
+// and the search returns to the unified bar.
 function dockMapSearchControls(active) {
   const nav        = document.querySelector('nav');
   const ubSearch   = document.querySelector('.ub-search');
@@ -4028,16 +4029,16 @@ function dockMapSearchControls(active) {
   if (!nav || !ubSearch || !unifiedBar) return;
   const isDesktop = window.innerWidth > 1024;
 
+  // Grid header (banner centred) on all desktop pages.
+  nav.classList.toggle('nav-map-grid', isDesktop);
+
+  // Dock the search into the header only on the Map page.
   if (active && isDesktop) {
     if (ubSearch.parentNode !== nav) nav.appendChild(ubSearch);
     ubSearch.classList.add('ub-search-in-nav');
-    nav.classList.add('nav-map-grid');
-  } else {
-    if (ubSearch.classList.contains('ub-search-in-nav')) {
-      unifiedBar.insertBefore(ubSearch, unifiedBar.firstChild);
-      ubSearch.classList.remove('ub-search-in-nav');
-    }
-    nav.classList.remove('nav-map-grid');
+  } else if (ubSearch.classList.contains('ub-search-in-nav')) {
+    unifiedBar.insertBefore(ubSearch, unifiedBar.firstChild);
+    ubSearch.classList.remove('ub-search-in-nav');
   }
 }
 
