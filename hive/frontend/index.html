@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v73.css"/>
+  <link rel="stylesheet" href="app.v74.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -968,9 +968,9 @@
       <input type="range" class="radius-slider" min="0" max="100" value="50" id="radiusSlider"/>
       <div class="radius-marks">
         <span style="left:0%">5</span>
-        <span style="left:25%">13</span>
-        <span style="left:50%">35</span>
-        <span style="left:75%">95</span>
+        <span style="left:35%">25</span>
+        <span style="left:50%">50</span>
+        <span style="left:65%">100</span>
         <span style="left:100%">🇵🇹 Todo</span>
       </div>
     </div>
@@ -3990,15 +3990,13 @@ function showTab(name) {
         map.invalidateSize({ animate: false });
         if (!window._mapEverShown) {
           window._mapEverShown = true;
+          // The map always opens zoomed OUT (the whole country); the user chooses
+          // whether to zoom into their location via the locate button. We still
+          // request their position so the "you are here" marker + 50 km radius
+          // circle are shown — but without changing the zoom.
+          map.setView(PORTUGAL_CENTER, 7);
           if (!_locationObtained) {
-            // Location not yet received — request it now the map is visible.
-            // Only fires if no request is already in-flight (_geoInProgress check
-            // is inside detectUserLocation for auto=true calls).
-            map.setView(PORTUGAL_CENTER, 7);
             setTimeout(() => detectUserLocation(true), 200);
-          } else {
-            // Location already obtained on page load — just re-center smoothly
-            map.flyTo(currentMapCenter, 13, { duration: 1.2 });
           }
         }
       }
@@ -6202,14 +6200,14 @@ function addCompanyMarker(c) {
   ensureClusterGroup();
 }
 
-// Logarithmic slider: slider 0-100 → real km 5-600
-// slider=0 → 5km, slider=50 → ~50km, slider=100 → 600km
+// Logarithmic slider: slider 0-100 → real km 5-500.
+// slider=0 → 5km, slider=50 → 50km (default), slider=100 → "Todo".
 function sliderToKm(sliderVal) {
   const s = parseFloat(sliderVal);
-  if (s >= 100) return 250;
+  if (s >= 100) return 500;
   if (s <= 0) return 5;
-  // Log scale: 5 * (250/5)^(s/100) = 5 * 50^(s/100)
-  return Math.round(5 * Math.pow(50, s / 100));
+  // Log scale anchored so the midpoint (50) is exactly 50 km: 5 * 100^(s/100).
+  return Math.round(5 * Math.pow(100, s / 100));
 }
 
 function getRadiusKm() {
@@ -8932,7 +8930,14 @@ function detectUserLocation(auto = false) {
       updateRadius(50);
     }
 
-    if (map) map.flyTo([lat, lng], 13, { duration: auto ? 1.2 : 1.8 });
+    // Only zoom into the user's location when THEY ask (locate button). On the
+    // automatic detection at startup, keep the map zoomed out — just sync the
+    // radius circle to their position (drawn below).
+    if (map && !auto) map.flyTo([lat, lng], 13, { duration: 1.8 });
+    if (typeof updateRadius === 'function') {
+      const _rs = document.getElementById('radiusSlider');
+      updateRadius(_rs ? _rs.value : 50);
+    }
 
     // Place/update the "you are here" marker
     if (userLocationMarker) { userLocationMarker.remove(); userLocationMarker = null; }
