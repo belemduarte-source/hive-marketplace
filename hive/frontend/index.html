@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v75.css"/>
+  <link rel="stylesheet" href="app.v76.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -4504,72 +4504,50 @@ function renderTestimonialBanner() {
   const track = document.getElementById('lpTestimonialTrack');
   if (!track) return;
 
-  // Get companies sorted by best reviews
-  const reviewed = [...companies]
-    .filter(c => c.reviews > 0 && c.rating >= 3.5)
-    .sort((a, b) => b.rating - a.rating || b.reviews - a.reviews);
-
-  if (reviewed.length === 0) {
-    // Show placeholder testimonials when no real companies exist
-    const placeholders = [
-      { emoji:'🏗️', color:'#f97316', name:t('testimonial1Name'), sector:t('testimonial1Sector'), rating:5, quote:t('testimonial1Quote') },
-      { emoji:'⚡', color:'#3b82f6', name:t('testimonial2Name'), sector:t('testimonial2Sector'), rating:5, quote:t('testimonial2Quote') },
-      { emoji:'🎨', color:'#8b5cf6', name:t('testimonial3Name'), sector:t('testimonial3Sector'), rating:5, quote:t('testimonial3Quote') },
-      { emoji:'🔑', color:'#10b981', name:t('testimonial4Name'), sector:t('testimonial4Sector'), rating:5, quote:t('testimonial4Quote') },
-      { emoji:'📐', color:'#06b6d4', name:t('testimonial1Name'), sector:t('testimonial1Sector'), rating:5, quote:t('testimonial1Quote') },
-      { emoji:'🌿', color:'#22c55e', name:t('testimonial2Name'), sector:t('testimonial2Sector'), rating:5, quote:t('testimonial2Quote') }
-    ];
-    const items = placeholders;
-    const cards = items.map(c => `
-      <div class="lp-testimonial-card">
-        <div class="lp-tc-header">
-          <div class="lp-tc-avatar" style="background:${c.color}22">${c.emoji}</div>
-          <div class="lp-tc-info">
-            <div class="lp-tc-name">${c.name}</div>
-            <div class="lp-tc-sector">${c.sector}</div>
-          </div>
-        </div>
-        <div class="lp-tc-stars">${'★'.repeat(c.rating)}${'☆'.repeat(5 - c.rating)}</div>
-        <div class="lp-tc-quote">"${c.quote}"</div>
-      </div>`).join('');
-    // Duplicate for seamless loop
-    track.innerHTML = cards + cards;
-    return;
-  }
-
-  const tr = translations[currentLang] || translations.pt;
-  const sc = tr.sectors || {};
-  const testimonialPhrases = [
+  // Simple "what customers say" cards: a 5-star rating, a short comment, and
+  // who it's from + which company it's about (picked at random from the list).
+  const phrases = [
     'Excelente profissionalismo e qualidade de trabalho.',
-    'Muito pontual e trabalho impecável. Recomendo!',
+    'Muito pontuais e trabalho impecável. Recomendo!',
     'Ótima relação qualidade-preço. Voltarei a contratar.',
     'Equipa muito competente e organizada.',
-    'Superou as expectativas. Trabalho de primeira.',
+    'Superaram as expectativas. Trabalho de primeira.',
     'Profissionais sérios e de confiança.',
     'Serviço rápido e eficiente. Muito satisfeito.',
-    'Atendimento excelente do início ao fim.'
+    'Atendimento excelente do início ao fim.',
+    'Cumpriram os prazos e o orçamento. Recomendo!',
+    'Trabalho cuidado e muita simpatia.'
   ];
+  const authors = ['João M.', 'Ana R.', 'Pedro S.', 'Marta C.', 'Rui F.', 'Sofia L.', 'Tiago A.', 'Inês P.', 'Bruno G.', 'Carla D.'];
 
-  const cards = reviewed.map((c, i) => {
-    const filled = Math.round(c.rating);
-    const stars = '★'.repeat(filled) + '☆'.repeat(5 - filled);
-    const sectorLabel = sc[c.sector] || c.sector || '';
-    const quote = testimonialPhrases[i % testimonialPhrases.length];
-    return `
-      <div class="lp-testimonial-card" onclick="lpOpenCompany(${c.id})" style="cursor:pointer">
-        <div class="lp-tc-header">
-          <div class="lp-tc-avatar" style="background:${c.color || '#f97316'}22">${c.emoji || '🏢'}</div>
-          <div class="lp-tc-info">
-            <div class="lp-tc-name">${c.name}</div>
-            <div class="lp-tc-sector">${sectorLabel}</div>
-          </div>
+  // Companies to attribute the comments to (random). Falls back to a generic
+  // label until the catalogue has loaded.
+  const pool = (Array.isArray(companies) ? companies : []).filter(c => c && c.name);
+
+  const N = 8;
+  const cards = [];
+  for (let i = 0; i < N; i++) {
+    const phrase  = phrases[i % phrases.length];
+    const author  = authors[i % authors.length];
+    const company = pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
+    const companyName = company ? company.name : 'Hivex';
+    const initial = (author.trim()[0] || '?').toUpperCase();
+    const open    = company ? `onclick="lpOpenCompany(${company.id})" style="cursor:pointer"` : '';
+    cards.push(`
+      <div class="lp-testimonial-card" ${open}>
+        <div class="lp-tc-stars">★★★★★</div>
+        <div class="lp-tc-quote">"${phrase}"</div>
+        <div class="lp-tc-attrib">
+          <span class="lp-tc-avatar">${initial}</span>
+          <span class="lp-tc-meta">
+            <span class="lp-tc-author">${author}</span>
+            <span class="lp-tc-company">${companyName}</span>
+          </span>
         </div>
-        <div class="lp-tc-stars">${stars} <span style="color:#6b7280;font-size:12px">${c.rating.toFixed(1)}</span></div>
-        <div class="lp-tc-quote">"${quote}"</div>
-      </div>`;
-  }).join('');
-  // Duplicate for seamless infinite scroll
-  track.innerHTML = cards + cards;
+      </div>`);
+  }
+  // Duplicate the set for the seamless infinite scroll.
+  track.innerHTML = cards.join('') + cards.join('');
 }
 
 function lpOpenCompany(companyId) {
