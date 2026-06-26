@@ -2715,7 +2715,7 @@
         grid-template-rows:96px 56px;       /* fixed → deterministic header height (row 1 fits the big buttons) */
         grid-template-areas:
           "logo tabs banner auth"
-          "search search banner .";
+          "search search banner auth";
         align-items:center;
         column-gap:16px;row-gap:6px;
         padding:10px 26px;
