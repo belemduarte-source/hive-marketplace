@@ -12,8 +12,13 @@ const COOKIE_OPTS = {
   httpOnly: true,
   sameSite: 'lax',
   secure: process.env.NODE_ENV === 'production',
+  path: '/',
   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
 };
+// clearCookie only removes the cookie when the attributes match the ones it was
+// set with (path/sameSite/secure) — otherwise some browsers keep it. Reuse the
+// same flags minus maxAge.
+const CLEAR_COOKIE_OPTS = { httpOnly: true, sameSite: 'lax', secure: process.env.NODE_ENV === 'production', path: '/' };
 
 // Lazy-init Google client so missing GOOGLE_CLIENT_ID only breaks /auth/google,
 // not the whole server.
@@ -181,7 +186,7 @@ router.post('/login', async (req, res, next) => {
 
 // POST /api/auth/logout
 router.post('/logout', (req, res) => {
-  res.clearCookie('hive_token');
+  res.clearCookie('hive_token', CLEAR_COOKIE_OPTS);
   res.json({ ok: true });
 });
 
@@ -392,7 +397,7 @@ router.delete('/me', requireAuth, async (req, res, next) => {
     }
 
     await pool.query('DELETE FROM users WHERE id = $1', [user.id]);
-    res.clearCookie('hive_token');
+    res.clearCookie('hive_token', CLEAR_COOKIE_OPTS);
     res.json({ ok: true });
   } catch (e) {
     next(e);

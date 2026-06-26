@@ -98,6 +98,11 @@ app.use(express.json({ limit: '50kb' }));
 app.use(cookieParser());
 
 // ── Rate limiters ─────────────────────────────────────────────────────────────
+// Only relax limits for genuine local dev. On Vercel (VERCEL is always set) or
+// any production build, limits stay ON even if NODE_ENV is somehow unset — we
+// must never ship the API with rate limiting silently disabled.
+const _skipRateLimit = () => !process.env.VERCEL && process.env.NODE_ENV !== 'production';
+
 // Auth routes: 20 attempts per 15-minute window per IP
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -105,7 +110,7 @@ const authLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Demasiadas tentativas. Tente novamente em 15 minutos.' },
-  skip: () => process.env.NODE_ENV !== 'production',
+  skip: _skipRateLimit,
 });
 
 // Company registration: 10 submissions per hour per IP (prevents spam)
@@ -115,7 +120,7 @@ const registerLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Demasiados registos. Tente novamente mais tarde.' },
-  skip: () => process.env.NODE_ENV !== 'production',
+  skip: _skipRateLimit,
 });
 
 // General API: 300 requests per minute per IP
@@ -125,7 +130,7 @@ const generalLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Demasiados pedidos. Abrandar.' },
-  skip: () => process.env.NODE_ENV !== 'production',
+  skip: _skipRateLimit,
 });
 
 app.use('/api/', generalLimiter);
@@ -468,7 +473,7 @@ const assistantLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Demasiados pedidos ao assistente. Aguarde um momento.' },
-  skip: () => process.env.NODE_ENV !== 'production',
+  skip: _skipRateLimit,
 });
 
 app.post('/api/assistant', assistantLimiter, async (req, res) => {
