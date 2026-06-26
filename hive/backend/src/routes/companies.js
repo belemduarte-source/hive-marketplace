@@ -5,6 +5,30 @@ const { requireAuth, requireAdmin, optionalAuth } = require('../middleware/auth'
 const reviewsRouter = require('./reviews');
 const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail, sendContactEmail } = require('../email');
 
+// ── Defer slow email sends off the response path ──────────────────────────────
+// SMTP round-trips (often 1-3 s on Gmail) used to block the user's "submit" /
+// "contact" response. Here we send the email AFTER the response is flushed:
+//   • On Vercel, register the promise with the platform's request context so the
+//     function instance stays alive to finish the send (this is exactly what
+//     @vercel/functions' waitUntil does under the hood — we read the injected
+//     symbol directly to avoid adding a dependency that could break the build).
+//   • Locally (or on any runtime without that context) we just fire-and-forget.
+// Either way the user no longer waits on SMTP, and a failed send only logs.
+function deferEmail(makePromise, label) {
+  const task = Promise.resolve()
+    .then(makePromise)
+    .then(() => console.log(`[email] ${label} sent`))
+    .catch(err => console.error(`[email] ${label} failed:`, err && (err.stack || err.message || err)));
+
+  try {
+    const ctxStore = globalThis[Symbol.for('@vercel/request-context')];
+    const ctx = ctxStore && typeof ctxStore.get === 'function' ? ctxStore.get() : null;
+    if (ctx && typeof ctx.waitUntil === 'function') ctx.waitUntil(task);
+  } catch (_) { /* no platform context — fire-and-forget is fine */ }
+
+  return task;
+}
+
 // Portuguese NIF (Número de Identificação Fiscal): 9 digits with a checksum.
 // First digit identifies the entity type — only valid prefixes are accepted.
 // The checksum follows the modulo-11 algorithm published by the AT.
@@ -24,6 +48,9 @@ function isValidPortugueseNIF(input) {
 
 // GET /api/companies — public, returns all approved companies
 // Supports: ?country=pt  ?q=search_text  ?sector=Construção
+//   ?lat=&lng=&radius=km  → only companies within ~radius km (map viewport)
+//   ?limit=&offset=        → pagination (limit capped at 500). All optional;
+//   omitting them preserves the original "return everything" behaviour.
 // Columns needed to draw pins, popups, run search/filters and dedup. Heavy
 // detail-only fields (description, portfolio_images, business_hours,
 // founded_year) are intentionally excluded — the detail panel fetches the
@@ -38,7 +65,7 @@ const LIST_COLS = `
 
 router.get('/', optionalAuth, async (req, res, next) => {
   try {
-    const { country, q, sector } = req.query;
+    const { country, q, sector, lat, lng, radius, limit, offset } = req.query;
     const params = [];
     const conditions = [`status = 'approved'`];
 
@@ -50,20 +77,80 @@ router.get('/', optionalAuth, async (req, res, next) => {
       params.push(sector);
       conditions.push(`($${params.length} = ANY(sectors) OR sector = $${params.length})`);
     }
+
+    // Search term (kept out of `conditions` so we can swap the clause/order for
+    // a legacy fallback if the search_doc column or similarity() aren't available
+    // yet — see runList below). Both modes reference the same param, so `params`
+    // is identical either way.
+    let qIdx = null;
     if (q && q.trim()) {
-      params.push(q.trim());
-      conditions.push(
-        `to_tsvector('portuguese', name || ' ' || COALESCE(description,'') || ' ' || array_to_string(tags,' ') || ' ' || COALESCE(cae,'') || ' ' || COALESCE(city,''))
-         @@ plainto_tsquery('portuguese', $${params.length})`
-      );
+      params.push(q.trim().slice(0, 80));
+      qIdx = params.length;
     }
 
-    const where = 'WHERE ' + conditions.join(' AND ');
-    const { rows } = await pool.query(
-      `SELECT ${LIST_COLS} FROM companies ${where}
-       ORDER BY created_at DESC`,
-      params
-    );
+    // Optional geo filter: a bounding box around (lat,lng) sized to `radius` km.
+    // Uses idx_companies_lat_lng. Lets the map fetch only what's near the user as
+    // the catalogue grows, instead of the whole country on every load. Omitted →
+    // unchanged behaviour (returns all matching companies).
+    const la = parseFloat(lat), lo = parseFloat(lng), r = parseFloat(radius);
+    if (Number.isFinite(la) && Number.isFinite(lo) && Number.isFinite(r) && r > 0) {
+      const dLat = r / 111.0;
+      const dLng = r / (111.0 * Math.max(0.1, Math.cos(la * Math.PI / 180)));
+      params.push(la - dLat, la + dLat, lo - dLng, lo + dLng);
+      const [a, b, c, d] = [params.length - 3, params.length - 2, params.length - 1, params.length];
+      conditions.push(`lat BETWEEN $${a} AND $${b} AND lng BETWEEN $${c} AND $${d}`);
+    }
+
+    const baseWhere = 'WHERE ' + conditions.join(' AND ');
+
+    // Optional pagination (capped at 500/page). Absent → no LIMIT, as before.
+    let pageClause = '';
+    const lim = parseInt(limit, 10);
+    if (Number.isFinite(lim) && lim > 0) {
+      params.push(Math.min(lim, 500));
+      pageClause += ` LIMIT $${params.length}`;
+      const off = parseInt(offset, 10);
+      if (Number.isFinite(off) && off > 0) {
+        params.push(off);
+        pageClause += ` OFFSET $${params.length}`;
+      }
+    }
+
+    // Build the search clause + ordering per mode:
+    //   modern → indexed search_doc + pg_trgm fuzzy match, ranked by relevance
+    //   legacy → original inline to_tsvector + ILIKE, newest first
+    const p = qIdx ? `$${qIdx}` : null;
+    const searchClause = (mode) => {
+      if (!qIdx) return '';
+      if (mode === 'legacy') {
+        return ` AND (to_tsvector('portuguese', name || ' ' || COALESCE(description,'') || ' ' || array_to_string(tags,' ') || ' ' || COALESCE(cae,'') || ' ' || COALESCE(city,''))
+                 @@ plainto_tsquery('portuguese', ${p}) OR name ILIKE '%' || ${p} || '%')`;
+      }
+      return ` AND (search_doc @@ plainto_tsquery('portuguese', ${p})
+               OR name ILIKE '%' || ${p} || '%'
+               OR similarity(name, ${p}) > 0.3)`;
+    };
+    const orderClause = (mode) =>
+      (qIdx && mode === 'modern')
+        ? `ORDER BY ts_rank(search_doc, plainto_tsquery('portuguese', ${p})) DESC, rating DESC, created_at DESC`
+        : `ORDER BY created_at DESC`;
+    const buildSql = (mode) =>
+      `SELECT ${LIST_COLS} FROM companies ${baseWhere}${searchClause(mode)} ${orderClause(mode)}${pageClause}`;
+
+    let rows;
+    try {
+      ({ rows } = await pool.query(buildSql('modern'), params));
+    } catch (err) {
+      // search_doc column / similarity() not present yet (e.g. a brand-new DB
+      // whose migration is still settling). Fall back to the legacy full-text
+      // query so search never hard-fails for the user.
+      if (qIdx && (err.code === '42703' || err.code === '42883')) {
+        console.warn('[companies] search using legacy fallback:', err.code);
+        ({ rows } = await pool.query(buildSql('legacy'), params));
+      } else {
+        throw err;
+      }
+    }
 
     // Alvará and certidão permanente are private credentials — visible only to
     // authenticated users. Anonymous traffic gets them redacted, and only that
@@ -118,13 +205,8 @@ router.get('/:id/approve', async (req, res, next) => {
       return res.status(404).send(htmlPage('❌ Não encontrada', 'Empresa não encontrada na base de dados.', '#dc2626'));
     }
 
-    // Await so the email actually sends before the lambda is paused.
-    try {
-      await sendCompanyApprovalEmail(rows[0]);
-      console.log('[email] approval email sent to company', rows[0].id, rows[0].email);
-    } catch (err) {
-      console.error('[email] Failed to send approval email to company:', err && (err.stack || err.message || err));
-    }
+    // Notify the company AFTER rendering the admin's confirmation page.
+    deferEmail(() => sendCompanyApprovalEmail(rows[0]), `approval email (company ${rows[0].id})`);
 
     res.send(htmlPage(
       '✅ Empresa aprovada!',
@@ -153,13 +235,8 @@ router.get('/:id/reject', async (req, res, next) => {
       return res.status(404).send(htmlPage('❌ Não encontrada', 'Empresa não encontrada na base de dados.', '#dc2626'));
     }
 
-    // Await so the email actually sends before the lambda is paused.
-    try {
-      await sendCompanyRejectionEmail(rows[0]);
-      console.log('[email] rejection email sent to company', rows[0].id, rows[0].email);
-    } catch (err) {
-      console.error('[email] Failed to send rejection email to company:', err && (err.stack || err.message || err));
-    }
+    // Notify the company AFTER rendering the admin's confirmation page.
+    deferEmail(() => sendCompanyRejectionEmail(rows[0]), `rejection email (company ${rows[0].id})`);
 
     res.send(htmlPage(
       '🚫 Empresa rejeitada',
@@ -295,14 +372,9 @@ router.post('/', requireAuth, async (req, res, next) => {
       ]
     );
 
-    // Await before responding so the lambda doesn't freeze mid-send.
-    // (Vercel functions can be paused after res is flushed.)
-    try {
-      await sendRegistrationNotification(rows[0]);
-      console.log('[email] registration notification sent for company', rows[0].id, rows[0].name);
-    } catch (err) {
-      console.error('[email] Failed to send registration notification:', err && (err.stack || err.message || err));
-    }
+    // Send the admin notification AFTER responding (see deferEmail) so the
+    // applicant gets an instant confirmation instead of waiting on SMTP.
+    deferEmail(() => sendRegistrationNotification(rows[0]), `registration notification (company ${rows[0].id})`);
 
     res.status(201).json(rows[0]);
   } catch (e) {
@@ -401,13 +473,8 @@ router.post('/:id/contact', requireAuth, async (req, res, next) => {
     if (!rows[0].email) return res.status(422).json({ error: 'Esta empresa não tem email configurado' });
 
     const sender = { name: req.user.name, email: req.user.email };
-    // Await so the email actually sends before the lambda is paused.
-    try {
-      await sendContactEmail(rows[0], sender, message.trim());
-      console.log('[email] contact relay sent to company', rows[0].id);
-    } catch (err) {
-      console.error('[email] Contact relay failed:', err && (err.stack || err.message || err));
-    }
+    // Relay the message AFTER responding so the sender isn't blocked on SMTP.
+    deferEmail(() => sendContactEmail(rows[0], sender, message.trim()), `contact relay (company ${rows[0].id})`);
 
     // Track as contact event
     pool.query(

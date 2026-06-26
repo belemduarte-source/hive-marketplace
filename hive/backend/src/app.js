@@ -285,6 +285,26 @@ const MIGRATIONS = [
   `ALTER TABLE companies DROP CONSTRAINT IF EXISTS companies_status_check`,
   `ALTER TABLE companies ADD CONSTRAINT companies_status_check CHECK (status IN ('approved','pending','rejected','removed'))`,
 
+  // ── Indexed full-text + fuzzy search ─────────────────────────────────────────
+  // The list endpoint used to build to_tsvector() per row on every ?q= search,
+  // which can't use an index (sequential scan). A STORED generated tsvector +
+  // GIN index makes search fast and scalable. pg_trgm adds typo tolerance so
+  // "eletrecista" still finds "eletricista" and partial words match.
+  // to_tsvector(<const regconfig>, text) is IMMUTABLE, so it's valid in a
+  // generated column; the table rewrite is trivial at current scale.
+  `CREATE EXTENSION IF NOT EXISTS pg_trgm`,
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS search_doc tsvector
+     GENERATED ALWAYS AS (
+       to_tsvector('portuguese',
+         coalesce(name,'') || ' ' || coalesce(description,'') || ' ' ||
+         coalesce(array_to_string(tags,' '),'') || ' ' || coalesce(cae,'') || ' ' ||
+         coalesce(city,'') || ' ' || coalesce(zone,'') || ' ' ||
+         coalesce(array_to_string(sectors,' '),'') || ' ' || coalesce(sector,'')
+       )
+     ) STORED`,
+  `CREATE INDEX IF NOT EXISTS idx_companies_search_doc ON companies USING GIN(search_doc)`,
+  `CREATE INDEX IF NOT EXISTS idx_companies_name_trgm  ON companies USING GIN(name gin_trgm_ops)`,
+
   `CREATE TABLE IF NOT EXISTS reviews (
      id BIGSERIAL PRIMARY KEY,
      company_id BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,

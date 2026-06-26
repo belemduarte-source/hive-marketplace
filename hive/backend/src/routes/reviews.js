@@ -73,39 +73,58 @@ router.post('/', requireAuth, async (req, res, next) => {
       return res.status(400).json({ error: 'Indique pelo menos uma classificação (1 a 5).' });
     }
 
-    // Verify company exists and is approved
-    const { rows: co } = await pool.query(
-      `SELECT id FROM companies WHERE id = $1 AND status = 'approved'`,
-      [req.params.id]
-    );
-    if (!co[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
+    // The upsert and the rating recompute must be atomic: otherwise a crash
+    // between them, or two users reviewing the same company at once, can leave a
+    // saved review with a stale star average. We run both in one transaction and
+    // lock the company row (FOR UPDATE) so concurrent reviews recompute serially.
+    const client = await pool.connect();
+    try {
+      await client.query('BEGIN');
 
-    // Upsert: update if user already reviewed this company
-    const { rows } = await pool.query(
-      `INSERT INTO reviews (company_id, user_id, score, score_quality, score_speed, score_communication, score_value, comment)
-       VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
-       ON CONFLICT (company_id, user_id)
-       DO UPDATE SET score = EXCLUDED.score,
-                     score_quality = EXCLUDED.score_quality,
-                     score_speed = EXCLUDED.score_speed,
-                     score_communication = EXCLUDED.score_communication,
-                     score_value = EXCLUDED.score_value,
-                     comment = EXCLUDED.comment, created_at = NOW()
-       RETURNING *`,
-      [req.params.id, req.user.id, overall, sq, sp, scm, sv, comment || null]
-    );
+      // Verify the company exists and is approved — and lock the row so any other
+      // review landing on the same company waits here instead of racing the AVG.
+      const { rows: co } = await client.query(
+        `SELECT id FROM companies WHERE id = $1 AND status = 'approved' FOR UPDATE`,
+        [req.params.id]
+      );
+      if (!co[0]) {
+        await client.query('ROLLBACK');
+        return res.status(404).json({ error: 'Empresa não encontrada' });
+      }
 
-    // Recalculate company rating
-    await pool.query(
-      `UPDATE companies SET
-         rating  = (SELECT ROUND(AVG(score)::numeric, 1) FROM reviews WHERE company_id = $1),
-         reviews = (SELECT COUNT(*) FROM reviews WHERE company_id = $1),
-         updated_at = NOW()
-       WHERE id = $1`,
-      [req.params.id]
-    );
+      // Upsert: update if user already reviewed this company
+      const { rows } = await client.query(
+        `INSERT INTO reviews (company_id, user_id, score, score_quality, score_speed, score_communication, score_value, comment)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+         ON CONFLICT (company_id, user_id)
+         DO UPDATE SET score = EXCLUDED.score,
+                       score_quality = EXCLUDED.score_quality,
+                       score_speed = EXCLUDED.score_speed,
+                       score_communication = EXCLUDED.score_communication,
+                       score_value = EXCLUDED.score_value,
+                       comment = EXCLUDED.comment, created_at = NOW()
+         RETURNING *`,
+        [req.params.id, req.user.id, overall, sq, sp, scm, sv, comment || null]
+      );
 
-    res.status(201).json(rows[0]);
+      // Recalculate the company's aggregate rating in the same transaction.
+      await client.query(
+        `UPDATE companies SET
+           rating  = (SELECT ROUND(AVG(score)::numeric, 1) FROM reviews WHERE company_id = $1),
+           reviews = (SELECT COUNT(*) FROM reviews WHERE company_id = $1),
+           updated_at = NOW()
+         WHERE id = $1`,
+        [req.params.id]
+      );
+
+      await client.query('COMMIT');
+      res.status(201).json(rows[0]);
+    } catch (e) {
+      await client.query('ROLLBACK').catch(() => {});
+      throw e;
+    } finally {
+      client.release();
+    }
   } catch (e) {
     next(e);
   }
