@@ -1439,15 +1439,16 @@
     .lp-cc-address{font-size:15px;color:#6b7280;display:flex;align-items:center;gap:6px}
 
     /* ── How It Works (dark) ── */
-    .lp-steps-section{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%);padding:72px 32px}
+    .lp-steps-section{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%);padding:88px 32px}
     /* Trust section (pricing / verification / approval timeline) */
-    .lp-steps-grid{max-width:900px;margin:0 auto;display:flex;align-items:flex-start;gap:0}
-    .lp-step{flex:1;text-align:center;padding:0 24px}
-    .lp-step-num{width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;font-size:17px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;box-shadow:0 4px 18px rgba(249,115,22,.45)}
-    .lp-step-icon{width:62px;height:62px;border-radius:17px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;color:#fb923c}
-    .lp-step-title{font-size:19px;font-weight:800;color:#fff;margin:0 0 10px}
-    .lp-step-desc{font-size:14px;color:rgba(255,255,255,.5);line-height:1.7;margin:0}
-    .lp-step-arrow{font-size:30px;color:rgba(249,115,22,.35);align-self:center;flex-shrink:0;padding:0 4px;margin-top:-32px}
+    .lp-steps-grid{max-width:1120px;margin:0 auto;display:flex;align-items:flex-start;gap:0}
+    .lp-step{flex:1;text-align:center;padding:0 28px}
+    .lp-step-num{width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;font-size:26px;font-weight:900;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 4px 18px rgba(249,115,22,.45)}
+    .lp-step-icon{width:96px;height:96px;border-radius:24px;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;color:#fb923c}
+    .lp-step-icon svg{width:46px;height:46px}
+    .lp-step-title{font-size:28px;font-weight:800;color:#fff;margin:0 0 12px}
+    .lp-step-desc{font-size:18px;color:rgba(255,255,255,.55);line-height:1.65;margin:0}
+    .lp-step-arrow{font-size:42px;color:rgba(249,115,22,.35);align-self:center;flex-shrink:0;padding:0 4px;margin-top:-44px}
 
     /* ── Use Cases ── */
     .lp-uc-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
