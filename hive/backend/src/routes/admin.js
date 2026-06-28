@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const { requireAdmin } = require('../middleware/auth');
+const { pushToUser } = require('../push');
 
 // All admin routes require admin auth
 router.use(requireAdmin);
@@ -80,6 +81,16 @@ router.put('/companies/:id/status', async (req, res, next) => {
       [status, req.params.id]
     );
     if (!rows[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
+    // Notify the owner when their listing goes live (best-effort, dormant
+    // unless FCM is configured).
+    if (status === 'approved') {
+      pushToUser(
+        rows[0].created_by,
+        'Empresa aprovada na Hivex',
+        `${rows[0].name} já está visível na plataforma.`,
+        { companyId: rows[0].id }
+      ).catch(() => {});
+    }
     res.json(rows[0]);
   } catch (e) {
     next(e);

@@ -37,6 +37,22 @@ function signToken(user) {
   );
 }
 
+// The native app sends `X-Hivex-Native: 1` (and runs from a capacitor:// origin).
+// It can't use the httpOnly cookie cross-origin, so for those clients we ALSO
+// return the JWT in the body to store as a bearer token. The web app never sets
+// this header, so its token stays cookie-only (not exposed to page JS).
+function isNativeReq(req) {
+  const h = req.headers || {};
+  return h['x-hivex-native'] === '1' ||
+    /^(capacitor|ionic):/i.test(h['origin'] || '') ||
+    /\b(capacitor|ionic)\b/i.test(h['user-agent'] || '');
+}
+function authBody(req, user, token) {
+  const body = { user: safeUser(user) };
+  if (isNativeReq(req)) body.token = token;
+  return body;
+}
+
 // First-admin bootstrap: any user whose email is listed in the ADMIN_USERS
 // env var (comma-separated) is promoted to is_admin=true on next login. Lets
 // you grant admin without manual SQL. Returns the user (possibly with the
@@ -151,7 +167,7 @@ router.post('/register', async (req, res, next) => {
 
     const token = signToken(user);
     res.cookie('hive_token', token, COOKIE_OPTS);
-    res.status(201).json({ user: safeUser(user) });
+    res.status(201).json(authBody(req, user, token));
   } catch (e) {
     // Concurrent duplicate email that slipped past the existence check → the
     // UNIQUE constraint fires. Return the same generic 409 (no enumeration).
@@ -178,7 +194,7 @@ router.post('/login', async (req, res, next) => {
     const user = await maybeBootstrapAdmin(rows[0]);
     const token = signToken(user);
     res.cookie('hive_token', token, COOKIE_OPTS);
-    res.json({ user: safeUser(user) });
+    res.json(authBody(req, user, token));
   } catch (e) {
     next(e);
   }
@@ -280,7 +296,7 @@ router.post('/google', async (req, res, next) => {
     user = await maybeBootstrapAdmin(user);
     const token = signToken(user);
     res.cookie('hive_token', token, COOKIE_OPTS);
-    res.json({ user: safeUser(user) });
+    res.json(authBody(req, user, token));
   } catch (e) {
     next(e);
   }

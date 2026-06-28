@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router({ mergeParams: true }); // mergeParams gives access to :id from parent
 const pool = require('../db');
 const { requireAuth } = require('../middleware/auth');
+const { pushToUser } = require('../push');
 
 // GET /api/companies/:id/reviews — public
 router.get('/', async (req, res, next) => {
@@ -33,7 +34,7 @@ router.post('/:reviewId/reply', requireAuth, async (req, res, next) => {
 
     // Confirm the review belongs to a company owned by the caller
     const { rows: r } = await pool.query(
-      `SELECT r.id, c.created_by
+      `SELECT r.id, r.user_id, c.created_by, c.name AS company_name
          FROM reviews r
          JOIN companies c ON c.id = r.company_id
         WHERE r.id = $1 AND r.company_id = $2`,
@@ -48,6 +49,18 @@ router.post('/:reviewId/reply', requireAuth, async (req, res, next) => {
       `UPDATE reviews SET reply = $1, reply_at = NOW() WHERE id = $2 RETURNING *`,
       [reply, req.params.reviewId]
     );
+
+    // Notify the reviewer that the company replied (best-effort, dormant unless
+    // FCM is configured). Don't notify yourself if you reviewed your own page.
+    if (r[0].user_id && r[0].user_id !== req.user.id) {
+      pushToUser(
+        r[0].user_id,
+        'Resposta à sua avaliação',
+        `${r[0].company_name} respondeu à sua avaliação.`,
+        { companyId: req.params.id }
+      ).catch(() => {});
+    }
+
     res.json(rows[0]);
   } catch (e) {
     next(e);

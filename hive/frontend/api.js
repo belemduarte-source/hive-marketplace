@@ -1,15 +1,38 @@
 // Hivex API client — replaces Supabase SDK
-// All requests use credentials: 'include' so the httpOnly JWT cookie is sent automatically
+// On the web, requests use credentials: 'include' so the httpOnly JWT cookie is
+// sent automatically. In the native app (Capacitor) the WebView origin differs
+// from hivex.pt, so the cookie can't flow — there we send `X-Hivex-Native: 1`,
+// store the JWT the server returns, and attach it as `Authorization: Bearer`.
 
 const API_BASE = window.API_BASE || '/api';
+const NATIVE = !!window.HIVEX_NATIVE;
+const NATIVE_TOKEN_KEY = 'hivex_native_token';
+
+function _getNativeToken() {
+  if (!NATIVE) return null;
+  try { return localStorage.getItem(NATIVE_TOKEN_KEY); } catch (_) { return null; }
+}
+function _setNativeToken(t) {
+  if (!NATIVE) return;
+  try { if (t) localStorage.setItem(NATIVE_TOKEN_KEY, t); } catch (_) {}
+}
+function _clearNativeToken() {
+  try { localStorage.removeItem(NATIVE_TOKEN_KEY); } catch (_) {}
+}
 
 async function apiFetch(path, options = {}) {
+  const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+  if (NATIVE) {
+    headers['X-Hivex-Native'] = '1';
+    const tok = _getNativeToken();
+    if (tok) headers['Authorization'] = 'Bearer ' + tok;
+  }
   let res;
   try {
     res = await fetch(API_BASE + path, {
       credentials: 'include',
-      headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
       ...options,
+      headers, // after ...options so our headers always win
       body: options.body ? JSON.stringify(options.body) : undefined,
     });
   } catch (netErr) {
@@ -25,12 +48,16 @@ async function apiFetch(path, options = {}) {
   let data = {};
   try { data = raw ? JSON.parse(raw) : {}; } catch (_) { /* keep data={} */ }
   if (!res.ok) {
+    // A 401 in native means the stored token is gone/expired — drop it.
+    if (NATIVE && res.status === 401) _clearNativeToken();
     const msg = data.error || `Erro do servidor (${res.status})`;
     const err = new Error(msg);
     err.status = res.status;
     err.body   = raw.slice(0, 200);
     throw err;
   }
+  // Auth endpoints return { token } for native clients — persist it.
+  if (NATIVE && data && data.token) _setNativeToken(data.token);
   return data;
 }
 
@@ -140,7 +167,7 @@ const api = {
     return apiFetch('/auth/register', { method: 'POST', body: data });
   },
   logout() {
-    return apiFetch('/auth/logout', { method: 'POST' });
+    return apiFetch('/auth/logout', { method: 'POST' }).finally(_clearNativeToken);
   },
   getMe() {
     return apiFetch('/auth/me');
@@ -165,7 +192,7 @@ const api = {
     return apiFetch('/auth/change-password', { method: 'POST', body: { currentPassword, newPassword } });
   },
   deleteAccount(password) {
-    return apiFetch('/auth/me', { method: 'DELETE', body: { password } });
+    return apiFetch('/auth/me', { method: 'DELETE', body: { password } }).finally(_clearNativeToken);
   },
 
   // ── Favourites (per-user, server-persisted) ──────────────────────────────

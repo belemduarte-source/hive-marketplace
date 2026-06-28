@@ -208,6 +208,13 @@ router.get('/:id/approve', async (req, res, next) => {
 
     // Notify the company AFTER rendering the admin's confirmation page.
     deferEmail(() => sendCompanyApprovalEmail(rows[0]), `approval email (company ${rows[0].id})`);
+    // Native push to the owner (best-effort, dormant unless FCM is set up).
+    pushToUser(
+      rows[0].created_by,
+      'Empresa aprovada na Hivex',
+      `${rows[0].name} já está visível na plataforma.`,
+      { companyId: rows[0].id }
+    ).catch(() => {});
 
     res.send(htmlPage(
       '✅ Empresa aprovada!',

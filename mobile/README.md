@@ -181,8 +181,11 @@ The client + backend are already in place:
 - The app registers for push on launch and POSTs its token to **`/api/devices`**
   (stored in the `device_tokens` table, tied to the logged-in user).
 - The backend has an FCM HTTP v1 sender (`hive/backend/src/push.js`), **dormant
-  until you set `FCM_*` env vars**. One trigger is wired: when someone contacts a
-  company, its owner gets *"Nova mensagem na Hivex"* (tapping it opens the company).
+  until you set `FCM_*` env vars**. Three triggers are wired (tapping any opens
+  the company):
+  - someone **contacts** a company → its owner is notified;
+  - a company is **approved** (admin panel or email link) → its owner is notified;
+  - a company **replies to a review** → the reviewer is notified.
 
 To turn it on:
 1. Create a **Firebase project**, add an Android app (package `pt.hivex.app`) and
@@ -197,17 +200,28 @@ To turn it on:
 5. Add more triggers by calling `pushToUser(userId, title, body, { companyId })`
    anywhere in the backend (e.g. on review replies, approvals).
 
-## 9. Roadmap (v2 — optional, sturdier)
+## 9. Offline / bundled mode (token auth — already wired)
 
-The current build loads the live site. A more robust, fully-offline-capable
-version would:
-1. **Bundle** the frontend into `www/` instead of `server.url`, and
-2. switch auth from the httpOnly **cookie** to a **bearer token** stored in native
-   secure storage (the cookie won't cross the `capacitor://localhost` ↔ `hivex.pt`
-   origin boundary when bundled). This needs a small backend change so
-   `requireAuth` also accepts `Authorization: Bearer <jwt>`.
+**Token auth is now in place.** The backend accepts `Authorization: Bearer <jwt>`
+in addition to the cookie (`extractToken` in `middleware/auth.js`), and the auth
+endpoints return the JWT in the body when the request carries `X-Hivex-Native: 1`.
+The app (`api.js`) sends that header, stores the token, and attaches it as a
+bearer on every request — so login works even cross-origin. **Nothing changed for
+the web**, which still uses the httpOnly cookie.
 
-Until then, login/quotes work because the app is same-origin with `hivex.pt`.
+That means you *can* switch to a fully-bundled, offline-capable build whenever you
+want — it's now just a config change, no auth rework:
+
+1. Copy the web assets into `www/` (index.html, `app.vNN.css`, `api.js`,
+   `manifest.json`, icons — **skip `sw.js`** in bundled mode).
+2. Remove `server.url` from `capacitor.config.json` so the app loads `www/`.
+3. `npx cap sync`.
+
+**Tradeoff — read before flipping:** the current build loads `https://www.hivex.pt`,
+so every Vercel deploy reaches users instantly with **no re-submission**. A bundled
+build freezes the UI into the binary — you'd re-bundle and **re-submit to the
+stores for every web change**. Most teams keep the remote build for exactly this
+reason. Bundle only if true offline use matters more than instant updates.
 
 ## 10. Troubleshooting
 
