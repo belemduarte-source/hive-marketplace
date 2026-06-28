@@ -367,6 +367,18 @@ const MIGRATIONS = [
      created_at TIMESTAMPTZ DEFAULT NOW()
    )`,
   `CREATE INDEX IF NOT EXISTS idx_site_visits_created ON site_visits(created_at DESC)`,
+
+  // Push notification device tokens (registered by the native iOS/Android app).
+  // user_id is nullable so anonymous installs can still register; it's filled in
+  // once the user logs in and re-registers.
+  `CREATE TABLE IF NOT EXISTS device_tokens (
+     token      TEXT PRIMARY KEY,
+     user_id    BIGINT REFERENCES users(id) ON DELETE CASCADE,
+     platform   TEXT,
+     created_at TIMESTAMPTZ DEFAULT NOW(),
+     updated_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_device_tokens_user ON device_tokens(user_id)`,
 ];
 
 async function ensureSchema() {
@@ -482,6 +494,29 @@ app.post('/api/visits', async (req, res) => {
     );
   } catch (_) { /* swallow — tracking is best-effort */ }
   res.json({ ok: true });
+});
+
+// ── Push device registration (from the native app) ───────────────────────────
+// The iOS/Android wrapper posts its FCM/APNs token here; we upsert it and tie it
+// to the logged-in user (if any) so the backend can notify them later. Storing
+// tokens is always safe even if FCM sending isn't configured yet.
+const { optionalAuth: _optionalAuth } = require('./middleware/auth');
+app.post('/api/devices', _optionalAuth, async (req, res) => {
+  try {
+    const token = (req.body && typeof req.body.token === 'string') ? req.body.token.slice(0, 500) : null;
+    const platform = (req.body && typeof req.body.platform === 'string') ? req.body.platform.slice(0, 20) : null;
+    if (!token) return res.status(400).json({ error: 'token em falta' });
+    const pool = require('./db');
+    await pool.query(
+      `INSERT INTO device_tokens (token, user_id, platform, updated_at)
+       VALUES ($1, $2, $3, NOW())
+       ON CONFLICT (token) DO UPDATE SET user_id = EXCLUDED.user_id, platform = EXCLUDED.platform, updated_at = NOW()`,
+      [token, req.user ? req.user.id : null, platform]
+    );
+    res.json({ ok: true });
+  } catch (e) {
+    res.status(500).json({ error: 'Não foi possível registar o dispositivo' });
+  }
 });
 
 // ── AI assistant — helps customers find companies for their job ───────────────

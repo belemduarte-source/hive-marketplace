@@ -152,6 +152,28 @@ real functionality (map, search, accounts, quotes), which helps, but to be safe:
 
 Google Play is far more lenient about web-backed apps.
 
+## 8.5 Push notifications (wired — needs Firebase to go live)
+
+The client + backend are already in place:
+- The app registers for push on launch and POSTs its token to **`/api/devices`**
+  (stored in the `device_tokens` table, tied to the logged-in user).
+- The backend has an FCM HTTP v1 sender (`hive/backend/src/push.js`), **dormant
+  until you set `FCM_*` env vars**. One trigger is wired: when someone contacts a
+  company, its owner gets *"Nova mensagem na Hivex"* (tapping it opens the company).
+
+To turn it on:
+1. Create a **Firebase project**, add an Android app (package `pt.hivex.app`) and
+   download **`google-services.json`** → place in `android/app/`.
+2. For iOS: in Firebase add an iOS app, and upload your **APNs auth key** (from
+   Apple Developer) under Project settings → Cloud Messaging.
+3. Add the plugin to the native projects (already in `package.json`):
+   `npx cap sync`.
+4. In Firebase → Project settings → **Service accounts → Generate new private key**,
+   then set these on Vercel (backend env): `FCM_PROJECT_ID`, `FCM_CLIENT_EMAIL`,
+   `FCM_PRIVATE_KEY` (one line, `\n` for newlines). See `hive/backend/.env.example`.
+5. Add more triggers by calling `pushToUser(userId, title, body, { companyId })`
+   anywhere in the backend (e.g. on review replies, approvals).
+
 ## 9. Roadmap (v2 — optional, sturdier)
 
 The current build loads the live site. A more robust, fully-offline-capable

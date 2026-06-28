@@ -106,7 +106,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v86.css"/>
+  <link rel="stylesheet" href="app.v87.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -11772,6 +11772,47 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
   } else {
     clearNavZoom();
   }
+})();
+
+// ── Native push notifications (Capacitor) ──────────────────────────────────────
+// No-op on the web. Inside the iOS/Android app, the Capacitor bridge exposes the
+// PushNotifications plugin on window.Capacitor.Plugins. We ask permission,
+// register, send the device token to /api/devices, and deep-link on tap.
+(function initNativePush() {
+  if (!window.HIVEX_NATIVE) return;
+  var Plugins = window.Capacitor && window.Capacitor.Plugins;
+  var Push = Plugins && Plugins.PushNotifications;
+  if (!Push) return;
+
+  function sendToken(token) {
+    try {
+      var platform = (window.Capacitor.getPlatform && window.Capacitor.getPlatform()) || 'unknown';
+      fetch((window.API_BASE || '/api') + '/devices', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: token, platform: platform }),
+      }).catch(function () {});
+    } catch (e) {}
+  }
+
+  Push.addListener('registration', function (t) { if (t && t.value) sendToken(t.value); });
+  Push.addListener('registrationError', function (e) { console.warn('[push] registration error', e); });
+  // Tap on a notification → open the relevant company if the payload carries one.
+  Push.addListener('pushNotificationActionPerformed', function (a) {
+    try {
+      var data = a && a.notification && a.notification.data;
+      if (data && data.companyId && typeof openDetail === 'function') {
+        if (typeof showTab === 'function') showTab('search');
+        setTimeout(function () { openDetail(Number(data.companyId)); }, 400);
+      }
+    } catch (e) {}
+  });
+
+  Push.checkPermissions().then(function (p) {
+    if (p.receive === 'granted') return Push.register();
+    return Push.requestPermissions().then(function (r) { if (r.receive === 'granted') return Push.register(); });
+  }).catch(function (e) { console.warn('[push] permission', e); });
 })();
 
 </script>

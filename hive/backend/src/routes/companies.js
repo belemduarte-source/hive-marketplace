@@ -4,6 +4,7 @@ const pool = require('../db');
 const { requireAuth, requireAdmin, optionalAuth } = require('../middleware/auth');
 const reviewsRouter = require('./reviews');
 const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail, sendContactEmail } = require('../email');
+const { pushToUser } = require('../push');
 
 // ── Defer slow email sends off the response path ──────────────────────────────
 // SMTP round-trips (often 1-3 s on Gmail) used to block the user's "submit" /
@@ -466,7 +467,7 @@ router.post('/:id/contact', requireAuth, async (req, res, next) => {
     }
 
     const { rows } = await pool.query(
-      `SELECT id, name, email FROM companies WHERE id = $1 AND status = 'approved'`,
+      `SELECT id, name, email, created_by FROM companies WHERE id = $1 AND status = 'approved'`,
       [req.params.id]
     );
     if (!rows[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
@@ -475,6 +476,14 @@ router.post('/:id/contact', requireAuth, async (req, res, next) => {
     const sender = { name: req.user.name, email: req.user.email };
     // Relay the message AFTER responding so the sender isn't blocked on SMTP.
     deferEmail(() => sendContactEmail(rows[0], sender, message.trim()), `contact relay (company ${rows[0].id})`);
+
+    // Native push to the company owner (best-effort, dormant unless FCM is set up).
+    pushToUser(
+      rows[0].created_by,
+      'Nova mensagem na Hivex',
+      `${req.user.name} contactou ${rows[0].name}`,
+      { companyId: rows[0].id }
+    ).catch(() => {});
 
     // Track as contact event
     pool.query(
