@@ -112,9 +112,9 @@ The map uses geolocation, so the stores require you to declare it.
 
 ## 6. iOS — build & submit
 
-> Requires a Mac. No Mac? Use a cloud-Mac build: **Codemagic**, **Ionic Appflow**,
-> or a **GitHub Actions `macos-latest` runner**. Each can run `pod install` →
-> `xcodebuild archive` → upload to App Store Connect from your committed `ios/` project.
+> **No Mac? Use the included GitHub Actions cloud-Mac build** — see
+> [§6.5](#65-build-in-the-cloud-no-mac-needed). It generates the iOS project,
+> builds, signs, and can upload to TestFlight on a GitHub-hosted Mac.
 
 On a Mac:
 1. `cd mobile && npm install && npx cap add ios && npx cap sync`
@@ -124,6 +124,29 @@ On a Mac:
 5. **Product ▸ Archive ▸ Distribute App ▸ App Store Connect**.
 6. In [App Store Connect](https://appstoreconnect.apple.com) ($99/yr), complete the
    listing and submit for review. Use **TestFlight** first to try it on your phone.
+
+## 6.5 Build in the cloud (no Mac needed)
+
+Two GitHub Actions workflows are included (run them from the **Actions** tab →
+**Run workflow**). Each generates the native project, builds, signs, and uploads
+the result as a downloadable artifact:
+
+| Workflow | File | Output |
+|---|---|---|
+| **iOS build (cloud Mac)** | `.github/workflows/ios.yml` | signed `.ipa` (+ optional TestFlight upload) |
+| **Android build** | `.github/workflows/android.yml` | signed `.aab` for Play |
+
+Add these repository **secrets** first (Settings → Secrets and variables → Actions).
+Each workflow file lists exactly what it needs at the top:
+
+- **iOS:** `IOS_DIST_CERT_P12_BASE64`, `IOS_DIST_CERT_PASSWORD`,
+  `IOS_PROVISION_PROFILE_BASE64`, `IOS_PROVISION_PROFILE_NAME`, `IOS_TEAM_ID`,
+  and for TestFlight upload `ASC_KEY_ID`, `ASC_ISSUER_ID`, `ASC_API_KEY_BASE64`.
+- **Android:** `ANDROID_KEYSTORE_BASE64`, `ANDROID_KEYSTORE_PASSWORD`,
+  `ANDROID_KEY_ALIAS`, `ANDROID_KEY_PASSWORD`.
+
+You still need the **Apple Developer ($99/yr)** and **Google Play ($25)** accounts
+to create the certificates/keys these secrets come from — but you never touch a Mac.
 
 ---
 

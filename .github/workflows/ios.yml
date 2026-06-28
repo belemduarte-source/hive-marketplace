@@ -1,0 +1,117 @@
+name: iOS build (cloud Mac)
+
+# Build the iOS app on a GitHub-hosted Mac — no Mac of your own needed.
+# Run it manually from the Actions tab. Produces a signed .ipa artifact and can
+# optionally upload it to TestFlight.
+#
+# Required repository secrets (Settings → Secrets and variables → Actions):
+#   IOS_DIST_CERT_P12_BASE64    base64 of your Apple Distribution cert (.p12)
+#   IOS_DIST_CERT_PASSWORD      password for that .p12
+#   IOS_PROVISION_PROFILE_BASE64  base64 of your App Store provisioning profile
+#   IOS_PROVISION_PROFILE_NAME  the profile's *name* (not filename)
+#   IOS_TEAM_ID                 your 10-char Apple Team ID
+#   ASC_KEY_ID                  App Store Connect API key id      (TestFlight upload)
+#   ASC_ISSUER_ID               App Store Connect API issuer id   (TestFlight upload)
+#   ASC_API_KEY_BASE64          base64 of the AuthKey_*.p8        (TestFlight upload)
+#
+# Tip: `base64 -i file -o out.txt` (macOS) or `base64 -w0 file` (Linux) to encode.
+
+on:
+  workflow_dispatch:
+    inputs:
+      upload_testflight:
+        description: "Upload the build to TestFlight"
+        type: boolean
+        default: false
+
+jobs:
+  build-ios:
+    runs-on: macos-14
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps & generate the iOS project
+        working-directory: mobile
+        run: |
+          npm install
+          npx cap add ios || echo "ios project already present"
+          npx cap sync ios
+
+      - name: CocoaPods
+        working-directory: mobile/ios/App
+        run: pod install
+
+      - name: Import signing certificate
+        uses: apple-actions/import-codesign-certs@v3
+        with:
+          p12-file-base64: ${{ secrets.IOS_DIST_CERT_P12_BASE64 }}
+          p12-password: ${{ secrets.IOS_DIST_CERT_PASSWORD }}
+
+      - name: Install provisioning profile
+        run: |
+          mkdir -p "$HOME/Library/MobileDevice/Provisioning Profiles"
+          echo "${{ secrets.IOS_PROVISION_PROFILE_BASE64 }}" | base64 --decode \
+            > "$HOME/Library/MobileDevice/Provisioning Profiles/hivex.mobileprovision"
+
+      - name: Archive
+        working-directory: mobile/ios/App
+        run: |
+          xcodebuild -workspace App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/Hivex.xcarchive" \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM="${{ secrets.IOS_TEAM_ID }}" \
+            PROVISIONING_PROFILE_SPECIFIER="${{ secrets.IOS_PROVISION_PROFILE_NAME }}" \
+            archive
+
+      - name: Export .ipa
+        run: |
+          cat > "$RUNNER_TEMP/exportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0"><dict>
+            <key>method</key><string>app-store</string>
+            <key>teamID</key><string>${{ secrets.IOS_TEAM_ID }}</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>provisioningProfiles</key>
+            <dict>
+              <key>pt.hivex.app</key>
+              <string>${{ secrets.IOS_PROVISION_PROFILE_NAME }}</string>
+            </dict>
+          </dict></plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/Hivex.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/exportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export"
+
+      - name: Upload .ipa artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Hivex-ios
+          path: ${{ runner.temp }}/export/*.ipa
+          if-no-files-found: error
+
+      - name: Upload to TestFlight
+        if: ${{ inputs.upload_testflight }}
+        env:
+          ASC_KEY_ID: ${{ secrets.ASC_KEY_ID }}
+          ASC_ISSUER_ID: ${{ secrets.ASC_ISSUER_ID }}
+        run: |
+          mkdir -p "$HOME/private_keys"
+          echo "${{ secrets.ASC_API_KEY_BASE64 }}" | base64 --decode \
+            > "$HOME/private_keys/AuthKey_${ASC_KEY_ID}.p8"
+          xcrun altool --upload-app -t ios \
+            -f "$RUNNER_TEMP/export/"*.ipa \
+            --apiKey "$ASC_KEY_ID" --apiIssuer "$ASC_ISSUER_ID"
