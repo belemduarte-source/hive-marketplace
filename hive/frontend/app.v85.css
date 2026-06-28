@@ -2161,7 +2161,7 @@
 
       /* ── Mobile filter chip bar ── */
       #mobileSearchPanel {
-        display: none !important; /* mobile filter chip bar (white full-width bar) removed by user request — mobile users filter via the floating "Filtros" button */
+        display: block !important; /* re-enabled: the scrollable filter chips (Localização/Raio/Área/Ordenar/Avaliação/Destaque) are how mobile users filter on the map */
         background: var(--surface);
         border-bottom: 1px solid var(--border);
         flex-shrink: 0;
