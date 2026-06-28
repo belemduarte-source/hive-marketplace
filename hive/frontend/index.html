@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v81.css"/>
+  <link rel="stylesheet" href="app.v82.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -1068,8 +1068,18 @@
       <span class="view-result-count" id="viewResultCount">0 empresas</span>
     </div>
     <div id="map" role="region" aria-label="Mapa interativo com empresas registadas. Use as setas para navegar e Enter para abrir os detalhes de uma empresa."></div>
-    <!-- List view (hidden by default) -->
-    <div class="search-list-view" id="searchListView" style="display:none"></div>
+    <!-- Results sheet. On desktop (.map-sheet{display:contents}) this is transparent
+         and #searchListView behaves exactly as the old list view. On mobile it
+         becomes a draggable bottom sheet over the map (peek → drag up for the list). -->
+    <div class="map-sheet" id="mapSheet">
+      <button class="map-sheet-handle" id="mapSheetHandle" type="button" aria-label="Mostrar ou esconder a lista de empresas">
+        <span class="map-sheet-grip"></span>
+        <span class="map-sheet-meta"><strong id="mapSheetCount">0</strong>&nbsp;empresas</span>
+        <span class="map-sheet-cta" id="mapSheetCta" data-i18n="viewList">Ver lista</span>
+      </button>
+      <!-- List view (hidden by default on desktop) -->
+      <div class="search-list-view" id="searchListView" style="display:none"></div>
+    </div>
 
     <!-- Empty-state hint — hidden once a sector is selected -->
     <div class="map-empty-hint" id="mapEmptyHint">
@@ -6187,7 +6197,12 @@ function addCompanyMarker(c) {
   // Lazy popup: content built only when the popup is actually opened,
   // so language changes and filter runs don't rebuild HTML for all markers
   m.bindPopup(() => buildPopupHtml(c));
-  m.on('click', () => openDetail(c.id));
+  // When the mobile results-sheet is open, a pin tap highlights that company's
+  // card in the list instead of opening the full detail; otherwise open detail.
+  m.on('click', () => {
+    if (_resultsSheetOpen && _highlightSheetCard(c.id)) return;
+    openDetail(c.id);
+  });
   markerMap[c.id] = m;
   // Ensure the cluster layer exists so updateMarkers() has something to add to,
   // but DO NOT add this marker yet — visibility is owned by applyFilters() so
@@ -7311,10 +7326,16 @@ function _runApplyFilters() {
   // Result count label + list view (pass filtered so list doesn't re-compute)
   const countEl = document.getElementById('viewResultCount');
   if (countEl) countEl.textContent = filtered.length + ' ' + t(filtered.length === 1 ? 'resultCompany' : 'resultCompanies');
+  // Mobile results-sheet peek count
+  const sheetCount = document.getElementById('mapSheetCount');
+  if (sheetCount) sheetCount.textContent = filtered.length;
   // Footer trust counter — reflects total loaded companies (not the filtered set)
   const _tc = document.getElementById('trustCompanyCount');
   if (_tc) _tc.textContent = companies.length;
-  if (document.getElementById('searchListView')?.style.display !== 'none') renderSearchList(filtered);
+  // Keep the visible list fresh: on mobile the sheet's list is always mounted
+  // (just translated off-screen when collapsed), so re-render whenever filters
+  // change; on desktop only re-render when the list view is actually showing.
+  if (_isMobileSheet() || document.getElementById('searchListView')?.style.display !== 'none') renderSearchList(filtered);
 }
 
 // ── MARKER DIFF UPDATE ─────────────────────────────────────────────────────────
@@ -7365,6 +7386,13 @@ function setSearchView(mode) {
   const btnMap = document.getElementById('btnViewMap');
   const btnList = document.getElementById('btnViewList');
   const hints = document.querySelectorAll('.map-empty-hint,.map-info-box,.btn-my-location,.mobile-filter-btn');
+  // Mobile: the list is a draggable bottom-sheet over the map (never hide the map).
+  // All the legacy callers — list-card taps, "Pedir Orçamento", etc. — funnel
+  // through here, so on phones 'map' just collapses the sheet and 'list' opens it.
+  if (window.matchMedia('(max-width:768px)').matches) {
+    if (mode === 'list') openResultsSheet(); else closeResultsSheet();
+    return;
+  }
   if (mode === 'list') {
     if (mapEl) mapEl.style.display = 'none';
     if (listEl) listEl.style.display = 'grid';
@@ -7381,6 +7409,83 @@ function setSearchView(mode) {
     if (typeof map !== 'undefined' && map) setTimeout(() => map.invalidateSize(), 100);
   }
 }
+
+// ── Mobile results bottom-sheet ────────────────────────────────────────────────
+// The sheet peeks at the bottom of the map showing the result count; dragging the
+// handle up (or tapping it) reveals the scrollable list. Desktop is untouched —
+// these run only on phones.
+let _resultsSheetOpen = false;
+function _isMobileSheet() { return window.matchMedia('(max-width:768px)').matches; }
+function openResultsSheet() {
+  const panel = document.querySelector('.map-panel');
+  if (!panel) return;
+  panel.classList.add('sheet-open');
+  _resultsSheetOpen = true;
+  _updateSheetCta();
+  renderSearchList();   // populate with the current filtered results
+  if (typeof map !== 'undefined' && map) setTimeout(() => map.invalidateSize(), 360);
+}
+function closeResultsSheet() {
+  const panel = document.querySelector('.map-panel');
+  if (!panel) return;
+  panel.classList.remove('sheet-open');
+  _resultsSheetOpen = false;
+  _updateSheetCta();
+  if (typeof map !== 'undefined' && map) setTimeout(() => map.invalidateSize(), 360);
+}
+function toggleResultsSheet() { _resultsSheetOpen ? closeResultsSheet() : openResultsSheet(); }
+function _updateSheetCta() {
+  const cta = document.getElementById('mapSheetCta');
+  if (cta) cta.textContent = _resultsSheetOpen ? (t('viewMap') || 'Mapa') : (t('viewList') || 'Ver lista');
+}
+// Scroll to + flash a card when its map pin is tapped (sheet open). Returns
+// false if the card isn't currently in the DOM so the caller can fall back.
+function _highlightSheetCard(id) {
+  const card = document.querySelector(`.search-list-card[data-company-id="${id}"]`);
+  if (!card) return false;
+  card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  card.classList.remove('slc-flash');
+  void card.offsetWidth;            // restart the animation if re-tapped
+  card.classList.add('slc-flash');
+  setTimeout(() => card.classList.remove('slc-flash'), 1600);
+  return true;
+}
+// Drag + tap handling on the sheet handle (pointer events cover touch + mouse).
+function _initResultsSheetDrag() {
+  const handle = document.getElementById('mapSheetHandle');
+  const sheet  = document.getElementById('mapSheet');
+  if (!handle || !sheet) return;
+  let dragging = false, startY = 0, moved = 0, peek = 76, sheetH = 0;
+  handle.addEventListener('pointerdown', (e) => {
+    if (!_isMobileSheet()) return;
+    dragging = true; moved = 0;
+    startY = e.clientY;
+    sheetH = sheet.getBoundingClientRect().height;
+    sheet.style.transition = 'none';
+    try { handle.setPointerCapture(e.pointerId); } catch (_) {}
+  });
+  handle.addEventListener('pointermove', (e) => {
+    if (!dragging) return;
+    moved = e.clientY - startY;                       // +down / -up
+    const base = _resultsSheetOpen ? 0 : (sheetH - peek);
+    let ty = Math.max(0, Math.min(sheetH - peek, base + moved));
+    sheet.style.transform = `translateY(${ty}px)`;
+    if (e.cancelable) e.preventDefault();
+  });
+  const end = () => {
+    if (!dragging) return;
+    dragging = false;
+    sheet.style.transition = '';
+    sheet.style.transform = '';                        // hand back to the CSS class
+    if (Math.abs(moved) < 8) toggleResultsSheet();      // treat as a tap
+    else if (moved < 0) openResultsSheet();
+    else closeResultsSheet();
+  };
+  handle.addEventListener('pointerup', end);
+  handle.addEventListener('pointercancel', end);
+}
+if (document.readyState !== 'loading') _initResultsSheetDrag();
+else document.addEventListener('DOMContentLoaded', _initResultsSheetDrag);
 
 const _LIST_PAGE = 40; // cards rendered per batch
 let _listRenderedCount = 0;

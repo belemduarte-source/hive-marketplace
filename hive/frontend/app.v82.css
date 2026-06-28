@@ -401,6 +401,10 @@
     /* Photo banner is mobile-only (Idealista-style cards); hidden on desktop so
        the desktop list view stays exactly as before. Mobile rules below opt it in. */
     .slc-photo{display:none}
+    /* Results sheet wrapper: on desktop it's layout-transparent so #searchListView
+       behaves exactly as before; the drag handle is mobile-only. */
+    .map-sheet{display:contents}
+    .map-sheet-handle{display:none}
     .slc-header{display:flex;align-items:center;gap:10px}
     .slc-emoji{font-size:28px;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .slc-info{flex:1;min-width:0}
@@ -2470,6 +2474,36 @@
       .slc-footer{margin-top:12px;margin-bottom:14px;gap:10px}
       .slc-phone{font-size:13px;padding:9px 12px}
       .btn-slc-contact{padding:11px 14px;font-size:14px;border-radius:10px}
+
+      /* ── Draggable results bottom-sheet over the map ── */
+      .view-toggle-bar{display:none !important}  /* the sheet handle is the toggle now */
+      .map-sheet{
+        display:flex;flex-direction:column;
+        position:absolute;left:0;right:0;bottom:0;
+        height:86%;z-index:430;
+        background:var(--bg);
+        border-radius:20px 20px 0 0;
+        box-shadow:0 -10px 34px rgba(0,0,0,.30);
+        transform:translateY(calc(100% - 76px));   /* peek: only the handle shows */
+        transition:transform .34s cubic-bezier(.32,.72,0,1);
+        touch-action:none;will-change:transform;
+      }
+      .map-panel.sheet-open .map-sheet{transform:translateY(0)}
+      .map-sheet-handle{
+        display:flex;align-items:center;gap:10px;flex:0 0 auto;
+        width:100%;border:none;background:transparent;cursor:pointer;
+        padding:16px 16px 10px;font-family:inherit;color:var(--text);
+        position:relative;text-align:left;
+      }
+      .map-sheet-grip{position:absolute;top:8px;left:50%;transform:translateX(-50%);width:42px;height:5px;border-radius:3px;background:var(--border)}
+      .map-sheet-meta{font-size:15px;font-weight:600;color:var(--text)}
+      .map-sheet-meta strong{color:var(--primary);font-weight:800;font-size:16px}
+      .map-sheet-cta{margin-left:auto;display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:800;color:#fff;background:var(--primary);padding:8px 16px;border-radius:999px;box-shadow:0 2px 10px rgba(249,115,22,.35)}
+      /* The list view becomes the sheet's scroll area (was absolute fill) */
+      #searchListView{display:block !important;position:static !important;inset:auto !important;height:auto !important;flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:6px 12px calc(24px + env(safe-area-inset-bottom)) !important;background:var(--bg);max-width:none;border-radius:0;overscroll-behavior:contain}
+      /* Pin-tap highlight pulse on the matching card */
+      .slc-flash{animation:slcFlash 1.5s ease}
+      @keyframes slcFlash{0%,100%{box-shadow:0 0 0 0 rgba(249,115,22,0)}25%{box-shadow:0 0 0 3px rgba(249,115,22,.85)}}
     }
     /* Recently viewed strip on the search tab */
     /* Recently-viewed strip removed by user request (the white bar above the filters). */
