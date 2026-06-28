@@ -1131,6 +1131,9 @@
       .logo-v{font-size:26px !important}
       .ad-banner{display:none !important}
       .ad-banner-home{display:none !important}
+      /* No publicity banner on mobile — hide the nav steps banner too (ID beats
+         the other .nav-ad display:flex rules regardless of source order). */
+      #navAdBanner{display:none !important}
       .main{flex-direction:column !important}
       .filter-sidebar{width:100% !important;min-width:auto !important;max-height:200px !important;border-right:none !important;border-bottom:1px solid var(--border) !important}
       #map{min-height:300px !important}
@@ -2459,6 +2462,9 @@
 
     /* ── Mobile: Idealista-style photo-led result cards (≤768px) ── */
     @media (max-width:768px){
+      /* No publicity banner anywhere on mobile (≤768px). IDs/!important beat the
+         other .nav-ad / .ad-banner display rules regardless of source order. */
+      #navAdBanner,.nav-ad,.ad-banner,.ad-banner-home{display:none !important}
       .search-list-card{padding:0;overflow:hidden;border-radius:16px;gap:0}
       .slc-photo{display:block;position:relative;width:100%;height:172px;background:#1e293b}
       .slc-photo img{width:100%;height:100%;object-fit:cover;display:block}
