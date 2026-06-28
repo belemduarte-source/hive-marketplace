@@ -90,7 +90,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v80.css"/>
+  <link rel="stylesheet" href="app.v81.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -5650,6 +5650,23 @@ Object.entries(SECTOR_HIERARCHY).forEach(([sectorKey, sectorObj]) => {
   });
 });
 
+// Representative photo per top-level category (reuses the home hero photos),
+// so mobile result cards can be photo-led like Idealista's property cards.
+const CAT_PHOTO = {};
+LP_CATS.forEach(cat => { CAT_PHOTO[cat.key] = cat.photo; });
+// Resolve a company → its top-level category key (handles sub-sectors and the
+// sectors[] array), then to a photo. Falls back to 'chave_na_mao' so every
+// company always has an image.
+function companyCatKey(c) {
+  const resolve = (k) => k && (CAT_PHOTO[k] ? k : (SUB_TO_SECTOR[k] || null));
+  let key = resolve(c && c.sector);
+  if (!key && c && Array.isArray(c.sectors)) {
+    for (const s of c.sectors) { key = resolve(s); if (key) break; }
+  }
+  return key || 'chave_na_mao';
+}
+function companyPhoto(c) { return CAT_PHOTO[companyCatKey(c)]; }
+
 function getSectorColor(c) {
   if (SECTOR_COLORS[c.sector]) return SECTOR_COLORS[c.sector];
   if (SUB_TO_SECTOR[c.sector]) return SECTOR_COLORS[SUB_TO_SECTOR[c.sector]];
@@ -7452,7 +7469,22 @@ function _appendListCards(frag, data, start, end) {
     div.onclick = () => { setSearchView('map'); setTimeout(() => openDetail(c.id), 300); };
     const isCompared = _compareIds && _compareIds.has(c.id);
     const isFav = _favIds && _favIds.has(c.id);
-    div.innerHTML = `<button class="slc-fav ${isFav ? 'is-fav' : ''}" onclick="event.stopPropagation();toggleFavourite(${c.id})" aria-label="Guardar favorito" title="Guardar favorito">${isFav ? '★' : '☆'}</button>
+    // Photo banner (shown on mobile only, hidden on desktop via CSS) — makes the
+    // card photo-led like Idealista. Image resolves from the company's sector.
+    const photo = companyPhoto(c);
+    const ratingPill = c.rating > 0
+      ? `★ ${c.rating.toFixed(1)}${c.reviews ? ` (${c.reviews})` : ''}`
+      : t('noRatingText');
+    const photoBadge = c.verified
+      ? '<span class="slc-photo-badge slc-badge-verified">✓ Verificado</span>'
+      : (c.topRated ? '<span class="slc-photo-badge slc-badge-top">★ Top</span>' : '');
+    div.innerHTML = `<div class="slc-photo" aria-hidden="true">
+        <img src="${photo}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.style.display='none'"/>
+        <div class="slc-photo-grad"></div>
+        ${photoBadge}
+        <span class="slc-photo-rating">${ratingPill}</span>
+      </div>
+      <button class="slc-fav ${isFav ? 'is-fav' : ''}" onclick="event.stopPropagation();toggleFavourite(${c.id})" aria-label="Guardar favorito" title="Guardar favorito">${isFav ? '★' : '☆'}</button>
       <label class="slc-compare" onclick="event.stopPropagation()" title="Adicionar à comparação">
         <input type="checkbox" ${isCompared ? 'checked' : ''} onchange="toggleCompare(${c.id})"/>
         <span>Comparar</span>

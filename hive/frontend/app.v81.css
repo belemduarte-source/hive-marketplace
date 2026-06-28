@@ -398,6 +398,9 @@
     .search-list-view{position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;padding:56px 16px 16px;background:var(--bg);display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;align-content:start;max-width:1400px;margin:0 auto}
     .search-list-card{background:var(--surface);border-radius:14px;padding:18px;border:1px solid var(--border);transition:all .2s;cursor:pointer;display:flex;flex-direction:column;gap:8px}
     .search-list-card:hover{box-shadow:var(--shadow-md);border-color:var(--primary);transform:translateY(-2px)}
+    /* Photo banner is mobile-only (Idealista-style cards); hidden on desktop so
+       the desktop list view stays exactly as before. Mobile rules below opt it in. */
+    .slc-photo{display:none}
     .slc-header{display:flex;align-items:center;gap:10px}
     .slc-emoji{font-size:28px;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .slc-info{flex:1;min-width:0}
@@ -2440,6 +2443,34 @@
     .slc-fav{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);border:1px solid var(--border);width:30px;height:30px;border-radius:50%;font-size:16px;color:var(--muted);cursor:pointer;transition:all .15s;z-index:2;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
     .slc-fav:hover{color:var(--gold);border-color:var(--gold);transform:scale(1.08)}
     .slc-fav.is-fav{color:var(--gold);border-color:var(--gold);background:#fef3c7}
+
+    /* ── Mobile: Idealista-style photo-led result cards (≤768px) ── */
+    @media (max-width:768px){
+      .search-list-card{padding:0;overflow:hidden;border-radius:16px;gap:0}
+      .slc-photo{display:block;position:relative;width:100%;height:172px;background:#1e293b}
+      .slc-photo img{width:100%;height:100%;object-fit:cover;display:block}
+      .slc-photo-grad{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55) 0%,rgba(0,0,0,0) 42%);pointer-events:none}
+      .slc-photo-badge{position:absolute;top:10px;left:10px;display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;padding:5px 10px;border-radius:999px;color:#fff;z-index:2;box-shadow:0 2px 8px rgba(0,0,0,.35)}
+      .slc-badge-verified{background:#16a34a}
+      .slc-badge-top{background:#f59e0b}
+      .slc-photo-rating{position:absolute;left:10px;bottom:10px;display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:800;color:#fff;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);padding:5px 11px;border-radius:999px;z-index:2}
+      /* Heart → top-right over the photo (Idealista placement); compare hidden on mobile */
+      .slc-fav{top:10px;left:auto;right:10px;width:38px;height:38px;font-size:20px;background:rgba(255,255,255,.95)}
+      .slc-compare{display:none}
+      /* Body now padded individually since the card itself has no padding */
+      .slc-header,.slc-address,.slc-tags,.slc-footer{margin-left:14px;margin-right:14px}
+      .slc-header{margin-top:12px}
+      .slc-emoji{display:none}          /* the photo carries the visual now */
+      .slc-rating{display:none}         /* rating shown as a pill on the photo */
+      .slc-name{font-size:17px;white-space:normal;line-height:1.25;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+      .slc-sector-badge{font-size:12px;margin-top:6px}
+      .slc-address{font-size:13px;margin-top:6px}
+      .slc-tags{margin-top:8px}
+      .slc-tag{font-size:11px;padding:3px 9px}
+      .slc-footer{margin-top:12px;margin-bottom:14px;gap:10px}
+      .slc-phone{font-size:13px;padding:9px 12px}
+      .btn-slc-contact{padding:11px 14px;font-size:14px;border-radius:10px}
+    }
     /* Recently viewed strip on the search tab */
     /* Recently-viewed strip removed by user request (the white bar above the filters). */
     .recent-strip{display:none !important}
