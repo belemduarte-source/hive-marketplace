@@ -58,6 +58,22 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" integrity="sha384-b8ANgTJvdlAnWM5YGMpKn7Kodm+1k7NYNG9zdjTCcZcKatzYHwZ0RLdWarbJJVzU" crossorigin="anonymous"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.min.css" integrity="sha384-4ej5W7Scxd1gcgoPPEnX+r7eVJnBaGyrzMRjy1ynilla1goyNavl0bUqDOyaHZ9G" crossorigin="anonymous"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.min.css" integrity="sha384-oMbBSplUkOVL60gBv+GgcT0m4ZRTkyWvvHZOJBhg3ttuvLc9biWcdgqVkDwRyzzb" crossorigin="anonymous"/>
+  <!-- Native app (Capacitor) bridge: when Hivex runs inside the iOS/Android
+       wrapper its origin is capacitor://localhost, so point the API client at the
+       production backend. The web PWA (served from hivex.pt) keeps same-origin /api.
+       Must run BEFORE api.js, which reads window.API_BASE on load. -->
+  <script>
+    (function () {
+      try {
+        var isNative = location.protocol === 'capacitor:' || location.protocol === 'ionic:' ||
+          (window.Capacitor && typeof window.Capacitor.isNativePlatform === 'function' && window.Capacitor.isNativePlatform());
+        if (isNative) {
+          window.API_BASE = 'https://www.hivex.pt/api';
+          window.HIVEX_NATIVE = true;
+        }
+      } catch (e) { /* default to same-origin /api */ }
+    })();
+  </script>
   <!-- Hivex API client (replaces Supabase) -->
   <script src="api.js"></script>
   <!-- Google Identity Services (Sign-in with Google).
@@ -90,7 +106,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v85.css"/>
+  <link rel="stylesheet" href="app.v86.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>

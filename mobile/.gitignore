@@ -1,0 +1,22 @@
+# Node deps
+node_modules/
+
+# iOS build artifacts (the ios/ project itself can be committed; these can't)
+ios/App/Pods/
+ios/App/App/public/
+ios/.DS_Store
+DerivedData/
+*.xcuserstate
+
+# Android build artifacts (the android/ project itself can be committed; these can't)
+android/.gradle/
+android/build/
+android/app/build/
+android/app/src/main/assets/public/
+android/local.properties
+android/.idea/
+*.iml
+*.keystore
+*.jks
+
+.DS_Store
