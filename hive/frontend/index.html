@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v104.css"/>
+  <link rel="stylesheet" href="app.v105.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -1793,25 +1793,27 @@
   <div class="help-body" id="helpTabSobre" style="display:none">
     <div style="margin-bottom:20px">
       <div class="help-section-title" data-i18n="helpWhoTitle">Quem Somos</div>
-      <p style="font-size:13px;color:var(--muted);line-height:1.7;margin:0 0 20px 0" data-i18n="helpWhoDesc">A HIVE é uma plataforma digital inovadora que conecta empresas, profissionais independentes e particulares, facilitando a criação de relações comerciais transparentes e confiáveis. Operamos em Portugal com o objetivo de democratizar o acesso a serviços de qualidade, eliminando intermediários e reduzindo custos.</p>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
+      <p style="font-size:18px;color:var(--text);font-weight:500;line-height:1.6;margin:0 0 20px 0" data-i18n="helpWhoDesc">A HIVE é uma plataforma digital inovadora que conecta empresas, profissionais independentes e particulares, facilitando a criação de relações comerciais transparentes e confiáveis. Operamos em Portugal com o objetivo de democratizar o acesso a serviços de qualidade, eliminando intermediários e reduzindo custos.</p>
+      <!-- Stats are populated with REAL counts from the live companies data on open
+           (see populateHelpStats) — no hardcoded/inflated figures. Hidden until set. -->
+      <div id="helpStatsGrid" style="display:none;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
         <div style="background:var(--orange-light);border:1.5px solid var(--orange-border);border-radius:10px;padding:18px;text-align:center">
-          <div style="font-size:26px;font-weight:900;color:var(--primary)">5K+</div>
-          <p style="margin:4px 0 0 0;font-size:12px;color:var(--muted)" data-i18n="helpStatPros">Profissionais Verificados</p>
+          <div id="helpStatNum1" style="font-size:32px;font-weight:900;color:var(--primary)">—</div>
+          <p style="margin:4px 0 0 0;font-size:15px;color:var(--text);font-weight:600" data-i18n="helpStatPros">Empresas Verificadas</p>
         </div>
         <div style="background:var(--orange-light);border:1.5px solid var(--orange-border);border-radius:10px;padding:18px;text-align:center">
-          <div style="font-size:26px;font-weight:900;color:var(--primary)">2K+</div>
-          <p style="margin:4px 0 0 0;font-size:12px;color:var(--muted)" data-i18n="helpStatCompanies">Empresas Parceiras</p>
+          <div id="helpStatNum2" style="font-size:32px;font-weight:900;color:var(--primary)">—</div>
+          <p style="margin:4px 0 0 0;font-size:15px;color:var(--text);font-weight:600" data-i18n="helpStatCompanies">Empresas Registadas</p>
         </div>
       </div>
     </div>
     <div style="background:linear-gradient(135deg,rgba(249,115,22,.07),rgba(30,58,138,.07));border:1.5px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px">
-      <h4 style="margin:0 0 8px 0;font-size:14px;font-weight:800;color:var(--primary)" data-i18n="helpMissionTitle">🎯 Missão</h4>
-      <p style="margin:0;font-size:12px;color:var(--text);line-height:1.7" data-i18n="helpMissionDesc">Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.</p>
+      <h4 style="margin:0 0 8px 0;font-size:20px;font-weight:800;color:var(--primary)" data-i18n="helpMissionTitle">🎯 Missão</h4>
+      <p style="margin:0;font-size:18px;font-weight:600;color:var(--text);line-height:1.6" data-i18n="helpMissionDesc">Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.</p>
     </div>
     <div style="background:linear-gradient(135deg,rgba(249,115,22,.07),rgba(30,58,138,.07));border:1.5px solid var(--border);border-radius:12px;padding:20px">
-      <h4 style="margin:0 0 8px 0;font-size:14px;font-weight:800;color:var(--primary)" data-i18n="helpVisionTitle">👁️ Visão</h4>
-      <p style="margin:0;font-size:12px;color:var(--text);line-height:1.7" data-i18n="helpVisionDesc">Ser a plataforma de referência em Portugal para conectar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.</p>
+      <h4 style="margin:0 0 8px 0;font-size:20px;font-weight:800;color:var(--primary)" data-i18n="helpVisionTitle">👁️ Visão</h4>
+      <p style="margin:0;font-size:18px;font-weight:600;color:var(--text);line-height:1.6" data-i18n="helpVisionDesc">Ser a plataforma de referência em Portugal para conectar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.</p>
     </div>
   </div>
 </div>
@@ -2200,7 +2202,7 @@ const translations = {
     helpPhoneTitle:'Telefone', helpPhoneDesc:'+351 XXX XXX XXX · Seg-Sex: 09h–18h', helpPhoneBtn:'Ligar',
     helpFaqTitle:'FAQ', helpFaqDesc:'Encontre respostas às perguntas mais frequentes.', helpFaqBtn:'Ver FAQ',
     helpWhoTitle:'Quem Somos', helpWhoDesc:'A HIVE é uma plataforma digital inovadora que conecta empresas, profissionais independentes e particulares, facilitando a criação de relações comerciais transparentes e confiáveis. Operamos em Portugal com o objetivo de democratizar o acesso a serviços de qualidade, eliminando intermediários e reduzindo custos.',
-    helpStatPros:'Profissionais Verificados', helpStatCompanies:'Empresas Parceiras',
+    helpStatPros:'Empresas Verificadas', helpStatCompanies:'Empresas Registadas',
     helpMissionTitle:'🎯 Missão', helpMissionDesc:'Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.',
     helpVisionTitle:'👁️ Visão', helpVisionDesc:'Ser a plataforma de referência em Portugal para conectar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.',
     navLogin:'Entrar / Registar', navHelp:'Ajuda',
@@ -2607,7 +2609,7 @@ const translations = {
     helpPhoneTitle:'Phone', helpPhoneDesc:'+351 XXX XXX XXX · Mon-Fri: 09h–18h', helpPhoneBtn:'Call',
     helpFaqTitle:'FAQ', helpFaqDesc:'Find answers to the most frequently asked questions.', helpFaqBtn:'View FAQ',
     helpWhoTitle:'Who We Are', helpWhoDesc:'HIVE is an innovative digital platform that connects companies, independent professionals and individuals, facilitating transparent and trustworthy business relationships. We operate in Portugal with the goal of democratising access to quality services, eliminating intermediaries and reducing costs.',
-    helpStatPros:'Verified Professionals', helpStatCompanies:'Partner Companies',
+    helpStatPros:'Verified Companies', helpStatCompanies:'Registered Companies',
     helpMissionTitle:'🎯 Mission', helpMissionDesc:'To simplify and democratise access to quality professional services, creating a transparent ecosystem where companies and professionals can grow together, without unnecessary intermediaries.',
     helpVisionTitle:'👁️ Vision', helpVisionDesc:'To be the reference platform in Portugal for connecting companies and professionals, promoting economic growth and creating opportunities for all.',
     navLogin:'Login / Sign up', navHelp:'Help',
@@ -3007,7 +3009,7 @@ const translations = {
     helpPhoneTitle:'Téléphone', helpPhoneDesc:'+351 XXX XXX XXX · Lun-Ven : 09h–18h', helpPhoneBtn:'Appeler',
     helpFaqTitle:'FAQ', helpFaqDesc:'Trouvez des réponses aux questions les plus fréquentes.', helpFaqBtn:'Voir la FAQ',
     helpWhoTitle:'Qui Sommes-Nous', helpWhoDesc:"HIVE est une plateforme numérique innovante qui connecte entreprises, professionnels indépendants et particuliers, facilitant la création de relations commerciales transparentes et fiables. Nous opérons au Portugal avec l'objectif de démocratiser l'accès à des services de qualité, en éliminant les intermédiaires et en réduisant les coûts.",
-    helpStatPros:'Professionnels Vérifiés', helpStatCompanies:'Entreprises Partenaires',
+    helpStatPros:'Entreprises Vérifiées', helpStatCompanies:'Entreprises Inscrites',
     helpMissionTitle:'🎯 Mission', helpMissionDesc:"Simplifier et démocratiser l'accès à des services professionnels de qualité, en créant un écosystème transparent où entreprises et professionnels peuvent grandir ensemble, sans intermédiaires inutiles.",
     helpVisionTitle:'👁️ Vision', helpVisionDesc:'Être la plateforme de référence au Portugal pour connecter entreprises et professionnels, en favorisant la croissance économique et en créant des opportunités pour tous.',
     navLogin:'Connexion / Inscription', navHelp:'Aide',
@@ -3403,7 +3405,7 @@ const translations = {
     helpPhoneTitle:'Teléfono', helpPhoneDesc:'+351 XXX XXX XXX · Lun-Vie: 09h–18h', helpPhoneBtn:'Llamar',
     helpFaqTitle:'FAQ', helpFaqDesc:'Encuentre respuestas a las preguntas más frecuentes.', helpFaqBtn:'Ver FAQ',
     helpWhoTitle:'Quiénes Somos', helpWhoDesc:'HIVE es una plataforma digital innovadora que conecta empresas, profesionales independientes y particulares, facilitando relaciones comerciales transparentes y fiables. Operamos en Portugal con el objetivo de democratizar el acceso a servicios de calidad.',
-    helpStatPros:'Profesionales Verificados', helpStatCompanies:'Empresas Asociadas',
+    helpStatPros:'Empresas Verificadas', helpStatCompanies:'Empresas Registradas',
     helpMissionTitle:'🎯 Misión', helpMissionDesc:'Simplificar y democratizar el acceso a servicios profesionales de calidad, creando un ecosistema transparente donde empresas y profesionales puedan crecer juntos.',
     helpVisionTitle:'👁️ Visión', helpVisionDesc:'Ser la plataforma de referencia en Portugal para conectar empresas y profesionales, fomentando el crecimiento económico y creando oportunidades para todos.',
     navLogin:'Entrar / Registrarse', navHelp:'Ayuda',
@@ -3796,7 +3798,7 @@ const translations = {
     helpPhoneTitle:'Telefon', helpPhoneDesc:'+351 XXX XXX XXX · Mo–Fr: 09:00–18:00 Uhr', helpPhoneBtn:'Anrufen',
     helpFaqTitle:'Häufige Fragen', helpFaqDesc:'Antworten auf die häufigsten Fragen finden.', helpFaqBtn:'FAQ ansehen',
     helpWhoTitle:'Über uns', helpWhoDesc:'HIVE ist eine innovative digitale Plattform, die Unternehmen, freie Fachleute und Privatpersonen vernetzt und transparente, verlässliche Geschäftsbeziehungen fördert. Wir sind in Portugal tätig und haben es uns zur Aufgabe gemacht, Zwischenhändler zu eliminieren, Kosten zu senken und hochwertige Dienstleistungen für alle zugänglich zu machen.',
-    helpStatPros:'Zertifizierte Fachleute', helpStatCompanies:'Partnerunternehmen',
+    helpStatPros:'Verifizierte Unternehmen', helpStatCompanies:'Registrierte Unternehmen',
     helpMissionTitle:'🎯 Mission', helpMissionDesc:'Den Zugang zu hochwertigen Fachleistungen vereinfachen und demokratisieren – ein transparentes Ökosystem schaffen, in dem Unternehmen und Fachleute gemeinsam wachsen können, ohne unnötige Zwischenhändler.',
     helpVisionTitle:'👁️ Vision', helpVisionDesc:'Die führende Plattform in Portugal zur Vernetzung von Unternehmen und Fachleuten werden, Wirtschaftswachstum fördern und Chancen für alle schaffen.',
     navLogin:'Anmelden / Registrieren', navHelp:'Hilfe',
@@ -9106,6 +9108,24 @@ function openHelp() {
   document.getElementById('helpPanel').classList.add('open');
   document.getElementById('helpBackdrop').classList.add('open');
   document.body.style.overflow = 'hidden';
+  populateHelpStats();
+}
+// Fill the "Sobre" stats with REAL counts from the live companies data (no
+// inflated figures). Hide the grid entirely while the catalogue is empty.
+function populateHelpStats() {
+  try {
+    var grid = document.getElementById('helpStatsGrid');
+    if (!grid) return;
+    var list = (typeof companies !== 'undefined' && Array.isArray(companies)) ? companies : [];
+    var total = list.length;
+    var verified = list.filter(function (c) { return c && c.verified; }).length;
+    if (total <= 0) { grid.style.display = 'none'; return; }
+    var n1 = document.getElementById('helpStatNum1');
+    var n2 = document.getElementById('helpStatNum2');
+    if (n1) n1.textContent = String(verified);
+    if (n2) n2.textContent = String(total);
+    grid.style.display = 'grid';
+  } catch (e) {}
 }
 function closeHelp() {
   document.getElementById('helpPanel').classList.remove('open');
