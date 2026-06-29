@@ -3,6 +3,25 @@
 <head>
   <meta charset="UTF-8"/>
   <script>/* Apply saved theme before paint to avoid a flash of the wrong theme */try{var _t=localStorage.getItem('hivex_theme');if(_t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+  <!-- ── Google AdSense (dormant until you add your IDs) ──────────────────────────
+       1. Paste your publisher ID into ADSENSE_CLIENT  (looks like ca-pub-XXXXXXXXXXXXXXXX).
+          That alone loads AdSense + enables Auto Ads (toggle them in your AdSense dashboard).
+       2. To also fill the publicity banner with a display ad, create a display ad unit
+          in AdSense and paste its slot id into ADSENSE_BANNER_SLOT (e.g. '1234567890').
+       Leave both '' to keep ads OFF (nothing loads — site behaves exactly as today).
+       Note: your site must be AdSense-approved first, and EU personalized ads need a
+       Google-certified consent platform. -->
+  <script>
+    window.ADSENSE_CLIENT = '';        // ← paste 'ca-pub-…' to turn ads ON
+    window.ADSENSE_BANNER_SLOT = '';   // ← paste a display ad-unit slot id for the banner
+    if (window.ADSENSE_CLIENT) {
+      var _as = document.createElement('script');
+      _as.async = true;
+      _as.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(window.ADSENSE_CLIENT);
+      _as.crossOrigin = 'anonymous';
+      document.head.appendChild(_as);
+    }
+  </script>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <meta name="format-detection" content="telephone=no"/>
@@ -106,7 +125,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v91.css"/>
+  <link rel="stylesheet" href="app.v92.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -322,6 +341,11 @@
         <span class="nav-ad-cta-ring">→</span>
       </div>
     </div>
+    <!-- AdSense display unit for the banner — hidden until ADSENSE_BANNER_SLOT is
+         set (see <head>). When active, JS fills in client/slot, hides the in-house
+         promo slides above, and shows this ad. -->
+    <ins class="adsbygoogle nav-ad-adsense" id="navAdSense" style="display:none;width:100%;height:100%"
+         data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
 
   <div class="nav-right">
@@ -11710,6 +11734,22 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
     if (p.receive === 'granted') return Push.register();
     return Push.requestPermissions().then(function (r) { if (r.receive === 'granted') return Push.register(); });
   }).catch(function (e) { console.warn('[push] permission', e); });
+})();
+
+// ── AdSense banner display unit ────────────────────────────────────────────────
+// Dormant unless BOTH window.ADSENSE_CLIENT and window.ADSENSE_BANNER_SLOT are set
+// (see <head>). When configured, fill in the ad's client/slot, hide the in-house
+// promo slides so the ad fills the banner, and request the ad.
+(function initBannerAd() {
+  var client = window.ADSENSE_CLIENT, slot = window.ADSENSE_BANNER_SLOT;
+  var ins = document.getElementById('navAdSense');
+  if (!client || !slot || !ins) return;
+  ins.setAttribute('data-ad-client', client);
+  ins.setAttribute('data-ad-slot', slot);
+  ins.style.display = 'block';
+  var banner = document.getElementById('navAdBanner');
+  if (banner) banner.querySelectorAll('.nav-ad-slide,.nav-ad-fallback').forEach(function (el) { el.style.display = 'none'; });
+  try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) { console.warn('[adsense]', e); }
 })();
 
 </script>
