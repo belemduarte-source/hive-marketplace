@@ -15,6 +15,23 @@
     window.ADSENSE_CLIENT = 'ca-pub-8615909245762152';  // live — loads AdSense (verification + Auto Ads when enabled in dashboard)
     window.ADSENSE_BANNER_SLOT = '';   // ← paste a display ad-unit slot id for the banner
     window.ADSENSE_CONTENT_SLOT = '';  // ← paste a slot id for the in-content ad (policy-safer)
+    // ── Google Consent Mode v2 ──────────────────────────────────────────────────
+    // Default-DENY ad/analytics storage until the user accepts on our cookie
+    // banner (EEA-safe). The AdSense script below respects this signal, so no
+    // personalized-ad cookies are set before consent. The banner's Accept/Reject
+    // updates this (see setCookieConsent). Returning visitors who already accepted
+    // start granted. The script still LOADS unconditionally so Google can verify
+    // the site for approval.
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    window.gtag = gtag;
+    var _hivexConsent = null;
+    try { _hivexConsent = localStorage.getItem('hive_cookie_consent'); } catch (e) {}
+    var _g = _hivexConsent === 'accepted' ? 'granted' : 'denied';
+    gtag('consent', 'default', {
+      ad_storage: _g, ad_user_data: _g, ad_personalization: _g, analytics_storage: _g,
+      wait_for_update: 500
+    });
     if (window.ADSENSE_CLIENT) {
       var _as = document.createElement('script');
       _as.async = true;
@@ -126,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v94.css"/>
+  <link rel="stylesheet" href="app.v95.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -8419,7 +8436,9 @@ const LEGAL_DOCS = {
         <h3>4. Base legal</h3>
         <p>Execução do contrato (Art. 6.º, n.º 1, alínea b)) para conta e perfil; consentimento (alínea a)) para cookies analíticos; interesse legítimo (alínea f)) para prevenção de fraude.</p>
         <h3>5. Partilha com terceiros</h3>
-        <p>Não vendemos dados. Partilhamos apenas com sub-processadores estritamente necessários: <strong>Vercel</strong> (hospedagem), <strong>Neon/Postgres</strong> (base de dados), <strong>Google</strong> (Sign-in opcional), <strong>OpenStreetMap/Carto</strong> (tiles do mapa). Todos cumprem o RGPD.</p>
+        <p>Não vendemos dados. Partilhamos apenas com sub-processadores estritamente necessários: <strong>Vercel</strong> (hospedagem), <strong>Neon/Postgres</strong> (base de dados), <strong>Google</strong> (Sign-in opcional e publicidade — ver ponto 5.1), <strong>OpenStreetMap/Carto</strong> (tiles do mapa). Todos cumprem o RGPD.</p>
+        <h3>5.1 Publicidade (Google AdSense)</h3>
+        <p>A Hivex pode apresentar anúncios fornecidos pelo <strong>Google AdSense</strong>. Fornecedores terceiros, incluindo a Google, utilizam cookies para apresentar anúncios com base em visitas anteriores do utilizador a este e a outros sites. A Google utiliza cookies de publicidade para apresentar anúncios; pode <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">desativar a publicidade personalizada</a> nas Definições de anúncios da Google ou recusar cookies de fornecedores terceiros em <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Mais informação na <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">política da Google sobre como utiliza dados de sites parceiros</a>. No Espaço Económico Europeu, Reino Unido e Suíça, os anúncios e respetivos cookies só são ativados <strong>após o seu consentimento</strong>, recolhido através do nosso banner de cookies — sem consentimento não são utilizados cookies de publicidade personalizada.</p>
         <h3>6. Período de conservação</h3>
         <p>Mantemos os dados enquanto a conta estiver ativa. Após eliminação, dados de conta são apagados em 30 dias. Logs de segurança: 12 meses. Empresas aprovadas continuam visíveis no diretório até pedido de remoção.</p>
         <h3>7. Os seus direitos</h3>
@@ -8907,6 +8926,13 @@ function setCookieConsent(value) {
   // Re-evaluate the analytics tracker now consent state changed
   if (typeof window.api !== 'undefined' && window.api) {
     window.api._analyticsAllowed = value === 'accepted';
+  }
+  // Update Google Consent Mode so AdSense (and any Google tag) respects the choice.
+  if (typeof window.gtag === 'function') {
+    const g = value === 'accepted' ? 'granted' : 'denied';
+    window.gtag('consent', 'update', {
+      ad_storage: g, ad_user_data: g, ad_personalization: g, analytics_storage: g,
+    });
   }
 }
 function showCookieBannerIfNeeded() {
