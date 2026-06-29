@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v100.css"/>
+  <link rel="stylesheet" href="app.v101.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -4073,7 +4073,9 @@ function showTab(name) {
           // circle are shown — but without changing the zoom.
           map.setView(PORTUGAL_CENTER, 7);
           if (!_locationObtained) {
-            setTimeout(() => detectUserLocation(true), 200);
+            // Only auto-centre for users who already granted location — never
+            // surface the OS prompt or the help modal without an explicit tap.
+            setTimeout(autoDetectLocationIfGranted, 200);
           }
         }
       }
@@ -6006,48 +6008,39 @@ loadCompaniesFromDB();
 // Sync radius label + circle with the slider's initial value on page load
 updateRadius(parseInt(document.getElementById('radiusSlider')?.value || 50, 10));
 
-// Auto-detect location at startup.
-// First checks the Permissions API to avoid calling getCurrentPosition without
-// a user gesture on first-visit mobile (which silently times out and blocks the
-// button for up to 8 s). If permission is already granted → auto-detect.
-// If unknown → pulse the button so user knows to tap. If denied → do nothing.
+// Auto-detect location at startup — but NEVER trigger the OS permission prompt
+// or a help modal without an explicit user action. We only silently auto-center
+// for users who have ALREADY granted permission; everyone else just gets a gentle
+// pulse on the locate button inviting them to opt in by tapping it.
+async function autoDetectLocationIfGranted() {
+  if (_locationObtained || !navigator.geolocation || !navigator.permissions) return;
+  try {
+    const perm = await navigator.permissions.query({ name: 'geolocation' });
+    if (perm.state === 'granted') detectUserLocation(true);
+    // 'prompt' / 'denied' → do nothing; the user opts in via the locate button.
+  } catch (_) {}
+}
 document.addEventListener('DOMContentLoaded', async () => {
   if (!navigator.geolocation) return;
   try {
     if (navigator.permissions) {
       const perm = await navigator.permissions.query({ name: 'geolocation' });
-
       if (perm.state === 'granted') {
-        detectUserLocation(true);
-
-      } else if (perm.state === 'denied') {
-        // Already blocked — open the help modal immediately so the user knows
-        // what to do before they even try to tap the button
-        openGeoHelp();
-
+        detectUserLocation(true);            // already allowed → silent auto-center
       } else {
-        // 'prompt' — trigger the browser's native permission prompt on first
-        // visit so the radius can be centered on the user. If they accept, the
-        // map flies to their location and the radius narrows to ~50 km. If they
-        // deny, we silently fall back to the default Lisbon-centered view.
-        detectUserLocation(true);
-        // Also pulse the locate button as a visual hint while the prompt shows
+        // 'prompt' or 'denied' — do NOT prompt or open the modal on load. Just a
+        // gentle pulse on the locate button so the user knows they can opt in.
         const b = document.getElementById('btnLocate');
         if (b) { b.classList.add('pulse-hint'); setTimeout(() => b.classList.remove('pulse-hint'), 5000); }
       }
-
-      // React to future permission changes (e.g. user enables from OS Settings)
+      // If the user later enables location (e.g. from OS settings) auto-center;
+      // never auto-open the modal on a denial.
       perm.onchange = () => {
         if (perm.state === 'granted') { closeGeoHelp(); detectUserLocation(true); }
-        else if (perm.state === 'denied') { openGeoHelp(); }
       };
-    } else {
-      // No Permissions API (iOS ≤15): try auto — works for returning visitors
-      detectUserLocation(true);
     }
-  } catch(e) {
-    detectUserLocation(true);
-  }
+    // No Permissions API → no auto-detect; the user opts in via the locate button.
+  } catch (_) {}
 });
 
 // ── MARKERS ───────────────────────────────────────────────────────────────────
