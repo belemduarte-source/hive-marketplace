@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v96.css"/>
+  <link rel="stylesheet" href="app.v97.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -4557,9 +4557,9 @@ function renderFeaturedCompanies() {
     const tags   = (c.tags || []).slice(0, 3).map(t => `<span class="lp-cc-tag">${t}</span>`).join('');
     const sectorLabel = sc[c.sector] || c.sector || '';
     return `
-      <div class="lp-company-card" onclick="lpOpenCompany(${c.id})">
+      <div class="lp-company-card" style="--cc:${(typeof getSectorColor === 'function' ? getSectorColor(c) : (c.color || '#f97316'))}" onclick="lpOpenCompany(${c.id})">
         <div class="lp-cc-header">
-          <div class="lp-cc-emoji" style="background:${c.color || '#f97316'}22">${c.emoji || '🏢'}</div>
+          <div class="lp-cc-emoji">${c.emoji || '🏢'}</div>
           <div class="lp-cc-info">
             <div class="lp-cc-name" title="${c.name}">${c.name}</div>
             <div class="lp-cc-sector">${sectorLabel}</div>
