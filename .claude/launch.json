@@ -9,6 +9,13 @@
       "port": 9091
     },
     {
+      "name": "hive-dist",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["serve.js"],
+      "cwd": "hive/dist",
+      "port": 9091
+    },
+    {
       "name": "hive-server",
       "runtimeExecutable": "powershell.exe",
       "runtimeArgs": ["-NoProfile", "-ExecutionPolicy", "Bypass", "-File", "C:\\Users\\35191\\Desktop\\Claude\\hive-deploy\\server.ps1"],
