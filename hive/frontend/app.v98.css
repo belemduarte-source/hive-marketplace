@@ -1370,7 +1370,7 @@
     .lp-stat-sep{width:1px;height:38px;background:#e5e7eb;flex-shrink:0}
 
     /* ── Section wrapper ── */
-    .lp-section{max-width:1100px;margin:0 auto;padding:60px 32px}
+    .lp-section{max-width:1100px;margin:0 auto;padding:72px 32px}
     .lp-section-head{text-align:center;margin-bottom:36px}
     .lp-section-head-row{display:flex;align-items:flex-end;justify-content:space-between;text-align:left;margin-bottom:28px}
     .lp-section-overline{font-size:11px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:#f97316;display:block;margin-bottom:8px}
@@ -1410,7 +1410,7 @@
     .lp-cat-count{font-size:10px;color:rgba(255,255,255,.85);background:rgba(0,0,0,.35);padding:2px 10px;border-radius:10px;font-weight:700;position:relative;z-index:2;backdrop-filter:blur(4px)}
 
     /* ── Featured Companies ── */
-    .lp-featured-section{background:#f9fafb;max-width:100%;padding:60px 0}
+    .lp-featured-section{background:#f9fafb;max-width:100%;padding:72px 0}
     /* In-content AdSense slot (shown only when configured) */
     .content-ad{max-width:1100px;margin:8px auto 4px;padding:0 24px;text-align:center}
     .content-ad-label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:6px}
@@ -1477,7 +1477,7 @@
     .lp-cc-address{font-size:15px;color:#6b7280;display:flex;align-items:center;gap:6px}
 
     /* ── How It Works (dark) ── */
-    .lp-steps-section{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%);padding:88px 32px}
+    .lp-steps-section{background:linear-gradient(135deg,#0f172a 0%,#1e1b4b 100%);padding:72px 32px}
     /* Trust section (pricing / verification / approval timeline) */
     .lp-steps-grid{max-width:1120px;margin:0 auto;display:flex;align-items:flex-start;gap:0}
     .lp-step{flex:1;text-align:center;padding:0 28px}
