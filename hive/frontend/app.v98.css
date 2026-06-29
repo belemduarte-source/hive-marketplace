@@ -42,8 +42,8 @@
       --fs-xs:13px;--fs-sm:15px;--fs-md:17px;--fs-lg:22px;--fs-xl:28px;--fs-2xl:36px;
       /* ── Spacing scale (4px grid) ── */
       --sp-1:4px;--sp-2:8px;--sp-3:12px;--sp-4:16px;--sp-5:20px;--sp-6:24px;--sp-8:32px;
-      /* ── Radius scale ── */
-      --rad-sm:8px;--rad-md:10px;--rad-lg:14px
+      /* ── Radius scale (sm 8 · md 12 · lg 16 · xl 20; pills 999) ── */
+      --rad-sm:8px;--rad-md:12px;--rad-lg:16px;--rad-xl:20px
     }
     /* height:100dvh adapts when the mobile address bar collapses/expands;
        100vh fallback for older browsers. overscroll-behavior:none keeps
@@ -396,7 +396,7 @@
     .view-toggle-btn:not(.active):hover{background:var(--border-light);color:var(--text)}
     .view-result-count{font-size:15px;color:#fff;font-weight:800;padding:6px 16px;margin-left:auto;border-radius:999px;background:linear-gradient(135deg,var(--primary),var(--primary-dark));box-shadow:0 2px 8px rgba(249,115,22,.35);white-space:nowrap;letter-spacing:.3px}
     .search-list-view{position:absolute;top:0;left:0;right:0;bottom:0;overflow-y:auto;padding:56px 16px 16px;background:var(--bg);display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;align-content:start;max-width:1400px;margin:0 auto}
-    .search-list-card{background:var(--surface);border-radius:14px;padding:18px;border:1px solid var(--border);transition:all .2s;cursor:pointer;display:flex;flex-direction:column;gap:8px}
+    .search-list-card{background:var(--surface);border-radius:var(--rad-lg);padding:18px;border:1px solid var(--border);transition:all .2s;cursor:pointer;display:flex;flex-direction:column;gap:8px}
     .search-list-card:hover{box-shadow:var(--shadow-md);border-color:var(--primary);transform:translateY(-2px)}
     /* Photo banner is mobile-only (Idealista-style cards); hidden on desktop so
        the desktop list view stays exactly as before. Mobile rules below opt it in. */
@@ -1446,7 +1446,7 @@
     .lp-testimonial-track:hover{animation-play-state:paused}
     @keyframes scrollTestimonials{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
     /* ── Customer-comment cards (bigger, easy to read) ── */
-    .lp-testimonial-card{flex-shrink:0;width:420px;background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:26px 30px;display:flex;flex-direction:column;gap:14px;transition:border-color .2s}
+    .lp-testimonial-card{flex-shrink:0;width:420px;background:#fff;border:1.5px solid #e5e7eb;border-radius:var(--rad-lg);padding:26px 30px;display:flex;flex-direction:column;gap:14px;transition:border-color .2s}
     .lp-testimonial-card:hover{border-color:#f97316}
     .lp-tc-stars{color:#f59e0b;font-size:26px;letter-spacing:3px;line-height:1}
     .lp-tc-quote{font-size:19px;color:#374151;line-height:1.5;font-style:italic;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
@@ -1457,7 +1457,7 @@
     .lp-tc-company{font-size:14px;font-weight:700;color:#f97316;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
     /* ── Featured-company cards (bigger, easy to read) ── */
-    .lp-company-card{background:#fff;border-radius:18px;border:1.5px solid #e5e7eb;padding:30px;cursor:pointer;position:relative;overflow:hidden;--cc:#f97316;transition:transform .22s cubic-bezier(.34,1.4,.5,1),box-shadow .22s,border-color .22s}
+    .lp-company-card{background:#fff;border-radius:var(--rad-lg);border:1.5px solid #e5e7eb;padding:30px;cursor:pointer;position:relative;overflow:hidden;--cc:#f97316;transition:transform .22s cubic-bezier(.34,1.4,.5,1),box-shadow .22s,border-color .22s}
     /* sector-coloured accent strip along the top edge */
     .lp-company-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,var(--cc),transparent 85%);opacity:.9}
     .lp-company-card:hover{transform:translateY(-4px);border-color:#f97316;border-color:color-mix(in srgb,var(--cc) 50%,#e5e7eb);box-shadow:0 16px 36px -14px rgba(0,0,0,.2);box-shadow:0 18px 40px -14px color-mix(in srgb,var(--cc) 40%,transparent)}
