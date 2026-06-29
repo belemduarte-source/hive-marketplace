@@ -2733,6 +2733,29 @@
     [data-theme="dark"] .lp-section,
     [data-theme="dark"] .lang-menu,
     [data-theme="dark"] .search-list-view{color:var(--text)}
+    /* Dark mode — company detail panel: several values use hardcoded dark accent
+       colours (inline or via class) that are unreadable on the dark surface.
+       Info text → light; small chip/tag accents → a lighter on-brand orange.
+       Badges on their own LIGHT background (.dp-cred-required/optional) are left
+       untouched since dark text is correct there. !important beats inline styles. */
+    [data-theme="dark"] .dp-fact-value,
+    [data-theme="dark"] .dp-description,
+    [data-theme="dark"] .dp-cred-doc-value,
+    [data-theme="dark"] .ch-name{color:var(--text) !important}
+    [data-theme="dark"] .ch-desc{color:var(--text-secondary) !important}
+    [data-theme="dark"] .detail-panel .tag,
+    [data-theme="dark"] .dp-cred-chip{color:#fdba74 !important}
+    /* Home testimonial cards hardcode a white background + dark text; darken the
+       card and lighten the text so they fit the dark theme and stay readable. */
+    [data-theme="dark"] .lp-testimonial-card{background:var(--surface);border-color:var(--border)}
+    [data-theme="dark"] .lp-tc-quote,
+    [data-theme="dark"] .lp-tc-author{color:var(--text)}
+    [data-theme="dark"] .lp-tc-company{color:#fdba74}
+    /* The featured ("Os mais bem avaliados") section has a light background that
+       didn't flip — darken it so its (light) title and the cards on it read. */
+    [data-theme="dark"] .lp-featured-section{background:var(--bg)}
+    [data-theme="dark"] .lp-see-all-btn,
+    [data-theme="dark"] .lp-cc-skeleton{background:var(--surface);border-color:var(--border);color:var(--text)}
     /* Cards/surfaces that hardcode a white background should darken too. */
     [data-theme="dark"] .lp-company-card,
     [data-theme="dark"] .sector-company-card,
