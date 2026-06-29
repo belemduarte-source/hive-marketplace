@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v102.css"/>
+  <link rel="stylesheet" href="app.v103.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -11791,6 +11791,41 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
   ins.setAttribute('data-ad-slot', slot);
   box.style.display = 'block';
   try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) { console.warn('[adsense]', e); }
+})();
+
+// ── A11y: keyboard-operable cards ──────────────────────────────────────────────
+// The main browse cards are clickable <div>s, so keyboard/AT users couldn't
+// activate them. This adds role="button" + tabindex and Enter/Space activation,
+// scoped to the card classes only (never backdrops/containers), and re-applies to
+// dynamically-rendered cards. No markup changes needed.
+(function enableCardKeyboard() {
+  var SEL = '.lp-company-card, .search-list-card, .sector-company-card';
+  function enhance() {
+    document.querySelectorAll(SEL).forEach(function (el) {
+      if (el.dataset.kbd || el.tagName === 'BUTTON' || el.tagName === 'A') return;
+      el.dataset.kbd = '1';
+      if (!el.hasAttribute('tabindex')) el.setAttribute('tabindex', '0');
+      if (!el.hasAttribute('role')) el.setAttribute('role', 'button');
+    });
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Enter' && e.key !== ' ') return;
+    if (/^(INPUT|TEXTAREA|SELECT|BUTTON|A)$/.test(e.target.tagName)) return; // don't hijack controls
+    var card = e.target.closest && e.target.closest(SEL);
+    if (!card) return;
+    e.preventDefault();
+    card.click();
+  });
+  if (document.readyState !== 'loading') enhance();
+  else document.addEventListener('DOMContentLoaded', enhance);
+  // Re-scan once per frame when cards are (re)rendered.
+  var scheduled = false;
+  try {
+    new MutationObserver(function () {
+      if (scheduled) return; scheduled = true;
+      requestAnimationFrame(function () { scheduled = false; enhance(); });
+    }).observe(document.body, { childList: true, subtree: true });
+  } catch (_) {}
 })();
 
 </script>
