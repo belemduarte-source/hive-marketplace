@@ -405,6 +405,17 @@
        behaves exactly as before; the drag handle is mobile-only. */
     .map-sheet{display:contents}
     .map-sheet-handle{display:none}
+
+    /* Accessibility: a consistent keyboard-focus ring across all interactive
+       elements. :focus-visible only triggers for keyboard/AT users, never on
+       mouse or touch, so it never shows for pointer interactions. */
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible,
+    textarea:focus-visible, [role="button"]:focus-visible, [tabindex]:focus-visible,
+    .msp-chip:focus-visible, .cat-item:focus-visible, .slc-fav:focus-visible,
+    .map-sheet-handle:focus-visible, .lp-hero-cat:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
     .slc-header{display:flex;align-items:center;gap:10px}
     .slc-emoji{font-size:28px;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
     .slc-info{flex:1;min-width:0}
@@ -2474,7 +2485,7 @@
       .slc-badge-top{background:#f59e0b}
       .slc-photo-rating{position:absolute;left:10px;bottom:10px;display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:800;color:#fff;background:rgba(0,0,0,.55);backdrop-filter:blur(3px);padding:5px 11px;border-radius:999px;z-index:2}
       /* Heart → top-right over the photo (Idealista placement); compare hidden on mobile */
-      .slc-fav{top:10px;left:auto;right:10px;width:38px;height:38px;font-size:20px;background:rgba(255,255,255,.95)}
+      .slc-fav{top:10px;left:auto;right:10px;width:44px;height:44px;font-size:21px;background:rgba(255,255,255,.95)}
       .slc-compare{display:none}
       /* Body now padded individually since the card itself has no padding */
       .slc-header,.slc-address,.slc-tags,.slc-footer{margin-left:14px;margin-right:14px}
