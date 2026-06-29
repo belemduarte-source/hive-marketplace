@@ -14,6 +14,7 @@
   <script>
     window.ADSENSE_CLIENT = '';        // ← paste 'ca-pub-…' to turn ads ON
     window.ADSENSE_BANNER_SLOT = '';   // ← paste a display ad-unit slot id for the banner
+    window.ADSENSE_CONTENT_SLOT = '';  // ← paste a slot id for the in-content ad (policy-safer)
     if (window.ADSENSE_CLIENT) {
       var _as = document.createElement('script');
       _as.async = true;
@@ -125,7 +126,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v92.css"/>
+  <link rel="stylesheet" href="app.v93.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -760,6 +761,15 @@
         <!-- populated by renderTestimonialBanner() -->
       </div>
     </div>
+  </div>
+
+  <!-- In-content AdSense slot — policy-safe placement (content above and below),
+       a fallback/alternative to the nav-banner unit. Hidden until both
+       ADSENSE_CLIENT and ADSENSE_CONTENT_SLOT are set (see <head>). -->
+  <div class="content-ad" id="contentAd" style="display:none">
+    <span class="content-ad-label" data-i18n="adLabel">Publicidade</span>
+    <ins class="adsbygoogle" id="contentAdSense" style="display:block"
+         data-ad-format="auto" data-full-width-responsive="true"></ins>
   </div>
 
   <!-- ══════════════════════════════════════════════════════════════════════════
@@ -11749,6 +11759,18 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
   ins.style.display = 'block';
   var banner = document.getElementById('navAdBanner');
   if (banner) banner.querySelectorAll('.nav-ad-slide,.nav-ad-fallback').forEach(function (el) { el.style.display = 'none'; });
+  try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) { console.warn('[adsense]', e); }
+})();
+
+// In-content ad unit (policy-safer placement). Dormant unless ADSENSE_CLIENT and
+// ADSENSE_CONTENT_SLOT are both set.
+(function initContentAd() {
+  var client = window.ADSENSE_CLIENT, slot = window.ADSENSE_CONTENT_SLOT;
+  var box = document.getElementById('contentAd'), ins = document.getElementById('contentAdSense');
+  if (!client || !slot || !box || !ins) return;
+  ins.setAttribute('data-ad-client', client);
+  ins.setAttribute('data-ad-slot', slot);
+  box.style.display = 'block';
   try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) { console.warn('[adsense]', e); }
 })();
 
