@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v122.css"/>
+  <link rel="stylesheet" href="app.v123.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -4707,7 +4707,8 @@ function setLanguage(lang) {
     else el.textContent = flags[lang];
   };
   setFlag('langFlag'); setFlag('mobileLangFlag'); setFlag('navLangFlag');
-  document.getElementById('langCode').textContent = codes[lang];
+  const _langCodeEl = document.getElementById('langCode');
+  if (_langCodeEl) _langCodeEl.textContent = codes[lang];
   const mobileCode = document.getElementById('mobileLangCode');
   if (mobileCode) mobileCode.textContent = codes[lang];
   const navLangCode = document.getElementById('navLangCode');
@@ -9759,7 +9760,10 @@ try {
   // user's saved favourites from the server. Fire-and-forget, doesn't block
   // first paint.
   try { setTimeout(syncFavouritesFromServer, 50); } catch(_) {}
-  try { applyI18n(); } catch(e) { console.warn('Init skip: applyI18n', e); }
+  // Apply the saved language on load: setLanguage() syncs the language button
+  // (flag/code/active highlight) AND translates the page, so a refresh keeps the
+  // chosen language everywhere — not just in the content.
+  try { setLanguage(currentLang); } catch(e) { console.warn('Init skip: setLanguage', e); try { applyI18n(); } catch(_) {} }
   try { const _yr = document.getElementById('copyYear'); if (_yr) _yr.textContent = new Date().getFullYear(); } catch(_) {}
   if (typeof lucide !== 'undefined') { try { lucide.createIcons(); } catch(e) { console.warn('Init skip: lucide', e); } }
 } catch(e) { console.error('Init error:', e); }
