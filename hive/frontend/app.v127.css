@@ -439,14 +439,14 @@
     .map-legend-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:2px solid rgba(255,255,255,.35);box-shadow:0 0 6px rgba(0,0,0,.2)}
     @media(max-width:768px){.map-legend{display:none !important}}
     /* Driving-route info bar (distance + ETA), shown over the map after "Como chegar" */
-    .route-info{position:absolute;top:12px;left:50%;transform:translateX(-50%);max-width:calc(100% - 24px);background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:8px 8px 8px 12px;box-shadow:0 6px 22px rgba(0,0,0,.3);display:flex;align-items:center;gap:10px;z-index:1100}
+    .route-info{position:absolute;top:14px;left:50%;transform:translateX(-50%);max-width:calc(100% - 24px);background:var(--surface);border:1.5px solid var(--border);border-radius:16px;padding:14px 14px 14px 20px;box-shadow:0 10px 30px rgba(0,0,0,.38);display:flex;align-items:center;gap:16px;z-index:1100}
     .route-info[hidden]{display:none}
-    .route-info-ico{color:#f97316;flex-shrink:0}
-    .route-info-text{display:flex;flex-direction:column;line-height:1.25;min-width:0}
-    .route-info-dest{font-size:13px;font-weight:700;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:240px}
-    .route-info-stats{font-size:13px;color:var(--text-secondary);font-weight:600}
-    .route-info-stats strong{color:#f97316;font-size:15px;font-weight:800}
-    .route-info-close{background:none;border:none;color:var(--muted);font-size:16px;cursor:pointer;line-height:1;padding:5px 7px;flex-shrink:0;border-radius:7px}
+    .route-info-ico{color:#f97316;flex-shrink:0;width:32px;height:32px}
+    .route-info-text{display:flex;flex-direction:column;line-height:1.25;min-width:0;gap:2px}
+    .route-info-dest{font-size:18px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:320px}
+    .route-info-stats{font-size:20px;color:var(--text-secondary);font-weight:700}
+    .route-info-stats strong{color:#f97316;font-size:26px;font-weight:900}
+    .route-info-close{background:none;border:none;color:var(--muted);font-size:24px;cursor:pointer;line-height:1;padding:6px 10px;flex-shrink:0;border-radius:8px}
     .route-info-close:hover{background:var(--bg);color:var(--text)}
     .map-empty-hint{position:absolute;bottom:16px;right:16px;transform:none;z-index:1000;pointer-events:none;display:flex;flex-direction:row;align-items:center;gap:10px;background:rgba(6,14,28,.85);border:1px solid rgba(249,115,22,.25);border-radius:12px;padding:12px 18px;backdrop-filter:blur(6px);text-align:left}
     .map-empty-hint svg{width:22px;height:22px;flex-shrink:0}
@@ -481,17 +481,17 @@
     /* ── DETAIL PANEL ── */
     .detail-panel{position:fixed;top:170px;right:-440px;width:420px;height:calc(100vh - 170px);background:var(--surface);box-shadow:-4px 0 16px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transition:right .25s cubic-bezier(.25,.46,.45,.94);border-left:1px solid var(--border);will-change:right;-webkit-backface-visibility:hidden;backface-visibility:hidden}
     .detail-panel.open{right:0}
-    .dp-header{background:linear-gradient(135deg,var(--nav) 0%,#1a2a4a 100%);padding:22px 20px;display:flex;align-items:flex-start;gap:16px;flex-shrink:0;border-bottom:1px solid var(--border)}
-    .dp-logo{width:62px;height:62px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff;flex-shrink:0;background:rgba(249,115,22,.2)}
-    .dp-name{font-size:27px;font-weight:800;color:#fff;margin-bottom:5px;line-height:1.2}
-    .dp-sub{font-size:18px;color:#f1f5f9;font-weight:600}
+    .dp-header{background:linear-gradient(135deg,var(--nav) 0%,#1a2a4a 100%);padding:28px 24px;display:flex;align-items:flex-start;gap:18px;flex-shrink:0;border-bottom:1px solid var(--border)}
+    .dp-logo{width:74px;height:74px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:44px;color:#fff;flex-shrink:0;background:rgba(249,115,22,.2)}
+    .dp-name{font-size:32px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.15}
+    .dp-sub{font-size:22px;color:#f1f5f9;font-weight:600}
     .dp-info{flex:1}
     .dp-close{background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
     .dp-close:hover{background:rgba(255,255,255,.2);transform:rotate(90deg)}
     .dp-fav-btn{font-size:18px;color:rgba(255,255,255,.6);transition:color .15s,transform .15s}
     .dp-fav-btn:hover{color:#fbbf24;transform:scale(1.12)}
     .dp-fav-btn.is-fav{color:#fbbf24}
-    .dp-quote-bar{display:flex;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(249,115,22,.04)}
+    .dp-quote-bar{display:flex;flex-wrap:wrap;gap:8px;padding:12px 16px;border-bottom:1px solid var(--border);background:rgba(249,115,22,.04)}
     /* Mobile: bigger thumb-friendly tap targets, slightly tighter gap */
     @media (max-width:768px){
       /* Pin the contact action bar to the BOTTOM of the detail sheet (Idealista
@@ -509,8 +509,16 @@
     }
     .btn-request-quote{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;font-size:14px;font-weight:700;padding:12px 20px;border-radius:10px;border:none;cursor:pointer;transition:all .2s;font-family:inherit;box-shadow:0 4px 12px rgba(249,115,22,.3)}
     .btn-request-quote:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(249,115,22,.4)}
-    .btn-quote-secondary{display:flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:10px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s}
+    .btn-quote-secondary{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);cursor:pointer;transition:all .2s}
+    .btn-quote-secondary svg{width:22px;height:22px}
     .btn-quote-secondary:hover{border-color:var(--primary);color:var(--text);background:var(--primary-light)}
+    /* Coloured action icons */
+    .qs-call{color:#16a34a;border-color:rgba(22,163,74,.45);background:rgba(22,163,74,.12)}
+    .qs-call:hover{color:#15803d;border-color:#16a34a;background:rgba(22,163,74,.2)}
+    .qs-share{color:#0d9488;border-color:rgba(13,148,136,.45);background:rgba(13,148,136,.12)}
+    .qs-share:hover{color:#0f766e;border-color:#0d9488;background:rgba(13,148,136,.2)}
+    .qs-report{color:#dc2626;border-color:rgba(220,38,38,.42);background:rgba(220,38,38,.1)}
+    .qs-report:hover{color:#b91c1c;border-color:#dc2626;background:rgba(220,38,38,.18)}
     .dp-body{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:16px}
     .dp-body::-webkit-scrollbar{width:6px}
     .dp-body::-webkit-scrollbar-track{background:var(--bg);border-radius:4px}
@@ -533,10 +541,10 @@
        sat flush against each other. Match the .dp-body 16 px gap. */
     #dpGatedSections{display:flex;flex-direction:column;gap:16px}
     .channel-grid{display:flex;flex-direction:column;gap:10px}
-    .channel-btn{display:flex;align-items:center;gap:12px;padding:12px 14px;border-radius:var(--radius-sm);border:1.5px solid transparent;cursor:pointer;transition:all .2s}
-    .ch-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;font-weight:700}
-    .ch-name{font-size:14px;font-weight:700;line-height:1.3}
-    .ch-desc{font-size:12px;opacity:.75;margin-top:2px}
+    .channel-btn{display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:var(--radius-sm);border:1.5px solid transparent;cursor:pointer;transition:all .2s}
+    .ch-icon{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0;font-weight:700}
+    .ch-name{font-size:17px;font-weight:700;line-height:1.3}
+    .ch-desc{font-size:14px;opacity:.78;margin-top:2px}
     .ch-info{flex:1}
     .channel-btn.wa{background:#f0fdf4;border-color:#bbf7d0;color:#15803d}.channel-btn.wa:hover{background:#16a34a;color:#fff;border-color:#16a34a}
     .channel-btn.wa .ch-icon{background:#16a34a;color:#fff}
@@ -586,6 +594,14 @@
     /* The credentials card is hardcoded white; in dark mode make it themed so
        its var(--text) (white) children keep contrast instead of white-on-white. */
     [data-theme="dark"] .dp-credentials{background:var(--surface);border-color:var(--border)}
+    /* "Additional information" collapsible — ordered last so key contact info shows first */
+    .dp-more{order:10}
+    .dp-more-toggle{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:15px 16px;font-size:17px;font-weight:800;color:var(--text);cursor:pointer;font-family:inherit;transition:background .15s,border-color .15s}
+    .dp-more-toggle:hover{background:var(--surface);border-color:var(--primary)}
+    .dp-more-arrow{font-size:15px;color:var(--text-secondary);transition:transform .2s}
+    .dp-more-toggle.open .dp-more-arrow{transform:rotate(180deg)}
+    .dp-more-body{display:flex;flex-direction:column;gap:16px;margin-top:14px}
+    .dp-more-body[hidden]{display:none}
 
     /* chat widget removed */
 
@@ -2666,7 +2682,11 @@
     .sector-company-card:hover{border-color:var(--primary);box-shadow:var(--shadow-md);transform:translateY(-2px)}
 
     /* ── dp contact button ── */
-    .btn-dp-contact{flex:1;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:11px 16px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .2s}
+    .btn-dp-contact{flex:1 1 44%;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:13px 16px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;transition:background .2s}
+    /* "Como chegar" / Directions — a prominent blue button (like Google Maps) */
+    .btn-dp-directions{flex:1 1 44%;background:linear-gradient(135deg,#2563eb,#1d4ed8);color:#fff;border:none;border-radius:10px;padding:13px 16px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,box-shadow .15s;box-shadow:0 4px 14px rgba(37,99,235,.4);white-space:nowrap}
+    .btn-dp-directions:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(37,99,235,.55)}
+    .btn-dp-directions svg{flex-shrink:0}
     .btn-dp-contact:hover{background:var(--primary-dark)}
 
     /* ════════════════════════════════════════════════════════════════
