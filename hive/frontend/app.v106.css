@@ -2734,6 +2734,11 @@
     [data-theme="dark"] .lp-sb-inner input,
     [data-theme="dark"] .hs-trigger-input{color:var(--text)}
     [data-theme="dark"] .hs-option-all{color:var(--text);border-bottom-color:var(--border)}
+    /* Featured cards — the review count, tags and address were dim grey in dark
+       mode; make them bold and light so they're clearly readable. */
+    [data-theme="dark"] .lp-cc-reviews,
+    [data-theme="dark"] .lp-cc-address{color:var(--text);font-weight:600}
+    [data-theme="dark"] .lp-cc-tag{background:rgba(255,255,255,.08);color:var(--text);font-weight:600}
     /* Generic safety net: panels/cards/modals inherit the themed text colour so
        any element relying on inheritance (not an explicit hardcoded colour) adapts. */
     [data-theme="dark"] .filter-sidebar,
