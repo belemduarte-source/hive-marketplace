@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v119.css"/>
+  <link rel="stylesheet" href="app.v120.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -3693,8 +3693,8 @@ const translations = {
       chave_na_mao_comercial:'Schlüsselfertiger Gewerbebau'
     },
     sectorGroups:{
-      estrutura_fundacao:'Rohbau & Fundament', instalacoes:'Technische Gebäudeausrüstung', acabamentos:'Ausbau & Finishing',
-      carpintaria:'Holzbau & Tischlerei', serralharia_metal:'Metallbau', exterior_jardim:'Außenanlagen', projeto_gestao:'Planung & Projektmanagement', chave_na_mao:'Schlüsselfertig',
+      estrutura_fundacao:'Rohbau & Fundament', instalacoes:'Gebäudetechnik', acabamentos:'Ausbau & Finishing',
+      carpintaria:'Holzbau & Tischlerei', serralharia_metal:'Metallbau', exterior_jardim:'Außenanlagen', projeto_gestao:'Planung & Projekte', chave_na_mao:'Schlüsselfertig',
       obra_grossa:'Rohbau', redes_tecnicas:'Haustechnik', revestimentos:'Bekleidung & Beschichtung',
       madeira:'Holz & Möbel', metal_vidro:'Metall, Glas & Bauelemente', exteriores:'Außen- & Grünanlagen', projetos:'Planung & Beratung'
     },
@@ -4822,6 +4822,10 @@ function applyI18n() {
   // Theme toggle label ("Escuro"/"Claro" etc.) is set in JS, so re-sync it
   // to the current language too.
   try { _syncThemeToggle(); } catch (_) {}
+
+  // Re-fit the sector bar: a longer-language label set must shrink to keep the
+  // bar one row (constant banner height). Deferred so the new labels lay out.
+  try { setTimeout(fitSectorBar, 0); } catch (_) {}
 
   // Defer Lucide icon re-init to the next idle slot so it doesn't compete
   // with paint of the just-translated DOM.
@@ -6303,7 +6307,7 @@ function renderSectorFilters() {
   allBtn.className = 'cat-item cat-item-master' + (_allSelected ? ' active' : '');
   allBtn.title = _allSelected ? t('sectorAllDeselectAll') : t('sectorAllSelectAll');
   allBtn.innerHTML = `
-    ${_allSelected ? '<span class="cat-icon" style="font-size:34px;line-height:1">✓</span>' : ''}
+    ${_allSelected ? '<span class="cat-icon" style="line-height:1">✓</span>' : ''}
     <span class="cat-label">${t('sectorAllLabel')}</span>
   `;
   allBtn.addEventListener('click', (e) => {
@@ -6371,7 +6375,7 @@ function renderSectorFilters() {
     const emoji = sectorEmojis[groupKey] || '📦';
 
     catItem.innerHTML = `
-      <span class="cat-icon" style="font-size:54px;line-height:1">${emoji}</span>
+      <span class="cat-icon" style="line-height:1">${emoji}</span>
       <span class="cat-label">${shortName}</span>
       <span class="cat-arrow">▾</span>
       ${dropdownHTML}
@@ -10510,8 +10514,39 @@ if (_origRenderSectorFilters) {
   renderSectorFilters = function() {
     _origRenderSectorFilters();
     setTimeout(initSectorScrollFade, 50);
+    setTimeout(fitSectorBar, 60);
   };
 }
+
+// ── Keep the sector bar at a CONSTANT height across languages ────────────────
+// The desktop bar is one row of equal-width tabs. Longer translations (es/de)
+// used to wrap to a 2nd row, growing the banner. Instead, auto-shrink the
+// cat-labels uniformly so the longest one fits its slot — same space, the text
+// size adapts to the language.
+function fitSectorBar() {
+  try {
+    const ub = document.getElementById('sectorFilters');
+    if (!ub) return;
+    const container = ub.querySelector('.sector-filter-container');
+    if (!container) return;
+    // Desktop one-row layout only; the mobile bar scrolls horizontally.
+    if (window.innerWidth < 1025) { container.style.removeProperty('--cat-fs'); return; }
+    const labels = [...container.querySelectorAll('.cat-label')];
+    if (!labels.length) return;
+    let size = 23;                                  // max / default label size
+    container.style.setProperty('--cat-fs', size + 'px');
+    const overflowing = () => labels.some(l => l.scrollWidth > l.clientWidth + 1);
+    let guard = 0;
+    while (overflowing() && size > 10 && guard++ < 40) {
+      size -= 1;
+      container.style.setProperty('--cat-fs', size + 'px');
+    }
+  } catch (e) {}
+}
+window.addEventListener('resize', () => {
+  clearTimeout(window.__fitSectorT);
+  window.__fitSectorT = setTimeout(fitSectorBar, 120);
+});
 
 // ── Add translations for new UI strings ──────────────────────────────────────
 (function() {

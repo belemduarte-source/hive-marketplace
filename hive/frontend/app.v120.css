@@ -227,7 +227,7 @@
     .ub-btn:hover{background:var(--primary-dark)}
     .ub-divider{width:1px;background:rgba(255,255,255,.15);margin:8px 0;flex-shrink:0}
     .ub-sectors{display:flex;align-items:stretch;overflow:visible;flex:1;min-width:0;padding:0 4px}
-    .ub-sectors .sector-filter-container{display:flex;flex-direction:row !important;flex-wrap:wrap;gap:0;align-items:stretch;min-height:100%;width:100%}
+    .ub-sectors .sector-filter-container{display:flex;flex-direction:row !important;flex-wrap:nowrap;gap:0;align-items:stretch;min-height:100%;width:100%}
     /* cat-item base (overridden by card-style block below) */
     .cat-item{position:relative;display:flex;align-items:center;justify-content:center;gap:6px;padding:8px 12px;font-size:13px;font-weight:600;color:#e2e8f0;background:transparent;border:none;cursor:pointer;transition:all .18s;white-space:nowrap;letter-spacing:.02em;flex:1 1 0}
     /* Dropdown - fixed position to escape overflow clipping */
@@ -966,7 +966,7 @@
 
     /* ── SECTOR BUTTONS redesigned ── */
     /* cat-item: full-width tab buttons, no scroll */
-    .cat-item{position:relative;flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:8px;padding:0 14px;font-size:14px;font-weight:700;color:#ffffff;background:transparent;border:none;border-right:1px solid rgba(255,255,255,.1);cursor:pointer;transition:all .18s;white-space:nowrap;letter-spacing:.02em;user-select:none;text-shadow:0 1px 3px rgba(0,0,0,.4)}
+    .cat-item{position:relative;flex:1;min-width:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:6px;padding:0 9px;font-size:14px;font-weight:700;color:#ffffff;background:transparent;border:none;border-right:1px solid rgba(255,255,255,.1);cursor:pointer;transition:all .18s;white-space:nowrap;letter-spacing:.02em;user-select:none;text-shadow:0 1px 3px rgba(0,0,0,.4)}
     .cat-item:last-child{border-right:none}
     .cat-item:hover{background:rgba(249,115,22,.15);color:#fff}
     .cat-item.active{background:rgba(255,255,255,.18);color:#fff;outline:none;border-radius:6px}
@@ -975,10 +975,10 @@
     .cat-item-master:hover{background:rgba(249,115,22,.2)}
     .cat-item-master.active{background:rgba(255,255,255,.24);color:#fff;outline:none;border-radius:6px}
     .cat-item.open{background:rgba(249,115,22,.12);color:#fff}
-    .cat-item .cat-icon{display:flex;align-items:center;justify-content:center;opacity:1;flex-shrink:0}
+    .cat-item .cat-icon{display:flex;align-items:center;justify-content:center;opacity:1;flex-shrink:0;font-size:calc(var(--cat-fs,23px) + 6px);line-height:1}
     .cat-item:hover .cat-icon,.cat-item.active .cat-icon,.cat-item.open .cat-icon{opacity:1}
     .cat-item .cat-icon[data-lucide]{width:18px;height:18px;stroke:currentColor;fill:none;flex-shrink:0}
-    .cat-item .cat-label{font-size:23px;font-weight:700;line-height:1.1;color:#fff}
+    .cat-item .cat-label{font-size:var(--cat-fs,23px);font-weight:700;line-height:1.1;color:#fff;display:block;min-width:0;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
     .cat-item .cat-arrow{font-size:10px;opacity:.4;margin-left:2px;transition:transform .15s}
     .cat-item.open .cat-arrow{transform:rotate(180deg);opacity:.8}
     /* ── CLEAR-ALL FILTERS BUTTON (right of sector bar) ── */
