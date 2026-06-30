@@ -285,7 +285,7 @@
     .filter-result{padding:8px 12px;font-size:17px;color:var(--text);background:linear-gradient(135deg,var(--orange-mid) 0%,var(--orange-light) 100%);border-bottom:1px solid var(--orange-border);display:flex;align-items:center;gap:6px;font-weight:700}
     .filter-result strong{color:var(--primary);font-size:26px;font-weight:900;line-height:1}
     .filter-section{border-bottom:1px solid var(--border-light);padding:10px 14px;background:var(--surface)}
-    .filter-section-title{font-size:21px;font-weight:800;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px;display:flex;align-items:center;gap:4px}
+    .filter-section-title{font-size:21px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px;display:flex;align-items:center;gap:4px}
     .filter-opt{display:flex;align-items:center;gap:8px;padding:5px 4px;cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;margin-bottom:2px}
     .filter-opt:hover{background:var(--bg)}
     .filter-opt input[type=checkbox],.filter-opt input[type=radio]{width:15px;height:15px;accent-color:var(--primary);cursor:pointer;flex-shrink:0}
@@ -293,7 +293,7 @@
     .fcount{font-size:11px;color:#fff;background:var(--primary);border:none;border-radius:12px;padding:3px 8px;margin-left:auto;flex-shrink:0;font-weight:700;text-align:center;font-size:11px}
     .sector-ico{width:13px;height:13px;color:var(--muted);flex-shrink:0;stroke-width:2}
     .filter-opt input:checked ~ label .sector-ico{color:var(--primary)}
-    .rating-stars-f{color:#f59e0b;font-size:10px;letter-spacing:-0.5px;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+    .rating-stars-f{color:#f59e0b;font-size:15px;letter-spacing:0;font-weight:700;text-shadow:0 1px 2px rgba(0,0,0,.1)}
     .sort-opt{display:flex;align-items:center;gap:6px;padding:3px 4px;cursor:pointer;border-radius:var(--radius-sm);transition:all .15s;margin-bottom:1px}
     .sort-opt:hover{background:var(--bg)}
     .sort-opt input{width:13px;height:13px;accent-color:var(--primary);cursor:pointer;flex-shrink:0}
