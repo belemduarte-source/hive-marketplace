@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v113.css"/>
+  <link rel="stylesheet" href="app.v114.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -157,7 +157,7 @@
 <noscript>
   <div style="position:fixed;inset:0;background:#0f172a;color:#fff;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;font-family:'Segoe UI',system-ui,sans-serif">
     <div style="font-size:48px;margin-bottom:16px">🐝</div>
-    <h1 style="font-size:22px;margin:0 0 12px;color:#f97316">JavaScript necessário</h1>
+    <h1 style="font-size:22px;margin:0 0 12px;color:#fff">JavaScript necessário</h1>
     <p style="max-width:480px;line-height:1.5;font-size:15px;margin:0 0 16px">
       A Hivex requer JavaScript para funcionar. Por favor, ative o JavaScript no seu navegador e recarregue a página.
     </p>
@@ -1371,10 +1371,10 @@
           <div class="caps-hint" id="loginCapsHint" hidden data-i18n="capsLockOn">⚠️ Caps Lock está ativado</div>
           <div class="field-error" id="loginPassErr" hidden></div>
         </div>
-        <div style="text-align:right;margin-bottom:14px"><a href="#" onclick="openForgotPassword();return false" style="display:inline-block;font-size:13px;font-weight:700;color:var(--primary);text-decoration:underline;text-underline-offset:3px;padding:6px 2px" data-i18n="forgotPwd">Esqueceu a palavra-passe?</a></div>
+        <div style="text-align:right;margin-bottom:14px"><a href="#" onclick="openForgotPassword();return false" style="display:inline-block;font-size:13px;font-weight:700;color:var(--text);text-decoration:underline;text-underline-offset:3px;padding:6px 2px" data-i18n="forgotPwd">Esqueceu a palavra-passe?</a></div>
         <button type="submit" class="btn-submit" id="loginSubmitBtn" style="width:100%;padding:11px;font-size:14px" data-i18n="authLoginSubmit">Entrar</button>
       </form>
-      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)"><span data-i18n="authNoAccount">Ainda não tem conta?</span> <button type="button" onclick="switchLoginTab('register')" style="background:none;border:0;color:var(--primary);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0" data-i18n="authTabRegister">Criar Conta</button></div>
+      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)"><span data-i18n="authNoAccount">Ainda não tem conta?</span> <button type="button" onclick="switchLoginTab('register')" style="background:none;border:0;color:var(--text);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0" data-i18n="authTabRegister">Criar Conta</button></div>
     </div>
 
     <!-- REGISTER TAB -->
@@ -1411,7 +1411,7 @@
         <div id="turnstileWidget" style="display:flex;justify-content:center;margin:8px 0 4px;min-height:0"></div>
         <button type="submit" class="btn-submit" id="registerSubmitBtn" style="width:100%;padding:11px;font-size:14px;margin-top:6px" data-i18n="authRegisterSubmit">Criar Conta</button>
       </form>
-      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)"><span data-i18n="authHasAccount">Já tem conta?</span> <button type="button" onclick="switchLoginTab('login')" style="background:none;border:0;color:var(--primary);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0" data-i18n="authTabLogin">Entrar</button></div>
+      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)"><span data-i18n="authHasAccount">Já tem conta?</span> <button type="button" onclick="switchLoginTab('login')" style="background:none;border:0;color:var(--text);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0" data-i18n="authTabLogin">Entrar</button></div>
     </div>
   </div>
 </div>
@@ -1777,21 +1777,21 @@
            (see populateHelpStats) — no hardcoded/inflated figures. Hidden until set. -->
       <div id="helpStatsGrid" style="display:none;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
         <div style="background:var(--orange-light);border:1.5px solid var(--orange-border);border-radius:10px;padding:18px;text-align:center">
-          <div id="helpStatNum1" style="font-size:32px;font-weight:900;color:var(--primary)">—</div>
+          <div id="helpStatNum1" style="font-size:32px;font-weight:900;color:#1f2937">—</div>
           <p style="margin:4px 0 0 0;font-size:15px;color:var(--text);font-weight:600" data-i18n="helpStatPros">Empresas Verificadas</p>
         </div>
         <div style="background:var(--orange-light);border:1.5px solid var(--orange-border);border-radius:10px;padding:18px;text-align:center">
-          <div id="helpStatNum2" style="font-size:32px;font-weight:900;color:var(--primary)">—</div>
+          <div id="helpStatNum2" style="font-size:32px;font-weight:900;color:#1f2937">—</div>
           <p style="margin:4px 0 0 0;font-size:15px;color:var(--text);font-weight:600" data-i18n="helpStatCompanies">Empresas Registadas</p>
         </div>
       </div>
     </div>
     <div style="background:linear-gradient(135deg,rgba(249,115,22,.07),rgba(30,58,138,.07));border:1.5px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px">
-      <h4 style="margin:0 0 8px 0;font-size:20px;font-weight:800;color:var(--primary)" data-i18n="helpMissionTitle">🎯 Missão</h4>
+      <h4 style="margin:0 0 8px 0;font-size:20px;font-weight:800;color:var(--text)" data-i18n="helpMissionTitle">🎯 Missão</h4>
       <p style="margin:0;font-size:18px;font-weight:600;color:var(--text);line-height:1.6" data-i18n="helpMissionDesc">Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.</p>
     </div>
     <div style="background:linear-gradient(135deg,rgba(249,115,22,.07),rgba(30,58,138,.07));border:1.5px solid var(--border);border-radius:12px;padding:20px">
-      <h4 style="margin:0 0 8px 0;font-size:20px;font-weight:800;color:var(--primary)" data-i18n="helpVisionTitle">👁️ Visão</h4>
+      <h4 style="margin:0 0 8px 0;font-size:20px;font-weight:800;color:var(--text)" data-i18n="helpVisionTitle">👁️ Visão</h4>
       <p style="margin:0;font-size:18px;font-weight:600;color:var(--text);line-height:1.6" data-i18n="helpVisionDesc">Ser a plataforma de referência em Portugal para conectar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.</p>
     </div>
   </div>
@@ -1847,7 +1847,7 @@
       <button type="submit" class="btn-submit" id="forgotSubmitBtn" style="width:100%;padding:11px;font-size:14px" data-i18n="forgotSend">Enviar link</button>
     </form>
     <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)">
-      <button type="button" onclick="closeForgotPassword();openLogin()" style="background:none;border:0;color:var(--primary);font-weight:700;cursor:pointer;font-family:inherit;font-size:12px" data-i18n="forgotBackLogin">Voltar a iniciar sessão</button>
+      <button type="button" onclick="closeForgotPassword();openLogin()" style="background:none;border:0;color:var(--text);font-weight:700;cursor:pointer;font-family:inherit;font-size:12px" data-i18n="forgotBackLogin">Voltar a iniciar sessão</button>
     </div>
   </div>
 </div>
@@ -6663,7 +6663,7 @@ function mspOpenSheet(type) {
     const kmLabels = {0:'5 km',25:'15 km',50:'50 km',75:'165 km',100:'Todo'};
     body.innerHTML = `
       <div style="padding:8px 4px 20px">
-        <div style="font-size:28px;font-weight:800;color:var(--primary);text-align:center;margin-bottom:6px" id="mspRadiusDisplay">${kmLabels[currentVal]||'50 km'}</div>
+        <div style="font-size:28px;font-weight:800;color:var(--text);text-align:center;margin-bottom:6px" id="mspRadiusDisplay">${kmLabels[currentVal]||'50 km'}</div>
         <div style="color:var(--muted);font-size:12px;text-align:center;margin-bottom:20px">Distância máxima ao centro do mapa</div>
         <input type="range" class="radius-slider" min="0" max="100" step="25" value="${currentVal}"
           oninput="mspRadiusInput(this.value)" onchange="mspRadiusApply(this.value)"/>
@@ -7230,7 +7230,7 @@ function _runApplyFilters() {
           const wantSlider = wantKm >= 600 ? 100 : Math.round(100 * Math.log(wantKm / 5) / Math.log(120));
           html += `<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
             <button onclick="_expandRadiusTo(${wantSlider})" class="lp-see-all-cta" style="padding:8px 14px;font-size:12px">📍 Aumentar para ${wantKm} km</button>
-            <button onclick="_expandRadiusTo(100)" class="lp-see-all-cta" style="padding:8px 14px;font-size:12px;background:transparent;color:var(--primary);border:1px solid var(--primary);box-shadow:none">Todo o país</button>
+            <button onclick="_expandRadiusTo(100)" class="lp-see-all-cta" style="padding:8px 14px;font-size:12px;background:transparent;color:#fff;border:1px solid var(--primary);box-shadow:none">Todo o país</button>
           </div>`;
         }
         hintText.innerHTML = html;
@@ -7450,7 +7450,7 @@ function renderSearchList(filtered) {
       const wantSlider = wantKm >= 600 ? 100 : Math.round(100 * Math.log(wantKm / 5) / Math.log(120));
       actionsHtml = `<div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">
         <button onclick="_expandRadiusTo(${wantSlider})" class="lp-see-all-cta" style="padding:10px 18px;font-size:13px">📍 Aumentar para ${wantKm} km</button>
-        <button onclick="_expandRadiusTo(100)" class="lp-see-all-cta" style="padding:10px 18px;font-size:13px;background:transparent;color:var(--primary);border:1px solid var(--primary);box-shadow:none">Todo o país</button>
+        <button onclick="_expandRadiusTo(100)" class="lp-see-all-cta" style="padding:10px 18px;font-size:13px;background:transparent;color:#fff;border:1px solid var(--primary);box-shadow:none">Todo o país</button>
       </div>`;
     }
     listEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1">' +
@@ -11180,7 +11180,7 @@ async function adminLoadStats() {
     const visitsHtml = v ? `
       <div style="font-size:13px;font-weight:800;color:var(--text);margin:0 0 10px">📈 Visitas ao site</div>
       <div class="admin-stat-grid">
-        <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--primary)">${v.today}</div><div class="admin-stat-label">Hoje</div></div>
+        <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--text)">${v.today}</div><div class="admin-stat-label">Hoje</div></div>
         <div class="admin-stat-card"><div class="admin-stat-value">${v.last7}</div><div class="admin-stat-label">Últimos 7 dias</div></div>
         <div class="admin-stat-card"><div class="admin-stat-value">${v.last30}</div><div class="admin-stat-label">Últimos 30 dias</div></div>
         <div class="admin-stat-card"><div class="admin-stat-value">${v.unique30}</div><div class="admin-stat-label">Únicos (30 dias)</div></div>
@@ -11201,7 +11201,7 @@ async function adminLoadStats() {
         <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--red)">${s.rejected}</div><div class="admin-stat-label">${t('admStatRejected')}</div></div>
         <div class="admin-stat-card"><div class="admin-stat-value">${s.total_users}</div><div class="admin-stat-label">${t('admStatUsers')}</div></div>
         <div class="admin-stat-card"><div class="admin-stat-value">${s.total_reviews}</div><div class="admin-stat-label">${t('admStatReviews')}</div></div>
-        <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--primary)">${s.events_7d}</div><div class="admin-stat-label">${t('admStatEvents7d')}</div></div>
+        <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--text)">${s.events_7d}</div><div class="admin-stat-label">${t('admStatEvents7d')}</div></div>
         <div class="admin-stat-card"><div class="admin-stat-value">${s.new_7d}</div><div class="admin-stat-label">${t('admStatNew7d')}</div></div>
         <div class="admin-stat-card"><div class="admin-stat-value">${s.total_companies}</div><div class="admin-stat-label">${t('admStatTotal')}</div></div>
       </div>
