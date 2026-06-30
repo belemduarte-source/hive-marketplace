@@ -1309,8 +1309,8 @@
     .lp-hero-register{display:flex;flex-direction:column;align-items:center;gap:10px;margin:22px 0 36px;position:relative;z-index:2;width:100%;max-width:560px}
     .lp-hero-register[hidden]{display:none !important}
     .lp-hero-register-hint{font-size:13px;color:rgba(255,255,255,.65);text-align:center;letter-spacing:.2px}
-    .lp-hero-register-btn{display:inline-flex;align-items:center;justify-content:center;gap:11px;background:linear-gradient(135deg,#ea580c 0%,#f97316 50%,#fb923c 100%);color:#fff;border:none;border-radius:14px;padding:18px 42px;font-size:21px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.02em;box-shadow:0 6px 24px rgba(234,88,12,.45),inset 0 1px 0 rgba(255,255,255,.18);transition:transform .15s,box-shadow .15s}
-    .lp-hero-register-btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(234,88,12,.6),inset 0 1px 0 rgba(255,255,255,.22)}
+    .lp-hero-register-btn{display:inline-flex;align-items:center;justify-content:center;gap:11px;background:linear-gradient(135deg,#ea580c 0%,#f97316 50%,#fb923c 100%);color:#fff;border:none;border-radius:14px;padding:18px 42px;font-size:21px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.02em;box-shadow:0 4px 14px rgba(0,0,0,.22),inset 0 1px 0 rgba(255,255,255,.18);transition:transform .15s,box-shadow .15s}
+    .lp-hero-register-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.22)}
     .lp-hero-register-btn:active{transform:translateY(0)}
     .lp-hero-register-btn svg{flex-shrink:0}
     .lp-hero-login{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:6px;font-size:13px;color:rgba(255,255,255,.7);flex-wrap:wrap}
@@ -1325,7 +1325,7 @@
     .lp-hero-userCta-text{display:flex;flex-direction:column;text-align:left;color:#fff;line-height:1.35}
     .lp-hero-userCta-text strong{font-size:23px;font-weight:800;color:#fff}
     .lp-hero-userCta-text span{font-size:20px;font-weight:700;color:#fff}
-    .lp-hero-userCta-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#ea580c,#f97316);color:#fff;border:none;border-radius:10px;padding:12px 22px;font-size:17px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.02em;box-shadow:0 4px 14px rgba(234,88,12,.4);transition:transform .15s,box-shadow .15s;flex-shrink:0;white-space:nowrap}
+    .lp-hero-userCta-btn{display:inline-flex;align-items:center;gap:10px;background:linear-gradient(135deg,#ea580c,#f97316);color:#fff;border:none;border-radius:12px;padding:16px 32px;font-size:21px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.02em;box-shadow:0 4px 14px rgba(234,88,12,.4);transition:transform .15s,box-shadow .15s;flex-shrink:0;white-space:nowrap}
     .lp-hero-userCta-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(234,88,12,.55)}
     .lp-hero-userCta-btn:active{transform:translateY(0)}
     @media(max-width:520px){
