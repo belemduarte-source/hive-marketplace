@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v111.css"/>
+  <link rel="stylesheet" href="app.v112.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -594,6 +594,7 @@
             <div class="lp-sb-inner">
               <div class="lp-sb-label" data-i18n="lpLocationLabel">Localização</div>
               <input type="text" id="heroLocation" placeholder="Lisboa, Porto, Braga..." data-i18n-ph="lpLocationPh" autocomplete="off"
+                     onfocus="this.dataset.ph=this.placeholder;this.placeholder=''" onblur="this.placeholder=this.dataset.ph||'Lisboa, Porto, Braga...'"
                      onkeydown="if(event.key==='Enter') heroSearch()"/>
             </div>
           </div>
