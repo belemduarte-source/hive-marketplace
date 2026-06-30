@@ -1320,7 +1320,7 @@
 
     /* ── Hero quick-category strip — 2 rows × 4 grid ── */
     /* Logged-in hero CTA — only displayed via JS once a session is active */
-    .lp-hero-userCta{display:flex;align-items:center;gap:16px;justify-content:center;flex-wrap:wrap;background:linear-gradient(135deg,rgba(249,115,22,.16),rgba(249,115,22,.06));border:none;border-radius:14px;padding:16px 24px;margin:0 auto 24px;max-width:600px;position:relative;z-index:2;box-shadow:0 4px 16px rgba(0,0,0,.18)}
+    .lp-hero-userCta{display:flex;align-items:center;gap:16px;justify-content:center;flex-wrap:wrap;background:none;border:none;border-radius:14px;padding:16px 24px;margin:0 auto 24px;max-width:600px;position:relative;z-index:2;box-shadow:none}
     .lp-hero-userCta[hidden]{display:none !important}
     .lp-hero-userCta-text{display:flex;flex-direction:column;text-align:left;color:#fff;line-height:1.35}
     .lp-hero-userCta-text strong{font-size:23px;font-weight:800;color:#fff}
