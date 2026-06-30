@@ -471,10 +471,10 @@
     /* ── DETAIL PANEL ── */
     .detail-panel{position:fixed;top:170px;right:-440px;width:420px;height:calc(100vh - 170px);background:var(--surface);box-shadow:-4px 0 16px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transition:right .25s cubic-bezier(.25,.46,.45,.94);border-left:1px solid var(--border);will-change:right;-webkit-backface-visibility:hidden;backface-visibility:hidden}
     .detail-panel.open{right:0}
-    .dp-header{background:linear-gradient(135deg,var(--nav) 0%,#1a2a4a 100%);padding:18px 18px;display:flex;align-items:flex-start;gap:14px;flex-shrink:0;border-bottom:1px solid var(--border)}
-    .dp-logo{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:28px;color:#fff;flex-shrink:0;background:rgba(249,115,22,.2)}
-    .dp-name{font-size:16px;font-weight:800;color:#fff;margin-bottom:4px;line-height:1.3}
-    .dp-sub{font-size:12px;color:#cbd5e1}
+    .dp-header{background:linear-gradient(135deg,var(--nav) 0%,#1a2a4a 100%);padding:22px 20px;display:flex;align-items:flex-start;gap:16px;flex-shrink:0;border-bottom:1px solid var(--border)}
+    .dp-logo{width:62px;height:62px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:36px;color:#fff;flex-shrink:0;background:rgba(249,115,22,.2)}
+    .dp-name{font-size:27px;font-weight:800;color:#fff;margin-bottom:5px;line-height:1.2}
+    .dp-sub{font-size:18px;color:#f1f5f9;font-weight:600}
     .dp-info{flex:1}
     .dp-close{background:rgba(255,255,255,.1);border:none;color:#fff;width:32px;height:32px;border-radius:8px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
     .dp-close:hover{background:rgba(255,255,255,.2);transform:rotate(90deg)}
@@ -506,18 +506,18 @@
     .dp-body::-webkit-scrollbar-track{background:var(--bg);border-radius:4px}
     .dp-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;cursor:pointer}
     .dp-body::-webkit-scrollbar-thumb:hover{background:var(--text-secondary)}
-    .dp-section-title{font-size:12px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+    .dp-section-title{font-size:16px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
     /* Quick-fact pills (founded year, hours) */
     .dp-facts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-    .dp-fact{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:8px 12px;font-size:12px;color:var(--text);display:inline-flex;align-items:center;gap:6px;line-height:1.3}
-    .dp-fact-icon{font-size:14px;flex-shrink:0}
-    .dp-fact-label{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.04em;margin-right:2px}
-    .dp-fact-value{font-weight:600}
+    .dp-fact{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:15px;color:var(--text);display:inline-flex;align-items:center;gap:6px;line-height:1.3}
+    .dp-fact-icon{font-size:17px;flex-shrink:0}
+    .dp-fact-label{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.04em;margin-right:2px}
+    .dp-fact-value{font-weight:700}
     /* Portfolio gallery */
     .dp-portfolio{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px;margin-bottom:14px}
     .dp-portfolio img{width:100%;height:96px;object-fit:cover;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;transition:transform .15s,box-shadow .15s;display:block}
     .dp-portfolio img:hover{transform:scale(1.03);box-shadow:var(--shadow-md)}
-    .dp-address{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text);background:var(--bg);padding:10px 12px;border-radius:var(--radius-sm);border:1px solid var(--border)}
+    .dp-address{display:flex;align-items:center;gap:8px;font-size:16px;color:var(--text);background:var(--bg);padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--border)}
     /* Gated sections (Localização / Avaliação / Contactos / etc.) live inside
        a single wrapper that wasn't a flex container — so the inner sections
        sat flush against each other. Match the .dp-body 16 px gap. */
@@ -551,28 +551,31 @@
     .dp-credentials{background:linear-gradient(180deg,#ffffff 0%,#fafbfc 100%);border:1.5px solid var(--border);border-radius:14px;padding:16px 18px;box-shadow:0 1px 2px rgba(15,23,42,.04)}
     .dp-cred-block{margin-bottom:14px}
     .dp-cred-block:last-child{margin-bottom:0}
-    .dp-cred-label{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:800;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
-    .dp-cred-label [data-lucide]{width:13px;height:13px;color:var(--primary)}
+    .dp-cred-label{display:flex;align-items:center;gap:6px;font-size:14px;font-weight:800;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+    .dp-cred-label [data-lucide]{width:16px;height:16px;color:var(--primary)}
     .dp-cred-activities{display:flex;flex-wrap:wrap;gap:6px}
-    .dp-cred-chip{display:inline-flex;align-items:center;gap:5px;background:var(--orange-light);color:#1f2937;font-size:12px;font-weight:600;padding:5px 10px;border-radius:8px;border:1px solid rgba(249,115,22,.18);line-height:1.2}
+    .dp-cred-chip{display:inline-flex;align-items:center;gap:5px;background:var(--orange-light);color:#1f2937;font-size:15px;font-weight:600;padding:6px 12px;border-radius:8px;border:1px solid rgba(249,115,22,.18);line-height:1.2}
     .dp-cred-chip::before{content:'';display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--primary);flex-shrink:0}
     .dp-cred-row{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     @media (max-width:480px){.dp-cred-row{grid-template-columns:1fr}}
     .dp-cred-doc{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 12px;display:flex;flex-direction:column;gap:6px;min-width:0;transition:border-color .2s}
     .dp-cred-doc:hover{border-color:rgba(249,115,22,.35)}
     .dp-cred-doc-head{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-    .dp-cred-doc-head [data-lucide]{width:14px;height:14px;color:var(--primary);flex-shrink:0}
-    .dp-cred-doc-name{font-size:12px;font-weight:700;color:var(--text)}
-    .dp-cred-required,.dp-cred-optional{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:2px 6px;border-radius:5px;margin-left:auto}
+    .dp-cred-doc-head [data-lucide]{width:16px;height:16px;color:var(--primary);flex-shrink:0}
+    .dp-cred-doc-name{font-size:15px;font-weight:700;color:var(--text)}
+    .dp-cred-required,.dp-cred-optional{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;padding:2px 6px;border-radius:5px;margin-left:auto}
     .dp-cred-required{background:#dcfce7;color:#166534}
     .dp-cred-optional{background:#f1f5f9;color:#64748b}
-    .dp-cred-doc-value{font-family:'JetBrains Mono','SF Mono','Menlo',Consolas,monospace;font-size:12px;color:var(--text);font-weight:600;word-break:break-all;line-height:1.4}
+    .dp-cred-doc-value{font-family:'JetBrains Mono','SF Mono','Menlo',Consolas,monospace;font-size:15px;color:var(--text);font-weight:600;word-break:break-all;line-height:1.4}
     .dp-cred-doc-value.empty{font-family:inherit;color:var(--muted);font-style:italic;font-weight:500}
     .dp-cred-doc-value.locked{font-family:inherit}
-    .dp-cred-lock{display:inline-flex;align-items:center;gap:5px;background:none;border:0;padding:0;margin:0;font-family:inherit;font-size:12px;font-weight:600;color:var(--text);cursor:pointer;line-height:1.3}
+    .dp-cred-lock{display:inline-flex;align-items:center;gap:5px;background:none;border:0;padding:0;margin:0;font-family:inherit;font-size:15px;font-weight:600;color:var(--text);cursor:pointer;line-height:1.3}
     .dp-cred-lock span{text-decoration:underline;text-underline-offset:2px}
     .dp-cred-lock:hover span{text-decoration:none}
-    .dp-cred-empty{font-size:12px;color:var(--muted);font-style:italic}
+    .dp-cred-empty{font-size:14px;color:var(--muted);font-style:italic}
+    /* The credentials card is hardcoded white; in dark mode make it themed so
+       its var(--text) (white) children keep contrast instead of white-on-white. */
+    [data-theme="dark"] .dp-credentials{background:var(--surface);border-color:var(--border)}
 
     /* chat widget removed */
 
