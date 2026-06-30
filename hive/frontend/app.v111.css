@@ -238,7 +238,7 @@
     /* Logo honeycomb outer cells — dramatic breathe: shrink to almost nothing, then grow larger than normal. transform-box:fill-box scales each cell around its own centre. */
     .hexcell{transform-box:fill-box;transform-origin:center;animation:hexBreathe 6s ease-in-out infinite}
     @keyframes hexBreathe{0%,100%{transform:scale(.12);opacity:.1}50%{transform:scale(1.32);opacity:1}}
-    .cat-dd-all{display:flex;align-items:center;gap:8px;padding:11px 14px;font-size:18px;font-weight:800;color:#f97316;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.1);background:rgba(249,115,22,.08)}
+    .cat-dd-all{display:flex;align-items:center;gap:8px;padding:13px 16px;font-size:24px;font-weight:900;color:#f97316;cursor:pointer;border-bottom:1px solid rgba(255,255,255,.1);background:rgba(249,115,22,.08)}
     .cat-dd-all:hover{background:rgba(249,115,22,.2)}
     .cat-dd-head{padding:8px 14px 4px;font-size:12px;font-weight:800;color:#64748b;text-transform:uppercase;letter-spacing:.6px;border-bottom:1px solid rgba(255,255,255,.06);margin-bottom:2px}
     .cat-dd-item{display:flex;align-items:center;gap:9px;padding:9px 14px;font-size:22px;font-weight:500;color:#cbd5e1;cursor:pointer;transition:all .1s}
@@ -966,11 +966,11 @@
     .cat-item{position:relative;flex:1;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:8px;padding:0 14px;font-size:14px;font-weight:700;color:#ffffff;background:transparent;border:none;border-right:1px solid rgba(255,255,255,.1);cursor:pointer;transition:all .18s;white-space:nowrap;letter-spacing:.02em;user-select:none;text-shadow:0 1px 3px rgba(0,0,0,.4)}
     .cat-item:last-child{border-right:none}
     .cat-item:hover{background:rgba(249,115,22,.15);color:#fff}
-    .cat-item.active{background:transparent;color:#fff;outline:3px solid #f97316;outline-offset:-3px;border-radius:6px}
+    .cat-item.active{background:rgba(255,255,255,.18);color:#fff;outline:none;border-radius:6px}
     /* Master "Todas as áreas" toggle — distinguished from per-area chips */
     .cat-item-master{flex:0 0 auto;font-weight:800;background:rgba(255,255,255,.06);border-radius:6px;border-right:1px solid rgba(255,255,255,.18) !important;padding:0 12px}
     .cat-item-master:hover{background:rgba(249,115,22,.2)}
-    .cat-item-master.active{background:rgba(255,255,255,.06);color:#fff;outline:3px solid #f97316;outline-offset:-3px;border-radius:6px}
+    .cat-item-master.active{background:rgba(255,255,255,.24);color:#fff;outline:none;border-radius:6px}
     .cat-item.open{background:rgba(249,115,22,.12);color:#fff}
     .cat-item .cat-icon{display:flex;align-items:center;justify-content:center;opacity:1;flex-shrink:0}
     .cat-item:hover .cat-icon,.cat-item.active .cat-icon,.cat-item.open .cat-icon{opacity:1}
@@ -2892,8 +2892,8 @@
          containing block and the list jumps/flickers. Hover via background only. */
       .ub-sectors .cat-item{border-radius:10px;transition:background .15s ease,box-shadow .15s ease,color .15s ease}
       .ub-sectors .cat-item:hover{background:rgba(249,115,22,.16)}
-      .ub-sectors .cat-item.active{background:transparent;color:#fff;outline:3px solid #f97316;outline-offset:-3px;box-shadow:none;border-radius:8px}
-      .ub-sectors .cat-item-master.active{background:rgba(255,255,255,.06)}
+      .ub-sectors .cat-item.active{background:rgba(255,255,255,.18);color:#fff;outline:none;box-shadow:none;border-radius:8px}
+      .ub-sectors .cat-item-master.active{background:rgba(255,255,255,.24)}
       .ub-sectors .cat-item.active .cat-label{color:#fff}
     }
 
