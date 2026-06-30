@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v106.css"/>
+  <link rel="stylesheet" href="app.v107.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -967,11 +967,6 @@
       <span id="mspChipRatingLabel">Avaliação</span>
       <svg class="msp-chip-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
     </button>
-    <button class="msp-chip" id="mspChipStatus"  onclick="mspOpenSheet('status')">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><polyline points="12 8 12 12 14 14"/></svg>
-      <span id="mspChipStatusLabel">Destaque</span>
-      <svg class="msp-chip-caret" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="6 9 12 15 18 9"/></svg>
-    </button>
     <button class="msp-chip msp-chip-clear" id="mspChipClear" onclick="mspClearAll()" style="display:none">
       ✕ Limpar
     </button>
@@ -1060,23 +1055,6 @@
       <div class="sort-opt">
         <input type="radio" name="sort" id="sortName" value="name" onchange="applyFilters()">
         <label for="sortName" data-i18n="sortName">Nome A–Z</label>
-      </div>
-      <!-- Featured subsection — kept in the same filter-section as Sort By
-           so the two related controls live together visually. -->
-      <div class="filter-subsection-title" style="display:flex;align-items:center;gap:4px;margin-top:10px;padding-top:8px;border-top:1px solid rgba(255,255,255,.06);font-size:11px;font-weight:700;color:#cbd5e1;text-transform:uppercase;letter-spacing:.04em">
-        <i data-lucide="award" style="width:11px;height:11px"></i><span data-i18n="featured">Destaque</span>
-      </div>
-      <div class="filter-opt">
-        <input type="checkbox" id="filterTopRated" onchange="applyFilters()"/>
-        <label for="filterTopRated" data-i18n="topRated">Top Rated</label>
-      </div>
-      <div class="filter-opt">
-        <input type="checkbox" id="filterVerified" onchange="applyFilters()"/>
-        <label for="filterVerified" data-i18n="verified">Verificado</label>
-      </div>
-      <div class="filter-opt">
-        <input type="checkbox" id="filterNew" onchange="applyFilters()"/>
-        <label for="filterNew" data-i18n="newEntry">🆕 Novo Registo</label>
       </div>
     </div>
 
