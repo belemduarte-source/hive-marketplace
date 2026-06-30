@@ -1320,16 +1320,16 @@
 
     /* ── Hero quick-category strip — 2 rows × 4 grid ── */
     /* Logged-in hero CTA — only displayed via JS once a session is active */
-    .lp-hero-userCta{display:flex;align-items:center;gap:28px;justify-content:center;flex-wrap:wrap;background:linear-gradient(135deg,rgba(249,115,22,.16),rgba(249,115,22,.06));border:3px solid rgba(249,115,22,.4);border-radius:22px;padding:28px 44px;margin:0 auto 32px;max-width:900px;position:relative;z-index:2;box-shadow:0 8px 28px rgba(0,0,0,.22)}
+    .lp-hero-userCta{display:flex;align-items:center;gap:16px;justify-content:center;flex-wrap:wrap;background:linear-gradient(135deg,rgba(249,115,22,.16),rgba(249,115,22,.06));border:none;border-radius:14px;padding:16px 24px;margin:0 auto 24px;max-width:600px;position:relative;z-index:2;box-shadow:0 4px 16px rgba(0,0,0,.18)}
     .lp-hero-userCta[hidden]{display:none !important}
     .lp-hero-userCta-text{display:flex;flex-direction:column;text-align:left;color:#fff;line-height:1.35}
-    .lp-hero-userCta-text strong{font-size:28px;font-weight:800;color:#fff}
-    .lp-hero-userCta-text span{font-size:26px;color:rgba(255,255,255,.85)}
-    .lp-hero-userCta-btn{display:inline-flex;align-items:center;gap:14px;background:linear-gradient(135deg,#ea580c,#f97316);color:#fff;border:none;border-radius:16px;padding:20px 36px;font-size:26px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.02em;box-shadow:0 6px 22px rgba(234,88,12,.45);transition:transform .15s,box-shadow .15s;flex-shrink:0;white-space:nowrap}
+    .lp-hero-userCta-text strong{font-size:18px;font-weight:800;color:#fff}
+    .lp-hero-userCta-text span{font-size:16px;color:rgba(255,255,255,.85)}
+    .lp-hero-userCta-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,#ea580c,#f97316);color:#fff;border:none;border-radius:10px;padding:11px 20px;font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.02em;box-shadow:0 4px 14px rgba(234,88,12,.4);transition:transform .15s,box-shadow .15s;flex-shrink:0;white-space:nowrap}
     .lp-hero-userCta-btn:hover{transform:translateY(-1px);box-shadow:0 6px 20px rgba(234,88,12,.55)}
     .lp-hero-userCta-btn:active{transform:translateY(0)}
     @media(max-width:520px){
-      .lp-hero-userCta{padding:24px 22px}
+      .lp-hero-userCta{padding:14px 16px}
       .lp-hero-userCta-text{text-align:center;align-items:center}
       .lp-hero-userCta-btn{width:100%;justify-content:center}
     }
