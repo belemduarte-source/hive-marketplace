@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v120.css"/>
+  <link rel="stylesheet" href="app.v121.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -2498,8 +2498,8 @@ const translations = {
       equipamentos_construcao:'Plant & Construction Equipment'
     },
     sectorGroups:{
-      estrutura_fundacao:'Structure & Foundations', instalacoes:'Building Services', acabamentos:'Finishes',
-      carpintaria:'Carpentry & Joinery', serralharia_metal:'Metal Fabrication', exterior_jardim:'Exterior', projeto_gestao:'Design & Management', chave_na_mao:'Turnkey',
+      estrutura_fundacao:'Structure', instalacoes:'Installations', acabamentos:'Finishes',
+      carpintaria:'Carpentry', serralharia_metal:'Metalwork', exterior_jardim:'Exterior', projeto_gestao:'Design', chave_na_mao:'Turnkey',
       obra_grossa:'Structural Works', redes_tecnicas:'Technical Services', revestimentos:'Finishes & Decoration',
       madeira:'Timber & Furniture', metal_vidro:'Metal, Glass & Windows', exteriores:'Outdoors & Garden', projetos:'Design & Consultancy'
     },
@@ -2900,8 +2900,8 @@ const translations = {
       chave_na_mao_comercial:'Aménagement Commercial Clé en Main'
     },
     sectorGroups:{
-      estrutura_fundacao:'Gros Œuvre', instalacoes:'Corps d\'État Techniques', acabamentos:'Second Œuvre',
-      carpintaria:'Charpente / Menuiserie', serralharia_metal:'Métallerie', exterior_jardim:'Extérieur', projeto_gestao:'Conception & Pilotage', chave_na_mao:'Clé en Main',
+      estrutura_fundacao:'Gros Œuvre', instalacoes:'Installations', acabamentos:'Finitions',
+      carpintaria:'Menuiserie', serralharia_metal:'Métallerie', exterior_jardim:'Extérieur', projeto_gestao:'Conception', chave_na_mao:'Clé en Main',
       obra_grossa:'Gros Œuvre', redes_tecnicas:'Réseaux Techniques', revestimentos:'Revêtements & Peinture',
       madeira:'Bois & Mobilier', metal_vidro:'Métal, Verre & Menuiserie', exteriores:'Extérieurs & Jardin', projetos:'Projets & Conseil'
     },
@@ -3298,8 +3298,8 @@ const translations = {
       chave_na_mao_comercial:'Locales Comerciales Llave en Mano'
     },
     sectorGroups:{
-      estrutura_fundacao:'Estructura & Cimentación', instalacoes:'Instalaciones', acabamentos:'Acabados & Revestimientos',
-      carpintaria:'Carpintería', serralharia_metal:'Construcción Metálica', exterior_jardim:'Exterior', projeto_gestao:'Proyectos & Dirección', chave_na_mao:'Llave en Mano',
+      estrutura_fundacao:'Estructura', instalacoes:'Instalaciones', acabamentos:'Acabados',
+      carpintaria:'Carpintería', serralharia_metal:'Cerrajería', exterior_jardim:'Exterior', projeto_gestao:'Proyectos', chave_na_mao:'Llave en Mano',
       obra_grossa:'Obra Gruesa', redes_tecnicas:'Redes Técnicas', revestimentos:'Revestimientos & Pintura',
       madeira:'Madera & Mobiliario', metal_vidro:'Metal, Vidrio & Carpintería', exteriores:'Exteriores & Jardín', projetos:'Proyectos & Consultoría'
     },
@@ -3693,8 +3693,8 @@ const translations = {
       chave_na_mao_comercial:'Schlüsselfertiger Gewerbebau'
     },
     sectorGroups:{
-      estrutura_fundacao:'Rohbau & Fundament', instalacoes:'Gebäudetechnik', acabamentos:'Ausbau & Finishing',
-      carpintaria:'Holzbau & Tischlerei', serralharia_metal:'Metallbau', exterior_jardim:'Außenanlagen', projeto_gestao:'Planung & Projekte', chave_na_mao:'Schlüsselfertig',
+      estrutura_fundacao:'Rohbau', instalacoes:'Gebäudetechnik', acabamentos:'Ausbau',
+      carpintaria:'Holzbau', serralharia_metal:'Metallbau', exterior_jardim:'Außenanlagen', projeto_gestao:'Planung', chave_na_mao:'Schlüsselfertig',
       obra_grossa:'Rohbau', redes_tecnicas:'Haustechnik', revestimentos:'Bekleidung & Beschichtung',
       madeira:'Holz & Möbel', metal_vidro:'Metall, Glas & Bauelemente', exteriores:'Außen- & Grünanlagen', projetos:'Planung & Beratung'
     },
@@ -10529,18 +10529,30 @@ function fitSectorBar() {
     if (!ub) return;
     const container = ub.querySelector('.sector-filter-container');
     if (!container) return;
-    // Desktop one-row layout only; the mobile bar scrolls horizontally.
-    if (window.innerWidth < 1025) { container.style.removeProperty('--cat-fs'); return; }
     const labels = [...container.querySelectorAll('.cat-label')];
     if (!labels.length) return;
-    let size = 23;                                  // max / default label size
-    container.style.setProperty('--cat-fs', size + 'px');
-    const overflowing = () => labels.some(l => l.scrollWidth > l.clientWidth + 1);
-    let guard = 0;
-    while (overflowing() && size > 10 && guard++ < 40) {
-      size -= 1;
-      container.style.setProperty('--cat-fs', size + 'px');
+    // Mobile bar scrolls horizontally — let CSS handle sizing there.
+    if (window.innerWidth < 1025) {
+      container.style.removeProperty('--cat-fs');
+      labels.forEach(l => l.style.removeProperty('font-size'));
+      return;
     }
+    // Keep emoji icons a consistent size (they follow --cat-fs).
+    container.style.setProperty('--cat-fs', '17px');
+    // Size EACH label to fill its own button, so short labels aren't shrunk
+    // to match the longest one (which left big empty gaps). Clamp so the
+    // sizes stay close and readable.
+    const MIN = 11, MAX = 20;
+    labels.forEach(l => {
+      let lo = MIN, hi = MAX, best = MIN;
+      while (lo <= hi) {
+        const mid = (lo + hi) >> 1;
+        l.style.fontSize = mid + 'px';
+        if (l.scrollWidth <= l.clientWidth + 0.5) { best = mid; lo = mid + 1; }
+        else { hi = mid - 1; }
+      }
+      l.style.fontSize = best + 'px';
+    });
   } catch (e) {}
 }
 window.addEventListener('resize', () => {
