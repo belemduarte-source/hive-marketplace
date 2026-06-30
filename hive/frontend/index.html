@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v125.css"/>
+  <link rel="stylesheet" href="app.v126.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -1114,6 +1114,15 @@
       <span class="view-result-count" id="viewResultCount">0 empresas</span>
     </div>
     <div id="map" role="region" aria-label="Mapa interativo com empresas registadas. Use as setas para navegar e Enter para abrir os detalhes de uma empresa."></div>
+    <!-- Driving route info (distance + ETA) shown after "Como chegar" -->
+    <div class="route-info" id="routeInfo" hidden>
+      <svg class="route-info-ico" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
+      <div class="route-info-text">
+        <span class="route-info-dest" id="routeInfoDest"></span>
+        <span class="route-info-stats"><strong id="routeInfoDist"></strong> · <span id="routeInfoTime"></span></span>
+      </div>
+      <button class="route-info-close" onclick="clearRoute()" aria-label="Limpar rota" title="Limpar rota">✕</button>
+    </div>
     <!-- Results sheet. On desktop (.map-sheet{display:contents}) this is transparent
          and #searchListView behaves exactly as the old list view. On mobile it
          becomes a draggable bottom sheet over the map (peek → drag up for the list). -->
@@ -1193,6 +1202,9 @@
     <button class="btn-dp-contact" id="btnRequestQuote" onclick="openContactModal()">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
       <span data-i18n="contactTitle">Enviar Mensagem</span>
+    </button>
+    <button class="btn-quote-secondary" onclick="routeToCompany()" data-i18n-title="dpDirectionsTitle" title="Como chegar">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="3 11 22 2 13 21 11 13 3 11"/></svg>
     </button>
     <button class="btn-quote-secondary" onclick="callCompany()" data-i18n-title="dpCallTitle" title="Ligar">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
@@ -1981,6 +1993,7 @@ const translations = {
     loadingGeneric:"A carregar...",
     statusTitle:"Estado do Registo", statusPrompt:"Introduza o email com que registou a sua empresa para verificar o estado.", statusVerify:"Verificar",
     dpDragClose:"puxe para fechar", dpCloseTitle:"Fechar", dpCallTitle:"Ligar", dpShareTitle:"Partilhar",
+    dpDirectionsTitle:"Como chegar", routeLocating:"A obter a sua localização…", routeNoLocation:"Não foi possível obter a sua localização.", routeError:"Não foi possível calcular a rota.",
     loginGateTitle:"Inicie sessão para ver os contactos", loginGateDesc:"Crie uma conta gratuita para aceder aos contactos, morada, avaliações e pedir orçamentos.", loginGateBtn:"Entrar / Criar Conta Grátis",
     reviewsHeading:"Avaliações", reviewFormTitle:"✍️ A sua avaliação", reviewPh:"Partilhe a sua experiência com esta empresa...", reviewSubmit:"Publicar Avaliação", reviewWrite:"+ Escrever Avaliação",
     closeBtn:"Fechar",
@@ -2388,6 +2401,7 @@ const translations = {
     loadingGeneric:"Loading...",
     statusTitle:"Registration Status", statusPrompt:"Enter the email you registered your company with to check its status.", statusVerify:"Check",
     dpDragClose:"pull to close", dpCloseTitle:"Close", dpCallTitle:"Call", dpShareTitle:"Share",
+    dpDirectionsTitle:"Directions", routeLocating:"Getting your location…", routeNoLocation:"Could not get your location.", routeError:"Could not calculate the route.",
     loginGateTitle:"Sign in to view contacts", loginGateDesc:"Create a free account to access contacts, address, reviews and request quotes.", loginGateBtn:"Sign in / Create free account",
     reviewsHeading:"Reviews", reviewFormTitle:"✍️ Your review", reviewPh:"Share your experience with this company...", reviewSubmit:"Publish Review", reviewWrite:"+ Write Review",
     closeBtn:"Close",
@@ -2787,6 +2801,7 @@ const translations = {
     loadingGeneric:"Chargement...",
     statusTitle:"Statut de l'inscription", statusPrompt:"Saisissez l'e-mail utilisé pour enregistrer votre entreprise afin de vérifier le statut.", statusVerify:"Vérifier",
     dpDragClose:"tirer pour fermer", dpCloseTitle:"Fermer", dpCallTitle:"Appeler", dpShareTitle:"Partager",
+    dpDirectionsTitle:"Itinéraire", routeLocating:"Localisation en cours…", routeNoLocation:"Impossible d'obtenir votre position.", routeError:"Impossible de calculer l'itinéraire.",
     loginGateTitle:"Connectez-vous pour voir les contacts", loginGateDesc:"Créez un compte gratuit pour accéder aux contacts, à l'adresse, aux avis et demander des devis.", loginGateBtn:"Se connecter / Créer un compte gratuit",
     reviewsHeading:"Avis", reviewFormTitle:"✍️ Votre avis", reviewPh:"Partagez votre expérience avec cette entreprise...", reviewSubmit:"Publier l'avis", reviewWrite:"+ Écrire un avis",
     closeBtn:"Fermer",
@@ -3190,6 +3205,7 @@ const translations = {
     loadingGeneric:"Cargando...",
     statusTitle:"Estado del registro", statusPrompt:"Introduce el correo con el que registraste tu empresa para verificar el estado.", statusVerify:"Verificar",
     dpDragClose:"desliza para cerrar", dpCloseTitle:"Cerrar", dpCallTitle:"Llamar", dpShareTitle:"Compartir",
+    dpDirectionsTitle:"Cómo llegar", routeLocating:"Obteniendo su ubicación…", routeNoLocation:"No se pudo obtener su ubicación.", routeError:"No se pudo calcular la ruta.",
     loginGateTitle:"Inicia sesión para ver los contactos", loginGateDesc:"Crea una cuenta gratuita para acceder a contactos, dirección, valoraciones y pedir presupuestos.", loginGateBtn:"Iniciar sesión / Crear cuenta gratis",
     reviewsHeading:"Valoraciones", reviewFormTitle:"✍️ Tu valoración", reviewPh:"Comparte tu experiencia con esta empresa...", reviewSubmit:"Publicar valoración", reviewWrite:"+ Escribir valoración",
     closeBtn:"Cerrar",
@@ -3585,6 +3601,7 @@ const translations = {
     loadingGeneric:"Wird geladen...",
     statusTitle:"Registrierungsstatus", statusPrompt:"Geben Sie die E-Mail-Adresse ein, mit der Sie Ihr Unternehmen registriert haben, um den Status zu prüfen.", statusVerify:"Prüfen",
     dpDragClose:"zum Schließen ziehen", dpCloseTitle:"Schließen", dpCallTitle:"Anrufen", dpShareTitle:"Teilen",
+    dpDirectionsTitle:"Route", routeLocating:"Standort wird ermittelt…", routeNoLocation:"Standort konnte nicht ermittelt werden.", routeError:"Route konnte nicht berechnet werden.",
     loginGateTitle:"Anmelden, um Kontakte zu sehen", loginGateDesc:"Erstellen Sie ein kostenloses Konto für Zugriff auf Kontakte, Adresse, Bewertungen und Angebotsanfragen.", loginGateBtn:"Anmelden / Kostenloses Konto erstellen",
     reviewsHeading:"Bewertungen", reviewFormTitle:"✍️ Ihre Bewertung", reviewPh:"Teilen Sie Ihre Erfahrung mit diesem Unternehmen...", reviewSubmit:"Bewertung veröffentlichen", reviewWrite:"+ Bewertung schreiben",
     closeBtn:"Schließen",
@@ -7937,11 +7954,89 @@ function submitRegister() {
   }
 }
 
+// ── DRIVING DIRECTIONS (OSRM) ─────────────────────────────────────────────────
+// Draw a road route from the user's current location to the selected company,
+// with distance + ETA — like a "Como chegar" on Google Maps. Uses the free
+// public OSRM demo server (no API key).
+let _routeLayer = null;
+
+function clearRoute() {
+  try { if (_routeLayer) { _routeLayer.remove(); _routeLayer = null; } } catch (_) {}
+  const ri = document.getElementById('routeInfo');
+  if (ri) ri.hidden = true;
+}
+window.clearRoute = clearRoute;
+
+function _routeUserLatLng() {
+  if (typeof userLocationMarker !== 'undefined' && userLocationMarker) {
+    try { const ll = userLocationMarker.getLatLng(); return [ll.lat, ll.lng]; } catch (_) {}
+  }
+  return null;
+}
+
+async function routeToCompany(id) {
+  const cid = (id != null) ? id : selectedId;
+  const c = companies.find(x => x.id === cid);
+  if (!c || c.lat == null || c.lng == null) return;
+
+  // The route lives on the map, so make sure the map view is showing.
+  try { setSearchView('map'); } catch (_) {}
+
+  // Origin = the user's GPS position. Reuse it if we already have it, else ask.
+  let origin = _routeUserLatLng();
+  if (!origin) {
+    if (!navigator.geolocation) { showToast(t('toastGeoNotSupported')); return; }
+    showToast(t('routeLocating'));
+    try {
+      const pos = await new Promise((res, rej) =>
+        navigator.geolocation.getCurrentPosition(res, rej,
+          { enableHighAccuracy: false, timeout: 15000, maximumAge: 30000 }));
+      origin = [pos.coords.latitude, pos.coords.longitude];
+      try { detectUserLocation(false); } catch (_) {}   // drop the "you are here" marker too
+    } catch (e) { showToast(t('routeNoLocation')); return; }
+  }
+
+  try {
+    const url = `https://router.project-osrm.org/route/v1/driving/`
+      + `${origin[1]},${origin[0]};${c.lng},${c.lat}?overview=full&geometries=geojson`;
+    const data = await fetch(url).then(r => r.json());
+    if (data.code !== 'Ok' || !data.routes || !data.routes.length) { showToast(t('routeError')); return; }
+
+    const route = data.routes[0];
+    const latlngs = route.geometry.coordinates.map(p => [p[1], p[0]]); // GeoJSON [lng,lat] → [lat,lng]
+
+    if (_routeLayer) { _routeLayer.remove(); _routeLayer = null; }
+    _routeLayer = L.layerGroup([
+      L.polyline(latlngs, { color: '#0b1220', weight: 9, opacity: 0.25 }),   // casing
+      L.polyline(latlngs, { color: '#f97316', weight: 5, opacity: 0.95 })    // route
+    ]).addTo(map);
+    try { map.fitBounds(L.latLngBounds(latlngs), { padding: [60, 60], maxZoom: 15 }); } catch (_) {}
+
+    const km = route.distance / 1000;
+    const kmStr = (km < 10 ? km.toFixed(1) : Math.round(km)) + ' km';
+    const mins = Math.max(1, Math.round(route.duration / 60));
+    const timeStr = mins >= 60 ? `${Math.floor(mins / 60)} h ${mins % 60} min` : `${mins} min`;
+
+    const ri = document.getElementById('routeInfo');
+    if (ri) {
+      const dest = document.getElementById('routeInfoDest');
+      const dist = document.getElementById('routeInfoDist');
+      const time = document.getElementById('routeInfoTime');
+      if (dest) dest.textContent = c.name || '';
+      if (dist) dist.textContent = kmStr;
+      if (time) time.textContent = timeStr;
+      ri.hidden = false;
+    }
+  } catch (e) { showToast(t('routeError')); }
+}
+window.routeToCompany = routeToCompany;
+
 // ── DETAIL PANEL ──────────────────────────────────────────────────────────────
 async function openDetail(id) {
   const c  = companies.find(x => x.id === id);
   if (!c) return;
   selectedId = id;
+  try { clearRoute(); } catch (_) {}   // clear any route from a previously opened company
 
   // Sync URL ?company=<id> so the panel is shareable + browser-back works.
   // _suppressCompanyHistory is flipped by the popstate listener and the
