@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v142.css"/>
+  <link rel="stylesheet" href="app.v143.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -8162,7 +8162,7 @@ async function routeToCompany(id) {
     if (_routeLayer) { _routeLayer.remove(); _routeLayer = null; }
     _routeLayer = L.layerGroup([
       L.polyline(latlngs, { color: '#0b1220', weight: 9, opacity: 0.25 }),   // casing
-      L.polyline(latlngs, { color: '#f97316', weight: 5, opacity: 0.95 })    // route
+      L.polyline(latlngs, { color: '#1a73e8', weight: 5, opacity: 0.95 })    // route
     ]).addTo(map);
     try { map.fitBounds(L.latLngBounds(latlngs), { padding: [60, 60], maxZoom: 15 }); } catch (_) {}
 
