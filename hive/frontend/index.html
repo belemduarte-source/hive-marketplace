@@ -91,6 +91,7 @@
   <link rel="preconnect" href="https://accounts.google.com" crossorigin/>
   <link rel="preconnect" href="https://basemaps.cartocdn.com" crossorigin/>
   <link rel="dns-prefetch" href="https://nominatim.openstreetmap.org"/>
+  <link rel="dns-prefetch" href="https://router.project-osrm.org"/>
 
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" integrity="sha384-b8ANgTJvdlAnWM5YGMpKn7Kodm+1k7NYNG9zdjTCcZcKatzYHwZ0RLdWarbJJVzU" crossorigin="anonymous"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.min.css" integrity="sha384-4ej5W7Scxd1gcgoPPEnX+r7eVJnBaGyrzMRjy1ynilla1goyNavl0bUqDOyaHZ9G" crossorigin="anonymous"/>
@@ -143,7 +144,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v149.css"/>
+  <link rel="stylesheet" href="app.v150.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -491,6 +492,19 @@
         <div style="font-size:16px;color:var(--muted);margin-top:3px" id="contactModalSub">A sua mensagem será entregue directamente à empresa</div>
       </div>
       <button onclick="closeContactModal()" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
+    </div>
+    <!-- Guest sender details — shown only when not logged in -->
+    <div id="contactGuestFields" style="display:none">
+      <div class="contact-form-group">
+        <label data-i18n="contactYourName">O seu nome</label>
+        <input type="text" id="contactGuestName" class="contact-input" autocomplete="name" maxlength="120"/>
+      </div>
+      <div class="contact-form-group">
+        <label data-i18n="contactYourEmail">O seu email (para a empresa responder)</label>
+        <input type="email" id="contactGuestEmail" class="contact-input" autocomplete="email" maxlength="254"/>
+      </div>
+      <!-- Honeypot: humans never see it, bots autofill it. Off-screen, not display:none. -->
+      <input type="text" id="contactWebsite" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;border:0;padding:0"/>
     </div>
     <div class="contact-form-group">
       <label data-i18n="contactMsgLabel">Mensagem</label>
@@ -2050,7 +2064,7 @@ const translations = {
     sortBy:'Ordenar Por', sortRating:'Melhor Avaliação', sortReviews:'Mais Avaliados', sortName:'Nome A–Z',
     sectorArea:'Área de Atividade', minRating:'Avaliação Mínima',
     ratingAny:'Qualquer avaliação', ratingOrMore:'ou mais',
-    searchRadius:'Raio de Pesquisa', featured:'Destaque', ignoreRadius:'Não Usar Raio de Pesquisa', nearbyTitle:'Empresas Próximas',
+    searchRadius:'Raio de Pesquisa', featured:'Destaque', ignoreRadius:'Não Usar Raio de Pesquisa', nearbyTitle:'Empresas Próximas', contactYourName:'O seu nome', contactYourEmail:'O seu email (para a empresa responder)', contactNameReq:'Indique o seu nome', contactEmailReq:'Indique um email válido', retryBtn:'Tentar novamente',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Novo Registo',
     specialties:'Especialidades',
     mapLive:'Mapa em tempo real', mapCity:'Lisboa, Portugal',
@@ -2460,7 +2474,7 @@ const translations = {
     sortBy:'Sort By', sortRating:'Best Rating', sortReviews:'Most Reviewed', sortName:'Name A–Z',
     sectorArea:'Activity Area', minRating:'Minimum Rating',
     ratingAny:'Any rating', ratingOrMore:'or more',
-    searchRadius:'Search Radius', featured:'Featured', ignoreRadius:'Don\'t Use Search Radius', nearbyTitle:'Nearby Companies',
+    searchRadius:'Search Radius', featured:'Featured', ignoreRadius:'Don\'t Use Search Radius', nearbyTitle:'Nearby Companies', contactYourName:'Your name', contactYourEmail:'Your email (so the company can reply)', contactNameReq:'Enter your name', contactEmailReq:'Enter a valid email', retryBtn:'Try again',
     topRated:'Top Rated', verified:'Verified', newEntry:'New Entry',
     specialties:'Specialties',
     mapLive:'Live map', mapCity:'Lisbon, Portugal',
@@ -2861,7 +2875,7 @@ const translations = {
     sortBy:'Trier Par', sortRating:'Meilleure Évaluation', sortReviews:'Plus Évalués', sortName:'Nom A–Z',
     sectorArea:"Secteur d'Activité", minRating:'Évaluation Minimale',
     ratingAny:'Toute évaluation', ratingOrMore:'ou plus',
-    searchRadius:'Rayon de Recherche', featured:'En Vedette', ignoreRadius:'Ne pas utiliser le rayon', nearbyTitle:'Entreprises à Proximité',
+    searchRadius:'Rayon de Recherche', featured:'En Vedette', ignoreRadius:'Ne pas utiliser le rayon', nearbyTitle:'Entreprises à Proximité', contactYourName:'Votre nom', contactYourEmail:'Votre email (pour la réponse de l\'entreprise)', contactNameReq:'Indiquez votre nom', contactEmailReq:'Indiquez un email valide', retryBtn:'Réessayer',
     topRated:'Mieux Noté', verified:'Vérifié', newEntry:'Nouveau Enregistrement',
     specialties:'Spécialités',
     mapLive:'Carte en direct', mapCity:'Lisbonne, Portugal',
@@ -3264,7 +3278,7 @@ const translations = {
     sortBy:'Ordenar Por', sortRating:'Mejor Valoradas', sortReviews:'Más Valoradas', sortName:'Nombre A–Z',
     sectorArea:'Área de Actividad', minRating:'Valoración Mínima',
     ratingAny:'Cualquier valoración', ratingOrMore:'o más',
-    searchRadius:'Radio de Búsqueda', featured:'Destacados', ignoreRadius:'No Usar Radio de Búsqueda', nearbyTitle:'Empresas Cercanas',
+    searchRadius:'Radio de Búsqueda', featured:'Destacados', ignoreRadius:'No Usar Radio de Búsqueda', nearbyTitle:'Empresas Cercanas', contactYourName:'Su nombre', contactYourEmail:'Su email (para que la empresa responda)', contactNameReq:'Indique su nombre', contactEmailReq:'Indique un email válido', retryBtn:'Intentar de nuevo',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Nuevo Registro',
     specialties:'Especialidades',
     mapLive:'Mapa en tiempo real', mapCity:'Lisboa, Portugal',
@@ -3661,7 +3675,7 @@ const translations = {
     sortBy:'Sortieren nach', sortRating:'Beste Bewertung', sortReviews:'Meiste Bewertungen', sortName:'Name A–Z',
     sectorArea:'Tätigkeitsbereich', minRating:'Mindestbewertung',
     ratingAny:'Beliebige Bewertung', ratingOrMore:'oder mehr',
-    searchRadius:'Suchradius', featured:'Empfohlen', ignoreRadius:'Suchradius nicht verwenden', nearbyTitle:'Unternehmen in der Nähe',
+    searchRadius:'Suchradius', featured:'Empfohlen', ignoreRadius:'Suchradius nicht verwenden', nearbyTitle:'Unternehmen in der Nähe', contactYourName:'Ihr Name', contactYourEmail:'Ihre E-Mail (für die Antwort der Firma)', contactNameReq:'Geben Sie Ihren Namen an', contactEmailReq:'Geben Sie eine gültige E-Mail an', retryBtn:'Erneut versuchen',
     topRated:'Top-Bewertet', verified:'Verifiziert', newEntry:'Neu eingetragen',
     specialties:'Fachbereiche',
     mapLive:'Live-Karte', mapCity:'Lissabon, Portugal',
@@ -5438,11 +5452,22 @@ window.closeCompareModal  = closeCompareModal;
 // Show the bar on first paint if there's a saved selection
 setTimeout(() => { try { _renderCompareBar(); } catch (_) {} }, 200);
 
-// Load companies from backend API; renders markers when done
-async function loadCompaniesFromDB() {
-  companies.length = 0;
+// Load companies from backend API; renders markers when done.
+// Two-phase load: the first call is scoped to the user's country (much smaller
+// payload → pins appear sooner as the catalogue grows), then the full
+// catalogue is fetched once in the background and re-ingested. Pass
+// {full:true} to skip the scoping (used by the background phase and retry).
+let _fullCatalogueLoaded = false;
+async function loadCompaniesFromDB(opts) {
+  const scoped = !(opts && opts.full) && !_fullCatalogueLoaded;
+  let loadErrMsg = null; // set on failure; injected into the map hint AFTER the render pipeline (which overwrites the hint)
   try {
-    const data = await api.getCompanies();
+    const country = String(window._userCountry || 'pt').toLowerCase();
+    const data = await api.getCompanies(scoped ? { country } : undefined);
+    if (!scoped) _fullCatalogueLoaded = true;
+    // Clear only now that fresh data is in hand — clearing before the await
+    // would let a failed background refresh wipe what's already on screen.
+    companies.length = 0;
     if (data && data.length > 0) {
       // Sort featured companies to top client-side (avoids full-table-scan ORDER BY in DB)
       data.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
@@ -5450,12 +5475,17 @@ async function loadCompaniesFromDB() {
       nextCompanyId = computeNextCompanyId(companies, nextCompanyId);
     }
   } catch(e) {
+    // A failed *background* refresh must not disturb a working page — the
+    // user keeps the country-scoped set and we simply try again next boot.
+    if (!scoped && companies.length > 0) return;
+    companies.length = 0;
     // Distinguish between actual network failure (no connection) and a server
     // error response — the latter is much more actionable to debug.
     const msg = (e.status === 0 || e.status === undefined)
       ? 'Sem ligação ao servidor. Tente novamente em instantes.'
       : `Não foi possível carregar as empresas (erro ${e.status}). Tente novamente.`;
     showToast(msg);
+    loadErrMsg = msg;
     if (e.status && e.status >= 500) console.error('Companies API error:', e.message, e.body || '');
     // IMPORTANT: never inject DEMO_COMPANIES on the live site. A transient API
     // error would otherwise flood the map with ~100 fake "random" companies the
@@ -5511,7 +5541,37 @@ async function loadCompaniesFromDB() {
   renderTestimonialBanner();
   updateLandingStats();
   if (typeof _renderRecentStrip === 'function') _renderRecentStrip();
+
+  // Dead-end fix: on failure give the user a retry button right on the map
+  // instead of requiring a full page reload. Injected here (after the render
+  // pipeline) because applyFilters.now() above rewrites the hint contents.
+  if (loadErrMsg && companies.length === 0) {
+    try {
+      const hint = document.getElementById('mapEmptyHint');
+      const hintText = document.getElementById('mapEmptyHintText');
+      if (hint && hintText) {
+        hint.classList.remove('hidden');
+        hintText.innerHTML = '<strong>' + escHtml(loadErrMsg) + '</strong>' +
+          '<div style="margin-top:14px"><button onclick="retryLoadCompanies(this)" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px">🔄 ' + escHtml(t('retryBtn') || 'Tentar novamente') + '</button></div>';
+      }
+    } catch (_) {}
+  }
+
+  // Background phase: pull the rest of the catalogue (other countries) once,
+  // shortly after first paint. Re-runs this same function un-scoped — the
+  // ingest pipeline is idempotent, so the merge is just a full re-ingest.
+  if (scoped && !loadErrMsg) {
+    setTimeout(() => { loadCompaniesFromDB({ full: true }).catch(() => {}); }, 2500);
+  }
 }
+
+// Retry handler for the "couldn't load companies" dead end (button lives in
+// the map empty-hint). Retries un-scoped so it can't fail into a smaller set.
+async function retryLoadCompanies(btn) {
+  if (btn) { btn.disabled = true; btn.textContent = '…'; }
+  try { await loadCompaniesFromDB({ full: true }); } finally { if (btn) btn.disabled = false; }
+}
+window.retryLoadCompanies = retryLoadCompanies;
 
 // Save a new company to the backend API; returns the persisted record (with DB id)
 async function saveCompanyToDB(company) {
@@ -11248,8 +11308,8 @@ function openSectorLanding(sector) {
 // Run hash routing after companies load
 const _origLoadCompanies = typeof loadCompaniesFromDB === 'function' ? loadCompaniesFromDB : null;
 if (_origLoadCompanies) {
-  loadCompaniesFromDB = async function() {
-    await _origLoadCompanies();
+  loadCompaniesFromDB = async function(opts) {
+    await _origLoadCompanies(opts); // forward opts — {full:true} drives the two-phase load
     // Now that the companies list is available, re-render the avatar menu so
     // the "Anunciante" badge picks up any listings owned by the current user.
     if (typeof updateNavAuth === 'function') updateNavAuth();
@@ -11504,16 +11564,19 @@ function escHtml(str) {
 // FEATURE: Contact Form Modal
 // ═══════════════════════════════════════════════════════════════════════════════
 function openContactModal() {
+  // Guests can send messages too — the backend accepts unauthenticated contact
+  // with a name + email (rate-limited + honeypot). No more login wall here.
   const user = JSON.parse(localStorage.getItem('hive_user') || 'null');
-  if (!user) { openLogin(); return; }
   const c = companies.find(x => x.id === selectedId);
   if (!c) return;
+  const guest = document.getElementById('contactGuestFields');
+  if (guest) guest.style.display = user ? 'none' : '';
   const sub = document.getElementById('contactModalSub');
   if (sub) sub.textContent = t('contactSendTo') + ' ' + c.name;
   const msg = document.getElementById('contactMessage');
   if (msg) msg.value = '';
   document.getElementById('contactModal').classList.add('open');
-  setTimeout(() => msg?.focus(), 200);
+  setTimeout(() => (user ? msg : document.getElementById('contactGuestName'))?.focus(), 200);
 }
 
 function closeContactModal() {
@@ -11523,10 +11586,21 @@ function closeContactModal() {
 async function submitContactForm() {
   const msg = (document.getElementById('contactMessage')?.value || '').trim();
   if (msg.length < 10) { showToast(t('toastMsgTooShort')); return; }
+  const user = JSON.parse(localStorage.getItem('hive_user') || 'null');
+  const body = { message: msg };
+  if (!user) {
+    const gName = (document.getElementById('contactGuestName')?.value || '').trim();
+    const gEmail = (document.getElementById('contactGuestEmail')?.value || '').trim();
+    if (!gName) { showToast(t('contactNameReq')); document.getElementById('contactGuestName')?.focus(); return; }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(gEmail)) { showToast(t('contactEmailReq')); document.getElementById('contactGuestEmail')?.focus(); return; }
+    body.name = gName;
+    body.email = gEmail;
+    body.website = document.getElementById('contactWebsite')?.value || ''; // honeypot
+  }
   const btn = document.querySelector('#contactModal button[onclick="submitContactForm()"]');
   if (btn) { btn.disabled = true; btn.textContent = t('sendingBtn'); }
   try {
-    await api.contactCompany(selectedId, msg);
+    await api.contactCompany(selectedId, body);
     closeContactModal();
     showToast(t('toastMsgSent'));
   } catch(e) {

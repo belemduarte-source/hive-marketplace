@@ -133,6 +133,28 @@ const generalLimiter = rateLimit({
   skip: _skipRateLimit,
 });
 
+// Analytics events: unauthenticated by design (fire-and-forget pings from the
+// map) — cap the write volume per IP so it can't be used to flood the table.
+const eventLimiter = rateLimit({
+  windowMs: 60 * 1000,
+  max: 30,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados pedidos.' },
+  skip: _skipRateLimit,
+});
+
+// Contact relay: guests may send messages (no login), so keep a tight per-IP
+// budget — 8/hour is plenty for a human asking for quotes, useless for spam.
+const contactLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 8,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiadas mensagens enviadas. Tente novamente mais tarde.' },
+  skip: _skipRateLimit,
+});
+
 app.use('/api/', generalLimiter);
 app.use('/api/auth/', authLimiter);
 
@@ -166,10 +188,10 @@ app.use((req, res, next) => {
 
 // ── Schema auto-migration ────────────────────────────────────────────────────
 // Runs at most once per Lambda instance, *before* any request is served
-// (kicks off at module load) and is then no-op'd by the _migrated flag. Older
-// versions ran ALTER TABLE on every cold start; this version checks for a
-// recent sentinel column and skips the migration when the schema is already
-// up to date — saves ~50-200 ms per cold-start serverless instance.
+// (kicks off at module load) and is then no-op'd by the _migrated flag.
+// Cold starts check a schema_version row first (one SELECT) and skip the
+// full statement list when it matches SCHEMA_VERSION below — saves
+// ~50-200 ms per cold-start serverless instance.
 let _migrated = false;
 let _migrationPromise = null;
 
@@ -180,7 +202,8 @@ let _migrationPromise = null;
 //
 // Each statement uses `IF NOT EXISTS` and runs in its own try/catch so one
 // failure (e.g. an unrelated unique-constraint conflict) doesn't abort the
-// rest. The sentinel column at the end gates the fast path on cold start.
+// rest. IMPORTANT: bump SCHEMA_VERSION (below) whenever this list changes,
+// or warm databases will skip the new statement.
 const MIGRATIONS = [
   // Initial schema for fresh deployments (idempotent — IF NOT EXISTS)
   `CREATE TABLE IF NOT EXISTS users (
@@ -382,6 +405,14 @@ const MIGRATIONS = [
   `CREATE INDEX IF NOT EXISTS idx_device_tokens_user ON device_tokens(user_id)`,
 ];
 
+// Version sentinel: bump this integer WHENEVER a statement is added to
+// MIGRATIONS. Cold starts compare it against a single row in schema_version —
+// on match they skip the ~50 statements entirely (one fast SELECT instead),
+// on mismatch (or missing table) they run everything and store the new
+// version. Unlike the old column-existence sentinel this can never skip DROP
+// migrations, because the version is written only after a full run.
+const SCHEMA_VERSION = 1;
+
 async function ensureSchema() {
   if (_migrated) return;
   if (_migrationPromise) return _migrationPromise; // in-flight on this instance
@@ -389,12 +420,18 @@ async function ensureSchema() {
     try {
       const pool = require('./db');
 
+      // Fast path: schema already at the current version → skip the full run.
+      try {
+        const { rows } = await pool.query('SELECT version FROM schema_version LIMIT 1');
+        if (rows[0] && Number(rows[0].version) === SCHEMA_VERSION) {
+          _migrated = true;
+          return;
+        }
+      } catch (_) { /* table missing (fresh DB) → full run below creates it */ }
+
       // Every migration is idempotent (IF NOT EXISTS / IF EXISTS) so we just
-      // run them all on cold start. We used to short-circuit on a sentinel
-      // column, but that silently skipped DROP migrations once any of the
-      // expected columns existed. Running them all is cheap (~50ms) and the
-      // _migrated flag caches the result for the rest of this instance.
-      // Each statement is wrapped so one failure doesn't block the rest.
+      // run them all. Each statement is wrapped so one failure doesn't block
+      // the rest.
       let okCount = 0, failCount = 0;
       for (const stmt of MIGRATIONS) {
         try {
@@ -406,6 +443,19 @@ async function ensureSchema() {
         }
       }
       console.log(`Schema migrations: ${okCount} OK, ${failCount} failed`);
+      // Record the version only after a clean run — a partial run keeps the
+      // old version so the next cold start retries everything.
+      if (failCount === 0) {
+        try {
+          await pool.query(`CREATE TABLE IF NOT EXISTS schema_version (version INT NOT NULL)`);
+          await pool.query(
+            `INSERT INTO schema_version (version)
+             SELECT $1 WHERE NOT EXISTS (SELECT 1 FROM schema_version)`, [SCHEMA_VERSION]);
+          await pool.query(`UPDATE schema_version SET version = $1`, [SCHEMA_VERSION]);
+        } catch (e) {
+          console.error('schema_version write failed:', e.message);
+        }
+      }
       _migrated = true;
     } catch (e) {
       console.error('Schema migration error:', e.message);
@@ -427,7 +477,9 @@ app.use(async (req, res, next) => {
 });
 
 // ── API routes ────────────────────────────────────────────────────────────────
-app.post('/api/companies', registerLimiter);  // registration spam guard (POST only)
+app.post('/api/companies', registerLimiter);            // registration spam guard (POST only)
+app.post('/api/companies/:id/event', eventLimiter);     // analytics ping flood guard
+app.post('/api/companies/:id/contact', contactLimiter); // guest-contact spam guard
 app.use('/api/companies', companiesRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/admin', adminRouter);

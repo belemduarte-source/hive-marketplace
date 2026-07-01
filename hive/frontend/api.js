@@ -104,10 +104,13 @@ const api = {
   },
 
   // ── Contact form relay ─────────────────────────────────────────────────────
+  // `message` may be a plain string (legacy) or a payload object — guests send
+  // { message, name, email, website } so the relay works without a login.
   contactCompany(companyId, message) {
+    const body = typeof message === 'string' ? { message } : message;
     return apiFetch('/companies/' + companyId + '/contact', {
       method: 'POST',
-      body: { message },
+      body,
     });
   },
 

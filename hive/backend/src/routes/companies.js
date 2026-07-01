@@ -190,12 +190,56 @@ router.get('/status', async (req, res, next) => {
 });
 
 // GET /api/companies/:id/approve?token=ADMIN_TOKEN — one-click approval from email
+// ── Moderation links (approve / reject) ───────────────────────────────────────
+// The links in the admin notification email are GETs, and email clients /
+// security scanners prefetch GET links — which used to approve or reject a
+// company without anyone clicking. The GET now only renders a confirmation
+// page; the actual state change happens on the POST behind the button, which
+// a prefetch can never trigger.
+function _checkAdminToken(req, res) {
+  const adminToken = process.env.ADMIN_TOKEN;
+  if (!adminToken || req.query.token !== adminToken) {
+    res.status(403).send(htmlPage('❌ Acesso negado', 'Token de administrador inválido.', '#dc2626'));
+    return false;
+  }
+  return true;
+}
+
+function moderationConfirmPage(req, company, kind) {
+  const isApprove = kind === 'approve';
+  const color = isApprove ? '#16a34a' : '#dc2626';
+  const action = `${req.baseUrl}/${company.id}/${kind}?token=${encodeURIComponent(req.query.token)}`;
+  return htmlPage(
+    isApprove ? 'Aprovar empresa?' : 'Rejeitar empresa?',
+    `Confirma que pretende <strong>${isApprove ? 'aprovar' : 'rejeitar'}</strong> a empresa <strong>${escHtml(company.name)}</strong>?
+     <form method="post" action="${action}" style="margin:22px 0 0">
+       <button type="submit" style="background:${color};color:#fff;border:none;border-radius:8px;padding:14px 34px;font-size:16px;font-weight:700;cursor:pointer;font-family:inherit">
+         ${isApprove ? '✅ Sim, aprovar' : '🚫 Sim, rejeitar'}
+       </button>
+     </form>`,
+    color
+  );
+}
+
 router.get('/:id/approve', async (req, res, next) => {
   try {
-    const adminToken = process.env.ADMIN_TOKEN;
-    if (!adminToken || req.query.token !== adminToken) {
-      return res.status(403).send(htmlPage('❌ Acesso negado', 'Token de administrador inválido.', '#dc2626'));
+    if (!_checkAdminToken(req, res)) return;
+    const { rows } = await pool.query(`SELECT id, name, status FROM companies WHERE id = $1`, [req.params.id]);
+    if (!rows[0]) {
+      return res.status(404).send(htmlPage('❌ Não encontrada', 'Empresa não encontrada na base de dados.', '#dc2626'));
     }
+    if (rows[0].status === 'approved') {
+      return res.send(htmlPage('✅ Já aprovada', `<strong>${escHtml(rows[0].name)}</strong> já está aprovada e visível na plataforma.`, '#16a34a'));
+    }
+    res.send(moderationConfirmPage(req, rows[0], 'approve'));
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post('/:id/approve', async (req, res, next) => {
+  try {
+    if (!_checkAdminToken(req, res)) return;
 
     const { rows } = await pool.query(
       `UPDATE companies SET status = 'approved', updated_at = NOW() WHERE id = $1 RETURNING *`,
@@ -226,13 +270,26 @@ router.get('/:id/approve', async (req, res, next) => {
   }
 });
 
-// GET /api/companies/:id/reject?token=ADMIN_TOKEN — one-click rejection from email
+// GET renders the confirmation page; POST performs the rejection.
 router.get('/:id/reject', async (req, res, next) => {
   try {
-    const adminToken = process.env.ADMIN_TOKEN;
-    if (!adminToken || req.query.token !== adminToken) {
-      return res.status(403).send(htmlPage('❌ Acesso negado', 'Token de administrador inválido.', '#dc2626'));
+    if (!_checkAdminToken(req, res)) return;
+    const { rows } = await pool.query(`SELECT id, name, status FROM companies WHERE id = $1`, [req.params.id]);
+    if (!rows[0]) {
+      return res.status(404).send(htmlPage('❌ Não encontrada', 'Empresa não encontrada na base de dados.', '#dc2626'));
     }
+    if (rows[0].status === 'rejected') {
+      return res.send(htmlPage('🚫 Já rejeitada', `O registo de <strong>${escHtml(rows[0].name)}</strong> já tinha sido rejeitado.`, '#f97316'));
+    }
+    res.send(moderationConfirmPage(req, rows[0], 'reject'));
+  } catch (e) {
+    next(e);
+  }
+});
+
+router.post('/:id/reject', async (req, res, next) => {
+  try {
+    if (!_checkAdminToken(req, res)) return;
 
     const { rows } = await pool.query(
       `UPDATE companies SET status = 'rejected', updated_at = NOW() WHERE id = $1 RETURNING *`,
@@ -469,11 +526,30 @@ router.put('/:id', requireAuth, async (req, res, next) => {
 });
 
 // POST /api/companies/:id/contact — relay a message to the company (auth required)
-router.post('/:id/contact', requireAuth, async (req, res, next) => {
+// Guests may contact companies too (login was the biggest drop-off point in
+// the contact funnel). Logged-in users keep the old flow; guests must supply
+// a name + valid email. A honeypot field ("website") and a tight per-IP rate
+// limit (see app.js) keep the spam surface small.
+router.post('/:id/contact', optionalAuth, async (req, res, next) => {
   try {
-    const { message } = req.body;
+    const { message, name, email, website } = req.body;
+    // Honeypot: humans never see this field; bots autofill it. Pretend success.
+    if (website && String(website).trim() !== '') return res.json({ ok: true });
     if (!message || message.trim().length < 10) {
       return res.status(400).json({ error: 'Mensagem demasiado curta (mínimo 10 caracteres)' });
+    }
+
+    let sender;
+    if (req.user) {
+      sender = { name: req.user.name, email: req.user.email };
+    } else {
+      const gName = (name || '').trim().slice(0, 120);
+      const gEmail = (email || '').trim().slice(0, 254);
+      if (!gName) return res.status(400).json({ error: 'Indique o seu nome' });
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(gEmail)) {
+        return res.status(400).json({ error: 'Indique um email válido para a empresa lhe responder' });
+      }
+      sender = { name: gName, email: gEmail };
     }
 
     const { rows } = await pool.query(
@@ -483,7 +559,6 @@ router.post('/:id/contact', requireAuth, async (req, res, next) => {
     if (!rows[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
     if (!rows[0].email) return res.status(422).json({ error: 'Esta empresa não tem email configurado' });
 
-    const sender = { name: req.user.name, email: req.user.email };
     // Relay the message AFTER responding so the sender isn't blocked on SMTP.
     deferEmail(() => sendContactEmail(rows[0], sender, message.trim()), `contact relay (company ${rows[0].id})`);
 
@@ -491,7 +566,7 @@ router.post('/:id/contact', requireAuth, async (req, res, next) => {
     pushToUser(
       rows[0].created_by,
       'Nova mensagem na Hivex',
-      `${req.user.name} contactou ${rows[0].name}`,
+      `${sender.name} contactou ${rows[0].name}`,
       { companyId: rows[0].id }
     ).catch(() => {});
 
