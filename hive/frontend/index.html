@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v127.css"/>
+  <link rel="stylesheet" href="app.v128.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -8006,7 +8006,21 @@ async function routeToCompany(id) {
         navigator.geolocation.getCurrentPosition(res, rej,
           { enableHighAccuracy: false, timeout: 15000, maximumAge: 30000 }));
       origin = [pos.coords.latitude, pos.coords.longitude];
-      try { detectUserLocation(false); } catch (_) {}   // drop the "you are here" marker too
+      // Drop a lightweight "you are here" marker WITHOUT running the locate
+      // flow (detectUserLocation), which narrows the search radius to 50 km and
+      // re-filters the map around the user — that would hide every company
+      // farther than 50 km. Directions must never change what's on the map.
+      try {
+        if (map && typeof L !== 'undefined') {
+          if (userLocationMarker) { userLocationMarker.remove(); }
+          const youIcon = L.divIcon({
+            className: '',
+            html: '<div style="width:18px;height:18px;background:#f97316;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>',
+            iconSize: [18, 18], iconAnchor: [9, 9],
+          });
+          userLocationMarker = L.marker(origin, { icon: youIcon, zIndexOffset: 1000 }).addTo(map);
+        }
+      } catch (_) {}
     } catch (e) { showToast(t('routeNoLocation')); return; }
   }
 
