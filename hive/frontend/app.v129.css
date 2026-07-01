@@ -31,7 +31,7 @@
       --accent:#1e3a8a;--accent-light:#dbeafe;
       --gold:#f59e0b;--gold-light:#fef3c7;--green:#10b981;--green-light:#d1fae5;
       --red:#ef4444;--red-light:#fee2e2;
-      --text:#1f2937;--text-secondary:#6b7280;--muted:#9ca3af;
+      --text:#1f2937;--text-secondary:#4b5563;--muted:#6b7280;
       --border:#e5e7eb;--border-light:#f3f4f6;
       --radius:12px;--radius-sm:8px;
       --shadow:0 1px 3px rgba(0,0,0,.1);
@@ -2746,7 +2746,7 @@
 
     /* ── Dark mode (opt-in via [data-theme="dark"]; default light unaffected) ── */
     [data-theme="dark"]{
-      --bg:#0b1220;--surface:#111a2b;--text:#ffffff;--text-secondary:#cdd6e3;--muted:#6b7787;
+      --bg:#0b1220;--surface:#111a2b;--text:#ffffff;--text-secondary:#dbe3ef;--muted:#9aa7ba;
       --border:#23304a;--border-light:#1a2438;
       --shadow:0 1px 3px rgba(0,0,0,.5);--shadow-md:0 4px 12px rgba(0,0,0,.45);--shadow-lg:0 8px 32px rgba(0,0,0,.55);
       --primary-light:#3a2a14;--accent-light:#16223e;--gold-light:#3a2a14;--green-light:#0e2a20;--red-light:#3a1414;
