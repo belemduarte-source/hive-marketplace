@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v145.css"/>
+  <link rel="stylesheet" href="app.v146.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -1165,6 +1165,17 @@
     </button>
   </div>
 
+  <!-- NEARBY COMPANIES PANEL — right side, mirrors the filter sidebar. Scrollable
+       list of the companies currently on the map, ordered by proximity to the
+       user / searched location. Desktop only (CSS hides it below 1280px). -->
+  <div class="nearby-panel" id="nearbyPanel">
+    <div class="nearby-panel-header">
+      <span class="nearby-panel-title"><i data-lucide="map-pin"></i><span data-i18n="nearbyTitle">Empresas Próximas</span></span>
+      <span class="nearby-count" id="nearbyCount">0</span>
+    </div>
+    <div class="nearby-panel-body" id="nearbyList"></div>
+  </div>
+
 </div>
 
 </div><!-- /tab-search -->
@@ -2040,7 +2051,7 @@ const translations = {
     sortBy:'Ordenar Por', sortRating:'Melhor Avaliação', sortReviews:'Mais Avaliados', sortName:'Nome A–Z',
     sectorArea:'Área de Atividade', minRating:'Avaliação Mínima',
     ratingAny:'Qualquer avaliação', ratingOrMore:'ou mais',
-    searchRadius:'Raio de Pesquisa', featured:'Destaque', ignoreRadius:'Não Usar Raio de Pesquisa',
+    searchRadius:'Raio de Pesquisa', featured:'Destaque', ignoreRadius:'Não Usar Raio de Pesquisa', nearbyTitle:'Empresas Próximas',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Novo Registo',
     specialties:'Especialidades',
     mapLive:'Mapa em tempo real', mapCity:'Lisboa, Portugal',
@@ -2450,7 +2461,7 @@ const translations = {
     sortBy:'Sort By', sortRating:'Best Rating', sortReviews:'Most Reviewed', sortName:'Name A–Z',
     sectorArea:'Activity Area', minRating:'Minimum Rating',
     ratingAny:'Any rating', ratingOrMore:'or more',
-    searchRadius:'Search Radius', featured:'Featured', ignoreRadius:'Don\'t Use Search Radius',
+    searchRadius:'Search Radius', featured:'Featured', ignoreRadius:'Don\'t Use Search Radius', nearbyTitle:'Nearby Companies',
     topRated:'Top Rated', verified:'Verified', newEntry:'New Entry',
     specialties:'Specialties',
     mapLive:'Live map', mapCity:'Lisbon, Portugal',
@@ -2851,7 +2862,7 @@ const translations = {
     sortBy:'Trier Par', sortRating:'Meilleure Évaluation', sortReviews:'Plus Évalués', sortName:'Nom A–Z',
     sectorArea:"Secteur d'Activité", minRating:'Évaluation Minimale',
     ratingAny:'Toute évaluation', ratingOrMore:'ou plus',
-    searchRadius:'Rayon de Recherche', featured:'En Vedette', ignoreRadius:'Ne pas utiliser le rayon',
+    searchRadius:'Rayon de Recherche', featured:'En Vedette', ignoreRadius:'Ne pas utiliser le rayon', nearbyTitle:'Entreprises à Proximité',
     topRated:'Mieux Noté', verified:'Vérifié', newEntry:'Nouveau Enregistrement',
     specialties:'Spécialités',
     mapLive:'Carte en direct', mapCity:'Lisbonne, Portugal',
@@ -3254,7 +3265,7 @@ const translations = {
     sortBy:'Ordenar Por', sortRating:'Mejor Valoradas', sortReviews:'Más Valoradas', sortName:'Nombre A–Z',
     sectorArea:'Área de Actividad', minRating:'Valoración Mínima',
     ratingAny:'Cualquier valoración', ratingOrMore:'o más',
-    searchRadius:'Radio de Búsqueda', featured:'Destacados', ignoreRadius:'No Usar Radio de Búsqueda',
+    searchRadius:'Radio de Búsqueda', featured:'Destacados', ignoreRadius:'No Usar Radio de Búsqueda', nearbyTitle:'Empresas Cercanas',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Nuevo Registro',
     specialties:'Especialidades',
     mapLive:'Mapa en tiempo real', mapCity:'Lisboa, Portugal',
@@ -3651,7 +3662,7 @@ const translations = {
     sortBy:'Sortieren nach', sortRating:'Beste Bewertung', sortReviews:'Meiste Bewertungen', sortName:'Name A–Z',
     sectorArea:'Tätigkeitsbereich', minRating:'Mindestbewertung',
     ratingAny:'Beliebige Bewertung', ratingOrMore:'oder mehr',
-    searchRadius:'Suchradius', featured:'Empfohlen', ignoreRadius:'Suchradius nicht verwenden',
+    searchRadius:'Suchradius', featured:'Empfohlen', ignoreRadius:'Suchradius nicht verwenden', nearbyTitle:'Unternehmen in der Nähe',
     topRated:'Top-Bewertet', verified:'Verifiziert', newEntry:'Neu eingetragen',
     specialties:'Fachbereiche',
     mapLive:'Live-Karte', mapCity:'Lissabon, Portugal',
@@ -7355,6 +7366,7 @@ applyFilters.now = function() { clearTimeout(_afTimer); _runApplyFilters(); };
 function _runApplyFilters() {
   const filtered = getFiltered();
   updateMarkers(filtered);
+  try { renderNearbyPanel(filtered); } catch (_) {}
   document.getElementById('countNum').textContent = filtered.length;
   // Show/hide the empty-state map hint
   const hint = document.getElementById('mapEmptyHint');
@@ -7705,6 +7717,102 @@ function _appendListCards(frag, data, start, end) {
     frag.appendChild(div);
   }
 }
+
+// ── NEARBY COMPANIES PANEL (right side of the map, desktop) ───────────────────
+// Scrollable list of the filtered companies ordered by distance to the user's
+// location (blue "you are here" marker) or, failing that, the searched location
+// (radius circle centre) / map centre. Re-rendered on every filter run.
+const _NEARBY_PAGE = 25;
+let _nearbyData = [];
+let _nearbyRendered = 0;
+let _nearbyObs = null;
+
+function _nearbyRefPoint() {
+  // Priority: real user location → searched location (radius circle) → map centre
+  if (typeof userLocationMarker !== 'undefined' && userLocationMarker) {
+    try { const ll = userLocationMarker.getLatLng(); return [ll.lat, ll.lng]; } catch (_) {}
+  }
+  if (typeof radiusCircle !== 'undefined' && radiusCircle) {
+    try { const ll = radiusCircle.getLatLng(); return [ll.lat, ll.lng]; } catch (_) {}
+  }
+  return currentMapCenter;
+}
+
+function renderNearbyPanel(filtered) {
+  const listEl = document.getElementById('nearbyList');
+  const countEl = document.getElementById('nearbyCount');
+  const panel = document.getElementById('nearbyPanel');
+  if (!listEl || !panel) return;
+  // Skip all work when the panel is hidden (mobile/tablet use the bottom sheet)
+  if (!panel.offsetParent && getComputedStyle(panel).display === 'none') return;
+
+  if (countEl) countEl.textContent = filtered.length;
+  if (_nearbyObs) { _nearbyObs.disconnect(); _nearbyObs = null; }
+
+  if (!filtered.length) {
+    _nearbyData = []; _nearbyRendered = 0;
+    listEl.innerHTML = '<div class="nearby-empty">🐝<br><strong>' +
+      (activeSectors.size === 0 ? t('emptySectorTitle') : t('searchListEmpty')) + '</strong><br><span>' +
+      (activeSectors.size === 0 ? t('emptySectorSub') : t('searchListEmptySub')) + '</span></div>';
+    return;
+  }
+
+  const [refLat, refLng] = _nearbyRefPoint();
+  // Sort a copy by proximity — never mutate the caller's array (markers use it)
+  _nearbyData = filtered.map(c => ({ c, d: calculateDistance(refLat, refLng, c.lat, c.lng) }))
+                        .sort((a, b) => a.d - b.d);
+  listEl.innerHTML = '';
+  _nearbyRendered = 0;
+  _appendNearbyCards(listEl, Math.min(_NEARBY_PAGE, _nearbyData.length));
+
+  // Infinite scroll within the panel
+  if (_nearbyRendered < _nearbyData.length) {
+    const sentinel = document.createElement('div');
+    sentinel.style.cssText = 'height:1px;flex-shrink:0';
+    listEl.appendChild(sentinel);
+    _nearbyObs = new IntersectionObserver(entries => {
+      if (!entries[0].isIntersecting) return;
+      _appendNearbyCards(listEl, Math.min(_nearbyRendered + _NEARBY_PAGE, _nearbyData.length), sentinel);
+      if (_nearbyRendered >= _nearbyData.length) { _nearbyObs.disconnect(); _nearbyObs = null; sentinel.remove(); }
+    }, { root: listEl, rootMargin: '300px' });
+    _nearbyObs.observe(sentinel);
+  }
+}
+
+function _appendNearbyCards(listEl, upTo, sentinel) {
+  const tr = translations[currentLang] || translations.pt;
+  const sc = tr.sectors || {};
+  const frag = document.createDocumentFragment();
+  for (let i = _nearbyRendered; i < upTo; i++) {
+    const { c, d } = _nearbyData[i];
+    const distStr = d < 10 ? d.toFixed(1).replace('.', ',') + ' km' : Math.round(d) + ' km';
+    const sectorLabel = sc[c.sector] || c.sector || '';
+    const rating = c.rating > 0
+      ? `<span class="nc-stars">${'★'.repeat(Math.round(c.rating))}</span> <strong>${c.rating.toFixed(1)}</strong> <span class="nc-reviews">(${c.reviews || 0})</span>`
+      : `<span class="nc-reviews">☆☆☆☆☆ ${t('popupNoRatings')}</span>`;
+    const logo = c.logo
+      ? `<div class="nc-logo" style="background:url('${c.logo}') center/cover no-repeat"></div>`
+      : `<div class="nc-logo" style="background:${c.color}22">${c.emoji || '🏢'}</div>`;
+    const div = document.createElement('div');
+    div.className = 'nearby-card';
+    div.onclick = () => openDetail(c.id);
+    div.innerHTML = `
+      <div class="nc-top">
+        ${logo}
+        <div class="nc-main">
+          <div class="nc-name">${escHtml(c.name)}</div>
+          <div class="nc-sector"><span class="nc-dot" style="background:${c.color}"></span>${escHtml(sectorLabel)}</div>
+        </div>
+        <span class="nc-dist">${distStr}</span>
+      </div>
+      <div class="nc-rating">${rating}</div>
+      ${c.address || c.city ? `<div class="nc-address">📍 ${escHtml(c.address || c.city)}</div>` : ''}`;
+    frag.appendChild(div);
+  }
+  if (sentinel) listEl.insertBefore(frag, sentinel); else listEl.appendChild(frag);
+  _nearbyRendered = upTo;
+}
+window.renderNearbyPanel = renderNearbyPanel;
 
 // ── REGISTER COMPANY ──────────────────────────────────────────────────────────
 function openRegister() {
