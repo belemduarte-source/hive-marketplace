@@ -24,6 +24,13 @@
        query; on desktop they'd render as plain divs in the flow (the thin white
        bar with an ✕). Hide them by default — they're shown only when opened. */
     #mspSheet,#mspBackdrop{display:none}
+    /* Desktop: proportional down-scale so the UI isn't oversized on high-DPI /
+       OS-scaled laptops (e.g. Windows at 125/150%). Mobile keeps its own
+       viewport sizing. zoom reflows (unlike transform:scale) and keeps ratios.
+       Body is a 100dvh app-shell, so grow its layout height by 1/zoom to fill. */
+    @media (min-width:1024px){
+      body{zoom:.87;width:calc(100vw / .87) !important;max-width:none !important;height:calc(100dvh / .87) !important;max-height:none !important}
+    }
     :root{
       /* ── PALETA MODERNIZADA ── */
       --bg:#f5f7fa;--surface:#ffffff;--nav:#0f172a;
