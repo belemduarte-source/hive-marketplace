@@ -274,7 +274,7 @@
     .filter-title-main{font-size:22px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:5px}
     .cat-clear-btn{flex:0 0 28px;display:flex;align-items:center;justify-content:center;width:28px;height:100%;background:rgba(239,68,68,.18);border:none;border-left:1px solid rgba(239,68,68,.3);color:#fca5a5;cursor:pointer;transition:all .15s}
     .cat-clear-btn:hover{background:rgba(239,68,68,.38);color:#fff}
-    .btn-clear-big{display:flex;align-items:center;gap:6px;padding:6px 10px;background:#dc2626;border:none;border-radius:6px;color:#fff;font-size:11px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap}
+    .btn-clear-big{display:flex;align-items:center;gap:12px;padding:12px 20px;background:#dc2626;border:none;border-radius:10px;color:#fff;font-size:22px;font-weight:600;cursor:pointer;transition:all .15s;white-space:nowrap}
     .btn-clear-big:hover{background:#b91c1c;transform:scale(1.03)}
     /* ── Second-layer filters ── */
     .filters-layer2{position:relative;transition:opacity .25s}
