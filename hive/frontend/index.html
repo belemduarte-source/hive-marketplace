@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v139.css"/>
+  <link rel="stylesheet" href="app.v140.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -1625,6 +1625,16 @@
         <input type="url" id="regWebsite" data-i18n-ph="regWebsitePh" autocomplete="url" inputmode="url"/>
       </div>
       <div class="form-row">
+        <label><span data-i18n="regLogo">Logótipo da empresa</span> <span style="font-size:11px;color:var(--muted);font-weight:400" data-i18n="optionalTag">(opcional)</span></label>
+        <div class="reg-logo-row">
+          <div class="reg-logo-preview" id="regLogoPreview"><span data-i18n="regLogoEmpty">Sem imagem</span></div>
+          <input type="file" id="regLogoInput" accept="image/*" onchange="handleRegLogo(this)" style="display:none"/>
+          <button type="button" class="reg-logo-btn" onclick="document.getElementById('regLogoInput').click()" data-i18n="regLogoPick">Escolher imagem…</button>
+          <button type="button" class="reg-logo-clear" id="regLogoClear" onclick="clearRegLogo()" style="display:none" data-i18n="regLogoRemove">Remover</button>
+        </div>
+        <div class="form-hint" data-i18n="regLogoHint">JPG ou PNG — é redimensionada e comprimida. Passa a aparecer como logótipo da empresa.</div>
+      </div>
+      <div class="form-row">
         <label><span data-i18n="regSocial">Redes sociais</span> <span style="font-size:11px;color:var(--muted);font-weight:400" data-i18n="optionalTag">(opcional)</span></label>
         <input type="url" id="regFacebook"  placeholder="https://facebook.com/a-sua-empresa"        autocomplete="url" inputmode="url" style="margin-bottom:8px"/>
         <input type="url" id="regInstagram" placeholder="https://instagram.com/a-sua-empresa"       autocomplete="url" inputmode="url" style="margin-bottom:8px"/>
@@ -2144,6 +2154,7 @@ const translations = {
     regEmail:'Email de Contacto', regEmailPh:'empresa@email.pt',
     regPhone:'Telefone / WhatsApp',
     regWebsite:'Website', regWebsitePh:'https://www.empresa.pt',
+    regLogo:'Logótipo da empresa', regLogoPick:'Escolher imagem…', regLogoRemove:'Remover', regLogoEmpty:'Sem imagem', regLogoHint:'JPG ou PNG — é redimensionada e comprimida. Passa a aparecer como logótipo da empresa.', regLogoInvalid:'Ficheiro de imagem inválido.',
     regSpecialties:'Especialidades', regTagsPh:'Ex: Construção Civil, Obras Públicas, Internacional',
     regTagsHint:'Separe as especialidades por vírgulas.',
     regDescription:'Descrição Breve', regDescPh:'Breve descrição da empresa, serviços prestados e diferenciais...',
@@ -2553,6 +2564,7 @@ const translations = {
     regEmail:'Contact Email', regEmailPh:'company@email.com',
     regPhone:'Phone / WhatsApp',
     regWebsite:'Website', regWebsitePh:'https://www.company.com',
+    regLogo:'Company logo', regLogoPick:'Choose image…', regLogoRemove:'Remove', regLogoEmpty:'No image', regLogoHint:'JPG or PNG — resized and compressed automatically. Shown as the company logo.', regLogoInvalid:'Invalid image file.',
     regSpecialties:'Specialties', regTagsPh:'Ex: Civil Construction, Public Works, International',
     regTagsHint:'Separate specialties with commas.',
     regDescription:'Brief Description', regDescPh:'Brief description of the company, services provided...',
@@ -2956,6 +2968,7 @@ const translations = {
     regEmail:'E-mail de Contact', regEmailPh:'entreprise@email.fr',
     regPhone:'Téléphone / WhatsApp',
     regWebsite:'Site Web', regWebsitePh:'https://www.entreprise.fr',
+    regLogo:'Logo de l\'entreprise', regLogoPick:'Choisir une image…', regLogoRemove:'Retirer', regLogoEmpty:'Aucune image', regLogoHint:'JPG ou PNG — redimensionné et compressé. Affiché comme logo de l\'entreprise.', regLogoInvalid:'Fichier image invalide.',
     regSpecialties:'Spécialités', regTagsPh:'Ex : Construction Civile, Travaux Publics, International',
     regTagsHint:'Séparez les spécialités par des virgules.',
     regDescription:'Description Brève', regDescPh:"Brève description de l'entreprise, services fournis...",
@@ -3355,6 +3368,7 @@ const translations = {
     regEmail:'Email de Contacto', regEmailPh:'empresa@email.es',
     regPhone:'Teléfono / WhatsApp',
     regWebsite:'Sitio Web', regWebsitePh:'https://www.empresa.es',
+    regLogo:'Logotipo de la empresa', regLogoPick:'Elegir imagen…', regLogoRemove:'Quitar', regLogoEmpty:'Sin imagen', regLogoHint:'JPG o PNG — se redimensiona y comprime. Aparece como logotipo de la empresa.', regLogoInvalid:'Archivo de imagen no válido.',
     regSpecialties:'Especialidades', regTagsPh:'Ej: Construcción Civil, Obras Públicas',
     regTagsHint:'Separe las especialidades con comas.',
     regDescription:'Descripción Breve', regDescPh:'Breve descripción de la empresa, servicios y diferenciales...',
@@ -3751,6 +3765,7 @@ const translations = {
     regEmail:'Kontakt-E-Mail', regEmailPh:'firma@email.com',
     regPhone:'Telefon/WhatsApp',
     regWebsite:'Website', regWebsitePh:'https://www.firma.de',
+    regLogo:'Firmenlogo', regLogoPick:'Bild wählen…', regLogoRemove:'Entfernen', regLogoEmpty:'Kein Bild', regLogoHint:'JPG oder PNG — wird verkleinert und komprimiert. Erscheint als Firmenlogo.', regLogoInvalid:'Ungültige Bilddatei.',
     regSpecialties:'Fachbereiche', regTagsPh:'z. B. Tiefbau, Öffentliche Aufträge',
     regTagsHint:'Fachbereiche durch Komma trennen.',
     regDescription:'Kurzbeschreibung', regDescPh:'Unternehmensprofil, angebotene Leistungen und Stärken...',
@@ -4664,7 +4679,7 @@ function renderFeaturedCompanies() {
     return `
       <div class="lp-company-card" style="--cc:${(typeof getSectorColor === 'function' ? getSectorColor(c) : (c.color || '#f97316'))}" onclick="lpOpenCompany(${c.id})">
         <div class="lp-cc-header">
-          <div class="lp-cc-emoji">${c.emoji || '🏢'}</div>
+          <div class="lp-cc-emoji"${c.logo ? ` style="background:url('${c.logo}') center/cover no-repeat"` : ''}>${c.logo ? '' : (c.emoji || '🏢')}</div>
           <div class="lp-cc-info">
             <div class="lp-cc-name" title="${c.name}">${c.name}</div>
             <div class="lp-cc-sector">${sectorLabel}</div>
@@ -5024,6 +5039,7 @@ function dbRowToCompany(row) {
     facebook:  row.facebook  || '',
     instagram: row.instagram || '',
     linkedin:  row.linkedin  || '',
+    logo:      row.logo      || '',
     description: row.description || '',
     founded_year:     row.founded_year     || null,
     business_hours:   row.business_hours   || '',
@@ -5526,6 +5542,7 @@ async function saveCompanyToDB(company) {
     facebook:    company.facebook    || null,
     instagram:   company.instagram   || null,
     linkedin:    company.linkedin    || null,
+    logo:        company.logo        || null,
     tags:        company.tags        || [],
     description: company.description || null,
     founded_year:     company.founded_year     || null,
@@ -6171,7 +6188,8 @@ function createMarkerIcon(c) {
   const bg = c.pinType === 'gold' ? '#f59e0b' : sectorColor;
   const featured = !!c.featured;
   const emoji = c.emoji || '🏢';
-  const key = bg + '|' + (featured ? '1' : '0') + '|' + emoji;
+  const key = c.logo ? ('logo|' + c.id + '|' + (featured ? '1' : '0'))
+                     : (bg + '|' + (featured ? '1' : '0') + '|' + emoji);
   let icon = _markerIconCache.get(key);
   if (icon) return icon;
 
@@ -6186,7 +6204,7 @@ function createMarkerIcon(c) {
   const borderColor = featured ? '#f59e0b' : '#ffffff';
   icon = L.divIcon({
     className: '',
-    html: `<div style="width:40px;height:42px;position:relative;cursor:pointer;filter:drop-shadow(0 3px 5px ${glow})${featured ? ' drop-shadow(0 0 2px rgba(245,158,11,.9))' : ''}">${featuredBadge}<div style="position:absolute;inset:0;background:${borderColor};clip-path:${hex}"></div><div style="position:absolute;inset:3px;background:${bg};clip-path:${hex};display:flex;align-items:center;justify-content:center"><span style="font-size:16px;display:block;line-height:1">${emoji}</span></div></div>`,
+    html: `<div style="width:40px;height:42px;position:relative;cursor:pointer;filter:drop-shadow(0 3px 5px ${glow})${featured ? ' drop-shadow(0 0 2px rgba(245,158,11,.9))' : ''}">${featuredBadge}<div style="position:absolute;inset:0;background:${borderColor};clip-path:${hex}"></div><div style="position:absolute;inset:3px;background:${bg};clip-path:${hex};display:flex;align-items:center;justify-content:center;overflow:hidden">${c.logo ? `<img src="${c.logo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"/>` : `<span style="font-size:16px;display:block;line-height:1">${emoji}</span>`}</div></div>`,
     iconSize:[40,42], iconAnchor:[20,42], popupAnchor:[0,-44]
   });
   _markerIconCache.set(key, icon);
@@ -7708,6 +7726,7 @@ function _appendListCards(frag, data, start, end) {
 // ── REGISTER COMPANY ──────────────────────────────────────────────────────────
 function openRegister() {
   document.getElementById('registerOverlay').classList.add('open');
+  try { clearRegLogo(); } catch (_) {}   // start with a blank logo (edit flow re-applies after)
 
   // Initialize dropdowns
   renderRegisterSectorSelect();
@@ -7974,6 +7993,7 @@ function submitRegister() {
       topRated:    false, verified: false, isNew: true,
       tags,
       email, phone, website, facebook, instagram, linkedin, description,
+      logo:        _regLogoData || '',
       color:       defaultColors[idx],
       emoji:       defaultEmojis[idx],
       pinType:     'std',
@@ -7998,6 +8018,7 @@ function submitRegister() {
           lat, lng,  // re-geocoded from the (possibly edited) address — repositions the pin
           email, phone, website: website || null,
           facebook: facebook || null, instagram: instagram || null, linkedin: linkedin || null,
+          logo: _regLogoData || null,
           tags, description: document.getElementById('regDesc')?.value.trim() || null,
           founded_year:     foundedYear,
           business_hours:   businessHours || null,
@@ -8226,8 +8247,9 @@ async function openDetail(id) {
 
 function _renderDetailPanel(c) {
   const tr = translations[currentLang];
-  document.getElementById('dpLogo').textContent        = c.emoji;
-  document.getElementById('dpLogo').style.background   = c.color;
+  const _dpLogoEl = document.getElementById('dpLogo');
+  if (c.logo) { _dpLogoEl.textContent = ''; _dpLogoEl.style.background = 'url("' + c.logo + '") center/cover no-repeat'; }
+  else        { _dpLogoEl.textContent = c.emoji; _dpLogoEl.style.background = c.color; }
   document.getElementById('dpName').textContent        = c.name;
 
   // Sub-line: primary activity + city, plus a compact rating when present.
@@ -9706,6 +9728,52 @@ async function doLogin() {
     setBusy(btn, false);
   }
 }
+// ── Company logo upload (registration) ────────────────────────────────────────
+// Resize + compress the chosen image to a small square data URL so it can be
+// stored inline and shown in place of the emoji logo everywhere.
+let _regLogoData = '';
+function handleRegLogo(input) {
+  const file = input && input.files && input.files[0];
+  if (!file) return;
+  if (!/^image\//.test(file.type)) { showToast(t('regLogoInvalid') || 'Ficheiro inválido'); input.value = ''; return; }
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    const img = new Image();
+    img.onload = () => {
+      const S = 200;                                     // output square (px)
+      const canvas = document.createElement('canvas');
+      canvas.width = S; canvas.height = S;
+      const ctx = canvas.getContext('2d');
+      const scale = Math.max(S / img.width, S / img.height);   // cover-crop, centred
+      const w = img.width * scale, h = img.height * scale;
+      ctx.drawImage(img, (S - w) / 2, (S - h) / 2, w, h);
+      _regLogoData = canvas.toDataURL('image/jpeg', 0.8);
+      const prev = document.getElementById('regLogoPreview');
+      if (prev) { prev.classList.add('has-img'); prev.style.backgroundImage = 'url("' + _regLogoData + '")'; prev.innerHTML = ''; }
+      const clr = document.getElementById('regLogoClear'); if (clr) clr.style.display = '';
+    };
+    img.onerror = () => showToast(t('regLogoInvalid') || 'Ficheiro inválido');
+    img.src = ev.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+function clearRegLogo() {
+  _regLogoData = '';
+  const prev = document.getElementById('regLogoPreview');
+  if (prev) { prev.classList.remove('has-img'); prev.style.backgroundImage = ''; prev.innerHTML = '<span>' + (t('regLogoEmpty') || 'Sem imagem') + '</span>'; }
+  const inp = document.getElementById('regLogoInput'); if (inp) inp.value = '';
+  const clr = document.getElementById('regLogoClear'); if (clr) clr.style.display = 'none';
+}
+// Preselect an existing logo (used when editing a company).
+function setRegLogo(dataUrl) {
+  if (dataUrl) { _regLogoData = dataUrl; const inp = document.getElementById('regLogoInput'); if (inp) inp.value = '';
+    const prev = document.getElementById('regLogoPreview'); if (prev) { prev.classList.add('has-img'); prev.style.backgroundImage = 'url("' + dataUrl + '")'; prev.innerHTML = ''; }
+    const clr = document.getElementById('regLogoClear'); if (clr) clr.style.display = ''; }
+  else clearRegLogo();
+}
+window.handleRegLogo = handleRegLogo;
+window.clearRegLogo = clearRegLogo;
+
 async function doRegister() {
   _clearAuthErrors();
   const name = document.getElementById('regAuthName').value.trim();
@@ -10729,6 +10797,7 @@ async function profileEditCompany(companyId) {
   // schedules a label restore (~50 ms). Set the edit state AFTER, and queue
   // the label update so it lands after the wrapper's restore.
   window._editingCompanyId = companyId;
+  try { setRegLogo(full.logo || ''); } catch (_) {}   // re-apply the logo after openRegister() reset it
   setTimeout(() => {
     const submitBtn = document.getElementById('regSubmitBtn');
     if (submitBtn) submitBtn.innerHTML = '<i data-lucide="save"></i> <span>Guardar Alterações</span>';

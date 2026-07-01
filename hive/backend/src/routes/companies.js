@@ -61,7 +61,7 @@ const LIST_COLS = `
   address, postal_code, city, country, zone,
   email, phone, website, facebook, instagram, linkedin, tags,
   lat, lng, rating, reviews, top_rated, verified, is_new, featured,
-  emoji, color, pin_type, status, created_by, created_at
+  emoji, color, pin_type, logo, status, created_by, created_at
 `.trim();
 
 router.get('/', optionalAuth, async (req, res, next) => {
@@ -301,7 +301,7 @@ router.post('/', requireAuth, async (req, res, next) => {
       name, sectors, sector, nif, cae, alvara, certidao_permanente,
       address, postal_code, city, country,
       zone, email, phone, website, facebook, instagram, linkedin, tags, description, lat, lng,
-      emoji, color, pin_type,
+      emoji, color, pin_type, logo,
       founded_year, business_hours, portfolio_images,
     } = req.body;
 
@@ -336,6 +336,8 @@ router.post('/', requireAuth, async (req, res, next) => {
     // Sanitise founded_year — keep only sensible 4-digit values
     const yr = founded_year != null ? parseInt(founded_year, 10) : null;
     const foundedSafe = (yr && yr >= 1800 && yr <= new Date().getFullYear()) ? yr : null;
+    // Company logo — accept only a reasonably-sized inline image data URL.
+    const logoSafe = (typeof logo === 'string' && /^data:image\//i.test(logo) && logo.length < 400000) ? logo : null;
 
     const { rows } = await pool.query(
       `INSERT INTO companies
@@ -343,9 +345,9 @@ router.post('/', requireAuth, async (req, res, next) => {
          address, postal_code, city, country, zone,
          email, phone, website, facebook, instagram, linkedin, tags, description,
          founded_year, business_hours, portfolio_images,
-         lat, lng, emoji, color, pin_type,
+         lat, lng, emoji, color, pin_type, logo,
          status, created_by)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,'pending',$29)
+       VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15,$16,$17,$18,$19,$20,$21,$22,$23,$24,$25,$26,$27,$28,$29,'pending',$30)
        RETURNING *`,
       [
         name,
@@ -376,6 +378,7 @@ router.post('/', requireAuth, async (req, res, next) => {
         emoji || '🏢',
         color || '#f97316',
         pin_type || 'std',
+        logoSafe,
         req.user.id,   // requireAuth guarantees req.user
       ]
     );

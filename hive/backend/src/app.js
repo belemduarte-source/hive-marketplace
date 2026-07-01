@@ -94,7 +94,7 @@ app.options('/api/*', cors(corsOptions));
 app.use(cors(corsOptions));
 
 // ── Body parsing (50 kb cap to prevent payload abuse) ─────────────────────────
-app.use(express.json({ limit: '50kb' }));
+app.use(express.json({ limit: '600kb' })); // headroom for an inline company logo (data URL)
 app.use(cookieParser());
 
 // ── Rate limiters ─────────────────────────────────────────────────────────────
@@ -278,6 +278,7 @@ const MIGRATIONS = [
   `ALTER TABLE companies ADD COLUMN IF NOT EXISTS facebook  TEXT`,
   `ALTER TABLE companies ADD COLUMN IF NOT EXISTS instagram TEXT`,
   `ALTER TABLE companies ADD COLUMN IF NOT EXISTS linkedin  TEXT`,
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS logo      TEXT`,
   // Status CHECK constraint — drop the old (more restrictive) one and re-add
   // with 'removed' allowed. ALTER TABLE ADD CONSTRAINT IF NOT EXISTS isn't a
   // thing in PG, hence the explicit DROP+ADD. PG names inline column CHECKs
