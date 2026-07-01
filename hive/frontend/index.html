@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v141.css"/>
+  <link rel="stylesheet" href="app.v142.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -487,8 +487,8 @@
   <div class="modal" style="width:480px">
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:18px">
       <div>
-        <div style="font-size:17px;font-weight:800;color:var(--text)" data-i18n="contactTitle">Enviar Mensagem</div>
-        <div style="font-size:12px;color:var(--muted);margin-top:2px" id="contactModalSub">A sua mensagem será entregue directamente à empresa</div>
+        <div style="font-size:24px;font-weight:800;color:var(--text)" data-i18n="contactTitle">Enviar Mensagem</div>
+        <div style="font-size:16px;color:var(--muted);margin-top:3px" id="contactModalSub">A sua mensagem será entregue directamente à empresa</div>
       </div>
       <button onclick="closeContactModal()" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center">✕</button>
     </div>
@@ -496,11 +496,11 @@
       <label data-i18n="contactMsgLabel">Mensagem</label>
       <textarea id="contactMessage" data-i18n-ph="contactMsgPh" placeholder="Olá! Gostaria de solicitar informações sobre os vossos serviços..."></textarea>
     </div>
-    <div style="display:flex;align-items:center;gap:6px;margin-bottom:16px;font-size:12px;color:var(--muted)">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:18px;font-size:15px;color:var(--muted)">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       <span data-i18n="contactPrivacy">O email da empresa nunca é partilhado consigo — a Hivex entrega a mensagem de forma segura.</span>
     </div>
-    <button onclick="submitContactForm()" style="width:100%;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:13px;font-size:15px;font-weight:700;cursor:pointer;font-family:inherit" data-i18n="contactTitle">
+    <button onclick="submitContactForm()" style="width:100%;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:16px;font-size:20px;font-weight:700;cursor:pointer;font-family:inherit" data-i18n="contactTitle">
       Enviar Mensagem
     </button>
   </div>

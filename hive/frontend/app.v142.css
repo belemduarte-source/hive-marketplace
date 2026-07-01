@@ -2504,8 +2504,8 @@
 /* ── Contact Modal ── */
     #contactModal .modal{max-width:480px}
     .contact-form-group{margin-bottom:14px}
-    .contact-form-group label{display:block;font-size:12px;font-weight:700;color:var(--text-secondary);margin-bottom:5px;text-transform:uppercase;letter-spacing:.04em}
-    .contact-form-group textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;font-size:14px;font-family:inherit;color:var(--text);background:var(--bg);resize:vertical;min-height:120px;transition:border-color .2s}
+    .contact-form-group label{display:block;font-size:16px;font-weight:700;color:var(--text-secondary);margin-bottom:7px;text-transform:uppercase;letter-spacing:.04em}
+    .contact-form-group textarea{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:14px 16px;font-size:18px;line-height:1.5;font-family:inherit;color:var(--text);background:var(--bg);resize:vertical;min-height:140px;transition:border-color .2s}
     .contact-form-group textarea:focus{outline:none;border-color:var(--primary)}
 
     /* ── Reviews ── */
