@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v129.css"/>
+  <link rel="stylesheet" href="app.v130.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -594,8 +594,9 @@
             <div class="lp-sb-inner">
               <div class="lp-sb-label" data-i18n="lpLocationLabel">Localização</div>
               <input type="text" id="heroLocation" placeholder="Lisboa, Porto, Braga..." data-i18n-ph="lpLocationPh" autocomplete="off"
-                     onfocus="this.dataset.ph=this.placeholder;this.placeholder=''" onblur="this.placeholder=this.dataset.ph||'Lisboa, Porto, Braga...'"
-                     onkeydown="if(event.key==='Enter') heroSearch()"/>
+                     onfocus="this.dataset.ph=this.placeholder;this.placeholder=''" onblur="this.placeholder=this.dataset.ph||'Lisboa, Porto, Braga...';setTimeout(hideHeroSuggest,180)"
+                     oninput="heroLocationInput(this.value)"
+                     onkeydown="if(event.key==='Enter'){hideHeroSuggest();heroSearch();}"/>
             </div>
           </div>
 
@@ -618,12 +619,15 @@
             <div class="lp-sb-inner">
               <div class="lp-sb-label" data-i18n="lpCompanyLabel">Nome da Empresa</div>
               <input type="text" id="heroCompanyName" placeholder="Ex: Construções Ribeiro, ElectroLux..." data-i18n-ph="lpCompanyPh" autocomplete="off"
-                     onkeydown="if(event.key==='Enter') heroSearch()"/>
+                     oninput="heroCompanyInput(this.value)" onblur="setTimeout(hideHeroSuggest,180)"
+                     onkeydown="if(event.key==='Enter'){hideHeroSuggest();heroSearch();}"/>
             </div>
           </div>
 
           <!-- Dropdown panel — shared, always anchored to this field -->
           <div class="hs-panel" id="heroServicePanel"></div>
+          <!-- Typeahead suggestions for Location + Company modes -->
+          <div class="hs-suggest" id="heroSuggestPanel"></div>
           <input type="hidden" id="heroService" value=""/>
 
         </div><!-- /lp-sb-field -->
@@ -4157,6 +4161,7 @@ const _heroGroupIcons = {
 
 // ── Toggle between "location" and "activity" search modes ──────────────────
 function heroSetMode(mode) {
+  try { hideHeroSuggest(); } catch (_) {}   // close any open typeahead when switching modes
   const wrap     = document.getElementById('heroSearchWrap');
   const locWrap  = document.getElementById('heroLocationWrap');
   const actWrap  = document.getElementById('heroActivityWrap');
@@ -4460,6 +4465,82 @@ function _heroSelectOption(value, label) {
 }
 
 // ── Execute the search and jump to the map page ────────────────────────────
+// ── Hero search typeahead (Location + Company) ────────────────────────────────
+let _heroSuggestTimer = null, _heroSuggestSeq = 0;
+function hideHeroSuggest() { const p = document.getElementById('heroSuggestPanel'); if (p) { p.style.display = 'none'; p.innerHTML = ''; } }
+window.hideHeroSuggest = hideHeroSuggest;
+
+function _renderHeroSuggest(items, onPick, icon) {
+  const p = document.getElementById('heroSuggestPanel');
+  if (!p) return;
+  if (!items || !items.length) { hideHeroSuggest(); return; }
+  p.innerHTML = '';
+  items.forEach(it => {
+    const row = document.createElement('div');
+    row.className = 'hs-suggest-opt';
+    row.innerHTML = '<span class="hs-suggest-ico">' + (icon || '') + '</span><span class="hs-suggest-txt"></span>';
+    row.querySelector('.hs-suggest-txt').textContent = it.label;
+    // mousedown fires before the input's blur so the pick isn't lost.
+    row.addEventListener('mousedown', (e) => { e.preventDefault(); onPick(it); });
+    p.appendChild(row);
+  });
+  p.style.display = 'block';
+}
+
+// Location — OpenStreetMap (Nominatim) geocoder, Portugal only, debounced.
+function heroLocationInput(val) {
+  const q = (val || '').trim();
+  clearTimeout(_heroSuggestTimer);
+  if (q.length < 3) { hideHeroSuggest(); return; }
+  _heroSuggestTimer = setTimeout(async () => {
+    const seq = ++_heroSuggestSeq;
+    try {
+      const url = 'https://nominatim.openstreetmap.org/search?format=jsonv2&addressdetails=1'
+        + '&countrycodes=pt&limit=6&accept-language=pt&q=' + encodeURIComponent(q);
+      const data = await fetch(url, { headers: { 'Accept': 'application/json' } }).then(r => r.json());
+      if (seq !== _heroSuggestSeq) return;                     // a newer keystroke won
+      const seen = new Set();
+      const items = (data || []).map(d => {
+        const a = d.address || {};
+        const name   = d.name || (d.display_name || '').split(',')[0].trim();
+        const region = a.district || a.state || a.municipality || a.county || '';
+        const label  = (name && region && name.toLowerCase() !== region.toLowerCase())
+          ? (name + ', ' + region) : (name || d.display_name);
+        return { label };
+      }).filter(it => { if (!it.label || seen.has(it.label)) return false; seen.add(it.label); return true; });
+      _renderHeroSuggest(items, (it) => {
+        const inp = document.getElementById('heroLocation');
+        if (inp) inp.value = it.label;
+        hideHeroSuggest();
+        heroSearch();
+      }, '📍');
+    } catch (e) { hideHeroSuggest(); }
+  }, 320);
+}
+window.heroLocationInput = heroLocationInput;
+
+// Company — filter the loaded catalogue by name (starts-with first, then contains).
+function heroCompanyInput(val) {
+  const q = (val || '').trim().toLowerCase();
+  if (q.length < 1) { hideHeroSuggest(); return; }
+  const list = (typeof companies !== 'undefined' && Array.isArray(companies)) ? companies : [];
+  const starts = [], contains = [], seen = new Set();
+  for (const c of list) {
+    if (!c || !c.name) continue;
+    const nl = c.name.toLowerCase();
+    if (seen.has(nl)) continue;
+    if (nl.startsWith(q)) { seen.add(nl); starts.push({ label: c.name }); }
+    else if (nl.includes(q)) { seen.add(nl); contains.push({ label: c.name }); }
+  }
+  _renderHeroSuggest(starts.concat(contains).slice(0, 8), (it) => {
+    const inp = document.getElementById('heroCompanyName');
+    if (inp) inp.value = it.label;
+    hideHeroSuggest();
+    heroSearch();
+  }, '🏢');
+}
+window.heroCompanyInput = heroCompanyInput;
+
 function heroSearch() {
   const wrap    = document.getElementById('heroSearchWrap');
   const mode    = wrap?.dataset.mode || 'location';
