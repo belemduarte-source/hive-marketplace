@@ -321,6 +321,10 @@
     .radius-marks span{position:absolute;transform:translateX(-50%);font-size:22px;color:var(--text-secondary);font-weight:700;white-space:nowrap}
     .radius-marks span:first-child{transform:none}
     .radius-marks span:last-child{transform:translateX(-100%)}
+    /* "Ignore radius" checkbox — show companies everywhere (country/world) */
+    .radius-ignore{display:flex;align-items:center;gap:10px;margin-top:14px;font-size:16px;font-weight:700;color:var(--text);cursor:pointer;line-height:1.3}
+    .radius-ignore input{width:20px;height:20px;accent-color:var(--primary);cursor:pointer;flex-shrink:0}
+    .radius-off .radius-slider,.radius-off .radius-marks,.radius-off .radius-live-val{opacity:.4;pointer-events:none}
 
     /* ── AI ASSISTANT WIDGET ── */
     .ai-fab{position:fixed;right:20px;bottom:20px;z-index:1500;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;box-shadow:0 6px 22px rgba(234,88,12,.45);cursor:pointer;display:none;align-items:center;justify-content:center;font-family:inherit;transition:transform .15s}

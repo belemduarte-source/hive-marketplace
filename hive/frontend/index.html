@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v135.css"/>
+  <link rel="stylesheet" href="app.v136.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -1040,6 +1040,7 @@
         <span style="left:65%">100</span>
         <span style="left:100%">Todo</span>
       </div>
+      <label class="radius-ignore"><input type="checkbox" id="ignoreRadius" onchange="toggleIgnoreRadius()"/><span data-i18n="ignoreRadius">Não usar raio — mostrar em todo o lado</span></label>
     </div>
 
     <!-- SORT + FEATURED (combined) -->
@@ -2046,7 +2047,7 @@ const translations = {
     sortBy:'Ordenar Por', sortRating:'Melhor Avaliação', sortReviews:'Mais Avaliados', sortName:'Nome A–Z',
     sectorArea:'Área de Atividade', minRating:'Avaliação Mínima',
     ratingAny:'Qualquer avaliação', ratingOrMore:'ou mais',
-    searchRadius:'Raio de Pesquisa', featured:'Destaque',
+    searchRadius:'Raio de Pesquisa', featured:'Destaque', ignoreRadius:'Não usar raio — mostrar em todo o lado',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Novo Registo',
     specialties:'Especialidades',
     mapLive:'Mapa em tempo real', mapCity:'Lisboa, Portugal',
@@ -2455,7 +2456,7 @@ const translations = {
     sortBy:'Sort By', sortRating:'Best Rating', sortReviews:'Most Reviewed', sortName:'Name A–Z',
     sectorArea:'Activity Area', minRating:'Minimum Rating',
     ratingAny:'Any rating', ratingOrMore:'or more',
-    searchRadius:'Search Radius', featured:'Featured',
+    searchRadius:'Search Radius', featured:'Featured', ignoreRadius:'Ignore radius — show everywhere',
     topRated:'Top Rated', verified:'Verified', newEntry:'New Entry',
     specialties:'Specialties',
     mapLive:'Live map', mapCity:'Lisbon, Portugal',
@@ -2855,7 +2856,7 @@ const translations = {
     sortBy:'Trier Par', sortRating:'Meilleure Évaluation', sortReviews:'Plus Évalués', sortName:'Nom A–Z',
     sectorArea:"Secteur d'Activité", minRating:'Évaluation Minimale',
     ratingAny:'Toute évaluation', ratingOrMore:'ou plus',
-    searchRadius:'Rayon de Recherche', featured:'En Vedette',
+    searchRadius:'Rayon de Recherche', featured:'En Vedette', ignoreRadius:'Ignorer le rayon — afficher partout',
     topRated:'Mieux Noté', verified:'Vérifié', newEntry:'Nouveau Enregistrement',
     specialties:'Spécialités',
     mapLive:'Carte en direct', mapCity:'Lisbonne, Portugal',
@@ -3257,7 +3258,7 @@ const translations = {
     sortBy:'Ordenar Por', sortRating:'Mejor Valoradas', sortReviews:'Más Valoradas', sortName:'Nombre A–Z',
     sectorArea:'Área de Actividad', minRating:'Valoración Mínima',
     ratingAny:'Cualquier valoración', ratingOrMore:'o más',
-    searchRadius:'Radio de Búsqueda', featured:'Destacados',
+    searchRadius:'Radio de Búsqueda', featured:'Destacados', ignoreRadius:'Ignorar el radio — mostrar en todas partes',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Nuevo Registro',
     specialties:'Especialidades',
     mapLive:'Mapa en tiempo real', mapCity:'Lisboa, Portugal',
@@ -3653,7 +3654,7 @@ const translations = {
     sortBy:'Sortieren nach', sortRating:'Beste Bewertung', sortReviews:'Meiste Bewertungen', sortName:'Name A–Z',
     sectorArea:'Tätigkeitsbereich', minRating:'Mindestbewertung',
     ratingAny:'Beliebige Bewertung', ratingOrMore:'oder mehr',
-    searchRadius:'Suchradius', featured:'Empfohlen',
+    searchRadius:'Suchradius', featured:'Empfohlen', ignoreRadius:'Radius ignorieren — überall anzeigen',
     topRated:'Top-Bewertet', verified:'Verifiziert', newEntry:'Neu eingetragen',
     specialties:'Fachbereiche',
     mapLive:'Live-Karte', mapCity:'Lissabon, Portugal',
@@ -6327,6 +6328,22 @@ function _expandRadiusTo(sliderVal) {
 }
 window._expandRadiusTo = _expandRadiusTo;
 
+// Checkbox: ignore the search radius entirely → show companies everywhere.
+function toggleIgnoreRadius() {
+  const on = document.getElementById('ignoreRadius')?.checked;
+  const slider = document.getElementById('radiusSlider');
+  if (slider) slider.disabled = !!on;
+  const sec = document.querySelector('.radius-section');
+  if (sec) sec.classList.toggle('radius-off', !!on);
+  // Hide the orange radius circle while ignoring; restore it when turned back off.
+  try {
+    if (on) { if (radiusCircle) radiusCircle.setStyle({ opacity: 0, fillOpacity: 0 }); }
+    else { updateRadius(slider ? slider.value : 50); }
+  } catch (_) {}
+  if (typeof applyFilters === 'function' && applyFilters.now) applyFilters.now();
+}
+window.toggleIgnoreRadius = toggleIgnoreRadius;
+
 // Geocode location and center map
 function geocodeLocation(location) {
   if (!location || location.trim() === '') return;
@@ -7255,6 +7272,8 @@ function invalidateDistanceCache() { _distCacheCenter = null; _distCache = {}; }
 
 function getFiltered() {
   const searchRadius = getRadiusKm();
+  // Checkbox: ignore the radius entirely → show companies everywhere (country/world).
+  const ignoreRadius = document.getElementById('ignoreRadius')?.checked;
   // "Todo o país" (radius at max) → ignore distance and scope to the user's current country instead.
   const isAllCountry = searchRadius >= 99999;
   const userCountry = (window._userCountry || '').toLowerCase();
@@ -7280,10 +7299,13 @@ function getFiltered() {
     const c = companies[i];
     // Sector — only applied when the user has selected at least one sector
     if (hasSectorFilter && !activeSectors.has(c.sector) && !(c.sectors && c.sectors.some(s => activeSectors.has(s)))) continue;
-    // Radius (cached Haversine) — or, when "Todo o país", scope to the user's country
-    if (isAllCountry) {
-      if (userCountry && (c.country || 'pt').toLowerCase() !== userCountry) continue;
-    } else if (_getCachedDistance(cc.lat, cc.lng, c) > searchRadius) continue;
+    // Radius (cached Haversine) — skipped entirely when "ignore radius" is on;
+    // else at "Todo o país" scope to the user's country, otherwise filter by distance.
+    if (!ignoreRadius) {
+      if (isAllCountry) {
+        if (userCountry && (c.country || 'pt').toLowerCase() !== userCountry) continue;
+      } else if (_getCachedDistance(cc.lat, cc.lng, c) > searchRadius) continue;
+    }
     // Rating
     if (minRating > 0 && c.rating < minRating) continue;
     // Checkboxes
@@ -7442,6 +7464,8 @@ function clearAllFilters() {
   const _uniInput = document.getElementById('searchUnified'); if(_uniInput) _uniInput.value = '';
   document.getElementById('sortAll').checked         = true;
   document.getElementById('radiusSlider').value     = 50;
+  const _ir = document.getElementById('ignoreRadius');
+  if (_ir && _ir.checked) { _ir.checked = false; toggleIgnoreRadius(); }
   updateRadius(50);
   renderTagCloud();
   applyFilters.now();
