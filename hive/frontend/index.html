@@ -143,7 +143,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v143.css"/>
+  <link rel="stylesheet" href="app.v144.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -6218,36 +6218,36 @@ function buildPopupHtml(c) {
     const fullStars = Math.floor(c.rating);
     const hasHalf = c.rating % 1 !== 0;
     const stars = '★'.repeat(fullStars) + (hasHalf ? '½' : '') + '☆'.repeat(5 - Math.ceil(c.rating));
-    starsHtml = `<div style="color:#f59e0b;font-size:13px;margin-bottom:3px">${stars} <strong style="color:#1e293b">${c.rating.toFixed(1)}</strong> <span style="color:#64748b;font-size:11px">(${c.reviews} ${tr.reviews})</span></div>`;
+    starsHtml = `<div style="color:#f59e0b;font-size:19px;margin-bottom:5px">${stars} <strong style="color:#1e293b">${c.rating.toFixed(1)}</strong> <span style="color:#64748b;font-size:16px">(${c.reviews} ${tr.reviews})</span></div>`;
   } else {
-    starsHtml = `<div style="font-size:11px;color:#64748b;margin-bottom:3px">☆☆☆☆☆ ${tr.popupNoRatings}</div>`;
+    starsHtml = `<div style="font-size:16px;color:#64748b;margin-bottom:5px">☆☆☆☆☆ ${tr.popupNoRatings}</div>`;
   }
   const sc = (tr && tr.sectors) || {};
   const sectorsArr = (c.sectors && c.sectors.length) ? c.sectors : (c.sector ? [c.sector] : []);
   const shown = sectorsArr.slice(0, 3);
   const extra = Math.max(0, sectorsArr.length - shown.length);
-  const sectorsHtml = sectorsArr.length ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin:5px 0 6px">
-    ${shown.map(s => `<span style="background:#fff7ed;color:#9a3412;font-size:10.5px;font-weight:600;padding:2px 7px;border-radius:6px;border:1px solid rgba(249,115,22,.18);line-height:1.3">${escHtml(sc[s] || s)}</span>`).join('')}
-    ${extra > 0 ? `<span style="font-size:10.5px;color:#64748b;font-weight:700;padding:2px 4px;align-self:center">+${extra}</span>` : ''}
+  const sectorsHtml = sectorsArr.length ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 9px">
+    ${shown.map(s => `<span style="background:#fff7ed;color:#9a3412;font-size:15px;font-weight:600;padding:4px 11px;border-radius:8px;border:1px solid rgba(249,115,22,.18);line-height:1.3">${escHtml(sc[s] || s)}</span>`).join('')}
+    ${extra > 0 ? `<span style="font-size:15px;color:#64748b;font-weight:700;padding:4px 5px;align-self:center">+${extra}</span>` : ''}
   </div>` : '';
   // Credentials are only present on the company object for logged-in users
   // (the backend redacts them for anonymous traffic).
   const certBadge = c.certidao_permanente
-    ? `<span style="font-size:10px;color:#166534;background:#dcfce7;border-radius:4px;padding:2px 6px;display:inline-flex;align-items:center;gap:3px;font-weight:700">✓ ${escHtml(tr.popupCertOk || 'Certidão registada')}</span>`
+    ? `<span style="font-size:14px;color:#166534;background:#dcfce7;border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;gap:4px;font-weight:700">✓ ${escHtml(tr.popupCertOk || 'Certidão registada')}</span>`
     : '';
   const alvaraBadge = c.alvara
-    ? `<span style="font-size:10px;color:#9a3412;background:#fff7ed;border:1px solid rgba(249,115,22,.25);border-radius:4px;padding:2px 6px;display:inline-flex;align-items:center;gap:3px;font-weight:700">⚒ ${escHtml(tr.popupAlvaraOk || 'Alvará')}</span>`
+    ? `<span style="font-size:14px;color:#9a3412;background:#fff7ed;border:1px solid rgba(249,115,22,.25);border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;gap:4px;font-weight:700">⚒ ${escHtml(tr.popupAlvaraOk || 'Alvará')}</span>`
     : '';
   const newBadge = c.isNew
-    ? `<span style="font-size:10px;color:#166534;background:#dcfce7;border-radius:4px;padding:2px 6px;display:inline-flex;align-items:center;font-weight:700">${escHtml(tr.popupNewBadge)}</span>`
+    ? `<span style="font-size:14px;color:#166534;background:#dcfce7;border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;font-weight:700">${escHtml(tr.popupNewBadge)}</span>`
     : '';
   const badges = [certBadge, alvaraBadge, newBadge].filter(Boolean).join('');
-  return `<div style="min-width:200px;max-width:260px">
-    <div style="font-size:14px;font-weight:700;color:#1e293b;margin-bottom:3px">${c.emoji} ${escHtml(c.name)}</div>
+  return `<div style="min-width:290px;max-width:380px">
+    <div style="font-size:22px;font-weight:800;color:#1e293b;margin-bottom:5px">${c.emoji} ${escHtml(c.name)}</div>
     ${sectorsHtml}
     ${starsHtml}
-    ${c.address ? `<div style="font-size:11px;color:#64748b">📍 ${escHtml(c.address)}</div>` : ''}
-    ${badges ? `<div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px">${badges}</div>` : ''}
+    ${c.address ? `<div style="font-size:16px;color:#64748b;line-height:1.4">📍 ${escHtml(c.address)}</div>` : ''}
+    ${badges ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:9px">${badges}</div>` : ''}
   </div>`;
 }
 
@@ -6284,7 +6284,7 @@ function addCompanyMarker(c) {
   const m = L.marker([c.lat, c.lng], { icon: createMarkerIcon(c) });
   // Lazy popup: content built only when the popup is actually opened,
   // so language changes and filter runs don't rebuild HTML for all markers
-  m.bindPopup(() => buildPopupHtml(c));
+  m.bindPopup(() => buildPopupHtml(c), { maxWidth: 400, minWidth: 300 });
   // When the mobile results-sheet is open, a pin tap highlights that company's
   // card in the list instead of opening the full detail; otherwise open detail.
   m.on('click', () => {
