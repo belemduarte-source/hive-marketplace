@@ -6555,8 +6555,15 @@ function closeDetail() {
       }
     } catch (_) {}
   }
-  // Return to the location user was viewing
-  if (map) map.flyTo(currentMapCenter, 12, { animate: true, duration: 1 });
+  // Return to the location user was viewing. Guarded: flying a hidden or
+  // zero-size map throws "Invalid LatLng (NaN, NaN)" (the projection has no
+  // pixel space) — happens when the detail is closed from the list view or
+  // right after a tab switch, and the throw breaks the caller mid-flow.
+  try {
+    if (map && map.getSize().x > 0) {
+      map.flyTo(currentMapCenter, 12, { animate: true, duration: 1 });
+    }
+  } catch (_) {}
 }
 
 // ── CALL / SHARE ────────────────────────────────────────────────────────────

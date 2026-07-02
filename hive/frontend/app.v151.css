@@ -2993,3 +2993,16 @@
 
 /* Dark mode: make readable text bold white on themed surfaces (landing/white cards keep their dark text via literal colors). Weight-only here, so it never hides text on light surfaces. */
 [data-theme="dark"] :is(p,li,label,td,th,dd,dt,small,a,strong,b,figcaption,blockquote){font-weight:700}
+
+    /* iOS Safari auto-zooms the viewport when focusing any form field whose
+       font-size is under 16px — a jarring jump that often leaves the page
+       stuck zoomed. Give every known sub-16px field a 16px floor on phones.
+       (!important also beats the inline style on #statusEmail.) */
+    @media (max-width:768px){
+      .form-row input,.form-row textarea,.form-row select,
+      .ub-input input,.lp-sb-inner input,
+      #heroLocation,#heroActivityInput,#heroCompanyName,
+      #statusEmail,#loginEmail,#loginPass,#reviewComment,
+      #reportReason,#reportDetails,
+      #regZone,#chatInput,#aiInput{font-size:16px !important}
+    }
