@@ -6196,7 +6196,7 @@ function submitRegister() {
           lat, lng,  // re-geocoded from the (possibly edited) address — repositions the pin
           email, phone, website: website || null,
           facebook: facebook || null, instagram: instagram || null, linkedin: linkedin || null,
-          logo: _regLogoData || null,
+          logo: _regLogoData, // '' = remover; data URL = substituir (null manteria a existente)
           tags, description: document.getElementById('regDesc')?.value.trim() || null,
           founded_year:     foundedYear,
           business_hours:   businessHours || null,

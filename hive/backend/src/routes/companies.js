@@ -469,7 +469,7 @@ router.put('/:id', requireAuth, async (req, res, next) => {
       name, sectors, sector, cae, alvara, certidao_permanente,
       address, postal_code, city, country,
       zone, email, phone, website, facebook, instagram, linkedin, tags, description, lat, lng,
-      emoji, color, pin_type, status,
+      emoji, color, pin_type, status, logo,
       founded_year, business_hours, portfolio_images,
     } = req.body;
 
@@ -477,6 +477,11 @@ router.put('/:id', requireAuth, async (req, res, next) => {
     const foundedSafe = (yr && yr >= 1800 && yr <= new Date().getFullYear()) ? yr
                       : (founded_year === null ? null : undefined);
     const photosSafe = Array.isArray(portfolio_images) ? portfolio_images.slice(0, 12) : undefined;
+    // Logo semantics: valid data URL → replace; '' → remove; null/absent/invalid → keep.
+    // (This was missing entirely — editing a company silently dropped the
+    // uploaded logo, so pre-existing companies could never gain one.)
+    const logoSafe = (typeof logo === 'string' && (logo === '' || (/^data:image\//i.test(logo) && logo.length < 400000)))
+      ? logo : null;
 
     const { rows } = await pool.query(
       `UPDATE companies SET
@@ -508,8 +513,9 @@ router.put('/:id', requireAuth, async (req, res, next) => {
         facebook = COALESCE($26, facebook),
         instagram = COALESCE($27, instagram),
         linkedin = COALESCE($28, linkedin),
+        logo = CASE WHEN $29::text IS NULL THEN logo WHEN $29 = '' THEN NULL ELSE $29 END,
         updated_at = NOW()
-       WHERE id = $29
+       WHERE id = $30
        RETURNING *`,
       [name, sectors, sector, cae, alvara, certidao_permanente,
        address, postal_code, city, country,
@@ -517,6 +523,7 @@ router.put('/:id', requireAuth, async (req, res, next) => {
        emoji, color, pin_type, status,
        foundedSafe, business_hours, photosSafe,
        facebook, instagram, linkedin,
+       logoSafe,
        req.params.id]
     );
     res.json(rows[0]);
