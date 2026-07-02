@@ -2666,6 +2666,15 @@
     .compare-table .compare-co-emoji{font-size:22px;margin-right:6px}
     .compare-table .compare-co-rating{color:var(--gold);font-weight:700}
     .compare-table tr:last-child td{border-bottom:0}
+    /* Winner highlight — the best value per metric row */
+    .compare-table td.compare-best{background:rgba(22,163,74,.10);box-shadow:inset 3px 0 0 #16a34a}
+    .compare-best-chip{display:inline-block;background:#16a34a;color:#fff;font-size:10px;font-weight:800;border-radius:999px;padding:2px 8px;margin-left:6px;vertical-align:middle;text-transform:uppercase;letter-spacing:.03em}
+    .compare-doc-badge{display:inline-block;background:var(--orange-light);color:var(--text);border:1px solid rgba(249,115,22,.25);border-radius:6px;padding:3px 8px;font-size:12px;font-weight:700;margin:2px 4px 2px 0}
+    .compare-doc-badge.ok{background:#dcfce7;color:#166534;border-color:rgba(22,101,52,.2)}
+    /* Compare toggle on the nearby-panel cards */
+    .nc-compare{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:16px;font-weight:700;color:var(--text-secondary);cursor:pointer;user-select:none;width:max-content}
+    .nc-compare input{width:18px;height:18px;accent-color:var(--primary);cursor:pointer}
+    .nc-compare:hover{color:var(--primary)}
     .review-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
     .review-card-author{font-weight:700;font-size:13px;color:var(--text)}
     .review-card-date{font-size:11px;color:var(--muted)}

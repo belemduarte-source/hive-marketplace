@@ -3359,6 +3359,12 @@ function _syncCompareCheckboxes() {
     const cb = card.querySelector('.slc-compare input[type="checkbox"]');
     if (cb) cb.checked = _compareIds.has(id);
   });
+  // Nearby-panel cards carry the same toggle
+  document.querySelectorAll('.nearby-card').forEach(card => {
+    const id = Number(card.dataset.companyId);
+    const cb = card.querySelector('.nc-compare input[type="checkbox"]');
+    if (cb) cb.checked = _compareIds.has(id);
+  });
 }
 
 function _renderCompareBar() {
@@ -3390,17 +3396,48 @@ function openCompareModal() {
   const ids = [..._compareIds];
   const cos = ids.map(id => companies.find(x => Number(x.id) === id)).filter(Boolean);
   const tr = translations[currentLang] || translations.pt;
+  const loggedIn = !!JSON.parse(localStorage.getItem('hive_user') || 'null');
+
+  // Distance to the user's location (or searched location / map centre) —
+  // same reference the "Empresas Próximas" panel uses.
+  const [refLat, refLng] = _nearbyRefPoint();
+  const dist = new Map(cos.map(c => [c.id, calculateDistance(refLat, refLng, c.lat, c.lng)]));
+  const fmtKm = d => d < 10 ? d.toFixed(1).replace('.', ',') + ' km' : Math.round(d) + ' km';
+
+  // Winners per metric — the automatic part of the comparison: the best value
+  // in each row gets a green "Melhor" highlight so the table reads itself.
+  const bestScore   = Math.max(...cos.map(c => c.rating || 0));
+  const bestReviews = Math.max(...cos.map(c => c.reviews || 0));
+  const bestDist    = Math.min(...cos.map(c => dist.get(c.id)));
+  const docCount    = c => (c.alvara ? 1 : 0) + (c.certidao_permanente ? 1 : 0);
+  const bestDocs    = Math.max(...cos.map(docCount));
+
+  // Credentials/contacts are redacted server-side for anonymous visitors.
+  const lockedCell = '<span style="color:var(--muted)">🔒 requer sessão</span>';
 
   // Build a side-by-side table. First column is the field labels.
   const fields = [
     { key:'header',   label:'',                renderer: c => `<div class="compare-co-header"><span class="compare-co-emoji">${c.emoji||'🏢'}</span>${escHtml(c.name)}</div>` },
-    { key:'rating',   label:'Avaliação',       renderer: c => c.rating ? `<span class="compare-co-rating">★ ${c.rating.toFixed(1)}</span> <span style="color:var(--muted)">(${c.reviews||0})</span>` : '<span style="color:var(--muted)">Sem avaliações</span>' },
+    { key:'score',    label:'Pontuação média', best: c => (c.rating||0) > 0 && c.rating === bestScore,
+      renderer: c => c.rating ? `<span class="compare-co-rating">★ ${c.rating.toFixed(1)}</span>` : '<span style="color:var(--muted)">Sem avaliações</span>' },
+    { key:'reviews',  label:'N.º de avaliações', best: c => (c.reviews||0) > 0 && (c.reviews||0) === bestReviews,
+      renderer: c => (c.reviews||0) > 0 ? `<strong>${c.reviews}</strong>` : '<span style="color:var(--muted)">0</span>' },
+    { key:'distance', label:'Distância',       best: c => dist.get(c.id) === bestDist,
+      renderer: c => fmtKm(dist.get(c.id)) },
+    { key:'city',     label:'Localização',     renderer: c => escHtml(c.city || c.address || '—') },
+    { key:'docs',     label:'Documentação',    best: c => loggedIn && docCount(c) > 0 && docCount(c) === bestDocs,
+      renderer: c => {
+        if (!loggedIn) return lockedCell;
+        const badges = [];
+        if (c.alvara) badges.push('<span class="compare-doc-badge">⚒ Alvará</span>');
+        if (c.certidao_permanente) badges.push('<span class="compare-doc-badge ok">✓ Certidão Permanente</span>');
+        return badges.join(' ') || '<span style="color:var(--muted)">—</span>';
+      } },
+    { key:'verified', label:'Verificada',      renderer: c => c.verified ? '<span style="color:#16a34a;font-weight:700">✓ Sim</span>' : '<span style="color:var(--muted)">—</span>' },
     { key:'sector',   label:'Setor principal', renderer: c => escHtml((tr.sectors && tr.sectors[c.sector]) || c.sector || '—') },
     { key:'sectors',  label:'Áreas',           renderer: c => (c.sectors||[]).map(s => `<span class="tag" style="margin-right:4px">${escHtml((tr.sectors&&tr.sectors[s])||s)}</span>`).join('') || '—' },
-    { key:'city',     label:'Localização',     renderer: c => escHtml(c.city || c.address || '—') },
-    { key:'verified', label:'Verificada',      renderer: c => c.verified ? '<span style="color:#16a34a;font-weight:700">✓ Sim</span>' : '<span style="color:var(--muted)">—</span>' },
-    { key:'phone',    label:'Telefone',        renderer: c => c.phone ? `<a href="tel:${escHtml(c.phone)}">${escHtml(c.phone)}</a>` : '<span style="color:var(--muted)">—</span>' },
-    { key:'email',    label:'Email',           renderer: c => c.email ? `<a href="mailto:${escHtml(c.email)}">${escHtml(c.email)}</a>` : '<span style="color:var(--muted)">—</span>' },
+    { key:'phone',    label:'Telefone',        renderer: c => c.phone ? `<a href="tel:${escHtml(c.phone)}">${escHtml(c.phone)}</a>` : (loggedIn ? '<span style="color:var(--muted)">—</span>' : lockedCell) },
+    { key:'email',    label:'Email',           renderer: c => c.email ? `<a href="mailto:${escHtml(c.email)}">${escHtml(c.email)}</a>` : (loggedIn ? '<span style="color:var(--muted)">—</span>' : lockedCell) },
     { key:'website',  label:'Website',         renderer: c => c.website ? `<a href="${escHtml(c.website)}" target="_blank" rel="noopener">${escHtml(c.website)}</a>` : '<span style="color:var(--muted)">—</span>' },
     { key:'tags',     label:'Especialidades',  renderer: c => (c.tags||[]).slice(0, 6).map(tag => `<span class="tag" style="margin-right:4px">${escHtml(tag)}</span>`).join('') || '—' },
     { key:'action',   label:'',                renderer: c => `<button class="btn-submit" style="font-size:12px;padding:8px 14px" onclick="closeCompareModal();setTimeout(()=>openDetail(${c.id}),200)">Ver perfil</button>` },
@@ -3410,7 +3447,10 @@ function openCompareModal() {
   fields.forEach(f => {
     html += '<tr>';
     html += `<th>${f.label}</th>`;
-    cos.forEach(c => { html += `<td>${f.renderer(c)}</td>`; });
+    cos.forEach(c => {
+      const isBest = !!(f.best && f.best(c));
+      html += `<td${isBest ? ' class="compare-best"' : ''}>${f.renderer(c)}${isBest ? ' <span class="compare-best-chip">Melhor</span>' : ''}</td>`;
+    });
     html += '</tr>';
   });
   html += '</tbody></table>';
@@ -5837,6 +5877,7 @@ function _appendNearbyCards(listEl, upTo, sentinel) {
       : `<div class="nc-logo" style="background:${c.color}22">${c.emoji || '🏢'}</div>`;
     const div = document.createElement('div');
     div.className = 'nearby-card';
+    div.dataset.companyId = c.id;
     div.onclick = () => openDetail(c.id);
     div.innerHTML = `
       <div class="nc-top">
@@ -5848,7 +5889,11 @@ function _appendNearbyCards(listEl, upTo, sentinel) {
         <span class="nc-dist">${distStr}</span>
       </div>
       <div class="nc-rating">${rating}</div>
-      ${c.address || c.city ? `<div class="nc-address">📍 ${escHtml(c.address || c.city)}</div>` : ''}`;
+      ${c.address || c.city ? `<div class="nc-address">📍 ${escHtml(c.address || c.city)}</div>` : ''}
+      <label class="nc-compare" onclick="event.stopPropagation()" title="Adicionar à comparação">
+        <input type="checkbox" ${_compareIds.has(Number(c.id)) ? 'checked' : ''} onchange="toggleCompare(${c.id})"/>
+        <span>⚖ Comparar</span>
+      </label>`;
     frag.appendChild(div);
   }
   if (sentinel) listEl.insertBefore(frag, sentinel); else listEl.appendChild(frag);
