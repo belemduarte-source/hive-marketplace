@@ -1,4 +1,5 @@
 const jwt = require('jsonwebtoken');
+const pool = require('../db');
 
 // Pull the JWT from the httpOnly cookie (web) or, failing that, an
 // `Authorization: Bearer <jwt>` header (the native app, where cross-origin
@@ -23,9 +24,20 @@ function requireAuth(req, res, next) {
 }
 
 function requireAdmin(req, res, next) {
-  requireAuth(req, res, () => {
-    if (!req.user.is_admin) return res.status(403).json({ error: 'Acesso restrito a administradores' });
-    next();
+  requireAuth(req, res, async () => {
+    if (req.user.is_admin) return next();
+    // The admin flag lives in the JWT, so a token signed BEFORE a promotion
+    // says false for up to 7 days. Before rejecting, check the DB — the flag
+    // there is the source of truth. Costs one indexed query and only on the
+    // would-be-rejected path, so regular admin traffic never pays it.
+    try {
+      const { rows } = await pool.query('SELECT is_admin FROM users WHERE id = $1', [req.user.id]);
+      if (rows[0] && rows[0].is_admin === true) {
+        req.user.is_admin = true;
+        return next();
+      }
+    } catch (_) { /* DB hiccup → fall through to the 403 */ }
+    return res.status(403).json({ error: 'Acesso restrito a administradores' });
   });
 }
 
