@@ -6509,12 +6509,20 @@ function _renderDetailPanel(c) {
     }
   }
 
-  // Auth gate: show contact details only to logged-in users
+  // Auth gate: contact DETAILS (telefone, email, credenciais) stay behind
+  // login, but the message relay is guest-safe — the backend accepts guest
+  // messages (name+email form) and never exposes the company's email. So
+  // guests keep the action bar with the buttons that work logged out:
+  // Enviar Mensagem, Como chegar, Partilhar. Ligar (phone is redacted for
+  // anonymous traffic) and Reportar (backend requires auth) stay gated.
   const loggedIn = !!JSON.parse(localStorage.getItem('hive_user') || 'null');
   const quoteBar = document.getElementById('dpQuoteBar');
   const loginGate = document.getElementById('dpLoginGate');
   const gatedSections = document.getElementById('dpGatedSections');
-  if (quoteBar) quoteBar.style.display = loggedIn ? '' : 'none';
+  if (quoteBar) {
+    quoteBar.style.display = '';
+    quoteBar.querySelectorAll('.qs-call,.qs-report').forEach(b => { b.style.display = loggedIn ? '' : 'none'; });
+  }
   if (loginGate) loginGate.style.display = loggedIn ? 'none' : '';
   if (gatedSections) gatedSections.style.display = loggedIn ? '' : 'none';
 
