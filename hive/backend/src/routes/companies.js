@@ -628,7 +628,7 @@ router.post('/:id/report', requireAuth, async (req, res, next) => {
 router.post('/:id/event', async (req, res, next) => {
   try {
     const { type } = req.body;
-    const allowed = ['view', 'contact', 'website_click', 'whatsapp'];
+    const allowed = ['view', 'contact', 'website_click', 'whatsapp', 'streetview'];
     if (!allowed.includes(type)) return res.status(400).json({ error: 'type inválido' });
 
     await pool.query(
