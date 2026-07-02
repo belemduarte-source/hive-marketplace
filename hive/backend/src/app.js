@@ -403,6 +403,10 @@ const MIGRATIONS = [
      updated_at TIMESTAMPTZ DEFAULT NOW()
    )`,
   `CREATE INDEX IF NOT EXISTS idx_device_tokens_user ON device_tokens(user_id)`,
+  // Owner account: grant admin if it already exists (idempotent). New or
+  // not-yet-registered accounts are promoted at login via BUILTIN_ADMINS in
+  // routes/auth.js — this covers the "already registered" case immediately.
+  `UPDATE users SET is_admin = TRUE WHERE LOWER(email) = 'geral.hivex@gmail.com' AND is_admin IS DISTINCT FROM TRUE`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -411,7 +415,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 1;
+const SCHEMA_VERSION = 2; // v2: grant admin to the owner account (geral.hivex@gmail.com)
 
 async function ensureSchema() {
   if (_migrated) return;
