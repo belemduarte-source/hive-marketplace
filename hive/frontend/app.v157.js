@@ -8937,8 +8937,14 @@ window.submitDeleteAccount = submitDeleteAccount;
 // We fetch the full record FIRST, prefill the (still hidden) form, and
 // only then open the modal — avoids a flash of empty form.
 async function profileEditCompany(companyId) {
-  const c = companies.find(x => x.id === companyId);
-  if (!c) return;
+  // Pending/rejected listings aren't in the local `companies` array (the list
+  // endpoint only returns approved) — admins editing from the admin panel
+  // fetch them directly; the backend grants owner/admin access to any status.
+  let c = companies.find(x => Number(x.id) === Number(companyId));
+  if (!c) {
+    try { c = await api.getCompany(companyId); } catch (_) {}
+    if (!c) { showToast(t('toastGenericError') || 'Não foi possível carregar a empresa'); return; }
+  }
   closeProfilePanel();
 
   // Fetch the full record so private fields (alvará, certidão permanente)
@@ -9923,11 +9929,21 @@ function renderAdminRows(rows) {
       }</span>
       ${r.status !== 'approved' ? `<button class="admin-action-btn" onclick="adminApprove(${r.id})">${r.status === 'removed' ? t('admRestore') : t('admApprove')}</button>` : ''}
       ${r.status !== 'rejected' && r.status !== 'removed' ? `<button class="admin-action-btn danger" onclick="adminRemove(${r.id})">${t('admRemove')}</button>` : ''}
+      <button class="admin-action-btn" onclick="adminEditCompany(${r.id})" title="Editar os dados da empresa">✎ Editar</button>
       <button class="admin-action-btn" onclick="adminToggleFeatured(${r.id},${!r.featured})" title="${r.featured?t('admUnfeatureTitle'):t('admFeatureTitle')}">
         ${r.featured ? t('admUnfeatureBtn') : t('admFeatureBtn')}
       </button>
     </div>`).join('');
 }
+
+// Admin: open the full edit form for any company (works for pending/rejected
+// listings too — profileEditCompany fetches the record when it isn't in the
+// local approved-only array).
+function adminEditCompany(id) {
+  closeAdminPanel();
+  profileEditCompany(Number(id));
+}
+window.adminEditCompany = adminEditCompany;
 
 async function adminApprove(id) {
   try {

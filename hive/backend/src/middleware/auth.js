@@ -52,4 +52,17 @@ function optionalAuth(req, res, next) {
   next();
 }
 
-module.exports = { requireAuth, requireAdmin, optionalAuth, extractToken };
+// Backfill req.user.is_admin from the DB when the JWT says false. The flag
+// lives in the 7-day token, so a session signed before a promotion keeps the
+// old value — route handlers that mix owner/admin logic (PUT/DELETE company,
+// review replies) call this before trusting req.user.is_admin. One indexed
+// query, and only on the paths that would otherwise be rejected.
+async function ensureAdminFlag(req) {
+  if (!req.user || req.user.is_admin) return;
+  try {
+    const { rows } = await pool.query('SELECT is_admin FROM users WHERE id = $1', [req.user.id]);
+    if (rows[0] && rows[0].is_admin === true) req.user.is_admin = true;
+  } catch (_) { /* DB hiccup → keep the token's value */ }
+}
+
+module.exports = { requireAuth, requireAdmin, optionalAuth, extractToken, ensureAdminFlag };

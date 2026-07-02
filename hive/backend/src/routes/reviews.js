@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true }); // mergeParams gives access to :id from parent
 const pool = require('../db');
-const { requireAuth } = require('../middleware/auth');
+const { requireAuth, ensureAdminFlag } = require('../middleware/auth');
 const { pushToUser } = require('../push');
 
 // GET /api/companies/:id/reviews — public
@@ -41,6 +41,7 @@ router.post('/:reviewId/reply', requireAuth, async (req, res, next) => {
       [req.params.reviewId, req.params.id]
     );
     if (!r[0]) return res.status(404).json({ error: 'Avaliação não encontrada' });
+    if (r[0].created_by !== req.user.id) await ensureAdminFlag(req);
     if (!req.user.is_admin && r[0].created_by !== req.user.id) {
       return res.status(403).json({ error: 'Apenas o dono da empresa pode responder' });
     }

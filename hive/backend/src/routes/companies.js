@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const pool = require('../db');
-const { requireAuth, requireAdmin, optionalAuth } = require('../middleware/auth');
+const { requireAuth, requireAdmin, optionalAuth, ensureAdminFlag } = require('../middleware/auth');
 const reviewsRouter = require('./reviews');
 const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail, sendContactEmail } = require('../email');
 const { pushToUser } = require('../push');
@@ -333,11 +333,21 @@ router.get('/check-nif', requireAuth, async (req, res, next) => {
 router.get('/:id', optionalAuth, async (req, res, next) => {
   try {
     const { rows } = await pool.query(
-      `SELECT * FROM companies WHERE id = $1 AND status = 'approved'`,
+      `SELECT * FROM companies WHERE id = $1`,
       [req.params.id]
     );
     if (!rows[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
     const company = rows[0];
+    // Non-public listings (pending/rejected/removed) are visible only to the
+    // owner and admins — everyone else gets the same 404 as a missing id, so
+    // the response doesn't leak that the listing exists.
+    if (company.status !== 'approved') {
+      if (!req.user) return res.status(404).json({ error: 'Empresa não encontrada' });
+      if (company.created_by !== req.user.id) await ensureAdminFlag(req);
+      if (!req.user.is_admin && company.created_by !== req.user.id) {
+        return res.status(404).json({ error: 'Empresa não encontrada' });
+      }
+    }
     if (!req.user) {
       delete company.certidao_permanente;
       delete company.alvara;
@@ -461,6 +471,8 @@ router.put('/:id', requireAuth, async (req, res, next) => {
     const { rows: existing } = await pool.query('SELECT * FROM companies WHERE id = $1', [req.params.id]);
     if (!existing[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
 
+    // Non-owner: the JWT's admin flag may predate a promotion — confirm in the DB
+    if (existing[0].created_by !== req.user.id) await ensureAdminFlag(req);
     if (!req.user.is_admin && existing[0].created_by !== req.user.id) {
       return res.status(403).json({ error: 'Sem permissão para editar esta empresa' });
     }
@@ -634,6 +646,7 @@ router.get('/:id/analytics', requireAuth, async (req, res, next) => {
   try {
     const { rows: co } = await pool.query('SELECT * FROM companies WHERE id = $1', [req.params.id]);
     if (!co[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
+    if (co[0].created_by !== req.user.id) await ensureAdminFlag(req);
     if (!req.user.is_admin && co[0].created_by !== req.user.id) {
       return res.status(403).json({ error: 'Sem permissão' });
     }
