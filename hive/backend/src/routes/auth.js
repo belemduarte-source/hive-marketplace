@@ -208,12 +208,24 @@ router.post('/logout', (req, res) => {
   res.json({ ok: true });
 });
 
-// GET /api/auth/me — returns current user from JWT
+// GET /api/auth/me — returns current user (fresh from the DB).
+// Self-heal: requireAdmin trusts the JWT payload, so a token signed BEFORE an
+// admin promotion (or demotion) keeps the old flag until re-login — the admin
+// panel would open (this endpoint says is_admin) while every /api/admin call
+// 403s (the cookie says otherwise). When the DB flag differs from the token,
+// re-sign and refresh the cookie so the session catches up on next page load.
 router.get('/me', requireAuth, async (req, res, next) => {
   try {
     const { rows } = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
     if (!rows[0]) return res.status(401).json({ error: 'Utilizador não encontrado' });
-    res.json({ user: safeUser(rows[0]) });
+    const user = rows[0];
+    let token = null;
+    if (!!user.is_admin !== !!req.user.is_admin) {
+      token = signToken(user);
+      res.cookie('hive_token', token, COOKIE_OPTS);
+      console.log('[auth] refreshed session token (is_admin changed) for', user.email);
+    }
+    res.json(token ? authBody(req, user, token) : { user: safeUser(user) });
   } catch (e) {
     next(e);
   }
