@@ -3015,3 +3015,17 @@
       #reportReason,#reportDetails,
       #regZone,#chatInput,#aiInput{font-size:16px !important}
     }
+
+    /* Registo de empresa — dark mode: todo o texto a branco e bold.
+       O asterisco .req mantém o vermelho de campo obrigatório. */
+    [data-theme="dark"] #registerOverlay .modal-title,
+    [data-theme="dark"] #registerOverlay .form-row label,
+    [data-theme="dark"] #registerOverlay .form-hint,
+    [data-theme="dark"] #registerOverlay .reg-step-label,
+    [data-theme="dark"] #registerOverlay .reg-ms-text,
+    [data-theme="dark"] #registerOverlay .reg-logo-preview span,
+    [data-theme="dark"] #registerOverlay p,
+    [data-theme="dark"] #registerOverlay small,
+    [data-theme="dark"] #registerOverlay span:not(.req){color:#fff !important;font-weight:700 !important}
+    [data-theme="dark"] #registerOverlay :is(input,textarea,select){color:#fff;font-weight:700}
+    [data-theme="dark"] #registerOverlay ::placeholder{color:rgba(255,255,255,.6);font-weight:600}
