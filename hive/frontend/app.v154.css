@@ -439,7 +439,7 @@
     .map-panel{flex:1;position:relative;overflow:hidden}
     #map{width:100%;height:100%}
     /* ── Nearby companies panel — right column, mirrors the filter sidebar ── */
-    .nearby-panel{width:492px;min-width:468px;background:var(--surface);border-left:1px solid var(--border);border-top:3px solid var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;box-shadow:-2px 0 8px rgba(0,0,0,.04)}
+    .nearby-panel{width:590px;min-width:562px;background:var(--surface);border-left:1px solid var(--border);border-top:3px solid var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;box-shadow:-2px 0 8px rgba(0,0,0,.04)}
     .nearby-panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:20px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
     .nearby-panel-title{display:flex;align-items:center;gap:11px;font-size:25px;font-weight:800;color:var(--text)}
     .nearby-panel-title i,.nearby-panel-title svg{width:26px;height:26px;color:var(--primary)}
