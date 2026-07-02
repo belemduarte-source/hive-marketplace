@@ -317,13 +317,21 @@ const MIGRATIONS = [
   // to_tsvector(<const regconfig>, text) is IMMUTABLE, so it's valid in a
   // generated column; the table rewrite is trivial at current scale.
   `CREATE EXTENSION IF NOT EXISTS pg_trgm`,
+  // array_to_string() is only STABLE, and generated columns require IMMUTABLE
+  // expressions — the ALTER below failed on every cold start until this
+  // wrapper existed (which also blocked schema_version from ever being
+  // written). For text[] with a constant separator the function IS
+  // deterministic, so the IMMUTABLE marking is safe.
+  `CREATE OR REPLACE FUNCTION hivex_arr2txt(text[]) RETURNS text
+     LANGUAGE sql IMMUTABLE PARALLEL SAFE
+     AS 'SELECT coalesce(array_to_string($1, '' ''), '''')'`,
   `ALTER TABLE companies ADD COLUMN IF NOT EXISTS search_doc tsvector
      GENERATED ALWAYS AS (
        to_tsvector('portuguese',
          coalesce(name,'') || ' ' || coalesce(description,'') || ' ' ||
-         coalesce(array_to_string(tags,' '),'') || ' ' || coalesce(cae,'') || ' ' ||
+         hivex_arr2txt(tags) || ' ' || coalesce(cae,'') || ' ' ||
          coalesce(city,'') || ' ' || coalesce(zone,'') || ' ' ||
-         coalesce(array_to_string(sectors,' '),'') || ' ' || coalesce(sector,'')
+         hivex_arr2txt(sectors) || ' ' || coalesce(sector,'')
        )
      ) STORED`,
   `CREATE INDEX IF NOT EXISTS idx_companies_search_doc ON companies USING GIN(search_doc)`,
@@ -415,7 +423,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 2; // v2: grant admin to the owner account (geral.hivex@gmail.com)
+const SCHEMA_VERSION = 3; // v3: immutable wrapper fixes the search_doc generated column
 
 async function ensureSchema() {
   if (_migrated) return;
