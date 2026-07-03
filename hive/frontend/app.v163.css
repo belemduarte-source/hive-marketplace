@@ -517,7 +517,7 @@
     .btn-register-now:hover{background:var(--primary-dark)}
 
     /* ── DETAIL PANEL ── */
-    .detail-panel{position:fixed;top:170px;right:-440px;width:420px;height:calc(100vh - 170px);background:var(--surface);box-shadow:-4px 0 16px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transition:right .25s cubic-bezier(.25,.46,.45,.94);border-left:1px solid var(--border);will-change:right;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+    .detail-panel{position:fixed;top:170px;right:-880px;width:min(840px,92vw);height:calc(100vh - 170px);background:var(--surface);box-shadow:-4px 0 16px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transition:right .25s cubic-bezier(.25,.46,.45,.94);border-left:1px solid var(--border);will-change:right;-webkit-backface-visibility:hidden;backface-visibility:hidden}
     .detail-panel.open{right:0}
     .dp-header{background:linear-gradient(135deg,var(--nav) 0%,#1a2a4a 100%);padding:28px 24px;display:flex;align-items:flex-start;gap:18px;flex-shrink:0;border-bottom:1px solid var(--border)}
     .dp-logo{width:74px;height:74px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:44px;color:#fff;flex-shrink:0;background:rgba(249,115,22,.2)}
@@ -586,27 +586,27 @@
     .dp-body::-webkit-scrollbar-track{background:var(--bg);border-radius:4px}
     .dp-body::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;cursor:pointer}
     .dp-body::-webkit-scrollbar-thumb:hover{background:var(--text-secondary)}
-    .dp-section-title{font-size:16px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+    .dp-section-title{font-size:20px;font-weight:800;color:var(--text);text-transform:uppercase;letter-spacing:.7px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
     /* Quick-fact pills (founded year, hours) */
     .dp-facts{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
     .dp-fact{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:10px 14px;font-size:15px;color:var(--text);display:inline-flex;align-items:center;gap:6px;line-height:1.3}
     .dp-fact-icon{font-size:17px;flex-shrink:0}
-    .dp-fact-label{color:var(--muted);font-size:13px;text-transform:uppercase;letter-spacing:.04em;margin-right:2px}
-    .dp-fact-value{font-weight:700}
+    .dp-fact-label{color:var(--muted);font-size:16px;text-transform:uppercase;letter-spacing:.04em;margin-right:2px}
+    .dp-fact-value{font-weight:700;font-size:17px}
     /* Portfolio gallery */
     .dp-portfolio{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:6px;margin-bottom:14px}
     .dp-portfolio img{width:100%;height:96px;object-fit:cover;border-radius:8px;border:1px solid var(--border);background:var(--bg);cursor:pointer;transition:transform .15s,box-shadow .15s;display:block}
     .dp-portfolio img:hover{transform:scale(1.03);box-shadow:var(--shadow-md)}
-    .dp-address{display:flex;align-items:center;gap:8px;font-size:16px;color:var(--text);background:var(--bg);padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--border)}
+    .dp-address{display:flex;align-items:center;gap:8px;font-size:19px;color:var(--text);background:var(--bg);padding:12px 14px;border-radius:var(--radius-sm);border:1px solid var(--border)}
     /* Gated sections (Localização / Avaliação / Contactos / etc.) live inside
        a single wrapper that wasn't a flex container — so the inner sections
        sat flush against each other. Match the .dp-body 16 px gap. */
     #dpGatedSections{display:flex;flex-direction:column;gap:16px}
     .channel-grid{display:flex;flex-direction:column;gap:10px}
     .channel-btn{display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:var(--radius-sm);border:1.5px solid transparent;cursor:pointer;transition:all .2s}
-    .ch-icon{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0;font-weight:700}
-    .ch-name{font-size:17px;font-weight:700;line-height:1.3}
-    .ch-desc{font-size:14px;opacity:.78;margin-top:2px}
+    .ch-icon{width:50px;height:50px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:21px;flex-shrink:0;font-weight:700}
+    .ch-name{font-size:21px;font-weight:700;line-height:1.3}
+    .ch-desc{font-size:17px;opacity:.78;margin-top:2px}
     .ch-info{flex:1}
     .channel-btn.wa{background:#f0fdf4;border-color:#bbf7d0;color:#15803d}.channel-btn.wa:hover{background:#16a34a;color:#fff;border-color:#16a34a}
     .channel-btn.wa .ch-icon{background:#16a34a;color:#fff}
@@ -658,7 +658,7 @@
     [data-theme="dark"] .dp-credentials{background:var(--surface);border-color:var(--border)}
     /* "Additional information" collapsible — ordered last so key contact info shows first */
     .dp-more{order:10}
-    .dp-more-toggle{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:15px 16px;font-size:17px;font-weight:800;color:var(--text);cursor:pointer;font-family:inherit;transition:background .15s,border-color .15s}
+    .dp-more-toggle{display:flex;align-items:center;justify-content:center;gap:9px;width:100%;background:var(--bg);border:1.5px solid var(--border);border-radius:12px;padding:17px 18px;font-size:20px;font-weight:800;color:var(--text);cursor:pointer;font-family:inherit;transition:background .15s,border-color .15s}
     .dp-more-toggle:hover{background:var(--surface);border-color:var(--primary)}
     .dp-more-arrow{font-size:15px;color:var(--text-secondary);transition:transform .2s}
     .dp-more-toggle.open .dp-more-arrow{transform:rotate(180deg)}

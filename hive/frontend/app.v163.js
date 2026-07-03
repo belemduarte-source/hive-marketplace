@@ -9354,6 +9354,14 @@ function _handleHashRoute() {
   const route = _parseHash();
   if (!route) return;
   if (route.type === 'empresa' && route.value) {
+    // Refresh must land on the plain map — only fresh navigations (shared
+    // links) auto-open a company. _hashRouteConsumed keeps later re-runs of
+    // this handler (init fires it twice) from re-opening after a reload strip.
+    if (typeof _isReloadNavigation === 'function' && _isReloadNavigation() && !window._hashRouteConsumed) {
+      window._hashRouteConsumed = true;
+      try { history.replaceState(null, '', window.location.pathname + window.location.search); } catch (_) {}
+      return;
+    }
     const id = parseInt(route.value, 10);
     const c  = companies.find(x => x.id === id || x.slug === route.value);
     if (c) { showTab('search'); setTimeout(() => openDetail(c.id), 400); }
@@ -9409,11 +9417,28 @@ document.addEventListener('DOMContentLoaded', () => setTimeout(_handleHashRoute,
 // ── DEEP-LINK ROUTING FOR COMPANY DETAIL ─────────────────────────────────────
 // Reads ?company=<id> on initial load and on browser back/forward, opening
 // or closing the detail panel without pushing redundant history entries.
+// True when this page load is a refresh (F5 / pull-to-refresh) rather than a
+// first navigation. Shared deep links must still open the company, but a
+// refresh must land on the plain map (no auto-selected company).
+function _isReloadNavigation() {
+  try {
+    const nav = performance.getEntriesByType('navigation')[0];
+    return !!nav && nav.type === 'reload';
+  } catch (_) { return false; }
+}
 function _openCompanyFromUrl() {
   try {
     const params = new URLSearchParams(window.location.search);
     const raw = params.get('company');
     if (!raw) return;
+    if (_isReloadNavigation()) {
+      // Refresh: drop the param so the map comes up clean (and stays clean on
+      // further refreshes) instead of re-selecting the company.
+      const url = new URL(window.location.href);
+      url.searchParams.delete('company');
+      history.replaceState({ company: null }, '', url.toString());
+      return;
+    }
     const id = Number(raw);
     if (!Number.isFinite(id)) return;
     if (typeof companies === 'undefined' || !companies.find(c => c.id === id)) return;
