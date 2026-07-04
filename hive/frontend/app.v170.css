@@ -1665,9 +1665,9 @@
       .lp-sb-btn{width:100%;justify-content:center;min-height:54px;border-radius:0 0 16px 16px}
       /* Register CTA — full width, chunkier on mobile */
       .lp-hero-register{margin:18px 0 28px}
-      .lp-hero-register-btn{width:100%;padding:16px 20px;font-size:30px}
+      .lp-hero-register-btn{width:100%;padding:13px 18px;font-size:18px}
       .lp-hero-register-btn svg{width:30px;height:30px}
-      .lp-hero-register-hint{font-size:24px;padding:0 8px}
+      .lp-hero-register-hint{font-size:14px;padding:0 8px}
       /* Keep hero cats 4-col on mobile — same as desktop, just shorter */
       .lp-hero-cats{grid-template-columns:repeat(4,1fr) !important;gap:11px !important}
       .lp-hero-cat{height:140px !important}
@@ -3091,4 +3091,19 @@
       .leaflet-control-zoom a{width:44px !important;height:44px !important;line-height:44px !important;font-size:24px !important}
       #dpLoginGate button{min-height:48px !important;font-size:16px !important}
       .lp-early-access a{display:inline-block;padding:8px 4px}
+    }
+
+    /* ── Cartões "mais bem avaliadas" no mobile: proporções equilibradas.
+       Medido a 375px: cartão 144x255 com avaliação 22px e emoji 68px a
+       dominar um nome de 13px — encolher os secundários, nome lidera. ── */
+    @media (max-width:768px){
+      .lp-hero-register-btn svg{width:20px !important;height:20px !important}
+      .lp-cc-emoji{width:44px !important;height:44px !important;font-size:24px !important;border-radius:10px !important}
+      .lp-cc-name{font-size:14px !important}
+      .lp-cc-rating-num{font-size:15px !important}
+      .lp-cc-stars{font-size:13px !important}
+      .lp-cc-sector{font-size:11px !important}
+      .lp-cc-reviews,.lp-cc-address{font-size:12px !important}
+      .lp-cc-tag{font-size:11px !important;padding:3px 8px !important}
+      .lp-company-card{padding:12px !important}
     }
