@@ -297,6 +297,33 @@ async function sendPasswordResetEmail(user, resetUrl) {
   });
 }
 
+// Generic branded email — one template for all the newer notification types
+// (claim codes, quote requests, quote replies, review alerts, feature
+// requests). bodyHtml is trusted template HTML built by the caller; user
+// content inside it must be escaped by the caller via esc().
+async function sendBrandedEmail({ to, replyTo, subject, title, bodyHtml }) {
+  const transporter = createTransporter();
+  if (!transporter || !to) return;
+  const html = `
+<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
+  <div style="background:#f97316;padding:24px 32px">
+    <h1 style="margin:0;color:#fff;font-size:20px">🐝 ${esc(title)}</h1>
+  </div>
+  <div style="padding:28px 32px;color:#374151;font-size:15px;line-height:1.65">
+    ${bodyHtml}
+    <hr style="border:none;border-top:1px solid #e5e7eb;margin:28px 0">
+    <p style="color:#6b7280;font-size:13px;margin:0">Equipa Hivex Marketplace · <a href="https://www.hivex.pt" style="color:#f97316">hivex.pt</a></p>
+  </div>
+</div>`;
+  await transporter.sendMail({
+    from: `"Hivex Marketplace" <${process.env.SMTP_USER}>`,
+    to,
+    ...(replyTo ? { replyTo } : {}),
+    subject,
+    html,
+  });
+}
+
 // Minimal HTML escaping
 function esc(str) {
   return String(str)
@@ -308,5 +335,5 @@ function esc(str) {
 
 module.exports = {
   sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail,
-  sendContactEmail, sendPasswordResetEmail,
+  sendContactEmail, sendPasswordResetEmail, sendBrandedEmail, esc,
 };

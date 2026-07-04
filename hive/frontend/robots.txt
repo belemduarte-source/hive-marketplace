@@ -5,3 +5,4 @@ Disallow: /admin
 Disallow: /reset-password
 
 Sitemap: https://www.hivex.pt/sitemap.xml
+

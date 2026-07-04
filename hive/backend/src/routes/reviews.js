@@ -3,6 +3,7 @@ const router = express.Router({ mergeParams: true }); // mergeParams gives acces
 const pool = require('../db');
 const { requireAuth, ensureAdminFlag } = require('../middleware/auth');
 const { pushToUser } = require('../push');
+const { sendBrandedEmail, esc } = require('../email');
 
 // GET /api/companies/:id/reviews — public
 router.get('/', async (req, res, next) => {
@@ -132,6 +133,23 @@ router.post('/', requireAuth, async (req, res, next) => {
       );
 
       await client.query('COMMIT');
+
+      // Notify the company by email (best-effort, after the response).
+      pool.query(`SELECT name, email FROM companies WHERE id = $1`, [req.params.id])
+        .then(({ rows: co2 }) => {
+          if (!co2[0] || !co2[0].email) return;
+          const stars = '★'.repeat(overall) + '☆'.repeat(5 - overall);
+          return sendBrandedEmail({
+            to: co2[0].email,
+            subject: `[Hivex] Nova avaliação ${stars} para ${co2[0].name}`,
+            title: 'Hivex — Nova avaliação recebida',
+            bodyHtml: `<p><strong>${esc(req.user.name || 'Um cliente')}</strong> avaliou <strong>${esc(co2[0].name)}</strong> com <strong>${stars} (${overall}/5)</strong>.</p>` +
+              (comment ? `<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px"><p style="margin:0;white-space:pre-wrap">${esc(comment)}</p></div>` : '') +
+              `<p style="margin-top:16px">Pode responder à avaliação na sua página Hivex — as respostas do proprietário ficam visíveis para todos.</p>`,
+          });
+        })
+        .catch(err => console.error('[email] review notification failed:', err && err.message));
+
       res.status(201).json(rows[0]);
     } catch (e) {
       await client.query('ROLLBACK').catch(() => {});

@@ -40,6 +40,7 @@ const companiesRouter = require('./routes/companies');
 const authRouter = require('./routes/auth');
 const adminRouter = require('./routes/admin');
 const favouritesRouter = require('./routes/favourites');
+const marketplaceRouter = require('./routes/marketplace');
 const errorHandler = require('./middleware/errorHandler');
 
 const app = express();
@@ -152,6 +153,24 @@ const contactLimiter = rateLimit({
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: 'Demasiadas mensagens enviadas. Tente novamente mais tarde.' },
+  skip: _skipRateLimit,
+});
+
+// Claim codes + quote requests: both fan out email, so keep tight budgets.
+const claimLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 6,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados pedidos de código. Tente novamente mais tarde.' },
+  skip: _skipRateLimit,
+});
+const rfqLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados pedidos de orçamento. Tente novamente mais tarde.' },
   skip: _skipRateLimit,
 });
 
@@ -415,6 +434,73 @@ const MIGRATIONS = [
   // not-yet-registered accounts are promoted at login via BUILTIN_ADMINS in
   // routes/auth.js — this covers the "already registered" case immediately.
   `UPDATE users SET is_admin = TRUE WHERE LOWER(email) = 'geral.hivex@gmail.com' AND is_admin IS DISTINCT FROM TRUE`,
+
+  // ── Marketplace v2: claims, quote requests, inbox, feature requests ─────────
+  // Claim a listing: 6-digit code sent to the company's public email; a
+  // verified claim transfers created_by to the claiming user.
+  `CREATE TABLE IF NOT EXISTS claims (
+     id BIGSERIAL PRIMARY KEY,
+     company_id BIGINT REFERENCES companies(id) ON DELETE CASCADE,
+     user_id    BIGINT REFERENCES users(id) ON DELETE CASCADE,
+     code       TEXT NOT NULL,
+     expires_at TIMESTAMPTZ NOT NULL,
+     verified_at TIMESTAMPTZ,
+     created_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_claims_company ON claims(company_id)`,
+  `CREATE INDEX IF NOT EXISTS idx_claims_user    ON claims(user_id)`,
+  // Structured quote requests (RFQ) broadcast to matching companies.
+  `CREATE TABLE IF NOT EXISTS quote_requests (
+     id BIGSERIAL PRIMARY KEY,
+     client_user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+     client_name  TEXT NOT NULL,
+     client_email TEXT NOT NULL,
+     client_phone TEXT,
+     sector       TEXT NOT NULL,
+     description  TEXT NOT NULL,
+     city         TEXT,
+     lat DOUBLE PRECISION, lng DOUBLE PRECISION,
+     timeline     TEXT,
+     budget_range TEXT,
+     notified_count INT DEFAULT 0,
+     status       TEXT DEFAULT 'open',
+     created_at   TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_qr_sector ON quote_requests(sector)`,
+  `CREATE INDEX IF NOT EXISTS idx_qr_client ON quote_requests(client_email)`,
+  // Company responses to a quote request.
+  `CREATE TABLE IF NOT EXISTS quotes (
+     id BIGSERIAL PRIMARY KEY,
+     request_id BIGINT REFERENCES quote_requests(id) ON DELETE CASCADE,
+     company_id BIGINT REFERENCES companies(id) ON DELETE CASCADE,
+     message    TEXT NOT NULL,
+     price_estimate TEXT,
+     created_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_quotes_request ON quotes(request_id)`,
+  `CREATE INDEX IF NOT EXISTS idx_quotes_company ON quotes(company_id)`,
+  // In-app inbox: contact messages become threads (company ↔ client email).
+  `CREATE TABLE IF NOT EXISTS messages (
+     id BIGSERIAL PRIMARY KEY,
+     company_id BIGINT REFERENCES companies(id) ON DELETE CASCADE,
+     sender     TEXT NOT NULL,
+     client_user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+     client_name  TEXT,
+     client_email TEXT NOT NULL,
+     body       TEXT NOT NULL,
+     read_at    TIMESTAMPTZ,
+     created_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_messages_company ON messages(company_id)`,
+  `CREATE INDEX IF NOT EXISTS idx_messages_client  ON messages(client_email)`,
+  // Owner requests to feature a listing (admin approves via the existing toggle).
+  `CREATE TABLE IF NOT EXISTS feature_requests (
+     id BIGSERIAL PRIMARY KEY,
+     company_id BIGINT REFERENCES companies(id) ON DELETE CASCADE,
+     user_id    BIGINT REFERENCES users(id) ON DELETE SET NULL,
+     status     TEXT DEFAULT 'pending',
+     created_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -423,7 +509,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 3; // v3: immutable wrapper fixes the search_doc generated column
+const SCHEMA_VERSION = 4; // v4: marketplace v2 tables (claims, quote_requests, quotes, messages, feature_requests)
 
 async function ensureSchema() {
   if (_migrated) return;
@@ -492,10 +578,34 @@ app.use(async (req, res, next) => {
 app.post('/api/companies', registerLimiter);            // registration spam guard (POST only)
 app.post('/api/companies/:id/event', eventLimiter);     // analytics ping flood guard
 app.post('/api/companies/:id/contact', contactLimiter); // guest-contact spam guard
+app.post('/api/claims/:companyId', claimLimiter);       // claim-code email guard
+app.post('/api/quote-requests', rfqLimiter);            // RFQ email fan-out guard
+app.use('/api', marketplaceRouter);
 app.use('/api/companies', companiesRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/favourites', favouritesRouter);
+
+// ── Sitemap ──────────────────────────────────────────────────────────────────
+// Dynamic sitemap for crawlers: home + every approved company deep link +
+// sector landing hashes are client-routed, so we expose the ?company= URLs
+// (server rewrites serve index.html for them). Cached at the CDN for 1h.
+app.get('/sitemap.xml', async (req, res, next) => {
+  try {
+    const BASE = 'https://www.hivex.pt';
+    const { rows } = await require('./db').query(
+      `SELECT id, updated_at FROM companies WHERE status = 'approved' ORDER BY id`
+    );
+    const urls = [
+      `<url><loc>${BASE}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`,
+      ...rows.map(r =>
+        `<url><loc>${BASE}/?company=${r.id}</loc><lastmod>${new Date(r.updated_at || Date.now()).toISOString().slice(0, 10)}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`),
+    ];
+    res.set('Content-Type', 'application/xml');
+    res.set('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
+    res.send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>`);
+  } catch (e) { next(e); }
+});
 
 // ── Health check ─────────────────────────────────────────────────────────────
 // Returns 200 only if the DB is actually reachable; uptime monitors should

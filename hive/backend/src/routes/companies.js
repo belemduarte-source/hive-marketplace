@@ -581,6 +581,13 @@ router.post('/:id/contact', optionalAuth, async (req, res, next) => {
     // Relay the message AFTER responding so the sender isn't blocked on SMTP.
     deferEmail(() => sendContactEmail(rows[0], sender, message.trim()), `contact relay (company ${rows[0].id})`);
 
+    // Also persist to the in-app inbox so the owner sees the thread on-site.
+    pool.query(
+      `INSERT INTO messages (company_id, sender, client_user_id, client_name, client_email, body)
+       VALUES ($1, 'client', $2, $3, $4, $5)`,
+      [rows[0].id, req.user ? req.user.id : null, sender.name, sender.email, message.trim().slice(0, 4000)]
+    ).catch(() => {});
+
     // Native push to the company owner (best-effort, dormant unless FCM is set up).
     pushToUser(
       rows[0].created_by,
