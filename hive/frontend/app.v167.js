@@ -2598,7 +2598,6 @@ function renderHeroCats() {
     <button class="lp-hero-cat" onclick="lpCatSearch('${cat.key}')" title="${label}">
       <img src="${cat.photo}" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" onerror="this.remove()"/>
       <div class="lp-hero-cat-overlay">
-        <span class="lp-hero-cat-emoji">${cat.emoji}</span>
         <span class="lp-hero-cat-name">${label}</span>
       </div>
     </button>`;
