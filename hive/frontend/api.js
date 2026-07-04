@@ -198,6 +198,28 @@ const api = {
     return apiFetch('/auth/me', { method: 'DELETE', body: { password } }).finally(_clearNativeToken);
   },
 
+  // ── Marketplace v2 ─────────────────────────────────────────────────────────
+  // Claim a listing (code → verify), structured quote requests, owner inbox,
+  // and feature-me requests.
+  requestClaimCode(companyId) {
+    return apiFetch('/claims/' + companyId, { method: 'POST' });
+  },
+  verifyClaim(companyId, code) {
+    return apiFetch('/claims/verify', { method: 'POST', body: { companyId, code } });
+  },
+  createQuoteRequest(payload) {
+    return apiFetch('/quote-requests', { method: 'POST', body: payload });
+  },
+  getCompanyInbox(companyId) {
+    return apiFetch('/messages/company/' + companyId);
+  },
+  replyInbox(companyId, clientEmail, body) {
+    return apiFetch('/messages/company/' + companyId + '/reply', { method: 'POST', body: { clientEmail, body } });
+  },
+  requestFeature(companyId) {
+    return apiFetch('/feature-requests', { method: 'POST', body: { companyId } });
+  },
+
   // ── Favourites (per-user, server-persisted) ──────────────────────────────
   // All four require a valid session cookie; logged-out callers get 401.
   getFavourites() {

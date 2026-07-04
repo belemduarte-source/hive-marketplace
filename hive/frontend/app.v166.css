@@ -3063,3 +3063,10 @@
     [data-theme="dark"] #registerOverlay span:not(.req){color:#fff !important;font-weight:700 !important}
     [data-theme="dark"] #registerOverlay :is(input,textarea,select){color:#fff;font-weight:700}
     [data-theme="dark"] #registerOverlay ::placeholder{color:rgba(255,255,255,.6);font-weight:600}
+
+    /* RFQ hero CTA — pedir orçamentos a várias empresas */
+    .lp-rfq-btn{display:inline-flex;align-items:center;gap:12px;background:linear-gradient(135deg,#1a73e8,#1d4ed8);color:#fff;border:none;border-radius:16px;padding:20px 46px;font-size:34px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.02em;box-shadow:0 4px 14px rgba(0,0,0,.25),inset 0 1px 0 rgba(255,255,255,.18);transition:transform .15s,box-shadow .15s}
+    .lp-rfq-btn:hover{transform:translateY(-2px);box-shadow:0 8px 22px rgba(0,0,0,.32)}
+    @media(max-width:768px){.lp-rfq-btn{width:100%;justify-content:center;font-size:24px;padding:16px 20px}}
+    /* selects herdam o estilo dos inputs do contacto */
+    select.contact-input{appearance:auto;-webkit-appearance:auto}

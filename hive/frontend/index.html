@@ -144,7 +144,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v165.css"/>
+  <link rel="stylesheet" href="app.v166.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -653,6 +653,13 @@
 
       </div><!-- /lp-searchbar -->
     </div><!-- /lp-search-wrap -->
+
+    <!-- RFQ CTA — pedir orçamentos a várias empresas de uma vez (sempre visível) -->
+    <div style="position:relative;z-index:2;margin:16px 0 4px">
+      <button type="button" class="lp-rfq-btn" onclick="openRfqModal()">
+        📋 <span data-i18n="rfqCta">Pedir Orçamentos Grátis</span>
+      </button>
+    </div>
 
     <!-- Anonymous-user primary CTA — the main action while the catalogue is
          small. Toggled in updateNavAuth(): visible to logged-out visitors,
@@ -1241,6 +1248,11 @@
       <div style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5" data-i18n="loginGateDesc">Crie uma conta gratuita para aceder aos contactos, morada, avaliações e pedir orçamentos.</div>
       <button onclick="openLogin()" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;width:100%" data-i18n="loginGateBtn">Entrar / Criar Conta Grátis</button>
     </div>
+  </div>
+
+  <!-- CLAIM ROW — visibilidade gerida em openDetail (escondido para o dono) -->
+  <div id="dpClaimRow" style="display:none;padding:0 20px 14px">
+    <button onclick="openClaimModal()" style="width:100%;background:transparent;border:1.5px dashed var(--border);border-radius:12px;padding:13px 16px;font-size:16px;font-weight:700;color:var(--text-secondary);cursor:pointer;font-family:inherit" data-i18n="claimLink">🏷 É a sua empresa? Reclame esta ficha</button>
   </div>
 
   <div class="dp-body">
@@ -1897,6 +1909,94 @@
   </div>
 </div>
 
+<!-- ── CLAIM LISTING — código enviado ao email público da ficha ────────────── -->
+<div class="overlay" id="claimOverlay" onclick="if(event.target===this)closeClaimModal()" role="dialog" aria-modal="true" aria-labelledby="claimTitle">
+  <div class="modal" style="width:520px">
+    <button class="modal-close" onclick="closeClaimModal()" aria-label="Fechar">×</button>
+    <h2 id="claimTitle" class="legal-title" data-i18n="claimTitle">Reclamar ficha da empresa</h2>
+    <div id="claimStep1">
+      <p style="font-size:16px;color:var(--text-secondary);line-height:1.6" data-i18n="claimIntro">Para provar que gere esta empresa, enviamos um código de 6 dígitos para o email público da ficha. Com a ficha reclamada pode editar os dados, responder a avaliações e ver estatísticas.</p>
+      <button class="btn-submit" style="width:100%;font-size:18px;padding:14px" onclick="claimSendCode(this)" data-i18n="claimSendBtn">Enviar código para o email da ficha</button>
+    </div>
+    <div id="claimStep2" style="display:none">
+      <p style="font-size:16px;color:var(--text-secondary)"><span data-i18n="claimSentTo">Código enviado para</span> <strong id="claimSentEmail"></strong></p>
+      <div class="form-row" style="margin:14px 0">
+        <input type="text" id="claimCode" class="contact-input" inputmode="numeric" maxlength="6" placeholder="______" style="text-align:center;font-size:30px;letter-spacing:12px;font-weight:800"/>
+      </div>
+      <button class="btn-submit" style="width:100%;font-size:18px;padding:14px" onclick="claimVerify(this)" data-i18n="claimVerifyBtn">Confirmar código</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── RFQ — pedido de orçamento estruturado multi-empresa ─────────────────── -->
+<div class="overlay" id="rfqOverlay" onclick="if(event.target===this)closeRfqModal()" role="dialog" aria-modal="true" aria-labelledby="rfqTitle">
+  <div class="modal" style="width:620px">
+    <button class="modal-close" onclick="closeRfqModal()" aria-label="Fechar">×</button>
+    <h2 id="rfqTitle" class="legal-title" data-i18n="rfqTitle">Pedir orçamentos</h2>
+    <p style="font-size:16px;color:var(--text-secondary);line-height:1.55;margin-top:0" data-i18n="rfqIntro">Descreva o trabalho — enviamos o pedido às empresas certas da sua zona e as propostas chegam diretamente ao seu email.</p>
+    <div class="form-row">
+      <label data-i18n="rfqSector">Área de atividade <span class="req">*</span></label>
+      <select id="rfqSector" class="contact-input"></select>
+    </div>
+    <div class="form-row">
+      <label data-i18n="rfqDesc">Descrição do trabalho <span class="req">*</span></label>
+      <textarea id="rfqDesc" class="contact-input" rows="4" maxlength="2000" data-i18n-ph="rfqDescPh" placeholder="Ex.: Remodelação completa de casa de banho (~4 m²): substituição de loiças, azulejos e canalização."></textarea>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-row">
+        <label data-i18n="rfqCity">Localidade <span class="req">*</span></label>
+        <input type="text" id="rfqCity" class="contact-input" placeholder="Ex.: Braga"/>
+      </div>
+      <div class="form-row">
+        <label data-i18n="rfqTimeline">Prazo desejado</label>
+        <select id="rfqTimeline" class="contact-input">
+          <option value="Flexível" data-i18n="tlFlex">Flexível</option>
+          <option value="Urgente" data-i18n="tlUrgent">Urgente</option>
+          <option value="No próximo mês" data-i18n="tl1m">No próximo mês</option>
+          <option value="Nos próximos 3 meses" data-i18n="tl3m">Nos próximos 3 meses</option>
+        </select>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-row">
+        <label data-i18n="rfqBudget">Orçamento indicativo</label>
+        <select id="rfqBudget" class="contact-input">
+          <option value="" data-i18n="budNS">Ainda não sei</option>
+          <option value="Até 1.000 €">Até 1.000 €</option>
+          <option value="1.000–5.000 €">1.000–5.000 €</option>
+          <option value="5.000–20.000 €">5.000–20.000 €</option>
+          <option value="Mais de 20.000 €">Mais de 20.000 €</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label data-i18n="rfqPhone">Telefone (opcional)</label>
+        <input type="tel" id="rfqPhone" class="contact-input" placeholder="9xx xxx xxx"/>
+      </div>
+    </div>
+    <div id="rfqGuestFields" style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+      <div class="form-row">
+        <label data-i18n="contactYourName">O seu nome <span class="req">*</span></label>
+        <input type="text" id="rfqName" class="contact-input" autocomplete="name"/>
+      </div>
+      <div class="form-row">
+        <label data-i18n="rfqEmail">O seu email <span class="req">*</span></label>
+        <input type="email" id="rfqEmail" class="contact-input" autocomplete="email"/>
+      </div>
+    </div>
+    <input type="text" id="rfqWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;border:0;padding:0"/>
+    <button class="btn-submit" style="width:100%;font-size:19px;padding:15px;margin-top:6px" onclick="submitRfq(this)" data-i18n="rfqSend">Enviar pedido às empresas</button>
+  </div>
+</div>
+
+<!-- ── INBOX — mensagens de clientes (donos de empresa) ─────────────────────── -->
+<div class="overlay" id="inboxOverlay" onclick="if(event.target===this)closeInbox()" role="dialog" aria-modal="true" aria-labelledby="inboxTitle">
+  <div class="modal" style="width:680px;max-height:88vh;display:flex;flex-direction:column">
+    <button class="modal-close" onclick="closeInbox()" aria-label="Fechar">×</button>
+    <h2 id="inboxTitle" class="legal-title" data-i18n="inboxTitle">Mensagens de clientes</h2>
+    <div id="inboxBody" style="flex:1;overflow-y:auto;min-height:200px"></div>
+  </div>
+</div>
+
 <!-- ── PASSWORD RECOVERY (request + reset) ──────────────────────────────── -->
 <div class="overlay" id="forgotOverlay" onclick="if(event.target===this)closeForgotPassword()" role="dialog" aria-modal="true" aria-labelledby="forgotTitle">
   <div class="modal" style="width:420px">
@@ -2031,7 +2131,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v165.js"></script>
+<script src="app.v166.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
