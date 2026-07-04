@@ -2584,9 +2584,9 @@
     .review-dist-count{width:28px;text-align:right;flex-shrink:0;font-weight:600}
     /* Compare + favourite controls on each search-list card */
     .search-list-card{position:relative}
-    .slc-compare{position:absolute;top:10px;right:10px;display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);border:1px solid var(--border);border-radius:6px;padding:3px 8px;font-size:11px;font-weight:600;color:var(--text-secondary);cursor:pointer;transition:all .15s;user-select:none;z-index:2}
+    .slc-compare{position:absolute;top:10px;right:10px;display:inline-flex;align-items:center;gap:9px;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:22px;font-weight:600;color:var(--text-secondary);cursor:pointer;transition:all .15s;user-select:none;z-index:2}
     .slc-compare:hover{background:#fff;border-color:var(--primary);color:#1f2937}
-    .slc-compare input[type="checkbox"]{margin:0;accent-color:var(--primary);cursor:pointer}
+    .slc-compare input[type="checkbox"]{margin:0;accent-color:var(--primary);cursor:pointer;width:24px;height:24px}
     .slc-fav{position:absolute;top:10px;left:10px;background:rgba(255,255,255,.92);backdrop-filter:blur(4px);border:1px solid var(--border);width:30px;height:30px;border-radius:50%;font-size:16px;color:var(--muted);cursor:pointer;transition:all .15s;z-index:2;display:flex;align-items:center;justify-content:center;line-height:1;padding:0}
     .slc-fav:hover{color:var(--gold);border-color:var(--gold);transform:scale(1.08)}
     .slc-fav.is-fav{color:var(--gold);border-color:var(--gold);background:#fef3c7}
@@ -2706,8 +2706,8 @@
     #compareOverlay .modal-close{font-size:30px;width:44px;height:44px}
     #compareOverlay > .modal > div:last-child .btn-submit{font-size:19px;padding:14px 34px}
     /* Compare toggle on the nearby-panel cards */
-    .nc-compare{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:16px;font-weight:700;color:var(--text-secondary);cursor:pointer;user-select:none;width:max-content}
-    .nc-compare input{width:18px;height:18px;accent-color:var(--primary);cursor:pointer}
+    .nc-compare{display:flex;align-items:center;gap:12px;margin-top:12px;font-size:32px;font-weight:700;color:var(--text-secondary);cursor:pointer;user-select:none;width:max-content}
+    .nc-compare input{width:36px;height:36px;accent-color:var(--primary);cursor:pointer}
     .nc-compare:hover{color:var(--primary)}
     .review-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
     .review-card-author{font-weight:700;font-size:13px;color:var(--text)}
