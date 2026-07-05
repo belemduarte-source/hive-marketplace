@@ -3439,7 +3439,7 @@ function openCompareModal() {
     { key:'email',    label:'Email',           renderer: c => c.email ? `<a href="mailto:${escHtml(c.email)}">${escHtml(c.email)}</a>` : (loggedIn ? '<span style="color:var(--muted)">—</span>' : lockedCell) },
     { key:'website',  label:'Website',         renderer: c => c.website ? `<a href="${escHtml(c.website)}" target="_blank" rel="noopener">${escHtml(c.website)}</a>` : '<span style="color:var(--muted)">—</span>' },
     { key:'tags',     label:'Especialidades',  renderer: c => (c.tags||[]).slice(0, 6).map(tag => `<span class="tag" style="margin-right:4px">${escHtml(tag)}</span>`).join('') || '—' },
-    { key:'action',   label:'',                renderer: c => `<button class="btn-submit" style="font-size:19px;padding:14px 30px" onclick="closeCompareModal();setTimeout(()=>openDetail(${c.id}),200)">Ver perfil</button>` },
+    { key:'action',   label:'',                renderer: c => `<button class="btn-submit" style="font-size:22px;padding:15px 34px" onclick="closeCompareModal();setTimeout(()=>openDetail(${c.id}),200)">Ver perfil</button>` },
   ];
 
   let html = '<table class="compare-table"><tbody>';
