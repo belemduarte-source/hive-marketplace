@@ -2673,7 +2673,7 @@
     .compare-bar-chips{flex:1;display:flex;gap:9px;flex-wrap:wrap;min-width:0}
     .compare-bar-chip{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.18);border-radius:18px;padding:8px 14px 8px 16px;font-size:17px;display:inline-flex;align-items:center;gap:9px;max-width:320px}
     .compare-bar-chip span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-    .compare-bar-chip button{background:none;border:0;color:rgba(255,255,255,.5);cursor:pointer;font-size:20px;line-height:1;padding:0;flex-shrink:0;transition:color .15s}
+    .compare-bar-chip button{background:none;border:0;color:rgba(255,255,255,.5);cursor:pointer;font-size:20px;line-height:1;padding:8px 10px;margin:-8px -10px -8px -4px;flex-shrink:0;transition:color .15s}
     .compare-bar-chip button:hover{color:#fff}
     .compare-bar-clear{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.18);padding:13px 22px;border-radius:10px;font-size:17px;font-weight:600;cursor:pointer;font-family:inherit;flex-shrink:0}
     .compare-bar-clear:hover{background:rgba(255,255,255,.14)}
@@ -3091,6 +3091,14 @@
       .leaflet-control-zoom a{width:44px !important;height:44px !important;line-height:44px !important;font-size:24px !important}
       #dpLoginGate button{min-height:48px !important;font-size:16px !important}
       .lp-early-access a{display:inline-block;padding:8px 4px}
+      .btn-submit{min-height:48px !important;font-size:16px !important}
+      .pwd-toggle{padding:12px !important;right:2px !important}
+      a[onclick^="openForgotPassword"]{font-size:14px !important;padding:12px 4px !important}
+      button[onclick^="switchLoginTab"]{font-size:14px !important;padding:12px 8px !important;min-height:44px}
+      #contactModal button[onclick^="closeContactModal"],#adminPanel button[onclick^="closeAdminPanel"],#statusModal button[onclick^="closeStatusModal"]{width:44px !important;height:44px !important;font-size:20px !important}
+      .compare-bar-chip button{font-size:24px !important;padding:10px 12px !important;margin:-10px -12px -10px -4px !important}
+      .compare-bar-clear{min-height:46px !important}
+      .compare-bar-go{min-height:48px !important}
     }
 
     /* ── Cartões "mais bem avaliadas" no mobile: proporções equilibradas.
