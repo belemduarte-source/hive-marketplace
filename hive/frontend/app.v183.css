@@ -544,7 +544,7 @@
     /* ── DETAIL PANEL ── */
     .detail-panel{position:fixed;top:170px;right:-880px;width:min(588px,64vw);height:calc(100vh - 170px);background:var(--surface);box-shadow:-4px 0 16px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transition:right .25s cubic-bezier(.25,.46,.45,.94);border-left:1px solid var(--border);will-change:right;-webkit-backface-visibility:hidden;backface-visibility:hidden}
     .detail-panel.open{right:0}
-    @media (min-width:1024px){.detail-panel{height:calc(100dvh / var(--z) - 170px)}}
+    @media (min-width:1024px){.detail-panel{zoom:.7;top:243px;height:calc((100dvh / var(--z) - 170px) / .7)}}
     .dp-header{background:linear-gradient(135deg,var(--nav) 0%,#1a2a4a 100%);padding:28px 24px;display:flex;align-items:flex-start;gap:18px;flex-shrink:0;border-bottom:1px solid var(--border)}
     .dp-logo{width:74px;height:74px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:44px;color:#fff;flex-shrink:0;background:rgba(249,115,22,.2)}
     .dp-name{font-size:32px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.15;overflow-wrap:break-word}
