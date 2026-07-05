@@ -463,6 +463,13 @@
     .nc-sector{display:flex;align-items:center;gap:7px;font-size:18px;font-weight:600;color:var(--text-secondary);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .nc-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
     .nc-dist{font-size:20px;font-weight:900;color:#1a73e8;background:rgba(26,115,232,.10);padding:6px 13px;border-radius:999px;flex-shrink:0;white-space:nowrap}
+    /* Right column of each card: distance on top, open/closed underneath */
+    .nc-side{display:flex;flex-direction:column;align-items:flex-end;gap:7px;flex-shrink:0}
+    .nc-open{font-size:17px;font-weight:800;padding:4px 12px;border-radius:999px;white-space:nowrap}
+    .nc-open.is-open{color:#15803d;background:rgba(22,163,74,.13)}
+    .nc-open.is-closed{color:#dc2626;background:rgba(220,38,38,.10)}
+    [data-theme="dark"] .nc-open.is-open{color:#4ade80;background:rgba(74,222,128,.14)}
+    [data-theme="dark"] .nc-open.is-closed{color:#f87171;background:rgba(248,113,113,.14)}
     .nc-rating{font-size:19px;font-weight:700;color:var(--text);margin-top:10px}
     .nc-stars{color:#f59e0b}
     .nc-reviews{color:var(--text-secondary);font-weight:600;font-size:18px}

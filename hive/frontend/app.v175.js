@@ -177,6 +177,7 @@ const translations = {
     valTags:'Por favor insira pelo menos uma especialidade.',
     toastRegistered: name => `"${name}" registada com sucesso! Visível no mapa.`,
     popupNoRatings:'Sem avaliações ainda', popupNewBadge:'Novo Registo',
+    openNow:'Aberto', closedNow:'Fechado',
     btnSearch:'Pesquisar',
     heroLabel:'Marketplace B2B & B2C',
     heroTitleMain:'Ligue-se. Colabore. ', heroTitleAccent:'Cresça.',
@@ -587,6 +588,7 @@ const translations = {
     valTags:'Please enter at least one specialty.',
     toastRegistered: name => `"${name}" successfully registered! Visible on the map.`,
     popupNoRatings:'No ratings yet', popupNewBadge:'New Entry',
+    openNow:'Open', closedNow:'Closed',
     btnSearch:'Search',
     heroLabel:'B2B & B2C Marketplace',
     heroTitleMain:'Connect. Collaborate. ', heroTitleAccent:'Grow.',
@@ -991,6 +993,7 @@ const translations = {
     valTags:'Veuillez saisir au moins une spécialité.',
     toastRegistered: name => `"${name}" enregistrée avec succès ! Visible sur la carte.`,
     popupNoRatings:'Aucun avis encore', popupNewBadge:'Nouveau Enregistrement',
+    openNow:'Ouvert', closedNow:'Fermé',
     btnSearch:'Rechercher',
     heroLabel:'Marketplace B2B & B2C',
     heroTitleMain:'Connectez. Collaborez. ', heroTitleAccent:'Grandissez.',
@@ -1391,6 +1394,7 @@ const translations = {
     valTags:'Por favor introduzca al menos una especialidad.',
     toastRegistered: name => `"${name}" registrada con éxito. Visible en el mapa.`,
     popupNoRatings:'Sin valoraciones aún', popupNewBadge:'Nuevo Registro',
+    openNow:'Abierto', closedNow:'Cerrado',
     btnSearch:'Buscar',
     heroLabel:'Marketplace B2B & B2C',
     heroTitleMain:'Conéctese. Colabore. ', heroTitleAccent:'Crezca.',
@@ -1788,6 +1792,7 @@ const translations = {
     valTags:'Bitte mindestens einen Fachbereich eingeben.',
     toastRegistered: name => `„${name}" wurde erfolgreich registriert und erscheint jetzt auf der Karte.`,
     popupNoRatings:'Noch keine Bewertungen', popupNewBadge:'Neu eingetragen',
+    openNow:'Geöffnet', closedNow:'Geschlossen',
     btnSearch:'Suchen',
     heroLabel:'B2B & B2C Marktplatz',
     heroTitleMain:'Vernetzen. Zusammenarbeiten.', heroTitleAccent:'Wachsen.',
@@ -5860,6 +5865,37 @@ function renderNearbyPanel(filtered) {
   }
 }
 
+// Open/closed right now, on the Europe/Lisbon clock regardless of the
+// visitor's timezone. Companies without their own schedule (c.opening_hours,
+// JSON keyed by weekday 0-6 with [h1,m1,h2,m2] windows) fall back to the
+// sector norm for PT construction trades: weekdays 08:00-18:00.
+const _DEFAULT_HOURS = { 1:[[8,0,18,0]], 2:[[8,0,18,0]], 3:[[8,0,18,0]], 4:[[8,0,18,0]], 5:[[8,0,18,0]], 6:null, 0:null };
+function _openStatus(c) {
+  let sched = _DEFAULT_HOURS;
+  if (c && c.opening_hours) {
+    try {
+      const p = typeof c.opening_hours === 'string' ? JSON.parse(c.opening_hours) : c.opening_hours;
+      if (p && typeof p === 'object') sched = p;
+    } catch (_) {}
+  }
+  let dow, mins;
+  try {
+    const parts = new Intl.DateTimeFormat('en-GB', { timeZone: 'Europe/Lisbon', weekday: 'short', hour: 'numeric', minute: 'numeric', hourCycle: 'h23' }).formatToParts(new Date());
+    const get = ty => (parts.find(p => p.type === ty) || {}).value;
+    dow = { Sun:0, Mon:1, Tue:2, Wed:3, Thu:4, Fri:5, Sat:6 }[get('weekday')];
+    mins = (parseInt(get('hour'), 10) % 24) * 60 + parseInt(get('minute'), 10);
+  } catch (_) { const d = new Date(); dow = d.getDay(); mins = d.getHours() * 60 + d.getMinutes(); }
+  const windows = sched[dow];
+  if (!Array.isArray(windows)) return false;
+  return windows.some(w => Array.isArray(w) && w.length >= 4 &&
+    mins >= w[0] * 60 + w[1] && mins < w[2] * 60 + w[3]);
+}
+
+function _openBadgeHtml(c) {
+  const open = _openStatus(c);
+  return `<span class="nc-open ${open ? 'is-open' : 'is-closed'}">● ${open ? t('openNow') : t('closedNow')}</span>`;
+}
+
 function _appendNearbyCards(listEl, upTo, sentinel) {
   const tr = translations[currentLang] || translations.pt;
   const sc = tr.sectors || {};
@@ -5885,7 +5921,7 @@ function _appendNearbyCards(listEl, upTo, sentinel) {
           <div class="nc-name">${escHtml(c.name)}</div>
           <div class="nc-sector"><span class="nc-dot" style="background:${c.color}"></span>${escHtml(sectorLabel)}</div>
         </div>
-        <span class="nc-dist">${distStr}</span>
+        <div class="nc-side"><span class="nc-dist">${distStr}</span>${_openBadgeHtml(c)}</div>
       </div>
       <div class="nc-rating">${rating}</div>
       ${c.address || c.city ? `<div class="nc-address">📍 ${escHtml(c.address || c.city)}</div>` : ''}
