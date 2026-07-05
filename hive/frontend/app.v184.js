@@ -10129,8 +10129,9 @@ async function adminLoadStats() {
     if (pendTab) pendTab.innerHTML = t('adminTabPending') + (s.pending > 0 ? ` <span style="background:#ef4444;color:#fff;font-size:10px;font-weight:800;border-radius:9px;padding:1px 6px;margin-left:4px">${s.pending}</span>` : '');
     const visitsHtml = v ? `
       <div style="font-size:13px;font-weight:800;color:var(--text);margin:0 0 10px">📈 Visitas ao site</div>
-      <div class="admin-stat-grid">
+      <div class="admin-stat-grid avg-5">
         <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--text)">${v.today}</div><div class="admin-stat-label">Hoje</div></div>
+        <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--primary)">${v.uniqueToday != null ? v.uniqueToday : '—'}</div><div class="admin-stat-label">Únicos hoje</div></div>
         <div class="admin-stat-card"><div class="admin-stat-value">${v.last7}</div><div class="admin-stat-label">Últimos 7 dias</div></div>
         <div class="admin-stat-card"><div class="admin-stat-value">${v.last30}</div><div class="admin-stat-label">Últimos 30 dias</div></div>
         <div class="admin-stat-card"><div class="admin-stat-value">${v.unique30}</div><div class="admin-stat-label">Únicos (30 dias)</div></div>

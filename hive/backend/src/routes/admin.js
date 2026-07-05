@@ -214,6 +214,7 @@ router.get('/visits', async (req, res, next) => {
       pool.query(`
         SELECT
           (SELECT COUNT(*) FROM site_visits WHERE created_at >= date_trunc('day', now()))::int          AS today,
+          (SELECT COUNT(DISTINCT visitor) FROM site_visits WHERE created_at >= date_trunc('day', now()))::int AS "uniqueToday",
           (SELECT COUNT(*) FROM site_visits WHERE created_at > now() - interval '7 days')::int           AS last7,
           (SELECT COUNT(*) FROM site_visits WHERE created_at > now() - interval '30 days')::int          AS last30,
           (SELECT COUNT(*) FROM site_visits)::int                                                        AS total,
