@@ -4629,19 +4629,26 @@ function renderSectorFilters() {
       document.querySelectorAll('.cat-dropdown.show').forEach(d => d.classList.remove('show'));
       document.querySelectorAll('.cat-item.open').forEach(d => d.classList.remove('open'));
       if (!isOpen) {
+        // The desktop body uses `zoom` (see the >=1160px rule). A position:fixed
+        // element inside a zoomed body has its top/left MULTIPLIED by that zoom,
+        // while getBoundingClientRect() already returns scaled (visual) coords.
+        // So convert every target coordinate to layout px by dividing by zoom,
+        // otherwise the menu renders offset (and right-side ones fall off-screen).
+        const z = parseFloat(getComputedStyle(document.body).zoom) || 1;
         const rect = catItem.getBoundingClientRect();
-        dropdown.style.top = (rect.bottom + 2) + 'px';
-        dropdown.style.maxWidth = (window.innerWidth - 8) + 'px';
+        const vpW = window.innerWidth / z;   // viewport width in layout px
+        dropdown.style.top = ((rect.bottom + 2) / z) + 'px';
+        dropdown.style.maxWidth = (vpW - 8) + 'px';
         // Constrain height so it doesn't go below the bottom nav bar.
         const bottomBar = window.innerWidth <= 768 ? 64 : 0;
-        dropdown.style.maxHeight = Math.min(560, window.innerHeight - rect.bottom - bottomBar - 8) + 'px';
+        dropdown.style.maxHeight = Math.min(560, (window.innerHeight - rect.bottom - bottomBar - 8) / z) + 'px';
         dropdown.classList.add('show');
         catItem.classList.add('open');
-        // Measure the ACTUAL width now it's visible, then clamp left so the whole
-        // dropdown — and every activity — stays on screen (never clipped on the
-        // right, e.g. for right-side areas like "Chave na Mão").
+        // Measure the ACTUAL (layout) width now it's visible, then clamp left so
+        // the whole dropdown — and every activity — stays on screen (never
+        // clipped on the right, e.g. for right-side areas like "Chave na Mão").
         const dw = dropdown.offsetWidth || 320;
-        dropdown.style.left = Math.min(Math.max(4, rect.left), Math.max(4, window.innerWidth - dw - 6)) + 'px';
+        dropdown.style.left = Math.min(Math.max(4, rect.left / z), Math.max(4, vpW - dw - 6)) + 'px';
       }
     });
     // Keep dropdown open when clicking inside it (don't close)
