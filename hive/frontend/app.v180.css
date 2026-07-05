@@ -1092,7 +1092,7 @@
 
     /* ── SECTOR BUTTONS redesigned ── */
     /* cat-item: full-width tab buttons, no scroll */
-    .cat-item{position:relative;flex:1;min-width:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:7px;padding:0 15px;font-weight:600;color:rgba(255,255,255,.80);background:transparent;border:none;cursor:pointer;transition:background .18s,color .18s,box-shadow .18s;white-space:nowrap;letter-spacing:.015em;user-select:none}
+    .cat-item{position:relative;flex:1;min-width:0;display:flex;flex-direction:row;align-items:center;justify-content:center;gap:7px;padding:0 9px;font-weight:600;color:rgba(255,255,255,.80);background:transparent;border:none;cursor:pointer;transition:background .18s,color .18s,box-shadow .18s;white-space:nowrap;letter-spacing:.01em;user-select:none}
     /* Hairline separators between tabs (skips the first tab in the row) */
     .cat-item + .cat-item{box-shadow:inset 1px 0 0 rgba(255,255,255,.07)}
     .cat-item:hover{background:rgba(255,255,255,.06);color:#fff}
@@ -1101,7 +1101,7 @@
     .cat-item.active{color:#fff;font-weight:700;background:rgba(255,255,255,.05);box-shadow:inset 0 -3px 0 var(--primary)}
     .cat-item.open{background:rgba(255,255,255,.09);color:#fff}
     /* Master "Todas as áreas" — primary toggle, visually distinct from tabs */
-    .cat-item-master{flex:0 0 auto;font-weight:700;color:#fff;background:rgba(255,255,255,.06);border-radius:8px;margin:0 8px 0 2px;padding:0 18px;box-shadow:none}
+    .cat-item-master{flex:0 0 auto;font-weight:700;color:#fff;background:rgba(255,255,255,.06);border-radius:8px;margin:0 6px 0 2px;padding:0 13px;box-shadow:none}
     .cat-item-master:hover{background:rgba(249,115,22,.22)}
     .cat-item-master.active{background:var(--primary);color:#fff;box-shadow:0 2px 10px rgba(249,115,22,.35)}
     .cat-item .cat-icon{display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:var(--cat-fs,17px);line-height:1;color:inherit}
@@ -1144,7 +1144,7 @@
       .ub-flex1{flex:0 1 180px !important;min-width:120px !important}
       .ub-btn{padding:5px 10px !important;font-size:12px !important}
       .cat-item{padding:6px 8px !important;font-size:10px !important}
-      .cat-item .cat-label{font-size:11px !important}
+      .cat-item .cat-label{font-size:14px !important}
       .cat-item .cat-icon[data-lucide]{width:15px !important;height:15px !important}
       .filter-sidebar{width:375px !important;min-width:350px !important}
     }
@@ -1253,7 +1253,7 @@
       .ub-sectors{width:100% !important;overflow-x:auto !important;scrollbar-width:none !important;padding:2px 4px !important}
       .ub-sectors .sector-filter-container{width:max-content !important}
       .cat-item{flex:0 0 auto !important;padding:8px 12px !important;font-size:12px !important}
-      .cat-item .cat-label{font-size:12px !important}
+      .cat-item .cat-label{font-size:15px !important}
       .cat-item .cat-icon[data-lucide]{width:15px !important;height:15px !important}
       .filter-sidebar{width:230px !important;min-width:210px !important}
       .filter-section-title{font-size:16px !important}
@@ -1283,7 +1283,7 @@
       #map{min-height:300px !important}
       .unified-bar{height:auto !important;flex-wrap:wrap !important}
       .cat-item{padding:4px 8px !important;font-size:9px !important}
-      .cat-item .cat-label{font-size:10px !important}
+      .cat-item .cat-label{font-size:13px !important}
       .cat-item .cat-icon[data-lucide]{width:12px !important;height:12px !important}
       .filter-section{padding:5px 8px !important}
       .filter-section-title{font-size:16px !important}

@@ -9365,20 +9365,37 @@ function fitSectorBar() {
       labels.forEach(l => l.style.removeProperty('font-size'));
       return;
     }
-    // Professional bar: ONE consistent label size across all tabs. Find the
-    // largest size (up to a refined cap) at which EVERY label still fits its
-    // slot, then apply it uniformly — no per-button size jitter, no wrapping.
-    const MIN = 11, MAX = 19;
-    let lo = MIN, hi = MAX, best = MIN;
-    while (lo <= hi) {
-      const mid = (lo + hi) >> 1;
-      labels.forEach(l => { l.style.fontSize = mid + 'px'; });
-      const allFit = labels.every(l => l.scrollWidth <= l.clientWidth + 0.5);
-      if (allFit) { best = mid; lo = mid + 1; } else { hi = mid - 1; }
+    // Don't size against an un-laid-out bar (hidden tab / mid-transition): the
+    // buttons report near-zero width and every label would latch onto the
+    // minimum. Retry once the bar has a real width.
+    if (container.clientWidth < 320) {
+      clearTimeout(window.__fitRetry);
+      window.__fitRetry = setTimeout(fitSectorBar, 200);
+      return;
     }
-    labels.forEach(l => { l.style.fontSize = best + 'px'; });
-    // Match the master "Todas as áreas" label (it lives outside the container).
-    ub.style.setProperty('--cat-fs', best + 'px');
+    // Each label grows to fill its OWN tab, capped 25% above the old baseline
+    // (19px -> 24px). Per-label rather than one shared size: the tabs are equal
+    // width, so a single size would be dragged down to whatever the longest
+    // label ("Chave na Mão") needs (~13px) and everything would look tiny.
+    // On wide screens every label reaches the cap and reads uniform; on tighter
+    // widths only the longest labels step down. (The label is a shrink-to-content
+    // flex item, so clientWidth==scrollWidth until the text exceeds the tab —
+    // the +0.5 check grows the font right up to that boundary.)
+    const MIN = 13, MAX = 24;
+    let maxBest = MIN;
+    labels.forEach(l => {
+      let lo = MIN, hi = MAX, best = MIN;
+      while (lo <= hi) {
+        const mid = (lo + hi) >> 1;
+        l.style.fontSize = mid + 'px';
+        if (l.scrollWidth <= l.clientWidth + 0.5) { best = mid; lo = mid + 1; }
+        else { hi = mid - 1; }
+      }
+      l.style.fontSize = best + 'px';
+      if (best > maxBest) maxBest = best;
+    });
+    // Master "Todas as áreas" label (outside the container) tracks the widest tab.
+    ub.style.setProperty('--cat-fs', maxBest + 'px');
   } catch (e) {}
 }
 window.addEventListener('resize', () => {
