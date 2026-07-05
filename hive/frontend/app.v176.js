@@ -7742,8 +7742,10 @@ function detectUserLocation(auto = false) {
   // Show loading state on both locate buttons
   const btn   = document.getElementById('btnLocate');
   const mapBtn = document.getElementById('btnMyLocation');
-  if (btn)   { btn.classList.remove('pulse-hint'); btn.classList.add('locating'); btn.title = 'A detetar…'; }
-  if (!auto && mapBtn) mapBtn.classList.add('locating');
+  // Drop the "active" flash while a fresh fix is in progress (the spinner /
+  // ping state takes over); it's re-applied on success.
+  if (btn)   { btn.classList.remove('pulse-hint', 'geo-active'); btn.classList.add('locating'); btn.title = 'A detetar…'; }
+  if (mapBtn) { mapBtn.classList.remove('geo-active'); if (!auto) mapBtn.classList.add('locating'); }
 
   // Auto: allow a cached position (up to 30 s old), short timeout so failure
   // is quick and silent. User tap: fresh position, long timeout (user is waiting).
@@ -7757,6 +7759,13 @@ function detectUserLocation(auto = false) {
     if (!_geoCleanup(myGen)) return; // stale result from a superseded request
     const { latitude: lat, longitude: lng, accuracy } = pos.coords;
     _locationObtained = true;
+
+    // Location is now active — flash both locate buttons orange until a new
+    // request supersedes this fix.
+    const lb = document.getElementById('btnLocate');
+    const mb = document.getElementById('btnMyLocation');
+    if (lb) lb.classList.add('geo-active');
+    if (mb) mb.classList.add('geo-active');
 
     currentMapCenter = [lat, lng];
     invalidateDistanceCache();
@@ -7822,6 +7831,15 @@ function detectUserLocation(auto = false) {
 
   function onGeoError(err) {
     if (!_geoCleanup(myGen)) return; // stale
+
+    // A previous fix is still shown on the map — keep the active flash going
+    // even though this refresh attempt failed.
+    if (_locationObtained) {
+      const lb = document.getElementById('btnLocate');
+      const mb = document.getElementById('btnMyLocation');
+      if (lb) lb.classList.add('geo-active');
+      if (mb) mb.classList.add('geo-active');
+    }
 
     if (err.code === 1) {
       // PERMISSION_DENIED — only nag on manual taps. Auto-prompts that the user
