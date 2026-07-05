@@ -4589,23 +4589,9 @@ function renderSectorFilters() {
     });
     dropdownHTML += `</div>`;
 
-    // Use same emojis as the landing page hero categories
-    const sectorEmojis = {
-      'estrutura_fundacao': '🏗️',
-      'instalacoes': '⚡',
-      'acabamentos': '🎨',
-      'carpintaria': '🪚',
-      'serralharia_metal': '🔩',
-      'exterior_jardim': '🌿',
-      'projeto_gestao': '📐',
-      'chave_na_mao': '🔑'
-    };
-    const emoji = sectorEmojis[groupKey] || '📦';
-
     catItem.innerHTML = `
-      <span class="cat-icon" style="line-height:1">${emoji}</span>
       <span class="cat-label">${shortName}</span>
-      <span class="cat-arrow">▾</span>
+      <span class="cat-arrow" aria-hidden="true">▾</span>
       ${dropdownHTML}
     `;
 
@@ -9375,25 +9361,24 @@ function fitSectorBar() {
     // Mobile bar scrolls horizontally — let CSS handle sizing there.
     if (window.innerWidth < 1025) {
       container.style.removeProperty('--cat-fs');
+      ub.style.removeProperty('--cat-fs');
       labels.forEach(l => l.style.removeProperty('font-size'));
       return;
     }
-    // Keep emoji icons a consistent size (they follow --cat-fs).
-    container.style.setProperty('--cat-fs', '17px');
-    // Size EACH label to fill its own button, so short labels aren't shrunk
-    // to match the longest one (which left big empty gaps). Clamp so the
-    // sizes stay close and readable.
-    const MIN = 11, MAX = 26;
-    labels.forEach(l => {
-      let lo = MIN, hi = MAX, best = MIN;
-      while (lo <= hi) {
-        const mid = (lo + hi) >> 1;
-        l.style.fontSize = mid + 'px';
-        if (l.scrollWidth <= l.clientWidth + 0.5) { best = mid; lo = mid + 1; }
-        else { hi = mid - 1; }
-      }
-      l.style.fontSize = best + 'px';
-    });
+    // Professional bar: ONE consistent label size across all tabs. Find the
+    // largest size (up to a refined cap) at which EVERY label still fits its
+    // slot, then apply it uniformly — no per-button size jitter, no wrapping.
+    const MIN = 11, MAX = 19;
+    let lo = MIN, hi = MAX, best = MIN;
+    while (lo <= hi) {
+      const mid = (lo + hi) >> 1;
+      labels.forEach(l => { l.style.fontSize = mid + 'px'; });
+      const allFit = labels.every(l => l.scrollWidth <= l.clientWidth + 0.5);
+      if (allFit) { best = mid; lo = mid + 1; } else { hi = mid - 1; }
+    }
+    labels.forEach(l => { l.style.fontSize = best + 'px'; });
+    // Match the master "Todas as áreas" label (it lives outside the container).
+    ub.style.setProperty('--cat-fs', best + 'px');
   } catch (e) {}
 }
 window.addEventListener('resize', () => {
