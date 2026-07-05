@@ -28,8 +28,17 @@
        OS-scaled laptops (e.g. Windows at 125/150%). Mobile keeps its own
        viewport sizing. zoom reflows (unlike transform:scale) and keeps ratios.
        Body is a 100dvh app-shell, so grow its layout height by 1/zoom to fill. */
+    /* --z mirrors the active zoom so vw/vh lengths can be divided back
+       (viewport units resolve against the real viewport and are then scaled
+       by zoom, so raw 96vw would overflow when zoom > 1). */
+    :root{--z:1}
     @media (min-width:1024px){
-      body{zoom:.87;width:calc(100vw / .87) !important;max-width:none !important;height:calc(100dvh / .87) !important;max-height:none !important}
+      :root{--z:1}
+      body{zoom:1;width:100vw !important;max-width:none !important;height:100dvh !important;max-height:none !important}
+    }
+    @media (min-width:1160px){
+      :root{--z:1.13}
+      body{zoom:1.13;width:calc(100vw / 1.13) !important;height:calc(100dvh / 1.13) !important}
     }
     :root{
       /* ── PALETA MODERNIZADA ── */
@@ -72,18 +81,18 @@
     .nav-ad-fallback{position:absolute;inset:0;background:linear-gradient(-45deg,#ffffff,#fff7ed,#ffffff,#fff3e6);background-size:400% 400%;animation:adGrad 28s ease infinite;opacity:1}
     .nav-ad-content{position:relative;z-index:1;display:flex;align-items:center;gap:16px;padding:8px 18px;height:100%;width:100%;box-sizing:border-box}
     .nav-ad-left{flex-shrink:0;min-width:110px}
-    .nav-ad-badge{display:inline-block;background:#f97316;color:#fff;font-size:11px;font-weight:800;padding:3px 10px;border-radius:14px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
-    .nav-ad-title{display:block;color:#0f172a;font-size:18px;font-weight:800;line-height:1.2}
-    .nav-ad-sub{display:block;color:#64748b;font-size:13px;margin-top:3px}
+    .nav-ad-badge{display:inline-block;background:#f97316;color:#fff;font-size:14px;font-weight:800;padding:4px 12px;border-radius:14px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
+    .nav-ad-title{display:block;color:#0f172a;font-size:23px;font-weight:800;line-height:1.2}
+    .nav-ad-sub{display:block;color:#64748b;font-size:17px;margin-top:3px}
     .nav-ad-steps{display:flex;flex-wrap:wrap;gap:8px;flex:1;align-items:center;justify-content:center}
-    .nav-ad-step{display:inline-flex;align-items:center;gap:6px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:16px;padding:4px 9px;font-size:15px;color:#334155;white-space:nowrap;transition:all .3s}
-    .nav-ad-step span{font-size:12px;font-weight:700}
+    .nav-ad-step{display:inline-flex;align-items:center;gap:7px;background:#f1f5f9;border:1px solid #e2e8f0;border-radius:18px;padding:6px 12px;font-size:19px;color:#334155;white-space:nowrap;transition:all .3s}
+    .nav-ad-step span{font-size:16px;font-weight:700}
     .nav-ad-step.lit{background:rgba(249,115,22,.12);border-color:#f97316;color:#fff;transform:scale(1.02);box-shadow:0 0 6px rgba(249,115,22,.18)}
     .nav-ad-step.done{background:rgba(16,185,129,.14);border-color:#10b981;color:#047857}
     .nav-ad-cta{flex-shrink:0;text-align:center;cursor:pointer;transition:transform .2s}
     .nav-ad-cta:hover{transform:scale(1.08)}
-    .nav-ad-cta-text{display:block;color:#fff;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
-    .nav-ad-cta-ring{display:inline-flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;border:2.5px solid #f97316;color:#f97316;font-size:18px;animation:ringPulse 2.8s ease-in-out infinite}
+    .nav-ad-cta-text{display:block;color:#fff;font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
+    .nav-ad-cta-ring{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;border:2.5px solid #f97316;color:#f97316;font-size:22px;animation:ringPulse 2.8s ease-in-out infinite}
     /* Nav-ad rotating slides (Example ↔ Hivex) */
     .nav-ad .nav-ad-slide{display:none}
     .nav-ad .nav-ad-slide.active{display:flex}
@@ -92,7 +101,7 @@
     .story-step{display:inline-flex;flex-direction:column;align-items:center;gap:6px;opacity:.45;transition:all .45s ease}
     .story-ico{width:66px;height:66px;display:inline-flex;align-items:center;justify-content:center;font-size:40px;line-height:1;background:#fff;border:2px solid #e2e8f0;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.1);filter:grayscale(.4)}
     .story-ico svg{width:56px;height:56px}
-    .story-cap{font-size:11px;font-weight:700;color:#475569;text-align:center;white-space:nowrap}
+    .story-cap{font-size:14px;font-weight:700;color:#475569;text-align:center;white-space:nowrap}
     .story-arrow{flex:1 1 40px;min-width:28px;align-self:flex-start;margin-top:31px;height:4px;background:#cbd5e1;border-radius:4px;position:relative;transition:background .4s ease}
     .story-arrow::after{content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:14px solid #cbd5e1;border-top:9px solid transparent;border-bottom:9px solid transparent;transition:border-color .4s ease}
     .story-arrow.on{background:#f97316;animation:arrowFlow 2.4s ease-in-out infinite}
@@ -462,7 +471,10 @@
     .nearby-empty strong{font-size:23px;color:var(--text);display:inline-block;margin-top:10px}
     .nearby-empty span{font-size:19px}
     /* Hide on smaller screens — mobile/tablet already have the bottom results sheet */
-    @media (max-width:1279px){.nearby-panel{display:none}}
+    /* With the bigger desktop zoom the panel needs real width to spare:
+       hidden below 1500px, narrower until 1800px, full width above. */
+    @media (max-width:1499px){.nearby-panel{display:none}}
+    @media (min-width:1500px) and (max-width:1799px){.nearby-panel{width:440px;min-width:420px}}
     .map-info-box{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:var(--surface);border-radius:var(--radius);padding:14px 24px;box-shadow:var(--shadow);font-size:24px;color:var(--muted);display:flex;align-items:center;gap:12px;z-index:1000;pointer-events:none;white-space:nowrap}
     .map-legend{position:absolute;bottom:14px;left:14px;background:rgba(15,23,42,.92);backdrop-filter:blur(8px);border-radius:12px;z-index:1000;min-width:215px;box-shadow:0 4px 16px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);transition:all .3s}
     .map-legend.collapsed .map-legend-body{display:none}
@@ -519,7 +531,7 @@
     /* ── DETAIL PANEL ── */
     .detail-panel{position:fixed;top:170px;right:-880px;width:min(840px,92vw);height:calc(100vh - 170px);background:var(--surface);box-shadow:-4px 0 16px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transition:right .25s cubic-bezier(.25,.46,.45,.94);border-left:1px solid var(--border);will-change:right;-webkit-backface-visibility:hidden;backface-visibility:hidden}
     .detail-panel.open{right:0}
-    @media (min-width:1024px){.detail-panel{height:calc(100dvh / 0.87 - 170px)}}
+    @media (min-width:1024px){.detail-panel{height:calc(100dvh / var(--z) - 170px)}}
     .dp-header{background:linear-gradient(135deg,var(--nav) 0%,#1a2a4a 100%);padding:28px 24px;display:flex;align-items:flex-start;gap:18px;flex-shrink:0;border-bottom:1px solid var(--border)}
     .dp-logo{width:74px;height:74px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:44px;color:#fff;flex-shrink:0;background:rgba(249,115,22,.2)}
     .dp-name{font-size:32px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.15;overflow-wrap:break-word}
@@ -566,14 +578,14 @@
     /* Street View modal — panorama embedded in-site, near-fullscreen.
        (.modal.sv-modal: this rule sits before the base .modal in the file,
        so it needs the higher specificity to win the width battle.) */
-    .modal.sv-modal{width:min(1500px,96vw);max-width:96vw;padding:16px 18px;display:flex;flex-direction:column}
+    .modal.sv-modal{width:min(1500px,calc(96vw / var(--z)));max-width:calc(96vw / var(--z));padding:16px 18px;display:flex;flex-direction:column}
     .sv-head{display:flex;align-items:center;gap:14px;margin-bottom:12px;min-width:0}
     .sv-title{font-size:22px;font-weight:800;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
     .sv-external{font-size:16px;font-weight:700;color:#1a73e8;text-decoration:none;flex-shrink:0;border:1.5px solid rgba(26,115,232,.4);border-radius:10px;padding:10px 16px;background:rgba(26,115,232,.08);transition:background .15s}
     .sv-external:hover{background:rgba(26,115,232,.16)}
     .sv-close{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;width:46px;height:46px;font-size:28px;cursor:pointer;color:var(--text);flex-shrink:0;line-height:1;font-family:inherit}
     .sv-close:hover{border-color:var(--primary);color:var(--primary)}
-    #svFrame{width:100%;height:min(74vh,900px);border:0;border-radius:12px;background:#0b1220}
+    #svFrame{width:100%;height:min(calc(74vh / var(--z)),900px);border:0;border-radius:12px;background:#0b1220}
     .sv-fallback{margin-top:10px;font-size:15px;color:var(--text-secondary);text-align:center}
     .sv-fallback a{color:#1a73e8;font-weight:700}
     @media(max-width:768px){
@@ -671,9 +683,9 @@
     /* ── MODALS ── */
     .overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:400;display:none;align-items:center;justify-content:center}
     .overlay.open{display:flex}
-    .modal{background:var(--surface);border-radius:13px;padding:24px;width:500px;max-width:96vw;box-shadow:var(--shadow-lg);max-height:92vh;overflow-y:auto}
+    .modal{background:var(--surface);border-radius:13px;padding:24px;width:500px;max-width:calc(96vw / var(--z));box-shadow:var(--shadow-lg);max-height:calc(92vh / var(--z));overflow-y:auto}
     /* ── HELP PANEL ── */
-    .help-panel{position:fixed;top:0;right:0;width:520px;max-width:100vw;height:100vh;background:var(--surface);z-index:500;box-shadow:-8px 0 40px rgba(0,0,0,.18);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
+    .help-panel{position:fixed;top:0;right:0;width:520px;max-width:calc(100vw / var(--z));height:calc(100vh / var(--z));background:var(--surface);z-index:500;box-shadow:-8px 0 40px rgba(0,0,0,.18);display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1)}
     .help-panel.open{transform:translateX(0)}
     .help-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:499;display:none;opacity:0;transition:opacity .3s}
     .help-backdrop.open{display:block;opacity:1}
@@ -789,7 +801,7 @@
     button[data-busy="true"]::after{content:"";position:absolute;inset:0;margin:auto;width:18px;height:18px;border-radius:50%;border:2px solid currentColor;border-top-color:transparent;animation:spinBtn .7s linear infinite;color:#fff}
     @keyframes spinBtn{to{transform:rotate(360deg)}}
     /* Legal modal (Terms / Privacy / Cookies / RGPD) */
-    .legal-modal{max-width:680px;max-height:85vh;display:flex;flex-direction:column}
+    .legal-modal{max-width:680px;max-height:calc(85vh / var(--z));display:flex;flex-direction:column}
     .legal-title{font-size:22px;font-weight:800;color:var(--text);margin:0 0 6px;padding-right:32px}
     .legal-meta{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:14px}
     .legal-body{font-size:14px;line-height:1.65;color:var(--text);overflow-y:auto;padding-right:8px;flex:1}
@@ -953,7 +965,7 @@
     /* ── LANDING HERO (idealista-style) ── */
     .home-hero{
       background:linear-gradient(135deg,#0f172a 0%,#0c1827 40%,#1a1040 70%,#0f172a 100%);
-      color:#fff;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      color:#fff;min-height:100vh;min-height:calc(100dvh / var(--z));display:flex;flex-direction:column;align-items:center;justify-content:center;
       text-align:center;position:relative;flex-shrink:0;padding:40px 24px 60px
     }
     .home-hero::before{content:'';position:absolute;inset:0;
@@ -1271,7 +1283,7 @@
        ═══════════════════════════════════════════════════════════════════════ */
 
     /* ── Hero overrides ── */
-    .lp-hero{min-height:100vh;min-height:100dvh;padding:0px 24px 80px;justify-content:center}
+    .lp-hero{min-height:100vh;min-height:calc(100dvh / var(--z));padding:0px 24px 80px;justify-content:center}
     .lp-hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(249,115,22,.15);border:1px solid rgba(249,115,22,.3);border-radius:20px;padding:6px 18px;font-size:11px;font-weight:700;color:#fff;letter-spacing:.8px;text-transform:uppercase;margin-bottom:24px;position:relative;z-index:1}
     .lp-hero-title{font-size:52px;font-weight:900;line-height:1.1;color:#fff;margin-bottom:18px;letter-spacing:-.5px;position:relative;z-index:1;max-width:700px}
     .lp-hero-sub{font-size:17px;color:rgba(255,255,255,.6);max-width:520px;margin:0 auto 44px;line-height:1.7;position:relative;z-index:1}
@@ -2204,7 +2216,7 @@
     /* ── IMPROVEMENT 7: Profile panel ── */
     .profile-panel-overlay{position:fixed;inset:0;z-index:1800;background:rgba(15,23,42,.6);display:none;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
     .profile-panel-overlay.open{display:flex}
-    .profile-panel{background:var(--surface);border-radius:20px;width:min(480px,94vw);max-height:85vh;overflow-y:auto;box-shadow:var(--shadow-lg)}
+    .profile-panel{background:var(--surface);border-radius:20px;width:min(480px,calc(94vw / var(--z)));max-height:calc(85vh / var(--z));overflow-y:auto;box-shadow:var(--shadow-lg)}
     .profile-panel-header{display:flex;align-items:center;justify-content:space-between;padding:20px 24px;border-bottom:1px solid var(--border)}
     .profile-panel-title{font-size:18px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px}
     .profile-panel-close{width:32px;height:32px;border-radius:50%;border:none;background:var(--border-light);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;color:var(--text-secondary)}
@@ -2684,7 +2696,7 @@
     /* Compare modal — side-by-side table */
     /* Near-fullscreen when open — the base .modal is 500px wide, which forced
        the 3 company columns into a cramped horizontal scroll. */
-    .compare-modal{width:min(1500px,96vw);max-width:96vw}
+    .compare-modal{width:min(1500px,calc(96vw / var(--z)));max-width:calc(96vw / var(--z))}
     .compare-body{overflow-x:auto;padding-right:4px}
     .compare-table{width:100%;border-collapse:collapse;min-width:760px}
     .compare-table th,.compare-table td{padding:17px 18px;text-align:left;border-bottom:1px solid var(--border-light);font-size:24px;vertical-align:top;line-height:1.45}
@@ -2729,7 +2741,7 @@
     .featured-badge{position:absolute;top:-8px;right:-8px;background:#f59e0b;color:#fff;font-size:9px;font-weight:900;border-radius:8px;padding:2px 5px;letter-spacing:.03em;line-height:1.3}
 
     /* ── Admin Panel ── */
-    #adminPanel .modal{max-width:900px;width:95vw;max-height:88vh;display:flex;flex-direction:column;padding:0;overflow:hidden}
+    #adminPanel .modal{max-width:900px;width:calc(95vw / var(--z));max-height:calc(88vh / var(--z));display:flex;flex-direction:column;padding:0;overflow:hidden}
     .admin-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
     .admin-header h2{font-size:18px;font-weight:800;margin:0;color:var(--text)}
     .admin-tabs{display:flex;gap:0;border-bottom:2px solid var(--border);flex-shrink:0;padding:0 24px}
