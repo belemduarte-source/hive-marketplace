@@ -542,7 +542,7 @@
     .btn-register-now:hover{background:var(--primary-dark)}
 
     /* ── DETAIL PANEL ── */
-    .detail-panel{position:fixed;top:170px;right:-880px;width:min(840px,92vw);height:calc(100vh - 170px);background:var(--surface);box-shadow:-4px 0 16px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transition:right .25s cubic-bezier(.25,.46,.45,.94);border-left:1px solid var(--border);will-change:right;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+    .detail-panel{position:fixed;top:170px;right:-880px;width:min(588px,64vw);height:calc(100vh - 170px);background:var(--surface);box-shadow:-4px 0 16px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transition:right .25s cubic-bezier(.25,.46,.45,.94);border-left:1px solid var(--border);will-change:right;-webkit-backface-visibility:hidden;backface-visibility:hidden}
     .detail-panel.open{right:0}
     @media (min-width:1024px){.detail-panel{height:calc(100dvh / var(--z) - 170px)}}
     .dp-header{background:linear-gradient(135deg,var(--nav) 0%,#1a2a4a 100%);padding:28px 24px;display:flex;align-items:flex-start;gap:18px;flex-shrink:0;border-bottom:1px solid var(--border)}
