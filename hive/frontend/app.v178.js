@@ -5829,19 +5829,25 @@ function renderNearbyPanel(filtered) {
   const countEl = document.getElementById('nearbyCount');
   const panel = document.getElementById('nearbyPanel');
   if (!listEl || !panel) return;
-  // Skip all work when the panel is hidden (mobile/tablet use the bottom sheet)
-  if (!panel.offsetParent && getComputedStyle(panel).display === 'none') return;
+  // Skip work when the panel is hidden by layout (mobile/tablet bottom sheet,
+  // or the map tab is inactive). Our own empty-state display:none must NOT be
+  // treated as "layout-hidden", otherwise a later re-show would be blocked.
+  const hiddenByLayout = getComputedStyle(panel).display === 'none' && panel.style.display !== 'none';
+  if (hiddenByLayout) return;
 
-  if (countEl) countEl.textContent = filtered.length;
   if (_nearbyObs) { _nearbyObs.disconnect(); _nearbyObs = null; }
 
+  // The panel only appears when at least one company is on the map; otherwise
+  // hide the whole section (no empty-state placeholder).
   if (!filtered.length) {
+    panel.style.display = 'none';
     _nearbyData = []; _nearbyRendered = 0;
-    listEl.innerHTML = '<div class="nearby-empty">🐝<br><strong>' +
-      (activeSectors.size === 0 ? t('emptySectorTitle') : t('searchListEmpty')) + '</strong><br><span>' +
-      (activeSectors.size === 0 ? t('emptySectorSub') : t('searchListEmptySub')) + '</span></div>';
+    if (countEl) countEl.textContent = 0;
     return;
   }
+  panel.style.display = '';   // restore the CSS default (flex) when populated
+
+  if (countEl) countEl.textContent = filtered.length;
 
   const [refLat, refLng] = _nearbyRefPoint();
   // Sort a copy by proximity — never mutate the caller's array (markers use it)

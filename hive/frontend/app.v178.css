@@ -448,7 +448,7 @@
     .map-panel{flex:1;position:relative;overflow:hidden;min-height:340px} /* short viewports (landscape phones): keep the map usable and let the page scroll */
     #map{width:100%;height:100%}
     /* ── Nearby companies panel — right column, mirrors the filter sidebar ── */
-    .nearby-panel{width:590px;min-width:562px;background:var(--surface);border-left:1px solid var(--border);border-top:3px solid var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;box-shadow:-2px 0 8px rgba(0,0,0,.04)}
+    .nearby-panel{width:502px;min-width:478px;background:var(--surface);border-left:1px solid var(--border);border-top:3px solid var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;box-shadow:-2px 0 8px rgba(0,0,0,.04)}
     .nearby-panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:20px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
     .nearby-panel-title{display:flex;align-items:center;gap:11px;font-size:25px;font-weight:800;color:var(--text)}
     .nearby-panel-title i,.nearby-panel-title svg{width:26px;height:26px;color:var(--primary)}
@@ -481,7 +481,7 @@
     /* With the bigger desktop zoom the panel needs real width to spare:
        hidden below 1500px, narrower until 1800px, full width above. */
     @media (max-width:1499px){.nearby-panel{display:none}}
-    @media (min-width:1500px) and (max-width:1799px){.nearby-panel{width:440px;min-width:420px}}
+    @media (min-width:1500px) and (max-width:1799px){.nearby-panel{width:374px;min-width:357px}}
     .map-info-box{position:absolute;top:12px;left:50%;transform:translateX(-50%);background:var(--surface);border-radius:var(--radius);padding:14px 24px;box-shadow:var(--shadow);font-size:24px;color:var(--muted);display:flex;align-items:center;gap:12px;z-index:1000;pointer-events:none;white-space:nowrap}
     .map-legend{position:absolute;bottom:14px;left:14px;background:rgba(15,23,42,.92);backdrop-filter:blur(8px);border-radius:12px;z-index:1000;min-width:215px;box-shadow:0 4px 16px rgba(0,0,0,.3);border:1px solid rgba(255,255,255,.1);transition:all .3s}
     .map-legend.collapsed .map-legend-body{display:none}
