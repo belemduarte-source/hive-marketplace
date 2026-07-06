@@ -144,7 +144,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v184.css"/>
+  <link rel="stylesheet" href="app.v185.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -154,6 +154,40 @@
   
 </head>
 <body>
+<script>
+/* Fluid responsive zoom — runs before the body content renders (no flash) and
+   on every resize. Scales the desktop UI to a CONSISTENT effective layout width
+   (~1280px) on every laptop, instead of the old hard 1160px breakpoint that
+   jumped the zoom 13% and made a slightly-wider screen render MORE cramped.
+   Sets --z so the CSS vw/vh compensations (calc(.../var(--z))) stay correct.
+   Below 1024px the mobile/tablet layout keeps its native sizing. */
+(function () {
+  var DESIGN = 1280, MINZ = 0.85, MAXZ = 1.2;
+  function apply() {
+    var b = document.body, r = document.documentElement, w = window.innerWidth;
+    if (!b) return;
+    if (w < 1024) {
+      b.style.zoom = ''; b.style.width = ''; b.style.height = '';
+      b.style.maxWidth = ''; b.style.maxHeight = '';
+      r.style.setProperty('--z', '1');
+      return;
+    }
+    var z = Math.max(MINZ, Math.min(MAXZ, w / DESIGN));
+    z = Math.round(z * 1000) / 1000;
+    b.style.zoom = z;
+    b.style.width = 'calc(100vw / ' + z + ')';
+    b.style.maxWidth = 'none';
+    b.style.height = 'calc(100dvh / ' + z + ')';
+    b.style.maxHeight = 'none';
+    r.style.setProperty('--z', String(z));
+  }
+  window.__applyResponsiveZoom = apply;
+  apply();
+  var t;
+  window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(apply, 100); });
+  window.addEventListener('orientationchange', function () { setTimeout(apply, 100); });
+})();
+</script>
 
 <noscript>
   <div style="position:fixed;inset:0;background:#0f172a;color:#fff;z-index:99999;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;text-align:center;font-family:'Segoe UI',system-ui,sans-serif">
@@ -2118,7 +2152,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v184.js"></script>
+<script src="app.v185.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

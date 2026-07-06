@@ -28,18 +28,15 @@
        OS-scaled laptops (e.g. Windows at 125/150%). Mobile keeps its own
        viewport sizing. zoom reflows (unlike transform:scale) and keeps ratios.
        Body is a 100dvh app-shell, so grow its layout height by 1/zoom to fill. */
-    /* --z mirrors the active zoom so vw/vh lengths can be divided back
-       (viewport units resolve against the real viewport and are then scaled
-       by zoom, so raw 96vw would overflow when zoom > 1). */
+    /* --z mirrors the active body zoom so vw/vh lengths can be divided back
+       (viewport units resolve against the real viewport and are then scaled by
+       zoom, so raw 96vw would overflow when zoom > 1).
+       The desktop zoom + --z are driven by the fluid responsive-zoom script in
+       index.html: it scales the UI to a CONSISTENT effective width (~1280px) on
+       every laptop, replacing the old hard 1160px breakpoint that jumped the
+       zoom 13% (making a slightly-wider screen render MORE cramped). Without JS
+       the page degrades to a plain zoom:1 responsive layout. */
     :root{--z:1}
-    @media (min-width:1024px){
-      :root{--z:1}
-      body{zoom:1;width:100vw !important;max-width:none !important;height:100dvh !important;max-height:none !important}
-    }
-    @media (min-width:1160px){
-      :root{--z:1.13}
-      body{zoom:1.13;width:calc(100vw / 1.13) !important;height:calc(100dvh / 1.13) !important}
-    }
     :root{
       /* ── PALETA MODERNIZADA ── */
       --bg:#f5f7fa;--surface:#ffffff;--nav:#0f172a;
@@ -544,7 +541,10 @@
     /* ── DETAIL PANEL ── */
     .detail-panel{position:fixed;top:170px;right:-880px;width:min(588px,64vw);height:calc(100vh - 170px);background:var(--surface);box-shadow:-4px 0 16px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transition:right .25s cubic-bezier(.25,.46,.45,.94);border-left:1px solid var(--border);will-change:right;-webkit-backface-visibility:hidden;backface-visibility:hidden}
     .detail-panel.open{right:0}
-    @media (min-width:1024px){.detail-panel{zoom:.7;top:243px;height:calc((100dvh / var(--z) - 170px) / .7)}}
+    /* top/height account for the panel's own zoom:.7 AND the ~204px desktop nav
+       (logo + search + activity bar + ad banner). 296*.7 ≈ 207 clears the nav
+       with a small gap at every body zoom; the height offset matches. */
+    @media (min-width:1024px){.detail-panel{zoom:.7;top:296px;height:calc((100dvh / var(--z) - 207px) / .7)}}
     .dp-header{background:linear-gradient(135deg,var(--nav) 0%,#1a2a4a 100%);padding:28px 24px;display:flex;align-items:flex-start;gap:18px;flex-shrink:0;border-bottom:1px solid var(--border)}
     .dp-logo{width:74px;height:74px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:44px;color:#fff;flex-shrink:0;background:rgba(249,115,22,.2)}
     .dp-name{font-size:32px;font-weight:800;color:#fff;margin-bottom:6px;line-height:1.15;overflow-wrap:break-word}
