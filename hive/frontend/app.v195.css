@@ -2740,8 +2740,8 @@
     #compareOverlay .modal-close{font-size:32px;width:46px;height:46px}
     #compareOverlay > .modal > div:last-child .btn-submit{font-size:22px;padding:15px 38px}
     /* Compare toggle on the nearby-panel cards */
-    .nc-compare{display:flex;align-items:center;gap:12px;margin-top:12px;font-size:32px;font-weight:700;color:var(--text-secondary);cursor:pointer;user-select:none;width:max-content}
-    .nc-compare input{width:36px;height:36px;accent-color:var(--primary);cursor:pointer}
+    .nc-compare{display:flex;align-items:center;gap:8px;margin-top:10px;font-size:19px;font-weight:700;color:var(--text-secondary);cursor:pointer;user-select:none;width:max-content}
+    .nc-compare input{width:22px;height:22px;accent-color:var(--primary);cursor:pointer}
     .nc-compare:hover{color:var(--primary)}
     .review-card-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
     .review-card-author{font-weight:700;font-size:13px;color:var(--text)}
