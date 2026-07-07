@@ -144,7 +144,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v188.css"/>
+  <link rel="stylesheet" href="app.v189.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -156,34 +156,55 @@
 <body>
 <script>
 /* Fluid responsive zoom — runs before the body content renders (no flash) and
-   on every resize. Scales the desktop UI to a CONSISTENT effective layout width
-   (~1280px) on every laptop, instead of the old hard 1160px breakpoint that
-   jumped the zoom 13% and made a slightly-wider screen render MORE cramped.
+   on every resize / display change. Two inputs, two goals:
+     • WINDOW SIZE: wider windows get a modestly larger UI. The width-following
+       is dampened (sqrt) so it never dominates.
+     • OS DISPLAY SCALE (devicePixelRatio): 1 CSS px is already normalized by
+       the OS scale, so zoom≈1 matches the size of the user's other apps. On
+       scaled displays (Windows 125/150%, dpr>1) the user explicitly asked for
+       a LARGER UI — we never render below 1:1 there. (The old width-only
+       formula shrank the site 11% exactly on those screens: the more the
+       customer scaled Windows up, the smaller Hivex got.)
    Sets --z so the CSS vw/vh compensations (calc(.../var(--z))) stay correct.
    Below 1024px the mobile/tablet layout keeps its native sizing. */
 (function () {
-  /* DESIGN 1440 + max 1.1: customer feedback said the site opened "com muito
-     zoom" — target a roomier effective width and never enlarge more than 10%. */
-  var DESIGN = 1440, MINZ = 0.85, MAXZ = 1.1;
+  var DESIGN = 1440, MAXZ = 1.12;
+  function zoomFor(w, dpr) {
+    if (w < 1024) return 1;
+    var z = Math.sqrt(w / DESIGN);                 // dampened width-following
+    var minz = dpr > 1.01 ? 1.0 : 0.95;            // respect the OS scale
+    return Math.round(Math.max(minz, Math.min(MAXZ, z)) * 1000) / 1000;
+  }
+  var _dprWatch = null;
   function apply() {
     var b = document.body, r = document.documentElement, w = window.innerWidth;
     if (!b) return;
+    var dpr = window.devicePixelRatio || 1;
     if (w < 1024) {
       b.style.zoom = ''; b.style.width = ''; b.style.height = '';
       b.style.maxWidth = ''; b.style.maxHeight = '';
       r.style.setProperty('--z', '1');
-      return;
+    } else {
+      var z = zoomFor(w, dpr);
+      b.style.zoom = z;
+      b.style.width = 'calc(100vw / ' + z + ')';
+      b.style.maxWidth = 'none';
+      b.style.height = 'calc(100dvh / ' + z + ')';
+      b.style.maxHeight = 'none';
+      r.style.setProperty('--z', String(z));
     }
-    var z = Math.max(MINZ, Math.min(MAXZ, w / DESIGN));
-    z = Math.round(z * 1000) / 1000;
-    b.style.zoom = z;
-    b.style.width = 'calc(100vw / ' + z + ')';
-    b.style.maxWidth = 'none';
-    b.style.height = 'calc(100dvh / ' + z + ')';
-    b.style.maxHeight = 'none';
-    r.style.setProperty('--z', String(z));
+    // Re-apply when the window moves to a monitor with a different scale
+    // (resize doesn't always fire for that). One live listener at a time.
+    try {
+      if (_dprWatch) _dprWatch.mq.removeEventListener('change', _dprWatch.fn);
+      var mq = window.matchMedia('(resolution: ' + dpr + 'dppx)');
+      var fn = function () { apply(); };
+      mq.addEventListener('change', fn);
+      _dprWatch = { mq: mq, fn: fn };
+    } catch (_) {}
   }
   window.__applyResponsiveZoom = apply;
+  window.__zoomFor = zoomFor;   // pure — used by layout tests
   apply();
   var t;
   window.addEventListener('resize', function () { clearTimeout(t); t = setTimeout(apply, 100); });
@@ -2173,7 +2194,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v188.js"></script>
+<script src="app.v189.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
