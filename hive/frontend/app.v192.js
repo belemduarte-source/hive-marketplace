@@ -4787,6 +4787,22 @@ function updateSectorActiveStates() {
   document.querySelectorAll('.cat-dd-item[data-sector]').forEach(item => {
     item.classList.toggle('active', activeSectors.has(item.dataset.sector));
   });
+  // Master "Todas as áreas": checked only while EVERY activity is selected.
+  // This used to be computed only when the bar was rebuilt, so the clear-all ✕
+  // (and deselecting an individual activity) left a stale ✓ on the button.
+  const master = document.querySelector('.cat-item-master');
+  if (master) {
+    const allKeys = [];
+    Object.values(SECTOR_HIERARCHY).forEach(g =>
+      Object.values(g.categories).forEach(cat =>
+        Object.keys(cat.subcategories).forEach(k => allKeys.push(k))));
+    const allSel = allKeys.length > 0 && allKeys.every(k => activeSectors.has(k));
+    master.classList.toggle('active', allSel);
+    master.title = allSel ? t('sectorAllDeselectAll') : t('sectorAllSelectAll');
+    const check = master.querySelector('.cat-icon');
+    if (allSel && !check) master.insertAdjacentHTML('afterbegin', '<span class="cat-icon" style="line-height:1">✓</span>');
+    else if (!allSel && check) check.remove();
+  }
   // Show/hide clear-all button
   const clearBtn = document.getElementById('sectorClearBtn');
   if (clearBtn) clearBtn.style.display = activeSectors.size > 0 ? '' : 'none';
