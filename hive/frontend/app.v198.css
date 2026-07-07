@@ -1105,8 +1105,8 @@
     .cat-item:hover{background:rgba(255,255,255,.06);color:#fff}
     .cat-item:hover .cat-arrow{opacity:.7}
     /* Active tab: clean orange underline indicator, no boxy pill */
-    /* Selected area: whole tab fills light blue (no underline indicator) */
-    .cat-item.active{color:#0f172a;font-weight:700;background:#dbeafe;border-radius:8px;box-shadow:none}
+    /* Selected area: whole tab fills the primary button blue */
+    .cat-item.active{color:#fff;font-weight:700;background:var(--primary);border-radius:8px;box-shadow:none}
     .cat-item.open{background:rgba(255,255,255,.09);color:#fff}
     /* Master "Todas as áreas" — primary toggle, visually distinct from tabs */
     .cat-item-master{flex:0 0 auto;font-weight:700;color:#fff;background:rgba(255,255,255,.06);border-radius:8px;margin:0 6px 0 2px;padding:0 13px;box-shadow:none}
@@ -3064,9 +3064,9 @@
       .ub-sectors .cat-item{border-radius:0;transition:background .15s ease,box-shadow .15s ease,color .15s ease}
       .ub-sectors .cat-item:hover{background:rgba(255,255,255,.06);color:#fff}
       /* Selected tab: crisp orange underline, no boxy pill */
-      .ub-sectors .cat-item.active{background:#dbeafe;color:#0f172a;outline:none;box-shadow:none;border-radius:8px}
-      .ub-sectors .cat-item.active .cat-label{color:#0f172a}
-      .ub-sectors .cat-item.active .cat-arrow{opacity:.55}
+      .ub-sectors .cat-item.active{background:var(--primary);color:#fff;outline:none;box-shadow:none;border-radius:8px}
+      .ub-sectors .cat-item.active .cat-label{color:#fff}
+      .ub-sectors .cat-item.active .cat-arrow{opacity:.7}
       /* Master "Todas as áreas": rounded pill, solid orange when on */
       .ub-sectors .cat-item-master{border-radius:8px}
       .ub-sectors .cat-item-master:hover{background:rgba(37,99,235,.22)}
@@ -3201,3 +3201,13 @@
     .lp-sb-icon .lucide{width:19px;height:19px;stroke-width:2.2}
     /* Accessible primary CTAs on desktop too (mobile already enforced) */
     .btn-submit,.ub-btn,.btn-dp-contact,.btn-dp-directions,.compare-bar-go{min-height:44px}
+
+    /* ── MOBILE SIMPLIFICADO (estilo idealista: search-first) ─────────────── */
+    /* No telemóvel a página reduz-se ao essencial: barra de topo, pesquisa,
+       categorias, mais bem avaliados, números e rodapé. As faixas publicitárias
+       e a secção "Como funciona" saem — ruído num ecrã pequeno. */
+    @media (max-width:768px){
+      .nav-ad{display:none !important}
+      .ad-banner-home{display:none !important}
+      .lp-steps-section{display:none !important}
+    }

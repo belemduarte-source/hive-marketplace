@@ -150,7 +150,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v197.css"/>
+  <link rel="stylesheet" href="app.v198.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -1069,7 +1069,9 @@
 
   <!-- FILTER SIDEBAR -->
   <div class="filter-sidebar">
-    <div class="filter-header">
+    <!-- Cabeçalho "Filtros" + Limpar Tudo escondidos (feedback: não acrescentavam
+         valor — limpar continua disponível no ✕ da barra de atividades). -->
+    <div class="filter-header" style="display:none">
       <div class="filter-title-main"><i data-lucide="sliders-horizontal"></i><span data-i18n="filterTitle">Filtros</span></div>
       <button class="btn-clear-big" onclick="clearAllFilters()" title="Limpar todos os filtros activos">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
@@ -2201,7 +2203,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v197.js"></script>
+<script src="app.v198.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
