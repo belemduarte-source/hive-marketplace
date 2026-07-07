@@ -61,7 +61,7 @@
     /* height:100dvh adapts when the mobile address bar collapses/expands;
        100vh fallback for older browsers. overscroll-behavior:none keeps
        gestures from bouncing the page off-screen. */
-    body{font-family:'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);width:100vw;max-width:100vw;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;overscroll-behavior:none;touch-action:pan-y;position:relative}
+    body{font-family:'Inter','Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--text);width:100vw;max-width:100vw;height:100vh;height:100dvh;display:flex;flex-direction:column;overflow:hidden;overscroll-behavior:none;touch-action:pan-y;position:relative}
 
     /* ── NAV ── */
     nav{background:var(--nav);padding:0;display:flex;align-items:center;flex-wrap:wrap;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,.3);position:relative;z-index:200;transition:transform 0.3s ease;overflow:visible;will-change:transform;-webkit-backface-visibility:hidden;backface-visibility:hidden}
@@ -75,7 +75,9 @@
     .nav-link.active svg{opacity:1;color:#f97316}
     /* ── NAV AD BANNER ── */
     .nav-ad{flex:1;min-width:0;align-self:center;position:relative;border-radius:14px;overflow:hidden;margin:8px 12px;background:#ffffff;border:1px solid #e5e7eb;box-shadow:0 2px 12px rgba(0,0,0,.15);min-height:150px;max-height:316px;display:flex}
-    .nav-ad-fallback{position:absolute;inset:0;background:linear-gradient(-45deg,#ffffff,#fff7ed,#ffffff,#fff3e6);background-size:400% 400%;animation:adGrad 28s ease infinite;opacity:1}
+    /* Static gradient — permanent motion in the header reads as a display ad,
+       not a professional platform (credibility pass). */
+    .nav-ad-fallback{position:absolute;inset:0;background:linear-gradient(135deg,#ffffff,#fff7ed 55%,#fff3e6);opacity:1}
     .nav-ad-content{position:relative;z-index:1;display:flex;align-items:center;gap:16px;padding:8px 18px;height:100%;width:100%;box-sizing:border-box}
     .nav-ad-left{flex-shrink:0;min-width:110px}
     .nav-ad-badge{display:inline-block;background:#f97316;color:#fff;font-size:14px;font-weight:800;padding:4px 12px;border-radius:14px;text-transform:uppercase;letter-spacing:.5px;margin-bottom:4px}
@@ -89,7 +91,7 @@
     .nav-ad-cta{flex-shrink:0;text-align:center;cursor:pointer;transition:transform .2s}
     .nav-ad-cta:hover{transform:scale(1.08)}
     .nav-ad-cta-text{display:block;color:#fff;font-size:16px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;margin-bottom:3px}
-    .nav-ad-cta-ring{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;border:2.5px solid #f97316;color:#f97316;font-size:22px;animation:ringPulse 2.8s ease-in-out infinite}
+    .nav-ad-cta-ring{display:inline-flex;align-items:center;justify-content:center;width:48px;height:48px;border-radius:50%;border:2.5px solid #f97316;color:#f97316;font-size:22px}
     /* Nav-ad rotating slides (Example ↔ Hivex) */
     .nav-ad .nav-ad-slide{display:none}
     .nav-ad .nav-ad-slide.active{display:flex}
@@ -101,7 +103,7 @@
     .story-cap{font-size:14px;font-weight:700;color:#475569;text-align:center;white-space:nowrap}
     .story-arrow{flex:1 1 40px;min-width:28px;align-self:flex-start;margin-top:31px;height:4px;background:#cbd5e1;border-radius:4px;position:relative;transition:background .4s ease}
     .story-arrow::after{content:'';position:absolute;right:-1px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:14px solid #cbd5e1;border-top:9px solid transparent;border-bottom:9px solid transparent;transition:border-color .4s ease}
-    .story-arrow.on{background:#f97316;animation:arrowFlow 2.4s ease-in-out infinite}
+    .story-arrow.on{background:#f97316}
     .story-arrow.on::after{border-left-color:#f97316}
     @keyframes arrowFlow{0%,100%{opacity:.8}50%{opacity:1}}
     .story-step.lit{opacity:1;transform:scale(1.03)}
@@ -3153,3 +3155,38 @@
       .lp-cc-tag{font-size:11px !important;padding:3px 8px !important}
       .lp-company-card{padding:12px !important}
     }
+
+    /* ── CREDIBILITY PASS ─────────────────────────────────────────────────── */
+    /* Lucide icons inside the nav publicity strip (replaced the emojis) */
+    .nav-ad-step .lucide{width:16px;height:16px;stroke-width:2.2;color:#9a3412;flex-shrink:0}
+    .story-ico .lucide{width:34px;height:34px;stroke-width:1.7;color:#334155}
+
+    /* Monogram tile: professional fallback when a company has no logo */
+    .logo-mono{background:#334155 !important;color:#e2e8f0 !important;font-weight:800;letter-spacing:.4px;font-family:'Inter','Segoe UI',system-ui,sans-serif;display:flex;align-items:center;justify-content:center}
+    .lp-cc-emoji.logo-mono{font-size:19px}
+    .mini-list-emoji.logo-mono{font-size:13px}
+    .recent-chip-emoji.logo-mono{font-size:10px;display:inline-flex;border-radius:6px;padding:2px 4px}
+    .compare-co-emoji.logo-mono{font-size:16px;display:inline-flex;border-radius:9px;width:40px;height:40px;margin-right:10px;vertical-align:middle}
+    .compare-co-logo{display:inline-block;width:40px;height:40px;border-radius:9px;background-size:cover;background-position:center;margin-right:10px;vertical-align:middle;border:1px solid var(--border)}
+    .slc-emoji.logo-mono{font-size:15px}
+    .nc-logo.logo-mono{font-size:16px}
+    .profile-company-emoji.logo-mono{font-size:14px}
+    .dp-logo.logo-mono{font-size:18px}
+    [data-theme="dark"] .logo-mono{background:#475569 !important;color:#f1f5f9 !important}
+
+    /* "Novo na Hivex" — neutral badge instead of a wall of empty stars */
+    .badge-new{display:inline-block;background:var(--accent-light);color:var(--accent);font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;line-height:1.5;letter-spacing:.01em;white-space:nowrap}
+    [data-theme="dark"] .badge-new{background:rgba(147,197,253,.14);color:#93c5fd}
+
+    /* "✓ Verificada" — company passed NIF + Certidão checks */
+    .badge-verified{display:inline-block;background:rgba(16,185,129,.12);color:#047857;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;line-height:1.5;white-space:nowrap;vertical-align:middle}
+    [data-theme="dark"] .badge-verified{background:rgba(52,211,153,.15);color:#6ee7b7}
+
+    /* Button system: one radius, one weight, flat fills, no text-shadow */
+    .btn-submit,.ub-btn,.compare-bar-go,.compare-bar-clear,.lp-see-all-cta,
+    .btn-dp-contact,.btn-dp-directions,.cookie-btn,.cat-item-master,
+    .lp-hero-register-btn{border-radius:10px;font-weight:700;text-shadow:none}
+    .lp-sb-btn{border-radius:0 10px 10px 0;font-weight:700;text-shadow:none}
+
+    /* Footer trust line */
+    .footer-trust{font-size:12px;color:var(--muted);margin:0 0 8px;line-height:1.6}

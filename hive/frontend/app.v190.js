@@ -177,7 +177,7 @@ const translations = {
     valTags:'Por favor insira pelo menos uma especialidade.',
     toastRegistered: name => `"${name}" registada com sucesso! Visível no mapa.`,
     popupNoRatings:'Sem avaliações ainda', popupNewBadge:'Novo Registo',
-    openNow:'Aberto', closedNow:'Fechado',
+    openNow:'Aberto', closedNow:'Fechado', newOnHivex:'Novo na Hivex',
     btnSearch:'Pesquisar',
     heroLabel:'Marketplace B2B & B2C',
     heroTitleMain:'Ligue-se. Colabore. ', heroTitleAccent:'Cresça.',
@@ -383,7 +383,7 @@ const translations = {
     adNavSub:'10 especialistas, 1 plataforma',
     adMainSub:'8 áreas, 1 plataforma',
     adCta:'Encontre<br>tudo aqui',
-    adHivexBadge:'✨ A Hivex',
+    adHivexBadge:'A Hivex',
     adHivexTitle:'Do terreno à casa',
     adHivexSub:'O seu projeto, passo a passo',
     adHivexB2C:'Clientes encontram empresas',
@@ -588,7 +588,7 @@ const translations = {
     valTags:'Please enter at least one specialty.',
     toastRegistered: name => `"${name}" successfully registered! Visible on the map.`,
     popupNoRatings:'No ratings yet', popupNewBadge:'New Entry',
-    openNow:'Open', closedNow:'Closed',
+    openNow:'Open', closedNow:'Closed', newOnHivex:'New on Hivex',
     btnSearch:'Search',
     heroLabel:'B2B & B2C Marketplace',
     heroTitleMain:'Connect. Collaborate. ', heroTitleAccent:'Grow.',
@@ -785,7 +785,7 @@ const translations = {
     adNavSub:'10 specialists, 1 platform',
     adMainSub:'8 areas, 1 platform',
     adCta:'Find<br>everything here',
-    adHivexBadge:'✨ Hivex',
+    adHivexBadge:'Hivex',
     adHivexTitle:'From plot to home',
     adHivexSub:'Your project, step by step',
     adHivexB2C:'Clients find companies',
@@ -993,7 +993,7 @@ const translations = {
     valTags:'Veuillez saisir au moins une spécialité.',
     toastRegistered: name => `"${name}" enregistrée avec succès ! Visible sur la carte.`,
     popupNoRatings:'Aucun avis encore', popupNewBadge:'Nouveau Enregistrement',
-    openNow:'Ouvert', closedNow:'Fermé',
+    openNow:'Ouvert', closedNow:'Fermé', newOnHivex:'Nouveau sur Hivex',
     btnSearch:'Rechercher',
     heroLabel:'Marketplace B2B & B2C',
     heroTitleMain:'Connectez. Collaborez. ', heroTitleAccent:'Grandissez.',
@@ -1190,7 +1190,7 @@ const translations = {
     adNavSub:'10 spécialistes, 1 plateforme',
     adMainSub:'8 domaines, 1 plateforme',
     adCta:'Trouvez<br>tout ici',
-    adHivexBadge:'✨ Hivex',
+    adHivexBadge:'Hivex',
     adHivexTitle:'Du terrain à la maison',
     adHivexSub:'Votre projet, étape par étape',
     adHivexB2C:'Les clients trouvent des entreprises',
@@ -1394,7 +1394,7 @@ const translations = {
     valTags:'Por favor introduzca al menos una especialidad.',
     toastRegistered: name => `"${name}" registrada con éxito. Visible en el mapa.`,
     popupNoRatings:'Sin valoraciones aún', popupNewBadge:'Nuevo Registro',
-    openNow:'Abierto', closedNow:'Cerrado',
+    openNow:'Abierto', closedNow:'Cerrado', newOnHivex:'Nuevo en Hivex',
     btnSearch:'Buscar',
     heroLabel:'Marketplace B2B & B2C',
     heroTitleMain:'Conéctese. Colabore. ', heroTitleAccent:'Crezca.',
@@ -1596,7 +1596,7 @@ const translations = {
     adNavSub:'10 especialistas, 1 plataforma',
     adMainSub:'8 áreas, 1 plataforma',
     adCta:'Encuentre<br>todo aquí',
-    adHivexBadge:'✨ Hivex',
+    adHivexBadge:'Hivex',
     adHivexTitle:'Del terreno a la casa',
     adHivexSub:'Tu proyecto, paso a paso',
     adHivexB2C:'Los clientes encuentran empresas',
@@ -1792,7 +1792,7 @@ const translations = {
     valTags:'Bitte mindestens einen Fachbereich eingeben.',
     toastRegistered: name => `„${name}" wurde erfolgreich registriert und erscheint jetzt auf der Karte.`,
     popupNoRatings:'Noch keine Bewertungen', popupNewBadge:'Neu eingetragen',
-    openNow:'Geöffnet', closedNow:'Geschlossen',
+    openNow:'Geöffnet', closedNow:'Geschlossen', newOnHivex:'Neu bei Hivex',
     btnSearch:'Suchen',
     heroLabel:'B2B & B2C Marktplatz',
     heroTitleMain:'Vernetzen. Zusammenarbeiten.', heroTitleAccent:'Wachsen.',
@@ -1988,7 +1988,7 @@ const translations = {
     adNavSub:'10 Fachleute, 1 Plattform',
     adMainSub:'8 Gewerke, 1 Plattform',
     adCta:'Hier alles<br>finden',
-    adHivexBadge:'✨ Hivex',
+    adHivexBadge:'Hivex',
     adHivexTitle:'Vom Grundstück zum Haus',
     adHivexSub:'Ihr Projekt, Schritt für Schritt',
     adHivexB2C:'Kunden finden Unternehmen',
@@ -2673,7 +2673,7 @@ function renderFeaturedCompanies() {
     return `
       <div class="lp-company-card" style="--cc:${(typeof getSectorColor === 'function' ? getSectorColor(c) : (c.color || '#f97316'))}" onclick="lpOpenCompany(${c.id})">
         <div class="lp-cc-header">
-          <div class="lp-cc-emoji"${c.logo ? ` style="background:url('${c.logo}') center/cover no-repeat"` : ''}>${c.logo ? '' : (c.emoji || '🏢')}</div>
+          <div class="lp-cc-emoji${c.logo ? '' : ' logo-mono'}"${c.logo ? ` style="background:url('${c.logo}') center/cover no-repeat"` : ''}>${c.logo ? '' : companyMonogram(c)}</div>
           <div class="lp-cc-info">
             <div class="lp-cc-name" title="${c.name}">${c.name}</div>
             <div class="lp-cc-sector">${sectorLabel}</div>
@@ -3211,7 +3211,7 @@ function openMyFavourites() {
     const items = ids.map(id => companies.find(c => Number(c.id) === id)).filter(Boolean);
     body.innerHTML = items.map(c => `
       <div class="mini-list-item" onclick="closeMyFavourites();openDetail(${c.id})">
-        <div class="mini-list-emoji">${c.emoji || '🏢'}</div>
+        <div class="mini-list-emoji logo-mono">${companyMonogram(c)}</div>
         <div class="mini-list-text">
           <div class="mini-list-name">${escHtml(c.name)}</div>
           <div class="mini-list-sub">${c.rating ? '★ ' + c.rating.toFixed(1) + ' · ' : ''}${escHtml(c.city || c.address || '—')}</div>
@@ -3268,7 +3268,7 @@ function _renderRecentStrip() {
     items.map(c => `
       <span class="recent-chip" title="${escHtml(c.name)}">
         <span style="display:inline-flex;align-items:center;gap:6px;cursor:pointer" onclick="openDetail(${c.id})">
-          <span class="recent-chip-emoji">${c.emoji || '🏢'}</span>
+          <span class="recent-chip-emoji logo-mono">${companyMonogram(c)}</span>
           <span class="recent-chip-name">${escHtml(c.name)}</span>
         </span>
         <button type="button" class="recent-chip-x" aria-label="${removeTxt}" title="${removeTxt}" onclick="event.stopPropagation();_removeRecent(${c.id})">×</button>
@@ -3421,9 +3421,9 @@ function openCompareModal() {
 
   // Build a side-by-side table. First column is the field labels.
   const fields = [
-    { key:'header',   label:'',                renderer: c => `<div class="compare-co-header"><span class="compare-co-emoji">${c.emoji||'🏢'}</span>${escHtml(c.name)}</div>` },
+    { key:'header',   label:'',                renderer: c => `<div class="compare-co-header">${c.logo ? `<span class="compare-co-logo" style="background-image:url('${c.logo}')"></span>` : `<span class="compare-co-emoji logo-mono">${companyMonogram(c)}</span>`}${escHtml(c.name)}</div>` },
     { key:'score',    label:'Pontuação média', best: c => (c.rating||0) > 0 && c.rating === bestScore,
-      renderer: c => c.rating ? `<span class="compare-co-rating">★ ${c.rating.toFixed(1)}</span>` : '<span style="color:var(--muted)">Sem avaliações</span>' },
+      renderer: c => c.rating ? `<span class="compare-co-rating">★ ${c.rating.toFixed(1)}</span>` : `<span class="badge-new">${t('newOnHivex')}</span>` },
     { key:'reviews',  label:'N.º de avaliações', best: c => (c.reviews||0) > 0 && (c.reviews||0) === bestReviews,
       renderer: c => (c.reviews||0) > 0 ? `<strong>${c.reviews}</strong>` : '<span style="color:var(--muted)">0</span>' },
     { key:'distance', label:'Distância',       best: c => dist.get(c.id) === bestDist,
@@ -4196,9 +4196,11 @@ try {
     updateWhenZooming: false,
   }).addTo(map);
   if (_tabSearchEl) { _tabSearchEl.style.display = 'none'; _tabSearchEl.style.visibility = ''; }
+  // Slate-blue instead of orange: the radius is context, not a call to action —
+  // keeps orange reserved for primary CTAs (credibility pass).
   radiusCircle = L.circle(PORTUGAL_CENTER, {
-    radius: 600000, color:'#f97316', fillColor:'#f97316',
-    fillOpacity: 0.12, weight: 2.5, dashArray:'5,4'
+    radius: 600000, color:'#64748b', fillColor:'#64748b',
+    fillOpacity: 0.08, weight: 2, dashArray:'5,4'
   }).addTo(map);
 } catch(e) {
   console.error('Map init failed:', e);
@@ -4271,13 +4273,25 @@ function _hexToGlow(hex) {
   const r=parseInt(hex.slice(1,3),16),g=parseInt(hex.slice(3,5),16),b=parseInt(hex.slice(5,7),16);
   return `rgba(${r},${g},${b},.4)`;
 }
+// Professional fallback when a company has no logo: a monogram with the
+// company's initials (LinkedIn-style tile) instead of a consumer-grade emoji.
+function companyMonogram(c) {
+  const stop = new Set(['de','da','do','das','dos','e','a','o','&','-','lda','lda.','sa','s.a.','s.a','unipessoal','sociedade']);
+  const words = String((c && c.name) || '').split(/\s+/)
+    .filter(w => w && !stop.has(w.toLowerCase().replace(/[.,()]/g, '')));
+  const src = words.length ? words : String((c && c.name) || '?').split(/\s+/);
+  const ini = (src[0] ? src[0][0] : '') + (src[1] ? src[1][0] : '');
+  return (ini || '?').toUpperCase();
+}
+window.companyMonogram = companyMonogram;
+
 function createMarkerIcon(c) {
   const sectorColor = getSectorColor(c);
   const bg = c.pinType === 'gold' ? '#f59e0b' : sectorColor;
   const featured = !!c.featured;
-  const emoji = c.emoji || '🏢';
+  const mono = companyMonogram(c);
   const key = c.logo ? ('logo|' + c.id + '|' + (featured ? '1' : '0'))
-                     : (bg + '|' + (featured ? '1' : '0') + '|' + emoji);
+                     : (bg + '|' + (featured ? '1' : '0') + '|' + mono);
   let icon = _markerIconCache.get(key);
   if (icon) return icon;
 
@@ -4292,7 +4306,7 @@ function createMarkerIcon(c) {
   const borderColor = featured ? '#f59e0b' : '#ffffff';
   icon = L.divIcon({
     className: '',
-    html: `<div style="width:40px;height:42px;position:relative;cursor:pointer;filter:drop-shadow(0 3px 5px ${glow})${featured ? ' drop-shadow(0 0 2px rgba(245,158,11,.9))' : ''}">${featuredBadge}<div style="position:absolute;inset:0;background:${borderColor};clip-path:${hex}"></div><div style="position:absolute;inset:3px;background:${bg};clip-path:${hex};display:flex;align-items:center;justify-content:center;overflow:hidden">${c.logo ? `<img src="${c.logo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"/>` : `<span style="font-size:16px;display:block;line-height:1">${emoji}</span>`}</div></div>`,
+    html: `<div style="width:40px;height:42px;position:relative;cursor:pointer;filter:drop-shadow(0 3px 5px ${glow})${featured ? ' drop-shadow(0 0 2px rgba(245,158,11,.9))' : ''}">${featuredBadge}<div style="position:absolute;inset:0;background:${borderColor};clip-path:${hex}"></div><div style="position:absolute;inset:3px;background:${bg};clip-path:${hex};display:flex;align-items:center;justify-content:center;overflow:hidden">${c.logo ? `<img src="${c.logo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"/>` : `<span style="font-size:12px;font-weight:800;color:#fff;letter-spacing:.3px;display:block;line-height:1;font-family:inherit">${mono}</span>`}</div></div>`,
     iconSize:[40,42], iconAnchor:[20,42], popupAnchor:[0,-44]
   });
   _markerIconCache.set(key, icon);
@@ -4308,7 +4322,7 @@ function buildPopupHtml(c) {
     const stars = '★'.repeat(fullStars) + (hasHalf ? '½' : '') + '☆'.repeat(5 - Math.ceil(c.rating));
     starsHtml = `<div style="color:#f59e0b;font-size:19px;margin-bottom:5px">${stars} <strong style="color:#1e293b">${c.rating.toFixed(1)}</strong> <span style="color:#64748b;font-size:16px">(${c.reviews} ${tr.reviews})</span></div>`;
   } else {
-    starsHtml = `<div style="font-size:16px;color:#64748b;margin-bottom:5px">☆☆☆☆☆ ${tr.popupNoRatings}</div>`;
+    starsHtml = `<div style="margin-bottom:5px"><span class="badge-new">${tr.newOnHivex || 'Novo na Hivex'}</span></div>`;
   }
   const sc = (tr && tr.sectors) || {};
   const sectorsArr = (c.sectors && c.sectors.length) ? c.sectors : (c.sector ? [c.sector] : []);
@@ -5767,7 +5781,7 @@ function _appendListCards(frag, data, start, end) {
   for (let i = start; i < end; i++) {
     const c = data[i];
     const sectorLabel = (tr.sectors && tr.sectors[c.sector]) || c.sector || '';
-    const stars = c.rating > 0 ? '★'.repeat(Math.round(c.rating)) + ` ${c.rating.toFixed(1)}` : t('noRatingText');
+    const stars = c.rating > 0 ? '★'.repeat(Math.round(c.rating)) + ` ${c.rating.toFixed(1)}` : `<span class="badge-new">${t('newOnHivex')}</span>`;
     const tags = (c.tags || []).slice(0, 3).map(tag => `<span class="slc-tag">${tag}</span>`).join('');
     const phoneFrag = c.phone ? `<a class="slc-phone" href="tel:${c.phone}" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>${c.phone}</a>` : '';
     const div = document.createElement('div');
@@ -5797,7 +5811,7 @@ function _appendListCards(frag, data, start, end) {
         <span>Comparar</span>
       </label>
       <div class="slc-header">
-        <div class="slc-emoji" style="background:${c.color}22">${c.emoji || '🏢'}</div>
+        ${c.logo ? `<div class="slc-emoji" style="background:url('${c.logo}') center/cover no-repeat"></div>` : `<div class="slc-emoji logo-mono">${companyMonogram(c)}</div>`}
         <div class="slc-info">
           <div class="slc-name">${c.name}</div>
           <div class="slc-sector-badge"><span style="width:8px;height:8px;border-radius:50%;background:${c.color};display:inline-block;flex-shrink:0"></span>${sectorLabel}</div>
@@ -5922,10 +5936,10 @@ function _appendNearbyCards(listEl, upTo, sentinel) {
     const sectorLabel = sc[c.sector] || c.sector || '';
     const rating = c.rating > 0
       ? `<span class="nc-stars">${'★'.repeat(Math.round(c.rating))}</span> <strong>${c.rating.toFixed(1)}</strong> <span class="nc-reviews">(${c.reviews || 0})</span>`
-      : `<span class="nc-reviews">☆☆☆☆☆ ${t('popupNoRatings')}</span>`;
+      : `<span class="badge-new">${t('newOnHivex')}</span>`;
     const logo = c.logo
       ? `<div class="nc-logo" style="background:url('${c.logo}') center/cover no-repeat"></div>`
-      : `<div class="nc-logo" style="background:${c.color}22">${c.emoji || '🏢'}</div>`;
+      : `<div class="nc-logo logo-mono">${companyMonogram(c)}</div>`;
     const div = document.createElement('div');
     div.className = 'nearby-card';
     div.dataset.companyId = c.id;
@@ -5934,7 +5948,7 @@ function _appendNearbyCards(listEl, upTo, sentinel) {
       <div class="nc-top">
         ${logo}
         <div class="nc-main">
-          <div class="nc-name">${escHtml(c.name)}</div>
+          <div class="nc-name">${escHtml(c.name)}${c.verified ? ' <span class="badge-verified" title="Empresa verificada">✓ Verificada</span>' : ''}</div>
           <div class="nc-sector"><span class="nc-dot" style="background:${c.color}"></span>${escHtml(sectorLabel)}</div>
         </div>
         <div class="nc-side"><span class="nc-dist">${distStr}</span>${_openBadgeHtml(c)}</div>
@@ -6534,9 +6548,10 @@ async function openDetail(id) {
 function _renderDetailPanel(c) {
   const tr = translations[currentLang];
   const _dpLogoEl = document.getElementById('dpLogo');
-  if (c.logo) { _dpLogoEl.textContent = ''; _dpLogoEl.style.background = 'url("' + c.logo + '") center/cover no-repeat'; }
-  else        { _dpLogoEl.textContent = c.emoji; _dpLogoEl.style.background = c.color; }
-  document.getElementById('dpName').textContent        = c.name;
+  if (c.logo) { _dpLogoEl.textContent = ''; _dpLogoEl.classList.remove('logo-mono'); _dpLogoEl.style.background = 'url("' + c.logo + '") center/cover no-repeat'; }
+  else        { _dpLogoEl.textContent = companyMonogram(c); _dpLogoEl.classList.add('logo-mono'); _dpLogoEl.style.background = ''; }
+  document.getElementById('dpName').innerHTML =
+    escHtml(c.name) + (c.verified ? ' <span class="badge-verified" title="Empresa verificada">✓ Verificada</span>' : '');
 
   // Sub-line: primary activity + city, plus a compact rating when present.
   // The raw CAE classification code is intentionally dropped — it carries no
@@ -8395,7 +8410,7 @@ async function verifySubmit() {
       const r = await apiFetch('/auth/verify-email', { method: 'POST', body: { code } });
       if (r && r.user) localStorage.setItem('hive_user', JSON.stringify(r.user));
       closeVerifyModal();
-      showToast('Email confirmado ✔');
+      showToast('Email confirmado');
     } else {
       // company mode — stash the code; the create endpoint validates and burns it
       window._companyEmailCode = code;
@@ -8415,7 +8430,7 @@ async function verifyResend() {
   try {
     if (_verifyMode === 'user') await apiFetch('/auth/send-verify', { method: 'POST', body: {} });
     else await apiFetch('/companies/send-email-code', { method: 'POST', body: { email: _verifyEmail } });
-    showToast('Código enviado ✔');
+    showToast('Código enviado');
   } catch (e) {
     _verifyShowErr(e.message || 'Não foi possível enviar o código.');
   } finally {
@@ -9273,7 +9288,7 @@ function openProfilePanel() {
   const companyCards = myCompanies.length > 0
     ? myCompanies.map(c => `
         <div class="profile-company-card">
-          <div class="profile-company-emoji" style="background:${c.color}22;cursor:pointer" onclick="closeProfilePanel();showTab('search');setTimeout(()=>openDetail(${c.id}),300)">${c.emoji||'🏢'}</div>
+          <div class="profile-company-emoji logo-mono" style="cursor:pointer" onclick="closeProfilePanel();showTab('search');setTimeout(()=>openDetail(${c.id}),300)">${companyMonogram(c)}</div>
           <div class="profile-company-info" style="cursor:pointer;flex:1" onclick="closeProfilePanel();showTab('search');setTimeout(()=>openDetail(${c.id}),300)">
             <div class="profile-company-name">${c.name}</div>
             <div class="profile-company-city">📍 ${c.city||'Portugal'} · <span style="color:${c.status==='approved'?'var(--green)':c.status==='pending'?'#f59e0b':c.status==='removed'?'var(--muted)':'var(--red)'};font-weight:700;font-size:11px">${c.status==='approved'?t('statusApproved'):c.status==='pending'?t('statusPending'):c.status==='removed'?t('statusRemoved'):t('statusRejected')}</span></div>
