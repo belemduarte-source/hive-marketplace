@@ -75,7 +75,7 @@
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json"/>
-  <meta name="theme-color" content="#f97316"/>
+  <meta name="theme-color" content="#2563eb"/>
   <meta name="color-scheme" content="light"/>
   <meta name="apple-mobile-web-app-capable" content="yes"/>
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -150,7 +150,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v193.css"/>
+  <link rel="stylesheet" href="app.v194.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -241,15 +241,15 @@
         <div style="display:flex;align-items:center;gap:14px">
 
         <!-- Icon Mark — honeycomb: 7 hex cells, breathing animation -->
-        <svg id="logoHexSvg" width="237" height="237" viewBox="0 0 64 64" style="flex-shrink:0;filter:drop-shadow(0 2px 32px rgba(234,88,12,.6))">
+        <svg id="logoHexSvg" width="237" height="237" viewBox="0 0 64 64" style="flex-shrink:0;filter:drop-shadow(0 2px 32px rgba(29,78,216,.6))">
           <defs>
             <linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="100%">
               <stop offset="0%" stop-color="#0e1f3a"/>
               <stop offset="100%" stop-color="#060d1e"/>
             </linearGradient>
             <radialGradient id="hcg" cx="50%" cy="35%" r="65%">
-              <stop offset="0%"   stop-color="#fb923c"/>
-              <stop offset="35%"  stop-color="#ea580c"/>
+              <stop offset="0%"   stop-color="#60a5fa"/>
+              <stop offset="35%"  stop-color="#1d4ed8"/>
               <stop offset="100%" stop-color="#7c2d12"/>
             </radialGradient>
             <linearGradient id="hogLit" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -270,59 +270,59 @@
 
 
           <!-- Ambient glow -->
-          <circle cx="32" cy="32" r="18" fill="#ea580c" opacity=".12" filter="url(#hcf)"/>
+          <circle cx="32" cy="32" r="18" fill="#1d4ed8" opacity=".12" filter="url(#hcf)"/>
 
           <!-- 6 OUTER HEX CELLS — each breathes toward/away from center (32,32) -->
           <!-- East (center 45,32) — moves along X toward 32 -->
           <g>
             <animateTransform attributeName="transform" type="translate" values="0,0;-3,0;0,0" dur="6s" begin="0s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
             <polygon class="hexcell" style="animation-delay:0s" points="45,24.5 51.5,28.25 51.5,35.75 45,39.5 38.5,35.75 38.5,28.25" fill="url(#hogLit)" stroke="#ea580c" stroke-width="1.2">
-              <animate attributeName="stroke" values="#ea580c;#f97316;#ea580c" dur="6s" begin="0s" repeatCount="indefinite"/>
+              <animate attributeName="stroke" values="#1d4ed8;#2563eb;#1d4ed8" dur="6s" begin="0s" repeatCount="indefinite"/>
             </polygon>
           </g>
           <!-- NE (center 38.5,20) — moves toward 32,32 = dx -1.5, dy 2.8 -->
           <g>
             <animateTransform attributeName="transform" type="translate" values="0,0;-1.8,2.5;0,0" dur="6s" begin="1s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
             <polygon class="hexcell" style="animation-delay:1s" points="38.5,13.25 45,17 45,24.5 38.5,28.25 32,24.5 32,17" fill="url(#hogLit)" stroke="#ea580c" stroke-width="1.2">
-              <animate attributeName="stroke" values="#ea580c;#f97316;#ea580c" dur="6s" begin="1s" repeatCount="indefinite"/>
+              <animate attributeName="stroke" values="#1d4ed8;#2563eb;#1d4ed8" dur="6s" begin="1s" repeatCount="indefinite"/>
             </polygon>
           </g>
           <!-- NW (center 25.5,20) — moves toward 32,32 = dx 1.5, dy 2.8 -->
           <g>
             <animateTransform attributeName="transform" type="translate" values="0,0;1.8,2.5;0,0" dur="6s" begin="2s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
             <polygon class="hexcell" style="animation-delay:2s" points="25.5,13.25 32,17 32,24.5 25.5,28.25 19,24.5 19,17" fill="url(#hogLit)" stroke="#ea580c" stroke-width="1.2">
-              <animate attributeName="stroke" values="#ea580c;#f97316;#ea580c" dur="6s" begin="2s" repeatCount="indefinite"/>
+              <animate attributeName="stroke" values="#1d4ed8;#2563eb;#1d4ed8" dur="6s" begin="2s" repeatCount="indefinite"/>
             </polygon>
           </g>
           <!-- West (center 19,32) — moves along X toward 32 -->
           <g>
             <animateTransform attributeName="transform" type="translate" values="0,0;3,0;0,0" dur="6s" begin="3s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
             <polygon class="hexcell" style="animation-delay:3s" points="19,24.5 25.5,28.25 25.5,35.75 19,39.5 12.5,35.75 12.5,28.25" fill="url(#hogLit)" stroke="#ea580c" stroke-width="1.2">
-              <animate attributeName="stroke" values="#ea580c;#f97316;#ea580c" dur="6s" begin="3s" repeatCount="indefinite"/>
+              <animate attributeName="stroke" values="#1d4ed8;#2563eb;#1d4ed8" dur="6s" begin="3s" repeatCount="indefinite"/>
             </polygon>
           </g>
           <!-- SW (center 25.5,44) — moves toward 32,32 = dx 1.5, dy -2.8 -->
           <g>
             <animateTransform attributeName="transform" type="translate" values="0,0;1.8,-2.5;0,0" dur="6s" begin="4s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
             <polygon class="hexcell" style="animation-delay:4s" points="25.5,35.75 32,39.5 32,47 25.5,50.75 19,47 19,39.5" fill="url(#hogLit)" stroke="#ea580c" stroke-width="1.2">
-              <animate attributeName="stroke" values="#ea580c;#f97316;#ea580c" dur="6s" begin="4s" repeatCount="indefinite"/>
+              <animate attributeName="stroke" values="#1d4ed8;#2563eb;#1d4ed8" dur="6s" begin="4s" repeatCount="indefinite"/>
             </polygon>
           </g>
           <!-- SE (center 38.5,44) — moves toward 32,32 = dx -1.5, dy -2.8 -->
           <g>
             <animateTransform attributeName="transform" type="translate" values="0,0;-1.8,-2.5;0,0" dur="6s" begin="5s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
             <polygon class="hexcell" style="animation-delay:5s" points="38.5,35.75 45,39.5 45,47 38.5,50.75 32,47 32,39.5" fill="url(#hogLit)" stroke="#ea580c" stroke-width="1.2">
-              <animate attributeName="stroke" values="#ea580c;#f97316;#ea580c" dur="6s" begin="5s" repeatCount="indefinite"/>
+              <animate attributeName="stroke" values="#1d4ed8;#2563eb;#1d4ed8" dur="6s" begin="5s" repeatCount="indefinite"/>
             </polygon>
           </g>
 
           <!-- CENTRE HUB HEX — static, glowing -->
           <polygon points="32,24.5 38.5,28.25 38.5,35.75 32,39.5 25.5,35.75 25.5,28.25"
-                   fill="#ea580c" opacity=".15">
+                   fill="#1d4ed8" opacity=".15">
             <animate attributeName="opacity" values=".1;.35;.1" dur="2.4s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
           </polygon>
           <polygon points="32,24.5 38.5,28.25 38.5,35.75 32,39.5 25.5,35.75 25.5,28.25"
-                   fill="url(#hcg)" stroke="#fb923c" stroke-width=".8" stroke-opacity=".6" filter="url(#hof)"/>
+                   fill="url(#hcg)" stroke="#60a5fa" stroke-width=".8" stroke-opacity=".6" filter="url(#hof)"/>
           <polygon points="32,27.5 36.2,29.75 36.2,34.25 32,36.5 27.8,34.25 27.8,29.75"
                    fill="none" stroke="#fff" stroke-width=".6" opacity=".35"/>
           <circle cx="32" cy="32" r="2.4" fill="#fff" opacity=".96"/>
@@ -869,7 +869,7 @@
        ══════════════════════════════════════════════════════════════════════════ -->
   <div class="lp-steps-section">
     <div class="lp-section-head" style="max-width:1100px;margin:0 auto 48px;padding:0 32px">
-      <span class="lp-section-overline" style="color:#fb923c" data-i18n="stepsLabel">Como funciona</span>
+      <span class="lp-section-overline" style="color:#60a5fa" data-i18n="stepsLabel">Como funciona</span>
       <h2 class="lp-section-title" style="color:#fff" data-i18n="stepsTitle">Em 3 passos simples</h2>
     </div>
     <div class="lp-steps-grid">
@@ -1214,8 +1214,8 @@
 
     <!-- Empty-state hint — hidden once a sector is selected -->
     <div class="map-empty-hint" id="mapEmptyHint">
-      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f97316" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M3 6h18M3 12h18M3 18h18"/><circle cx="19" cy="6" r="3" fill="#f97316" stroke="none"/>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#2563eb" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 6h18M3 12h18M3 18h18"/><circle cx="19" cy="6" r="3" fill="#2563eb" stroke="none"/>
       </svg>
       <div id="mapEmptyHintText" style="margin:0;color:#fff;line-height:1.4"><span data-i18n="emptySectorTitle">Selecione uma área de atividade</span><br><span data-i18n="emptySectorSub">Escolha um ou mais setores acima para ver as empresas disponíveis.</span></div>
     </div>
@@ -1293,7 +1293,7 @@
 
   <!-- LOGIN GATE — shown to guests instead of contact details -->
   <div id="dpLoginGate" style="display:none;padding:18px 20px">
-    <div style="background:linear-gradient(135deg,rgba(249,115,22,.08),rgba(249,115,22,.04));border:1.5px solid rgba(249,115,22,.25);border-radius:14px;padding:22px 20px;text-align:center">
+    <div style="background:linear-gradient(135deg,rgba(37,99,235,.08),rgba(37,99,235,.04));border:1.5px solid rgba(37,99,235,.25);border-radius:14px;padding:22px 20px;text-align:center">
       <div style="margin-bottom:10px"><i data-lucide="lock" style="width:28px;height:28px;color:var(--primary)"></i></div>
       <div style="font-weight:800;font-size:15px;color:var(--text);margin-bottom:6px" data-i18n="loginGateTitle">Inicie sessão para ver os contactos</div>
       <div style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5" data-i18n="loginGateDesc">Crie uma conta gratuita para aceder aos contactos, morada, avaliações e pedir orçamentos.</div>
@@ -1751,7 +1751,7 @@
 <!-- LOCATION PERMISSION HELP MODAL -->
 <div class="overlay" id="geoHelpOverlay" onclick="if(event.target===this)closeGeoHelp()" role="dialog" aria-modal="true" aria-label="Ajuda — permissão de localização">
   <div class="modal" style="max-width:440px;padding:0;overflow:hidden">
-    <div style="background:linear-gradient(135deg,#f97316,#ea580c);padding:24px 24px 20px;text-align:center">
+    <div style="background:linear-gradient(135deg,#2563eb,#1d4ed8);padding:24px 24px 20px;text-align:center">
       <div style="font-size:42px;margin-bottom:8px">📍</div>
       <h2 style="color:#fff;font-size:18px;font-weight:800;margin:0 0 6px" data-i18n="geoTitle">Localização Bloqueada</h2>
       <p style="color:rgba(255,255,255,.85);font-size:13px;margin:0;line-height:1.4" data-i18n="geoIntro">O browser bloqueou o acesso à localização. Siga os passos abaixo para ativar.</p>
@@ -1767,7 +1767,7 @@
           <li data-i18n-html="geoIOS4">Encontre <strong>Safari</strong> na lista e selecione <strong>Ao Usar a App</strong></li>
           <li data-i18n-html="geoIOS5">Volte ao browser e toque no botão 📍</li>
         </ol>
-        <div style="margin-top:14px;padding:10px 12px;background:rgba(249,115,22,.08);border-radius:8px;border-left:3px solid #f97316;font-size:12px;color:var(--muted);line-height:1.5" data-i18n-html="geoIOSAlt">
+        <div style="margin-top:14px;padding:10px 12px;background:rgba(37,99,235,.08);border-radius:8px;border-left:3px solid #2563eb;font-size:12px;color:var(--muted);line-height:1.5" data-i18n-html="geoIOSAlt">
           Em alternativa: toque no botão <strong>aA</strong> na barra de endereço do Safari → <strong>Definições do Site</strong> → <strong>Localização → Permitir</strong>
         </div>
       </div>
@@ -1780,7 +1780,7 @@
           <li data-i18n-html="geoAndroid3">Em <strong>Localização</strong>, selecione <strong>Permitir</strong></li>
           <li data-i18n-html="geoAndroid4">Recarregue a página e toque em 📍</li>
         </ol>
-        <div style="margin-top:14px;padding:10px 12px;background:rgba(249,115,22,.08);border-radius:8px;border-left:3px solid #f97316;font-size:12px;color:var(--muted);line-height:1.5" data-i18n-html="geoAndroidAlt">
+        <div style="margin-top:14px;padding:10px 12px;background:rgba(37,99,235,.08);border-radius:8px;border-left:3px solid #2563eb;font-size:12px;color:var(--muted);line-height:1.5" data-i18n-html="geoAndroidAlt">
           Se não aparecer o cadeado: Definições do Chrome → Definições do Site → Localização → permitir este site.
         </div>
       </div>
@@ -1795,7 +1795,7 @@
       </div>
     </div>
     <div style="padding:12px 24px 24px;display:flex;flex-direction:column;gap:8px">
-      <button onclick="closeGeoHelp();detectUserLocation(false)" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;transition:background .2s" onmouseover="this.style.background='#ea580c'" onmouseout="this.style.background='var(--primary)'" data-i18n="geoRetry">
+      <button onclick="closeGeoHelp();detectUserLocation(false)" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;width:100%;transition:background .2s" onmouseover="this.style.background='#1d4ed8'" onmouseout="this.style.background='var(--primary)'" data-i18n="geoRetry">
         📍 Tentar novamente
       </button>
       <button onclick="closeGeoHelp()" style="background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:10px;padding:11px;font-size:13px;cursor:pointer;font-family:inherit;width:100%" data-i18n="geoSkip">
@@ -1902,11 +1902,11 @@
         </div>
       </div>
     </div>
-    <div style="background:linear-gradient(135deg,rgba(249,115,22,.07),rgba(30,58,138,.07));border:1.5px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px">
+    <div style="background:linear-gradient(135deg,rgba(37,99,235,.07),rgba(30,58,138,.07));border:1.5px solid var(--border);border-radius:12px;padding:20px;margin-bottom:12px">
       <h4 style="margin:0 0 8px 0;font-size:20px;font-weight:800;color:var(--text)" data-i18n="helpMissionTitle">🎯 Missão</h4>
       <p style="margin:0;font-size:18px;font-weight:600;color:var(--text);line-height:1.6" data-i18n="helpMissionDesc">Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.</p>
     </div>
-    <div style="background:linear-gradient(135deg,rgba(249,115,22,.07),rgba(30,58,138,.07));border:1.5px solid var(--border);border-radius:12px;padding:20px">
+    <div style="background:linear-gradient(135deg,rgba(37,99,235,.07),rgba(30,58,138,.07));border:1.5px solid var(--border);border-radius:12px;padding:20px">
       <h4 style="margin:0 0 8px 0;font-size:20px;font-weight:800;color:var(--text)" data-i18n="helpVisionTitle">👁️ Visão</h4>
       <p style="margin:0;font-size:18px;font-weight:600;color:var(--text);line-height:1.6" data-i18n="helpVisionDesc">Ser a plataforma de referência em Portugal para ligar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.</p>
     </div>
@@ -2201,7 +2201,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v193.js"></script>
+<script src="app.v194.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

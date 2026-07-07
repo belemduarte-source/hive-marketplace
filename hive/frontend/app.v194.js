@@ -2671,7 +2671,7 @@ function renderFeaturedCompanies() {
     const tags   = (c.tags || []).slice(0, 3).map(t => `<span class="lp-cc-tag">${t}</span>`).join('');
     const sectorLabel = sc[c.sector] || c.sector || '';
     return `
-      <div class="lp-company-card" style="--cc:${(typeof getSectorColor === 'function' ? getSectorColor(c) : (c.color || '#f97316'))}" onclick="lpOpenCompany(${c.id})">
+      <div class="lp-company-card" style="--cc:${(typeof getSectorColor === 'function' ? getSectorColor(c) : (c.color || '#2563eb'))}" onclick="lpOpenCompany(${c.id})">
         <div class="lp-cc-header">
           <div class="lp-cc-emoji${c.logo ? '' : ' logo-mono'}"${c.logo ? ` style="background:url('${c.logo}') center/cover no-repeat"` : ''}>${c.logo ? '' : companyMonogram(c)}</div>
           <div class="lp-cc-info">
@@ -2957,16 +2957,16 @@ function applyI18n() {
 
 // ── SPECIALTY ILLUSTRATIONS ────────────────────────────────────────────────────
 const SPECIALTY_SVG = {
-  ruler: '<svg viewBox="0 0 80 80"><rect x="15" y="25" width="50" height="8" fill="#f97316"/><line x1="20" y1="20" x2="20" y2="38" stroke="#f97316" stroke-width="1.5"/><line x1="30" y1="20" x2="30" y2="38" stroke="#f97316" stroke-width="1.5"/><line x1="40" y1="20" x2="40" y2="38" stroke="#f97316" stroke-width="1.5"/><line x1="50" y1="20" x2="50" y2="38" stroke="#f97316" stroke-width="1.5"/><line x1="60" y1="20" x2="60" y2="38" stroke="#f97316" stroke-width="1.5"/><circle cx="40" cy="55" r="6" fill="none" stroke="#f97316" stroke-width="2"/><line x1="35" y1="55" x2="45" y2="55" stroke="#f97316" stroke-width="1.5"/><line x1="40" y1="50" x2="40" y2="60" stroke="#f97316" stroke-width="1.5"/></svg>',
-  hammer: '<svg viewBox="0 0 80 80"><rect x="50" y="20" width="18" height="18" fill="#f97316" rx="2"/><rect x="56" y="38" width="6" height="28" fill="#8b4513" rx="1"/><path d="M 30 60 Q 35 50 40 55 Q 35 60 30 60" fill="#ea580c"/><circle cx="35" cy="58" r="2" fill="#f97316"/></svg>',
-  layers: '<svg viewBox="0 0 80 80"><polygon points="40,20 65,32 40,44 15,32" fill="#f97316" opacity="0.8"/><polygon points="40,38 65,50 40,62 15,50" fill="#f97316" opacity="0.6"/><polygon points="40,56 65,68 40,80 15,68" fill="#f97316" opacity="0.4"/><line x1="40" y1="20" x2="40" y2="80" stroke="#f97316" stroke-width="1" stroke-dasharray="2,2"/></svg>',
-  zap: '<svg viewBox="0 0 80 80"><polygon points="40,15 55,40 45,40 55,70 25,40 35,40 25,15" fill="#f97316" stroke="#ea580c" stroke-width="1.5" stroke-linejoin="round"/><circle cx="40" cy="42" r="3" fill="#ffeb3b"/></svg>',
+  ruler: '<svg viewBox="0 0 80 80"><rect x="15" y="25" width="50" height="8" fill="#2563eb"/><line x1="20" y1="20" x2="20" y2="38" stroke="#2563eb" stroke-width="1.5"/><line x1="30" y1="20" x2="30" y2="38" stroke="#2563eb" stroke-width="1.5"/><line x1="40" y1="20" x2="40" y2="38" stroke="#2563eb" stroke-width="1.5"/><line x1="50" y1="20" x2="50" y2="38" stroke="#2563eb" stroke-width="1.5"/><line x1="60" y1="20" x2="60" y2="38" stroke="#2563eb" stroke-width="1.5"/><circle cx="40" cy="55" r="6" fill="none" stroke="#2563eb" stroke-width="2"/><line x1="35" y1="55" x2="45" y2="55" stroke="#2563eb" stroke-width="1.5"/><line x1="40" y1="50" x2="40" y2="60" stroke="#2563eb" stroke-width="1.5"/></svg>',
+  hammer: '<svg viewBox="0 0 80 80"><rect x="50" y="20" width="18" height="18" fill="#2563eb" rx="2"/><rect x="56" y="38" width="6" height="28" fill="#8b4513" rx="1"/><path d="M 30 60 Q 35 50 40 55 Q 35 60 30 60" fill="#1d4ed8"/><circle cx="35" cy="58" r="2" fill="#2563eb"/></svg>',
+  layers: '<svg viewBox="0 0 80 80"><polygon points="40,20 65,32 40,44 15,32" fill="#2563eb" opacity="0.8"/><polygon points="40,38 65,50 40,62 15,50" fill="#2563eb" opacity="0.6"/><polygon points="40,56 65,68 40,80 15,68" fill="#2563eb" opacity="0.4"/><line x1="40" y1="20" x2="40" y2="80" stroke="#2563eb" stroke-width="1" stroke-dasharray="2,2"/></svg>',
+  zap: '<svg viewBox="0 0 80 80"><polygon points="40,15 55,40 45,40 55,70 25,40 35,40 25,15" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round"/><circle cx="40" cy="42" r="3" fill="#ffeb3b"/></svg>',
   droplets: '<svg viewBox="0 0 80 80"><path d="M 40 15 Q 35 25 35 35 Q 35 48 40 55 Q 45 48 45 35 Q 45 25 40 15" fill="#3b82f6" stroke="#1d4ed8" stroke-width="1.5"/><path d="M 25 50 Q 22 58 22 65 Q 22 73 28 76 Q 34 73 34 65 Q 34 58 25 50" fill="#60a5fa" opacity="0.7"/><path d="M 55 55 Q 52 62 52 68 Q 52 75 58 78 Q 64 75 64 68 Q 64 62 55 55" fill="#60a5fa" opacity="0.7"/></svg>',
-  square: '<svg viewBox="0 0 80 80"><rect x="15" y="15" width="50" height="50" fill="none" stroke="#f97316" stroke-width="3" rx="2"/><line x1="40" y1="15" x2="40" y2="65" stroke="#f97316" stroke-width="2" opacity="0.4"/><line x1="15" y1="40" x2="65" y2="40" stroke="#f97316" stroke-width="2" opacity="0.4"/><rect x="25" y="25" width="10" height="10" fill="#f97316" opacity="0.3"/><rect x="45" y="45" width="10" height="10" fill="#f97316" opacity="0.3"/></svg>',
-  paintbrush: '<svg viewBox="0 0 80 80"><rect x="32" y="15" width="16" height="30" fill="#8b4513" rx="1"/><path d="M 28 45 L 52 45 Q 50 55 40 58 Q 30 55 28 45" fill="#f97316"/><path d="M 38 48 L 42 48 L 41 56 L 39 56 Z" fill="#fbbf24" opacity="0.6"/><ellipse cx="40" cy="58" rx="8" ry="4" fill="#f97316" opacity="0.4"/></svg>',
-  scissors: '<svg viewBox="0 0 80 80"><circle cx="28" cy="30" r="6" fill="none" stroke="#f97316" stroke-width="2"/><circle cx="28" cy="50" r="6" fill="none" stroke="#f97316" stroke-width="2"/><circle cx="52" cy="40" r="6" fill="none" stroke="#f97316" stroke-width="2"/><line x1="34" y1="30" x2="46" y2="40" stroke="#f97316" stroke-width="2" stroke-linecap="round"/><line x1="34" y1="50" x2="46" y2="40" stroke="#f97316" stroke-width="2" stroke-linecap="round"/><path d="M 52 34 L 58 28 Q 60 30 58 36" fill="#f97316" opacity="0.3"/></svg>',
-  home: '<svg viewBox="0 0 80 80"><polygon points="40,18 20,35 25,35 25,60 55,60 55,35 60,35" fill="#f97316" stroke="#ea580c" stroke-width="1.5" stroke-linejoin="round"/><rect x="35" y="40" width="10" height="12" fill="#ffb6c1" opacity="0.5"/><line x1="25" y1="55" x2="55" y2="55" stroke="#8b4513" stroke-width="2"/></svg>',
-  wind: '<svg viewBox="0 0 80 80"><g stroke="#f97316" stroke-width="2.5" fill="none" stroke-linecap="round"><path d="M 15 30 Q 30 25 45 30"/><path d="M 20 45 Q 35 40 55 45"/><path d="M 10 60 Q 28 55 50 60"/><circle cx="40" cy="45" r="18" fill="none" stroke="#f97316" stroke-width="2" opacity="0.3"/><g transform="translate(40,45)"><line x1="0" y1="-12" x2="0" y2="12"/><line x1="-12" y1="0" x2="12" y2="0"/><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="-8" y1="8" x2="8" y2="-8"/></g></g></svg>'
+  square: '<svg viewBox="0 0 80 80"><rect x="15" y="15" width="50" height="50" fill="none" stroke="#2563eb" stroke-width="3" rx="2"/><line x1="40" y1="15" x2="40" y2="65" stroke="#2563eb" stroke-width="2" opacity="0.4"/><line x1="15" y1="40" x2="65" y2="40" stroke="#2563eb" stroke-width="2" opacity="0.4"/><rect x="25" y="25" width="10" height="10" fill="#2563eb" opacity="0.3"/><rect x="45" y="45" width="10" height="10" fill="#2563eb" opacity="0.3"/></svg>',
+  paintbrush: '<svg viewBox="0 0 80 80"><rect x="32" y="15" width="16" height="30" fill="#8b4513" rx="1"/><path d="M 28 45 L 52 45 Q 50 55 40 58 Q 30 55 28 45" fill="#2563eb"/><path d="M 38 48 L 42 48 L 41 56 L 39 56 Z" fill="#fbbf24" opacity="0.6"/><ellipse cx="40" cy="58" rx="8" ry="4" fill="#2563eb" opacity="0.4"/></svg>',
+  scissors: '<svg viewBox="0 0 80 80"><circle cx="28" cy="30" r="6" fill="none" stroke="#2563eb" stroke-width="2"/><circle cx="28" cy="50" r="6" fill="none" stroke="#2563eb" stroke-width="2"/><circle cx="52" cy="40" r="6" fill="none" stroke="#2563eb" stroke-width="2"/><line x1="34" y1="30" x2="46" y2="40" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/><line x1="34" y1="50" x2="46" y2="40" stroke="#2563eb" stroke-width="2" stroke-linecap="round"/><path d="M 52 34 L 58 28 Q 60 30 58 36" fill="#2563eb" opacity="0.3"/></svg>',
+  home: '<svg viewBox="0 0 80 80"><polygon points="40,18 20,35 25,35 25,60 55,60 55,35 60,35" fill="#2563eb" stroke="#1d4ed8" stroke-width="1.5" stroke-linejoin="round"/><rect x="35" y="40" width="10" height="12" fill="#ffb6c1" opacity="0.5"/><line x1="25" y1="55" x2="55" y2="55" stroke="#8b4513" stroke-width="2"/></svg>',
+  wind: '<svg viewBox="0 0 80 80"><g stroke="#2563eb" stroke-width="2.5" fill="none" stroke-linecap="round"><path d="M 15 30 Q 30 25 45 30"/><path d="M 20 45 Q 35 40 55 45"/><path d="M 10 60 Q 28 55 50 60"/><circle cx="40" cy="45" r="18" fill="none" stroke="#2563eb" stroke-width="2" opacity="0.3"/><g transform="translate(40,45)"><line x1="0" y1="-12" x2="0" y2="12"/><line x1="-12" y1="0" x2="12" y2="0"/><line x1="-8" y1="-8" x2="8" y2="8"/><line x1="-8" y1="8" x2="8" y2="-8"/></g></g></svg>'
 };
 
 // ── SECTOR PIN COLORS ────────────────────────────────────────────────────────
@@ -3039,7 +3039,7 @@ function dbRowToCompany(row) {
     business_hours:   row.business_hours   || '',
     portfolio_images: row.portfolio_images || [],
     emoji:     row.emoji     || '🏢',
-    color:     row.color     || '#f97316',
+    color:     row.color     || '#2563eb',
     pinType:   row.pin_type  || 'std',
     lat:       row.lat,
     lng:       row.lng,
@@ -3532,7 +3532,7 @@ async function loadCompaniesFromDB(opts) {
           verified: d.verified || false, isNew: d.isNew !== undefined ? d.isNew : true,
           tags: d.tags || [], email: d.email || '', phone: d.phone || '',
           website: d.website || '', description: d.description || '',
-          emoji: d.emoji || '🏢', color: d.color || '#f97316',
+          emoji: d.emoji || '🏢', color: d.color || '#2563eb',
           pinType: d.pinType || 'std', lat: d.lat, lng: d.lng,
           address: d.address || '', city: d.city || '', country: d.country || 'pt',
         });
@@ -3870,7 +3870,7 @@ function getSectorColor(c) {
       if (SUB_TO_SECTOR[s]) return SECTOR_COLORS[SUB_TO_SECTOR[s]];
     }
   }
-  return '#f97316';
+  return '#2563eb';
 }
 
 const SECTOR_KEYS = [
@@ -4211,7 +4211,7 @@ try {
       + '<div style="font-size:48px;margin-bottom:12px">🗺️</div>'
       + '<div style="font-size:16px;font-weight:700;color:#374151;margin-bottom:6px">Não foi possível carregar o mapa</div>'
       + '<div style="font-size:13px;max-width:340px;line-height:1.5">Verifique a sua ligação e recarregue a página. Se o problema persistir, alguma extensão do browser pode estar a bloquear o serviço de mapas.</div>'
-      + '<button onclick="location.reload()" style="margin-top:16px;background:#f97316;color:#fff;border:0;padding:10px 24px;border-radius:8px;font-weight:700;cursor:pointer">Recarregar</button>'
+      + '<button onclick="location.reload()" style="margin-top:16px;background:#2563eb;color:#fff;border:0;padding:10px 24px;border-radius:8px;font-weight:700;cursor:pointer">Recarregar</button>'
       + '</div>';
   }
   // Defer toast so showToast is defined by the time we call it
@@ -4329,7 +4329,7 @@ function buildPopupHtml(c) {
   const shown = sectorsArr.slice(0, 3);
   const extra = Math.max(0, sectorsArr.length - shown.length);
   const sectorsHtml = sectorsArr.length ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 9px">
-    ${shown.map(s => `<span style="background:#fff7ed;color:#9a3412;font-size:15px;font-weight:600;padding:4px 11px;border-radius:8px;border:1px solid rgba(249,115,22,.18);line-height:1.3">${escHtml(sc[s] || s)}</span>`).join('')}
+    ${shown.map(s => `<span style="background:#eff6ff;color:#1e40af;font-size:15px;font-weight:600;padding:4px 11px;border-radius:8px;border:1px solid rgba(37,99,235,.18);line-height:1.3">${escHtml(sc[s] || s)}</span>`).join('')}
     ${extra > 0 ? `<span style="font-size:15px;color:#64748b;font-weight:700;padding:4px 5px;align-self:center">+${extra}</span>` : ''}
   </div>` : '';
   // Credentials are only present on the company object for logged-in users
@@ -4338,7 +4338,7 @@ function buildPopupHtml(c) {
     ? `<span style="font-size:14px;color:#166534;background:#dcfce7;border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;gap:4px;font-weight:700">✓ ${escHtml(tr.popupCertOk || 'Certidão registada')}</span>`
     : '';
   const alvaraBadge = c.alvara
-    ? `<span style="font-size:14px;color:#9a3412;background:#fff7ed;border:1px solid rgba(249,115,22,.25);border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;gap:4px;font-weight:700">⚒ ${escHtml(tr.popupAlvaraOk || 'Alvará')}</span>`
+    ? `<span style="font-size:14px;color:#1e40af;background:#eff6ff;border:1px solid rgba(37,99,235,.25);border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;gap:4px;font-weight:700">⚒ ${escHtml(tr.popupAlvaraOk || 'Alvará')}</span>`
     : '';
   const newBadge = c.isNew
     ? `<span style="font-size:14px;color:#166534;background:#dcfce7;border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;font-weight:700">${escHtml(tr.popupNewBadge)}</span>`
@@ -6449,7 +6449,7 @@ async function routeToCompany(id) {
           if (userLocationMarker) { userLocationMarker.remove(); }
           const youIcon = L.divIcon({
             className: '',
-            html: '<div style="width:18px;height:18px;background:#f97316;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>',
+            html: '<div style="width:18px;height:18px;background:#2563eb;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>',
             iconSize: [18, 18], iconAnchor: [9, 9],
           });
           userLocationMarker = L.marker(origin, { icon: youIcon, zIndexOffset: 1000 }).addTo(map);
@@ -6965,7 +6965,7 @@ async function openInbox(companyId) {
       const items = th.items.slice().reverse(); // chronological
       const msgsHtml = items.map(m => `
         <div style="margin:7px 0;display:flex;${m.sender === 'company' ? 'justify-content:flex-end' : ''}">
-          <div style="max-width:82%;background:${m.sender === 'company' ? 'rgba(249,115,22,.12)' : 'var(--bg)'};border:1px solid var(--border);border-radius:12px;padding:10px 14px">
+          <div style="max-width:82%;background:${m.sender === 'company' ? 'rgba(37,99,235,.12)' : 'var(--bg)'};border:1px solid var(--border);border-radius:12px;padding:10px 14px">
             <div style="font-size:15px;color:var(--text);white-space:pre-wrap">${escHtml(m.body)}</div>
             <div style="font-size:12px;color:var(--muted);margin-top:5px">${m.sender === 'company' ? t('inboxYou') : escHtml(th.name || th.email)} · ${new Date(m.created_at).toLocaleString('pt-PT')}</div>
           </div>
@@ -7897,8 +7897,8 @@ function detectUserLocation(auto = false) {
       const youIcon = L.divIcon({
         className: '',
         html: `<div style="position:relative;width:28px;height:28px">
-          <div style="position:absolute;inset:0;background:rgba(249,115,22,.22);border-radius:50%;animation:pulse 2s infinite"></div>
-          <div style="position:absolute;inset:6px;background:#f97316;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(249,115,22,.7)"></div>
+          <div style="position:absolute;inset:0;background:rgba(37,99,235,.22);border-radius:50%;animation:pulse 2s infinite"></div>
+          <div style="position:absolute;inset:6px;background:#2563eb;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(37,99,235,.7)"></div>
         </div>`,
         iconSize: [28, 28],
         iconAnchor: [14, 14],
@@ -9105,9 +9105,9 @@ window.toggleAdSound = toggleAdSound;
 
 window.diagnosticCheck = function() {
   console.clear();
-  console.log('%c╔═══════════════════════════════════════════╗', 'color: #f97316; font-weight: bold;');
-  console.log('%c║      B2B MARKETPLACE - DIAGNOSTIC       ║', 'color: #f97316; font-weight: bold;');
-  console.log('%c╚═══════════════════════════════════════════╝', 'color: #f97316; font-weight: bold;');
+  console.log('%c╔═══════════════════════════════════════════╗', 'color: #2563eb; font-weight: bold;');
+  console.log('%c║      B2B MARKETPLACE - DIAGNOSTIC       ║', 'color: #2563eb; font-weight: bold;');
+  console.log('%c╚═══════════════════════════════════════════╝', 'color: #2563eb; font-weight: bold;');
   console.log('%c✓ map:', 'color: #22c55e;', typeof window.map !== 'undefined' ? '✅' : '❌');
   console.log('%c✓ Leaflet:', 'color: #22c55e;', typeof L !== 'undefined' ? '✅' : '❌');
   console.log('%c✓ Supabase:', 'color: #22c55e;', sb ? '✅ Configurado' : '⚠️ Não configurado (armazenamento local)');
@@ -10397,14 +10397,14 @@ function adminVisitsLineChart(series, period) {
   const step = Math.max(1, Math.ceil(n / 6));
   let xl = '';
   for (let i = 0; i < n; i += step) xl += `<text x="${X(i).toFixed(1)}" y="${H - 8}" font-size="9" fill="#94a3b8" text-anchor="middle">${_visitLabelFmt(series[i].label, period)}</text>`;
-  const dots = series.map((d, i) => `<circle cx="${X(i).toFixed(1)}" cy="${Y(d.visits).toFixed(1)}" r="2.6" fill="#ea580c"><title>${d.label}: ${d.visits} visita(s)</title></circle>`).join('');
+  const dots = series.map((d, i) => `<circle cx="${X(i).toFixed(1)}" cy="${Y(d.visits).toFixed(1)}" r="2.6" fill="#1d4ed8"><title>${d.label}: ${d.visits} visita(s)</title></circle>`).join('');
   return `<div style="background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:6px">
     <svg viewBox="0 0 ${W} ${H}" style="width:100%;height:auto;display:block">
       <line x1="${P.l}" y1="${P.t}" x2="${P.l}" y2="${(P.t + iH).toFixed(1)}" stroke="#e2e8f0"/>
       <line x1="${P.l}" y1="${(P.t + iH).toFixed(1)}" x2="${W - P.r}" y2="${(P.t + iH).toFixed(1)}" stroke="#e2e8f0"/>
       <text x="4" y="${(P.t + 4).toFixed(1)}" font-size="9" fill="#94a3b8">${maxV}</text>
-      <polygon points="${areaPts}" fill="rgba(249,115,22,.12)"/>
-      <polyline points="${linePts}" fill="none" stroke="#ea580c" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+      <polygon points="${areaPts}" fill="rgba(37,99,235,.12)"/>
+      <polyline points="${linePts}" fill="none" stroke="#1d4ed8" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
       ${dots}
       ${xl}
     </svg>
@@ -10713,7 +10713,7 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
   function buildBanner(html, onAction) {
     const el = document.createElement('div');
     el.id = 'pwaInstallBanner';
-    el.style.cssText = 'position:fixed;left:12px;right:12px;bottom:calc(72px + env(safe-area-inset-bottom));z-index:1400;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);border:1.5px solid rgba(249,115,22,.5);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 12px 32px rgba(0,0,0,.4);font-family:inherit;animation:pwaSlideUp .35s cubic-bezier(.4,0,.2,1) both';
+    el.style.cssText = 'position:fixed;left:12px;right:12px;bottom:calc(72px + env(safe-area-inset-bottom));z-index:1400;background:linear-gradient(135deg,#0f172a 0%,#1e293b 100%);border:1.5px solid rgba(37,99,235,.5);border-radius:14px;padding:14px 16px;display:flex;align-items:center;gap:12px;box-shadow:0 12px 32px rgba(0,0,0,.4);font-family:inherit;animation:pwaSlideUp .35s cubic-bezier(.4,0,.2,1) both';
     el.innerHTML = html;
     document.body.appendChild(el);
     const action = el.querySelector('[data-action]');
@@ -10738,7 +10738,7 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
       buildBanner(
         '<div style="font-size:24px;flex-shrink:0">📲</div>' +
         '<div style="flex:1;min-width:0"><div style="color:#fff;font-size:13px;font-weight:800;line-height:1.3">Instalar Hivex no telemóvel</div><div style="color:#94a3b8;font-size:11px;line-height:1.4;margin-top:2px">Acesso rápido como uma app nativa</div></div>' +
-        '<button data-action style="background:linear-gradient(135deg,#ea580c,#f97316);color:#fff;border:0;border-radius:8px;padding:13px 22px;font-size:16px;font-weight:800;cursor:pointer;flex-shrink:0">Instalar</button>' +
+        '<button data-action style="background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;border:0;border-radius:8px;padding:13px 22px;font-size:16px;font-weight:800;cursor:pointer;flex-shrink:0">Instalar</button>' +
         '<button data-close aria-label="Fechar" style="background:none;border:0;color:#94a3b8;font-size:22px;cursor:pointer;padding:0 4px;line-height:1;flex-shrink:0">×</button>',
         async () => {
           const banner = document.getElementById('pwaInstallBanner');
