@@ -5602,10 +5602,10 @@ function clearAllFilters() {
   document.getElementById('ratingAny').checked      = true;
   const _uniInput = document.getElementById('searchUnified'); if(_uniInput) _uniInput.value = '';
   document.getElementById('sortAll').checked         = true;
-  document.getElementById('radiusSlider').value     = 50;
+  document.getElementById('radiusSlider').value     = 100;   // "Todo o país" (novo defeito)
   const _ir = document.getElementById('ignoreRadius');
   if (_ir && _ir.checked) { _ir.checked = false; toggleIgnoreRadius(); }
-  updateRadius(50);
+  updateRadius(100);
   renderTagCloud();
   applyFilters.now();
   showToast(t('toastFiltersCleared'));
@@ -7875,9 +7875,12 @@ function detectUserLocation(auto = false) {
     invalidateDistanceCache();
     if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
 
-    // Narrow radius to 50 km now that we have a precise position
+    // Narrow the radius to 50 km ONLY when the user explicitly tapped the
+    // locate button ("near me" intent). The automatic boot-time detection
+    // used to do this too, which made most of the country's companies vanish
+    // a second after the map appeared — reported as "companies disappeared".
     const slider = document.getElementById('radiusSlider');
-    if (slider && parseInt(slider.value, 10) >= 100) {
+    if (!auto && slider && parseInt(slider.value, 10) >= 100) {
       slider.value = 50;
       updateRadius(50);
     }
