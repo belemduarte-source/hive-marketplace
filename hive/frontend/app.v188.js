@@ -3489,8 +3489,11 @@ async function loadCompaniesFromDB(opts) {
   const scoped = !(opts && opts.full) && !_fullCatalogueLoaded;
   let loadErrMsg = null; // set on failure; injected into the map hint AFTER the render pipeline (which overwrites the hint)
   try {
-    const country = String(window._userCountry || 'pt').toLowerCase();
-    const data = await api.getCompanies(scoped ? { country } : undefined);
+    // The catalogue is Portugal-only. Scoping this fetch by the VISITOR's
+    // country (_userCountry from geolocation) made every company vanish for
+    // anyone browsing from abroad or on a VPN — ?country=ch returns []. Same
+    // failure class as the "Todo o país" filter bug; always fetch 'pt'.
+    const data = await api.getCompanies(scoped ? { country: 'pt' } : undefined);
     if (!scoped) _fullCatalogueLoaded = true;
     // Clear only now that fresh data is in hand — clearing before the await
     // would let a failed background refresh wipe what's already on screen.
@@ -3502,9 +3505,10 @@ async function loadCompaniesFromDB(opts) {
       nextCompanyId = computeNextCompanyId(companies, nextCompanyId);
     }
   } catch(e) {
-    // A failed *background* refresh must not disturb a working page — the
-    // user keeps the country-scoped set and we simply try again next boot.
-    if (!scoped && companies.length > 0) return;
+    // A failed refresh must NEVER disturb a working page: whatever set is
+    // already on screen (scoped boot or full catalogue) stays, and we simply
+    // try again later. Only a failure with nothing loaded shows the error UI.
+    if (companies.length > 0) return;
     companies.length = 0;
     // Distinguish between actual network failure (no connection) and a server
     // error response — the latter is much more actionable to debug.
