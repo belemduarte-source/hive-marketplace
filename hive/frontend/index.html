@@ -144,7 +144,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v185.css"/>
+  <link rel="stylesheet" href="app.v186.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -162,7 +162,9 @@
    Sets --z so the CSS vw/vh compensations (calc(.../var(--z))) stay correct.
    Below 1024px the mobile/tablet layout keeps its native sizing. */
 (function () {
-  var DESIGN = 1280, MINZ = 0.85, MAXZ = 1.2;
+  /* DESIGN 1440 + max 1.1: customer feedback said the site opened "com muito
+     zoom" — target a roomier effective width and never enlarge more than 10%. */
+  var DESIGN = 1440, MINZ = 0.85, MAXZ = 1.1;
   function apply() {
     var b = document.body, r = document.documentElement, w = window.innerWidth;
     if (!b) return;
@@ -1684,9 +1686,11 @@
         <input type="url" id="regLinkedin"  placeholder="https://linkedin.com/company/a-sua-empresa" autocomplete="url" inputmode="url"/>
       </div>
       <div class="form-row">
-        <label for="regTags"><span data-i18n="regSpecialties">Especialidades</span> <span class="req">*</span></label>
-        <input type="text" id="regTags" data-i18n-ph="regTagsPh" autocomplete="off" required aria-required="true"/>
-        <div class="form-hint" data-i18n="regTagsHint">Separe as especialidades por vírgulas.</div>
+        <!-- Especialidades em texto livre removidas (feedback de utilizador:
+             lista aberta convida a inventar e duplica as áreas de atividade já
+             escolhidas no passo 1 — as tags passam a derivar dessas áreas). -->
+        <label for="regTags" style="display:none"><span data-i18n="regSpecialties">Especialidades</span></label>
+        <input type="text" id="regTags" autocomplete="off" style="display:none"/>
       </div>
       <div class="form-row">
         <label for="regDesc" data-i18n="regDescription">Descrição Breve</label>
@@ -1856,7 +1860,7 @@
   <div class="help-body" id="helpTabSobre" style="display:none">
     <div style="margin-bottom:20px">
       <div class="help-section-title" data-i18n="helpWhoTitle">Quem Somos</div>
-      <p style="font-size:18px;color:var(--text);font-weight:500;line-height:1.6;margin:0 0 20px 0" data-i18n="helpWhoDesc">A HIVE é uma plataforma digital inovadora que conecta empresas, profissionais independentes e particulares, facilitando a criação de relações comerciais transparentes e confiáveis. Operamos em Portugal com o objetivo de democratizar o acesso a serviços de qualidade, eliminando intermediários e reduzindo custos.</p>
+      <p style="font-size:18px;color:var(--text);font-weight:500;line-height:1.6;margin:0 0 20px 0" data-i18n="helpWhoDesc">A HIVE é uma plataforma digital inovadora que liga empresas, profissionais independentes e particulares, facilitando a criação de relações comerciais transparentes e confiáveis. Operamos em Portugal com o objetivo de democratizar o acesso a serviços de qualidade, eliminando intermediários e reduzindo custos.</p>
       <!-- Stats are populated with REAL counts from the live companies data on open
            (see populateHelpStats) — no hardcoded/inflated figures. Hidden until set. -->
       <div id="helpStatsGrid" style="display:none;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px">
@@ -1876,7 +1880,7 @@
     </div>
     <div style="background:linear-gradient(135deg,rgba(249,115,22,.07),rgba(30,58,138,.07));border:1.5px solid var(--border);border-radius:12px;padding:20px">
       <h4 style="margin:0 0 8px 0;font-size:20px;font-weight:800;color:var(--text)" data-i18n="helpVisionTitle">👁️ Visão</h4>
-      <p style="margin:0;font-size:18px;font-weight:600;color:var(--text);line-height:1.6" data-i18n="helpVisionDesc">Ser a plataforma de referência em Portugal para conectar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.</p>
+      <p style="margin:0;font-size:18px;font-weight:600;color:var(--text);line-height:1.6" data-i18n="helpVisionDesc">Ser a plataforma de referência em Portugal para ligar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.</p>
     </div>
   </div>
 </div>
@@ -2152,7 +2156,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v185.js"></script>
+<script src="app.v186.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

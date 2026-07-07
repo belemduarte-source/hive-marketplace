@@ -340,6 +340,10 @@
     .radius-off .radius-slider,.radius-off .radius-marks,.radius-off .radius-live-val{opacity:.4;pointer-events:none}
 
     /* ── AI ASSISTANT WIDGET ── */
+    /* DESLIGADO por agora — feedback de utilizador: "o chat não funciona, mais
+       vale desligar e focar nas funcionalidades principais". Para reativar,
+       remover a linha seguinte. */
+    .ai-fab,.ai-panel{display:none !important}
     .ai-fab{position:fixed;right:20px;bottom:20px;z-index:1500;width:60px;height:60px;border-radius:50%;background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;border:none;box-shadow:0 6px 22px rgba(234,88,12,.45);cursor:pointer;display:none;align-items:center;justify-content:center;font-family:inherit;transition:transform .15s}
     .ai-fab:hover{transform:scale(1.07)}
     .ai-fab svg{width:30px;height:30px}

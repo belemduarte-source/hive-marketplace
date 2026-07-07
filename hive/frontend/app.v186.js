@@ -184,7 +184,7 @@ const translations = {
     heroSub:'A Hivex une empresas e particulares aos melhores fornecedores de serviços — de forma rápida, transparente e com total controlo.',
     heroBtnSearch:'Explorar Empresas', heroBtnRegister:'Registar a minha Empresa',
     whatLabel:'O que é a Hivex', whatTitle:'Uma plataforma para todos',
-    whatSub:'A Hivex foi criada para simplificar a forma como clientes e fornecedores se encontram. Seja uma empresa à procura de parceiros estratégicos, seja um particular que precisa de um serviço rápido — a Hivex conecta-os a especialistas de confiança, com avaliações verificadas e contacto direto.',
+    whatSub:'A Hivex foi criada para simplificar a forma como clientes e fornecedores se encontram. Seja uma empresa à procura de parceiros estratégicos, seja um particular que precisa de um serviço rápido — a Hivex liga-os a especialistas de confiança, com avaliações verificadas e contacto direto.',
     uc1Title:'Empresa para Empresa (B2B)', uc1Desc:'Empresas que procuram fornecedores, subcontratados ou parceiros estratégicos. Ideal para projetos de maior dimensão, contratos de longo prazo e relações comerciais continuadas.',
     uc2Title:'Particular para Empresa (B2C)', uc2Desc:'Particulares que precisam de um serviço profissional para uso pessoal ou doméstico — renovação, obra, instalação ou manutenção. Simples, rápido e sem intermediários.',
     houseLabel:'Exemplo prático', houseTitle:'Construir uma casa? Encontre todos os especialistas',
@@ -214,10 +214,10 @@ const translations = {
     helpEmailTitle:'Email', helpEmailDesc:'geral.hivex@gmail.com — Resposta em até 24 horas úteis.', helpEmailBtn:'Enviar Email',
     helpPhoneTitle:'Telefone', helpPhoneDesc:'+351 XXX XXX XXX · Seg-Sex: 09h–18h', helpPhoneBtn:'Ligar',
     helpFaqTitle:'FAQ', helpFaqDesc:'Encontre respostas às perguntas mais frequentes.', helpFaqBtn:'Ver FAQ',
-    helpWhoTitle:'Quem Somos', helpWhoDesc:'A HIVE é uma plataforma digital inovadora que conecta empresas, profissionais independentes e particulares, facilitando a criação de relações comerciais transparentes e confiáveis. Operamos em Portugal com o objetivo de democratizar o acesso a serviços de qualidade, eliminando intermediários e reduzindo custos.',
+    helpWhoTitle:'Quem Somos', helpWhoDesc:'A HIVE é uma plataforma digital inovadora que liga empresas, profissionais independentes e particulares, facilitando a criação de relações comerciais transparentes e confiáveis. Operamos em Portugal com o objetivo de democratizar o acesso a serviços de qualidade, eliminando intermediários e reduzindo custos.',
     helpStatPros:'Empresas Verificadas', helpStatCompanies:'Empresas Registadas',
     helpMissionTitle:'🎯 Missão', helpMissionDesc:'Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.',
-    helpVisionTitle:'👁️ Visão', helpVisionDesc:'Ser a plataforma de referência em Portugal para conectar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.',
+    helpVisionTitle:'👁️ Visão', helpVisionDesc:'Ser a plataforma de referência em Portugal para ligar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.',
     navLogin:'Entrar / Registar', navHelp:'Ajuda',
     themeToDark:'Escuro', themeToLight:'Claro', themeModeDark:'Modo escuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidade', avatarLogout:'Terminar Sessão', avatarFaqHelp:'FAQ & Ajuda',
@@ -5390,12 +5390,13 @@ function getFiltered() {
     const c = companies[i];
     // Sector — only applied when the user has selected at least one sector
     if (hasSectorFilter && !activeSectors.has(c.sector) && !(c.sectors && c.sectors.some(s => activeSectors.has(s)))) continue;
-    // Radius (cached Haversine) — skipped entirely when "ignore radius" is on;
-    // else at "Todo o país" scope to the user's country, otherwise filter by distance.
-    if (!ignoreRadius) {
-      if (isAllCountry) {
-        if (userCountry && (c.country || 'pt').toLowerCase() !== userCountry) continue;
-      } else if (_getCachedDistance(cc.lat, cc.lng, c) > searchRadius) continue;
+    // Radius (cached Haversine) — skipped entirely when "ignore radius" is on.
+    // "Todo o país" (slider at max) shows EVERY company. It used to scope to the
+    // visitor's own country, which zeroed out results for anyone browsing from
+    // abroad (all companies are PT) — real user feedback: "seleciono o mapa
+    // inteiro e todas as especialidades e não encontra empresas".
+    if (!ignoreRadius && !isAllCountry) {
+      if (_getCachedDistance(cc.lat, cc.lng, c) > searchRadius) continue;
     }
     // Rating
     if (minRating > 0 && c.rating < minRating) continue;
@@ -5444,7 +5445,15 @@ applyFilters.now = function() { clearTimeout(_afTimer); _runApplyFilters(); };
 
 function _runApplyFilters() {
   const filtered = getFiltered();
-  updateMarkers(filtered);
+  // The company open in the detail panel always keeps its pin, even when the
+  // active filters wouldn't include it (e.g. arriving from the home "mais bem
+  // avaliadas" cards with no area selected — the map used to zoom to nothing).
+  let markerList = filtered;
+  if (selectedId != null) {
+    const sel = companies.find(x => x.id === selectedId);
+    if (sel && !filtered.includes(sel)) markerList = filtered.concat(sel);
+  }
+  updateMarkers(markerList);
   try { renderNearbyPanel(filtered); } catch (_) {}
   document.getElementById('countNum').textContent = filtered.length;
   // Show/hide the empty-state map hint
@@ -6136,9 +6145,15 @@ function submitRegister() {
   if (!address)        { failField('regAddress',    t('valAddress')); return; }
   if (!email)          { failField('regEmail',      t('valEmail'));   return; }
   if (!phone)          { failField('regPhone',      'Introduza o número de telemóvel da empresa'); return; }
-  if (!tagsRaw)        { failField('regTags',       t('valTags'));    return; }
 
-  const tags   = tagsRaw.split(',').map(s => s.trim()).filter(Boolean);
+  // Especialidades: closed vocabulary. The free-text field invited invented
+  // terms and duplicated step 1 (user feedback) — derive the tags from the
+  // selected activity areas' PT labels instead. Edits of older companies keep
+  // whatever tags they already had (the hidden field is pre-filled then).
+  const ptSectors = (translations.pt && translations.pt.sectors) || {};
+  const tags = tagsRaw
+    ? tagsRaw.split(',').map(s => s.trim()).filter(Boolean)
+    : sectors.map(s => ptSectors[s] || s).slice(0, 8);
   const idx    = nextCompanyId % defaultEmojis.length;
   const tr     = translations[currentLang];
   const zone   = document.getElementById('regZone').value;
@@ -6414,6 +6429,14 @@ async function openDetail(id) {
   const c  = companies.find(x => x.id === id);
   if (!c) return;
   selectedId = id;
+  // Guarantee this company's pin is on the map right away (deep links / home
+  // cards land here before any area filter is active — see _runApplyFilters).
+  try {
+    if (map && !markerMap[id]) {
+      addCompanyMarker(c);   // covers markers not built yet (deep-link races)
+      applyFilters.now();
+    }
+  } catch (_) {}
   try { clearRoute(); } catch (_) {}   // clear any route from a previously opened company
   // Collapse the "additional information" section for each newly opened company.
   try {
