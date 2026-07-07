@@ -3190,3 +3190,11 @@
 
     /* Footer trust line */
     .footer-trust{font-size:12px;color:var(--muted);margin:0 0 8px;line-height:1.6}
+
+    /* ── CREDIBILITY PASS 2 ──────────────────────────────────────────────── */
+    /* Lucide icons in the home publicity banner + hero search-box tabs */
+    .ad-step .lucide{width:15px;height:15px;stroke-width:2.2;color:#9a3412;vertical-align:-2px;flex-shrink:0}
+    .ad-flow .lucide{width:15px;height:15px;stroke-width:2.2;vertical-align:-2px;flex-shrink:0}
+    .lp-sb-icon .lucide{width:19px;height:19px;stroke-width:2.2}
+    /* Accessible primary CTAs on desktop too (mobile already enforced) */
+    .btn-submit,.ub-btn,.btn-dp-contact,.btn-dp-directions,.compare-bar-go{min-height:44px}

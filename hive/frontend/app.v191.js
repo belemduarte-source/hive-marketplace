@@ -8,7 +8,7 @@ const translations = {
     contactTitle:"Enviar Mensagem", contactSub:"A sua mensagem será entregue directamente à empresa",
     contactMsgLabel:"Mensagem", contactMsgPh:"Olá! Gostaria de solicitar informações sobre os vossos serviços...",
     contactPrivacy:"O email da empresa nunca é partilhado consigo — a Hivex entrega a mensagem de forma segura.",
-    adminTitle:"⚙️ Painel de Administração", adminTabStats:"📊 Estatísticas", adminTabPending:"⏳ Pendentes", adminTabAll:"🏢 Todas", adminTabReports:"🚩 Reportes",
+    adminTitle:"Painel de Administração", adminTabStats:"Estatísticas", adminTabPending:"Pendentes", adminTabAll:"Todas", adminTabReports:"Reportes",
     loadingGeneric:"A carregar...",
     statusTitle:"Estado do Registo", statusPrompt:"Introduza o email com que registou a sua empresa para verificar o estado.", statusVerify:"Verificar",
     dpDragClose:"puxe para fechar", dpCloseTitle:"Fechar", dpCallTitle:"Ligar", dpShareTitle:"Partilhar",
@@ -20,17 +20,17 @@ const translations = {
     optionalTag:"(opcional)", regAlvaraHint:"Número de alvará de construção, se aplicável.", regCountryPh:"Selecione um país",
     countryPT:"Portugal", countryES:"Espanha", countryFR:"França", countryIT:"Itália", countryDE:"Alemanha", countryUK:"Reino Unido", countryNL:"Países Baixos", countryBE:"Bélgica", countryCH:"Suíça", countryAT:"Áustria", countryOther:"Outro país",
     regAddressHint:"Incluir rua, número, apartamento e complementos para localização precisa no mapa.", regFoundedPh:"Ex: 2010", regHoursPh:"Ex: Seg-Sex 09h-18h, Sáb 09h-13h", regPortfolioPh:"URLs separados por vírgula (até 12)",
-    geoTitle:"Localização Bloqueada", geoIntro:"O browser bloqueou o acesso à localização. Siga os passos abaixo para ativar.", geoRetry:"📍 Tentar novamente", geoSkip:"Continuar sem localização",
+    geoTitle:"Localização Bloqueada", geoIntro:"O browser bloqueou o acesso à localização. Siga os passos abaixo para ativar.", geoRetry:"Tentar novamente", geoSkip:"Continuar sem localização",
     forgotBackLogin:"Voltar a iniciar sessão", resetNewPwdLabel:"Nova palavra-passe", min8Chars:"Mínimo 8 caracteres.",
     changePwdTitle:"Alterar palavra-passe", changePwdBody:"Introduza a sua palavra-passe atual e depois a nova (mínimo 8 caracteres).", changePwdCurrent:"Palavra-passe atual", changePwdNew:"Nova palavra-passe", changePwdSubmit:"Alterar palavra-passe",
     delAccTitle:"Eliminar conta", delAccWarn:"Esta ação é <strong>permanente</strong>. As suas avaliações e favoritos serão removidos. As empresas que registou permanecem na plataforma, mas sem dono associado.", delAccConfirmPwd:"Confirme a palavra-passe", delAccSubmit:"Eliminar definitivamente",
     compareOfThree:"de 3 selecionadas",
     // ── JS-string coverage (toasts, dynamic labels) ──
     contactSendTo:"Enviar mensagem para", sendingBtn:"A enviar...",
-    toastSelectMin2:"Selecione pelo menos 2 empresas para comparar.", toastMapUnavailable:"⚠️ Mapa indisponível — verifique a sua ligação", toastPlaceNotFound:"Local não encontrado. Tente outro nome.", toastLocationDetected:"📍 Localização detetada!",
-    toastEnterEmail:"Indique o seu email", toastEnterEmail2:"Introduza um email", toastPwdReset:"✅ Palavra-passe redefinida! Pode iniciar sessão.", toastLoginToRegister:"Inicie sessão para registar a sua empresa.", toastPwdChanged:"✅ Palavra-passe alterada.", toastAccountDeleted:"Conta eliminada.",
-    toastSelectRating:"Selecione uma classificação (1-5 estrelas)", toastReviewPublished:"✅ Avaliação publicada!", toastWriteReply:"Escreva uma resposta", toastReplyPublished:"✅ Resposta publicada", toastMsgTooShort:"Mensagem demasiado curta", toastMsgSent:"✅ Mensagem enviada com sucesso!",
-    toastReportUpdated:"Reporte atualizado", toastCompanyApproved:"✅ Empresa aprovada", toastCompanyRejected:"Empresa rejeitada", toastCompanyRemoved:"🗑️ Empresa removida", toastLoadingStats:"A carregar estatísticas...", toastStatsError:"Erro ao carregar estatísticas",
+    toastSelectMin2:"Selecione pelo menos 2 empresas para comparar.", toastMapUnavailable:"⚠️ Mapa indisponível — verifique a sua ligação", toastPlaceNotFound:"Local não encontrado. Tente outro nome.", toastLocationDetected:"Localização detetada!",
+    toastEnterEmail:"Indique o seu email", toastEnterEmail2:"Introduza um email", toastPwdReset:"Palavra-passe redefinida! Pode iniciar sessão.", toastLoginToRegister:"Inicie sessão para registar a sua empresa.", toastPwdChanged:"Palavra-passe alterada.", toastAccountDeleted:"Conta eliminada.",
+    toastSelectRating:"Selecione uma classificação (1-5 estrelas)", toastReviewPublished:"Avaliação publicada!", toastWriteReply:"Escreva uma resposta", toastReplyPublished:"Resposta publicada", toastMsgTooShort:"Mensagem demasiado curta", toastMsgSent:"Mensagem enviada com sucesso!",
+    toastReportUpdated:"Reporte atualizado", toastCompanyApproved:"Empresa aprovada", toastCompanyRejected:"Empresa rejeitada", toastCompanyRemoved:"🗑️ Empresa removida", toastLoadingStats:"A carregar estatísticas...", toastStatsError:"Erro ao carregar estatísticas",
     compareMaxPrefix:"Pode comparar até", compareMaxSuffix:"empresas. Remova uma para adicionar outra.", showingPrefix:"A mostrar", showingMid:"empresas em",
     // ── profile / geo-help / admin coverage ──
     profileMyCompanies:"As Minhas Empresas", profileAdd:"Adicionar", profileEditTitle:"Editar empresa", profileNoCompanyMsg:"Registe a sua empresa para aparecer no mapa e receber orçamentos.", profileAccount:"Conta",
@@ -38,7 +38,7 @@ const translations = {
     geoAndroidLabel:"Android (Chrome)", geoAndroid1:"Toque no <strong>cadeado 🔒</strong> na barra de endereço", geoAndroid2:"Toque em <strong>Permissões</strong>", geoAndroid3:"Em <strong>Localização</strong>, selecione <strong>Permitir</strong>", geoAndroid4:"Recarregue a página e toque em 📍", geoAndroidAlt:"Se não aparecer o cadeado: Definições do Chrome → Definições do Site → Localização → permitir este site.",
     geoBrowserLabel:"Browser", geoGeneric1:"Clique no <strong>cadeado 🔒</strong> na barra de endereço", geoGeneric2:"Encontre <strong>Localização</strong> e defina como <strong>Permitir</strong>", geoGeneric3:"Recarregue a página",
     admPendingPlain:"Pendentes", admReviewed:"Revistos", admDismissed:"Descartados", admAll:"Todos", admNoReports:"Nenhum reporte.", admReasonFake:"Empresa falsa", admReasonInappropriate:"Conteúdo impróprio", admReasonDuplicate:"Duplicada", admReasonWrongInfo:"Informação incorreta", admReasonSpam:"Spam", admReasonOther:"Outro", admReportedBy:"Reportado por", admViewCompany:"Ver empresa", admMarkReviewed:"Marcar como revisto", admDismiss:"Descartar", admError:"Erro", admErrorLoading:"Erro ao carregar", admAnonymous:"anónimo",
-    admStatApproved:"Aprovadas", admStatRejected:"Rejeitadas", admStatUsers:"Utilizadores", admStatReviews:"Avaliações", admStatEvents7d:"Eventos (7d)", admStatNew7d:"Novas (7d)", admStatTotal:"Total Empresas", admViewPendingA:"Ver", admViewPendingB:"empresa(s) pendente(s) →", admSearchPh:"Pesquisar por nome ou email...", admStatusRemoved:"Removidas", admNoCompanies:"Nenhuma empresa encontrada.", admNoAccount:"sem conta", admRestore:"Restaurar", admApprove:"Aprovar", admRemove:"Remover", admUnfeatureTitle:"Remover destaque", admFeatureTitle:"Destacar", admUnfeatureBtn:"⭐ Remover", admFeatureBtn:"☆ Destacar", admFeatured:"⭐ Empresa destacada", admUnfeatured:"Destaque removido", adminPanelTitle:"Painel Admin",
+    admStatApproved:"Aprovadas", admStatRejected:"Rejeitadas", admStatUsers:"Utilizadores", admStatReviews:"Avaliações", admStatEvents7d:"Eventos (7d)", admStatNew7d:"Novas (7d)", admStatTotal:"Total Empresas", admViewPendingA:"Ver", admViewPendingB:"empresa(s) pendente(s) →", admSearchPh:"Pesquisar por nome ou email...", admStatusRemoved:"Removidas", admNoCompanies:"Nenhuma empresa encontrada.", admNoAccount:"sem conta", admRestore:"Restaurar", admApprove:"Aprovar", admRemove:"Remover", admUnfeatureTitle:"Remover destaque", admFeatureTitle:"Destacar", admUnfeatureBtn:"Remover", admFeatureBtn:"☆ Destacar", admFeatured:"Empresa destacada", admUnfeatured:"Destaque removido", adminPanelTitle:"Painel Admin",
     navHome:'Início', navSearch:'Mapa', navAbout:'Sobre', navRegister:'Registar Empresa',
     recentlyViewed:'Vistas recentemente', recentRemove:'Remover', recentClear:'Limpar',
     searchUpdated:'Pesquisa atualizada!',
@@ -216,8 +216,8 @@ const translations = {
     helpFaqTitle:'FAQ', helpFaqDesc:'Encontre respostas às perguntas mais frequentes.', helpFaqBtn:'Ver FAQ',
     helpWhoTitle:'Quem Somos', helpWhoDesc:'A HIVE é uma plataforma digital inovadora que liga empresas, profissionais independentes e particulares, facilitando a criação de relações comerciais transparentes e confiáveis. Operamos em Portugal com o objetivo de democratizar o acesso a serviços de qualidade, eliminando intermediários e reduzindo custos.',
     helpStatPros:'Empresas Verificadas', helpStatCompanies:'Empresas Registadas',
-    helpMissionTitle:'🎯 Missão', helpMissionDesc:'Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.',
-    helpVisionTitle:'👁️ Visão', helpVisionDesc:'Ser a plataforma de referência em Portugal para ligar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.',
+    helpMissionTitle:'Missão', helpMissionDesc:'Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.',
+    helpVisionTitle:'Visão', helpVisionDesc:'Ser a plataforma de referência em Portugal para ligar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.',
     navLogin:'Entrar / Registar', navHelp:'Ajuda',
     themeToDark:'Escuro', themeToLight:'Claro', themeModeDark:'Modo escuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidade', avatarLogout:'Terminar Sessão', avatarFaqHelp:'FAQ & Ajuda',
@@ -246,17 +246,17 @@ const translations = {
     // ── Missing i18n keys ──
     toastEmailUnavailable:'📧 Email não disponível — utilize o WhatsApp ou Chat interno',
     toastPhoneUnavailable:'📞 Telefone não disponível',
-    toastLinkCopied:'📋 Link copiado!',
+    toastLinkCopied:'Link copiado!',
     toastCopyFailed:'Não foi possível copiar',
     toastGeoNotSupported:'Geolocalização não suportada neste browser.',
     toastGeoPermissionDenied:'Permissão de localização negada.',
     toastGeoPositionUnavailable:'Posição não disponível.',
     toastGeoTimeout:'Tempo de espera excedido.',
     toastGeoError:'Erro ao obter localização.',
-    toastLocationFound:'📍 Localização atual encontrada!',
+    toastLocationFound:'Localização atual encontrada!',
     toastLocationFailed:'Não foi possível obter a localização.',
     toastLocationError:'Erro ao procurar localização.',
-    toastRegisterError:'❌ Erro ao guardar. Verifique a ligação e tente novamente.',
+    toastRegisterError:'Erro ao guardar. Verifique a ligação e tente novamente.',
     emailQuoteSubject:'Pedido de Orçamento',
     emailQuoteBody:'Olá,\n\nGostaria de solicitar um orçamento para os vossos serviços.\n\nDetalhes do projeto:\n- Descrição: \n- Localização: \n- Prazo desejado: \n\nAguardo a vossa resposta.\n\nCumprimentos',
     searchListEmpty:'Nenhuma empresa encontrada',
@@ -266,14 +266,14 @@ const translations = {
     mapHintSelectSector:'Selecione uma área de atividade',
     mapHintSelectSectorSub:'para ver empresas no mapa',
     noRatingText:'Sem avaliação',
-    regTypeCompany:'🏢 Registo Empresa',
+    regTypeCompany:'Registo Empresa',
     regTypeClient:'🔍 Registo Cliente',
     typeCompanyLabel:'Empresa',
     typeClientLabel:'Cliente',
     typeAdvertiserLabel:'Anunciante',
     avatarRegisterCompany:'Registar Empresa',
     // Status badges (used in admin row, profile companies, owner banner)
-    statusApproved:'✅ Aprovada', statusPending:'⏳ Pendente', statusRejected:'❌ Rejeitada', statusRemoved:'🗑️ Removida',
+    statusApproved:'Aprovada', statusPending:'Pendente', statusRejected:'Rejeitada', statusRemoved:'🗑️ Removida',
     // Post-register choice modal
     postRegAria:'Próximos passos',
     postRegWelcome:'Bem-vindo à Hivex!', postRegWelcomeNamed:'Bem-vindo à Hivex, {name}!',
@@ -284,7 +284,7 @@ const translations = {
     postRegBrowseDesc:'Explorar o marketplace para encontrar profissionais',
     postRegFooterHint:'Pode anunciar a sua empresa mais tarde a partir do menu da conta.',
     // Report listing modal
-    reportAria:'Reportar listagem', reportTitle:'🚩 Reportar listagem',
+    reportAria:'Reportar listagem', reportTitle:'Reportar listagem',
     reportSubtitle:'Os reportes são revistos pela nossa equipa de moderação.',
     reportReasonLabel:'Motivo', reportReasonPh:'Selecionar motivo…',
     reportReasonFake:'Empresa falsa ou inexistente', reportReasonInappropriate:'Conteúdo impróprio',
@@ -295,7 +295,7 @@ const translations = {
     // Auto-publish success overlay
     regSuccessTitle:'Registo Recebido!',
     regSuccessSub:'O seu registo foi recebido e está em análise pela nossa equipa. Assim que for aprovada, a empresa fica visível no mapa e recebe um email de confirmação.',
-    regSuccessStep1:'⏳ Em análise — normalmente aprovada em <strong>24 horas úteis</strong>.',
+    regSuccessStep1:'Em análise — normalmente aprovada em <strong>24 horas úteis</strong>.',
     regSuccessStep2:'✉️ Recebe um <strong>email</strong> assim que for aprovada.',
     regSuccessStep3:'✏️ Pode editar os detalhes em <strong>O Meu Perfil</strong>.',
     // Logged-in hero CTA
@@ -325,7 +325,7 @@ const translations = {
     // Top user-visible toasts
     toastFavRemoved:'Removida dos favoritos', toastFavAdded:'★ Guardada nos favoritos',
     toastNoEditPermission:'Sem permissão para editar esta empresa.',
-    toastCompanyUpdated:'✅ Empresa atualizada com sucesso!',
+    toastCompanyUpdated:'Empresa atualizada com sucesso!',
     toastReportLoginRequired:'Inicie sessão para reportar uma listagem.',
     toastReportSelectReason:'Selecione um motivo.',
     toastReportSent:'Reporte enviado. Obrigado por nos ajudar a manter a plataforma segura.',
@@ -418,7 +418,7 @@ const translations = {
     contactTitle:"Send Message", contactSub:"Your message will be delivered directly to the company",
     contactMsgLabel:"Message", contactMsgPh:"Hello! I'd like to request information about your services...",
     contactPrivacy:"The company's email is never shared with you — Hivex delivers your message securely.",
-    adminTitle:"⚙️ Admin Panel", adminTabStats:"📊 Statistics", adminTabPending:"⏳ Pending", adminTabAll:"🏢 All", adminTabReports:"🚩 Reports",
+    adminTitle:"Admin Panel", adminTabStats:"Statistics", adminTabPending:"Pending", adminTabAll:"All", adminTabReports:"Reports",
     loadingGeneric:"Loading...",
     statusTitle:"Registration Status", statusPrompt:"Enter the email you registered your company with to check its status.", statusVerify:"Check",
     dpDragClose:"pull to close", dpCloseTitle:"Close", dpCallTitle:"Call", dpShareTitle:"Share",
@@ -430,17 +430,17 @@ const translations = {
     optionalTag:"(optional)", regAlvaraHint:"Construction permit number, if applicable.", regCountryPh:"Select a country",
     countryPT:"Portugal", countryES:"Spain", countryFR:"France", countryIT:"Italy", countryDE:"Germany", countryUK:"United Kingdom", countryNL:"Netherlands", countryBE:"Belgium", countryCH:"Switzerland", countryAT:"Austria", countryOther:"Other country",
     regAddressHint:"Include street, number, apartment and details for precise location on the map.", regFoundedPh:"e.g. 2010", regHoursPh:"e.g. Mon-Fri 9am-6pm, Sat 9am-1pm", regPortfolioPh:"Comma-separated URLs (up to 12)",
-    geoTitle:"Location Blocked", geoIntro:"Your browser blocked location access. Follow the steps below to enable it.", geoRetry:"📍 Try again", geoSkip:"Continue without location",
+    geoTitle:"Location Blocked", geoIntro:"Your browser blocked location access. Follow the steps below to enable it.", geoRetry:"Try again", geoSkip:"Continue without location",
     forgotBackLogin:"Back to sign in", resetNewPwdLabel:"New password", min8Chars:"Minimum 8 characters.",
     changePwdTitle:"Change password", changePwdBody:"Enter your current password and then the new one (minimum 8 characters).", changePwdCurrent:"Current password", changePwdNew:"New password", changePwdSubmit:"Change password",
     delAccTitle:"Delete account", delAccWarn:"This action is <strong>permanent</strong>. Your reviews and favourites will be removed. Companies you registered remain on the platform, but with no associated owner.", delAccConfirmPwd:"Confirm your password", delAccSubmit:"Delete permanently",
     compareOfThree:"of 3 selected",
     // ── JS-string coverage (toasts, dynamic labels) ──
     contactSendTo:"Send message to", sendingBtn:"Sending...",
-    toastSelectMin2:"Select at least 2 companies to compare.", toastMapUnavailable:"⚠️ Map unavailable — check your connection", toastPlaceNotFound:"Place not found. Try another name.", toastLocationDetected:"📍 Location detected!",
-    toastEnterEmail:"Enter your email", toastEnterEmail2:"Enter an email", toastPwdReset:"✅ Password reset! You can sign in.", toastLoginToRegister:"Sign in to register your company.", toastPwdChanged:"✅ Password changed.", toastAccountDeleted:"Account deleted.",
-    toastSelectRating:"Select a rating (1-5 stars)", toastReviewPublished:"✅ Review published!", toastWriteReply:"Write a reply", toastReplyPublished:"✅ Reply published", toastMsgTooShort:"Message too short", toastMsgSent:"✅ Message sent successfully!",
-    toastReportUpdated:"Report updated", toastCompanyApproved:"✅ Company approved", toastCompanyRejected:"Company rejected", toastCompanyRemoved:"🗑️ Company removed", toastLoadingStats:"Loading statistics...", toastStatsError:"Error loading statistics",
+    toastSelectMin2:"Select at least 2 companies to compare.", toastMapUnavailable:"⚠️ Map unavailable — check your connection", toastPlaceNotFound:"Place not found. Try another name.", toastLocationDetected:"Location detected!",
+    toastEnterEmail:"Enter your email", toastEnterEmail2:"Enter an email", toastPwdReset:"Password reset! You can sign in.", toastLoginToRegister:"Sign in to register your company.", toastPwdChanged:"Password changed.", toastAccountDeleted:"Account deleted.",
+    toastSelectRating:"Select a rating (1-5 stars)", toastReviewPublished:"Review published!", toastWriteReply:"Write a reply", toastReplyPublished:"Reply published", toastMsgTooShort:"Message too short", toastMsgSent:"Message sent successfully!",
+    toastReportUpdated:"Report updated", toastCompanyApproved:"Company approved", toastCompanyRejected:"Company rejected", toastCompanyRemoved:"🗑️ Company removed", toastLoadingStats:"Loading statistics...", toastStatsError:"Error loading statistics",
     compareMaxPrefix:"You can compare up to", compareMaxSuffix:"companies. Remove one to add another.", showingPrefix:"Showing", showingMid:"companies in",
     // ── profile / geo-help / admin coverage ──
     profileMyCompanies:"My Companies", profileAdd:"Add", profileEditTitle:"Edit company", profileNoCompanyMsg:"Register your company to appear on the map and receive quotes.", profileAccount:"Account",
@@ -448,7 +448,7 @@ const translations = {
     geoAndroidLabel:"Android (Chrome)", geoAndroid1:"Tap the <strong>padlock 🔒</strong> in the address bar", geoAndroid2:"Tap <strong>Permissions</strong>", geoAndroid3:"Under <strong>Location</strong>, select <strong>Allow</strong>", geoAndroid4:"Reload the page and tap 📍", geoAndroidAlt:"If the padlock doesn't appear: Chrome Settings → Site Settings → Location → allow this site.",
     geoBrowserLabel:"Browser", geoGeneric1:"Click the <strong>padlock 🔒</strong> in the address bar", geoGeneric2:"Find <strong>Location</strong> and set it to <strong>Allow</strong>", geoGeneric3:"Reload the page",
     admPendingPlain:"Pending", admReviewed:"Reviewed", admDismissed:"Dismissed", admAll:"All", admNoReports:"No reports.", admReasonFake:"Fake company", admReasonInappropriate:"Inappropriate content", admReasonDuplicate:"Duplicate", admReasonWrongInfo:"Incorrect information", admReasonSpam:"Spam", admReasonOther:"Other", admReportedBy:"Reported by", admViewCompany:"View company", admMarkReviewed:"Mark as reviewed", admDismiss:"Dismiss", admError:"Error", admErrorLoading:"Error loading", admAnonymous:"anonymous",
-    admStatApproved:"Approved", admStatRejected:"Rejected", admStatUsers:"Users", admStatReviews:"Reviews", admStatEvents7d:"Events (7d)", admStatNew7d:"New (7d)", admStatTotal:"Total Companies", admViewPendingA:"View", admViewPendingB:"pending company(ies) →", admSearchPh:"Search by name or email...", admStatusRemoved:"Removed", admNoCompanies:"No companies found.", admNoAccount:"no account", admRestore:"Restore", admApprove:"Approve", admRemove:"Remove", admUnfeatureTitle:"Remove featured", admFeatureTitle:"Feature", admUnfeatureBtn:"⭐ Remove", admFeatureBtn:"☆ Feature", admFeatured:"⭐ Company featured", admUnfeatured:"Featured removed", adminPanelTitle:"Admin Panel",
+    admStatApproved:"Approved", admStatRejected:"Rejected", admStatUsers:"Users", admStatReviews:"Reviews", admStatEvents7d:"Events (7d)", admStatNew7d:"New (7d)", admStatTotal:"Total Companies", admViewPendingA:"View", admViewPendingB:"pending company(ies) →", admSearchPh:"Search by name or email...", admStatusRemoved:"Removed", admNoCompanies:"No companies found.", admNoAccount:"no account", admRestore:"Restore", admApprove:"Approve", admRemove:"Remove", admUnfeatureTitle:"Remove featured", admFeatureTitle:"Feature", admUnfeatureBtn:"Remove", admFeatureBtn:"☆ Feature", admFeatured:"Company featured", admUnfeatured:"Featured removed", adminPanelTitle:"Admin Panel",
     navHome:'Home', navSearch:'Map', navBuyer:'Buyer Panel',
     recentlyViewed:'Recently viewed', recentRemove:'Remove', recentClear:'Clear',
     navSupplier:'Supplier Panel', navAbout:'About', navRegister:'Register Company',
@@ -627,8 +627,8 @@ const translations = {
     helpFaqTitle:'FAQ', helpFaqDesc:'Find answers to the most frequently asked questions.', helpFaqBtn:'View FAQ',
     helpWhoTitle:'Who We Are', helpWhoDesc:'HIVE is an innovative digital platform that connects companies, independent professionals and individuals, facilitating transparent and trustworthy business relationships. We operate in Portugal with the goal of democratising access to quality services, eliminating intermediaries and reducing costs.',
     helpStatPros:'Verified Companies', helpStatCompanies:'Registered Companies',
-    helpMissionTitle:'🎯 Mission', helpMissionDesc:'To simplify and democratise access to quality professional services, creating a transparent ecosystem where companies and professionals can grow together, without unnecessary intermediaries.',
-    helpVisionTitle:'👁️ Vision', helpVisionDesc:'To be the reference platform in Portugal for connecting companies and professionals, promoting economic growth and creating opportunities for all.',
+    helpMissionTitle:'Mission', helpMissionDesc:'To simplify and democratise access to quality professional services, creating a transparent ecosystem where companies and professionals can grow together, without unnecessary intermediaries.',
+    helpVisionTitle:'Vision', helpVisionDesc:'To be the reference platform in Portugal for connecting companies and professionals, promoting economic growth and creating opportunities for all.',
     navLogin:'Login / Sign up', navHelp:'Help',
     themeToDark:'Dark', themeToLight:'Light', themeModeDark:'Dark mode', themeModeLight:'Light mode',
     testimonialPhrases:['Excellent professionalism and quality of work.','Very punctual and impeccable work. Recommended!','Great value for money. Will hire again.','Very competent and organised team.','Exceeded expectations. First-class work.','Serious, trustworthy professionals.','Fast, efficient service. Very satisfied.','Excellent service from start to finish.','Met the deadline and the budget. Recommended!','Careful work and very friendly.'],
@@ -658,17 +658,17 @@ const translations = {
     // ── Missing i18n keys ──
     toastEmailUnavailable:'📧 Email not available — use WhatsApp or internal Chat',
     toastPhoneUnavailable:'📞 Phone not available',
-    toastLinkCopied:'📋 Link copied!',
+    toastLinkCopied:'Link copied!',
     toastCopyFailed:'Could not copy',
     toastGeoNotSupported:'Geolocation not supported in this browser.',
     toastGeoPermissionDenied:'Location permission denied.',
     toastGeoPositionUnavailable:'Position unavailable.',
     toastGeoTimeout:'Location request timed out.',
     toastGeoError:'Error getting location.',
-    toastLocationFound:'📍 Current location found!',
+    toastLocationFound:'Current location found!',
     toastLocationFailed:'Could not get location.',
     toastLocationError:'Error searching location.',
-    toastRegisterError:'❌ Error saving. Check connection and try again.',
+    toastRegisterError:'Error saving. Check connection and try again.',
     emailQuoteSubject:'Quote Request',
     emailQuoteBody:'Hello,\n\nI would like to request a quote for your services.\n\nProject details:\n- Description: \n- Location: \n- Desired deadline: \n\nLooking forward to your reply.\n\nBest regards',
     searchListEmpty:'No companies found',
@@ -678,13 +678,13 @@ const translations = {
     mapHintSelectSector:'Select an activity area',
     mapHintSelectSectorSub:'to see companies on the map',
     noRatingText:'No ratings',
-    regTypeCompany:'🏢 Company Registration',
+    regTypeCompany:'Company Registration',
     regTypeClient:'🔍 Client Registration',
     typeCompanyLabel:'Company',
     typeClientLabel:'Client',
     typeAdvertiserLabel:'Advertiser',
     avatarRegisterCompany:'Register Company',
-    statusApproved:'✅ Approved', statusPending:'⏳ Pending', statusRejected:'❌ Rejected', statusRemoved:'🗑️ Removed',
+    statusApproved:'Approved', statusPending:'Pending', statusRejected:'Rejected', statusRemoved:'🗑️ Removed',
     postRegAria:'Next steps',
     postRegWelcome:'Welcome to Hivex!', postRegWelcomeNamed:'Welcome to Hivex, {name}!',
     postRegPrompt:'What would you like to do?',
@@ -693,7 +693,7 @@ const translations = {
     postRegBrowseTitle:'Just browse companies',
     postRegBrowseDesc:'Explore the marketplace to find professionals',
     postRegFooterHint:'You can advertise your company later from the account menu.',
-    reportAria:'Report listing', reportTitle:'🚩 Report listing',
+    reportAria:'Report listing', reportTitle:'Report listing',
     reportSubtitle:'Reports are reviewed by our moderation team.',
     reportReasonLabel:'Reason', reportReasonPh:'Select a reason…',
     reportReasonFake:'Fake or non-existent company', reportReasonInappropriate:'Inappropriate content',
@@ -703,7 +703,7 @@ const translations = {
     reportSubmit:'Send report', btnCancel:'Cancel',
     regSuccessTitle:'Registration Received!',
     regSuccessSub:'Your registration has been received and is under review by our team. Once approved, your company will appear on the map and you will receive a confirmation email.',
-    regSuccessStep1:'⏳ Under review — usually approved within <strong>24 business hours</strong>.',
+    regSuccessStep1:'Under review — usually approved within <strong>24 business hours</strong>.',
     regSuccessStep2:'✉️ You will receive an <strong>email</strong> as soon as it is approved.',
     regSuccessStep3:'✏️ Edit the details anytime from <strong>My Profile</strong>.',
     heroUserGreeting:'Hello!', heroUserGreetingNamed:'Hello, {name}!',
@@ -727,7 +727,7 @@ const translations = {
     authAria:'Sign in or create an account',
     toastFavRemoved:'Removed from favourites', toastFavAdded:'★ Saved to favourites',
     toastNoEditPermission:'You don’t have permission to edit this company.',
-    toastCompanyUpdated:'✅ Company updated successfully!',
+    toastCompanyUpdated:'Company updated successfully!',
     toastReportLoginRequired:'Log in to report a listing.',
     toastReportSelectReason:'Select a reason.',
     toastReportSent:'Report sent. Thank you for helping keep the platform safe.',
@@ -820,7 +820,7 @@ const translations = {
     contactTitle:"Envoyer un message", contactSub:"Votre message sera transmis directement à l'entreprise",
     contactMsgLabel:"Message", contactMsgPh:"Bonjour ! Je souhaiterais obtenir des informations sur vos services...",
     contactPrivacy:"L'e-mail de l'entreprise ne vous est jamais communiqué — Hivex transmet votre message en toute sécurité.",
-    adminTitle:"⚙️ Panneau d'administration", adminTabStats:"📊 Statistiques", adminTabPending:"⏳ En attente", adminTabAll:"🏢 Toutes", adminTabReports:"🚩 Signalements",
+    adminTitle:"Panneau d'administration", adminTabStats:"Statistiques", adminTabPending:"En attente", adminTabAll:"Toutes", adminTabReports:"Signalements",
     loadingGeneric:"Chargement...",
     statusTitle:"Statut de l'inscription", statusPrompt:"Saisissez l'e-mail utilisé pour enregistrer votre entreprise afin de vérifier le statut.", statusVerify:"Vérifier",
     dpDragClose:"tirer pour fermer", dpCloseTitle:"Fermer", dpCallTitle:"Appeler", dpShareTitle:"Partager",
@@ -832,17 +832,17 @@ const translations = {
     optionalTag:"(facultatif)", regAlvaraHint:"Numéro de permis de construction, le cas échéant.", regCountryPh:"Sélectionnez un pays",
     countryPT:"Portugal", countryES:"Espagne", countryFR:"France", countryIT:"Italie", countryDE:"Allemagne", countryUK:"Royaume-Uni", countryNL:"Pays-Bas", countryBE:"Belgique", countryCH:"Suisse", countryAT:"Autriche", countryOther:"Autre pays",
     regAddressHint:"Indiquez la rue, le numéro, l'appartement et les détails pour une localisation précise sur la carte.", regFoundedPh:"ex. 2010", regHoursPh:"ex. Lun-Ven 9h-18h, Sam 9h-13h", regPortfolioPh:"URLs séparées par des virgules (jusqu'à 12)",
-    geoTitle:"Localisation bloquée", geoIntro:"Le navigateur a bloqué l'accès à la localisation. Suivez les étapes ci-dessous pour l'activer.", geoRetry:"📍 Réessayer", geoSkip:"Continuer sans localisation",
+    geoTitle:"Localisation bloquée", geoIntro:"Le navigateur a bloqué l'accès à la localisation. Suivez les étapes ci-dessous pour l'activer.", geoRetry:"Réessayer", geoSkip:"Continuer sans localisation",
     forgotBackLogin:"Retour à la connexion", resetNewPwdLabel:"Nouveau mot de passe", min8Chars:"Minimum 8 caractères.",
     changePwdTitle:"Changer le mot de passe", changePwdBody:"Saisissez votre mot de passe actuel puis le nouveau (minimum 8 caractères).", changePwdCurrent:"Mot de passe actuel", changePwdNew:"Nouveau mot de passe", changePwdSubmit:"Changer le mot de passe",
     delAccTitle:"Supprimer le compte", delAccWarn:"Cette action est <strong>permanente</strong>. Vos avis et favoris seront supprimés. Les entreprises que vous avez enregistrées restent sur la plateforme, mais sans propriétaire associé.", delAccConfirmPwd:"Confirmez votre mot de passe", delAccSubmit:"Supprimer définitivement",
     compareOfThree:"sur 3 sélectionnées",
     // ── JS-string coverage (toasts, dynamic labels) ──
     contactSendTo:"Envoyer un message à", sendingBtn:"Envoi...",
-    toastSelectMin2:"Sélectionnez au moins 2 entreprises à comparer.", toastMapUnavailable:"⚠️ Carte indisponible — vérifiez votre connexion", toastPlaceNotFound:"Lieu introuvable. Essayez un autre nom.", toastLocationDetected:"📍 Localisation détectée !",
-    toastEnterEmail:"Indiquez votre e-mail", toastEnterEmail2:"Saisissez un e-mail", toastPwdReset:"✅ Mot de passe réinitialisé ! Vous pouvez vous connecter.", toastLoginToRegister:"Connectez-vous pour enregistrer votre entreprise.", toastPwdChanged:"✅ Mot de passe modifié.", toastAccountDeleted:"Compte supprimé.",
-    toastSelectRating:"Sélectionnez une note (1-5 étoiles)", toastReviewPublished:"✅ Avis publié !", toastWriteReply:"Écrivez une réponse", toastReplyPublished:"✅ Réponse publiée", toastMsgTooShort:"Message trop court", toastMsgSent:"✅ Message envoyé avec succès !",
-    toastReportUpdated:"Signalement mis à jour", toastCompanyApproved:"✅ Entreprise approuvée", toastCompanyRejected:"Entreprise rejetée", toastCompanyRemoved:"🗑️ Entreprise supprimée", toastLoadingStats:"Chargement des statistiques...", toastStatsError:"Erreur lors du chargement des statistiques",
+    toastSelectMin2:"Sélectionnez au moins 2 entreprises à comparer.", toastMapUnavailable:"⚠️ Carte indisponible — vérifiez votre connexion", toastPlaceNotFound:"Lieu introuvable. Essayez un autre nom.", toastLocationDetected:"Localisation détectée !",
+    toastEnterEmail:"Indiquez votre e-mail", toastEnterEmail2:"Saisissez un e-mail", toastPwdReset:"Mot de passe réinitialisé ! Vous pouvez vous connecter.", toastLoginToRegister:"Connectez-vous pour enregistrer votre entreprise.", toastPwdChanged:"Mot de passe modifié.", toastAccountDeleted:"Compte supprimé.",
+    toastSelectRating:"Sélectionnez une note (1-5 étoiles)", toastReviewPublished:"Avis publié !", toastWriteReply:"Écrivez une réponse", toastReplyPublished:"Réponse publiée", toastMsgTooShort:"Message trop court", toastMsgSent:"Message envoyé avec succès !",
+    toastReportUpdated:"Signalement mis à jour", toastCompanyApproved:"Entreprise approuvée", toastCompanyRejected:"Entreprise rejetée", toastCompanyRemoved:"🗑️ Entreprise supprimée", toastLoadingStats:"Chargement des statistiques...", toastStatsError:"Erreur lors du chargement des statistiques",
     compareMaxPrefix:"Vous pouvez comparer jusqu'à", compareMaxSuffix:"entreprises. Retirez-en une pour en ajouter une autre.", showingPrefix:"Affichage de", showingMid:"entreprises à",
     // ── profile / geo-help / admin coverage ──
     profileMyCompanies:"Mes entreprises", profileAdd:"Ajouter", profileEditTitle:"Modifier l'entreprise", profileNoCompanyMsg:"Enregistrez votre entreprise pour apparaître sur la carte et recevoir des devis.", profileAccount:"Compte",
@@ -850,7 +850,7 @@ const translations = {
     geoAndroidLabel:"Android (Chrome)", geoAndroid1:"Touchez le <strong>cadenas 🔒</strong> dans la barre d'adresse", geoAndroid2:"Touchez <strong>Autorisations</strong>", geoAndroid3:"Sous <strong>Localisation</strong>, sélectionnez <strong>Autoriser</strong>", geoAndroid4:"Rechargez la page et touchez 📍", geoAndroidAlt:"Si le cadenas n'apparaît pas : Paramètres de Chrome → Paramètres du site → Localisation → autoriser ce site.",
     geoBrowserLabel:"Navigateur", geoGeneric1:"Cliquez sur le <strong>cadenas 🔒</strong> dans la barre d'adresse", geoGeneric2:"Trouvez <strong>Localisation</strong> et définissez-la sur <strong>Autoriser</strong>", geoGeneric3:"Rechargez la page",
     admPendingPlain:"En attente", admReviewed:"Examinés", admDismissed:"Rejetés", admAll:"Tous", admNoReports:"Aucun signalement.", admReasonFake:"Fausse entreprise", admReasonInappropriate:"Contenu inapproprié", admReasonDuplicate:"Doublon", admReasonWrongInfo:"Information incorrecte", admReasonSpam:"Spam", admReasonOther:"Autre", admReportedBy:"Signalé par", admViewCompany:"Voir l'entreprise", admMarkReviewed:"Marquer comme examiné", admDismiss:"Rejeter", admError:"Erreur", admErrorLoading:"Erreur de chargement", admAnonymous:"anonyme",
-    admStatApproved:"Approuvées", admStatRejected:"Rejetées", admStatUsers:"Utilisateurs", admStatReviews:"Avis", admStatEvents7d:"Événements (7 j)", admStatNew7d:"Nouvelles (7 j)", admStatTotal:"Total entreprises", admViewPendingA:"Voir", admViewPendingB:"entreprise(s) en attente →", admSearchPh:"Rechercher par nom ou e-mail...", admStatusRemoved:"Supprimées", admNoCompanies:"Aucune entreprise trouvée.", admNoAccount:"sans compte", admRestore:"Restaurer", admApprove:"Approuver", admRemove:"Supprimer", admUnfeatureTitle:"Retirer la mise en avant", admFeatureTitle:"Mettre en avant", admUnfeatureBtn:"⭐ Retirer", admFeatureBtn:"☆ Mettre en avant", admFeatured:"⭐ Entreprise mise en avant", admUnfeatured:"Mise en avant retirée", adminPanelTitle:"Panneau Admin",
+    admStatApproved:"Approuvées", admStatRejected:"Rejetées", admStatUsers:"Utilisateurs", admStatReviews:"Avis", admStatEvents7d:"Événements (7 j)", admStatNew7d:"Nouvelles (7 j)", admStatTotal:"Total entreprises", admViewPendingA:"Voir", admViewPendingB:"entreprise(s) en attente →", admSearchPh:"Rechercher par nom ou e-mail...", admStatusRemoved:"Supprimées", admNoCompanies:"Aucune entreprise trouvée.", admNoAccount:"sans compte", admRestore:"Restaurer", admApprove:"Approuver", admRemove:"Supprimer", admUnfeatureTitle:"Retirer la mise en avant", admFeatureTitle:"Mettre en avant", admUnfeatureBtn:"Retirer", admFeatureBtn:"☆ Mettre en avant", admFeatured:"Entreprise mise en avant", admUnfeatured:"Mise en avant retirée", adminPanelTitle:"Panneau Admin",
     navHome:'Accueil', navSearch:'Carte', navBuyer:'Espace Acheteur',
     recentlyViewed:'Vues récemment', recentRemove:'Retirer', recentClear:'Effacer',
     navSupplier:'Espace Fournisseur', navAbout:'À propos', navRegister:'Enregistrer Entreprise',
@@ -1032,8 +1032,8 @@ const translations = {
     helpFaqTitle:'FAQ', helpFaqDesc:'Trouvez des réponses aux questions les plus fréquentes.', helpFaqBtn:'Voir la FAQ',
     helpWhoTitle:'Qui Sommes-Nous', helpWhoDesc:"HIVE est une plateforme numérique innovante qui connecte entreprises, professionnels indépendants et particuliers, facilitant la création de relations commerciales transparentes et fiables. Nous opérons au Portugal avec l'objectif de démocratiser l'accès à des services de qualité, en éliminant les intermédiaires et en réduisant les coûts.",
     helpStatPros:'Entreprises Vérifiées', helpStatCompanies:'Entreprises Inscrites',
-    helpMissionTitle:'🎯 Mission', helpMissionDesc:"Simplifier et démocratiser l'accès à des services professionnels de qualité, en créant un écosystème transparent où entreprises et professionnels peuvent grandir ensemble, sans intermédiaires inutiles.",
-    helpVisionTitle:'👁️ Vision', helpVisionDesc:'Être la plateforme de référence au Portugal pour connecter entreprises et professionnels, en favorisant la croissance économique et en créant des opportunités pour tous.',
+    helpMissionTitle:'Mission', helpMissionDesc:"Simplifier et démocratiser l'accès à des services professionnels de qualité, en créant un écosystème transparent où entreprises et professionnels peuvent grandir ensemble, sans intermédiaires inutiles.",
+    helpVisionTitle:'Vision', helpVisionDesc:'Être la plateforme de référence au Portugal pour connecter entreprises et professionnels, en favorisant la croissance économique et en créant des opportunités pour tous.',
     navLogin:'Connexion / Inscription', navHelp:'Aide',
     themeToDark:'Sombre', themeToLight:'Clair', themeModeDark:'Mode sombre', themeModeLight:'Mode clair',
     testimonialPhrases:['Professionnalisme et qualité de travail excellents.','Très ponctuels et travail impeccable. Je recommande !','Excellent rapport qualité-prix. Je ferai de nouveau appel à eux.','Équipe très compétente et organisée.','Ont dépassé les attentes. Travail de premier ordre.','Des professionnels sérieux et de confiance.','Service rapide et efficace. Très satisfait.','Excellent accueil du début à la fin.','Délais et budget respectés. Je recommande !','Travail soigné et beaucoup de sympathie.'],
@@ -1063,17 +1063,17 @@ const translations = {
     // ── Missing i18n keys ──
     toastEmailUnavailable:"📧 E-mail non disponible — utilisez WhatsApp ou le Chat interne",
     toastPhoneUnavailable:'📞 Téléphone non disponible',
-    toastLinkCopied:'📋 Lien copié !',
+    toastLinkCopied:'Lien copié !',
     toastCopyFailed:'Impossible de copier',
     toastGeoNotSupported:'Géolocalisation non supportée par ce navigateur.',
     toastGeoPermissionDenied:'Permission de localisation refusée.',
     toastGeoPositionUnavailable:'Position non disponible.',
     toastGeoTimeout:'Délai de localisation dépassé.',
     toastGeoError:'Erreur de localisation.',
-    toastLocationFound:'📍 Position actuelle trouvée !',
+    toastLocationFound:'Position actuelle trouvée !',
     toastLocationFailed:'Impossible de trouver la position.',
     toastLocationError:'Erreur lors de la recherche de localisation.',
-    toastRegisterError:'❌ Erreur lors de la sauvegarde. Vérifiez la connexion et réessayez.',
+    toastRegisterError:'Erreur lors de la sauvegarde. Vérifiez la connexion et réessayez.',
     emailQuoteSubject:'Demande de Devis',
     emailQuoteBody:"Bonjour,\n\nJe souhaiterais obtenir un devis pour vos services.\n\nDétails du projet :\n- Description : \n- Localisation : \n- Délai souhaité : \n\nDans l'attente de votre réponse.\n\nCordialement",
     searchListEmpty:'Aucune entreprise trouvée',
@@ -1083,13 +1083,13 @@ const translations = {
     mapHintSelectSector:'Sélectionnez un domaine d\'activité',
     mapHintSelectSectorSub:'pour voir les entreprises sur la carte',
     noRatingText:'Pas encore noté',
-    regTypeCompany:"🏢 Inscription Entreprise",
+    regTypeCompany:"Inscription Entreprise",
     regTypeClient:'🔍 Inscription Client',
     typeCompanyLabel:'Entreprise',
     typeClientLabel:'Client',
     typeAdvertiserLabel:'Annonceur',
     avatarRegisterCompany:'Enregistrer Entreprise',
-    statusApproved:'✅ Approuvée', statusPending:'⏳ En attente', statusRejected:'❌ Rejetée', statusRemoved:'🗑️ Supprimée',
+    statusApproved:'Approuvée', statusPending:'En attente', statusRejected:'Rejetée', statusRemoved:'🗑️ Supprimée',
     postRegAria:'Prochaines étapes',
     postRegWelcome:'Bienvenue sur Hivex !', postRegWelcomeNamed:'Bienvenue sur Hivex, {name} !',
     postRegPrompt:'Que souhaitez-vous faire ?',
@@ -1098,7 +1098,7 @@ const translations = {
     postRegBrowseTitle:'Parcourir les entreprises',
     postRegBrowseDesc:'Explorer le marketplace pour trouver des professionnels',
     postRegFooterHint:'Vous pourrez annoncer votre entreprise plus tard depuis le menu du compte.',
-    reportAria:'Signaler une annonce', reportTitle:'🚩 Signaler une annonce',
+    reportAria:'Signaler une annonce', reportTitle:'Signaler une annonce',
     reportSubtitle:'Les signalements sont examinés par notre équipe de modération.',
     reportReasonLabel:'Motif', reportReasonPh:'Sélectionner un motif…',
     reportReasonFake:'Entreprise fictive ou inexistante', reportReasonInappropriate:'Contenu inapproprié',
@@ -1108,7 +1108,7 @@ const translations = {
     reportSubmit:'Envoyer le signalement', btnCancel:'Annuler',
     regSuccessTitle:'Inscription reçue !',
     regSuccessSub:"Votre inscription a bien été reçue et est en cours de validation par notre équipe. Une fois approuvée, votre entreprise apparaîtra sur la carte et vous recevrez un email de confirmation.",
-    regSuccessStep1:'⏳ En cours de validation — généralement approuvée sous <strong>24 heures ouvrables</strong>.',
+    regSuccessStep1:'En cours de validation — généralement approuvée sous <strong>24 heures ouvrables</strong>.',
     regSuccessStep2:'✉️ Vous recevrez un <strong>email</strong> dès son approbation.',
     regSuccessStep3:'✏️ Modifiez les détails depuis <strong>Mon Profil</strong>.',
     heroUserGreeting:'Bonjour !', heroUserGreetingNamed:'Bonjour, {name} !',
@@ -1132,7 +1132,7 @@ const translations = {
     authAria:'Se connecter ou créer un compte',
     toastFavRemoved:'Retiré des favoris', toastFavAdded:'★ Ajouté aux favoris',
     toastNoEditPermission:"Vous n'êtes pas autorisé à modifier cette entreprise.",
-    toastCompanyUpdated:'✅ Entreprise mise à jour avec succès !',
+    toastCompanyUpdated:'Entreprise mise à jour avec succès !',
     toastReportLoginRequired:'Connectez-vous pour signaler une annonce.',
     toastReportSelectReason:'Sélectionnez un motif.',
     toastReportSent:'Signalement envoyé. Merci de nous aider à garder la plateforme sûre.',
@@ -1226,7 +1226,7 @@ const translations = {
     contactTitle:"Enviar mensaje", contactSub:"Tu mensaje se entregará directamente a la empresa",
     contactMsgLabel:"Mensaje", contactMsgPh:"¡Hola! Me gustaría solicitar información sobre vuestros servicios...",
     contactPrivacy:"El correo de la empresa nunca se comparte contigo — Hivex entrega tu mensaje de forma segura.",
-    adminTitle:"⚙️ Panel de administración", adminTabStats:"📊 Estadísticas", adminTabPending:"⏳ Pendientes", adminTabAll:"🏢 Todas", adminTabReports:"🚩 Reportes",
+    adminTitle:"Panel de administración", adminTabStats:"Estadísticas", adminTabPending:"Pendientes", adminTabAll:"Todas", adminTabReports:"Reportes",
     loadingGeneric:"Cargando...",
     statusTitle:"Estado del registro", statusPrompt:"Introduce el correo con el que registraste tu empresa para verificar el estado.", statusVerify:"Verificar",
     dpDragClose:"desliza para cerrar", dpCloseTitle:"Cerrar", dpCallTitle:"Llamar", dpShareTitle:"Compartir",
@@ -1238,17 +1238,17 @@ const translations = {
     optionalTag:"(opcional)", regAlvaraHint:"Número de licencia de construcción, si procede.", regCountryPh:"Selecciona un país",
     countryPT:"Portugal", countryES:"España", countryFR:"Francia", countryIT:"Italia", countryDE:"Alemania", countryUK:"Reino Unido", countryNL:"Países Bajos", countryBE:"Bélgica", countryCH:"Suiza", countryAT:"Austria", countryOther:"Otro país",
     regAddressHint:"Incluye calle, número, piso y detalles para una ubicación precisa en el mapa.", regFoundedPh:"ej. 2010", regHoursPh:"ej. Lun-Vie 9h-18h, Sáb 9h-13h", regPortfolioPh:"URLs separadas por comas (hasta 12)",
-    geoTitle:"Ubicación bloqueada", geoIntro:"El navegador bloqueó el acceso a la ubicación. Sigue los pasos siguientes para activarla.", geoRetry:"📍 Intentar de nuevo", geoSkip:"Continuar sin ubicación",
+    geoTitle:"Ubicación bloqueada", geoIntro:"El navegador bloqueó el acceso a la ubicación. Sigue los pasos siguientes para activarla.", geoRetry:"Intentar de nuevo", geoSkip:"Continuar sin ubicación",
     forgotBackLogin:"Volver a iniciar sesión", resetNewPwdLabel:"Nueva contraseña", min8Chars:"Mínimo 8 caracteres.",
     changePwdTitle:"Cambiar contraseña", changePwdBody:"Introduce tu contraseña actual y luego la nueva (mínimo 8 caracteres).", changePwdCurrent:"Contraseña actual", changePwdNew:"Nueva contraseña", changePwdSubmit:"Cambiar contraseña",
     delAccTitle:"Eliminar cuenta", delAccWarn:"Esta acción es <strong>permanente</strong>. Tus valoraciones y favoritos se eliminarán. Las empresas que registraste permanecen en la plataforma, pero sin propietario asociado.", delAccConfirmPwd:"Confirma tu contraseña", delAccSubmit:"Eliminar definitivamente",
     compareOfThree:"de 3 seleccionadas",
     // ── JS-string coverage (toasts, dynamic labels) ──
     contactSendTo:"Enviar mensaje a", sendingBtn:"Enviando...",
-    toastSelectMin2:"Selecciona al menos 2 empresas para comparar.", toastMapUnavailable:"⚠️ Mapa no disponible — comprueba tu conexión", toastPlaceNotFound:"Lugar no encontrado. Prueba otro nombre.", toastLocationDetected:"📍 ¡Ubicación detectada!",
-    toastEnterEmail:"Indica tu correo", toastEnterEmail2:"Introduce un correo", toastPwdReset:"✅ ¡Contraseña restablecida! Ya puedes iniciar sesión.", toastLoginToRegister:"Inicia sesión para registrar tu empresa.", toastPwdChanged:"✅ Contraseña cambiada.", toastAccountDeleted:"Cuenta eliminada.",
-    toastSelectRating:"Selecciona una valoración (1-5 estrellas)", toastReviewPublished:"✅ ¡Valoración publicada!", toastWriteReply:"Escribe una respuesta", toastReplyPublished:"✅ Respuesta publicada", toastMsgTooShort:"Mensaje demasiado corto", toastMsgSent:"✅ ¡Mensaje enviado con éxito!",
-    toastReportUpdated:"Reporte actualizado", toastCompanyApproved:"✅ Empresa aprobada", toastCompanyRejected:"Empresa rechazada", toastCompanyRemoved:"🗑️ Empresa eliminada", toastLoadingStats:"Cargando estadísticas...", toastStatsError:"Error al cargar estadísticas",
+    toastSelectMin2:"Selecciona al menos 2 empresas para comparar.", toastMapUnavailable:"⚠️ Mapa no disponible — comprueba tu conexión", toastPlaceNotFound:"Lugar no encontrado. Prueba otro nombre.", toastLocationDetected:"¡Ubicación detectada!",
+    toastEnterEmail:"Indica tu correo", toastEnterEmail2:"Introduce un correo", toastPwdReset:"¡Contraseña restablecida! Ya puedes iniciar sesión.", toastLoginToRegister:"Inicia sesión para registrar tu empresa.", toastPwdChanged:"Contraseña cambiada.", toastAccountDeleted:"Cuenta eliminada.",
+    toastSelectRating:"Selecciona una valoración (1-5 estrellas)", toastReviewPublished:"¡Valoración publicada!", toastWriteReply:"Escribe una respuesta", toastReplyPublished:"Respuesta publicada", toastMsgTooShort:"Mensaje demasiado corto", toastMsgSent:"¡Mensaje enviado con éxito!",
+    toastReportUpdated:"Reporte actualizado", toastCompanyApproved:"Empresa aprobada", toastCompanyRejected:"Empresa rechazada", toastCompanyRemoved:"🗑️ Empresa eliminada", toastLoadingStats:"Cargando estadísticas...", toastStatsError:"Error al cargar estadísticas",
     compareMaxPrefix:"Puedes comparar hasta", compareMaxSuffix:"empresas. Quita una para añadir otra.", showingPrefix:"Mostrando", showingMid:"empresas en",
     // ── profile / geo-help / admin coverage ──
     profileMyCompanies:"Mis empresas", profileAdd:"Añadir", profileEditTitle:"Editar empresa", profileNoCompanyMsg:"Registra tu empresa para aparecer en el mapa y recibir presupuestos.", profileAccount:"Cuenta",
@@ -1256,7 +1256,7 @@ const translations = {
     geoAndroidLabel:"Android (Chrome)", geoAndroid1:"Toca el <strong>candado 🔒</strong> en la barra de direcciones", geoAndroid2:"Toca <strong>Permisos</strong>", geoAndroid3:"En <strong>Ubicación</strong>, selecciona <strong>Permitir</strong>", geoAndroid4:"Recarga la página y toca 📍", geoAndroidAlt:"Si no aparece el candado: Ajustes de Chrome → Configuración de sitios → Ubicación → permitir este sitio.",
     geoBrowserLabel:"Navegador", geoGeneric1:"Haz clic en el <strong>candado 🔒</strong> en la barra de direcciones", geoGeneric2:"Encuentra <strong>Ubicación</strong> y selecciona <strong>Permitir</strong>", geoGeneric3:"Recarga la página",
     admPendingPlain:"Pendientes", admReviewed:"Revisados", admDismissed:"Descartados", admAll:"Todos", admNoReports:"Sin reportes.", admReasonFake:"Empresa falsa", admReasonInappropriate:"Contenido inapropiado", admReasonDuplicate:"Duplicada", admReasonWrongInfo:"Información incorrecta", admReasonSpam:"Spam", admReasonOther:"Otro", admReportedBy:"Reportado por", admViewCompany:"Ver empresa", admMarkReviewed:"Marcar como revisado", admDismiss:"Descartar", admError:"Error", admErrorLoading:"Error al cargar", admAnonymous:"anónimo",
-    admStatApproved:"Aprobadas", admStatRejected:"Rechazadas", admStatUsers:"Usuarios", admStatReviews:"Valoraciones", admStatEvents7d:"Eventos (7d)", admStatNew7d:"Nuevas (7d)", admStatTotal:"Total empresas", admViewPendingA:"Ver", admViewPendingB:"empresa(s) pendiente(s) →", admSearchPh:"Buscar por nombre o correo...", admStatusRemoved:"Eliminadas", admNoCompanies:"No se encontraron empresas.", admNoAccount:"sin cuenta", admRestore:"Restaurar", admApprove:"Aprobar", admRemove:"Eliminar", admUnfeatureTitle:"Quitar destacado", admFeatureTitle:"Destacar", admUnfeatureBtn:"⭐ Quitar", admFeatureBtn:"☆ Destacar", admFeatured:"⭐ Empresa destacada", admUnfeatured:"Destacado eliminado", adminPanelTitle:"Panel Admin",
+    admStatApproved:"Aprobadas", admStatRejected:"Rechazadas", admStatUsers:"Usuarios", admStatReviews:"Valoraciones", admStatEvents7d:"Eventos (7d)", admStatNew7d:"Nuevas (7d)", admStatTotal:"Total empresas", admViewPendingA:"Ver", admViewPendingB:"empresa(s) pendiente(s) →", admSearchPh:"Buscar por nombre o correo...", admStatusRemoved:"Eliminadas", admNoCompanies:"No se encontraron empresas.", admNoAccount:"sin cuenta", admRestore:"Restaurar", admApprove:"Aprobar", admRemove:"Eliminar", admUnfeatureTitle:"Quitar destacado", admFeatureTitle:"Destacar", admUnfeatureBtn:"Quitar", admFeatureBtn:"☆ Destacar", admFeatured:"Empresa destacada", admUnfeatured:"Destacado eliminado", adminPanelTitle:"Panel Admin",
     navHome:'Inicio', navSearch:'Mapa', navAbout:'Sobre', navRegister:'Registrar Empresa',
     recentlyViewed:'Vistas recientemente', recentRemove:'Quitar', recentClear:'Limpiar',
     searchUpdated:'¡Búsqueda actualizada!',
@@ -1433,8 +1433,8 @@ const translations = {
     helpFaqTitle:'FAQ', helpFaqDesc:'Encuentre respuestas a las preguntas más frecuentes.', helpFaqBtn:'Ver FAQ',
     helpWhoTitle:'Quiénes Somos', helpWhoDesc:'HIVE es una plataforma digital innovadora que conecta empresas, profesionales independientes y particulares, facilitando relaciones comerciales transparentes y fiables. Operamos en Portugal con el objetivo de democratizar el acceso a servicios de calidad.',
     helpStatPros:'Empresas Verificadas', helpStatCompanies:'Empresas Registradas',
-    helpMissionTitle:'🎯 Misión', helpMissionDesc:'Simplificar y democratizar el acceso a servicios profesionales de calidad, creando un ecosistema transparente donde empresas y profesionales puedan crecer juntos.',
-    helpVisionTitle:'👁️ Visión', helpVisionDesc:'Ser la plataforma de referencia en Portugal para conectar empresas y profesionales, fomentando el crecimiento económico y creando oportunidades para todos.',
+    helpMissionTitle:'Misión', helpMissionDesc:'Simplificar y democratizar el acceso a servicios profesionales de calidad, creando un ecosistema transparente donde empresas y profesionales puedan crecer juntos.',
+    helpVisionTitle:'Visión', helpVisionDesc:'Ser la plataforma de referencia en Portugal para conectar empresas y profesionales, fomentando el crecimiento económico y creando oportunidades para todos.',
     navLogin:'Entrar / Registrarse', navHelp:'Ayuda',
     themeToDark:'Oscuro', themeToLight:'Claro', themeModeDark:'Modo oscuro', themeModeLight:'Modo claro',
     testimonialPhrases:['Excelente profesionalidad y calidad de trabajo.','Muy puntuales y trabajo impecable. ¡Recomendado!','Gran relación calidad-precio. Volveré a contratar.','Equipo muy competente y organizado.','Superaron las expectativas. Trabajo de primera.','Profesionales serios y de confianza.','Servicio rápido y eficiente. Muy satisfecho.','Atención excelente de principio a fin.','Cumplieron los plazos y el presupuesto. ¡Recomendado!','Trabajo cuidado y mucha simpatía.'],
@@ -1463,17 +1463,17 @@ const translations = {
     lpB2cBtn:'Encontrar profesional →',
     toastEmailUnavailable:'📧 Email no disponible — use WhatsApp o el Chat interno',
     toastPhoneUnavailable:'📞 Teléfono no disponible',
-    toastLinkCopied:'📋 ¡Enlace copiado!',
+    toastLinkCopied:'¡Enlace copiado!',
     toastCopyFailed:'No se pudo copiar',
     toastGeoNotSupported:'Geolocalización no soportada por este navegador.',
     toastGeoPermissionDenied:'Permiso de ubicación denegado.',
     toastGeoPositionUnavailable:'Posición no disponible.',
     toastGeoTimeout:'Tiempo de espera agotado.',
     toastGeoError:'Error al obtener ubicación.',
-    toastLocationFound:'📍 ¡Ubicación actual encontrada!',
+    toastLocationFound:'¡Ubicación actual encontrada!',
     toastLocationFailed:'No se pudo obtener la ubicación.',
     toastLocationError:'Error al buscar ubicación.',
-    toastRegisterError:'❌ Error al guardar. Verifique la conexión e inténtelo de nuevo.',
+    toastRegisterError:'Error al guardar. Verifique la conexión e inténtelo de nuevo.',
     emailQuoteSubject:'Solicitud de Presupuesto',
     emailQuoteBody:'Buenos días,\n\nMe gustaría solicitar un presupuesto para sus servicios.\n\nDetalles del proyecto:\n- Descripción: \n- Ubicación: \n- Plazo deseado: \n\nQuedo a la espera de su respuesta.\n\nSaludos',
     searchListEmpty:'Ninguna empresa encontrada',
@@ -1483,13 +1483,13 @@ const translations = {
     mapHintSelectSector:'Seleccione un área de actividad',
     mapHintSelectSectorSub:'para ver empresas en el mapa',
     noRatingText:'Sin valoración',
-    regTypeCompany:'🏢 Registro Empresa',
+    regTypeCompany:'Registro Empresa',
     regTypeClient:'🔍 Registro Cliente',
     typeCompanyLabel:'Empresa',
     typeClientLabel:'Cliente',
     typeAdvertiserLabel:'Anunciante',
     avatarRegisterCompany:'Registrar Empresa',
-    statusApproved:'✅ Aprobada', statusPending:'⏳ Pendiente', statusRejected:'❌ Rechazada', statusRemoved:'🗑️ Eliminada',
+    statusApproved:'Aprobada', statusPending:'Pendiente', statusRejected:'Rechazada', statusRemoved:'🗑️ Eliminada',
     postRegAria:'Próximos pasos',
     postRegWelcome:'¡Bienvenido a Hivex!', postRegWelcomeNamed:'¡Bienvenido a Hivex, {name}!',
     postRegPrompt:'¿Qué desea hacer?',
@@ -1498,7 +1498,7 @@ const translations = {
     postRegBrowseTitle:'Solo buscar empresas',
     postRegBrowseDesc:'Explorar el marketplace para encontrar profesionales',
     postRegFooterHint:'Puede anunciar su empresa más tarde desde el menú de la cuenta.',
-    reportAria:'Reportar anuncio', reportTitle:'🚩 Reportar anuncio',
+    reportAria:'Reportar anuncio', reportTitle:'Reportar anuncio',
     reportSubtitle:'Los reportes son revisados por nuestro equipo de moderación.',
     reportReasonLabel:'Motivo', reportReasonPh:'Seleccionar motivo…',
     reportReasonFake:'Empresa falsa o inexistente', reportReasonInappropriate:'Contenido inapropiado',
@@ -1508,7 +1508,7 @@ const translations = {
     reportSubmit:'Enviar reporte', btnCancel:'Cancelar',
     regSuccessTitle:'¡Registro Recibido!',
     regSuccessSub:'Su registro ha sido recibido y está en revisión por nuestro equipo. Una vez aprobada, su empresa aparecerá en el mapa y recibirá un email de confirmación.',
-    regSuccessStep1:'⏳ En revisión — normalmente aprobada en <strong>24 horas hábiles</strong>.',
+    regSuccessStep1:'En revisión — normalmente aprobada en <strong>24 horas hábiles</strong>.',
     regSuccessStep2:'✉️ Recibirá un <strong>email</strong> en cuanto sea aprobada.',
     regSuccessStep3:'✏️ Edite los detalles desde <strong>Mi Perfil</strong>.',
     heroUserGreeting:'¡Hola!', heroUserGreetingNamed:'¡Hola, {name}!',
@@ -1532,7 +1532,7 @@ const translations = {
     authAria:'Iniciar sesión o crear cuenta',
     toastFavRemoved:'Eliminada de favoritos', toastFavAdded:'★ Guardada en favoritos',
     toastNoEditPermission:'No tiene permiso para editar esta empresa.',
-    toastCompanyUpdated:'✅ ¡Empresa actualizada con éxito!',
+    toastCompanyUpdated:'¡Empresa actualizada con éxito!',
     toastReportLoginRequired:'Inicie sesión para reportar un anuncio.',
     toastReportSelectReason:'Seleccione un motivo.',
     toastReportSent:'Reporte enviado. Gracias por ayudar a mantener la plataforma segura.',
@@ -1624,7 +1624,7 @@ const translations = {
     contactTitle:"Nachricht senden", contactSub:"Ihre Nachricht wird direkt an das Unternehmen übermittelt",
     contactMsgLabel:"Nachricht", contactMsgPh:"Hallo! Ich hätte gerne Informationen zu Ihren Leistungen...",
     contactPrivacy:"Die E-Mail-Adresse des Unternehmens wird nie an Sie weitergegeben — Hivex übermittelt Ihre Nachricht sicher.",
-    adminTitle:"⚙️ Admin-Bereich", adminTabStats:"📊 Statistiken", adminTabPending:"⏳ Ausstehend", adminTabAll:"🏢 Alle", adminTabReports:"🚩 Meldungen",
+    adminTitle:"Admin-Bereich", adminTabStats:"Statistiken", adminTabPending:"Ausstehend", adminTabAll:"Alle", adminTabReports:"Meldungen",
     loadingGeneric:"Wird geladen...",
     statusTitle:"Registrierungsstatus", statusPrompt:"Geben Sie die E-Mail-Adresse ein, mit der Sie Ihr Unternehmen registriert haben, um den Status zu prüfen.", statusVerify:"Prüfen",
     dpDragClose:"zum Schließen ziehen", dpCloseTitle:"Schließen", dpCallTitle:"Anrufen", dpShareTitle:"Teilen",
@@ -1636,17 +1636,17 @@ const translations = {
     optionalTag:"(optional)", regAlvaraHint:"Baugenehmigungsnummer, falls zutreffend.", regCountryPh:"Land auswählen",
     countryPT:"Portugal", countryES:"Spanien", countryFR:"Frankreich", countryIT:"Italien", countryDE:"Deutschland", countryUK:"Vereinigtes Königreich", countryNL:"Niederlande", countryBE:"Belgien", countryCH:"Schweiz", countryAT:"Österreich", countryOther:"Anderes Land",
     regAddressHint:"Geben Sie Straße, Nummer, Wohnung und Details für eine genaue Position auf der Karte an.", regFoundedPh:"z. B. 2010", regHoursPh:"z. B. Mo-Fr 9-18 Uhr, Sa 9-13 Uhr", regPortfolioPh:"Durch Kommas getrennte URLs (bis zu 12)",
-    geoTitle:"Standort blockiert", geoIntro:"Der Browser hat den Standortzugriff blockiert. Folgen Sie den Schritten unten, um ihn zu aktivieren.", geoRetry:"📍 Erneut versuchen", geoSkip:"Ohne Standort fortfahren",
+    geoTitle:"Standort blockiert", geoIntro:"Der Browser hat den Standortzugriff blockiert. Folgen Sie den Schritten unten, um ihn zu aktivieren.", geoRetry:"Erneut versuchen", geoSkip:"Ohne Standort fortfahren",
     forgotBackLogin:"Zurück zur Anmeldung", resetNewPwdLabel:"Neues Passwort", min8Chars:"Mindestens 8 Zeichen.",
     changePwdTitle:"Passwort ändern", changePwdBody:"Geben Sie Ihr aktuelles und dann das neue Passwort ein (mindestens 8 Zeichen).", changePwdCurrent:"Aktuelles Passwort", changePwdNew:"Neues Passwort", changePwdSubmit:"Passwort ändern",
     delAccTitle:"Konto löschen", delAccWarn:"Diese Aktion ist <strong>endgültig</strong>. Ihre Bewertungen und Favoriten werden entfernt. Von Ihnen registrierte Unternehmen bleiben auf der Plattform, jedoch ohne zugeordneten Eigentümer.", delAccConfirmPwd:"Bestätigen Sie Ihr Passwort", delAccSubmit:"Endgültig löschen",
     compareOfThree:"von 3 ausgewählt",
     // ── JS-string coverage (toasts, dynamic labels) ──
     contactSendTo:"Nachricht senden an", sendingBtn:"Wird gesendet...",
-    toastSelectMin2:"Wählen Sie mindestens 2 Unternehmen zum Vergleich.", toastMapUnavailable:"⚠️ Karte nicht verfügbar — prüfen Sie Ihre Verbindung", toastPlaceNotFound:"Ort nicht gefunden. Versuchen Sie einen anderen Namen.", toastLocationDetected:"📍 Standort erkannt!",
-    toastEnterEmail:"Geben Sie Ihre E-Mail-Adresse an", toastEnterEmail2:"Geben Sie eine E-Mail-Adresse ein", toastPwdReset:"✅ Passwort zurückgesetzt! Sie können sich anmelden.", toastLoginToRegister:"Melden Sie sich an, um Ihr Unternehmen zu registrieren.", toastPwdChanged:"✅ Passwort geändert.", toastAccountDeleted:"Konto gelöscht.",
-    toastSelectRating:"Wählen Sie eine Bewertung (1-5 Sterne)", toastReviewPublished:"✅ Bewertung veröffentlicht!", toastWriteReply:"Schreiben Sie eine Antwort", toastReplyPublished:"✅ Antwort veröffentlicht", toastMsgTooShort:"Nachricht zu kurz", toastMsgSent:"✅ Nachricht erfolgreich gesendet!",
-    toastReportUpdated:"Meldung aktualisiert", toastCompanyApproved:"✅ Unternehmen genehmigt", toastCompanyRejected:"Unternehmen abgelehnt", toastCompanyRemoved:"🗑️ Unternehmen entfernt", toastLoadingStats:"Statistiken werden geladen...", toastStatsError:"Fehler beim Laden der Statistiken",
+    toastSelectMin2:"Wählen Sie mindestens 2 Unternehmen zum Vergleich.", toastMapUnavailable:"⚠️ Karte nicht verfügbar — prüfen Sie Ihre Verbindung", toastPlaceNotFound:"Ort nicht gefunden. Versuchen Sie einen anderen Namen.", toastLocationDetected:"Standort erkannt!",
+    toastEnterEmail:"Geben Sie Ihre E-Mail-Adresse an", toastEnterEmail2:"Geben Sie eine E-Mail-Adresse ein", toastPwdReset:"Passwort zurückgesetzt! Sie können sich anmelden.", toastLoginToRegister:"Melden Sie sich an, um Ihr Unternehmen zu registrieren.", toastPwdChanged:"Passwort geändert.", toastAccountDeleted:"Konto gelöscht.",
+    toastSelectRating:"Wählen Sie eine Bewertung (1-5 Sterne)", toastReviewPublished:"Bewertung veröffentlicht!", toastWriteReply:"Schreiben Sie eine Antwort", toastReplyPublished:"Antwort veröffentlicht", toastMsgTooShort:"Nachricht zu kurz", toastMsgSent:"Nachricht erfolgreich gesendet!",
+    toastReportUpdated:"Meldung aktualisiert", toastCompanyApproved:"Unternehmen genehmigt", toastCompanyRejected:"Unternehmen abgelehnt", toastCompanyRemoved:"🗑️ Unternehmen entfernt", toastLoadingStats:"Statistiken werden geladen...", toastStatsError:"Fehler beim Laden der Statistiken",
     compareMaxPrefix:"Sie können bis zu", compareMaxSuffix:"Unternehmen vergleichen. Entfernen Sie eines, um ein weiteres hinzuzufügen.", showingPrefix:"Zeige", showingMid:"Unternehmen in",
     // ── profile / geo-help / admin coverage ──
     profileMyCompanies:"Meine Unternehmen", profileAdd:"Hinzufügen", profileEditTitle:"Unternehmen bearbeiten", profileNoCompanyMsg:"Registrieren Sie Ihr Unternehmen, um auf der Karte zu erscheinen und Angebote zu erhalten.", profileAccount:"Konto",
@@ -1654,7 +1654,7 @@ const translations = {
     geoAndroidLabel:"Android (Chrome)", geoAndroid1:"Tippen Sie auf das <strong>Schloss 🔒</strong> in der Adressleiste", geoAndroid2:"Tippen Sie auf <strong>Berechtigungen</strong>", geoAndroid3:"Wählen Sie unter <strong>Standort</strong> die Option <strong>Erlauben</strong>", geoAndroid4:"Laden Sie die Seite neu und tippen Sie auf 📍", geoAndroidAlt:"Falls das Schloss nicht erscheint: Chrome-Einstellungen → Website-Einstellungen → Standort → diese Website zulassen.",
     geoBrowserLabel:"Browser", geoGeneric1:"Klicken Sie auf das <strong>Schloss 🔒</strong> in der Adressleiste", geoGeneric2:"Suchen Sie <strong>Standort</strong> und setzen Sie ihn auf <strong>Erlauben</strong>", geoGeneric3:"Laden Sie die Seite neu",
     admPendingPlain:"Ausstehend", admReviewed:"Geprüft", admDismissed:"Verworfen", admAll:"Alle", admNoReports:"Keine Meldungen.", admReasonFake:"Gefälschtes Unternehmen", admReasonInappropriate:"Unangemessener Inhalt", admReasonDuplicate:"Duplikat", admReasonWrongInfo:"Falsche Informationen", admReasonSpam:"Spam", admReasonOther:"Sonstiges", admReportedBy:"Gemeldet von", admViewCompany:"Unternehmen ansehen", admMarkReviewed:"Als geprüft markieren", admDismiss:"Verwerfen", admError:"Fehler", admErrorLoading:"Fehler beim Laden", admAnonymous:"anonym",
-    admStatApproved:"Genehmigt", admStatRejected:"Abgelehnt", admStatUsers:"Nutzer", admStatReviews:"Bewertungen", admStatEvents7d:"Ereignisse (7T)", admStatNew7d:"Neue (7T)", admStatTotal:"Unternehmen gesamt", admViewPendingA:"", admViewPendingB:"ausstehende(s) Unternehmen ansehen →", admSearchPh:"Nach Name oder E-Mail suchen...", admStatusRemoved:"Entfernt", admNoCompanies:"Keine Unternehmen gefunden.", admNoAccount:"kein Konto", admRestore:"Wiederherstellen", admApprove:"Genehmigen", admRemove:"Entfernen", admUnfeatureTitle:"Hervorhebung entfernen", admFeatureTitle:"Hervorheben", admUnfeatureBtn:"⭐ Entfernen", admFeatureBtn:"☆ Hervorheben", admFeatured:"⭐ Unternehmen hervorgehoben", admUnfeatured:"Hervorhebung entfernt", adminPanelTitle:"Admin-Bereich",
+    admStatApproved:"Genehmigt", admStatRejected:"Abgelehnt", admStatUsers:"Nutzer", admStatReviews:"Bewertungen", admStatEvents7d:"Ereignisse (7T)", admStatNew7d:"Neue (7T)", admStatTotal:"Unternehmen gesamt", admViewPendingA:"", admViewPendingB:"ausstehende(s) Unternehmen ansehen →", admSearchPh:"Nach Name oder E-Mail suchen...", admStatusRemoved:"Entfernt", admNoCompanies:"Keine Unternehmen gefunden.", admNoAccount:"kein Konto", admRestore:"Wiederherstellen", admApprove:"Genehmigen", admRemove:"Entfernen", admUnfeatureTitle:"Hervorhebung entfernen", admFeatureTitle:"Hervorheben", admUnfeatureBtn:"Entfernen", admFeatureBtn:"☆ Hervorheben", admFeatured:"Unternehmen hervorgehoben", admUnfeatured:"Hervorhebung entfernt", adminPanelTitle:"Admin-Bereich",
     navHome:'Start', navSearch:'Karte', navAbout:'Über uns', navRegister:'Unternehmen registrieren',
     recentlyViewed:'Kürzlich angesehen', recentRemove:'Entfernen', recentClear:'Leeren',
     searchUpdated:'Suche aktualisiert!',
@@ -1831,8 +1831,8 @@ const translations = {
     helpFaqTitle:'Häufige Fragen', helpFaqDesc:'Antworten auf die häufigsten Fragen finden.', helpFaqBtn:'FAQ ansehen',
     helpWhoTitle:'Über uns', helpWhoDesc:'HIVE ist eine innovative digitale Plattform, die Unternehmen, freie Fachleute und Privatpersonen vernetzt und transparente, verlässliche Geschäftsbeziehungen fördert. Wir sind in Portugal tätig und haben es uns zur Aufgabe gemacht, Zwischenhändler zu eliminieren, Kosten zu senken und hochwertige Dienstleistungen für alle zugänglich zu machen.',
     helpStatPros:'Verifizierte Unternehmen', helpStatCompanies:'Registrierte Unternehmen',
-    helpMissionTitle:'🎯 Mission', helpMissionDesc:'Den Zugang zu hochwertigen Fachleistungen vereinfachen und demokratisieren – ein transparentes Ökosystem schaffen, in dem Unternehmen und Fachleute gemeinsam wachsen können, ohne unnötige Zwischenhändler.',
-    helpVisionTitle:'👁️ Vision', helpVisionDesc:'Die führende Plattform in Portugal zur Vernetzung von Unternehmen und Fachleuten werden, Wirtschaftswachstum fördern und Chancen für alle schaffen.',
+    helpMissionTitle:'Mission', helpMissionDesc:'Den Zugang zu hochwertigen Fachleistungen vereinfachen und demokratisieren – ein transparentes Ökosystem schaffen, in dem Unternehmen und Fachleute gemeinsam wachsen können, ohne unnötige Zwischenhändler.',
+    helpVisionTitle:'Vision', helpVisionDesc:'Die führende Plattform in Portugal zur Vernetzung von Unternehmen und Fachleuten werden, Wirtschaftswachstum fördern und Chancen für alle schaffen.',
     navLogin:'Anmelden / Registrieren', navHelp:'Hilfe',
     themeToDark:'Dunkel', themeToLight:'Hell', themeModeDark:'Dunkelmodus', themeModeLight:'Heller Modus',
     testimonialPhrases:['Hervorragende Professionalität und Arbeitsqualität.','Sehr pünktlich und tadellose Arbeit. Empfehlenswert!','Tolles Preis-Leistungs-Verhältnis. Gerne wieder.','Sehr kompetentes und organisiertes Team.','Haben die Erwartungen übertroffen. Erstklassige Arbeit.','Seriöse und vertrauenswürdige Fachleute.','Schneller und effizienter Service. Sehr zufrieden.','Ausgezeichneter Service von Anfang bis Ende.','Termin und Budget eingehalten. Empfehlenswert!','Sorgfältige Arbeit und sehr freundlich.'],
@@ -1861,17 +1861,17 @@ const translations = {
     lpB2cBtn:'Fachleute finden →',
     toastEmailUnavailable:'📧 E-Mail nicht verfügbar — bitte WhatsApp oder Chat nutzen',
     toastPhoneUnavailable:'📞 Telefon nicht verfügbar',
-    toastLinkCopied:'📋 Link kopiert!',
+    toastLinkCopied:'Link kopiert!',
     toastCopyFailed:'Kopieren fehlgeschlagen',
     toastGeoNotSupported:'Dieser Browser unterstützt keine Geolokalisierung.',
     toastGeoPermissionDenied:'Standortzugriff verweigert.',
     toastGeoPositionUnavailable:'Standort nicht verfügbar.',
     toastGeoTimeout:'Standortermittlung hat zu lange gedauert.',
     toastGeoError:'Fehler beim Abrufen des Standorts.',
-    toastLocationFound:'📍 Aktueller Standort gefunden!',
+    toastLocationFound:'Aktueller Standort gefunden!',
     toastLocationFailed:'Standort konnte nicht ermittelt werden.',
     toastLocationError:'Fehler bei der Standortsuche.',
-    toastRegisterError:'❌ Fehler beim Speichern. Bitte Netzwerkverbindung prüfen und erneut versuchen.',
+    toastRegisterError:'Fehler beim Speichern. Bitte Netzwerkverbindung prüfen und erneut versuchen.',
     emailQuoteSubject:'Angebotsanfrage',
     emailQuoteBody:'Sehr geehrte Damen und Herren,\n\nIch möchte ein Angebot für Ihre Leistungen anfragen.\n\nProjektdetails:\n- Beschreibung:\n- Standort:\n- Gewünschter Fertigstellungstermin:\n\nIch freue mich auf Ihre Rückmeldung.\n\nMit freundlichen Grüßen',
     searchListEmpty:'Keine Unternehmen gefunden',
@@ -1881,12 +1881,12 @@ const translations = {
     mapHintSelectSector:'Tätigkeitsbereich auswählen',
     mapHintSelectSectorSub:'um Unternehmen auf der Karte anzuzeigen',
     noRatingText:'Noch keine Bewertung',
-    regTypeCompany:'🏢 Unternehmensregistrierung',
+    regTypeCompany:'Unternehmensregistrierung',
     regTypeClient:'🔍 Kundenregistrierung',
     typeCompanyLabel:'Unternehmen',
     typeClientLabel:'Kunde',
     typeAdvertiserLabel:'Inserent',
-    statusApproved:'✅ Genehmigt', statusPending:'⏳ Ausstehend', statusRejected:'❌ Abgelehnt', statusRemoved:'🗑️ Entfernt',
+    statusApproved:'Genehmigt', statusPending:'Ausstehend', statusRejected:'Abgelehnt', statusRemoved:'🗑️ Entfernt',
     postRegAria:'Nächste Schritte',
     postRegWelcome:'Willkommen bei Hivex!', postRegWelcomeNamed:'Willkommen bei Hivex, {name}!',
     postRegPrompt:'Was möchten Sie tun?',
@@ -1895,7 +1895,7 @@ const translations = {
     postRegBrowseTitle:'Nur Unternehmen suchen',
     postRegBrowseDesc:'Marketplace erkunden und Fachleute finden',
     postRegFooterHint:'Sie können Ihr Unternehmen später über das Kontomenü inserieren.',
-    reportAria:'Eintrag melden', reportTitle:'🚩 Eintrag melden',
+    reportAria:'Eintrag melden', reportTitle:'Eintrag melden',
     reportSubtitle:'Meldungen werden von unserem Moderationsteam geprüft.',
     reportReasonLabel:'Grund', reportReasonPh:'Grund auswählen…',
     reportReasonFake:'Falsches oder nicht existierendes Unternehmen', reportReasonInappropriate:'Unangemessener Inhalt',
@@ -1905,7 +1905,7 @@ const translations = {
     reportSubmit:'Meldung senden', btnCancel:'Abbrechen',
     regSuccessTitle:'Registrierung erhalten!',
     regSuccessSub:'Ihre Registrierung ist eingegangen und wird von unserem Team geprüft. Nach der Freigabe erscheint Ihr Unternehmen auf der Karte und Sie erhalten eine Bestätigungs-E-Mail.',
-    regSuccessStep1:'⏳ In Prüfung — meist innerhalb von <strong>24 Werkstunden</strong> freigegeben.',
+    regSuccessStep1:'In Prüfung — meist innerhalb von <strong>24 Werkstunden</strong> freigegeben.',
     regSuccessStep2:'✉️ Sie erhalten eine <strong>E-Mail</strong>, sobald es freigegeben ist.',
     regSuccessStep3:'✏️ Details jederzeit unter <strong>Mein Profil</strong> bearbeiten.',
     heroUserGreeting:'Hallo!', heroUserGreetingNamed:'Hallo, {name}!',
@@ -1929,7 +1929,7 @@ const translations = {
     authAria:'Anmelden oder Konto erstellen',
     toastFavRemoved:'Aus Favoriten entfernt', toastFavAdded:'★ Zu Favoriten hinzugefügt',
     toastNoEditPermission:'Keine Berechtigung, dieses Unternehmen zu bearbeiten.',
-    toastCompanyUpdated:'✅ Unternehmen erfolgreich aktualisiert!',
+    toastCompanyUpdated:'Unternehmen erfolgreich aktualisiert!',
     toastReportLoginRequired:'Bitte anmelden, um einen Eintrag zu melden.',
     toastReportSelectReason:'Bitte einen Grund auswählen.',
     toastReportSent:'Meldung gesendet. Danke, dass Sie helfen, die Plattform sicher zu halten.',
@@ -2686,7 +2686,7 @@ function renderFeaturedCompanies() {
           <span class="lp-cc-reviews">(${c.reviews || 0} ${tr.featuredReviews || 'avaliações'})</span>
         </div>
         ${tags ? `<div class="lp-cc-tags">${tags}</div>` : ''}
-        <div class="lp-cc-address">📍 ${c.address || 'Portugal'}</div>
+        <div class="lp-cc-address">${c.address || 'Portugal'}</div>
       </div>`;
   }).join('');
 }
@@ -4348,7 +4348,7 @@ function buildPopupHtml(c) {
     <div style="font-size:22px;font-weight:800;color:#1e293b;margin-bottom:5px">${c.emoji} ${escHtml(c.name)}</div>
     ${sectorsHtml}
     ${starsHtml}
-    ${c.address ? `<div style="font-size:16px;color:#64748b;line-height:1.4">📍 ${escHtml(c.address)}</div>` : ''}
+    ${c.address ? `<div style="font-size:16px;color:#64748b;line-height:1.4">${escHtml(c.address)}</div>` : ''}
     ${badges ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:9px">${badges}</div>` : ''}
   </div>`;
 }
@@ -4490,7 +4490,7 @@ function geocodeLocation(location) {
         // Update radius circle center
         if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
         // Show location name in toast
-        showToast(`📍 ${place.name || location}`);
+        showToast(`${place.name || location}`);
       } else {
         showToast(t('toastPlaceNotFound'));
       }
@@ -4878,7 +4878,7 @@ function mspOpenSheet(type) {
     })();
     const opts = [
       {val:'all',    label:'Todos'},
-      {val:'rating', label:'⭐ Melhor Avaliação'},
+      {val:'rating', label:'Melhor Avaliação'},
       {val:'reviews',label:'💬 Mais Avaliados'},
       {val:'name',   label:'A–Z'},
     ];
@@ -5345,7 +5345,7 @@ function submitUnifiedSearch(val) {
         if (typeof invalidateDistanceCache === 'function') invalidateDistanceCache();
         if (typeof radiusCircle !== 'undefined' && radiusCircle) radiusCircle.setLatLng([lat, lng]);
         _keywordFilter = '';
-        showToast(`📍 ${(p.display_name || val).split(',')[0]}`);
+        showToast(`${(p.display_name || val).split(',')[0]}`);
       } else {
         _keywordFilter = val; // not a place → keyword filter
         showToast(t('toastPlaceNotFound'));
@@ -5818,7 +5818,7 @@ function _appendListCards(frag, data, start, end) {
         </div>
         <div class="slc-rating">${stars}</div>
       </div>
-      <div class="slc-address">📍 ${c.city || c.address || 'Portugal'}</div>
+      <div class="slc-address">${c.city || c.address || 'Portugal'}</div>
       ${tags ? `<div class="slc-tags">${tags}</div>` : ''}
       <div class="slc-footer">
         ${phoneFrag}
@@ -5954,10 +5954,10 @@ function _appendNearbyCards(listEl, upTo, sentinel) {
         <div class="nc-side"><span class="nc-dist">${distStr}</span>${_openBadgeHtml(c)}</div>
       </div>
       <div class="nc-rating">${rating}</div>
-      ${c.address || c.city ? `<div class="nc-address">📍 ${escHtml(c.address || c.city)}</div>` : ''}
+      ${c.address || c.city ? `<div class="nc-address">${escHtml(c.address || c.city)}</div>` : ''}
       <label class="nc-compare" onclick="event.stopPropagation()" title="Adicionar à comparação">
         <input type="checkbox" ${_compareIds.has(Number(c.id)) ? 'checked' : ''} onchange="toggleCompare(${c.id})"/>
-        <span>⚖ Comparar</span>
+        <span>Comparar</span>
       </label>`;
     frag.appendChild(div);
   }
@@ -9291,7 +9291,7 @@ function openProfilePanel() {
           <div class="profile-company-emoji logo-mono" style="cursor:pointer" onclick="closeProfilePanel();showTab('search');setTimeout(()=>openDetail(${c.id}),300)">${companyMonogram(c)}</div>
           <div class="profile-company-info" style="cursor:pointer;flex:1" onclick="closeProfilePanel();showTab('search');setTimeout(()=>openDetail(${c.id}),300)">
             <div class="profile-company-name">${c.name}</div>
-            <div class="profile-company-city">📍 ${c.city||'Portugal'} · <span style="color:${c.status==='approved'?'var(--green)':c.status==='pending'?'#f59e0b':c.status==='removed'?'var(--muted)':'var(--red)'};font-weight:700;font-size:11px">${c.status==='approved'?t('statusApproved'):c.status==='pending'?t('statusPending'):c.status==='removed'?t('statusRemoved'):t('statusRejected')}</span></div>
+            <div class="profile-company-city">${c.city||'Portugal'} · <span style="color:${c.status==='approved'?'var(--green)':c.status==='pending'?'#f59e0b':c.status==='removed'?'var(--muted)':'var(--red)'};font-weight:700;font-size:11px">${c.status==='approved'?t('statusApproved'):c.status==='pending'?t('statusPending'):c.status==='removed'?t('statusRemoved'):t('statusRejected')}</span></div>
           </div>
           <button onclick="profileEditCompany(${c.id})" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;color:var(--text-secondary);cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0" title="${t('profileEditTitle')}">✏️</button>
           <button onclick="openInbox(${c.id})" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;color:var(--text-secondary);cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0" title="${t('inboxBtn')}">📨</button>
@@ -10296,7 +10296,7 @@ async function adminLoadStats() {
     const pendTab = document.querySelector('.admin-tab[onclick*="pending"]');
     if (pendTab) pendTab.innerHTML = t('adminTabPending') + (s.pending > 0 ? ` <span style="background:#ef4444;color:#fff;font-size:10px;font-weight:800;border-radius:9px;padding:1px 6px;margin-left:4px">${s.pending}</span>` : '');
     const visitsHtml = v ? `
-      <div style="font-size:13px;font-weight:800;color:var(--text);margin:0 0 10px">📈 Visitas ao site</div>
+      <div style="font-size:13px;font-weight:800;color:var(--text);margin:0 0 10px">Visitas ao site</div>
       <div class="admin-stat-grid avg-5">
         <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--text)">${v.today}</div><div class="admin-stat-label">Hoje</div></div>
         <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--primary)">${v.uniqueToday != null ? v.uniqueToday : '—'}</div><div class="admin-stat-label">Únicos hoje</div></div>
@@ -10311,7 +10311,7 @@ async function adminLoadStats() {
         <button id="admvbmonth" onclick="adminLoadVisitsChart('month')">Mês</button>
       </div>
       <div id="adminVisitsChartBox">${adminVisitsLineChart(v.series, v.period || 'day')}</div>
-      <div style="font-size:13px;font-weight:800;color:var(--text);margin:20px 0 10px">🏢 Empresas &amp; utilizadores</div>` : '';
+      <div style="font-size:13px;font-weight:800;color:var(--text);margin:20px 0 10px">Empresas &amp; utilizadores</div>` : '';
     body.innerHTML = `
       ${visitsHtml}
       <div class="admin-stat-grid">

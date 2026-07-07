@@ -150,7 +150,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v190.css"/>
+  <link rel="stylesheet" href="app.v191.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -667,7 +667,7 @@
 
           <!-- LOCATION mode -->
           <div id="heroLocationWrap">
-            <div class="lp-sb-icon">📍</div>
+            <div class="lp-sb-icon"><i data-lucide="map-pin"></i></div>
             <div class="lp-sb-inner">
               <div class="lp-sb-label" data-i18n="lpLocationLabel">Localização</div>
               <input type="text" id="heroLocation" placeholder="Lisboa, Porto, Braga..." data-i18n-ph="lpLocationPh" autocomplete="off"
@@ -692,7 +692,7 @@
 
           <!-- COMPANY NAME mode -->
           <div id="heroCompanyWrap" style="display:none">
-            <div class="lp-sb-icon">🏢</div>
+            <div class="lp-sb-icon"><i data-lucide="building-2"></i></div>
             <div class="lp-sb-inner">
               <div class="lp-sb-label" data-i18n="lpCompanyLabel">Nome da Empresa</div>
               <input type="text" id="heroCompanyName" placeholder="Ex: Construções Ribeiro, ElectroLux..." data-i18n-ph="lpCompanyPh" autocomplete="off"
@@ -768,14 +768,14 @@
                 <div class="ad-sub" data-i18n="adMainSub">8 áreas, 1 plataforma</div>
               </div>
               <div class="ad-casa-steps">
-                <div class="ad-step" data-casa="0">🏗️ <span data-i18n="legendEstrutura">Estrutura</span></div>
-                <div class="ad-step" data-casa="1">⚡ <span data-i18n="legendInstalacoes">Instalações</span></div>
-                <div class="ad-step" data-casa="2">🎨 <span data-i18n="legendAcabamentos">Acabamentos</span></div>
-                <div class="ad-step" data-casa="3">🪚 <span data-i18n="legendCarpintaria">Carpintaria</span></div>
-                <div class="ad-step" data-casa="4">🔩 <span data-i18n="legendSerralharia">Serralharia</span></div>
-                <div class="ad-step" data-casa="5">🌿 <span data-i18n="legendExterior">Exterior</span></div>
-                <div class="ad-step" data-casa="6">📐 <span data-i18n="legendProjeto">Projeto</span></div>
-                <div class="ad-step" data-casa="7">🔑 <span data-i18n="legendChaveNaMao">Chave na Mão</span></div>
+                <div class="ad-step" data-casa="0"><i data-lucide="building-2"></i> <span data-i18n="legendEstrutura">Estrutura</span></div>
+                <div class="ad-step" data-casa="1"><i data-lucide="zap"></i> <span data-i18n="legendInstalacoes">Instalações</span></div>
+                <div class="ad-step" data-casa="2"><i data-lucide="paintbrush"></i> <span data-i18n="legendAcabamentos">Acabamentos</span></div>
+                <div class="ad-step" data-casa="3"><i data-lucide="hammer"></i> <span data-i18n="legendCarpintaria">Carpintaria</span></div>
+                <div class="ad-step" data-casa="4"><i data-lucide="wrench"></i> <span data-i18n="legendSerralharia">Serralharia</span></div>
+                <div class="ad-step" data-casa="5"><i data-lucide="leaf"></i> <span data-i18n="legendExterior">Exterior</span></div>
+                <div class="ad-step" data-casa="6"><i data-lucide="ruler"></i> <span data-i18n="legendProjeto">Projeto</span></div>
+                <div class="ad-step" data-casa="7"><i data-lucide="key-round"></i> <span data-i18n="legendChaveNaMao">Chave na Mão</span></div>
               </div>
               <div class="ad-casa-cta">
                 <div class="ad-cta-label" data-i18n-html="adCta">Encontre<br>tudo aqui</div>
@@ -786,13 +786,13 @@
           <div class="ad-slide ad-slide-hivex" id="adSlideHivex">
             <div class="ad-casa-inner">
               <div class="ad-casa-left">
-                <div class="ad-badge" data-i18n="adHivexBadge">✨ A Hivex</div>
-                <div class="ad-title" data-i18n="adHivexTitle">Conectamos serviços</div>
+                <div class="ad-badge" data-i18n="adHivexBadge">A Hivex</div>
+                <div class="ad-title" data-i18n="adHivexTitle">Ligamos serviços</div>
                 <div class="ad-sub" data-i18n="adHivexSub">Pessoas e empresas, no mesmo sítio</div>
               </div>
               <div class="ad-flows">
-                <div class="ad-flow">👤 <span class="ad-flow-arrow">→</span> 🏢 <span data-i18n="adHivexB2C">Clientes encontram empresas</span></div>
-                <div class="ad-flow">🏢 <span class="ad-flow-arrow">→</span> 🏢 <span data-i18n="adHivexB2B">Empresas encontram parceiros</span></div>
+                <div class="ad-flow"><i data-lucide="user"></i> <span class="ad-flow-arrow">→</span> <i data-lucide="building-2"></i> <span data-i18n="adHivexB2C">Clientes encontram empresas</span></div>
+                <div class="ad-flow"><i data-lucide="building-2"></i> <span class="ad-flow-arrow">→</span> <i data-lucide="building-2"></i> <span data-i18n="adHivexB2B">Empresas encontram parceiros</span></div>
               </div>
               <div class="ad-casa-cta" onclick="showTab('search')">
                 <div class="ad-cta-label" data-i18n-html="adHivexCta">Faça<br>parte</div>
@@ -951,7 +951,7 @@
       <div class="footer-col">
         <h4 class="footer-title" data-i18n="footerContact">Contacto</h4>
         <p class="footer-contact">📧 geral.hivex@gmail.com</p>
-        <p class="footer-contact">📍 Lisboa, Portugal</p>
+        <p class="footer-contact">Lisboa, Portugal</p>
       </div>
     </div>
     <div class="footer-trust">
@@ -1123,7 +1123,7 @@
       </div>
       <div class="sort-opt">
         <input type="radio" name="sort" id="sortRating" value="rating" onchange="applyFilters()">
-        <label for="sortRating" data-i18n="sortRating">⭐ Melhor Avaliação <small style="color:#94a3b8;font-size:10px">(≥4★)</small></label>
+        <label for="sortRating" data-i18n="sortRating">Melhor Avaliação <small style="color:#94a3b8;font-size:10px">(≥4★)</small></label>
       </div>
       <div class="sort-opt">
         <input type="radio" name="sort" id="sortReviews" value="reviews" onchange="applyFilters()">
@@ -1294,7 +1294,7 @@
   <!-- LOGIN GATE — shown to guests instead of contact details -->
   <div id="dpLoginGate" style="display:none;padding:18px 20px">
     <div style="background:linear-gradient(135deg,rgba(249,115,22,.08),rgba(249,115,22,.04));border:1.5px solid rgba(249,115,22,.25);border-radius:14px;padding:22px 20px;text-align:center">
-      <div style="font-size:28px;margin-bottom:10px">🔒</div>
+      <div style="margin-bottom:10px"><i data-lucide="lock" style="width:28px;height:28px;color:var(--primary)"></i></div>
       <div style="font-weight:800;font-size:15px;color:var(--text);margin-bottom:6px" data-i18n="loginGateTitle">Inicie sessão para ver os contactos</div>
       <div style="font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5" data-i18n="loginGateDesc">Crie uma conta gratuita para aceder aos contactos, morada, avaliações e pedir orçamentos.</div>
       <button onclick="openLogin()" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:12px 28px;font-size:14px;font-weight:700;cursor:pointer;width:100%" data-i18n="loginGateBtn">Entrar / Criar Conta Grátis</button>
@@ -1558,7 +1558,7 @@
     <div style="font-size:13px;color:var(--muted);text-align:center;margin-bottom:18px" data-i18n="postRegPrompt">O que pretende fazer?</div>
     <div style="display:flex;flex-direction:column;gap:10px">
       <button type="button" onclick="postRegisterAdvertise()" style="display:flex;align-items:center;gap:14px;text-align:left;padding:16px;border-radius:12px;cursor:pointer;background:var(--bg);border:2px solid var(--border);font-family:inherit;transition:border-color .15s,background .15s" onmouseover="this.style.borderColor='var(--primary)'" onmouseout="this.style.borderColor='var(--border)'">
-        <div style="font-size:32px;flex-shrink:0">🏢</div>
+        <div style="flex-shrink:0"><i data-lucide="building-2" style="width:32px;height:32px;color:var(--primary)"></i></div>
         <div>
           <div style="font-weight:800;color:var(--text);font-size:14px" data-i18n="postRegAdvertiseTitle">Anunciar a minha empresa</div>
           <div style="font-size:12px;color:var(--muted);margin-top:3px" data-i18n="postRegAdvertiseDesc">Registar a minha empresa e aparecer no marketplace</div>
@@ -2201,7 +2201,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v190.js"></script>
+<script src="app.v191.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
