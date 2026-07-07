@@ -3633,7 +3633,11 @@ async function saveCompanyToDB(company) {
     emoji:       company.emoji,
     color:       company.color,
     pin_type:    company.pinType     || 'std',
+    // One-time code proving control of the company's contact email (only
+    // required by the server when it differs from the account email).
+    email_code:  window._companyEmailCode || null,
   });
+  window._companyEmailCode = null;   // single-use — burned server-side too
   return dbRowToCompany(saved);
 }
 
@@ -5946,6 +5950,19 @@ window.renderNearbyPanel = renderNearbyPanel;
 
 // ── REGISTER COMPANY ──────────────────────────────────────────────────────────
 function openRegister() {
+  // The ACCOUNT email must be confirmed before registering a company (user
+  // feedback). Only block when the flag is explicitly false — sessions from
+  // before this feature lack the field, and the server re-checks anyway.
+  try {
+    const meV = JSON.parse(localStorage.getItem('hive_user') || 'null');
+    if (meV && meV.email_verified === false && !window._editingCompanyId) {
+      apiFetch('/auth/send-verify', { method: 'POST', body: {} }).catch(() => {});
+      openVerifyModal('user', meV.email,
+        'Para registar uma empresa, confirme primeiro o email da sua conta. Enviámos um código para ' + meV.email + '.',
+        () => openRegister());
+      return;
+    }
+  } catch (_) {}
   document.getElementById('registerOverlay').classList.add('open');
   try { clearRegLogo(); } catch (_) {}   // start with a blank logo (edit flow re-applies after)
 
@@ -6154,6 +6171,23 @@ function submitRegister() {
   const tags = tagsRaw
     ? tagsRaw.split(',').map(s => s.trim()).filter(Boolean)
     : sectors.map(s => ptSectors[s] || s).slice(0, 8);
+
+  // The company's contact email is confirmed separately when it differs from
+  // the (already verified) account email — send a code, collect it in the
+  // verify modal, then resume this submit with the code attached.
+  try {
+    const meU = JSON.parse(localStorage.getItem('hive_user') || 'null');
+    const differs = meU && meU.email &&
+      email.toLowerCase() !== String(meU.email).toLowerCase();
+    if (!window._editingCompanyId && differs && !window._companyEmailCode && !(meU && meU.is_admin)) {
+      apiFetch('/companies/send-email-code', { method: 'POST', body: { email } })
+        .then(() => openVerifyModal('company', email,
+          'O email da empresa (' + email + ') é diferente do da sua conta. Enviámos-lhe um código de confirmação — introduza-o para continuar o registo.',
+          () => submitRegister()))
+        .catch(e => showToast(e.message || 'Não foi possível enviar o código de confirmação.'));
+      return;
+    }
+  } catch (_) {}
   const idx    = nextCompanyId % defaultEmojis.length;
   const tr     = translations[currentLang];
   const zone   = document.getElementById('regZone').value;
@@ -6311,10 +6345,23 @@ function submitRegister() {
       closeRegister();
     } catch(e) {
       console.error('Erro ao guardar empresa:', e);
-      // Surface the server's actual message — it's already translated and
-      // tells the user *what* is wrong (e.g. "certidão é obrigatório") instead
-      // of a useless generic "Erro ao guardar".
-      showToast(e.message || t('toastRegisterError'));
+      // Server-side email-verification gates → reopen the right verify modal
+      // (covers stale local sessions that bypassed the client-side gates).
+      let srvCode = null;
+      try { srvCode = JSON.parse(e.body || '{}').code || null; } catch (_) {}
+      if (srvCode === 'EMAIL_NOT_VERIFIED') {
+        apiFetch('/auth/send-verify', { method: 'POST', body: {} }).catch(() => {});
+        openVerifyModal('user', '', 'Confirme o email da sua conta para concluir o registo. Enviámos-lhe um código.', () => submitRegister());
+      } else if (srvCode === 'COMPANY_EMAIL_NOT_VERIFIED') {
+        window._companyEmailCode = null;
+        apiFetch('/companies/send-email-code', { method: 'POST', body: { email } }).catch(() => {});
+        openVerifyModal('company', email, 'Confirme o email de contacto da empresa com o código que enviámos para ' + email + '.', () => submitRegister());
+      } else {
+        // Surface the server's actual message — it's already translated and
+        // tells the user *what* is wrong (e.g. "certidão é obrigatório")
+        // instead of a useless generic "Erro ao guardar".
+        showToast(e.message || t('toastRegisterError'));
+      }
     } finally {
       if (submitBtn) { submitBtn.disabled = false; submitBtn.innerHTML = '<i data-lucide="check-circle"></i> ' + t('regSubmit'); refreshLucide(); }
     }
@@ -8303,6 +8350,79 @@ function setRegLogo(dataUrl) {
 window.handleRegLogo = handleRegLogo;
 window.clearRegLogo = clearRegLogo;
 
+// ── EMAIL VERIFICATION MODAL ─────────────────────────────────────────────────
+// One modal, two modes: 'user' confirms the ACCOUNT email via /auth/verify-email;
+// 'company' collects the code sent to the company's contact address — the code
+// itself is validated server-side during company creation (single-use there).
+let _verifyMode = 'user';
+let _verifyEmail = '';
+let _afterVerified = null;
+
+function openVerifyModal(mode, email, desc, after) {
+  _verifyMode = mode || 'user';
+  _verifyEmail = email || '';
+  _afterVerified = after || null;
+  const title = document.getElementById('verifyTitle');
+  if (title) title.textContent = _verifyMode === 'company' ? 'Confirme o email da empresa' : 'Confirme o seu email';
+  const d = document.getElementById('verifyDesc');
+  if (d) d.textContent = desc || ('Enviámos um código de 6 dígitos para ' + (email || 'o seu email') + '. Introduza-o abaixo.');
+  const inp = document.getElementById('verifyCodeInput');
+  if (inp) inp.value = '';
+  const err = document.getElementById('verifyError');
+  if (err) err.style.display = 'none';
+  document.getElementById('verifyOverlay').classList.add('open');
+  setTimeout(() => { try { inp && inp.focus(); } catch (_) {} }, 160);
+}
+function closeVerifyModal() {
+  document.getElementById('verifyOverlay').classList.remove('open');
+}
+function _verifyShowErr(msg) {
+  const e = document.getElementById('verifyError');
+  if (e) { e.textContent = msg; e.style.display = ''; }
+}
+
+async function verifySubmit() {
+  const code = (document.getElementById('verifyCodeInput').value || '').trim();
+  if (!/^\d{6}$/.test(code)) { _verifyShowErr('Introduza o código de 6 dígitos.'); return; }
+  const btn = document.getElementById('verifyConfirmBtn');
+  if (btn) btn.disabled = true;
+  try {
+    if (_verifyMode === 'user') {
+      const r = await apiFetch('/auth/verify-email', { method: 'POST', body: { code } });
+      if (r && r.user) localStorage.setItem('hive_user', JSON.stringify(r.user));
+      closeVerifyModal();
+      showToast('Email confirmado ✔');
+    } else {
+      // company mode — stash the code; the create endpoint validates and burns it
+      window._companyEmailCode = code;
+      closeVerifyModal();
+    }
+    if (_afterVerified) { const f = _afterVerified; _afterVerified = null; setTimeout(f, 120); }
+  } catch (e) {
+    _verifyShowErr(e.message || 'Código errado ou expirado.');
+  } finally {
+    if (btn) btn.disabled = false;
+  }
+}
+
+async function verifyResend() {
+  const btn = document.getElementById('verifyResendBtn');
+  if (btn) btn.disabled = true;
+  try {
+    if (_verifyMode === 'user') await apiFetch('/auth/send-verify', { method: 'POST', body: {} });
+    else await apiFetch('/companies/send-email-code', { method: 'POST', body: { email: _verifyEmail } });
+    showToast('Código enviado ✔');
+  } catch (e) {
+    _verifyShowErr(e.message || 'Não foi possível enviar o código.');
+  } finally {
+    setTimeout(() => { if (btn) btn.disabled = false; }, 3000);
+  }
+}
+window.openVerifyModal = openVerifyModal;
+window.closeVerifyModal = closeVerifyModal;
+window.verifySubmit = verifySubmit;
+window.verifyResend = verifyResend;
+
 async function doRegister() {
   _clearAuthErrors();
   const name = document.getElementById('regAuthName').value.trim();
@@ -8335,7 +8455,13 @@ async function doRegister() {
     // Clear any pending-company-register flag — the post-register choice
     // covers the "advertise" path explicitly.
     window._pendingCompanyRegister = false;
-    openPostRegisterChoice(user.name || name);
+    // New accounts confirm their email right away (the code was auto-sent by
+    // the register endpoint); the usual welcome choice follows the confirmation.
+    if (user && user.email_verified === false) {
+      openVerifyModal('user', email, null, () => openPostRegisterChoice(user.name || name));
+    } else {
+      openPostRegisterChoice(user.name || name);
+    }
   } catch(e) {
     // Map server-side validation errors to the most relevant field. Anything
     // else (CAPTCHA, rate-limit, network) falls through to a toast.

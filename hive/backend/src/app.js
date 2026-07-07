@@ -501,6 +501,25 @@ const MIGRATIONS = [
      status     TEXT DEFAULT 'pending',
      created_at TIMESTAMPTZ DEFAULT NOW()
    )`,
+  // ── v5: email verification ────────────────────────────────────────────────
+  // User accounts must confirm their email before registering a company, and
+  // the company's own contact email is confirmed with a one-time code too.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN NOT NULL DEFAULT FALSE`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS verify_code TEXT`,
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS verify_expires TIMESTAMPTZ`,
+  // Grandfather accounts created before the feature shipped so existing owners
+  // aren't suddenly locked out of managing their companies.
+  `UPDATE users SET email_verified = TRUE WHERE email_verified = FALSE AND created_at < TIMESTAMPTZ '2026-07-08'`,
+  // One-time codes sent to arbitrary addresses (company contact emails).
+  `CREATE TABLE IF NOT EXISTS email_codes (
+     id BIGSERIAL PRIMARY KEY,
+     email TEXT NOT NULL,
+     code  TEXT NOT NULL,
+     purpose TEXT NOT NULL DEFAULT 'company_email',
+     expires_at TIMESTAMPTZ NOT NULL,
+     created_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_email_codes_email ON email_codes(lower(email))`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -509,7 +528,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 4; // v4: marketplace v2 tables (claims, quote_requests, quotes, messages, feature_requests)
+const SCHEMA_VERSION = 5; // v5: email verification (users.email_verified + email_codes)
 
 async function ensureSchema() {
   if (_migrated) return;

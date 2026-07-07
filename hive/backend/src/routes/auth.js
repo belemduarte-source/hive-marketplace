@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const pool = require('../db');
 const { requireAuth } = require('../middleware/auth');
-const { sendPasswordResetEmail } = require('../email');
+const { sendPasswordResetEmail, sendBrandedEmail, esc } = require('../email');
 
 const COOKIE_OPTS = {
   httpOnly: true,
@@ -85,7 +85,34 @@ function safeUser(user) {
     id: user.id, name: user.name, email: user.email,
     is_admin: user.is_admin,
     picture: user.picture || null,
+    email_verified: !!user.email_verified,
   };
+}
+
+// ── Email verification ────────────────────────────────────────────────────────
+// New accounts must confirm their address with a 6-digit code before they can
+// register a company (user feedback). Google sign-ins skip it — Google already
+// guarantees email_verified on the ID token.
+function genCode() {
+  return String(crypto.randomInt(100000, 1000000)); // 6 digits, no leading-zero loss
+}
+
+async function sendUserVerifyCode(user) {
+  const code = genCode();
+  await pool.query(
+    `UPDATE users SET verify_code = $1, verify_expires = NOW() + interval '30 minutes' WHERE id = $2`,
+    [code, user.id]
+  );
+  await sendBrandedEmail({
+    to: user.email,
+    subject: `${code} é o seu código Hivex`,
+    title: 'Confirme o seu email',
+    bodyHtml: `
+      <p>Olá ${esc(user.name || '')},</p>
+      <p>Use este código para confirmar o seu email na Hivex:</p>
+      <p style="font-size:32px;font-weight:800;letter-spacing:8px;text-align:center;margin:18px 0">${code}</p>
+      <p style="color:#6b7280;font-size:13px">O código expira em 30 minutos. Se não criou uma conta na Hivex, ignore este email.</p>`,
+  });
 }
 
 // Practical email-format check — not RFC-perfect, but rejects the obvious
@@ -167,6 +194,11 @@ router.post('/register', async (req, res, next) => {
     );
     const user = rows[0];
 
+    // Kick off the confirmation email — but never block or fail the signup on
+    // SMTP hiccups; the user can hit "reenviar código" from the verify modal.
+    sendUserVerifyCode(user).catch(err =>
+      console.error('[auth] verify email send failed for', user.email, err.message));
+
     const token = signToken(user);
     res.cookie('hive_token', token, COOKIE_OPTS);
     res.status(201).json(authBody(req, user, token));
@@ -178,6 +210,42 @@ router.post('/register', async (req, res, next) => {
     }
     next(e);
   }
+});
+
+// POST /api/auth/send-verify — (re)send the account-confirmation code.
+router.post('/send-verify', requireAuth, async (req, res, next) => {
+  try {
+    const { rows } = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
+    const user = rows[0];
+    if (!user) return res.status(401).json({ error: 'Utilizador não encontrado' });
+    if (user.email_verified) return res.json({ ok: true, already: true });
+    // Throttle: at most 1 code per minute per account (codes last 30 min anyway).
+    if (user.verify_expires && new Date(user.verify_expires).getTime() - Date.now() > 29 * 60 * 1000) {
+      return res.status(429).json({ error: 'Aguarde um minuto antes de pedir novo código.' });
+    }
+    await sendUserVerifyCode(user);
+    res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+
+// POST /api/auth/verify-email — { code } → marks the account email as confirmed.
+router.post('/verify-email', requireAuth, async (req, res, next) => {
+  try {
+    const code = String(req.body && req.body.code || '').trim();
+    if (!/^\d{6}$/.test(code)) return res.status(400).json({ error: 'Código inválido.' });
+    const { rows } = await pool.query('SELECT * FROM users WHERE id = $1', [req.user.id]);
+    const user = rows[0];
+    if (!user) return res.status(401).json({ error: 'Utilizador não encontrado' });
+    if (user.email_verified) return res.json({ ok: true, user: safeUser(user) });
+    if (!user.verify_code || user.verify_code !== code ||
+        !user.verify_expires || new Date(user.verify_expires).getTime() < Date.now()) {
+      return res.status(400).json({ error: 'Código errado ou expirado. Peça um novo código.' });
+    }
+    const { rows: upd } = await pool.query(
+      `UPDATE users SET email_verified = TRUE, verify_code = NULL, verify_expires = NULL
+        WHERE id = $1 RETURNING *`, [user.id]);
+    res.json({ ok: true, user: safeUser(upd[0]) });
+  } catch (e) { next(e); }
 });
 
 // POST /api/auth/login
@@ -299,12 +367,21 @@ router.post('/google', async (req, res, next) => {
     // 3. Else create a new user.
     if (!user) {
       const { rows: created } = await pool.query(
-        `INSERT INTO users (name, email, google_id, picture, company, phone)
-         VALUES ($1, $2, $3, $4, '', '')
+        `INSERT INTO users (name, email, google_id, picture, company, phone, email_verified)
+         VALUES ($1, $2, $3, $4, '', '', TRUE)
          RETURNING *`,
         [name, email, googleId, picture]
       );
       user = created[0];
+    }
+
+    // Google guarantees email_verified on the ID token (checked above) — treat
+    // any Google sign-in as a confirmed address.
+    if (!user.email_verified) {
+      const { rows: verified } = await pool.query(
+        `UPDATE users SET email_verified = TRUE, verify_code = NULL, verify_expires = NULL
+          WHERE id = $1 RETURNING *`, [user.id]);
+      user = verified[0] || user;
     }
 
     user = await maybeBootstrapAdmin(user);

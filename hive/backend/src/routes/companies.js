@@ -3,7 +3,7 @@ const router = express.Router();
 const pool = require('../db');
 const { requireAuth, requireAdmin, optionalAuth, ensureAdminFlag } = require('../middleware/auth');
 const reviewsRouter = require('./reviews');
-const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail, sendContactEmail } = require('../email');
+const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail, sendContactEmail, sendBrandedEmail, esc } = require('../email');
 const { pushToUser } = require('../push');
 
 // ── Defer slow email sends off the response path ──────────────────────────────
@@ -362,6 +362,40 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
 // 'pending' so an admin must approve it (via the email Approve link or the
 // Pending tab) before it goes live. The auth gate keeps anonymous bots out
 // (we still also rate-limit at the app level).
+// POST /api/companies/send-email-code — sends a 6-digit confirmation code to
+// the COMPANY's contact email before registration (it can differ from the
+// account email, so it's proven separately — user feedback). DB-backed
+// throttle: max 5 codes per address per hour (serverless-safe).
+router.post('/send-email-code', requireAuth, async (req, res, next) => {
+  try {
+    const email = String(req.body && req.body.email || '').trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return res.status(400).json({ error: 'Email inválido.' });
+    }
+    const recent = await pool.query(
+      `SELECT COUNT(*)::int AS n FROM email_codes
+        WHERE lower(email) = $1 AND created_at > NOW() - interval '1 hour'`, [email]);
+    if (recent.rows[0].n >= 5) {
+      return res.status(429).json({ error: 'Demasiados códigos pedidos para este email. Tente mais tarde.' });
+    }
+    const code = String(require('crypto').randomInt(100000, 1000000));
+    await pool.query(
+      `INSERT INTO email_codes (email, code, purpose, expires_at)
+       VALUES ($1, $2, 'company_email', NOW() + interval '30 minutes')`, [email, code]);
+    await sendBrandedEmail({
+      to: email,
+      subject: `${code} é o seu código Hivex`,
+      title: 'Confirme o email da empresa',
+      bodyHtml: `
+        <p>Este endereço foi indicado como contacto de uma empresa em registo na Hivex.</p>
+        <p>Código de confirmação:</p>
+        <p style="font-size:32px;font-weight:800;letter-spacing:8px;text-align:center;margin:18px 0">${code}</p>
+        <p style="color:#6b7280;font-size:13px">O código expira em 30 minutos. Se não estiver a registar uma empresa na Hivex, ignore este email.</p>`,
+    });
+    res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+
 router.post('/', requireAuth, async (req, res, next) => {
   try {
     const {
@@ -370,10 +404,42 @@ router.post('/', requireAuth, async (req, res, next) => {
       zone, email, phone, website, facebook, instagram, linkedin, tags, description, lat, lng,
       emoji, color, pin_type, logo,
       founded_year, business_hours, portfolio_images,
+      email_code,
     } = req.body;
 
     if (!name || lat == null || lng == null || isNaN(Number(lat)) || isNaN(Number(lng))) {
       return res.status(400).json({ error: 'name, lat e lng são obrigatórios' });
+    }
+
+    // The account email must be confirmed before registering a company, and the
+    // company's own contact email needs a one-time code when it differs from
+    // the (already confirmed) account email. Admins skip both.
+    const { rows: meRows } = await pool.query(
+      'SELECT email, email_verified, is_admin FROM users WHERE id = $1', [req.user.id]);
+    const me = meRows[0] || {};
+    if (!me.is_admin) {
+      if (!me.email_verified) {
+        return res.status(403).json({
+          error: 'Confirme o email da sua conta antes de registar uma empresa.',
+          code: 'EMAIL_NOT_VERIFIED',
+        });
+      }
+      const companyEmail = String(email || '').trim().toLowerCase();
+      if (companyEmail && companyEmail !== String(me.email || '').toLowerCase()) {
+        const codeStr = String(email_code || '').trim();
+        const okCode = /^\d{6}$/.test(codeStr) && (await pool.query(
+          `SELECT id FROM email_codes
+            WHERE lower(email) = $1 AND code = $2 AND purpose = 'company_email'
+              AND expires_at > NOW()`, [companyEmail, codeStr])).rows.length > 0;
+        if (!okCode) {
+          return res.status(403).json({
+            error: 'Confirme o email de contacto da empresa com o código enviado.',
+            code: 'COMPANY_EMAIL_NOT_VERIFIED',
+          });
+        }
+        // Single-use: burn every outstanding code for this address.
+        await pool.query(`DELETE FROM email_codes WHERE lower(email) = $1`, [companyEmail]);
+      }
     }
     // NIF (Portuguese tax ID) is mandatory for PT companies and is checksum-
     // validated. Foreign companies (country != 'pt') skip this check.
