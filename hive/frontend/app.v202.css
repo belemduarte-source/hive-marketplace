@@ -3254,3 +3254,31 @@
       .chat-modal{height:calc(92dvh);padding:16px 12px}
       #chatComposeInput{font-size:16px !important}
     }
+
+    /* ── INÍCIO COMPACTA (desktop): usar a largura, não o comprimento ──────── */
+    /* O hero ocupava 100vh (meio ecrã vazio) e as secções tinham 72px de
+       almofada vertical com conteúdo a 1100px de largura num ecrã de 1440+. */
+    @media (min-width:1024px){
+      .lp-hero{min-height:0;padding:32px 24px 40px;justify-content:flex-start}
+      .home-hero{min-height:0}
+      .lp-hero h1{margin-bottom:8px}
+      .lp-hero-badge{margin-bottom:12px}
+      .lp-hero-register{margin:14px 0 6px}
+      /* categorias: mais largas, cartões mais baixos, gaps menores */
+      .lp-hero-cats{max-width:1320px;gap:16px}
+      .lp-hero-cat{height:225px}
+      /* secções: largura 1320 e metade da almofada vertical */
+      .lp-section{max-width:1320px;width:100%;padding:36px 32px}
+      .lp-featured-section{padding:36px 32px}
+      .lp-featured-grid{grid-template-columns:repeat(4,1fr)}
+      .lp-section-head{margin-bottom:20px}
+      .lp-section-head-row{margin-bottom:16px}
+      .lp-steps-section{padding:36px 32px}
+      /* aperto fino do topo do hero */
+      .home-hero{padding:18px 24px 30px}
+      .lp-hero-title{font-size:42px;margin-bottom:10px}
+      .lp-hero-sub{margin:0 auto 22px}
+      .lp-hero-cats-label{font-size:20px;margin-bottom:12px;letter-spacing:1px}
+      .lp-hero-cat{height:200px}
+      .lp-step{padding:0 20px}
+    }
