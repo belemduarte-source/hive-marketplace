@@ -3282,3 +3282,56 @@
       .lp-hero-cat{height:200px}
       .lp-step{padding:0 20px}
     }
+
+    /* ── INÍCIO ENXUTO: título logo abaixo do logo+Início/Mapa ─────────────
+       O CTA "Anunciar Empresa" + saudação saem do Início (o registo continua
+       no menu do avatar e no CTA de visitante) e "Como funciona" sai em todas
+       as larguras. No desktop o nav passa a UMA linha: a faixa publicitária
+       desaparece e a coluna direita (idioma/ajuda/tema/login) vira linha. */
+    .lp-hero-userCta{display:none !important}
+    .lp-steps-section{display:none !important}
+
+    @media (min-width:1025px){
+      .nav-ad{display:none !important}
+      nav{padding:8px 28px}
+      /* a grelha tinha linhas fixas 122px+56px (linha 2 = pesquisa acoplada no
+         Mapa; no Início fica VAZIA) — auto colapsa a linha vazia no Início */
+      nav.nav-map-grid{grid-template-rows:auto auto;row-gap:0;padding:8px 26px}
+      nav.nav-map-grid > .ub-search-in-nav{padding:6px 0 2px}
+      .nav-banner{padding:8px 28px}
+      .nav-right{flex-direction:row !important;width:auto !important;min-width:0 !important;max-width:none !important;gap:8px;align-items:center}
+      .nav-right-bottom{flex-direction:row !important;width:auto !important;align-items:center;flex:0 0 auto}
+      .nav-right-bottom > .lang-switcher{width:auto;flex:0 0 auto !important}
+      .nav-right .lang-btn,.nav-right .btn-ajuda,.nav-right .theme-toggle,.nav-right .btn-login{width:auto !important;padding:0 14px !important}
+      .nav-right #authArea{width:auto;flex:0 0 auto}
+    }
+
+    /* Painel de detalhe: o topo estava calibrado para o nav antigo de ~204px;
+       o nav do Mapa (logo+tabs+pesquisa acoplada) mede agora ~157px → topo
+       visual 161px (÷ .7 por causa do zoom:.7 do painel). */
+    @media (min-width:1024px){
+      .detail-panel{top:230px;height:calc((100dvh / var(--z) - 161px) / .7)}
+    }
+
+    /* ── EMPRESAS DESTACADAS — dropdown pago à direita da barra de áreas ── */
+    .ub-featured-btn{display:none}
+    @media (min-width:1025px){
+      .ub-featured-btn{position:relative;z-index:6;display:inline-flex;align-items:center;gap:8px;flex-shrink:0;align-self:center;margin:6px 14px 6px 10px;padding:9px 16px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:15px;font-weight:800;letter-spacing:.01em;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(245,158,11,.35);transition:filter .15s}
+      .ub-featured-btn:hover{filter:brightness(1.08)}
+      .ub-featured-btn .arrow{font-size:11px;opacity:.85}
+    }
+    .featured-menu{display:none;position:fixed;z-index:1200;background:var(--surface);border:1px solid var(--border);border-radius:14px;box-shadow:0 16px 48px rgba(0,0,0,.28);width:350px;max-width:calc(100vw - 16px);overflow:auto;padding:8px}
+    .featured-menu.show{display:block}
+    .featured-menu-head{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#64748b;padding:8px 10px 6px}
+    .featured-item{display:flex;align-items:center;gap:10px;padding:9px 10px;border-radius:10px;cursor:pointer}
+    .featured-item:hover{background:var(--primary-light,#dbeafe)}
+    .featured-mono{display:flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:9px;color:#fff;font-weight:800;font-size:14px;flex-shrink:0}
+    .featured-item img.featured-logo{width:38px;height:38px;border-radius:9px;object-fit:cover;flex-shrink:0;background:#fff;border:1px solid var(--border)}
+    .featured-item-name{font-weight:700;font-size:14.5px;color:var(--text-strong,#0f172a);line-height:1.25;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .featured-item-sub{font-size:12.5px;color:#64748b;margin-top:1px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+    .featured-item-star{margin-left:auto;font-size:13px;font-weight:800;color:#f59e0b;white-space:nowrap;flex-shrink:0}
+    .featured-empty{padding:14px 12px;font-size:13.5px;color:#64748b;line-height:1.5}
+    .featured-cta{display:block;width:100%;margin-top:6px;padding:10px 12px;background:var(--primary);color:#fff;border:none;border-radius:10px;font-weight:700;font-family:inherit;font-size:13.5px;cursor:pointer}
+    .featured-cta:hover{background:var(--primary-dark)}
+    [data-theme="dark"] .featured-item:hover{background:rgba(37,99,235,.18)}
+    [data-theme="dark"] .featured-item-name{color:#e2e8f0}

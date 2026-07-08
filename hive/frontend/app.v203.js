@@ -233,6 +233,7 @@ const translations = {
     statCompanies:'Empresas registadas', statAreas:'Áreas de atividade', statSpecialties:'Especialidades', statCoverage:'Todo Portugal',
     featuredOverline:'Empresas em destaque', featuredTitle:'Os mais bem avaliados', featuredSeeAll:'Ver todas as empresas →', featuredEmpty:'Nenhuma empresa em destaque ainda.',
     featuredVerified:'✓ Verificado', featuredReviews:'avaliações',
+    ubFeaturedBtn:'Empresas Destacadas', featEmpty:'Ainda não há empresas destacadas.', featCta:'Quer aparecer aqui primeiro? Destaque a sua empresa',
     lpStep1Title:'Pesquise', lpStep1Desc:'Filtre por setor, localização e avaliação. O mapa mostra os resultados em tempo real.',
     lpStep2Title:'Compare', lpStep2Desc:'Veja perfis detalhados com avaliações multidimensionais e especialidades de cada empresa.',
     lpStep3Title:'Contacte', lpStep3Desc:'Peça orçamentos diretamente por email ou chat. Sem intermediários, sem demoras.',
@@ -645,6 +646,7 @@ const translations = {
     statCompanies:'Registered Companies', statAreas:'Activity Areas', statSpecialties:'Specialties', statCoverage:'All Portugal',
     featuredOverline:'Featured Companies', featuredTitle:'Top rated', featuredSeeAll:'View all companies →', featuredEmpty:'No featured companies yet.',
     featuredVerified:'✓ Verified', featuredReviews:'reviews',
+    ubFeaturedBtn:'Featured Companies', featEmpty:'No featured companies yet.', featCta:'Want to appear here first? Feature your company',
     lpStep1Title:'Search', lpStep1Desc:'Filter by sector, location and rating. The map shows results in real time.',
     lpStep2Title:'Compare', lpStep2Desc:"View detailed profiles with multidimensional ratings and each company's specialties.",
     lpStep3Title:'Contact', lpStep3Desc:'Request quotes directly by email or chat. No intermediaries, no delays.',
@@ -1050,6 +1052,7 @@ const translations = {
     statCompanies:'Entreprises enregistrées', statAreas:"Domaines d'activité", statSpecialties:'Spécialités', statCoverage:'Tout le Portugal',
     featuredOverline:'Entreprises en vedette', featuredTitle:'Les mieux notés', featuredSeeAll:'Voir toutes les entreprises →', featuredEmpty:'Aucune entreprise en vedette encore.',
     featuredVerified:'✓ Vérifié', featuredReviews:'avis',
+    ubFeaturedBtn:'Entreprises en Vedette', featEmpty:'Aucune entreprise en vedette pour l’instant.', featCta:'Vous voulez apparaître ici en premier ? Mettez votre entreprise en avant',
     lpStep1Title:'Recherchez', lpStep1Desc:'Filtrez par secteur, lieu et évaluation. La carte affiche les résultats en temps réel.',
     lpStep2Title:'Comparez', lpStep2Desc:"Consultez des profils détaillés avec des évaluations multidimensionnelles et les spécialités de chaque entreprise.",
     lpStep3Title:'Contactez', lpStep3Desc:'Demandez des devis directement par e-mail ou chat. Sans intermédiaires, sans délais.',
@@ -1451,6 +1454,7 @@ const translations = {
     statCompanies:'Empresas registradas', statAreas:'Áreas de actividad', statSpecialties:'Especialidades', statCoverage:'Todo Portugal',
     featuredOverline:'Empresas destacadas', featuredTitle:'Los mejor valorados', featuredSeeAll:'Ver todas las empresas →', featuredEmpty:'Ninguna empresa destacada aún.',
     featuredVerified:'✓ Verificado', featuredReviews:'valoraciones',
+    ubFeaturedBtn:'Empresas Destacadas', featEmpty:'Aún no hay empresas destacadas.', featCta:'¿Quiere aparecer aquí primero? Destaque su empresa',
     lpStep1Title:'Busque', lpStep1Desc:'Filtre por sector, ubicación y valoración. El mapa muestra los resultados en tiempo real.',
     lpStep2Title:'Compare', lpStep2Desc:'Vea perfiles detallados con valoraciones multidimensionales y especialidades.',
     lpStep3Title:'Contacte', lpStep3Desc:'Solicite presupuestos directamente por email o chat. Sin intermediarios.',
@@ -1849,6 +1853,7 @@ const translations = {
     statCompanies:'Registrierte Unternehmen', statAreas:'Tätigkeitsbereiche', statSpecialties:'Fachbereiche', statCoverage:'Ganz Portugal',
     featuredOverline:'Empfohlene Unternehmen', featuredTitle:'Bestbewertet', featuredSeeAll:'Alle Unternehmen ansehen →', featuredEmpty:'Noch keine empfohlenen Unternehmen.',
     featuredVerified:'✓ Verifiziert', featuredReviews:'Bewertungen',
+    ubFeaturedBtn:'Empfohlene Unternehmen', featEmpty:'Noch keine empfohlenen Unternehmen.', featCta:'Möchten Sie hier zuerst erscheinen? Heben Sie Ihr Unternehmen hervor',
     lpStep1Title:'Suchen', lpStep1Desc:'Nach Gewerk, Standort und Bewertung filtern. Die Karte zeigt Ergebnisse in Echtzeit.',
     lpStep2Title:'Vergleichen', lpStep2Desc:'Detailprofile, Bewertungsübersichten und Fachbereiche der Unternehmen einsehen.',
     lpStep3Title:'Kontaktieren', lpStep3Desc:'Direkt per E-Mail oder Chat anfragen. Ohne Zwischenhändler.',
@@ -10924,3 +10929,78 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
     }, 6000);
   }
 })();
+
+/* ══════════════════════════════════════════════════════════════════════════
+   EMPRESAS DESTACADAS — dropdown pago à direita da barra "Áreas de Atividade"
+   Empresas com featured=true (aprovado pelo admin) aparecem primeiro aos
+   clientes. Posicionamento fixed dividido pelo zoom do body (mesmo padrão
+   dos dropdowns das áreas).
+   ══════════════════════════════════════════════════════════════════════════ */
+function renderFeaturedMenu() {
+  const menu = document.getElementById('featuredMenu');
+  if (!menu) return;
+  const feat = (companies || []).filter(c => c.featured)
+    .sort((a, b) => (b.rating || 0) - (a.rating || 0))
+    .slice(0, 12);
+  let html = '<div class="featured-menu-head">★ ' + escHtml(t('ubFeaturedBtn')) + '</div>';
+  if (!feat.length) {
+    html += '<div class="featured-empty">' + escHtml(t('featEmpty')) + '</div>';
+  } else {
+    html += feat.map(c => {
+      const tile = c.logo
+        ? '<img class="featured-logo" src="' + escHtml(c.logo) + '" alt="" loading="lazy" onerror="this.outerHTML=\'<span class=&quot;featured-mono&quot; style=&quot;background:' + getSectorColor(c) + '&quot;>' + companyMonogram(c) + '</span>\'"/>'
+        : '<span class="featured-mono" style="background:' + getSectorColor(c) + '">' + companyMonogram(c) + '</span>';
+      const sub = [c.sector, c.city].filter(Boolean).join(' · ');
+      const star = c.rating ? '★ ' + Number(c.rating).toFixed(1) : '';
+      return '<div class="featured-item" onclick="closeFeaturedMenu();openDetail(' + c.id + ')">'
+        + tile
+        + '<div style="min-width:0;flex:1"><div class="featured-item-name">' + escHtml(c.name) + '</div>'
+        + (sub ? '<div class="featured-item-sub">' + escHtml(sub) + '</div>' : '')
+        + '</div>'
+        + (star ? '<span class="featured-item-star">' + star + '</span>' : '')
+        + '</div>';
+    }).join('');
+  }
+  html += '<button type="button" class="featured-cta" onclick="closeFeaturedMenu();openRegister()">' + escHtml(t('featCta')) + '</button>';
+  menu.innerHTML = html;
+}
+
+function toggleFeaturedMenu(e) {
+  if (e) e.stopPropagation();
+  const btn = document.getElementById('ubFeaturedBtn');
+  const menu = document.getElementById('featuredMenu');
+  if (!btn || !menu) return;
+  const wasOpen = menu.classList.contains('show');
+  // fecha dropdowns de áreas abertos para não sobrepor
+  document.querySelectorAll('.cat-dropdown.show').forEach(d => d.classList.remove('show'));
+  document.querySelectorAll('.cat-item.open').forEach(d => d.classList.remove('open'));
+  if (wasOpen) { closeFeaturedMenu(); return; }
+  renderFeaturedMenu();
+  // position:fixed dentro de body com zoom: dividir coordenadas visuais pelo zoom
+  const z = parseFloat(getComputedStyle(document.body).zoom) || 1;
+  const rect = btn.getBoundingClientRect();
+  const vpW = window.innerWidth / z;
+  menu.style.top = ((rect.bottom + 6) / z) + 'px';
+  menu.style.maxHeight = Math.min(520, (window.innerHeight - rect.bottom - 16) / z) + 'px';
+  menu.classList.add('show');
+  const dw = menu.offsetWidth || 350;
+  // alinhar a borda direita do menu com a do botão, sem sair do ecrã
+  menu.style.left = Math.min(Math.max(4, rect.right / z - dw), Math.max(4, vpW - dw - 6)) + 'px';
+  btn.setAttribute('aria-expanded', 'true');
+}
+
+function closeFeaturedMenu() {
+  const menu = document.getElementById('featuredMenu');
+  if (menu) menu.classList.remove('show');
+  const btn = document.getElementById('ubFeaturedBtn');
+  if (btn) btn.setAttribute('aria-expanded', 'false');
+}
+
+document.addEventListener('click', (e) => {
+  const menu = document.getElementById('featuredMenu');
+  if (menu && menu.classList.contains('show') && !menu.contains(e.target)) closeFeaturedMenu();
+});
+
+window.renderFeaturedMenu = renderFeaturedMenu;
+window.toggleFeaturedMenu = toggleFeaturedMenu;
+window.closeFeaturedMenu = closeFeaturedMenu;

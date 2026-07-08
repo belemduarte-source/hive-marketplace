@@ -150,7 +150,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v202.css"/>
+  <link rel="stylesheet" href="app.v203.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -1005,6 +1005,14 @@
   <div class="ub-sectors-wrap">
     <div class="ub-sectors" id="sectorFilters"></div>
     <div class="ub-sectors-fade" id="sectorFade"></div>
+    <!-- Colocação paga: empresas com destaque aprovado pelo admin aparecem
+         primeiro aqui. Desktop apenas; posicionado por toggleFeaturedMenu(). -->
+    <button class="ub-featured-btn" id="ubFeaturedBtn" onclick="toggleFeaturedMenu(event)" aria-haspopup="true" aria-expanded="false">
+      <svg viewBox="0 0 24 24" fill="currentColor" width="15" height="15" aria-hidden="true"><path d="M12 2l3 6 6 .9-4.5 4.3L18 20l-6-3.2L6 20l1.5-6.8L3 8.9 9 8z"/></svg>
+      <span data-i18n="ubFeaturedBtn">Empresas Destacadas</span>
+      <span class="arrow">▾</span>
+    </button>
+    <div class="featured-menu" id="featuredMenu"></div>
   </div>
   <div class="ub-divider"></div>
 </div>
@@ -2226,7 +2234,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v202.js"></script>
+<script src="app.v203.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
