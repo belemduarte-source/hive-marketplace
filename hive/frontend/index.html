@@ -150,7 +150,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v199.css"/>
+  <link rel="stylesheet" href="app.v200.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -2063,11 +2063,32 @@
 </div>
 
 <!-- ── INBOX — mensagens de clientes (donos de empresa) ─────────────────────── -->
+<!-- CHAT empresa↔cliente: fios à esquerda, conversa à direita, anexos ≤3×2MB -->
 <div class="overlay" id="inboxOverlay" onclick="if(event.target===this)closeInbox()" role="dialog" aria-modal="true" aria-labelledby="inboxTitle">
-  <div class="modal" style="width:680px;max-height:88vh;display:flex;flex-direction:column">
+  <div class="modal chat-modal">
     <button class="modal-close" onclick="closeInbox()" aria-label="Fechar">×</button>
-    <h2 id="inboxTitle" class="legal-title" data-i18n="inboxTitle">Mensagens de clientes</h2>
-    <div id="inboxBody" style="flex:1;overflow-y:auto;min-height:200px"></div>
+    <h2 id="inboxTitle" class="legal-title" style="font-size:24px" data-i18n="inboxTitle">Mensagens</h2>
+    <div class="chat-retention">As mensagens e documentos são guardados durante 90 dias.</div>
+    <div class="chat-layout">
+      <div class="chat-threads" id="chatThreads"></div>
+      <div class="chat-main">
+        <div class="chat-head" id="chatHead"></div>
+        <div class="chat-msgs" id="chatMsgs"></div>
+        <div class="chat-compose">
+          <div id="chatFiles" class="chat-files-pending"></div>
+          <div class="chat-compose-row">
+            <label class="chat-attach" title="Anexar documentos (máx. 3 × 2 MB — PDF, imagem, Word, Excel, TXT)">
+              <input type="file" id="chatFileInput" multiple style="display:none"
+                     accept=".pdf,.png,.jpg,.jpeg,.webp,.txt,.doc,.docx,.xls,.xlsx"
+                     onchange="chatFilesPicked(this)"/>
+              <i data-lucide="paperclip"></i>
+            </label>
+            <textarea id="chatComposeInput" rows="1" placeholder="Escreva a sua mensagem…"></textarea>
+            <button class="btn-submit chat-send" onclick="chatSend(this)">Enviar</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2205,7 +2226,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v199.js"></script>
+<script src="app.v200.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

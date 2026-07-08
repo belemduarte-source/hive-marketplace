@@ -23,6 +23,74 @@ function deferEmail(makePromise, label) {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
+// ── CHAT: anexos + retenção ───────────────────────────────────────────────────
+// Documentos aceites no chat (máx. 3 por mensagem, 2 MB cada, base64 inline).
+const CHAT_FILE_MIMES = new Set([
+  'application/pdf', 'image/png', 'image/jpeg', 'image/webp', 'text/plain',
+  'application/msword',
+  'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-excel',
+  'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+]);
+const CHAT_MAX_FILES = 3;
+const CHAT_MAX_BYTES = 2 * 1024 * 1024;               // 2 MB por ficheiro
+const CHAT_MAX_B64 = Math.ceil(CHAT_MAX_BYTES * 4 / 3) + 8;
+
+// Valida e normaliza os anexos do corpo do pedido; devolve [] ou lança 400.
+function validateChatFiles(files) {
+  if (!files) return [];
+  if (!Array.isArray(files) || files.length > CHAT_MAX_FILES) {
+    const err = new Error(`Máximo ${CHAT_MAX_FILES} documentos por mensagem.`);
+    err.status = 400; throw err;
+  }
+  return files.map(f => {
+    const name = String(f && f.name || '').replace(/[\\/<>:"|?*\x00-\x1f]/g, '').trim().slice(0, 120);
+    const mime = String(f && f.mime || '').toLowerCase();
+    const data = String(f && f.data || '');
+    if (!name || !CHAT_FILE_MIMES.has(mime) || !data || data.length > CHAT_MAX_B64 ||
+        !/^[A-Za-z0-9+/=]+$/.test(data)) {
+      const err = new Error('Documento inválido (tipos aceites: PDF, imagem, Word, Excel, TXT · máx. 2 MB).');
+      err.status = 400; throw err;
+    }
+    return { name, mime, size: Math.floor(data.length * 3 / 4), data };
+  });
+}
+
+async function saveChatFiles(messageId, files) {
+  for (const f of files) {
+    await pool.query(
+      `INSERT INTO message_files (message_id, filename, mime, size_bytes, data)
+       VALUES ($1, $2, $3, $4, $5)`,
+      [messageId, f.name, f.mime, f.size, f.data]
+    );
+  }
+}
+
+// Retenção: conversas e documentos são guardados 90 dias. Corre de forma
+// oportunista nas leituras (fire-and-forget) e via cron diário — assim a
+// promessa mantém-se mesmo que o cron não esteja configurado.
+function purgeExpiredMessages() {
+  return pool.query(`DELETE FROM messages WHERE created_at < NOW() - interval '90 days'`)
+    .then(r => { if (r.rowCount) console.log(`[chat] retenção: ${r.rowCount} mensagens purgadas (90 dias)`); })
+    .catch(err => console.error('[chat] purga falhou:', err.message));
+}
+
+// Junta a metainformação dos anexos (sem os bytes) a uma lista de mensagens.
+async function attachFileMeta(rows) {
+  if (!rows.length) return rows;
+  const ids = rows.map(r => r.id);
+  const { rows: files } = await pool.query(
+    `SELECT id, message_id, filename, mime, size_bytes
+       FROM message_files WHERE message_id = ANY($1)`, [ids]);
+  const byMsg = new Map();
+  files.forEach(f => {
+    if (!byMsg.has(f.message_id)) byMsg.set(f.message_id, []);
+    byMsg.get(f.message_id).push({ id: f.id, name: f.filename, mime: f.mime, size: f.size_bytes });
+  });
+  rows.forEach(r => { r.files = byMsg.get(r.id) || []; });
+  return rows;
+}
+
 // Haversine (km) — for picking the nearest matching companies for an RFQ.
 function distKm(lat1, lng1, lat2, lng2) {
   const R = 6371, dLat = (lat2 - lat1) * Math.PI / 180, dLng = (lng2 - lng1) * Math.PI / 180;
@@ -174,10 +242,11 @@ router.post('/quote-requests', optionalAuth, async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
-// ── INBOX ─────────────────────────────────────────────────────────────────────
+// ── CHAT (empresa ↔ cliente, com documentos; retenção 90 dias) ────────────────
 // GET /api/messages/company/:companyId — owner/admin reads the company inbox.
 router.get('/messages/company/:companyId', requireAuth, async (req, res, next) => {
   try {
+    purgeExpiredMessages();
     const { rows: co } = await pool.query(`SELECT id, created_by FROM companies WHERE id = $1`, [req.params.companyId]);
     if (!co[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
     if (co[0].created_by !== req.user.id) await ensureAdminFlag(req);
@@ -189,6 +258,7 @@ router.get('/messages/company/:companyId', requireAuth, async (req, res, next) =
          FROM messages WHERE company_id = $1 ORDER BY created_at DESC LIMIT 200`,
       [req.params.companyId]
     );
+    await attachFileMeta(rows);
     // Mark client messages as read once the owner opens the inbox.
     pool.query(`UPDATE messages SET read_at = NOW() WHERE company_id = $1 AND sender = 'client' AND read_at IS NULL`, [req.params.companyId]).catch(() => {});
     res.json(rows);
@@ -196,33 +266,152 @@ router.get('/messages/company/:companyId', requireAuth, async (req, res, next) =
 });
 
 // POST /api/messages/company/:companyId/reply — owner replies to a client
-// (stored in the thread + relayed by email).
+// (stored in the thread + optional documents + relayed by email).
 router.post('/messages/company/:companyId/reply', requireAuth, async (req, res, next) => {
   try {
     const { clientEmail, body } = req.body || {};
+    const files = validateChatFiles(req.body && req.body.files);
     const text = (body || '').trim();
     if (!EMAIL_RE.test(clientEmail || '')) return res.status(400).json({ error: 'Cliente inválido' });
-    if (text.length < 2) return res.status(400).json({ error: 'Mensagem vazia' });
+    if (text.length < 2 && !files.length) return res.status(400).json({ error: 'Mensagem vazia' });
     const { rows: co } = await pool.query(`SELECT id, name, email, created_by FROM companies WHERE id = $1`, [req.params.companyId]);
     if (!co[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
     if (co[0].created_by !== req.user.id) await ensureAdminFlag(req);
     if (!req.user.is_admin && co[0].created_by !== req.user.id) {
       return res.status(403).json({ error: 'Sem permissão' });
     }
-    await pool.query(
-      `INSERT INTO messages (company_id, sender, client_email, client_name, body) VALUES ($1, 'company', $2, NULL, $3)`,
+    const { rows: ins } = await pool.query(
+      `INSERT INTO messages (company_id, sender, client_email, client_name, body) VALUES ($1, 'company', $2, NULL, $3) RETURNING id`,
       [co[0].id, clientEmail, text.slice(0, 4000)]
     );
+    await saveChatFiles(ins[0].id, files);
     deferEmail(() => sendBrandedEmail({
       to: clientEmail,
       replyTo: co[0].email || undefined,
       subject: `[Hivex] Resposta de ${co[0].name}`,
       title: `Hivex — ${co[0].name} respondeu`,
       bodyHtml: `<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px"><p style="margin:0;white-space:pre-wrap">${esc(text)}</p></div>
-        <p style="margin-top:16px">Pode responder diretamente a este email.</p>`,
+        ${files.length ? `<p style="margin-top:12px;color:#374151">📎 ${files.length} documento(s) anexado(s) — abra a conversa em hivex.pt para transferir.</p>` : ''}
+        <p style="margin-top:16px">Pode responder diretamente a este email ou na sua área de mensagens em hivex.pt.</p>`,
     }), `inbox reply (company ${co[0].id})`);
-    res.status(201).json({ ok: true });
+    res.status(201).json({ ok: true, id: ins[0].id });
   } catch (e) { next(e); }
+});
+
+// POST /api/messages/company/:companyId/client — logged-in CLIENT writes to a
+// company thread (identity = the session's email; documents optional).
+router.post('/messages/company/:companyId/client', requireAuth, async (req, res, next) => {
+  try {
+    const files = validateChatFiles(req.body && req.body.files);
+    const text = String(req.body && req.body.body || '').trim();
+    if (text.length < 2 && !files.length) return res.status(400).json({ error: 'Mensagem vazia' });
+    const { rows: me } = await pool.query(`SELECT id, name, email FROM users WHERE id = $1`, [req.user.id]);
+    if (!me[0]) return res.status(401).json({ error: 'Sessão inválida' });
+    const { rows: co } = await pool.query(
+      `SELECT id, name, email FROM companies WHERE id = $1 AND status = 'approved'`, [req.params.companyId]);
+    if (!co[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
+    // Throttle leve, resistente a serverless: máx. 60 mensagens/dia por conta.
+    const { rows: cnt } = await pool.query(
+      `SELECT COUNT(*)::int AS n FROM messages
+        WHERE sender = 'client' AND lower(client_email) = lower($1)
+          AND created_at > NOW() - interval '24 hours'`, [me[0].email]);
+    if (cnt[0].n >= 60) return res.status(429).json({ error: 'Limite diário de mensagens atingido.' });
+    const { rows: ins } = await pool.query(
+      `INSERT INTO messages (company_id, sender, client_user_id, client_name, client_email, body)
+       VALUES ($1, 'client', $2, $3, $4, $5) RETURNING id`,
+      [co[0].id, me[0].id, me[0].name || null, me[0].email, text.slice(0, 4000)]
+    );
+    await saveChatFiles(ins[0].id, files);
+    if (co[0].email) {
+      deferEmail(() => sendBrandedEmail({
+        to: co[0].email,
+        replyTo: me[0].email,
+        subject: `[Hivex] Nova mensagem de ${me[0].name || me[0].email}`,
+        title: `Hivex — nova mensagem para ${co[0].name}`,
+        bodyHtml: `<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px"><p style="margin:0;white-space:pre-wrap">${esc(text)}</p></div>
+          ${files.length ? `<p style="margin-top:12px;color:#374151">📎 ${files.length} documento(s) anexado(s) — abra a conversa em hivex.pt para transferir.</p>` : ''}
+          <p style="margin-top:16px">Responda na sua área de mensagens em hivex.pt (ou diretamente a este email).</p>`,
+      }), `chat client msg (company ${co[0].id})`);
+    }
+    res.status(201).json({ ok: true, id: ins[0].id });
+  } catch (e) { next(e); }
+});
+
+// GET /api/messages/mine — conversas do CLIENTE com sessão iniciada.
+router.get('/messages/mine', requireAuth, async (req, res, next) => {
+  try {
+    purgeExpiredMessages();
+    const { rows: me } = await pool.query(`SELECT email FROM users WHERE id = $1`, [req.user.id]);
+    if (!me[0]) return res.status(401).json({ error: 'Sessão inválida' });
+    const { rows } = await pool.query(
+      `SELECT m.company_id,
+              MAX(c.name)  AS company_name,
+              MAX(c.emoji) AS company_emoji,
+              MAX(m.created_at) AS last_at,
+              (ARRAY_AGG(m.body ORDER BY m.created_at DESC))[1] AS last_body,
+              COUNT(*) FILTER (WHERE m.sender = 'company' AND m.read_at IS NULL)::int AS unread
+         FROM messages m JOIN companies c ON c.id = m.company_id
+        WHERE lower(m.client_email) = lower($1)
+        GROUP BY m.company_id
+        ORDER BY MAX(m.created_at) DESC
+        LIMIT 100`, [me[0].email]);
+    res.json(rows);
+  } catch (e) { next(e); }
+});
+
+// GET /api/messages/thread/:companyId — a conversa do cliente com uma empresa.
+router.get('/messages/thread/:companyId', requireAuth, async (req, res, next) => {
+  try {
+    purgeExpiredMessages();
+    const { rows: me } = await pool.query(`SELECT email FROM users WHERE id = $1`, [req.user.id]);
+    if (!me[0]) return res.status(401).json({ error: 'Sessão inválida' });
+    const { rows } = await pool.query(
+      `SELECT id, sender, client_name, body, read_at, created_at
+         FROM messages
+        WHERE company_id = $1 AND lower(client_email) = lower($2)
+        ORDER BY created_at ASC LIMIT 200`,
+      [req.params.companyId, me[0].email]);
+    await attachFileMeta(rows);
+    pool.query(
+      `UPDATE messages SET read_at = NOW()
+        WHERE company_id = $1 AND lower(client_email) = lower($2)
+          AND sender = 'company' AND read_at IS NULL`,
+      [req.params.companyId, me[0].email]).catch(() => {});
+    res.json(rows);
+  } catch (e) { next(e); }
+});
+
+// GET /api/messages/file/:fileId — download de um documento (só participantes).
+router.get('/messages/file/:fileId', requireAuth, async (req, res, next) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT mf.filename, mf.mime, mf.data, m.client_email, c.created_by
+         FROM message_files mf
+         JOIN messages m ON m.id = mf.message_id
+         JOIN companies c ON c.id = m.company_id
+        WHERE mf.id = $1`, [req.params.fileId]);
+    const f = rows[0];
+    if (!f) return res.status(404).json({ error: 'Documento não encontrado (a retenção é de 90 dias).' });
+    const { rows: me } = await pool.query(`SELECT email, is_admin FROM users WHERE id = $1`, [req.user.id]);
+    const isClient = me[0] && me[0].email && f.client_email &&
+      me[0].email.toLowerCase() === f.client_email.toLowerCase();
+    const isOwner = String(f.created_by) === String(req.user.id);
+    if (!isClient && !isOwner && !(me[0] && me[0].is_admin)) {
+      return res.status(403).json({ error: 'Sem permissão' });
+    }
+    res.json({ filename: f.filename, mime: f.mime, data: f.data });
+  } catch (e) { next(e); }
+});
+
+// GET /api/messages/purge — alvo do cron diário do Vercel (retenção 90 dias).
+// Aceita apenas invocações do próprio cron (header) ou com o CRON_SECRET.
+router.get('/messages/purge', async (req, res) => {
+  const secret = process.env.CRON_SECRET;
+  const fromCron = !!req.headers['x-vercel-cron'];
+  const authed = secret && req.headers.authorization === `Bearer ${secret}`;
+  if (!fromCron && !authed) return res.status(401).json({ error: 'unauthorized' });
+  await purgeExpiredMessages();
+  res.json({ ok: true });
 });
 
 // GET /api/messages/unread-count?companyId= — badge for the owner UI.

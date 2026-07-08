@@ -94,8 +94,12 @@ const corsOptions = {
 app.options('/api/*', cors(corsOptions));
 app.use(cors(corsOptions));
 
-// ── Body parsing (50 kb cap to prevent payload abuse) ─────────────────────────
-app.use(express.json({ limit: '600kb' })); // headroom for an inline company logo (data URL)
+// ── Body parsing ──────────────────────────────────────────────────────────────
+// Chat messages may carry up to 3 base64 documents of 2 MB each (~8.2 MB of
+// JSON) — give those routes their own parser; everything else keeps the tight
+// 600 kb cap (headroom for an inline company logo data URL).
+app.use('/api/messages', express.json({ limit: '9mb' }));
+app.use(express.json({ limit: '600kb' }));
 app.use(cookieParser());
 
 // ── Rate limiters ─────────────────────────────────────────────────────────────
@@ -520,6 +524,21 @@ const MIGRATIONS = [
      created_at TIMESTAMPTZ DEFAULT NOW()
    )`,
   `CREATE INDEX IF NOT EXISTS idx_email_codes_email ON email_codes(lower(email))`,
+  // ── v6: chat empresa↔cliente com documentos ───────────────────────────────
+  // Anexos guardados inline (base64, ≤2 MB cada) numa tabela própria para as
+  // listagens de conversas não arrastarem os bytes. ON DELETE CASCADE garante
+  // que a purga de retenção (90 dias) limpa também os ficheiros.
+  `CREATE TABLE IF NOT EXISTS message_files (
+     id BIGSERIAL PRIMARY KEY,
+     message_id BIGINT NOT NULL REFERENCES messages(id) ON DELETE CASCADE,
+     filename   TEXT NOT NULL,
+     mime       TEXT NOT NULL,
+     size_bytes INTEGER NOT NULL,
+     data       TEXT NOT NULL,
+     created_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_message_files_msg ON message_files(message_id)`,
+  `CREATE INDEX IF NOT EXISTS idx_messages_created ON messages(created_at)`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -528,7 +547,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 5; // v5: email verification (users.email_verified + email_codes)
+const SCHEMA_VERSION = 6; // v6: chat attachments (message_files) + retention index
 
 async function ensureSchema() {
   if (_migrated) return;

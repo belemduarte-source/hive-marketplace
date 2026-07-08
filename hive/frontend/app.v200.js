@@ -6940,69 +6940,220 @@ window.closeRfqModal = closeRfqModal;
 window.submitRfq = submitRfq;
 
 // ── INBOX (donos de empresa) ───────────────────────────────────────────────────
-let _inboxCompanyId = null;
-async function openInbox(companyId) {
-  _inboxCompanyId = Number(companyId);
-  document.getElementById('inboxOverlay').classList.add('open');
-  const bodyEl = document.getElementById('inboxBody');
-  bodyEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--muted)">' + t('loadingGeneric') + '</div>';
+// ── CHAT empresa↔cliente (mensagens + documentos; retenção 90 dias) ───────────
+// Dois modos sobre o mesmo overlay: 'owner' (dono da empresa vê o inbox dela,
+// fios agrupados por cliente) e 'client' (o utilizador vê as suas conversas
+// com as várias empresas). Identidade = email da sessão.
+let _chatMode = 'owner';
+let _chatCompanyId = null;   // owner: a empresa; client: o fio selecionado
+let _chatPeer = null;        // owner: email do cliente selecionado
+let _chatThreads = [];
+let _chatFiles = [];         // anexos pendentes [{name,mime,size,data}]
+
+const _CHAT_ACCEPT = ['application/pdf', 'image/png', 'image/jpeg', 'image/webp', 'text/plain',
+  'application/msword', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+  'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'];
+
+function _chatEl(id) { return document.getElementById(id); }
+
+function openInbox(companyId) {
+  _chatMode = 'owner';
+  _chatCompanyId = Number(companyId);
+  _openChatOverlay();
+  _loadOwnerThreads();
+}
+function openMyChats() {
+  const u = JSON.parse(localStorage.getItem('hive_user') || 'null');
+  if (!u) { openLogin(); return; }
+  _chatMode = 'client';
+  _chatCompanyId = null;
+  _openChatOverlay();
+  _loadClientThreads();
+}
+function _openChatOverlay() {
+  _chatFiles = []; _chatPeer = null; _chatThreads = [];
+  _renderPendingFiles();
+  _chatEl('chatHead').textContent = '';
+  _chatEl('chatMsgs').innerHTML = '';
+  _chatEl('chatThreads').innerHTML = '<div class="chat-loading">' + t('loadingGeneric') + '</div>';
+  _chatEl('inboxOverlay').classList.add('open');
+}
+function closeInbox() { _chatEl('inboxOverlay').classList.remove('open'); }
+
+async function _loadOwnerThreads() {
   try {
-    const msgs = await api.getCompanyInbox(companyId);
-    if (!msgs.length) {
-      bodyEl.innerHTML = '<div style="text-align:center;padding:36px;color:var(--muted);font-size:17px">📭 ' + t('inboxEmpty') + '</div>';
-      return;
-    }
-    // Group into threads by client email (newest thread first).
-    const threads = new Map();
+    const msgs = await apiFetch('/messages/company/' + _chatCompanyId);
+    const map = new Map();
     msgs.forEach(m => {
-      const k = m.client_email.toLowerCase();
-      if (!threads.has(k)) threads.set(k, { email: m.client_email, name: m.client_name, items: [] });
-      const th = threads.get(k);
+      const k = (m.client_email || '').toLowerCase();
+      if (!map.has(k)) map.set(k, { key: k, email: m.client_email, name: m.client_name, items: [] });
+      const th = map.get(k);
       th.items.push(m);
       if (m.client_name) th.name = m.client_name;
     });
-    bodyEl.innerHTML = [...threads.values()].map(th => {
-      const items = th.items.slice().reverse(); // chronological
-      const msgsHtml = items.map(m => `
-        <div style="margin:7px 0;display:flex;${m.sender === 'company' ? 'justify-content:flex-end' : ''}">
-          <div style="max-width:82%;background:${m.sender === 'company' ? 'rgba(37,99,235,.12)' : 'var(--bg)'};border:1px solid var(--border);border-radius:12px;padding:10px 14px">
-            <div style="font-size:15px;color:var(--text);white-space:pre-wrap">${escHtml(m.body)}</div>
-            <div style="font-size:12px;color:var(--muted);margin-top:5px">${m.sender === 'company' ? t('inboxYou') : escHtml(th.name || th.email)} · ${new Date(m.created_at).toLocaleString('pt-PT')}</div>
-          </div>
-        </div>`).join('');
-      const tid = 'th_' + th.email.replace(/[^a-z0-9]/gi, '_');
-      return `
-        <div style="border:1.5px solid var(--border);border-radius:14px;padding:14px 16px;margin-bottom:14px">
-          <div style="font-size:17px;font-weight:800;color:var(--text);margin-bottom:6px">${escHtml(th.name || th.email)} <span style="font-weight:600;color:var(--muted);font-size:14px">&lt;${escHtml(th.email)}&gt;</span></div>
-          ${msgsHtml}
-          <div style="display:flex;gap:8px;margin-top:10px">
-            <input type="text" id="${tid}" class="contact-input" style="flex:1" placeholder="${t('inboxReplyPh')}"/>
-            <button class="btn-submit" style="font-size:15px;padding:10px 18px;white-space:nowrap" onclick="sendInboxReply('${escHtml(th.email)}','${tid}',this)">${t('inboxReplySend')}</button>
-          </div>
-        </div>`;
-    }).join('');
-  } catch (e) {
-    bodyEl.innerHTML = '<div style="text-align:center;padding:30px;color:var(--red)">' + escHtml(e.message || 'Erro') + '</div>';
-  }
+    _chatThreads = [...map.values()];
+    _chatThreads.forEach(th => th.items.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)));
+    _renderThreadList(_chatThreads.map(th => ({ id: th.key, title: th.name || th.email, sub: th.email, unread: 0 })));
+    if (_chatThreads.length) _selectOwnerThread(_chatThreads[0].key); else _chatEmpty();
+  } catch (e) { _chatError(e); }
 }
-function closeInbox() { document.getElementById('inboxOverlay').classList.remove('open'); }
-async function sendInboxReply(clientEmail, inputId, btn) {
-  const input = document.getElementById(inputId);
-  const text = (input?.value || '').trim();
-  if (text.length < 2) return;
-  if (btn) btn.disabled = true;
+function _selectOwnerThread(key) {
+  _chatPeer = key;
+  const th = _chatThreads.find(x => x.key === key);
+  if (!th) return;
+  _chatEl('chatHead').innerHTML = escHtml(th.name || th.email) +
+    ' <span class="chat-head-sub">' + escHtml(th.email) + '</span>';
+  _renderMsgs(th.items, 'company');
+  _markThreadActive(key);
+}
+
+async function _loadClientThreads() {
   try {
-    await api.replyInbox(_inboxCompanyId, clientEmail, text);
-    showToast(t('inboxReplySent'));
-    openInbox(_inboxCompanyId); // refresh the thread view
-  } catch (e) {
-    showToast(e.message || 'Erro ao responder');
-    if (btn) btn.disabled = false;
+    const rows = await apiFetch('/messages/mine');
+    _chatThreads = rows;
+    _renderThreadList(rows.map(r => ({
+      id: String(r.company_id), title: r.company_name,
+      sub: (r.last_body || '').slice(0, 46), unread: r.unread,
+    })));
+    if (rows.length) _selectClientThread(rows[0].company_id); else _chatEmpty();
+  } catch (e) { _chatError(e); }
+}
+async function _selectClientThread(companyId) {
+  _chatCompanyId = Number(companyId);
+  _markThreadActive(String(companyId));
+  const th = _chatThreads.find(r => Number(r.company_id) === Number(companyId));
+  _chatEl('chatHead').textContent = th ? th.company_name : '';
+  _chatEl('chatMsgs').innerHTML = '<div class="chat-loading">' + t('loadingGeneric') + '</div>';
+  try {
+    const msgs = await apiFetch('/messages/thread/' + companyId);
+    _renderMsgs(msgs, 'client');
+  } catch (e) { _chatError(e); }
+}
+
+function _renderThreadList(items) {
+  _chatEl('chatThreads').innerHTML = items.map(i => `
+    <button class="chat-thread" data-tid="${escHtml(String(i.id))}" onclick="chatSelectThread(this.dataset.tid)">
+      <span class="chat-thread-title">${escHtml(i.title || '')}</span>
+      <span class="chat-thread-sub">${escHtml(i.sub || '')}</span>
+      ${i.unread ? `<span class="chat-unread">${i.unread}</span>` : ''}
+    </button>`).join('') || '<div class="chat-loading">Sem conversas ainda</div>';
+}
+function chatSelectThread(id) {
+  if (_chatMode === 'owner') _selectOwnerThread(id);
+  else _selectClientThread(Number(id));
+}
+function _markThreadActive(id) {
+  document.querySelectorAll('.chat-thread').forEach(b =>
+    b.classList.toggle('active', b.dataset.tid === String(id)));
+}
+
+function _renderMsgs(msgs, mySender) {
+  const box = _chatEl('chatMsgs');
+  box.innerHTML = msgs.map(m => {
+    const mine = m.sender === mySender;
+    const files = (m.files || []).map(f =>
+      `<button class="chat-file" data-fid="${f.id}" data-fname="${escHtml(f.name)}" onclick="chatDownload(this.dataset.fid,this.dataset.fname)" title="Transferir documento">📄 ${escHtml(f.name)} <span>${_fmtSize(f.size)}</span></button>`).join('');
+    return `<div class="chat-row ${mine ? 'mine' : ''}"><div class="chat-bubble">
+      ${m.body ? `<div class="chat-text">${escHtml(m.body)}</div>` : ''}
+      ${files ? `<div class="chat-file-list">${files}</div>` : ''}
+      <div class="chat-meta">${new Date(m.created_at).toLocaleString('pt-PT')}</div>
+    </div></div>`;
+  }).join('') || '<div class="chat-loading">Sem mensagens ainda</div>';
+  box.scrollTop = box.scrollHeight;
+}
+function _fmtSize(b) { return b > 1048576 ? (b / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB'; }
+function _chatEmpty() {
+  _chatEl('chatThreads').innerHTML = '<div class="chat-loading">Sem conversas ainda</div>';
+  _chatEl('chatMsgs').innerHTML = '<div class="chat-loading">As mensagens que trocar aparecem aqui.</div>';
+}
+function _chatError(e) {
+  _chatEl('chatMsgs').innerHTML = '<div class="chat-loading" style="color:var(--red)">' + escHtml(e.message || 'Erro') + '</div>';
+}
+
+// ── anexos ──
+function chatFilesPicked(input) {
+  const files = [...(input.files || [])];
+  input.value = '';
+  for (const f of files) {
+    if (_chatFiles.length >= 3) { showToast('Máximo 3 documentos por mensagem'); break; }
+    if (f.size > 2 * 1024 * 1024) { showToast(f.name + ': máximo 2 MB'); continue; }
+    if (!_CHAT_ACCEPT.includes(f.type)) { showToast(f.name + ': tipo não suportado'); continue; }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const b64 = String(reader.result).split(',')[1] || '';
+      _chatFiles.push({ name: f.name, mime: f.type, size: f.size, data: b64 });
+      _renderPendingFiles();
+    };
+    reader.readAsDataURL(f);
   }
 }
+function _renderPendingFiles() {
+  const el = _chatEl('chatFiles');
+  if (!el) return;
+  el.innerHTML = _chatFiles.map((f, i) =>
+    `<span class="chat-file pending">📄 ${escHtml(f.name)} <button onclick="chatRemoveFile(${i})" aria-label="Remover anexo">×</button></span>`).join('');
+}
+function chatRemoveFile(i) { _chatFiles.splice(i, 1); _renderPendingFiles(); }
+
+async function chatSend(btn) {
+  const input = _chatEl('chatComposeInput');
+  const text = (input.value || '').trim();
+  if (text.length < 2 && !_chatFiles.length) return;
+  if (_chatMode === 'owner' && !_chatPeer) { showToast('Escolha uma conversa'); return; }
+  if (_chatMode === 'client' && !_chatCompanyId) { showToast('Escolha uma conversa'); return; }
+  btn.disabled = true;
+  try {
+    if (_chatMode === 'owner') {
+      await apiFetch('/messages/company/' + _chatCompanyId + '/reply',
+        { method: 'POST', body: { clientEmail: _chatPeer, body: text, files: _chatFiles } });
+    } else {
+      await apiFetch('/messages/company/' + _chatCompanyId + '/client',
+        { method: 'POST', body: { body: text, files: _chatFiles } });
+    }
+    input.value = '';
+    _chatFiles = [];
+    _renderPendingFiles();
+    if (_chatMode === 'owner') {
+      const keep = _chatPeer;
+      await _loadOwnerThreads();
+      if (keep && _chatThreads.some(x => x.key === keep)) _selectOwnerThread(keep);
+    } else {
+      await _selectClientThread(_chatCompanyId);
+    }
+  } catch (e) {
+    showToast(e.message || 'Erro ao enviar');
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function chatDownload(fileId, name) {
+  try {
+    const f = await apiFetch('/messages/file/' + fileId);
+    const bin = atob(f.data);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    const url = URL.createObjectURL(new Blob([bytes], { type: f.mime }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = f.filename || name || 'documento';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 4000);
+  } catch (e) {
+    showToast(e.message || 'Não foi possível transferir o documento');
+  }
+}
+
 window.openInbox = openInbox;
 window.closeInbox = closeInbox;
-window.sendInboxReply = sendInboxReply;
+window.openMyChats = openMyChats;
+window.chatSelectThread = chatSelectThread;
+window.chatFilesPicked = chatFilesPicked;
+window.chatRemoveFile = chatRemoveFile;
+window.chatSend = chatSend;
+window.chatDownload = chatDownload;
 
 // ── FEATURE REQUEST (destaque) ────────────────────────────────────────────────
 async function requestFeature(companyId, btn) {
@@ -9326,6 +9477,11 @@ function openProfilePanel() {
         <div class="profile-user-email">${user.email}</div>
       </div>
     </div>
+
+    <button onclick="closeProfilePanel();openMyChats()" style="width:100%;display:flex;align-items:center;gap:10px;background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:12px 14px;margin:4px 0 10px;font-size:14px;font-weight:700;color:var(--text);cursor:pointer;font-family:inherit">
+      <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+      As minhas mensagens
+    </button>
 
     <div style="margin-top:6px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
