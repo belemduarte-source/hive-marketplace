@@ -208,6 +208,36 @@ async function sendCompanyRejectionEmail(company) {
   });
 }
 
+// CTA no rodapé dos emails enviados às empresas: quem já reclamou a ficha é
+// convidado a INICIAR SESSÃO para responder no chat; quem ainda não tem conta
+// é convidado a registar-se e reclamar a ficha (fica associada ao seu login).
+function companyReplyCtaHtml(company) {
+  const claimed = company.created_by != null && String(company.created_by) !== '7';
+  const deepLink = `https://hivex.pt/?company=${company.id}`;
+  if (claimed) {
+    return `
+      <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:14px 18px;margin:18px 0">
+        <p style="margin:0;color:#1e40af;font-size:14px;line-height:1.6">
+          <strong>Responda pela plataforma:</strong> inicie sessão em
+          <a href="https://hivex.pt" style="color:#1d4ed8;font-weight:700">hivex.pt</a>
+          e abra as mensagens da sua empresa — a conversa e os documentos ficam guardados durante 90 dias.
+        </p>
+      </div>`;
+  }
+  return `
+    <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:14px 18px;margin:18px 0">
+      <p style="margin:0 0 8px;color:#1e40af;font-size:14px;line-height:1.6">
+        <strong>Ainda não gere a sua ficha no Hivex?</strong> Registe-se gratuitamente e associe
+        <strong>${esc(company.name)}</strong> à sua conta para responder pela plataforma e receber pedidos de clientes:
+      </p>
+      <ol style="margin:0;padding-left:18px;color:#1e40af;font-size:13px;line-height:1.7">
+        <li>Crie a sua conta grátis em <a href="https://hivex.pt" style="color:#1d4ed8;font-weight:700">hivex.pt</a></li>
+        <li>Abra a <a href="${deepLink}" style="color:#1d4ed8;font-weight:700">página da sua empresa</a></li>
+        <li>Clique em <strong>&laquo;É a sua empresa? Reclame esta ficha&raquo;</strong> — receberá um código de confirmação neste email</li>
+      </ol>
+    </div>`;
+}
+
 /**
  * Relay a contact form message to a company's email address.
  * The sender's email is shown in the email body but the company's
@@ -219,8 +249,8 @@ async function sendContactEmail(company, sender, message) {
 
   const html = `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
-  <div style="background:#f97316;padding:24px 32px">
-    <h1 style="margin:0;color:#fff;font-size:20px">🐝 Hivex — Nova mensagem de contacto</h1>
+  <div style="background:#2563eb;padding:24px 32px">
+    <h1 style="margin:0;color:#fff;font-size:20px">Hivex — Nova mensagem de contacto</h1>
   </div>
   <div style="padding:28px 32px">
     <p style="margin-top:0;color:#374151;font-size:15px">
@@ -236,11 +266,12 @@ async function sendContactEmail(company, sender, message) {
         <td style="padding:10px 14px;color:#374151;border:1px solid #e5e7eb">${esc(company.name)}</td>
       </tr>
     </table>
-    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:24px">
+    <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:8px">
       <p style="margin:0;color:#1f2937;font-size:15px;line-height:1.7;white-space:pre-wrap">${esc(message)}</p>
     </div>
+    ${companyReplyCtaHtml(company)}
     <p style="color:#6b7280;font-size:13px;margin:0">
-      Para responder, contacte directamente: <a href="mailto:${esc(sender.email)}" style="color:#f97316">${esc(sender.email)}</a><br><br>
+      Também pode responder diretamente por email: <a href="mailto:${esc(sender.email)}" style="color:#1d4ed8">${esc(sender.email)}</a><br><br>
       Equipa Hivex Marketplace
     </p>
   </div>
@@ -335,5 +366,5 @@ function esc(str) {
 
 module.exports = {
   sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail,
-  sendContactEmail, sendPasswordResetEmail, sendBrandedEmail, esc,
+  sendContactEmail, sendPasswordResetEmail, sendBrandedEmail, esc, companyReplyCtaHtml,
 };

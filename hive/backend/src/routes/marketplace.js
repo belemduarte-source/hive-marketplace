@@ -5,7 +5,7 @@ const router = express.Router();
 const crypto = require('crypto');
 const pool = require('../db');
 const { requireAuth, optionalAuth, ensureAdminFlag } = require('../middleware/auth');
-const { sendBrandedEmail, esc } = require('../email');
+const { sendBrandedEmail, esc, companyReplyCtaHtml } = require('../email');
 
 // Same "respond first, email after" pattern used by the contact relay.
 function deferEmail(makePromise, label) {
@@ -308,7 +308,7 @@ router.post('/messages/company/:companyId/client', requireAuth, async (req, res,
     const { rows: me } = await pool.query(`SELECT id, name, email FROM users WHERE id = $1`, [req.user.id]);
     if (!me[0]) return res.status(401).json({ error: 'Sessão inválida' });
     const { rows: co } = await pool.query(
-      `SELECT id, name, email FROM companies WHERE id = $1 AND status = 'approved'`, [req.params.companyId]);
+      `SELECT id, name, email, created_by FROM companies WHERE id = $1 AND status = 'approved'`, [req.params.companyId]);
     if (!co[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
     // Throttle leve, resistente a serverless: máx. 60 mensagens/dia por conta.
     const { rows: cnt } = await pool.query(
@@ -330,7 +330,8 @@ router.post('/messages/company/:companyId/client', requireAuth, async (req, res,
         title: `Hivex — nova mensagem para ${co[0].name}`,
         bodyHtml: `<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px"><p style="margin:0;white-space:pre-wrap">${esc(text)}</p></div>
           ${files.length ? `<p style="margin-top:12px;color:#374151">📎 ${files.length} documento(s) anexado(s) — abra a conversa em hivex.pt para transferir.</p>` : ''}
-          <p style="margin-top:16px">Responda na sua área de mensagens em hivex.pt (ou diretamente a este email).</p>`,
+          ${companyReplyCtaHtml(co[0])}
+          <p style="margin-top:8px;color:#6b7280;font-size:13px">Também pode responder diretamente a este email.</p>`,
       }), `chat client msg (company ${co[0].id})`);
     }
     res.status(201).json({ ok: true, id: ins[0].id });
