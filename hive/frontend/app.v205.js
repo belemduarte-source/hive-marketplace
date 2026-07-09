@@ -2158,6 +2158,18 @@ function dockMapSearchControls(active) {
     unifiedBar.insertBefore(ubSearch, unifiedBar.firstChild);
     ubSearch.classList.remove('ub-search-in-nav');
   }
+
+  // Banner publicitário: no Mapa (desktop) preenche a coluna central do nav
+  // (grid-area "banner"); no Início vive como faixa no hero, depois da pesquisa.
+  const adBanner = document.getElementById('navAdBanner');
+  if (adBanner) {
+    if (active && isDesktop) {
+      if (adBanner.parentNode !== nav) nav.appendChild(adBanner);
+    } else if (adBanner.parentNode === nav) {
+      const anchor = document.querySelector('#tab-home .lp-search-wrap');
+      if (anchor) anchor.insertAdjacentElement('afterend', adBanner);
+    }
+  }
 }
 
 // Re-evaluate the header layout when crossing the desktop/mobile boundary on the map.

@@ -3292,27 +3292,32 @@
     .lp-steps-section{display:none !important}
 
     @media (min-width:1025px){
-      /* banner publicitário: vive agora no hero do Início (movido do nav),
-         como faixa fina entre a barra de pesquisa e as categorias */
-      .nav-ad{height:96px;max-height:96px;min-height:0;width:100%;max-width:980px;margin:18px auto 0;flex:0 0 auto;order:0;border-radius:14px}
-      .nav-ad .nav-ad-content{padding:6px 16px;gap:12px}
+      /* banner publicitário no Início: faixa fina no hero entre a pesquisa e
+         as categorias. No Mapa o JS move-o para o nav (grid-area "banner"),
+         onde valem as regras da grelha — por isso tudo aqui é scoped ao hero. */
+      .lp-hero .nav-ad{height:96px;max-height:96px;min-height:0;width:100%;max-width:980px;margin:10px auto 0;flex:0 0 auto;order:0;border-radius:14px}
+      .lp-hero .nav-ad .nav-ad-content{padding:6px 16px;gap:12px}
       /* slide 2 (história) tem de caber nos 96px da faixa: 1 linha, sem quebra */
-      .nav-ad .nav-ad-story{flex-wrap:nowrap;gap:6px;min-width:0;overflow:hidden}
-      .nav-ad .story-step{gap:3px;flex-shrink:0}
-      .nav-ad .story-ico{width:40px;height:40px;font-size:22px}
-      .nav-ad .story-ico svg{width:20px;height:20px}
-      .nav-ad .story-cap{font-size:10px}
-      .nav-ad .story-arrow{flex-shrink:1;min-width:6px}
+      .lp-hero .nav-ad .nav-ad-story{flex-wrap:nowrap;gap:6px;min-width:0;overflow:hidden}
+      .lp-hero .nav-ad .story-step{gap:3px;flex-shrink:0}
+      .lp-hero .nav-ad .story-ico{width:40px;height:40px;font-size:22px}
+      .lp-hero .nav-ad .story-ico svg{width:20px;height:20px}
+      .lp-hero .nav-ad .story-cap{font-size:10px}
+      .lp-hero .nav-ad .story-arrow{flex-shrink:1;min-width:6px}
       nav{padding:8px 28px}
       /* a grelha tinha linhas fixas 122px+56px (linha 2 = pesquisa acoplada no
          Mapa; no Início fica VAZIA) — auto colapsa a linha vazia no Início */
       nav.nav-map-grid{grid-template-rows:auto auto;row-gap:0;padding:8px 26px}
       nav.nav-map-grid > .ub-search-in-nav{padding:6px 0 2px}
+      /* banner na coluna central do nav do Mapa: contain:size impede que o
+         conteúdo infle as linhas da grelha; abaixo de 1560px a coluna livre
+         é estreita demais e o banner esconde-se (no Início mantém-se sempre) */
+      nav.nav-map-grid > .nav-ad{contain:size;height:100%;min-height:0;align-self:stretch}
       .nav-banner{padding:8px 28px}
-      .nav-right{flex-direction:row !important;width:auto !important;min-width:0 !important;max-width:none !important;gap:8px;align-items:center}
-      .nav-right-bottom{flex-direction:row !important;width:auto !important;align-items:center;flex:0 0 auto}
+      .nav-right{flex-direction:row !important;width:auto !important;min-width:0 !important;max-width:none !important;gap:6px;align-items:center}
+      .nav-right-bottom{flex-direction:row !important;width:auto !important;align-items:center;flex:0 0 auto;gap:6px !important}
       .nav-right-bottom > .lang-switcher{width:auto;flex:0 0 auto !important}
-      .nav-right .lang-btn,.nav-right .btn-ajuda,.nav-right .theme-toggle,.nav-right .btn-login{width:auto !important;padding:0 14px !important}
+      .nav-right .lang-btn,.nav-right .btn-ajuda,.nav-right .theme-toggle,.nav-right .btn-login{width:auto !important;padding:0 10px !important;font-size:15px !important}
       .nav-right #authArea{width:auto;flex:0 0 auto}
 
       /* Início num só ecrã: título+pesquisa+banner+categorias cabem em ~900px
@@ -3325,8 +3330,28 @@
       .lp-hero-cats-label{margin:10px 0 8px}
       .lp-hero-cats{gap:14px}
       .lp-hero-cat{height:135px}
-      .nav-ad{margin:10px auto 0}
       .lp-featured-section{display:none !important}
+    }
+
+    /* Abaixo de 1560px a coluna central do nav do Mapa é estreita demais
+       para o banner (fica escondido; no Início a faixa mantém-se sempre) */
+    @media (min-width:1025px) and (max-width:1559px){
+      nav.nav-map-grid > .nav-ad{display:none !important}
+    }
+    /* No nav (≥1560px) o banner usa sempre a variante texto + CTA: os 140px
+       de altura não comportam os passos/história gráficos (esses vivem na
+       faixa do Início). Centrado e limitado a 680px na coluna da grelha. */
+    @media (min-width:1560px){
+      nav.nav-map-grid > .nav-ad{max-width:680px;justify-self:center;width:100%}
+      nav.nav-map-grid > .nav-ad .nav-ad-steps,
+      nav.nav-map-grid > .nav-ad .nav-ad-story{display:none !important}
+      nav.nav-map-grid > .nav-ad .nav-ad-content{justify-content:space-between;padding:8px 18px;gap:12px}
+      nav.nav-map-grid > .nav-ad .nav-ad-left{min-width:0;flex-shrink:1}
+      nav.nav-map-grid > .nav-ad .nav-ad-badge{font-size:11px;padding:3px 9px}
+      nav.nav-map-grid > .nav-ad .nav-ad-title{font-size:19px}
+      nav.nav-map-grid > .nav-ad .nav-ad-sub{font-size:13px;white-space:normal}
+      nav.nav-map-grid > .nav-ad .nav-ad-cta-ring{width:40px;height:40px;font-size:18px}
+      nav.nav-map-grid > .nav-ad .nav-ad-cta-text{font-size:12px}
     }
 
     /* Painel de detalhe: o topo estava calibrado para o nav antigo de ~204px;
