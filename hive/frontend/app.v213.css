@@ -3322,9 +3322,9 @@
       .lp-search-wrap{max-width:1080px;margin-bottom:14px}
       .lp-hero-cats-label{margin:6px 0 6px}
       /* 2 filas de 4 a preencher a largura, com espaçamento de 56px entre
-         cartões (lado e fundo) */
+         cartões (lado e fundo); forma HEXAGONAL (favo, como o logótipo) */
       .lp-hero-cats{max-width:none;width:100%;grid-template-columns:repeat(4,1fr) !important;gap:56px !important}
-      .lp-hero-cat{height:110px !important}
+      .lp-hero-cat{height:110px !important;clip-path:polygon(56px 0,calc(100% - 56px) 0,100% 50%,calc(100% - 56px) 100%,56px 100%,0 50%);border-radius:0 !important}
       .lp-featured-section{display:none !important}
       .footer-grid{max-width:none;padding:0 24px}
     }
