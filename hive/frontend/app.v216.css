@@ -3326,7 +3326,7 @@
          largura (~374×324 a 1920). O Início volta a ter algum scroll — é o
          custo de hexágonos com este tamanho. */
       .lp-hero-cats{max-width:none;width:100%;grid-template-columns:repeat(4,1fr) !important;gap:56px !important}
-      .lp-hero-cat{width:100%;height:auto !important;aspect-ratio:1.1547;margin:0;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border-radius:0 !important}
+      .lp-hero-cat{width:75%;height:auto !important;aspect-ratio:1.1547;margin:0 auto;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border-radius:0 !important}
       .lp-hero-cat-name{font-size:clamp(18px,1.5vw,28px)}
       .lp-featured-section{display:none !important}
       .footer-grid{max-width:none;padding:0 24px}
