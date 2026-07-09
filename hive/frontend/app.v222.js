@@ -6555,6 +6555,7 @@ async function openDetail(id) {
   // then fetch the authoritative record — full detail fields, any edits, and
   // credentials gated for this viewer — and re-render.
   _renderDetailPanel(c);
+  try { _sizeDetailPanel(); } catch (_) {}
   document.getElementById('detailPanel').classList.add('open');
   if (map) map.flyTo([c.lat, c.lng], 15, { animate: true, duration: 1.2 });
   setTimeout(() => markerMap[c.id]?.openPopup(), 1300);
@@ -6571,6 +6572,30 @@ async function openDetail(id) {
     }
   } catch (_) { /* keep the cached render */ }
 }
+
+/* Alinha a largura do painel de detalhe com o painel que fica por baixo
+   (Empresas Destacadas no Início; Empresas Próximas no Mapa) para as bordas
+   coincidirem. O painel tem zoom:.7 e o body zoom fluido (--z), por isso as
+   medidas visuais convertem-se em px de CSS dividindo por (z × .7). As
+   larguras entram como variáveis CSS para não partir a animação de deslize. */
+function _sizeDetailPanel() {
+  const panel = document.getElementById('detailPanel');
+  if (!panel) return;
+  const clear = () => { panel.style.removeProperty('--dp-w'); panel.style.removeProperty('--dp-right'); };
+  if (window.innerWidth <= 1023) { clear(); return; }
+  const homeEl = document.getElementById('tab-home');
+  const onHome = homeEl && getComputedStyle(homeEl).display !== 'none';
+  const ref = onHome ? document.getElementById('lpFeatPanel') : document.querySelector('.nearby-panel');
+  if (!ref || getComputedStyle(ref).display === 'none') { clear(); return; }
+  const r = ref.getBoundingClientRect();
+  if (r.width < 80 || r.height < 40) { clear(); return; }
+  const z = parseFloat(getComputedStyle(document.body).zoom) || 1;
+  const f = z * 0.7;
+  panel.style.setProperty('--dp-w', Math.round(r.width / f) + 'px');
+  panel.style.setProperty('--dp-right', Math.round((window.innerWidth - r.right) / f) + 'px');
+}
+window._sizeDetailPanel = _sizeDetailPanel;
+window.addEventListener('resize', () => { try { _sizeDetailPanel(); } catch (_) {} }, { passive: true });
 
 function _renderDetailPanel(c) {
   const tr = translations[currentLang];

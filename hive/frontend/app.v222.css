@@ -546,8 +546,11 @@
     .btn-register-now:hover{background:var(--primary-dark)}
 
     /* ── DETAIL PANEL ── */
-    .detail-panel{position:fixed;top:170px;right:-880px;width:min(588px,64vw);height:calc(100vh - 170px);background:var(--surface);box-shadow:-4px 0 16px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transition:right .25s cubic-bezier(.25,.46,.45,.94);border-left:1px solid var(--border);will-change:right;-webkit-backface-visibility:hidden;backface-visibility:hidden}
-    .detail-panel.open{right:0}
+    /* --dp-w / --dp-right: definidos por _sizeDetailPanel() no desktop para o
+       painel cobrir exatamente a largura do painel por baixo (Destacadas no
+       Início, Empresas Próximas no Mapa); sem eles valem os defaults. */
+    .detail-panel{position:fixed;top:170px;right:-1400px;width:var(--dp-w,min(588px,64vw));height:calc(100vh - 170px);background:var(--surface);box-shadow:-4px 0 16px rgba(0,0,0,.12);z-index:200;display:flex;flex-direction:column;transition:right .25s cubic-bezier(.25,.46,.45,.94);border-left:1px solid var(--border);will-change:right;-webkit-backface-visibility:hidden;backface-visibility:hidden}
+    .detail-panel.open{right:var(--dp-right,0)}
     /* top/height account for the panel's own zoom:.7 AND the ~204px desktop nav
        (logo + search + activity bar + ad banner). 296*.7 ≈ 207 clears the nav
        with a small gap at every body zoom; the height offset matches. */
