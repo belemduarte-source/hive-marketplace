@@ -3321,14 +3321,13 @@
       .lp-hero-sub{margin:0 auto 8px}
       .lp-search-wrap{max-width:1080px;margin-bottom:14px}
       .lp-hero-cats-label{margin:6px 0 6px}
-      /* Categorias (75% esq.) + Empresas Destacadas (25% dir.):
-         2 filas de 4 HEXÁGONOS REGULARES (aspect-ratio 2/√3 = lados iguais),
-         colunas fixas de 264px centradas dentro da metade esquerda */
-      /* painel absoluto sobre os 25% direitos: a altura da linha é definida
-         só pela coluna dos hexágonos (o conteúdo do painel roda, não estica) */
-      .lp-cats-row{display:flex;gap:24px;width:100%;position:relative}
-      .lp-cats-left{flex:0 0 75%;min-width:0}
-      .lp-feat-panel.on{display:flex;position:absolute;top:0;bottom:0;right:0;width:calc(25% - 24px)}
+      /* Hero em 2 colunas: conteúdo todo (título+pesquisa+hexágonos) nos
+         75% esquerdos; painel Empresas Destacadas absoluto nos 25% direitos,
+         do topo do hero (logo abaixo do nav) até ao fundo das categorias */
+      .lp-hero-main{width:75%;align-self:flex-start;min-width:0;display:flex;flex-direction:column;align-items:center}
+      .lp-cats-row{width:100%}
+      .lp-cats-left{width:100%;min-width:0}
+      .lp-feat-panel.on{display:flex;position:absolute;top:10px;bottom:12px;right:24px;width:calc(25% - 36px);z-index:2}
       .lp-hero-cats{max-width:none;width:100%;grid-template-columns:repeat(4,minmax(0,264px)) !important;justify-content:center;gap:24px !important}
       .lp-hero-cat{width:100%;height:auto !important;aspect-ratio:1.1547;margin:0;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border-radius:0 !important}
       .lp-hero-cat-name{font-size:clamp(16px,1.2vw,22px)}
