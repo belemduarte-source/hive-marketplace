@@ -3317,8 +3317,10 @@
       .lp-hero-sub{margin:0 auto 10px}
       .lp-search-wrap{max-width:1080px}
       .lp-hero-cats-label{margin:10px 0 8px}
-      .lp-hero-cats{max-width:none;width:100%;gap:14px}
-      .lp-hero-cat{height:147px}
+      /* cartões no tamanho original (~320px); é o ESPAÇO entre eles que
+         cresce para ocupar a largura toda (space-between) */
+      .lp-hero-cats{max-width:none;width:100%;grid-template-columns:repeat(4,minmax(0,320px)) !important;justify-content:space-between;gap:14px !important}
+      .lp-hero-cat{height:140px}
       .lp-featured-section{display:none !important}
       .footer-grid{max-width:none;padding:0 24px}
     }
