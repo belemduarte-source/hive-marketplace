@@ -5428,10 +5428,9 @@ function getFiltered() {
   const sort = document.querySelector('input[name="sort"]:checked')?.value || 'all';
   const hasSectorFilter = activeSectors.size > 0;
 
-  // Show nothing until the user picks at least one area of activity. The
-  // marketplace can list ~thousands of companies — surfacing all of them by
-  // default is noise, not signal.
-  if (!hasSectorFilter) return [];
+  // Sem área selecionada = "Todas as áreas": o mapa mostra TODAS as empresas
+  // por defeito (pedido do dono); os filtros só estreitam quando o utilizador
+  // os aplica. O clustering do Leaflet mantém a performance com o catálogo todo.
 
   // Single-pass filter (no intermediate array copies)
   const res = [];

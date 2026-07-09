@@ -3392,7 +3392,8 @@
        Lista tipo "empresas próximas" do mapa, sobre o hero escuro, com
        rotação vertical automática lenta quando não cabe (pausa no hover). */
     .lp-feat-panel{display:none;flex:1 1 auto;min-width:0;background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.14);border-radius:16px;padding:12px 12px 6px;flex-direction:column;overflow:hidden}
-    .lp-feat-head{display:flex;align-items:center;gap:7px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#f59e0b;padding:2px 4px 10px;flex-shrink:0}
+    .lp-feat-head{display:flex;align-items:center;gap:8px;font-size:17px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#f59e0b;padding:2px 4px 12px;flex-shrink:0}
+    .lp-feat-head svg{width:19px;height:19px;flex-shrink:0}
     .lp-feat-scroll{flex:1;overflow:hidden;position:relative;min-height:0}
     .lp-feat-track{display:flex;flex-direction:column;gap:8px}
     .lp-feat-track.roll{animation:lpFeatRoll var(--roll-dur,40s) linear infinite}
@@ -3401,12 +3402,12 @@
     /* Cartões nearby-card (iguais aos do painel do mapa) compactados para a
        largura do painel (~25% do ecrã); superfície clara/escura conforme o
        tema, exatamente como no mapa */
-    .lp-feat-track .nearby-card{padding:12px 14px;border-radius:12px;flex-shrink:0}
-    .lp-feat-track .nc-top{gap:10px}
-    .lp-feat-track .nc-logo{width:44px;height:44px;border-radius:10px;font-size:17px}
-    .lp-feat-track .nc-name{font-size:15.5px}
-    .lp-feat-track .nc-name .badge-verified{font-size:10px;padding:2px 6px}
-    .lp-feat-track .nc-sector{font-size:12.5px;gap:6px}
-    .lp-feat-track .nc-rating{font-size:13.5px;margin-top:6px}
-    .lp-feat-track .nc-address{font-size:12px;margin-top:4px}
-    .lp-feat-track .nc-open{font-size:10.5px}
+    .lp-feat-track .nearby-card{padding:14px 16px;border-radius:12px;flex-shrink:0}
+    .lp-feat-track .nc-top{gap:12px}
+    .lp-feat-track .nc-logo{width:52px;height:52px;border-radius:11px;font-size:20px}
+    .lp-feat-track .nc-name{font-size:19px}
+    .lp-feat-track .nc-name .badge-verified{font-size:12px;padding:2px 7px}
+    .lp-feat-track .nc-sector{font-size:15px;gap:7px}
+    .lp-feat-track .nc-rating{font-size:16px;margin-top:7px}
+    .lp-feat-track .nc-address{font-size:14.5px;margin-top:5px}
+    .lp-feat-track .nc-open{font-size:12.5px}
