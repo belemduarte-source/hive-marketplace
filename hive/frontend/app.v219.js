@@ -2764,6 +2764,9 @@ function updateLandingStats() {
   const elCompanies = document.getElementById('lpStatCompanies');
   if (elCompanies) elCompanies.textContent = companies.length;
 
+  // Painel lateral de Empresas Destacadas (25% à direita das categorias)
+  try { renderLpFeatured(); } catch (_) {}
+
   // Early-access banner + hero category strip — both hidden while the
   // catalogue is still bootstrapping (≤10 companies). Tapping a category with
   // a near-empty result set is a dead-end UX; we lift the register CTA above
@@ -11007,3 +11010,41 @@ document.addEventListener('click', (e) => {
 window.renderFeaturedMenu = renderFeaturedMenu;
 window.toggleFeaturedMenu = toggleFeaturedMenu;
 window.closeFeaturedMenu = closeFeaturedMenu;
+
+/* ── PAINEL EMPRESAS DESTACADAS no Início (25% à direita das categorias) ──
+   Lista todas as empresas featured; quando não cabem no painel, o conteúdo
+   é duplicado e roda em loop contínuo lento (~6s por empresa; pausa no
+   hover). Chamado por updateLandingStats() sempre que o Início é mostrado. */
+function renderLpFeatured() {
+  const panel = document.getElementById('lpFeatPanel');
+  const track = document.getElementById('lpFeatTrack');
+  const scroll = document.getElementById('lpFeatScroll');
+  if (!panel || !track || !scroll) return;
+  if (window.innerWidth <= 1024) { panel.classList.remove('on'); return; }
+  const feat = (companies || []).filter(c => c.featured)
+    .sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  if (!feat.length) { panel.classList.remove('on'); track.innerHTML = ''; return; }
+  const item = c => {
+    const tile = c.logo
+      ? '<img class="lp-feat-logo" src="' + escHtml(c.logo) + '" alt="" loading="lazy" onerror="this.remove()"/>'
+      : '<span class="lp-feat-mono" style="background:' + getSectorColor(c) + '">' + companyMonogram(c) + '</span>';
+    const sub = [c.sector, c.city].filter(Boolean).join(' · ');
+    const star = c.rating ? '★ ' + Number(c.rating).toFixed(1) : '';
+    return '<div class="lp-feat-item" onclick="openDetail(' + c.id + ')">' + tile
+      + '<div style="min-width:0;flex:1"><div class="lp-feat-name">' + escHtml(c.name) + '</div>'
+      + (sub ? '<div class="lp-feat-sub">' + escHtml(sub) + '</div>' : '') + '</div>'
+      + (star ? '<span class="lp-feat-star">' + star + '</span>' : '') + '</div>';
+  };
+  const listHtml = feat.map(item).join('');
+  track.classList.remove('roll');
+  track.innerHTML = listHtml;
+  panel.classList.add('on');
+  // rotação só quando a lista não cabe: duplicar para o loop -50% ser
+  // contínuo (leitura de scrollHeight força layout síncrono — sem rAF)
+  if (track.scrollHeight > scroll.clientHeight + 4) {
+    track.innerHTML = listHtml + listHtml;
+    track.style.setProperty('--roll-dur', Math.max(18, feat.length * 6) + 's');
+    track.classList.add('roll');
+  }
+}
+window.renderLpFeatured = renderLpFeatured;
