@@ -11024,16 +11024,30 @@ function renderLpFeatured() {
   const feat = (companies || []).filter(c => c.featured)
     .sort((a, b) => (b.rating || 0) - (a.rating || 0));
   if (!feat.length) { panel.classList.remove('on'); track.innerHTML = ''; return; }
+  // cartões idênticos aos do painel "Empresas Próximas" do mapa (nearby-card):
+  // logo, nome + verificada, setor com ponto colorido, Aberto/Fechado,
+  // estrelas + n.º de avaliações e morada
+  const tr = translations[currentLang] || translations.pt;
+  const sc = tr.sectors || {};
   const item = c => {
-    const tile = c.logo
-      ? '<img class="lp-feat-logo" src="' + escHtml(c.logo) + '" alt="" loading="lazy" onerror="this.remove()"/>'
-      : '<span class="lp-feat-mono" style="background:' + getSectorColor(c) + '">' + companyMonogram(c) + '</span>';
-    const sub = [c.sector, c.city].filter(Boolean).join(' · ');
-    const star = c.rating ? '★ ' + Number(c.rating).toFixed(1) : '';
-    return '<div class="lp-feat-item" onclick="openDetail(' + c.id + ')">' + tile
-      + '<div style="min-width:0;flex:1"><div class="lp-feat-name">' + escHtml(c.name) + '</div>'
-      + (sub ? '<div class="lp-feat-sub">' + escHtml(sub) + '</div>' : '') + '</div>'
-      + (star ? '<span class="lp-feat-star">' + star + '</span>' : '') + '</div>';
+    const rv = Number(c.rating) || 0;
+    const sectorLabel = sc[c.sector] || c.sector || '';
+    const rating = rv > 0
+      ? '<span class="nc-stars">' + '★'.repeat(Math.round(rv)) + '</span> <strong>' + rv.toFixed(1) + '</strong> <span class="nc-reviews">(' + (c.reviews || 0) + ')</span>'
+      : '<span class="badge-new">' + escHtml(t('newOnHivex')) + '</span>';
+    const logo = c.logo
+      ? '<div class="nc-logo" style="background:url(\'' + escHtml(c.logo) + '\') center/cover no-repeat"></div>'
+      : '<div class="nc-logo logo-mono">' + companyMonogram(c) + '</div>';
+    let openBadge = '';
+    try { openBadge = _openBadgeHtml(c); } catch (_) {}
+    return '<div class="nearby-card" onclick="openDetail(' + c.id + ')">'
+      + '<div class="nc-top">' + logo
+      + '<div class="nc-main"><div class="nc-name">' + escHtml(c.name) + (c.verified ? ' <span class="badge-verified" title="Empresa verificada">✓ Verificada</span>' : '') + '</div>'
+      + '<div class="nc-sector"><span class="nc-dot" style="background:' + (c.color || getSectorColor(c)) + '"></span>' + escHtml(sectorLabel) + '</div></div>'
+      + '<div class="nc-side">' + openBadge + '</div></div>'
+      + '<div class="nc-rating">' + rating + '</div>'
+      + (c.address || c.city ? '<div class="nc-address">' + escHtml(c.address || c.city) + '</div>' : '')
+      + '</div>';
   };
   const listHtml = feat.map(item).join('');
   track.classList.remove('roll');
