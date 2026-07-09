@@ -3307,17 +3307,20 @@
       .nav-right .lang-btn,.nav-right .btn-ajuda,.nav-right .theme-toggle,.nav-right .btn-login{width:auto !important;padding:0 10px !important;font-size:15px !important}
       .nav-right #authArea{width:auto;flex:0 0 auto}
 
-      /* Início num só ecrã: título+pesquisa+banner+categorias cabem em ~900px
-         de altura; a secção "Os mais bem avaliados" sai do desktop (as
-         destacadas têm agora o dropdown na barra de áreas) */
+      /* Início num só ecrã E a toda a largura: o conteúdo estende-se até às
+         margens laterais (pesquisa mais larga, categorias sem max-width,
+         footer sem o limite de 1100px); "Os mais bem avaliados" sai do
+         desktop (as destacadas têm o dropdown na barra de áreas) */
       .home-hero{padding:6px 24px 14px}
       .lp-hero{padding:12px 24px 18px}
       .lp-hero-title{font-size:36px;margin-bottom:6px}
       .lp-hero-sub{margin:0 auto 10px}
+      .lp-search-wrap{max-width:1080px}
       .lp-hero-cats-label{margin:10px 0 8px}
-      .lp-hero-cats{gap:14px}
-      .lp-hero-cat{height:135px}
+      .lp-hero-cats{max-width:none;width:100%;gap:14px}
+      .lp-hero-cat{height:147px}
       .lp-featured-section{display:none !important}
+      .footer-grid{max-width:none;padding:0 24px}
     }
 
     /* Abaixo de 1560px a coluna central da grelha é estreita demais para o
