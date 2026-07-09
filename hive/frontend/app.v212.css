@@ -3298,8 +3298,10 @@
       nav.nav-map-grid{grid-template-rows:auto auto;row-gap:0;padding:8px 26px}
       nav.nav-map-grid > .ub-search-in-nav{padding:6px 0 2px}
       /* banner na coluna central da grelha (Início e Mapa): contain:size
-         impede que o conteúdo infle as linhas auto da grelha */
-      nav.nav-map-grid > .nav-ad{contain:size;height:100%;min-height:0;align-self:stretch}
+         impede que o conteúdo infle as linhas auto da grelha; altura FIXA
+         de 141px para ser igual nas duas páginas (no Início a linha 2 da
+         grelha está vazia e o banner é quem define a altura do nav) */
+      nav.nav-map-grid > .nav-ad{contain:size;height:141px;min-height:0;align-self:center}
       .nav-banner{padding:8px 28px}
       .nav-right{flex-direction:row !important;width:auto !important;min-width:0 !important;max-width:none !important;gap:6px;align-items:center}
       .nav-right-bottom{flex-direction:row !important;width:auto !important;align-items:center;flex:0 0 auto;gap:6px !important}
@@ -3311,17 +3313,18 @@
          margens laterais (pesquisa mais larga, categorias sem max-width,
          footer sem o limite de 1100px); "Os mais bem avaliados" sai do
          desktop (as destacadas têm o dropdown na barra de áreas) */
-      .home-hero{padding:6px 24px 14px}
-      .lp-hero{padding:12px 24px 18px}
-      .lp-hero-title{font-size:36px;margin-bottom:6px}
-      .lp-hero-sub{margin:0 auto 10px}
-      .lp-search-wrap{max-width:1080px}
-      .lp-hero-cats-label{margin:10px 0 8px}
+      /* o nav do Início cresceu para 157px (banner igual ao do Mapa) —
+         verticais do hero apertados para continuar tudo num só ecrã */
+      .home-hero{padding:4px 24px 10px}
+      .lp-hero{padding:8px 24px 12px}
+      .lp-hero-title{font-size:34px;margin-bottom:4px}
+      .lp-hero-sub{margin:0 auto 8px}
+      .lp-search-wrap{max-width:1080px;margin-bottom:14px}
+      .lp-hero-cats-label{margin:6px 0 6px}
       /* 2 filas de 4 a preencher a largura, com espaçamento de 56px entre
-         cartões (lado e fundo); cartões um pouco mais baixos para o
-         conjunto continuar a caber num só ecrã */
+         cartões (lado e fundo) */
       .lp-hero-cats{max-width:none;width:100%;grid-template-columns:repeat(4,1fr) !important;gap:56px !important}
-      .lp-hero-cat{height:126px !important}
+      .lp-hero-cat{height:110px !important}
       .lp-featured-section{display:none !important}
       .footer-grid{max-width:none;padding:0 24px}
     }
@@ -3332,20 +3335,18 @@
       nav.nav-map-grid > .nav-ad{display:none !important}
     }
     /* No nav (≥1560px) o banner estica por toda a coluna central, até junto
-       dos botões de ambos os lados, com a variante texto + CTA — a altura da
-       coluna (~82px no Início, ~140px no Mapa) não comporta os gráficos. */
+       dos botões de ambos os lados, com a variante texto + CTA — os 141px
+       de altura não comportam os passos/história gráficos. */
     @media (min-width:1560px){
       nav.nav-map-grid > .nav-ad .nav-ad-steps,
-      nav.nav-map-grid > .nav-ad .nav-ad-story,
-      nav.nav-map-grid > .nav-ad .nav-ad-badge{display:none !important}
+      nav.nav-map-grid > .nav-ad .nav-ad-story{display:none !important}
       nav.nav-map-grid > .nav-ad .nav-ad-content{justify-content:space-between;padding:8px 22px;gap:12px}
       nav.nav-map-grid > .nav-ad .nav-ad-left{min-width:0;flex-shrink:1}
+      nav.nav-map-grid > .nav-ad .nav-ad-badge{font-size:11px;padding:3px 9px}
       nav.nav-map-grid > .nav-ad .nav-ad-title{font-size:19px}
       nav.nav-map-grid > .nav-ad .nav-ad-sub{font-size:13px;white-space:normal}
       nav.nav-map-grid > .nav-ad .nav-ad-cta-ring{width:40px;height:40px;font-size:18px}
       nav.nav-map-grid > .nav-ad .nav-ad-cta-text{font-size:12px}
-      /* no Mapa (pesquisa acoplada = coluna com ~140px) há altura para o badge */
-      nav.nav-map-grid:has(> .ub-search-in-nav) > .nav-ad .nav-ad-badge{display:inline-block !important;font-size:11px;padding:3px 9px}
     }
 
     /* Painel de detalhe: o topo estava calibrado para o nav antigo de ~204px;
