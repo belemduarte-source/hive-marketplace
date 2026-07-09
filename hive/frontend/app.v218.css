@@ -3322,9 +3322,9 @@
       .lp-search-wrap{max-width:1080px;margin-bottom:14px}
       .lp-hero-cats-label{margin:6px 0 6px}
       /* 2 filas de 4 HEXÁGONOS REGULARES (aspect-ratio 2/√3 = lados iguais):
-         colunas fixas de 220px CENTRADAS com gap de 24px — hexágonos mais
-         pequenos e juntos, em bloco no meio da página */
-      .lp-hero-cats{max-width:none;width:100%;grid-template-columns:repeat(4,220px) !important;justify-content:center;gap:24px !important}
+         colunas fixas de 264px CENTRADAS com gap de 24px — bloco compacto
+         no meio da página */
+      .lp-hero-cats{max-width:none;width:100%;grid-template-columns:repeat(4,264px) !important;justify-content:center;gap:24px !important}
       .lp-hero-cat{width:100%;height:auto !important;aspect-ratio:1.1547;margin:0;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border-radius:0 !important}
       .lp-hero-cat-name{font-size:clamp(16px,1.2vw,22px)}
       .lp-featured-section{display:none !important}
