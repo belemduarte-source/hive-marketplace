@@ -3317,10 +3317,11 @@
       .lp-hero-sub{margin:0 auto 10px}
       .lp-search-wrap{max-width:1080px}
       .lp-hero-cats-label{margin:10px 0 8px}
-      /* cartões no tamanho original (~320px); é o ESPAÇO entre eles que
-         cresce para ocupar a largura toda (space-between) */
-      .lp-hero-cats{max-width:none;width:100%;grid-template-columns:repeat(4,minmax(0,320px)) !important;justify-content:space-between;gap:14px !important}
-      .lp-hero-cat{height:140px}
+      /* UMA fila com os 8 cartões lado a lado a preencher a largura toda —
+         o espaço ocupa-se com conteúdo (tiles mais altos, estilo Airbnb) */
+      .lp-hero-cats{max-width:none;width:100%;grid-template-columns:repeat(8,1fr) !important;gap:16px !important}
+      .lp-hero-cat{height:230px !important}
+      .lp-hero-cat-name{font-size:clamp(14px,1.2vw,20px)}
       .lp-featured-section{display:none !important}
       .footer-grid{max-width:none;padding:0 24px}
     }
