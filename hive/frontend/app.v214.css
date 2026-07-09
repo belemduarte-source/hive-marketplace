@@ -3321,10 +3321,12 @@
       .lp-hero-sub{margin:0 auto 8px}
       .lp-search-wrap{max-width:1080px;margin-bottom:14px}
       .lp-hero-cats-label{margin:6px 0 6px}
-      /* 2 filas de 4 a preencher a largura, com espaçamento de 56px entre
-         cartões (lado e fundo); forma HEXAGONAL (favo, como o logótipo) */
+      /* 2 filas de 4, HEXÁGONOS REGULARES (lados todos iguais): exige a
+         proporção largura = 2/√3 × altura (127×110); centrados nas células
+         da grelha, que continua a ocupar a largura toda */
       .lp-hero-cats{max-width:none;width:100%;grid-template-columns:repeat(4,1fr) !important;gap:56px !important}
-      .lp-hero-cat{height:110px !important;clip-path:polygon(56px 0,calc(100% - 56px) 0,100% 50%,calc(100% - 56px) 100%,56px 100%,0 50%);border-radius:0 !important}
+      .lp-hero-cat{height:110px !important;width:127px;margin:0 auto;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);border-radius:0 !important}
+      .lp-hero-cat-name{font-size:14px}
       .lp-featured-section{display:none !important}
       .footer-grid{max-width:none;padding:0 24px}
     }
