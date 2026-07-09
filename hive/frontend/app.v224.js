@@ -3581,6 +3581,12 @@ async function loadCompaniesFromDB(opts) {
   applyFilters.now();
   renderFeaturedCompanies();
   renderTestimonialBanner();
+  // Cache das destacadas: o painel do Início enche instantaneamente no
+  // próximo arranque (antes da API responder) — ver renderLpFeatured()
+  try {
+    const _feat = companies.filter(c => c.featured);
+    if (_feat.length) localStorage.setItem('hivex_featured_cache', JSON.stringify(_feat.slice(0, 20)));
+  } catch (_) {}
   updateLandingStats();
   if (typeof _renderRecentStrip === 'function') _renderRecentStrip();
 
@@ -11045,8 +11051,13 @@ function renderLpFeatured() {
   const scroll = document.getElementById('lpFeatScroll');
   if (!panel || !track || !scroll) return;
   if (window.innerWidth <= 1024) { panel.classList.remove('on'); return; }
-  const feat = (companies || []).filter(c => c.featured)
-    .sort((a, b) => (b.rating || 0) - (a.rating || 0));
+  let feat = (companies || []).filter(c => c.featured);
+  // arranque: enquanto a API não responde, usa a cache da última visita
+  // (substituída pelos dados frescos quando loadCompaniesFromDB terminar)
+  if (!feat.length && !companies.length) {
+    try { feat = JSON.parse(localStorage.getItem('hivex_featured_cache') || '[]'); } catch (_) { feat = []; }
+  }
+  feat = feat.sort((a, b) => (b.rating || 0) - (a.rating || 0));
   if (!feat.length) { panel.classList.remove('on'); track.innerHTML = ''; return; }
   // cartões idênticos aos do painel "Empresas Próximas" do mapa (nearby-card):
   // logo, nome + verificada, setor com ponto colorido, Aberto/Fechado,
@@ -11086,3 +11097,5 @@ function renderLpFeatured() {
   }
 }
 window.renderLpFeatured = renderLpFeatured;
+// Primeiro paint: preenche já o painel a partir da cache, sem esperar pela API
+try { renderLpFeatured(); } catch (_) {}
