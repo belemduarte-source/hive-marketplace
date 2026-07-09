@@ -3292,7 +3292,17 @@
     .lp-steps-section{display:none !important}
 
     @media (min-width:1025px){
-      .nav-ad{display:none !important}
+      /* banner publicitário: vive agora no hero do Início (movido do nav),
+         como faixa fina entre a barra de pesquisa e as categorias */
+      .nav-ad{height:96px;max-height:96px;min-height:0;width:100%;max-width:980px;margin:18px auto 0;flex:0 0 auto;order:0;border-radius:14px}
+      .nav-ad .nav-ad-content{padding:6px 16px;gap:12px}
+      /* slide 2 (história) tem de caber nos 96px da faixa: 1 linha, sem quebra */
+      .nav-ad .nav-ad-story{flex-wrap:nowrap;gap:6px;min-width:0;overflow:hidden}
+      .nav-ad .story-step{gap:3px;flex-shrink:0}
+      .nav-ad .story-ico{width:40px;height:40px;font-size:22px}
+      .nav-ad .story-ico svg{width:20px;height:20px}
+      .nav-ad .story-cap{font-size:10px}
+      .nav-ad .story-arrow{flex-shrink:1;min-width:6px}
       nav{padding:8px 28px}
       /* a grelha tinha linhas fixas 122px+56px (linha 2 = pesquisa acoplada no
          Mapa; no Início fica VAZIA) — auto colapsa a linha vazia no Início */
@@ -3304,6 +3314,19 @@
       .nav-right-bottom > .lang-switcher{width:auto;flex:0 0 auto !important}
       .nav-right .lang-btn,.nav-right .btn-ajuda,.nav-right .theme-toggle,.nav-right .btn-login{width:auto !important;padding:0 14px !important}
       .nav-right #authArea{width:auto;flex:0 0 auto}
+
+      /* Início num só ecrã: título+pesquisa+banner+categorias cabem em ~900px
+         de altura; a secção "Os mais bem avaliados" sai do desktop (as
+         destacadas têm agora o dropdown na barra de áreas) */
+      .home-hero{padding:6px 24px 14px}
+      .lp-hero{padding:12px 24px 18px}
+      .lp-hero-title{font-size:36px;margin-bottom:6px}
+      .lp-hero-sub{margin:0 auto 10px}
+      .lp-hero-cats-label{margin:10px 0 8px}
+      .lp-hero-cats{gap:14px}
+      .lp-hero-cat{height:135px}
+      .nav-ad{margin:10px auto 0}
+      .lp-featured-section{display:none !important}
     }
 
     /* Painel de detalhe: o topo estava calibrado para o nav antigo de ~204px;

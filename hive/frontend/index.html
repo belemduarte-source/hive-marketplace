@@ -150,7 +150,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v203.css"/>
+  <link rel="stylesheet" href="app.v204.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -376,59 +376,7 @@
   </button>
 
   <!-- AD BANNER — fills free space between tabs and buttons -->
-  <div class="nav-ad" id="navAdBanner">
-    <div class="nav-ad-fallback"></div>
-    <div class="nav-ad-content nav-ad-slide nav-ad-casa active">
-      <div class="nav-ad-left">
-        <span class="nav-ad-badge" data-i18n="adBadge">🏠 Exemplo Prático</span>
-        <span class="nav-ad-title" data-i18n="adTitle">Construir uma casa?</span>
-        <span class="nav-ad-sub" data-i18n="adNavSub">10 especialistas, 1 plataforma</span>
-      </div>
-      <div class="nav-ad-steps">
-        <span class="nav-ad-step" data-casa="0"><i data-lucide="building-2"></i> <span data-i18n="legendEstrutura">Estrutura</span></span>
-        <span class="nav-ad-step" data-casa="1"><i data-lucide="zap"></i> <span data-i18n="legendInstalacoes">Instalações</span></span>
-        <span class="nav-ad-step" data-casa="2"><i data-lucide="paintbrush"></i> <span data-i18n="legendAcabamentos">Acabamentos</span></span>
-        <span class="nav-ad-step" data-casa="3"><i data-lucide="hammer"></i> <span data-i18n="legendCarpintaria">Carpintaria</span></span>
-        <span class="nav-ad-step" data-casa="4"><i data-lucide="wrench"></i> <span data-i18n="legendSerralharia">Serralharia</span></span>
-        <span class="nav-ad-step" data-casa="5"><i data-lucide="leaf"></i> <span data-i18n="legendExterior">Exterior</span></span>
-        <span class="nav-ad-step" data-casa="6"><i data-lucide="ruler"></i> <span data-i18n="legendProjeto">Projeto</span></span>
-        <span class="nav-ad-step" data-casa="7"><i data-lucide="key-round"></i> <span data-i18n="legendChaveNaMao">Chave na Mão</span></span>
-      </div>
-      <div class="nav-ad-cta" onclick="showTab('search')">
-        <span class="nav-ad-cta-text" data-i18n-html="adCta">Encontre<br>tudo aqui</span>
-        <span class="nav-ad-cta-ring">→</span>
-      </div>
-    </div>
-    <div class="nav-ad-content nav-ad-slide nav-ad-hivex">
-      <div class="nav-ad-left">
-        <span class="nav-ad-badge" data-i18n="adHivexBadge">✨ A Hivex</span>
-        <span class="nav-ad-title" data-i18n="adHivexTitle">Do terreno à casa</span>
-        <span class="nav-ad-sub" data-i18n="adHivexSub">O seu projeto, passo a passo</span>
-      </div>
-      <div class="nav-ad-story">
-        <span class="story-step" data-story="0"><span class="story-ico"><i data-lucide="map"></i></span><span class="story-cap" data-i18n="adStory1">Tem um terreno</span></span>
-        <span class="story-arrow"></span>
-        <span class="story-step" data-story="1"><span class="story-ico"><i data-lucide="smartphone"></i></span><span class="story-cap" data-i18n="adStory2">Abre a Hivex</span></span>
-        <span class="story-arrow"></span>
-        <span class="story-step" data-story="2"><span class="story-ico"><i data-lucide="search"></i></span><span class="story-cap" data-i18n="adStory3">Procura especialistas</span></span>
-        <span class="story-arrow"></span>
-        <span class="story-step" data-story="3"><span class="story-ico"><i data-lucide="phone"></i></span><span class="story-cap" data-i18n="adStory4">Pede orçamento</span></span>
-        <span class="story-arrow"></span>
-        <span class="story-step" data-story="4"><span class="story-ico"><i data-lucide="handshake"></i></span><span class="story-cap" data-i18n="adStory5">Fecha contrato</span></span>
-        <span class="story-arrow"></span>
-        <span class="story-step" data-story="5"><span class="story-ico"><svg viewBox="0 0 64 64"><polygon points="32,8 58,30 6,30" fill="#dc2626"/><rect x="12" y="29" width="40" height="27" rx="1" fill="#fcd9b6"/><rect x="27" y="40" width="10" height="16" fill="#7c2d12"/><rect x="16" y="34" width="9" height="9" rx="1" fill="#38bdf8"/><rect x="39" y="34" width="9" height="9" rx="1" fill="#38bdf8"/></svg></span><span class="story-cap" data-i18n="adStory6">Casa feita</span></span>
-      </div>
-      <div class="nav-ad-cta" onclick="showTab('search')">
-        <span class="nav-ad-cta-text" data-i18n-html="adHivexCta">Faça<br>parte</span>
-        <span class="nav-ad-cta-ring">→</span>
-      </div>
-    </div>
-    <!-- AdSense display unit for the banner — hidden until ADSENSE_BANNER_SLOT is
-         set (see <head>). When active, JS fills in client/slot, hides the in-house
-         promo slides above, and shows this ad. -->
-    <ins class="adsbygoogle nav-ad-adsense" id="navAdSense" style="display:none;width:100%;height:100%"
-         data-ad-format="auto" data-full-width-responsive="true"></ins>
-  </div>
+  <!-- Banner publicitário movido para o hero do Início (nav de 1 linha) -->
 
   <div class="nav-right">
     <!-- Login/Register top-nav buttons removed by user request.
@@ -716,6 +664,62 @@
 
       </div><!-- /lp-searchbar -->
     </div><!-- /lp-search-wrap -->
+
+    <!-- BANNER PUBLICITÁRIO — vindo do nav; faixa fina entre a pesquisa e as categorias -->
+  <div class="nav-ad" id="navAdBanner">
+    <div class="nav-ad-fallback"></div>
+    <div class="nav-ad-content nav-ad-slide nav-ad-casa active">
+      <div class="nav-ad-left">
+        <span class="nav-ad-badge" data-i18n="adBadge">🏠 Exemplo Prático</span>
+        <span class="nav-ad-title" data-i18n="adTitle">Construir uma casa?</span>
+        <span class="nav-ad-sub" data-i18n="adNavSub">10 especialistas, 1 plataforma</span>
+      </div>
+      <div class="nav-ad-steps">
+        <span class="nav-ad-step" data-casa="0"><i data-lucide="building-2"></i> <span data-i18n="legendEstrutura">Estrutura</span></span>
+        <span class="nav-ad-step" data-casa="1"><i data-lucide="zap"></i> <span data-i18n="legendInstalacoes">Instalações</span></span>
+        <span class="nav-ad-step" data-casa="2"><i data-lucide="paintbrush"></i> <span data-i18n="legendAcabamentos">Acabamentos</span></span>
+        <span class="nav-ad-step" data-casa="3"><i data-lucide="hammer"></i> <span data-i18n="legendCarpintaria">Carpintaria</span></span>
+        <span class="nav-ad-step" data-casa="4"><i data-lucide="wrench"></i> <span data-i18n="legendSerralharia">Serralharia</span></span>
+        <span class="nav-ad-step" data-casa="5"><i data-lucide="leaf"></i> <span data-i18n="legendExterior">Exterior</span></span>
+        <span class="nav-ad-step" data-casa="6"><i data-lucide="ruler"></i> <span data-i18n="legendProjeto">Projeto</span></span>
+        <span class="nav-ad-step" data-casa="7"><i data-lucide="key-round"></i> <span data-i18n="legendChaveNaMao">Chave na Mão</span></span>
+      </div>
+      <div class="nav-ad-cta" onclick="showTab('search')">
+        <span class="nav-ad-cta-text" data-i18n-html="adCta">Encontre<br>tudo aqui</span>
+        <span class="nav-ad-cta-ring">→</span>
+      </div>
+    </div>
+    <div class="nav-ad-content nav-ad-slide nav-ad-hivex">
+      <div class="nav-ad-left">
+        <span class="nav-ad-badge" data-i18n="adHivexBadge">✨ A Hivex</span>
+        <span class="nav-ad-title" data-i18n="adHivexTitle">Do terreno à casa</span>
+        <span class="nav-ad-sub" data-i18n="adHivexSub">O seu projeto, passo a passo</span>
+      </div>
+      <div class="nav-ad-story">
+        <span class="story-step" data-story="0"><span class="story-ico"><i data-lucide="map"></i></span><span class="story-cap" data-i18n="adStory1">Tem um terreno</span></span>
+        <span class="story-arrow"></span>
+        <span class="story-step" data-story="1"><span class="story-ico"><i data-lucide="smartphone"></i></span><span class="story-cap" data-i18n="adStory2">Abre a Hivex</span></span>
+        <span class="story-arrow"></span>
+        <span class="story-step" data-story="2"><span class="story-ico"><i data-lucide="search"></i></span><span class="story-cap" data-i18n="adStory3">Procura especialistas</span></span>
+        <span class="story-arrow"></span>
+        <span class="story-step" data-story="3"><span class="story-ico"><i data-lucide="phone"></i></span><span class="story-cap" data-i18n="adStory4">Pede orçamento</span></span>
+        <span class="story-arrow"></span>
+        <span class="story-step" data-story="4"><span class="story-ico"><i data-lucide="handshake"></i></span><span class="story-cap" data-i18n="adStory5">Fecha contrato</span></span>
+        <span class="story-arrow"></span>
+        <span class="story-step" data-story="5"><span class="story-ico"><svg viewBox="0 0 64 64"><polygon points="32,8 58,30 6,30" fill="#dc2626"/><rect x="12" y="29" width="40" height="27" rx="1" fill="#fcd9b6"/><rect x="27" y="40" width="10" height="16" fill="#7c2d12"/><rect x="16" y="34" width="9" height="9" rx="1" fill="#38bdf8"/><rect x="39" y="34" width="9" height="9" rx="1" fill="#38bdf8"/></svg></span><span class="story-cap" data-i18n="adStory6">Casa feita</span></span>
+      </div>
+      <div class="nav-ad-cta" onclick="showTab('search')">
+        <span class="nav-ad-cta-text" data-i18n-html="adHivexCta">Faça<br>parte</span>
+        <span class="nav-ad-cta-ring">→</span>
+      </div>
+    </div>
+    <!-- AdSense display unit for the banner — hidden until ADSENSE_BANNER_SLOT is
+         set (see <head>). When active, JS fills in client/slot, hides the in-house
+         promo slides above, and shows this ad. -->
+    <ins class="adsbygoogle nav-ad-adsense" id="navAdSense" style="display:none;width:100%;height:100%"
+         data-ad-format="auto" data-full-width-responsive="true"></ins>
+  </div>
+
 
     <!-- Anonymous-user primary CTA — the main action while the catalogue is
          small. Toggled in updateNavAuth(): visible to logged-out visitors,
@@ -2234,7 +2238,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v203.js"></script>
+<script src="app.v204.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
