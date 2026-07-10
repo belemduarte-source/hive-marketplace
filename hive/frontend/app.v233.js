@@ -12,7 +12,7 @@ const translations = {
     loadingGeneric:"A carregar...",
     statusTitle:"Estado do Registo", statusPrompt:"Introduza o email com que registou a sua empresa para verificar o estado.", statusVerify:"Verificar",
     dpDragClose:"puxe para fechar", dpCloseTitle:"Fechar", dpCallTitle:"Ligar", dpShareTitle:"Partilhar",
-    dpDirectionsTitle:"Como chegar", routeLocating:"A obter a sua localização…", routeNoLocation:"Não foi possível obter a sua localização.", routeError:"Não foi possível calcular a rota.", routeGps:"Iniciar GPS", routeStepsBtn:"Passos", routeArrived:"Chegou ao destino!", dpMoreInfo:"Mais informação",
+    dpDirectionsTitle:"Como chegar", routeLocating:"A obter a sua localização…", routeNoLocation:"Não foi possível obter a sua localização.", routeError:"Não foi possível calcular a rota.", routeGps:"Iniciar GPS", routeStepsBtn:"Passos", routeArrived:"Chegou ao destino!", navMsgs:"Mensagens", nearMe:"Perto de mim", sortDist:"Distância", sortRating2:"Avaliação", sortName2:"Nome", sheetHint:"Toque em \"Ver lista\" para ver as empresas", refreshing:"A atualizar…", dpMoreInfo:"Mais informação",
     loginGateTitle:"Inicie sessão para ver os contactos", loginGateDesc:"Crie uma conta gratuita para aceder aos contactos, morada, avaliações e pedir orçamentos.", loginGateBtn:"Entrar / Criar Conta Grátis",
     reviewsHeading:"Avaliações", reviewFormTitle:"✍️ A sua avaliação", reviewPh:"Partilhe a sua experiência com esta empresa...", reviewSubmit:"Publicar Avaliação", reviewWrite:"+ Escrever Avaliação",
     closeBtn:"Fechar",
@@ -423,7 +423,7 @@ const translations = {
     loadingGeneric:"Loading...",
     statusTitle:"Registration Status", statusPrompt:"Enter the email you registered your company with to check its status.", statusVerify:"Check",
     dpDragClose:"pull to close", dpCloseTitle:"Close", dpCallTitle:"Call", dpShareTitle:"Share",
-    dpDirectionsTitle:"Directions", routeLocating:"Getting your location…", routeNoLocation:"Could not get your location.", routeError:"Could not calculate the route.", routeGps:"Start GPS", routeStepsBtn:"Steps", routeArrived:"You have arrived!", dpMoreInfo:"Additional information",
+    dpDirectionsTitle:"Directions", routeLocating:"Getting your location…", routeNoLocation:"Could not get your location.", routeError:"Could not calculate the route.", routeGps:"Start GPS", routeStepsBtn:"Steps", routeArrived:"You have arrived!", navMsgs:"Messages", nearMe:"Near me", sortDist:"Distance", sortRating2:"Rating", sortName2:"Name", sheetHint:"Tap \"View list\" to see the companies", refreshing:"Refreshing…", dpMoreInfo:"Additional information",
     loginGateTitle:"Sign in to view contacts", loginGateDesc:"Create a free account to access contacts, address, reviews and request quotes.", loginGateBtn:"Sign in / Create free account",
     reviewsHeading:"Reviews", reviewFormTitle:"✍️ Your review", reviewPh:"Share your experience with this company...", reviewSubmit:"Publish Review", reviewWrite:"+ Write Review",
     closeBtn:"Close",
@@ -826,7 +826,7 @@ const translations = {
     loadingGeneric:"Chargement...",
     statusTitle:"Statut de l'inscription", statusPrompt:"Saisissez l'e-mail utilisé pour enregistrer votre entreprise afin de vérifier le statut.", statusVerify:"Vérifier",
     dpDragClose:"tirer pour fermer", dpCloseTitle:"Fermer", dpCallTitle:"Appeler", dpShareTitle:"Partager",
-    dpDirectionsTitle:"Itinéraire", routeLocating:"Localisation en cours…", routeNoLocation:"Impossible d'obtenir votre position.", routeError:"Impossible de calculer l'itinéraire.", routeGps:"Démarrer GPS", routeStepsBtn:"Étapes", routeArrived:"Vous êtes arrivé !", dpMoreInfo:"Plus d'informations",
+    dpDirectionsTitle:"Itinéraire", routeLocating:"Localisation en cours…", routeNoLocation:"Impossible d'obtenir votre position.", routeError:"Impossible de calculer l'itinéraire.", routeGps:"Démarrer GPS", routeStepsBtn:"Étapes", routeArrived:"Vous êtes arrivé !", navMsgs:"Messages", nearMe:"Près de moi", sortDist:"Distance", sortRating2:"Note", sortName2:"Nom", sheetHint:"Touchez \"Voir la liste\" pour voir les entreprises", refreshing:"Actualisation…", dpMoreInfo:"Plus d'informations",
     loginGateTitle:"Connectez-vous pour voir les contacts", loginGateDesc:"Créez un compte gratuit pour accéder aux contacts, à l'adresse, aux avis et demander des devis.", loginGateBtn:"Se connecter / Créer un compte gratuit",
     reviewsHeading:"Avis", reviewFormTitle:"✍️ Votre avis", reviewPh:"Partagez votre expérience avec cette entreprise...", reviewSubmit:"Publier l'avis", reviewWrite:"+ Écrire un avis",
     closeBtn:"Fermer",
@@ -1233,7 +1233,7 @@ const translations = {
     loadingGeneric:"Cargando...",
     statusTitle:"Estado del registro", statusPrompt:"Introduce el correo con el que registraste tu empresa para verificar el estado.", statusVerify:"Verificar",
     dpDragClose:"desliza para cerrar", dpCloseTitle:"Cerrar", dpCallTitle:"Llamar", dpShareTitle:"Compartir",
-    dpDirectionsTitle:"Cómo llegar", routeLocating:"Obteniendo su ubicación…", routeNoLocation:"No se pudo obtener su ubicación.", routeError:"No se pudo calcular la ruta.", routeGps:"Iniciar GPS", routeStepsBtn:"Pasos", routeArrived:"¡Ha llegado a su destino!", dpMoreInfo:"Más información",
+    dpDirectionsTitle:"Cómo llegar", routeLocating:"Obteniendo su ubicación…", routeNoLocation:"No se pudo obtener su ubicación.", routeError:"No se pudo calcular la ruta.", routeGps:"Iniciar GPS", routeStepsBtn:"Pasos", routeArrived:"¡Ha llegado a su destino!", navMsgs:"Mensajes", nearMe:"Cerca de mí", sortDist:"Distancia", sortRating2:"Valoración", sortName2:"Nombre", sheetHint:"Toque \"Ver lista\" para ver las empresas", refreshing:"Actualizando…", dpMoreInfo:"Más información",
     loginGateTitle:"Inicia sesión para ver los contactos", loginGateDesc:"Crea una cuenta gratuita para acceder a contactos, dirección, valoraciones y pedir presupuestos.", loginGateBtn:"Iniciar sesión / Crear cuenta gratis",
     reviewsHeading:"Valoraciones", reviewFormTitle:"✍️ Tu valoración", reviewPh:"Comparte tu experiencia con esta empresa...", reviewSubmit:"Publicar valoración", reviewWrite:"+ Escribir valoración",
     closeBtn:"Cerrar",
@@ -1632,7 +1632,7 @@ const translations = {
     loadingGeneric:"Wird geladen...",
     statusTitle:"Registrierungsstatus", statusPrompt:"Geben Sie die E-Mail-Adresse ein, mit der Sie Ihr Unternehmen registriert haben, um den Status zu prüfen.", statusVerify:"Prüfen",
     dpDragClose:"zum Schließen ziehen", dpCloseTitle:"Schließen", dpCallTitle:"Anrufen", dpShareTitle:"Teilen",
-    dpDirectionsTitle:"Route", routeLocating:"Standort wird ermittelt…", routeNoLocation:"Standort konnte nicht ermittelt werden.", routeError:"Route konnte nicht berechnet werden.", routeGps:"GPS starten", routeStepsBtn:"Schritte", routeArrived:"Sie haben Ihr Ziel erreicht!", dpMoreInfo:"Weitere Informationen",
+    dpDirectionsTitle:"Route", routeLocating:"Standort wird ermittelt…", routeNoLocation:"Standort konnte nicht ermittelt werden.", routeError:"Route konnte nicht berechnet werden.", routeGps:"GPS starten", routeStepsBtn:"Schritte", routeArrived:"Sie haben Ihr Ziel erreicht!", navMsgs:"Nachrichten", nearMe:"In meiner Nähe", sortDist:"Entfernung", sortRating2:"Bewertung", sortName2:"Name", sheetHint:"Tippen Sie auf \"Liste ansehen\", um die Unternehmen zu sehen", refreshing:"Aktualisierung…", dpMoreInfo:"Weitere Informationen",
     loginGateTitle:"Anmelden, um Kontakte zu sehen", loginGateDesc:"Erstellen Sie ein kostenloses Konto für Zugriff auf Kontakte, Adresse, Bewertungen und Angebotsanfragen.", loginGateBtn:"Anmelden / Kostenloses Konto erstellen",
     reviewsHeading:"Bewertungen", reviewFormTitle:"✍️ Ihre Bewertung", reviewPh:"Teilen Sie Ihre Erfahrung mit diesem Unternehmen...", reviewSubmit:"Bewertung veröffentlichen", reviewWrite:"+ Bewertung schreiben",
     closeBtn:"Schließen",
@@ -2093,6 +2093,13 @@ function showTab(name) {
           showToast(t('mapPinHint') || '💡 Toque num pin para ver os detalhes da empresa.');
           try { localStorage.setItem('hive_pin_hint_shown', '1'); } catch(_) {}
         }, 1200);
+      }
+      // dica única da folha de resultados (só mobile)
+      if (window.innerWidth <= 768 && !localStorage.getItem('hive_sheet_hint_shown')) {
+        setTimeout(() => {
+          showToast('👆 ' + (t('sheetHint') || 'Toque em "Ver lista" para ver as empresas'));
+          try { localStorage.setItem('hive_sheet_hint_shown', '1'); } catch(_) {}
+        }, 3200);
       }
     } catch(_) {}
 
@@ -3504,7 +3511,19 @@ async function loadCompaniesFromDB(opts) {
     // country (_userCountry from geolocation) made every company vanish for
     // anyone browsing from abroad or on a VPN — ?country=ch returns []. Same
     // failure class as the "Todo o país" filter bug; always fetch 'pt'.
-    const data = await api.getCompanies(scoped ? { country: 'pt' } : undefined);
+    // Catálogo completo em PÁGINAS de 500 (2000+ empresas numa só resposta
+    // pesava ~1,5MB — mau em rede móvel); a fase scoped (só PT) fica inteira.
+    let data;
+    if (scoped) {
+      data = await api.getCompanies({ country: 'pt' });
+    } else {
+      data = [];
+      for (let off = 0; ; off += 500) {
+        const page = await api.getCompanies({ limit: 500, offset: off });
+        if (page && page.length) data = data.concat(page);
+        if (!page || page.length < 500) break;
+      }
+    }
     if (!scoped) _fullCatalogueLoaded = true;
     // Clear only now that fresh data is in hand — clearing before the await
     // would let a failed background refresh wipe what's already on screen.
@@ -5743,11 +5762,44 @@ const _LIST_PAGE = 40; // cards rendered per batch
 let _listRenderedCount = 0;
 let _listCurrentData = [];
 
+// Número WhatsApp: PT com 9 dígitos ganha +351; outros países precisam de
+// trazer o indicativo no próprio número (padrão dos dados OSM)
+function _waNumber(c) {
+  if (!c || !c.phone) return null;
+  const raw = String(c.phone).trim();
+  const digits = raw.replace(/\D/g, '');
+  if (raw.startsWith('+') && digits.length >= 10) return digits;
+  if ((c.country || 'pt') === 'pt' && digits.length === 9) return '351' + digits;
+  if (digits.length >= 10) return digits;
+  return null;
+}
+
+// Ordenação da lista mobile (controlo no topo da folha): dist | rating | name
+let _mobileSort = 'dist';
+function setMobileSort(k, btn) {
+  _mobileSort = k;
+  document.querySelectorAll('.sheet-sort-btn').forEach(b => b.classList.toggle('active', b.dataset.sort === k));
+  renderSearchList();
+}
+window.setMobileSort = setMobileSort;
+
 function renderSearchList(filtered) {
   const listEl = document.getElementById('searchListView');
   if (!listEl) return;
   // Accept pre-computed results or compute fresh (e.g. direct call from list-view toggle)
-  const data = filtered !== undefined ? filtered : getFiltered();
+  let data = filtered !== undefined ? filtered : getFiltered();
+  // no telemóvel a ordenação vem do controlo da folha (destacadas primeiro)
+  if (_isMobileSheet()) {
+    const featFirst = (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+    if (_mobileSort === 'dist') {
+      const [rl, rg] = _nearbyRefPoint();
+      data = data.slice().sort((a, b) => featFirst(a, b) || (calculateDistance(rl, rg, a.lat, a.lng) - calculateDistance(rl, rg, b.lat, b.lng)));
+    } else if (_mobileSort === 'rating') {
+      data = data.slice().sort((a, b) => featFirst(a, b) || (b.rating || 0) - (a.rating || 0));
+    } else if (_mobileSort === 'name') {
+      data = data.slice().sort((a, b) => featFirst(a, b) || _nameCollator.compare(a.name, b.name));
+    }
+  }
   _listCurrentData = data;
   _listRenderedCount = 0;
 
@@ -5820,6 +5872,9 @@ function _appendListCards(frag, data, start, end) {
     const stars = c.rating > 0 ? '★'.repeat(Math.round(c.rating)) + ` ${c.rating.toFixed(1)}` : `<span class="badge-new">${t('newOnHivex')}</span>`;
     const tags = (c.tags || []).slice(0, 3).map(tag => `<span class="slc-tag">${tag}</span>`).join('');
     const phoneFrag = c.phone ? `<a class="slc-phone" href="tel:${c.phone}" onclick="event.stopPropagation()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>${c.phone}</a>` : '';
+    // WhatsApp: em PT converte 9 dígitos para +351; noutros países exige indicativo no número
+    const waNum = _waNumber(c);
+    const waFrag = waNum ? `<a class="slc-wa" href="https://wa.me/${waNum}" target="_blank" rel="noopener" onclick="event.stopPropagation()" aria-label="WhatsApp" title="WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor" width="17" height="17"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.64.07-.3-.15-1.26-.46-2.39-1.47-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.6.13-.14.3-.35.44-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.62-.92-2.22-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.5 0 1.47 1.07 2.9 1.22 3.1.15.2 2.1 3.2 5.1 4.49.71.3 1.27.49 1.7.63.72.23 1.37.2 1.88.12.57-.09 1.76-.72 2.01-1.42.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.9-9.88a9.82 9.82 0 0 1 6.99 2.9 9.82 9.82 0 0 1 2.9 7c0 5.45-4.45 9.87-9.9 9.87zm8.42-18.29A11.8 11.8 0 0 0 12.04 0C5.46 0 .1 5.35.1 11.92c0 2.1.55 4.15 1.6 5.95L0 24l6.28-1.64a11.93 11.93 0 0 0 5.76 1.47h.01c6.58 0 11.93-5.35 11.93-11.92 0-3.18-1.24-6.17-3.51-8.41z"/></svg></a>` : '';
     const div = document.createElement('div');
     div.className = 'search-list-card';
     div.dataset.companyId = c.id;
@@ -5858,6 +5913,7 @@ function _appendListCards(frag, data, start, end) {
       ${tags ? `<div class="slc-tags">${tags}</div>` : ''}
       <div class="slc-footer">
         ${phoneFrag}
+        ${waFrag}
         <button class="btn-slc-contact" onclick="event.stopPropagation();setSearchView('map');setTimeout(()=>{openDetail(${c.id});},300)" data-i18n="btnRequestQuote">Pedir Orçamento</button>
       </div>`;
     frag.appendChild(div);
@@ -11229,3 +11285,60 @@ function renderLpFeatured() {
 window.renderLpFeatured = renderLpFeatured;
 // Primeiro paint: preenche já o painel a partir da cache, sem esperar pela API
 try { renderLpFeatured(); } catch (_) {}
+
+/* ── UX MOBILE: fechar a ficha com deslize para baixo + pull-to-refresh ── */
+(function () {
+  const isMobile = () => window.matchMedia('(max-width:768px)').matches;
+
+  // Fechar a ficha da empresa com swipe-down (gesto natural das sheets).
+  // Só quando o toque começa na faixa de topo da ficha (cabeçalho, 90px).
+  const panel = document.getElementById('detailPanel');
+  if (panel) {
+    let sy = null, dy = 0, active = false;
+    panel.addEventListener('touchstart', (e) => {
+      if (!isMobile()) return;
+      const t0 = e.touches[0];
+      const r = panel.getBoundingClientRect();
+      if (t0.clientY - r.top > 90) return;
+      sy = t0.clientY; dy = 0; active = true;
+      panel.style.transition = 'none';
+    }, { passive: true });
+    panel.addEventListener('touchmove', (e) => {
+      if (!active || sy == null) return;
+      dy = e.touches[0].clientY - sy;
+      if (dy > 0) panel.style.transform = 'translateY(' + dy + 'px)';
+    }, { passive: true });
+    const end = () => {
+      if (!active) return;
+      active = false;
+      panel.style.transition = '';
+      panel.style.transform = '';
+      if (dy > 120) { try { closeDetail(); } catch (_) {} }
+      sy = null; dy = 0;
+    };
+    panel.addEventListener('touchend', end);
+    panel.addEventListener('touchcancel', end);
+  }
+
+  // Pull-to-refresh na lista de resultados (puxar no topo recarrega o catálogo)
+  const list = document.getElementById('searchListView');
+  if (list) {
+    let py = null, pulled = false, busy = false;
+    list.addEventListener('touchstart', (e) => {
+      if (!isMobile() || list.scrollTop > 0) { py = null; return; }
+      py = e.touches[0].clientY; pulled = false;
+    }, { passive: true });
+    list.addEventListener('touchmove', (e) => {
+      if (py == null) return;
+      if (list.scrollTop === 0 && e.touches[0].clientY - py > 70) pulled = true;
+    }, { passive: true });
+    list.addEventListener('touchend', async () => {
+      if (!pulled || busy) { py = null; return; }
+      pulled = false; busy = true; py = null;
+      try {
+        showToast('🔄 ' + t('refreshing'));
+        await loadCompaniesFromDB({ full: true });
+      } catch (_) {} finally { busy = false; }
+    });
+  }
+})();
