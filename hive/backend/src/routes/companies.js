@@ -56,13 +56,34 @@ function isValidPortugueseNIF(input) {
 // detail-only fields (description, portfolio_images, business_hours,
 // founded_year) are intentionally excluded — the detail panel fetches the
 // full record via GET /api/companies/:id on demand.
+// O logo (base64, ~32KB/empresa) tornava a lista ~3,7MB; aqui projeta-se
+// como URL para GET /:id/logo (cache imutável no browser; ?v= muda quando o
+// logo muda). O frontend usa c.logo igual para data-URIs e URLs.
 const LIST_COLS = `
   id, name, sectors, sector, nif, cae, alvara, certidao_permanente,
   address, postal_code, city, country, zone,
   email, phone, website, facebook, instagram, linkedin, tags,
   lat, lng, rating, reviews, top_rated, verified, is_new, featured,
-  emoji, color, pin_type, logo, status, created_by, created_at
+  emoji, color, pin_type,
+  CASE WHEN logo IS NOT NULL AND logo <> ''
+       THEN '/api/companies/' || id || '/logo?v=' || left(md5(logo), 10)
+       ELSE NULL END AS logo,
+  status, created_by, created_at
 `.trim();
+
+// Serve o logo de uma empresa como imagem cacheável (a lista envia apenas o
+// URL). O ?v= no URL versiona o cache imutável — logo novo = URL novo.
+router.get('/:id(\\d+)/logo', async (req, res, next) => {
+  try {
+    const { rows } = await pool.query('SELECT logo FROM companies WHERE id = $1', [req.params.id]);
+    const logo = rows[0] && rows[0].logo;
+    const m = logo && /^data:(image\/[a-z0-9.+-]+);base64,([\s\S]+)$/i.exec(logo);
+    if (!m) return res.status(404).end();
+    res.set('Content-Type', m[1]);
+    res.set('Cache-Control', 'public, max-age=31536000, immutable');
+    res.send(Buffer.from(m[2], 'base64'));
+  } catch (e) { next(e); }
+});
 
 router.get('/', optionalAuth, async (req, res, next) => {
   try {
