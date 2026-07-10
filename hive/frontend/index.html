@@ -150,7 +150,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v226.css"/>
+  <link rel="stylesheet" href="app.v227.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -1228,8 +1228,18 @@
         <span class="route-info-dest" id="routeInfoDest"></span>
         <span class="route-info-stats"><strong id="routeInfoDist"></strong> · <span id="routeInfoTime"></span></span>
       </div>
+      <!-- Navegação: abre o GPS nativo (Google Maps) já com o destino -->
+      <button class="route-info-gps" id="routeGpsBtn" onclick="openNativeNav()" title="Abrir navegação no Google Maps">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M21.71 11.29l-9-9a1 1 0 0 0-1.42 0l-9 9a1 1 0 0 0 0 1.42l9 9a1 1 0 0 0 1.42 0l9-9a1 1 0 0 0 0-1.42zM14 14.5V12h-4v3H8v-4a1 1 0 0 1 1-1h5V7.5l3.5 3.5z"/></svg>
+        <span data-i18n="routeGps">Iniciar GPS</span>
+      </button>
+      <button class="route-info-steps-toggle" id="routeStepsToggle" onclick="toggleRouteSteps()" hidden aria-expanded="false">
+        <span data-i18n="routeStepsBtn">Passos</span> <span class="arrow">▾</span>
+      </button>
       <button class="route-info-close" onclick="clearRoute()" aria-label="Limpar rota" title="Limpar rota">✕</button>
     </div>
+    <!-- Indicações passo-a-passo da rota (preenchido por _renderRouteSteps) -->
+    <div class="route-steps" id="routeSteps" hidden></div>
     <!-- Results sheet. On desktop (.map-sheet{display:contents}) this is transparent
          and #searchListView behaves exactly as the old list view. On mobile it
          becomes a draggable bottom sheet over the map (peek → drag up for the list). -->
@@ -2253,7 +2263,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v226.js"></script>
+<script src="app.v227.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

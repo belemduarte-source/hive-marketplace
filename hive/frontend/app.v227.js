@@ -12,7 +12,7 @@ const translations = {
     loadingGeneric:"A carregar...",
     statusTitle:"Estado do Registo", statusPrompt:"Introduza o email com que registou a sua empresa para verificar o estado.", statusVerify:"Verificar",
     dpDragClose:"puxe para fechar", dpCloseTitle:"Fechar", dpCallTitle:"Ligar", dpShareTitle:"Partilhar",
-    dpDirectionsTitle:"Como chegar", routeLocating:"A obter a sua localização…", routeNoLocation:"Não foi possível obter a sua localização.", routeError:"Não foi possível calcular a rota.", dpMoreInfo:"Mais informação",
+    dpDirectionsTitle:"Como chegar", routeLocating:"A obter a sua localização…", routeNoLocation:"Não foi possível obter a sua localização.", routeError:"Não foi possível calcular a rota.", routeGps:"Iniciar GPS", routeStepsBtn:"Passos", dpMoreInfo:"Mais informação",
     loginGateTitle:"Inicie sessão para ver os contactos", loginGateDesc:"Crie uma conta gratuita para aceder aos contactos, morada, avaliações e pedir orçamentos.", loginGateBtn:"Entrar / Criar Conta Grátis",
     reviewsHeading:"Avaliações", reviewFormTitle:"✍️ A sua avaliação", reviewPh:"Partilhe a sua experiência com esta empresa...", reviewSubmit:"Publicar Avaliação", reviewWrite:"+ Escrever Avaliação",
     closeBtn:"Fechar",
@@ -423,7 +423,7 @@ const translations = {
     loadingGeneric:"Loading...",
     statusTitle:"Registration Status", statusPrompt:"Enter the email you registered your company with to check its status.", statusVerify:"Check",
     dpDragClose:"pull to close", dpCloseTitle:"Close", dpCallTitle:"Call", dpShareTitle:"Share",
-    dpDirectionsTitle:"Directions", routeLocating:"Getting your location…", routeNoLocation:"Could not get your location.", routeError:"Could not calculate the route.", dpMoreInfo:"Additional information",
+    dpDirectionsTitle:"Directions", routeLocating:"Getting your location…", routeNoLocation:"Could not get your location.", routeError:"Could not calculate the route.", routeGps:"Start GPS", routeStepsBtn:"Steps", dpMoreInfo:"Additional information",
     loginGateTitle:"Sign in to view contacts", loginGateDesc:"Create a free account to access contacts, address, reviews and request quotes.", loginGateBtn:"Sign in / Create free account",
     reviewsHeading:"Reviews", reviewFormTitle:"✍️ Your review", reviewPh:"Share your experience with this company...", reviewSubmit:"Publish Review", reviewWrite:"+ Write Review",
     closeBtn:"Close",
@@ -826,7 +826,7 @@ const translations = {
     loadingGeneric:"Chargement...",
     statusTitle:"Statut de l'inscription", statusPrompt:"Saisissez l'e-mail utilisé pour enregistrer votre entreprise afin de vérifier le statut.", statusVerify:"Vérifier",
     dpDragClose:"tirer pour fermer", dpCloseTitle:"Fermer", dpCallTitle:"Appeler", dpShareTitle:"Partager",
-    dpDirectionsTitle:"Itinéraire", routeLocating:"Localisation en cours…", routeNoLocation:"Impossible d'obtenir votre position.", routeError:"Impossible de calculer l'itinéraire.", dpMoreInfo:"Plus d'informations",
+    dpDirectionsTitle:"Itinéraire", routeLocating:"Localisation en cours…", routeNoLocation:"Impossible d'obtenir votre position.", routeError:"Impossible de calculer l'itinéraire.", routeGps:"Démarrer GPS", routeStepsBtn:"Étapes", dpMoreInfo:"Plus d'informations",
     loginGateTitle:"Connectez-vous pour voir les contacts", loginGateDesc:"Créez un compte gratuit pour accéder aux contacts, à l'adresse, aux avis et demander des devis.", loginGateBtn:"Se connecter / Créer un compte gratuit",
     reviewsHeading:"Avis", reviewFormTitle:"✍️ Votre avis", reviewPh:"Partagez votre expérience avec cette entreprise...", reviewSubmit:"Publier l'avis", reviewWrite:"+ Écrire un avis",
     closeBtn:"Fermer",
@@ -1233,7 +1233,7 @@ const translations = {
     loadingGeneric:"Cargando...",
     statusTitle:"Estado del registro", statusPrompt:"Introduce el correo con el que registraste tu empresa para verificar el estado.", statusVerify:"Verificar",
     dpDragClose:"desliza para cerrar", dpCloseTitle:"Cerrar", dpCallTitle:"Llamar", dpShareTitle:"Compartir",
-    dpDirectionsTitle:"Cómo llegar", routeLocating:"Obteniendo su ubicación…", routeNoLocation:"No se pudo obtener su ubicación.", routeError:"No se pudo calcular la ruta.", dpMoreInfo:"Más información",
+    dpDirectionsTitle:"Cómo llegar", routeLocating:"Obteniendo su ubicación…", routeNoLocation:"No se pudo obtener su ubicación.", routeError:"No se pudo calcular la ruta.", routeGps:"Iniciar GPS", routeStepsBtn:"Pasos", dpMoreInfo:"Más información",
     loginGateTitle:"Inicia sesión para ver los contactos", loginGateDesc:"Crea una cuenta gratuita para acceder a contactos, dirección, valoraciones y pedir presupuestos.", loginGateBtn:"Iniciar sesión / Crear cuenta gratis",
     reviewsHeading:"Valoraciones", reviewFormTitle:"✍️ Tu valoración", reviewPh:"Comparte tu experiencia con esta empresa...", reviewSubmit:"Publicar valoración", reviewWrite:"+ Escribir valoración",
     closeBtn:"Cerrar",
@@ -1632,7 +1632,7 @@ const translations = {
     loadingGeneric:"Wird geladen...",
     statusTitle:"Registrierungsstatus", statusPrompt:"Geben Sie die E-Mail-Adresse ein, mit der Sie Ihr Unternehmen registriert haben, um den Status zu prüfen.", statusVerify:"Prüfen",
     dpDragClose:"zum Schließen ziehen", dpCloseTitle:"Schließen", dpCallTitle:"Anrufen", dpShareTitle:"Teilen",
-    dpDirectionsTitle:"Route", routeLocating:"Standort wird ermittelt…", routeNoLocation:"Standort konnte nicht ermittelt werden.", routeError:"Route konnte nicht berechnet werden.", dpMoreInfo:"Weitere Informationen",
+    dpDirectionsTitle:"Route", routeLocating:"Standort wird ermittelt…", routeNoLocation:"Standort konnte nicht ermittelt werden.", routeError:"Route konnte nicht berechnet werden.", routeGps:"GPS starten", routeStepsBtn:"Schritte", dpMoreInfo:"Weitere Informationen",
     loginGateTitle:"Anmelden, um Kontakte zu sehen", loginGateDesc:"Erstellen Sie ein kostenloses Konto für Zugriff auf Kontakte, Adresse, Bewertungen und Angebotsanfragen.", loginGateBtn:"Anmelden / Kostenloses Konto erstellen",
     reviewsHeading:"Bewertungen", reviewFormTitle:"✍️ Ihre Bewertung", reviewPh:"Teilen Sie Ihre Erfahrung mit diesem Unternehmen...", reviewSubmit:"Bewertung veröffentlichen", reviewWrite:"+ Bewertung schreiben",
     closeBtn:"Schließen",
@@ -6426,15 +6426,92 @@ function submitRegister() {
 // ── DRIVING DIRECTIONS (OSRM) ─────────────────────────────────────────────────
 // Draw a road route from the user's current location to the selected company,
 // with distance + ETA — like a "Como chegar" on Google Maps. Uses the free
-// public OSRM demo server (no API key).
+// public OSRM demo server (no API key). Modo GPS: indicações passo-a-passo
+// (steps=true) + botão "Iniciar GPS" que abre a navegação nativa.
 let _routeLayer = null;
+let _routeDest = null;
 
 function clearRoute() {
   try { if (_routeLayer) { _routeLayer.remove(); _routeLayer = null; } } catch (_) {}
+  _routeDest = null;
   const ri = document.getElementById('routeInfo');
   if (ri) ri.hidden = true;
+  const rs = document.getElementById('routeSteps');
+  if (rs) { rs.hidden = true; rs.innerHTML = ''; }
+  const tg = document.getElementById('routeStepsToggle');
+  if (tg) { tg.hidden = true; tg.setAttribute('aria-expanded', 'false'); }
 }
 window.clearRoute = clearRoute;
+
+// Sintetiza a instrução de cada manobra OSRM em PT (o OSRM devolve só
+// type/modifier/nome da via, não devolve texto)
+function _stepText(s) {
+  const n = (s.name || '').trim();
+  const via = n ? ' por ' + n : '';
+  const em = n ? ' para ' + n : '';
+  const mod = {
+    'left': 'à esquerda', 'right': 'à direita',
+    'slight left': 'ligeiramente à esquerda', 'slight right': 'ligeiramente à direita',
+    'sharp left': 'acentuadamente à esquerda', 'sharp right': 'acentuadamente à direita',
+    'straight': 'em frente', 'uturn': 'inversão de marcha',
+  }[(s.maneuver && s.maneuver.modifier) || ''] || '';
+  switch ((s.maneuver && s.maneuver.type) || '') {
+    case 'depart': return 'Siga' + (via || ' em frente');
+    case 'arrive': return 'Chegou ao destino' + (_routeDest && _routeDest.name ? ': ' + _routeDest.name : '');
+    case 'turn': return mod === 'inversão de marcha' ? 'Faça inversão de marcha' + em : 'Vire ' + (mod || '') + em;
+    case 'continue': case 'new name': return 'Continue ' + (mod && mod !== 'em frente' ? mod : 'em frente') + via;
+    case 'roundabout': case 'rotary': case 'roundabout turn':
+      return 'Na rotunda, apanhe a ' + ((s.maneuver && s.maneuver.exit) || 1) + '.ª saída' + em;
+    case 'merge': return 'Entre' + (em || ' na via');
+    case 'on ramp': return 'Apanhe o acesso' + em;
+    case 'off ramp': return 'Saia' + em;
+    case 'end of road': return 'No fim da estrada, vire ' + (mod || '') + em;
+    case 'fork': return 'Na bifurcação, mantenha-se ' + (mod || 'em frente') + em;
+    default: return 'Continue' + via;
+  }
+}
+
+function _renderRouteSteps(route) {
+  const rs = document.getElementById('routeSteps');
+  const tg = document.getElementById('routeStepsToggle');
+  if (!rs || !tg) return;
+  const steps = (route.legs && route.legs[0] && route.legs[0].steps) || [];
+  if (steps.length < 2) { tg.hidden = true; rs.hidden = true; return; }
+  const distStr = m => m >= 1000
+    ? ((m / 1000) < 10 ? (m / 1000).toFixed(1).replace('.', ',') : Math.round(m / 1000)) + ' km'
+    : Math.round(m) + ' m';
+  rs.innerHTML = steps.map((s, i) =>
+    '<div class="route-step"><span class="route-step-n">' + (i + 1) + '</span>'
+    + '<span class="route-step-txt">' + escHtml(_stepText(s)) + '</span>'
+    + (s.distance > 1 ? '<span class="route-step-dist">' + distStr(s.distance) + '</span>' : '')
+    + '</div>').join('');
+  tg.hidden = false;
+  rs.hidden = true;   // fechado por defeito; abre no botão "Passos"
+  tg.setAttribute('aria-expanded', 'false');
+}
+
+function toggleRouteSteps() {
+  const rs = document.getElementById('routeSteps');
+  const tg = document.getElementById('routeStepsToggle');
+  if (!rs) return;
+  rs.hidden = !rs.hidden;
+  if (tg) tg.setAttribute('aria-expanded', String(!rs.hidden));
+}
+window.toggleRouteSteps = toggleRouteSteps;
+
+// Abre a navegação nativa (Google Maps) com o destino pré-preenchido — no
+// telemóvel arranca o GPS a sério, com voz e recálculo de rota.
+function openNativeNav() {
+  const d = _routeDest || (typeof selectedId !== 'undefined' && selectedId != null
+    ? companies.find(x => x.id === selectedId) : null);
+  if (!d || d.lat == null) return;
+  const o = _routeUserLatLng();
+  const url = 'https://www.google.com/maps/dir/?api=1'
+    + (o ? '&origin=' + o[0] + ',' + o[1] : '')
+    + '&destination=' + d.lat + ',' + d.lng + '&travelmode=driving';
+  window.open(url, '_blank', 'noopener');
+}
+window.openNativeNav = openNativeNav;
 
 function _routeUserLatLng() {
   if (typeof userLocationMarker !== 'undefined' && userLocationMarker) {
@@ -6481,7 +6558,7 @@ async function routeToCompany(id) {
 
   try {
     const url = `https://router.project-osrm.org/route/v1/driving/`
-      + `${origin[1]},${origin[0]};${c.lng},${c.lat}?overview=full&geometries=geojson`;
+      + `${origin[1]},${origin[0]};${c.lng},${c.lat}?overview=full&geometries=geojson&steps=true`;
     const data = await fetch(url).then(r => r.json());
     if (data.code !== 'Ok' || !data.routes || !data.routes.length) { showToast(t('routeError')); return; }
 
@@ -6510,6 +6587,9 @@ async function routeToCompany(id) {
       if (time) time.textContent = timeStr;
       ri.hidden = false;
     }
+    // modo GPS: guarda o destino (para "Iniciar GPS") e as indicações
+    _routeDest = { lat: c.lat, lng: c.lng, name: c.name };
+    try { _renderRouteSteps(route); } catch (_) {}
   } catch (e) { showToast(t('routeError')); }
 }
 window.routeToCompany = routeToCompany;
