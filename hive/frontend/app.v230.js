@@ -5712,7 +5712,7 @@ function _initResultsSheetDrag() {
     dragging = true; moved = 0;
     startY = e.clientY;
     sheetH = sheet.getBoundingClientRect().height;
-    peek = Math.round(sheetH * 0.55);   // posição de descanso = meio-aberto (CSS translateY(45%))
+    peek = 64;   // fechado = só a barra (CSS translateY(calc(100% - 64px)))
     sheet.style.transition = 'none';
     try { handle.setPointerCapture(e.pointerId); } catch (_) {}
   });

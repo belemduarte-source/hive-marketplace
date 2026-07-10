@@ -2656,12 +2656,13 @@
       .map-sheet{
         display:flex;flex-direction:column;
         position:absolute;left:0;right:0;bottom:0;
-        height:86%;z-index:430;
+        height:96%;z-index:430;
         background:var(--bg);
         border-radius:20px 20px 0 0;
         box-shadow:0 -10px 34px rgba(0,0,0,.30);
-        transform:translateY(45%);   /* meio-aberto por defeito: mapa em cima,
-                                        lista em baixo — tudo numa página */
+        /* estilo Idealista: OU mapa OU lista — fechado mostra só a barra de
+           baixo; aberto, a lista cobre praticamente todo o mapa */
+        transform:translateY(calc(100% - 64px));
         transition:transform .34s cubic-bezier(.32,.72,0,1);
         touch-action:none;will-change:transform;
       }
