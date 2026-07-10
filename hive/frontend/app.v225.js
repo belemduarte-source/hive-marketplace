@@ -5474,13 +5474,16 @@ function getFiltered() {
   const listEl = document.getElementById('searchListView');
   const listVisible = listEl && listEl.style.display !== 'none';
   if (listVisible) {
-    if (sort === 'rating') res.sort((a,b) => b.rating - a.rating);
-    else if (sort === 'reviews') res.sort((a,b) => (b.reviews||0) - (a.reviews||0));
+    // Destacadas primeiro em qualquer ordenação (colocação paga); dentro de
+    // cada grupo aplica-se o critério escolhido pelo utilizador
+    const featFirst = (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
+    if (sort === 'rating') res.sort((a,b) => featFirst(a,b) || b.rating - a.rating);
+    else if (sort === 'reviews') res.sort((a,b) => featFirst(a,b) || (b.reviews||0) - (a.reviews||0));
     else if (sort === 'name') {
       const cmp = _nameCollator.compare;
-      res.sort((a,b) => cmp(a.name, b.name));
+      res.sort((a,b) => featFirst(a,b) || cmp(a.name, b.name));
     }
-    else res.sort((a,b) => b.rating - a.rating);
+    else res.sort((a,b) => featFirst(a,b) || b.rating - a.rating);
   }
 
   return res;
@@ -5906,9 +5909,11 @@ function renderNearbyPanel(filtered) {
   if (countEl) countEl.textContent = filtered.length;
 
   const [refLat, refLng] = _nearbyRefPoint();
-  // Sort a copy by proximity — never mutate the caller's array (markers use it)
+  // Sort a copy — never mutate the caller's array (markers use it).
+  // Destacadas (colocação paga) primeiro, mesmo que fiquem mais longe —
+  // mas só as que já passaram o raio/filtros; depois, por proximidade.
   _nearbyData = filtered.map(c => ({ c, d: calculateDistance(refLat, refLng, c.lat, c.lng) }))
-                        .sort((a, b) => a.d - b.d);
+                        .sort((a, b) => ((b.c.featured ? 1 : 0) - (a.c.featured ? 1 : 0)) || a.d - b.d);
   listEl.innerHTML = '';
   _nearbyRendered = 0;
   _appendNearbyCards(listEl, Math.min(_NEARBY_PAGE, _nearbyData.length));
