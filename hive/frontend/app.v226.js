@@ -233,7 +233,7 @@ const translations = {
     statCompanies:'Empresas registadas', statAreas:'Áreas de atividade', statSpecialties:'Especialidades', statCoverage:'Todo Portugal',
     featuredOverline:'Empresas em destaque', featuredTitle:'Os mais bem avaliados', featuredSeeAll:'Ver todas as empresas →', featuredEmpty:'Nenhuma empresa em destaque ainda.',
     featuredVerified:'✓ Verificado', featuredReviews:'avaliações',
-    ubFeaturedBtn:'Empresas Destacadas', featEmpty:'Ainda não há empresas destacadas.', featCta:'Quer aparecer aqui primeiro? Destaque a sua empresa',
+    ubFeaturedBtn:'Empresas Destacadas', featEmpty:'Ainda não há empresas destacadas.', featCta:'Quer aparecer aqui primeiro? Destaque a sua empresa', featuredBadge:'Destacado',
     lpStep1Title:'Pesquise', lpStep1Desc:'Filtre por setor, localização e avaliação. O mapa mostra os resultados em tempo real.',
     lpStep2Title:'Compare', lpStep2Desc:'Veja perfis detalhados com avaliações multidimensionais e especialidades de cada empresa.',
     lpStep3Title:'Contacte', lpStep3Desc:'Peça orçamentos diretamente por email ou chat. Sem intermediários, sem demoras.',
@@ -646,7 +646,7 @@ const translations = {
     statCompanies:'Registered Companies', statAreas:'Activity Areas', statSpecialties:'Specialties', statCoverage:'All Portugal',
     featuredOverline:'Featured Companies', featuredTitle:'Top rated', featuredSeeAll:'View all companies →', featuredEmpty:'No featured companies yet.',
     featuredVerified:'✓ Verified', featuredReviews:'reviews',
-    ubFeaturedBtn:'Featured Companies', featEmpty:'No featured companies yet.', featCta:'Want to appear here first? Feature your company',
+    ubFeaturedBtn:'Featured Companies', featEmpty:'No featured companies yet.', featCta:'Want to appear here first? Feature your company', featuredBadge:'Featured',
     lpStep1Title:'Search', lpStep1Desc:'Filter by sector, location and rating. The map shows results in real time.',
     lpStep2Title:'Compare', lpStep2Desc:"View detailed profiles with multidimensional ratings and each company's specialties.",
     lpStep3Title:'Contact', lpStep3Desc:'Request quotes directly by email or chat. No intermediaries, no delays.',
@@ -1052,7 +1052,7 @@ const translations = {
     statCompanies:'Entreprises enregistrées', statAreas:"Domaines d'activité", statSpecialties:'Spécialités', statCoverage:'Tout le Portugal',
     featuredOverline:'Entreprises en vedette', featuredTitle:'Les mieux notés', featuredSeeAll:'Voir toutes les entreprises →', featuredEmpty:'Aucune entreprise en vedette encore.',
     featuredVerified:'✓ Vérifié', featuredReviews:'avis',
-    ubFeaturedBtn:'Entreprises en Vedette', featEmpty:'Aucune entreprise en vedette pour l’instant.', featCta:'Vous voulez apparaître ici en premier ? Mettez votre entreprise en avant',
+    ubFeaturedBtn:'Entreprises en Vedette', featEmpty:'Aucune entreprise en vedette pour l’instant.', featCta:'Vous voulez apparaître ici en premier ? Mettez votre entreprise en avant', featuredBadge:'En vedette',
     lpStep1Title:'Recherchez', lpStep1Desc:'Filtrez par secteur, lieu et évaluation. La carte affiche les résultats en temps réel.',
     lpStep2Title:'Comparez', lpStep2Desc:"Consultez des profils détaillés avec des évaluations multidimensionnelles et les spécialités de chaque entreprise.",
     lpStep3Title:'Contactez', lpStep3Desc:'Demandez des devis directement par e-mail ou chat. Sans intermédiaires, sans délais.',
@@ -1454,7 +1454,7 @@ const translations = {
     statCompanies:'Empresas registradas', statAreas:'Áreas de actividad', statSpecialties:'Especialidades', statCoverage:'Todo Portugal',
     featuredOverline:'Empresas destacadas', featuredTitle:'Los mejor valorados', featuredSeeAll:'Ver todas las empresas →', featuredEmpty:'Ninguna empresa destacada aún.',
     featuredVerified:'✓ Verificado', featuredReviews:'valoraciones',
-    ubFeaturedBtn:'Empresas Destacadas', featEmpty:'Aún no hay empresas destacadas.', featCta:'¿Quiere aparecer aquí primero? Destaque su empresa',
+    ubFeaturedBtn:'Empresas Destacadas', featEmpty:'Aún no hay empresas destacadas.', featCta:'¿Quiere aparecer aquí primero? Destaque su empresa', featuredBadge:'Destacado',
     lpStep1Title:'Busque', lpStep1Desc:'Filtre por sector, ubicación y valoración. El mapa muestra los resultados en tiempo real.',
     lpStep2Title:'Compare', lpStep2Desc:'Vea perfiles detallados con valoraciones multidimensionales y especialidades.',
     lpStep3Title:'Contacte', lpStep3Desc:'Solicite presupuestos directamente por email o chat. Sin intermediarios.',
@@ -1853,7 +1853,7 @@ const translations = {
     statCompanies:'Registrierte Unternehmen', statAreas:'Tätigkeitsbereiche', statSpecialties:'Fachbereiche', statCoverage:'Ganz Portugal',
     featuredOverline:'Empfohlene Unternehmen', featuredTitle:'Bestbewertet', featuredSeeAll:'Alle Unternehmen ansehen →', featuredEmpty:'Noch keine empfohlenen Unternehmen.',
     featuredVerified:'✓ Verifiziert', featuredReviews:'Bewertungen',
-    ubFeaturedBtn:'Empfohlene Unternehmen', featEmpty:'Noch keine empfohlenen Unternehmen.', featCta:'Möchten Sie hier zuerst erscheinen? Heben Sie Ihr Unternehmen hervor',
+    ubFeaturedBtn:'Empfohlene Unternehmen', featEmpty:'Noch keine empfohlenen Unternehmen.', featCta:'Möchten Sie hier zuerst erscheinen? Heben Sie Ihr Unternehmen hervor', featuredBadge:'Empfohlen',
     lpStep1Title:'Suchen', lpStep1Desc:'Nach Gewerk, Standort und Bewertung filtern. Die Karte zeigt Ergebnisse in Echtzeit.',
     lpStep2Title:'Vergleichen', lpStep2Desc:'Detailprofile, Bewertungsübersichten und Fachbereiche der Unternehmen einsehen.',
     lpStep3Title:'Kontaktieren', lpStep3Desc:'Direkt per E-Mail oder Chat anfragen. Ohne Zwischenhändler.',
@@ -5988,7 +5988,7 @@ function _appendNearbyCards(listEl, upTo, sentinel) {
           <div class="nc-name">${escHtml(c.name)}${c.verified ? ' <span class="badge-verified" title="Empresa verificada">✓ Verificada</span>' : ''}</div>
           <div class="nc-sector"><span class="nc-dot" style="background:${c.color}"></span>${escHtml(sectorLabel)}</div>
         </div>
-        <div class="nc-side"><span class="nc-dist">${distStr}</span>${_openBadgeHtml(c)}</div>
+        <div class="nc-side">${c.featured ? '<span class="nc-feat-badge">★ ' + escHtml(t('featuredBadge')) + '</span>' : ''}<span class="nc-dist">${distStr}</span>${_openBadgeHtml(c)}</div>
       </div>
       <div class="nc-rating">${rating}</div>
       ${c.address || c.city ? `<div class="nc-address">${escHtml(c.address || c.city)}</div>` : ''}
@@ -11084,7 +11084,7 @@ function renderLpFeatured() {
       + '<div class="nc-top">' + logo
       + '<div class="nc-main"><div class="nc-name">' + escHtml(c.name) + (c.verified ? ' <span class="badge-verified" title="Empresa verificada">✓ Verificada</span>' : '') + '</div>'
       + '<div class="nc-sector"><span class="nc-dot" style="background:' + (c.color || getSectorColor(c)) + '"></span>' + escHtml(sectorLabel) + '</div></div>'
-      + '<div class="nc-side">' + openBadge + '</div></div>'
+      + '<div class="nc-side"><span class="nc-feat-badge">★ ' + escHtml(t('featuredBadge')) + '</span>' + openBadge + '</div></div>'
       + '<div class="nc-rating">' + rating + '</div>'
       + (c.address || c.city ? '<div class="nc-address">' + escHtml(c.address || c.city) + '</div>' : '')
       + '</div>';
