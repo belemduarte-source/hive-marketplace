@@ -3,6 +3,8 @@ const router = express.Router();
 const pool = require('../db');
 const { requireAuth, requireAdmin, optionalAuth, ensureAdminFlag } = require('../middleware/auth');
 const reviewsRouter = require('./reviews');
+// Item de portfólio aceitável: URL http(s) curto OU imagem inline até ~300KB
+const _pfOk = u => typeof u === 'string' && (/^https?:\/\//.test(u) ? u.length < 2048 : (/^data:image\//.test(u) && u.length < 400000));
 const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail, sendContactEmail, sendBrandedEmail, esc } = require('../email');
 const { pushToUser } = require('../push');
 
@@ -526,7 +528,7 @@ router.post('/', requireAuth, async (req, res, next) => {
         description || null,
         foundedSafe,
         business_hours || null,
-        Array.isArray(portfolio_images) ? portfolio_images.slice(0, 12) : [],
+        Array.isArray(portfolio_images) ? portfolio_images.filter(_pfOk).slice(0, 6) : [],
         lat,
         lng,
         emoji || '🏢',
@@ -575,7 +577,7 @@ router.put('/:id', requireAuth, async (req, res, next) => {
     const yr = founded_year != null ? parseInt(founded_year, 10) : null;
     const foundedSafe = (yr && yr >= 1800 && yr <= new Date().getFullYear()) ? yr
                       : (founded_year === null ? null : undefined);
-    const photosSafe = Array.isArray(portfolio_images) ? portfolio_images.slice(0, 12) : undefined;
+    const photosSafe = Array.isArray(portfolio_images) ? portfolio_images.filter(_pfOk).slice(0, 6) : undefined;
     // Logo semantics: valid data URL → replace; '' → remove; null/absent/invalid → keep.
     // (This was missing entirely — editing a company silently dropped the
     // uploaded logo, so pre-existing companies could never gain one.)

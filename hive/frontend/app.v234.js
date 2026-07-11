@@ -12,7 +12,7 @@ const translations = {
     loadingGeneric:"A carregar...",
     statusTitle:"Estado do Registo", statusPrompt:"Introduza o email com que registou a sua empresa para verificar o estado.", statusVerify:"Verificar",
     dpDragClose:"puxe para fechar", dpCloseTitle:"Fechar", dpCallTitle:"Ligar", dpShareTitle:"Partilhar",
-    dpDirectionsTitle:"Como chegar", routeLocating:"A obter a sua localização…", routeNoLocation:"Não foi possível obter a sua localização.", routeError:"Não foi possível calcular a rota.", routeGps:"Iniciar GPS", routeStepsBtn:"Passos", routeArrived:"Chegou ao destino!", navMsgs:"Mensagens", nearMe:"Perto de mim", sortDist:"Distância", sortRating2:"Avaliação", sortName2:"Nome", sheetHint:"Toque em \"Ver lista\" para ver as empresas", refreshing:"A atualizar…", dpMoreInfo:"Mais informação",
+    dpDirectionsTitle:"Como chegar", routeLocating:"A obter a sua localização…", routeNoLocation:"Não foi possível obter a sua localização.", routeError:"Não foi possível calcular a rota.", routeGps:"Iniciar GPS", routeStepsBtn:"Passos", routeArrived:"Chegou ao destino!", navMsgs:"Mensagens", nearMe:"Perto de mim", sortDist:"Distância", sortRating2:"Avaliação", sortName2:"Nome", sheetHint:"Toque em \"Ver lista\" para ver as empresas", refreshing:"A atualizar…", regPortfolio:"Portfólio de trabalhos", regPortfolioPick:"Adicionar fotos…", regPortfolioHint:"Até 6 fotos de obras concluídas. São comprimidas automaticamente e aparecem na ficha da empresa.", regPortfolioMax:"Máximo 6 fotos no portfólio", dpNoEmail:"Esta empresa ainda não tem email registado — contacte por telefone ou pelo site.", dpMoreInfo:"Mais informação",
     loginGateTitle:"Inicie sessão para ver os contactos", loginGateDesc:"Crie uma conta gratuita para aceder aos contactos, morada, avaliações e pedir orçamentos.", loginGateBtn:"Entrar / Criar Conta Grátis",
     reviewsHeading:"Avaliações", reviewFormTitle:"✍️ A sua avaliação", reviewPh:"Partilhe a sua experiência com esta empresa...", reviewSubmit:"Publicar Avaliação", reviewWrite:"+ Escrever Avaliação",
     closeBtn:"Fechar",
@@ -423,7 +423,7 @@ const translations = {
     loadingGeneric:"Loading...",
     statusTitle:"Registration Status", statusPrompt:"Enter the email you registered your company with to check its status.", statusVerify:"Check",
     dpDragClose:"pull to close", dpCloseTitle:"Close", dpCallTitle:"Call", dpShareTitle:"Share",
-    dpDirectionsTitle:"Directions", routeLocating:"Getting your location…", routeNoLocation:"Could not get your location.", routeError:"Could not calculate the route.", routeGps:"Start GPS", routeStepsBtn:"Steps", routeArrived:"You have arrived!", navMsgs:"Messages", nearMe:"Near me", sortDist:"Distance", sortRating2:"Rating", sortName2:"Name", sheetHint:"Tap \"View list\" to see the companies", refreshing:"Refreshing…", dpMoreInfo:"Additional information",
+    dpDirectionsTitle:"Directions", routeLocating:"Getting your location…", routeNoLocation:"Could not get your location.", routeError:"Could not calculate the route.", routeGps:"Start GPS", routeStepsBtn:"Steps", routeArrived:"You have arrived!", navMsgs:"Messages", nearMe:"Near me", sortDist:"Distance", sortRating2:"Rating", sortName2:"Name", sheetHint:"Tap \"View list\" to see the companies", refreshing:"Refreshing…", regPortfolio:"Work portfolio", regPortfolioPick:"Add photos…", regPortfolioHint:"Up to 6 photos of completed work. Automatically compressed; shown on the company page.", regPortfolioMax:"Maximum 6 portfolio photos", dpNoEmail:"This company has no registered email yet — contact them by phone or via their website.", dpMoreInfo:"Additional information",
     loginGateTitle:"Sign in to view contacts", loginGateDesc:"Create a free account to access contacts, address, reviews and request quotes.", loginGateBtn:"Sign in / Create free account",
     reviewsHeading:"Reviews", reviewFormTitle:"✍️ Your review", reviewPh:"Share your experience with this company...", reviewSubmit:"Publish Review", reviewWrite:"+ Write Review",
     closeBtn:"Close",
@@ -826,7 +826,7 @@ const translations = {
     loadingGeneric:"Chargement...",
     statusTitle:"Statut de l'inscription", statusPrompt:"Saisissez l'e-mail utilisé pour enregistrer votre entreprise afin de vérifier le statut.", statusVerify:"Vérifier",
     dpDragClose:"tirer pour fermer", dpCloseTitle:"Fermer", dpCallTitle:"Appeler", dpShareTitle:"Partager",
-    dpDirectionsTitle:"Itinéraire", routeLocating:"Localisation en cours…", routeNoLocation:"Impossible d'obtenir votre position.", routeError:"Impossible de calculer l'itinéraire.", routeGps:"Démarrer GPS", routeStepsBtn:"Étapes", routeArrived:"Vous êtes arrivé !", navMsgs:"Messages", nearMe:"Près de moi", sortDist:"Distance", sortRating2:"Note", sortName2:"Nom", sheetHint:"Touchez \"Voir la liste\" pour voir les entreprises", refreshing:"Actualisation…", dpMoreInfo:"Plus d'informations",
+    dpDirectionsTitle:"Itinéraire", routeLocating:"Localisation en cours…", routeNoLocation:"Impossible d'obtenir votre position.", routeError:"Impossible de calculer l'itinéraire.", routeGps:"Démarrer GPS", routeStepsBtn:"Étapes", routeArrived:"Vous êtes arrivé !", navMsgs:"Messages", nearMe:"Près de moi", sortDist:"Distance", sortRating2:"Note", sortName2:"Nom", sheetHint:"Touchez \"Voir la liste\" pour voir les entreprises", refreshing:"Actualisation…", regPortfolio:"Portfolio de travaux", regPortfolioPick:"Ajouter des photos…", regPortfolioHint:"Jusqu à 6 photos de travaux terminés. Compressées automatiquement ; affichées sur la fiche.", regPortfolioMax:"Maximum 6 photos", dpNoEmail:"Cette entreprise n a pas encore d email enregistré — contactez-la par téléphone ou via son site.", dpMoreInfo:"Plus d'informations",
     loginGateTitle:"Connectez-vous pour voir les contacts", loginGateDesc:"Créez un compte gratuit pour accéder aux contacts, à l'adresse, aux avis et demander des devis.", loginGateBtn:"Se connecter / Créer un compte gratuit",
     reviewsHeading:"Avis", reviewFormTitle:"✍️ Votre avis", reviewPh:"Partagez votre expérience avec cette entreprise...", reviewSubmit:"Publier l'avis", reviewWrite:"+ Écrire un avis",
     closeBtn:"Fermer",
@@ -1233,7 +1233,7 @@ const translations = {
     loadingGeneric:"Cargando...",
     statusTitle:"Estado del registro", statusPrompt:"Introduce el correo con el que registraste tu empresa para verificar el estado.", statusVerify:"Verificar",
     dpDragClose:"desliza para cerrar", dpCloseTitle:"Cerrar", dpCallTitle:"Llamar", dpShareTitle:"Compartir",
-    dpDirectionsTitle:"Cómo llegar", routeLocating:"Obteniendo su ubicación…", routeNoLocation:"No se pudo obtener su ubicación.", routeError:"No se pudo calcular la ruta.", routeGps:"Iniciar GPS", routeStepsBtn:"Pasos", routeArrived:"¡Ha llegado a su destino!", navMsgs:"Mensajes", nearMe:"Cerca de mí", sortDist:"Distancia", sortRating2:"Valoración", sortName2:"Nombre", sheetHint:"Toque \"Ver lista\" para ver las empresas", refreshing:"Actualizando…", dpMoreInfo:"Más información",
+    dpDirectionsTitle:"Cómo llegar", routeLocating:"Obteniendo su ubicación…", routeNoLocation:"No se pudo obtener su ubicación.", routeError:"No se pudo calcular la ruta.", routeGps:"Iniciar GPS", routeStepsBtn:"Pasos", routeArrived:"¡Ha llegado a su destino!", navMsgs:"Mensajes", nearMe:"Cerca de mí", sortDist:"Distancia", sortRating2:"Valoración", sortName2:"Nombre", sheetHint:"Toque \"Ver lista\" para ver las empresas", refreshing:"Actualizando…", regPortfolio:"Portafolio de trabajos", regPortfolioPick:"Añadir fotos…", regPortfolioHint:"Hasta 6 fotos de obras terminadas. Se comprimen automáticamente y aparecen en la ficha.", regPortfolioMax:"Máximo 6 fotos", dpNoEmail:"Esta empresa aún no tiene email registrado — contacte por teléfono o por su web.", dpMoreInfo:"Más información",
     loginGateTitle:"Inicia sesión para ver los contactos", loginGateDesc:"Crea una cuenta gratuita para acceder a contactos, dirección, valoraciones y pedir presupuestos.", loginGateBtn:"Iniciar sesión / Crear cuenta gratis",
     reviewsHeading:"Valoraciones", reviewFormTitle:"✍️ Tu valoración", reviewPh:"Comparte tu experiencia con esta empresa...", reviewSubmit:"Publicar valoración", reviewWrite:"+ Escribir valoración",
     closeBtn:"Cerrar",
@@ -1632,7 +1632,7 @@ const translations = {
     loadingGeneric:"Wird geladen...",
     statusTitle:"Registrierungsstatus", statusPrompt:"Geben Sie die E-Mail-Adresse ein, mit der Sie Ihr Unternehmen registriert haben, um den Status zu prüfen.", statusVerify:"Prüfen",
     dpDragClose:"zum Schließen ziehen", dpCloseTitle:"Schließen", dpCallTitle:"Anrufen", dpShareTitle:"Teilen",
-    dpDirectionsTitle:"Route", routeLocating:"Standort wird ermittelt…", routeNoLocation:"Standort konnte nicht ermittelt werden.", routeError:"Route konnte nicht berechnet werden.", routeGps:"GPS starten", routeStepsBtn:"Schritte", routeArrived:"Sie haben Ihr Ziel erreicht!", navMsgs:"Nachrichten", nearMe:"In meiner Nähe", sortDist:"Entfernung", sortRating2:"Bewertung", sortName2:"Name", sheetHint:"Tippen Sie auf \"Liste ansehen\", um die Unternehmen zu sehen", refreshing:"Aktualisierung…", dpMoreInfo:"Weitere Informationen",
+    dpDirectionsTitle:"Route", routeLocating:"Standort wird ermittelt…", routeNoLocation:"Standort konnte nicht ermittelt werden.", routeError:"Route konnte nicht berechnet werden.", routeGps:"GPS starten", routeStepsBtn:"Schritte", routeArrived:"Sie haben Ihr Ziel erreicht!", navMsgs:"Nachrichten", nearMe:"In meiner Nähe", sortDist:"Entfernung", sortRating2:"Bewertung", sortName2:"Name", sheetHint:"Tippen Sie auf \"Liste ansehen\", um die Unternehmen zu sehen", refreshing:"Aktualisierung…", regPortfolio:"Arbeitsportfolio", regPortfolioPick:"Fotos hinzufügen…", regPortfolioHint:"Bis zu 6 Fotos abgeschlossener Arbeiten. Automatisch komprimiert; auf der Firmenseite sichtbar.", regPortfolioMax:"Maximal 6 Fotos", dpNoEmail:"Dieses Unternehmen hat noch keine E-Mail hinterlegt — kontaktieren Sie es telefonisch oder über die Website.", dpMoreInfo:"Weitere Informationen",
     loginGateTitle:"Anmelden, um Kontakte zu sehen", loginGateDesc:"Erstellen Sie ein kostenloses Konto für Zugriff auf Kontakte, Adresse, Bewertungen und Angebotsanfragen.", loginGateBtn:"Anmelden / Kostenloses Konto erstellen",
     reviewsHeading:"Bewertungen", reviewFormTitle:"✍️ Ihre Bewertung", reviewPh:"Teilen Sie Ihre Erfahrung mit diesem Unternehmen...", reviewSubmit:"Bewertung veröffentlichen", reviewWrite:"+ Bewertung schreiben",
     closeBtn:"Schließen",
@@ -6077,6 +6077,7 @@ function openRegister() {
   } catch (_) {}
   document.getElementById('registerOverlay').classList.add('open');
   try { clearRegLogo(); } catch (_) {}   // start with a blank logo (edit flow re-applies after)
+  try { setRegPortfolio([]); } catch (_) {}
 
   // Initialize dropdowns
   renderRegisterSectorSelect();
@@ -6250,10 +6251,7 @@ function submitRegister() {
   const foundedYearRaw = document.getElementById('regFoundedYear')?.value.trim() || '';
   const foundedYear    = foundedYearRaw ? parseInt(foundedYearRaw, 10) : null;
   const businessHours  = document.getElementById('regBusinessHours')?.value.trim() || '';
-  const portfolioRaw   = document.getElementById('regPortfolioImages')?.value.trim() || '';
-  const portfolioImgs  = portfolioRaw
-    ? portfolioRaw.split(',').map(s => s.trim()).filter(s => /^https?:\/\//.test(s)).slice(0, 12)
-    : [];
+  const portfolioImgs  = (typeof _regPortfolio !== 'undefined' ? _regPortfolio : []).slice(0, 6);
 
   // Clear any stale field errors on the registration overlay before re-checking
   if (typeof clearAllFieldErrors === 'function') clearAllFieldErrors(document.getElementById('registerOverlay'));
@@ -6909,10 +6907,10 @@ function _renderDetailPanel(c) {
   const portfolioWrap = document.getElementById('dpPortfolioWrap');
   const portfolio     = document.getElementById('dpPortfolio');
   if (portfolioWrap && portfolio) {
-    const imgs = (c.portfolio_images || []).filter(u => /^https?:\/\//.test(u)).slice(0, 12);
+    const imgs = (c.portfolio_images || []).filter(u => typeof u === 'string' && (/^https?:\/\//.test(u) || /^data:image\//.test(u))).slice(0, 12);
     if (imgs.length) {
       portfolio.innerHTML = imgs.map(u =>
-        `<img src="${escHtml(u)}" alt="" loading="lazy" decoding="async" onclick="window.open('${escHtml(u)}','_blank','noopener')" onerror="this.style.display='none'"/>`
+        `<img src="${escHtml(u)}" alt="" loading="lazy" decoding="async" onclick="openLightbox(this.src)" onerror="this.style.display='none'"/>`
       ).join('');
       portfolioWrap.style.display = '';
     } else {
@@ -6933,6 +6931,26 @@ function _renderDetailPanel(c) {
   if (quoteBar) {
     quoteBar.style.display = '';
     quoteBar.querySelectorAll('.qs-call,.qs-report').forEach(b => { b.style.display = loggedIn ? '' : 'none'; });
+    // Empresas sem email não podem receber a mensagem (o backend responde
+    // 422): esconder o botão e apontar para telefone/site em vez de falhar.
+    const msgBtn = document.getElementById('btnRequestQuote');
+    if (msgBtn) {
+      const hasEmail = !!(c.email && String(c.email).trim());
+      msgBtn.style.display = hasEmail ? '' : 'none';
+      let hint = document.getElementById('dpNoEmailHint');
+      if (!hasEmail) {
+        if (!hint) {
+          hint = document.createElement('div');
+          hint.id = 'dpNoEmailHint';
+          hint.style.cssText = 'flex:1;min-width:0;font-size:12px;color:var(--muted);align-self:center;line-height:1.35';
+          quoteBar.insertBefore(hint, quoteBar.firstChild);
+        }
+        hint.textContent = t('dpNoEmail');
+        hint.style.display = '';
+      } else if (hint) {
+        hint.style.display = 'none';
+      }
+    }
   }
   if (loginGate) loginGate.style.display = loggedIn ? 'none' : '';
   if (gatedSections) gatedSections.style.display = loggedIn ? '' : 'none';
@@ -8766,6 +8784,54 @@ function setRegLogo(dataUrl) {
 window.handleRegLogo = handleRegLogo;
 window.clearRegLogo = clearRegLogo;
 
+// ── PORTFÓLIO DE TRABALHOS (registo/edição) ────────────────────────────────
+// Até 6 fotos; cada uma é redimensionada para máx. 900px e comprimida para
+// JPEG (~60-120KB) antes de seguir como data URI no corpo do registo.
+let _regPortfolio = [];
+function handleRegPortfolio(input) {
+  const files = [...((input && input.files) || [])];
+  if (input) input.value = '';
+  for (const f of files) {
+    if (_regPortfolio.length >= 6) { showToast(t('regPortfolioMax')); break; }
+    if (!/^image\//.test(f.type)) continue;
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const img = new Image();
+      img.onload = () => {
+        if (_regPortfolio.length >= 6) return;
+        const MAX = 900;
+        const scale = Math.min(1, MAX / Math.max(img.width, img.height));
+        const canvas = document.createElement('canvas');
+        canvas.width = Math.max(1, Math.round(img.width * scale));
+        canvas.height = Math.max(1, Math.round(img.height * scale));
+        canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height);
+        _regPortfolio.push(canvas.toDataURL('image/jpeg', 0.72));
+        _renderRegPortfolio();
+      };
+      img.onerror = () => showToast(t('regLogoInvalid') || 'Ficheiro inválido');
+      img.src = ev.target.result;
+    };
+    reader.readAsDataURL(f);
+  }
+}
+function _renderRegPortfolio() {
+  const grid = document.getElementById('regPortfolioGrid');
+  if (!grid) return;
+  grid.innerHTML = _regPortfolio.map((u, i) =>
+    `<div class="reg-portfolio-thumb" style="background-image:url('${u}')">
+       <button type="button" onclick="removeRegPortfolio(${i})" aria-label="Remover foto">×</button>
+     </div>`).join('');
+}
+function removeRegPortfolio(i) { _regPortfolio.splice(i, 1); _renderRegPortfolio(); }
+// Prefill ao editar uma empresa existente (aceita data URIs e URLs antigos)
+function setRegPortfolio(arr) {
+  _regPortfolio = (Array.isArray(arr) ? arr : []).filter(u => typeof u === 'string' && (/^https?:\/\//.test(u) || /^data:image\//.test(u))).slice(0, 6);
+  _renderRegPortfolio();
+}
+window.handleRegPortfolio = handleRegPortfolio;
+window.removeRegPortfolio = removeRegPortfolio;
+window.setRegPortfolio = setRegPortfolio;
+
 // ── EMAIL VERIFICATION MODAL ─────────────────────────────────────────────────
 // One modal, two modes: 'user' confirms the ACCOUNT email via /auth/verify-email;
 // 'company' collects the code sent to the company's contact address — the code
@@ -9879,6 +9945,7 @@ async function profileEditCompany(companyId) {
   // the label update so it lands after the wrapper's restore.
   window._editingCompanyId = companyId;
   try { setRegLogo(full.logo || ''); } catch (_) {}   // re-apply the logo after openRegister() reset it
+  try { setRegPortfolio(full.portfolio_images || []); } catch (_) {}
   setTimeout(() => {
     const submitBtn = document.getElementById('regSubmitBtn');
     if (submitBtn) submitBtn.innerHTML = '<i data-lucide="save"></i> <span>Guardar Alterações</span>';
@@ -11342,3 +11409,19 @@ try { renderLpFeatured(); } catch (_) {}
     });
   }
 })();
+
+/* ── LIGHTBOX simples para o portfólio da ficha ─────────────────────────── */
+function openLightbox(src) {
+  let ov = document.getElementById('lightboxOverlay');
+  if (!ov) {
+    ov = document.createElement('div');
+    ov.id = 'lightboxOverlay';
+    ov.className = 'lightbox-overlay';
+    ov.innerHTML = '<img alt=""/><button class="lightbox-close" aria-label="Fechar">×</button>';
+    ov.addEventListener('click', () => ov.classList.remove('open'));
+    document.body.appendChild(ov);
+  }
+  ov.querySelector('img').src = src;
+  ov.classList.add('open');
+}
+window.openLightbox = openLightbox;

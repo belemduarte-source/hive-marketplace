@@ -99,6 +99,7 @@ app.use(cors(corsOptions));
 // JSON) — give those routes their own parser; everything else keeps the tight
 // 600 kb cap (headroom for an inline company logo data URL).
 app.use('/api/messages', express.json({ limit: '9mb' }));
+app.use('/api/companies', express.json({ limit: '4mb' }));  // logo + até 6 fotos de portfólio inline
 app.use(express.json({ limit: '600kb' }));
 app.use(cookieParser());
 

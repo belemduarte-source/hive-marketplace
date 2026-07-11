@@ -3477,3 +3477,15 @@
       .map-fab-near svg{color:var(--primary)}
       .map-panel.sheet-open .map-fab-near{display:none}
     }
+
+    /* ── PORTFÓLIO: miniaturas no formulário de registo/edição ───────────── */
+    .reg-portfolio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;margin:8px 0}
+    .reg-portfolio-grid:empty{display:none}
+    .reg-portfolio-thumb{position:relative;aspect-ratio:4/3;border-radius:10px;background:var(--bg) center/cover no-repeat;border:1px solid var(--border);overflow:hidden}
+    .reg-portfolio-thumb button{position:absolute;top:4px;right:4px;width:22px;height:22px;border-radius:50%;border:none;background:rgba(0,0,0,.62);color:#fff;font-size:14px;line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+
+    /* ── LIGHTBOX do portfólio na ficha da empresa ───────────────────────── */
+    .lightbox-overlay{position:fixed;inset:0;z-index:12000;background:rgba(3,7,18,.9);display:none;align-items:center;justify-content:center;padding:20px;cursor:zoom-out}
+    .lightbox-overlay.open{display:flex}
+    .lightbox-overlay img{max-width:96vw;max-height:92vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
+    .lightbox-close{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:24px;cursor:pointer}

@@ -150,7 +150,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v233.css"/>
+  <link rel="stylesheet" href="app.v234.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -1766,6 +1766,15 @@
         </div>
         <div class="form-hint" data-i18n="regLogoHint">JPG ou PNG — é redimensionada e comprimida. Passa a aparecer como logótipo da empresa.</div>
       </div>
+
+      <!-- PORTFÓLIO DE TRABALHOS — até 6 fotos de obras/projetos -->
+      <div class="form-field">
+        <label><span data-i18n="regPortfolio">Portfólio de trabalhos</span> <span style="font-size:11px;color:var(--muted);font-weight:400" data-i18n="optionalTag">(opcional)</span></label>
+        <div class="reg-portfolio-grid" id="regPortfolioGrid"></div>
+        <input type="file" id="regPortfolioInput" accept="image/*" multiple onchange="handleRegPortfolio(this)" style="display:none"/>
+        <button type="button" class="reg-logo-btn" onclick="document.getElementById('regPortfolioInput').click()" data-i18n="regPortfolioPick">Adicionar fotos…</button>
+        <div class="form-hint" data-i18n="regPortfolioHint">Até 6 fotos de obras concluídas. São comprimidas automaticamente e aparecem na ficha da empresa.</div>
+      </div>
       <div class="form-row">
         <label><span data-i18n="regSocial">Redes sociais</span> <span style="font-size:11px;color:var(--muted);font-weight:400" data-i18n="optionalTag">(opcional)</span></label>
         <input type="url" id="regFacebook"  placeholder="https://facebook.com/a-sua-empresa"        autocomplete="url" inputmode="url" style="margin-bottom:8px"/>
@@ -2281,7 +2290,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v233.js"></script>
+<script src="app.v234.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
