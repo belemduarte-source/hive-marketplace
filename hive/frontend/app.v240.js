@@ -3540,12 +3540,24 @@ async function loadCompaniesFromDB(opts) {
     let data;
     if (scoped) {
       data = await api.getCompanies({ country: 'pt' });
+      if (!Array.isArray(data)) data = (data && Array.isArray(data.companies)) ? data.companies : [];
     } else {
+      // Só continua com uma página-array de exatamente 500 linhas. Qualquer
+      // outra coisa (resposta não-JSON → {}, ex.: portal cativo de WiFi a
+      // responder HTML com 200; servidor a ignorar limit/offset) termina o
+      // loop — senão ficava num ciclo infinito de pedidos. Teto de 60 páginas
+      // (30k empresas) como último recurso.
       data = [];
-      for (let off = 0; ; off += 500) {
+      let prevFirstId = null;
+      for (let off = 0, pages = 0; pages < 60; off += 500, pages++) {
         const page = await api.getCompanies({ limit: 500, offset: off });
-        if (page && page.length) data = data.concat(page);
-        if (!page || page.length < 500) break;
+        const rows = Array.isArray(page) ? page : (page && Array.isArray(page.companies)) ? page.companies : null;
+        if (!rows || !rows.length) break;
+        const firstId = rows[0] && rows[0].id;
+        if (firstId != null && firstId === prevFirstId) break; // offset ignorado → página repetida
+        prevFirstId = firstId;
+        data = data.concat(rows);
+        if (rows.length !== 500) break; // página curta = fim; página >500 = limit ignorado, já veio tudo
       }
     }
     if (!scoped) _fullCatalogueLoaded = true;
@@ -6928,7 +6940,7 @@ function _renderDetailPanel(c) {
     ];
     const links = defs
       .filter(([, u]) => u && String(u).trim())
-      .map(([key, u, icon]) => `<a href="${escHtml(norm(String(u).trim()))}" target="_blank" rel="noopener" class="dp-social-link dp-social-${key}" title="${key.charAt(0).toUpperCase() + key.slice(1)}" aria-label="${key}"><i data-lucide="${icon}"></i></a>`);
+      .map(([key, u, icon]) => `<a href="${escHtml(norm(String(u).trim()))}" target="_blank" rel="noopener" class="dp-social-link dp-social-${key}" title="${key.charAt(0).toUpperCase() + key.slice(1)}" aria-label="${key}">${key === 'website' ? '<span class="dp-social-txt">Website</span>' : ''}<i data-lucide="${icon}"></i></a>`);
     if (links.length) {
       socialEl.innerHTML = links.join('');
       socialEl.style.display = 'flex';

@@ -2864,6 +2864,9 @@
     .dp-social-link{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border-radius:12px;background:var(--bg);border:1px solid var(--border);color:var(--text-secondary);transition:transform .18s,background .18s,color .18s,box-shadow .18s}
     .dp-social-link:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
     .dp-social-link i,.dp-social-link svg{width:20px;height:20px}
+    .dp-social-website{width:auto;height:56px;padding:0 16px;gap:10px}
+    .dp-social-website i,.dp-social-website svg{width:40px;height:40px}
+    .dp-social-txt{font-size:15px;font-weight:600}
     .dp-social-website:hover{background:var(--primary);border-color:var(--primary);color:#fff}
     .dp-social-facebook:hover{background:#1877f2;border-color:#1877f2;color:#fff}
     .dp-social-instagram:hover{background:#e1306c;border-color:#e1306c;color:#fff}
