@@ -3632,7 +3632,13 @@ async function loadCompaniesFromDB(opts) {
   } catch (_) {}
   updateLandingStats();
   if (typeof _renderRecentStrip === 'function') _renderRecentStrip();
-  try { _suggestIndex = null; renderCountryPills(); if (window._mapEverShown) _maybeFocusVisitorCountry(); } catch (_) {}
+  try {
+    _suggestIndex = null;
+    // só cacheia contagens com o catálogo completo (evita cache envenenada por carga parcial)
+    if ((companies || []).length > 1000) localStorage.setItem('hivex_country_counts', JSON.stringify(_countryCounts()));
+    renderCountryPills();
+    if (window._mapEverShown) _maybeFocusVisitorCountry();
+  } catch (_) {}
 
   // Dead-end fix: on failure give the user a retry button right on the map
   // instead of requiring a full page reload. Injected here (after the render
@@ -11520,10 +11526,19 @@ window._maybeFocusVisitorCountry = _maybeFocusVisitorCountry;
 function renderCountryPills() {
   const box = document.getElementById('countryPills');
   if (!box) return;
-  const by = _countryCounts();
+  // botão sempre visível: junta contagens em memória (parciais no arranque)
+  // com a cache da última sessão, para o menu estar completo de imediato
+  const mem = _countryCounts();
+  let by = mem;
+  try {
+    const cache = JSON.parse(localStorage.getItem('hivex_country_counts') || 'null');
+    if (cache && typeof cache === 'object') {
+      by = Object.assign({}, cache);
+      Object.keys(mem).forEach(cc => { by[cc] = Math.max(by[cc] || 0, mem[cc]); });
+    }
+  } catch (_) {}
   const list = Object.entries(by).filter(([cc, n]) => n >= 5 && _COUNTRY_VIEWS[cc])
     .sort((a, b) => b[1] - a[1]);
-  if (list.length < 2) { box.style.display = 'none'; return; }
   box.style.display = '';
   // nomes localizados nativos (Intl) — 'uk' mapeia para região GB
   let dn = null;
@@ -11533,11 +11548,12 @@ function renderCountryPills() {
   box.innerHTML =
     '<button class="country-explore-btn" onclick="toggleCountryMenu(event)">🌍 <span>' + escHtml(t('exploreByCountry')) + '</span> <span class="arrow">' + (aberto ? '▴' : '▾') + '</span></button>' +
     '<div class="country-menu" id="countryMenu"' + (aberto ? '' : ' style="display:none"') + '>' +
-    list.map(([cc, n]) =>
+    (list.length ? list.map(([cc, n]) =>
       '<button class="country-row" onclick="flyToCountry(&#39;' + cc + '&#39;);toggleCountryMenu()">' +
       '<span class="cr-flag">' + _flagEmoji(cc) + '</span>' +
       '<span class="cr-name">' + escHtml(nome(cc)) + '</span>' +
-      '<span class="cr-n">' + n + '</span></button>').join('') +
+      '<span class="cr-n">' + n + '</span></button>').join('')
+      : '<div class="country-row" style="opacity:.55;cursor:default">…</div>') +
     '</div>';
 }
 function toggleCountryMenu(e) {
