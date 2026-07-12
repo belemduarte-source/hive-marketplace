@@ -3501,3 +3501,35 @@
     .lightbox-overlay.open{display:flex}
     .lightbox-overlay img{max-width:96vw;max-height:92vh;border-radius:12px;box-shadow:0 20px 60px rgba(0,0,0,.6)}
     .lightbox-close{position:absolute;top:14px;right:14px;width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.14);color:#fff;font-size:24px;cursor:pointer}
+
+    /* ── DESKTOP INTERNACIONAL: pílulas de países, autocomplete, painel ──── */
+    .country-pills{display:flex;gap:5px;padding:8px 12px 2px;overflow-x:auto;scrollbar-width:none;flex-shrink:0}
+    .country-pills::-webkit-scrollbar{display:none}
+    .country-pill{display:inline-flex;align-items:center;gap:4px;background:var(--bg);border:1.5px solid var(--border);border-radius:999px;padding:4px 10px;font-size:13px;font-weight:700;color:var(--text);cursor:pointer;white-space:nowrap;font-family:inherit;transition:border-color .15s}
+    .country-pill:hover{border-color:var(--primary)}
+
+    .search-suggest-box{display:none;position:absolute;top:calc(100% + 4px);left:0;right:0;z-index:1300;background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:0 14px 40px rgba(0,0,0,.28);overflow:hidden;max-height:320px;overflow-y:auto}
+    .ss-item{display:flex;align-items:center;gap:9px;padding:10px 13px;font-size:14px;color:var(--text);cursor:pointer;border-bottom:1px solid var(--border)}
+    .ss-item:last-child{border-bottom:none}
+    .ss-item:hover{background:var(--primary-light,#dbeafe)}
+    [data-theme="dark"] .ss-item:hover{background:rgba(37,99,235,.2)}
+    .ss-ico{flex-shrink:0}
+    .ss-n{margin-left:auto;font-size:12px;color:var(--muted);font-weight:700}
+
+    .nearby-tools{padding:6px 12px 8px;flex-shrink:0;border-bottom:1px solid var(--border)}
+    .nearby-sort{display:flex;gap:6px}
+    .nearby-sort button{flex:1;background:var(--bg);border:1.5px solid var(--border);border-radius:999px;padding:6px 4px;font-size:12.5px;font-weight:700;font-family:inherit;color:var(--text);cursor:pointer}
+    .nearby-sort button.active{background:var(--primary);border-color:var(--primary);color:#fff}
+    .nearby-chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:7px}
+    .nb-chip{background:var(--primary-light,#dbeafe);color:var(--primary-dark,#1d4ed8);border:none;border-radius:999px;padding:4px 10px;font-size:12px;font-weight:700;font-family:inherit;cursor:pointer}
+    [data-theme="dark"] .nb-chip{background:rgba(37,99,235,.22);color:#93c5fd}
+
+    .cat-dd-count{opacity:.6;font-size:11px;font-weight:700;margin-left:4px}
+
+    .lp-hero-proof{display:flex;gap:10px;justify-content:center;align-items:center;color:rgba(255,255,255,.82);font-size:15px;margin:0 0 12px;flex-wrap:wrap;position:relative;z-index:1}
+    .lp-hero-proof b{color:#fff;font-weight:800}
+    .lp-proof-dot{opacity:.5}
+    @media (max-width:768px){
+      .lp-hero-proof{font-size:12.5px;gap:7px}
+      .country-pills,.nearby-tools{display:none}  /* painel lateral é desktop */
+    }

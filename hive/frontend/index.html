@@ -150,7 +150,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v235.css"/>
+  <link rel="stylesheet" href="app.v236.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -653,6 +653,15 @@
     </h1>
 
     <p class="lp-hero-sub" data-i18n="lpHeroSub">Pesquise por localização e tipo de serviço. Compare avaliações e peça orçamentos — tudo numa só plataforma.</p>
+
+    <!-- Prova social: números reais do catálogo (preenchidos em updateLandingStats) -->
+    <div class="lp-hero-proof" id="lpHeroProof">
+      <span><b id="proofCompanies">2 400+</b> <span data-i18n="trustCompanies">empresas</span></span>
+      <span class="lp-proof-dot">·</span>
+      <span><b id="proofCountries">30</b> <span data-i18n="proofCountries">países</span></span>
+      <span class="lp-proof-dot">·</span>
+      <span><b>16</b> <span data-i18n="proofSpecialties">especialidades</span></span>
+    </div>
 
     <!-- ── SEARCH WIDGET (compact) ── -->
     <div class="lp-search-wrap lp-search-compact" id="heroSearchWrap" data-mode="location">
@@ -1307,6 +1316,16 @@
     <div class="nearby-panel-header">
       <span class="nearby-panel-title"><i data-lucide="map-pin"></i><span data-i18n="nearbyTitle">Empresas Próximas</span></span>
       <span class="nearby-count" id="nearbyCount">0</span>
+    </div>
+    <!-- Explorar por país: pílulas com bandeira + contagem (clicar voa lá) -->
+    <div class="country-pills" id="countryPills" style="display:none"></div>
+    <!-- Ordenação + filtros ativos -->
+    <div class="nearby-tools">
+      <div class="nearby-sort">
+        <button data-ns="dist" class="active" onclick="setNearbySort('dist')" data-i18n="sortDist">Distância</button>
+        <button data-ns="rating" onclick="setNearbySort('rating')" data-i18n="sortRating2">Avaliação</button>
+      </div>
+      <div class="nearby-chips" id="nearbyChips" style="display:none"></div>
     </div>
     <div class="nearby-panel-body" id="nearbyList"></div>
   </div>
@@ -2298,7 +2317,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v235.js"></script>
+<script src="app.v236.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
