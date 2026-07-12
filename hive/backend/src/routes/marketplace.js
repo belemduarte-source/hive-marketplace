@@ -430,6 +430,23 @@ router.get('/messages/unread-count', requireAuth, async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
+// GET /api/messages/unread-total — badge global do nav: soma as conversas do
+// utilizador como CLIENTE + o inbox de todas as empresas de que é DONO.
+router.get('/messages/unread-total', requireAuth, async (req, res, next) => {
+  try {
+    const { rows: me } = await pool.query(`SELECT email FROM users WHERE id = $1`, [req.user.id]);
+    const email = me[0] ? me[0].email : '';
+    const { rows } = await pool.query(
+      `SELECT
+         (SELECT COUNT(*) FROM messages m
+           WHERE lower(m.client_email) = lower($1) AND m.sender = 'company' AND m.read_at IS NULL)::int
+       + (SELECT COUNT(*) FROM messages m JOIN companies c ON c.id = m.company_id
+           WHERE c.created_by = $2 AND m.sender = 'client' AND m.read_at IS NULL)::int AS n`,
+      [email, req.user.id]);
+    res.json({ n: rows[0].n });
+  } catch (e) { next(e); }
+});
+
 // ── FEATURE REQUESTS ──────────────────────────────────────────────────────────
 // POST /api/feature-requests — owner asks the admin to feature their listing.
 router.post('/feature-requests', requireAuth, async (req, res, next) => {

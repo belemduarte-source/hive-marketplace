@@ -3545,3 +3545,9 @@
       .lp-hero-proof{font-size:12.5px;gap:7px}
       .country-pills,.nearby-tools{display:none}  /* painel lateral é desktop */
     }
+
+    /* ── Lote UX v242: badge de não-lidas + acessibilidade ── */
+    .sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+    .nav-msgs{position:relative}
+    .nav-unread{position:absolute;top:-5px;right:-7px;background:#ef4444;color:#fff;border-radius:999px;min-width:17px;height:17px;padding:0 4px;font-size:11px;font-weight:800;line-height:17px;text-align:center;pointer-events:none;box-shadow:0 0 0 2px var(--bg,#0f172a);z-index:3}
+    .nearby-card:focus-visible{outline:2px solid var(--primary);outline-offset:2px}

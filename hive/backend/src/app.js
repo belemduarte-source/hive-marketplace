@@ -646,6 +646,50 @@ app.get('/sitemap.xml', async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
+// ── Partilha rica: /e/:id ────────────────────────────────────────────────────
+// Os crawlers do WhatsApp/Facebook/etc. não executam JS, por isso o link SPA
+// (/?company=id) mostra sempre o cartão genérico do site. Esta rota serve os
+// og:tags DA EMPRESA e redireciona humanos de imediato para a SPA.
+app.get('/e/:id(\\d+)', async (req, res, next) => {
+  try {
+    const esc = s => String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    const BASE = 'https://www.hivex.pt';
+    const { rows } = await require('./db').query(
+      `SELECT id, name, city, sector, rating, reviews, description,
+              (logo IS NOT NULL AND logo LIKE 'data:image%') AS has_logo,
+              CASE WHEN logo IS NOT NULL THEN left(md5(logo), 10) END AS logo_v
+         FROM companies WHERE id = $1 AND status = 'approved'`, [req.params.id]);
+    const c = rows[0];
+    const dest = `/?company=${encodeURIComponent(req.params.id)}`;
+    if (!c) return res.redirect(302, '/');
+    const title = `${c.name}${c.city ? ' — ' + c.city : ''} | Hivex`;
+    const bits = [];
+    if (Number(c.rating) > 0) bits.push(`⭐ ${Number(c.rating).toFixed(1)}/5 (${c.reviews || 0})`);
+    if (c.description) bits.push(String(c.description).slice(0, 140));
+    const desc = bits.join(' · ') || 'Encontre empresas de construção e serviços na Hivex.';
+    const img = c.has_logo ? `${BASE}/api/companies/${c.id}/logo?v=${c.logo_v}` : `${BASE}/icon-512.png`;
+    res.set('Content-Type', 'text/html; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
+    res.send(`<!doctype html><html lang="pt"><head><meta charset="utf-8">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(desc)}">
+<meta property="og:type" content="business.business">
+<meta property="og:site_name" content="Hivex">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:image" content="${esc(img)}">
+<meta property="og:url" content="${BASE}/e/${c.id}">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="${BASE}${esc(dest)}">
+<meta http-equiv="refresh" content="0;url=${esc(dest)}">
+</head><body>
+<script>location.replace(${JSON.stringify(dest)});</script>
+<p><a href="${esc(dest)}">${esc(c.name)}</a></p>
+</body></html>`);
+  } catch (e) { next(e); }
+});
+
 // ── Health check ─────────────────────────────────────────────────────────────
 // Returns 200 only if the DB is actually reachable; uptime monitors should
 // hit this URL. Keeps response payload small so it's cheap to poll.

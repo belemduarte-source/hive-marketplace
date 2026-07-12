@@ -7,7 +7,8 @@
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/index.js" },
     { "source": "/sitemap.xml", "destination": "/api/index.js" },
-    { "source": "/((?!api|sitemap\\.xml).*)", "destination": "/index.html" }
+    { "source": "/e/:id", "destination": "/api/index.js" },
+    { "source": "/((?!api|sitemap\\.xml|e/).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
@@ -55,7 +56,7 @@
       ]
     },
     {
-      "source": "/((?!api|index\\.html|sw\\.js|manifest\\.json|$).*)",
+      "source": "/((?!api|index\\.html|sw\\.js|manifest\\.json|sitemap\\.xml|e/|$).*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]

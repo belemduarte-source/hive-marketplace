@@ -99,9 +99,16 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/600.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/700.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/800.css"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" integrity="sha384-b8ANgTJvdlAnWM5YGMpKn7Kodm+1k7NYNG9zdjTCcZcKatzYHwZ0RLdWarbJJVzU" crossorigin="anonymous"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.min.css" integrity="sha384-4ej5W7Scxd1gcgoPPEnX+r7eVJnBaGyrzMRjy1ynilla1goyNavl0bUqDOyaHZ9G" crossorigin="anonymous"/>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.min.css" integrity="sha384-oMbBSplUkOVL60gBv+GgcT0m4ZRTkyWvvHZOJBhg3ttuvLc9biWcdgqVkDwRyzzb" crossorigin="anonymous"/>
+  <!-- CSS do mapa em modo não-bloqueante: só é preciso quando o mapa abre,
+       e assim o primeiro paint da landing não espera pelo CDN. -->
+  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" integrity="sha384-b8ANgTJvdlAnWM5YGMpKn7Kodm+1k7NYNG9zdjTCcZcKatzYHwZ0RLdWarbJJVzU" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.min.css" integrity="sha384-4ej5W7Scxd1gcgoPPEnX+r7eVJnBaGyrzMRjy1ynilla1goyNavl0bUqDOyaHZ9G" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.min.css" integrity="sha384-oMbBSplUkOVL60gBv+GgcT0m4ZRTkyWvvHZOJBhg3ttuvLc9biWcdgqVkDwRyzzb" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+  <noscript>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" integrity="sha384-b8ANgTJvdlAnWM5YGMpKn7Kodm+1k7NYNG9zdjTCcZcKatzYHwZ0RLdWarbJJVzU" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.min.css" integrity="sha384-4ej5W7Scxd1gcgoPPEnX+r7eVJnBaGyrzMRjy1ynilla1goyNavl0bUqDOyaHZ9G" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.min.css" integrity="sha384-oMbBSplUkOVL60gBv+GgcT0m4ZRTkyWvvHZOJBhg3ttuvLc9biWcdgqVkDwRyzzb" crossorigin="anonymous"/>
+  </noscript>
   <!-- Native app (Capacitor) bridge: when Hivex runs inside the iOS/Android
        wrapper its origin is capacitor://localhost, so point the API client at the
        production backend. The web PWA (served from hivex.pt) keeps same-origin /api.
@@ -150,7 +157,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v241.css"/>
+  <link rel="stylesheet" href="app.v242.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -160,6 +167,8 @@
   
 </head>
 <body>
+<!-- Anúncio de resultados para leitores de ecrã (atualizado em applyFilters) -->
+<div id="ariaLive" class="sr-only" role="status" aria-live="polite"></div>
 <script>
 /* Fluid responsive zoom — runs before the body content renders (no flash) and
    on every resize / display change. Two inputs, two goals:
@@ -2314,10 +2323,12 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v241.js"></script>
+<!-- defer preserva a ordem (leaflet → cluster → lucide → app) mas deixa o
+     HTML pintar sem esperar pela execução dos scripts. -->
+<script defer src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
+<script defer src="app.v242.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
