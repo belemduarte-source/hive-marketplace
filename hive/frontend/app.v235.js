@@ -12,7 +12,7 @@ const translations = {
     loadingGeneric:"A carregar...",
     statusTitle:"Estado do Registo", statusPrompt:"Introduza o email com que registou a sua empresa para verificar o estado.", statusVerify:"Verificar",
     dpDragClose:"puxe para fechar", dpCloseTitle:"Fechar", dpCallTitle:"Ligar", dpShareTitle:"Partilhar",
-    dpDirectionsTitle:"Como chegar", routeLocating:"A obter a sua localização…", routeNoLocation:"Não foi possível obter a sua localização.", routeError:"Não foi possível calcular a rota.", routeGps:"Iniciar GPS", routeStepsBtn:"Passos", routeArrived:"Chegou ao destino!", navMsgs:"Mensagens", nearMe:"Perto de mim", sortDist:"Distância", sortRating2:"Avaliação", sortName2:"Nome", sheetHint:"Toque em \"Ver lista\" para ver as empresas", refreshing:"A atualizar…", regPortfolio:"Portfólio de trabalhos", regPortfolioPick:"Adicionar fotos…", regPortfolioHint:"Até 6 fotos de obras concluídas. São comprimidas automaticamente e aparecem na ficha da empresa.", regPortfolioMax:"Máximo 6 fotos no portfólio", dpNoEmail:"Esta empresa ainda não tem email registado — contacte por telefone ou pelo site.", dpMoreInfo:"Mais informação",
+    dpDirectionsTitle:"Como chegar", routeLocating:"A obter a sua localização…", routeNoLocation:"Não foi possível obter a sua localização.", routeError:"Não foi possível calcular a rota.", routeGps:"Iniciar GPS", routeStepsBtn:"Passos", routeArrived:"Chegou ao destino!", navMsgs:"Mensagens", nearMe:"Perto de mim", sortDist:"Distância", sortRating2:"Avaliação", sortName2:"Nome", sheetHint:"Toque em \"Ver lista\" para ver as empresas", refreshing:"A atualizar…", regPortfolio:"Portfólio de trabalhos", regPortfolioPick:"Adicionar fotos…", regPortfolioHint:"Até 6 fotos de obras concluídas. São comprimidas automaticamente e aparecem na ficha da empresa.", regPortfolioMax:"Máximo 6 fotos no portfólio", dpNoEmail:"Esta empresa ainda não tem email registado — contacte por telefone ou pelo site.", navMenu:"Menu", chipsMore:"Mais…", chipsLess:"Menos", dpMoreInfo:"Mais informação",
     loginGateTitle:"Inicie sessão para ver os contactos", loginGateDesc:"Crie uma conta gratuita para aceder aos contactos, morada, avaliações e pedir orçamentos.", loginGateBtn:"Entrar / Criar Conta Grátis",
     reviewsHeading:"Avaliações", reviewFormTitle:"✍️ A sua avaliação", reviewPh:"Partilhe a sua experiência com esta empresa...", reviewSubmit:"Publicar Avaliação", reviewWrite:"+ Escrever Avaliação",
     closeBtn:"Fechar",
@@ -137,7 +137,7 @@ const translations = {
     valAlvara:'Introduza o número do Alvará',
     regCertidao:'Código da Certidão Permanente', regCertidaoPh:'Ex: 1234-5678-9012',
     regCertidaoHint:'Código de acesso à certidão permanente do registo comercial (12 dígitos, formato XXXX-XXXX-XXXX).',
-    valCertidao:'Introduza o código da certidão permanente.',
+    valCertidao:'Introduza o código da certidão permanente.', valPhone:'Indique o telefone da empresa.',
     valCertidaoFormat:'Código da certidão permanente inválido (mínimo 8 caracteres alfanuméricos).',
     regAddress:'Morada', regAddressPh:'Ex: Av. da Liberdade 200, Lisboa',
     regZone:'Localidade / Zona',
@@ -403,9 +403,9 @@ const translations = {
     successSub:'O seu pedido foi recebido e está a aguardar validação. Receberá um email de confirmação assim que a empresa for aprovada.',
     successClose:'Fechar',
     sortAll:'Todas',
-    regStep1Label:'Identidade',
-    regStep2Label:'Localização',
-    regStep3Label:'Detalhes',
+    regStep1Label:'Essencial',
+    regStep2Label:'Contactos',
+    regStep3Label:'Credenciais & Extras',
     regStepNext:'Seguinte',
     regStepBack:'Voltar',
     regCountry:'País',
@@ -423,7 +423,7 @@ const translations = {
     loadingGeneric:"Loading...",
     statusTitle:"Registration Status", statusPrompt:"Enter the email you registered your company with to check its status.", statusVerify:"Check",
     dpDragClose:"pull to close", dpCloseTitle:"Close", dpCallTitle:"Call", dpShareTitle:"Share",
-    dpDirectionsTitle:"Directions", routeLocating:"Getting your location…", routeNoLocation:"Could not get your location.", routeError:"Could not calculate the route.", routeGps:"Start GPS", routeStepsBtn:"Steps", routeArrived:"You have arrived!", navMsgs:"Messages", nearMe:"Near me", sortDist:"Distance", sortRating2:"Rating", sortName2:"Name", sheetHint:"Tap \"View list\" to see the companies", refreshing:"Refreshing…", regPortfolio:"Work portfolio", regPortfolioPick:"Add photos…", regPortfolioHint:"Up to 6 photos of completed work. Automatically compressed; shown on the company page.", regPortfolioMax:"Maximum 6 portfolio photos", dpNoEmail:"This company has no registered email yet — contact them by phone or via their website.", dpMoreInfo:"Additional information",
+    dpDirectionsTitle:"Directions", routeLocating:"Getting your location…", routeNoLocation:"Could not get your location.", routeError:"Could not calculate the route.", routeGps:"Start GPS", routeStepsBtn:"Steps", routeArrived:"You have arrived!", navMsgs:"Messages", nearMe:"Near me", sortDist:"Distance", sortRating2:"Rating", sortName2:"Name", sheetHint:"Tap \"View list\" to see the companies", refreshing:"Refreshing…", regPortfolio:"Work portfolio", regPortfolioPick:"Add photos…", regPortfolioHint:"Up to 6 photos of completed work. Automatically compressed; shown on the company page.", regPortfolioMax:"Maximum 6 portfolio photos", dpNoEmail:"This company has no registered email yet — contact them by phone or via their website.", navMenu:"Menu", chipsMore:"More…", chipsLess:"Less", dpMoreInfo:"Additional information",
     loginGateTitle:"Sign in to view contacts", loginGateDesc:"Create a free account to access contacts, address, reviews and request quotes.", loginGateBtn:"Sign in / Create free account",
     reviewsHeading:"Reviews", reviewFormTitle:"✍️ Your review", reviewPh:"Share your experience with this company...", reviewSubmit:"Publish Review", reviewWrite:"+ Write Review",
     closeBtn:"Close",
@@ -549,7 +549,7 @@ const translations = {
     valAlvara:'Please enter the business licence number',
     regCertidao:'Permanent Commercial Certificate Code', regCertidaoPh:'Ex: 1234-5678-9012',
     regCertidaoHint:'Access code for the Portuguese commercial registry (Certidão Permanente — 12 digits, format XXXX-XXXX-XXXX).',
-    valCertidao:'Please enter the Certidão Permanente code.',
+    valCertidao:'Please enter the Certidão Permanente code.', valPhone:'Enter the company phone number.',
     valCertidaoFormat:'Invalid Certidão Permanente code (minimum 8 alphanumeric characters).',
     regAddress:'Address', regAddressPh:'Ex: Main Street 200, Lisbon',
     regZone:'Locality / Zone',
@@ -806,9 +806,9 @@ const translations = {
     successSub:'Your request has been received and is awaiting validation. You will receive a confirmation email once the company is approved.',
     successClose:'Close',
     sortAll:'All',
-    regStep1Label:'Identity',
-    regStep2Label:'Location',
-    regStep3Label:'Details',
+    regStep1Label:'Essentials',
+    regStep2Label:'Contacts',
+    regStep3Label:'Credentials & Extras',
     regStepNext:'Next',
     regStepBack:'Back',
     regCountry:'Country',
@@ -826,7 +826,7 @@ const translations = {
     loadingGeneric:"Chargement...",
     statusTitle:"Statut de l'inscription", statusPrompt:"Saisissez l'e-mail utilisé pour enregistrer votre entreprise afin de vérifier le statut.", statusVerify:"Vérifier",
     dpDragClose:"tirer pour fermer", dpCloseTitle:"Fermer", dpCallTitle:"Appeler", dpShareTitle:"Partager",
-    dpDirectionsTitle:"Itinéraire", routeLocating:"Localisation en cours…", routeNoLocation:"Impossible d'obtenir votre position.", routeError:"Impossible de calculer l'itinéraire.", routeGps:"Démarrer GPS", routeStepsBtn:"Étapes", routeArrived:"Vous êtes arrivé !", navMsgs:"Messages", nearMe:"Près de moi", sortDist:"Distance", sortRating2:"Note", sortName2:"Nom", sheetHint:"Touchez \"Voir la liste\" pour voir les entreprises", refreshing:"Actualisation…", regPortfolio:"Portfolio de travaux", regPortfolioPick:"Ajouter des photos…", regPortfolioHint:"Jusqu à 6 photos de travaux terminés. Compressées automatiquement ; affichées sur la fiche.", regPortfolioMax:"Maximum 6 photos", dpNoEmail:"Cette entreprise n a pas encore d email enregistré — contactez-la par téléphone ou via son site.", dpMoreInfo:"Plus d'informations",
+    dpDirectionsTitle:"Itinéraire", routeLocating:"Localisation en cours…", routeNoLocation:"Impossible d'obtenir votre position.", routeError:"Impossible de calculer l'itinéraire.", routeGps:"Démarrer GPS", routeStepsBtn:"Étapes", routeArrived:"Vous êtes arrivé !", navMsgs:"Messages", nearMe:"Près de moi", sortDist:"Distance", sortRating2:"Note", sortName2:"Nom", sheetHint:"Touchez \"Voir la liste\" pour voir les entreprises", refreshing:"Actualisation…", regPortfolio:"Portfolio de travaux", regPortfolioPick:"Ajouter des photos…", regPortfolioHint:"Jusqu à 6 photos de travaux terminés. Compressées automatiquement ; affichées sur la fiche.", regPortfolioMax:"Maximum 6 photos", dpNoEmail:"Cette entreprise n a pas encore d email enregistré — contactez-la par téléphone ou via son site.", navMenu:"Menu", chipsMore:"Plus…", chipsLess:"Moins", dpMoreInfo:"Plus d'informations",
     loginGateTitle:"Connectez-vous pour voir les contacts", loginGateDesc:"Créez un compte gratuit pour accéder aux contacts, à l'adresse, aux avis et demander des devis.", loginGateBtn:"Se connecter / Créer un compte gratuit",
     reviewsHeading:"Avis", reviewFormTitle:"✍️ Votre avis", reviewPh:"Partagez votre expérience avec cette entreprise...", reviewSubmit:"Publier l'avis", reviewWrite:"+ Écrire un avis",
     closeBtn:"Fermer",
@@ -1212,9 +1212,9 @@ const translations = {
     successSub:'Votre demande a été reçue et est en attente de validation. Vous recevrez un email de confirmation dès que l\'entreprise sera approuvée.',
     successClose:'Fermer',
     sortAll:'Toutes',
-    regStep1Label:'Identité',
-    regStep2Label:'Localisation',
-    regStep3Label:'Détails',
+    regStep1Label:'Essentiel',
+    regStep2Label:'Contacts',
+    regStep3Label:'Références & Extras',
     regStepNext:'Suivant',
     regStepBack:'Retour',
     regCountry:'Pays',
@@ -1233,7 +1233,7 @@ const translations = {
     loadingGeneric:"Cargando...",
     statusTitle:"Estado del registro", statusPrompt:"Introduce el correo con el que registraste tu empresa para verificar el estado.", statusVerify:"Verificar",
     dpDragClose:"desliza para cerrar", dpCloseTitle:"Cerrar", dpCallTitle:"Llamar", dpShareTitle:"Compartir",
-    dpDirectionsTitle:"Cómo llegar", routeLocating:"Obteniendo su ubicación…", routeNoLocation:"No se pudo obtener su ubicación.", routeError:"No se pudo calcular la ruta.", routeGps:"Iniciar GPS", routeStepsBtn:"Pasos", routeArrived:"¡Ha llegado a su destino!", navMsgs:"Mensajes", nearMe:"Cerca de mí", sortDist:"Distancia", sortRating2:"Valoración", sortName2:"Nombre", sheetHint:"Toque \"Ver lista\" para ver las empresas", refreshing:"Actualizando…", regPortfolio:"Portafolio de trabajos", regPortfolioPick:"Añadir fotos…", regPortfolioHint:"Hasta 6 fotos de obras terminadas. Se comprimen automáticamente y aparecen en la ficha.", regPortfolioMax:"Máximo 6 fotos", dpNoEmail:"Esta empresa aún no tiene email registrado — contacte por teléfono o por su web.", dpMoreInfo:"Más información",
+    dpDirectionsTitle:"Cómo llegar", routeLocating:"Obteniendo su ubicación…", routeNoLocation:"No se pudo obtener su ubicación.", routeError:"No se pudo calcular la ruta.", routeGps:"Iniciar GPS", routeStepsBtn:"Pasos", routeArrived:"¡Ha llegado a su destino!", navMsgs:"Mensajes", nearMe:"Cerca de mí", sortDist:"Distancia", sortRating2:"Valoración", sortName2:"Nombre", sheetHint:"Toque \"Ver lista\" para ver las empresas", refreshing:"Actualizando…", regPortfolio:"Portafolio de trabajos", regPortfolioPick:"Añadir fotos…", regPortfolioHint:"Hasta 6 fotos de obras terminadas. Se comprimen automáticamente y aparecen en la ficha.", regPortfolioMax:"Máximo 6 fotos", dpNoEmail:"Esta empresa aún no tiene email registrado — contacte por teléfono o por su web.", navMenu:"Menú", chipsMore:"Más…", chipsLess:"Menos", dpMoreInfo:"Más información",
     loginGateTitle:"Inicia sesión para ver los contactos", loginGateDesc:"Crea una cuenta gratuita para acceder a contactos, dirección, valoraciones y pedir presupuestos.", loginGateBtn:"Iniciar sesión / Crear cuenta gratis",
     reviewsHeading:"Valoraciones", reviewFormTitle:"✍️ Tu valoración", reviewPh:"Comparte tu experiencia con esta empresa...", reviewSubmit:"Publicar valoración", reviewWrite:"+ Escribir valoración",
     closeBtn:"Cerrar",
@@ -1357,7 +1357,7 @@ const translations = {
     valAlvara:'Introduzca el número de Licencia',
     regCertidao:'Código del Certificado Permanente', regCertidaoPh:'Ej: 1234-5678-9012',
     regCertidaoHint:'Código de acceso al registro mercantil portugués (Certidão Permanente — 12 dígitos, formato XXXX-XXXX-XXXX).',
-    valCertidao:'Introduzca el código del Certificado Permanente.',
+    valCertidao:'Introduzca el código del Certificado Permanente.', valPhone:'Indique el teléfono de la empresa.',
     valCertidaoFormat:'Código del Certificado Permanente inválido (mínimo 8 caracteres alfanuméricos).',
     regAddress:'Dirección', regAddressPh:'Ej: Calle Mayor 10, Madrid',
     regZone:'Localidad / Zona',
@@ -1590,7 +1590,7 @@ const translations = {
     successTitle:'¡Solicitud Enviada!',
     successSub:'Su solicitud ha sido recibida y está a la espera de validación. Recibirá un correo de confirmación cuando la empresa sea aprobada.',
     successClose:'Cerrar',
-    regStep1Label:'Identidad', regStep2Label:'Ubicación', regStep3Label:'Detalles',
+    regStep1Label:'Esencial', regStep2Label:'Contactos', regStep3Label:'Credenciales y Extras',
     regStepNext:'Siguiente', regStepBack:'Atrás',
     review1Author:'TechCorp SL',
     review2Author:'Ibérica Solutions SA',
@@ -1632,7 +1632,7 @@ const translations = {
     loadingGeneric:"Wird geladen...",
     statusTitle:"Registrierungsstatus", statusPrompt:"Geben Sie die E-Mail-Adresse ein, mit der Sie Ihr Unternehmen registriert haben, um den Status zu prüfen.", statusVerify:"Prüfen",
     dpDragClose:"zum Schließen ziehen", dpCloseTitle:"Schließen", dpCallTitle:"Anrufen", dpShareTitle:"Teilen",
-    dpDirectionsTitle:"Route", routeLocating:"Standort wird ermittelt…", routeNoLocation:"Standort konnte nicht ermittelt werden.", routeError:"Route konnte nicht berechnet werden.", routeGps:"GPS starten", routeStepsBtn:"Schritte", routeArrived:"Sie haben Ihr Ziel erreicht!", navMsgs:"Nachrichten", nearMe:"In meiner Nähe", sortDist:"Entfernung", sortRating2:"Bewertung", sortName2:"Name", sheetHint:"Tippen Sie auf \"Liste ansehen\", um die Unternehmen zu sehen", refreshing:"Aktualisierung…", regPortfolio:"Arbeitsportfolio", regPortfolioPick:"Fotos hinzufügen…", regPortfolioHint:"Bis zu 6 Fotos abgeschlossener Arbeiten. Automatisch komprimiert; auf der Firmenseite sichtbar.", regPortfolioMax:"Maximal 6 Fotos", dpNoEmail:"Dieses Unternehmen hat noch keine E-Mail hinterlegt — kontaktieren Sie es telefonisch oder über die Website.", dpMoreInfo:"Weitere Informationen",
+    dpDirectionsTitle:"Route", routeLocating:"Standort wird ermittelt…", routeNoLocation:"Standort konnte nicht ermittelt werden.", routeError:"Route konnte nicht berechnet werden.", routeGps:"GPS starten", routeStepsBtn:"Schritte", routeArrived:"Sie haben Ihr Ziel erreicht!", navMsgs:"Nachrichten", nearMe:"In meiner Nähe", sortDist:"Entfernung", sortRating2:"Bewertung", sortName2:"Name", sheetHint:"Tippen Sie auf \"Liste ansehen\", um die Unternehmen zu sehen", refreshing:"Aktualisierung…", regPortfolio:"Arbeitsportfolio", regPortfolioPick:"Fotos hinzufügen…", regPortfolioHint:"Bis zu 6 Fotos abgeschlossener Arbeiten. Automatisch komprimiert; auf der Firmenseite sichtbar.", regPortfolioMax:"Maximal 6 Fotos", dpNoEmail:"Dieses Unternehmen hat noch keine E-Mail hinterlegt — kontaktieren Sie es telefonisch oder über die Website.", navMenu:"Menü", chipsMore:"Mehr…", chipsLess:"Weniger", dpMoreInfo:"Weitere Informationen",
     loginGateTitle:"Anmelden, um Kontakte zu sehen", loginGateDesc:"Erstellen Sie ein kostenloses Konto für Zugriff auf Kontakte, Adresse, Bewertungen und Angebotsanfragen.", loginGateBtn:"Anmelden / Kostenloses Konto erstellen",
     reviewsHeading:"Bewertungen", reviewFormTitle:"✍️ Ihre Bewertung", reviewPh:"Teilen Sie Ihre Erfahrung mit diesem Unternehmen...", reviewSubmit:"Bewertung veröffentlichen", reviewWrite:"+ Bewertung schreiben",
     closeBtn:"Schließen",
@@ -4729,6 +4729,9 @@ function renderSectorFilters() {
     applyFilters();
   });
   filterContainer.appendChild(clearSectors);
+
+  // Nota: a fila móvel mostra os 8 GRUPOS de atividade (cada um abre o seu
+  // dropdown de subsetores) — já é compacta; não precisa de chip "Mais…".
 
   container.appendChild(filterContainer);
 
@@ -9675,14 +9678,12 @@ function failField(id, message) {
 function regNextStep(fromStep) {
   // Clear stale errors on the panel we're validating
   clearAllFieldErrors(document.getElementById('regStepPanel' + fromStep));
+  // Passos reagrupados (simplificação mobile): 1 Essencial (nome+áreas+
+  // localização) · 2 Contactos · 3 Credenciais & Extras (validados no submit)
   if (fromStep === 1) {
     const name = document.getElementById('regName')?.value.trim();
     if (!name) { failField('regName', t('valName')); return; }
     if (_regSelectedSectors.length === 0) { showToast(t('valSector')); return; }
-    const certidao = (document.getElementById('regCertidao')?.value || '').trim();
-    if (!certidao) { failField('regCertidao', t('valCertidao')); return; }
-    if (certidao.replace(/[\s-]/g, '').length < 8) { failField('regCertidao', t('valCertidaoFormat')); return; }
-  } else if (fromStep === 2) {
     const country = document.getElementById('regCountry')?.value;
     const city = document.getElementById('regCity')?.value;
     const address = document.getElementById('regAddress')?.value.trim();
@@ -9691,6 +9692,11 @@ function regNextStep(fromStep) {
     if (!city) { failField('regCity', 'Selecione uma cidade'); return; }
     if (!postal) { failField('regPostalCode', 'Introduza o código postal'); return; }
     if (!address) { failField('regAddress', t('valAddress')); return; }
+  } else if (fromStep === 2) {
+    const email = (document.getElementById('regEmail')?.value || '').trim();
+    const phone = (document.getElementById('regPhone')?.value || '').trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) { failField('regEmail', t('valEmail')); return; }
+    if (!phone) { failField('regPhone', t('valPhone')); return; }
   }
   regGoStep(fromStep + 1);
 }
@@ -10047,7 +10053,7 @@ window.addEventListener('resize', () => {
 // ── Add translations for new UI strings ──────────────────────────────────────
 (function() {
   const extra = {
-    pt: { regStep1Label:'Identidade', regStep2Label:'Localização', regStep3Label:'Contactos',
+    pt: { regStep1Label:'Essencial', regStep2Label:'Contactos', regStep3Label:'Credenciais & Extras',
           regStepNext:'Seguinte', regStepBack:'Anterior',
           regCountry:'País', regPostalCode:'Código Postal', regCity:'Localidade / Cidade',
           sortAll:'Todas',
@@ -10073,7 +10079,7 @@ window.addEventListener('resize', () => {
           cookieMore:'Saber mais',
           cookieAccept:'Aceitar tudo',
           cookieReject:'Rejeitar' },
-    en: { regStep1Label:'Identity', regStep2Label:'Location', regStep3Label:'Contacts',
+    en: { regStep1Label:'Essentials', regStep2Label:'Contacts', regStep3Label:'Credentials & Extras',
           regStepNext:'Next', regStepBack:'Back',
           regCountry:'Country', regPostalCode:'Postal Code', regCity:'Locality / City',
           sortAll:'All',
@@ -10099,7 +10105,7 @@ window.addEventListener('resize', () => {
           cookieMore:'Learn more',
           cookieAccept:'Accept all',
           cookieReject:'Reject' },
-    fr: { regStep1Label:'Identité', regStep2Label:'Localisation', regStep3Label:'Contacts',
+    fr: { regStep1Label:'Essentiel', regStep2Label:'Contacts', regStep3Label:'Références & Extras',
           regStepNext:'Suivant', regStepBack:'Précédent',
           regCountry:'Pays', regPostalCode:'Code Postal', regCity:'Localité / Ville',
           sortAll:'Toutes',
@@ -10125,7 +10131,7 @@ window.addEventListener('resize', () => {
           cookieMore:'En savoir plus',
           cookieAccept:'Tout accepter',
           cookieReject:'Refuser' },
-    es: { regStep1Label:'Identidad', regStep2Label:'Ubicación', regStep3Label:'Contactos',
+    es: { regStep1Label:'Esencial', regStep2Label:'Contactos', regStep3Label:'Credenciales y Extras',
           regStepNext:'Siguiente', regStepBack:'Anterior',
           regCountry:'País', regPostalCode:'Código Postal', regCity:'Localidad / Ciudad',
           sortAll:'Todos',
@@ -10151,7 +10157,7 @@ window.addEventListener('resize', () => {
           cookieMore:'Más información',
           cookieAccept:'Aceptar todo',
           cookieReject:'Rechazar' },
-    de: { regStep1Label:'Identität', regStep2Label:'Standort', regStep3Label:'Kontakte',
+    de: { regStep1Label:'Basisdaten', regStep2Label:'Kontakte', regStep3Label:'Nachweise & Extras',
           regStepNext:'Weiter', regStepBack:'Zurück',
           regCountry:'Land', regPostalCode:'Postleitzahl', regCity:'Ort / Stadt',
           sortAll:'Alle',

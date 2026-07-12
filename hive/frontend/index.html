@@ -150,7 +150,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v234.css"/>
+  <link rel="stylesheet" href="app.v235.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -358,8 +358,13 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
       <span data-i18n="navMsgs">Mensagens</span>
     </button>
-    <!-- Bottom-nav language switcher — mobile only, half-width of the tabs -->
-    <button class="nav-link nav-lang" id="navLangBtn" onclick="cycleLang()" aria-label="Idioma / Language">
+    <!-- Menu — mobile only: abre a gaveta (idioma, tema, ajuda, privacidade) -->
+    <button class="nav-link nav-menu" onclick="toggleMobileNav()" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      <span data-i18n="navMenu">Menu</span>
+    </button>
+    <!-- Bottom-nav language switcher — substituído pelo Menu (idioma vive na gaveta) -->
+    <button class="nav-link nav-lang" id="navLangBtn" onclick="cycleLang()" aria-label="Idioma / Language" style="display:none">
       <img id="navLangFlag" class="lang-flag" src="https://flagcdn.com/pt.svg" alt="PT"/>
       <span id="navLangCode">PT</span>
     </button>
@@ -1644,15 +1649,15 @@
     <div class="reg-steps-bar">
       <div class="reg-step-item active" id="regStepItem1">
         <div class="reg-step-dot">1</div>
-        <div class="reg-step-label" data-i18n="regStep1Label">Identidade</div>
+        <div class="reg-step-label" data-i18n="regStep1Label">Essencial</div>
       </div>
       <div class="reg-step-item" id="regStepItem2">
         <div class="reg-step-dot">2</div>
-        <div class="reg-step-label" data-i18n="regStep2Label">Localização</div>
+        <div class="reg-step-label" data-i18n="regStep2Label">Contactos</div>
       </div>
       <div class="reg-step-item" id="regStepItem3">
         <div class="reg-step-dot">3</div>
-        <div class="reg-step-label" data-i18n="regStep3Label">Contactos</div>
+        <div class="reg-step-label" data-i18n="regStep3Label">Credenciais & Extras</div>
       </div>
     </div>
 
@@ -1662,11 +1667,7 @@
         <label for="regName"><span data-i18n="regCompanyName">Nome da Empresa</span> <span class="req">*</span></label>
         <input type="text" id="regName" data-i18n-ph="regNamePh" autocomplete="organization" required aria-required="true"/>
       </div>
-      <div class="form-row">
-        <label for="regNif"><span>NIF / NIPC</span> <span class="req">*</span></label>
-        <input type="text" id="regNif" placeholder="123456789" inputmode="numeric" pattern="[0-9]{9}" maxlength="11" autocomplete="off" oninput="clearFieldError('regNif')" onblur="checkNifAvailability()"/>
-        <div class="form-hint" id="regNifHint" data-i18n="regNifHint">9 dígitos. Validamos o formato e o dígito de controlo.</div>
-      </div>
+
       <div class="form-row">
         <label><span data-i18n="regSectorLabel">Setor de Atividade</span> <span class="req">*</span></label>
         <div class="reg-ms-wrap" id="regSectorWrap">
@@ -1678,28 +1679,6 @@
         </div>
         <div class="form-hint" data-i18n="regSectorMultiHint">Pode selecionar várias áreas de atividade.</div>
       </div>
-      <div class="form-row">
-        <label data-i18n="regCae">Código CAE</label>
-        <input type="text" id="regCae" data-i18n-ph="regCaePh"/>
-      </div>
-      <div class="form-row">
-        <label><span data-i18n="regAlvara">Alvará</span> <span style="font-size:11px;color:var(--muted);font-weight:400" data-i18n="optionalTag">(opcional)</span></label>
-        <input type="text" id="regAlvara" data-i18n-ph="regAlvaraPh" placeholder="Ex: 123/2024"/>
-        <div class="form-hint" data-i18n="regAlvaraHint">Número de alvará de construção, se aplicável.</div>
-      </div>
-      <div class="form-row">
-        <label><span data-i18n="regCertidao">Código da Certidão Permanente</span> <span class="req">*</span></label>
-        <input type="text" id="regCertidao" data-i18n-ph="regCertidaoPh" placeholder="Ex: 1234-5678-9012" maxlength="32" autocomplete="off"/>
-        <div class="form-hint" data-i18n="regCertidaoHint">Código de acesso à certidão permanente do registo comercial (12 dígitos, formato XXXX-XXXX-XXXX).</div>
-      </div>
-      <div class="reg-step-nav">
-        <button class="btn-cancel" onclick="closeRegister()" data-i18n="regCancel">Cancelar</button>
-        <button class="btn-step-next" onclick="regNextStep(1)"><span data-i18n="regStepNext">Seguinte</span> →</button>
-      </div>
-    </div>
-
-    <!-- STEP 2: Location -->
-    <div class="reg-step-panel" id="regStepPanel2">
       <div class="form-row">
         <label for="regCountry"><span data-i18n="regCountry">País</span> <span class="req">*</span></label>
         <select id="regCountry" autocomplete="country" required aria-required="true">
@@ -1734,15 +1713,19 @@
       </div>
       <!-- Hidden zone select kept for backward-compat with geocoding logic -->
       <select id="regZone" style="display:none"></select>
+
+
+
       <div class="reg-step-nav">
-        <button class="btn-step-back" onclick="regGoStep(1)">← <span data-i18n="regStepBack">Anterior</span></button>
-        <button class="btn-step-next" onclick="regNextStep(2)"><span data-i18n="regStepNext">Seguinte</span> →</button>
+        <button class="btn-cancel" onclick="closeRegister()" data-i18n="regCancel">Cancelar</button>
+        <button class="btn-step-next" onclick="regNextStep(1)"><span data-i18n="regStepNext">Seguinte</span> →</button>
       </div>
     </div>
 
-    <!-- STEP 3: Contacts & Presentation -->
-    <div class="reg-step-panel" id="regStepPanel3">
-      <div class="form-grid2">
+    <!-- STEP 2: Location -->
+    <div class="reg-step-panel" id="regStepPanel2">
+
+            <div class="form-grid2">
         <div class="form-row">
           <label for="regEmail"><span data-i18n="regEmail">Email de Contacto</span> <span class="req">*</span></label>
           <input type="email" id="regEmail" data-i18n-ph="regEmailPh" autocomplete="email" inputmode="email" required aria-required="true"/>
@@ -1756,6 +1739,35 @@
         <label for="regWebsite" data-i18n="regWebsite">Website</label>
         <input type="url" id="regWebsite" data-i18n-ph="regWebsitePh" autocomplete="url" inputmode="url"/>
       </div>
+      <div class="reg-step-nav">
+        <button class="btn-step-back" onclick="regGoStep(1)">← <span data-i18n="regStepBack">Anterior</span></button>
+        <button class="btn-step-next" onclick="regNextStep(2)"><span data-i18n="regStepNext">Seguinte</span> →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Contacts & Presentation -->
+    <div class="reg-step-panel" id="regStepPanel3">
+      <div class="form-row">
+        <label for="regNif"><span>NIF / NIPC</span> <span class="req">*</span></label>
+        <input type="text" id="regNif" placeholder="123456789" inputmode="numeric" pattern="[0-9]{9}" maxlength="11" autocomplete="off" oninput="clearFieldError('regNif')" onblur="checkNifAvailability()"/>
+        <div class="form-hint" id="regNifHint" data-i18n="regNifHint">9 dígitos. Validamos o formato e o dígito de controlo.</div>
+      </div>
+      <div class="form-row">
+        <label data-i18n="regCae">Código CAE</label>
+        <input type="text" id="regCae" data-i18n-ph="regCaePh"/>
+      </div>
+      <div class="form-row">
+        <label><span data-i18n="regAlvara">Alvará</span> <span style="font-size:11px;color:var(--muted);font-weight:400" data-i18n="optionalTag">(opcional)</span></label>
+        <input type="text" id="regAlvara" data-i18n-ph="regAlvaraPh" placeholder="Ex: 123/2024"/>
+        <div class="form-hint" data-i18n="regAlvaraHint">Número de alvará de construção, se aplicável.</div>
+      </div>
+      <div class="form-row">
+        <label><span data-i18n="regCertidao">Código da Certidão Permanente</span> <span class="req">*</span></label>
+        <input type="text" id="regCertidao" data-i18n-ph="regCertidaoPh" placeholder="Ex: 1234-5678-9012" maxlength="32" autocomplete="off"/>
+        <div class="form-hint" data-i18n="regCertidaoHint">Código de acesso à certidão permanente do registo comercial (12 dígitos, formato XXXX-XXXX-XXXX).</div>
+      </div>
+
+
       <div class="form-row">
         <label><span data-i18n="regLogo">Logótipo da empresa</span> <span style="font-size:11px;color:var(--muted);font-weight:400" data-i18n="optionalTag">(opcional)</span></label>
         <div class="reg-logo-row">
@@ -1802,11 +1814,7 @@
           <input type="text" id="regBusinessHours" data-i18n-ph="regHoursPh" placeholder="Ex: Seg-Sex 09h-18h, Sáb 09h-13h"/>
         </div>
       </div>
-      <div class="form-row">
-        <label for="regPortfolioImages"><span data-i18n="regPortfolio">Galeria de trabalhos</span> <span style="font-size:11px;color:var(--muted);font-weight:400" data-i18n="optionalTag">(opcional)</span></label>
-        <input type="text" id="regPortfolioImages" data-i18n-ph="regPortfolioPh" placeholder="URLs separados por vírgula (até 12)"/>
-        <div class="form-hint" data-i18n="regPortfolioHint">Cole URLs de imagens dos seus trabalhos. Para já apenas links externos (ex: Imgur, Unsplash).</div>
-      </div>
+
       <div class="reg-step-nav">
         <button class="btn-step-back" onclick="regGoStep(2)">← <span data-i18n="regStepBack">Anterior</span></button>
         <button id="regSubmitBtn" class="btn-step-next" onclick="submitRegister()"><i data-lucide="check-circle"></i> <span data-i18n="regSubmit">Registar Empresa</span></button>
@@ -2290,7 +2298,7 @@
 <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script src="app.v234.js"></script>
+<script src="app.v235.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

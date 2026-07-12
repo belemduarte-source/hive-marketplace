@@ -3476,7 +3476,19 @@
       .map-fab-near{display:inline-flex;align-items:center;gap:6px;position:absolute;right:10px;bottom:calc(76px + env(safe-area-inset-bottom));z-index:425;background:var(--surface);color:var(--text);border:1px solid var(--border);border-radius:999px;padding:10px 14px;font-size:13px;font-weight:800;font-family:inherit;box-shadow:0 6px 20px rgba(0,0,0,.3);cursor:pointer}
       .map-fab-near svg{color:var(--primary)}
       .map-panel.sheet-open .map-fab-near{display:none}
+
+      /* SIMPLIFICAÇÃO MOBILE (itens 4-6):
+         4) barra inferior: Início · Mapa · Mensagens · Menu (idioma vive na gaveta) */
+      .nav-menu{display:flex !important}
+      .nav-link.nav-lang{display:none !important}
+      .hamburger,#mobileLangBtn{display:none !important}
+      /* 5) botão Pesquisar redundante na pílula (a pesquisa filtra ao escrever) */
+      .ub-btn{display:none !important}
+      /* 6) cartões mais magros: sem estrela de favorito (vive na ficha) */
+      .slc-fav{display:none !important}
+      .search-list-card{padding:10px}
     }
+    .nav-menu{display:none}
 
     /* ── PORTFÓLIO: miniaturas no formulário de registo/edição ───────────── */
     .reg-portfolio-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(84px,1fr));gap:8px;margin:8px 0}
