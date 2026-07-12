@@ -12,7 +12,7 @@ const translations = {
     loadingGeneric:"A carregar...",
     statusTitle:"Estado do Registo", statusPrompt:"Introduza o email com que registou a sua empresa para verificar o estado.", statusVerify:"Verificar",
     dpDragClose:"puxe para fechar", dpCloseTitle:"Fechar", dpCallTitle:"Ligar", dpShareTitle:"Partilhar",
-    dpDirectionsTitle:"Como chegar", routeLocating:"A obter a sua localização…", routeNoLocation:"Não foi possível obter a sua localização.", routeError:"Não foi possível calcular a rota.", routeGps:"Iniciar GPS", routeStepsBtn:"Passos", routeArrived:"Chegou ao destino!", navMsgs:"Mensagens", nearMe:"Perto de mim", sortDist:"Distância", sortRating2:"Avaliação", sortName2:"Nome", sheetHint:"Toque em \"Ver lista\" para ver as empresas", refreshing:"A atualizar…", regPortfolio:"Portfólio de trabalhos", regPortfolioPick:"Adicionar fotos…", regPortfolioHint:"Até 6 fotos de obras concluídas. São comprimidas automaticamente e aparecem na ficha da empresa.", regPortfolioMax:"Máximo 6 fotos no portfólio", dpNoEmail:"Esta empresa ainda não tem email registado — contacte por telefone ou pelo site.", navMenu:"Menu", chipsMore:"Mais…", chipsLess:"Menos", proofCountries:"países", proofSpecialties:"especialidades", dpMoreInfo:"Mais informação",
+    dpDirectionsTitle:"Como chegar", routeLocating:"A obter a sua localização…", routeNoLocation:"Não foi possível obter a sua localização.", routeError:"Não foi possível calcular a rota.", routeGps:"Iniciar GPS", routeStepsBtn:"Passos", routeArrived:"Chegou ao destino!", navMsgs:"Mensagens", nearMe:"Perto de mim", sortDist:"Distância", sortRating2:"Avaliação", sortName2:"Nome", sheetHint:"Toque em \"Ver lista\" para ver as empresas", refreshing:"A atualizar…", regPortfolio:"Portfólio de trabalhos", regPortfolioPick:"Adicionar fotos…", regPortfolioHint:"Até 6 fotos de obras concluídas. São comprimidas automaticamente e aparecem na ficha da empresa.", regPortfolioMax:"Máximo 6 fotos no portfólio", dpNoEmail:"Esta empresa ainda não tem email registado — contacte por telefone ou pelo site.", navMenu:"Menu", chipsMore:"Mais…", chipsLess:"Menos", proofCountries:"países", proofSpecialties:"especialidades", exploreByCountry:"Explorar por país", dpMoreInfo:"Mais informação",
     loginGateTitle:"Inicie sessão para ver os contactos", loginGateDesc:"Crie uma conta gratuita para aceder aos contactos, morada, avaliações e pedir orçamentos.", loginGateBtn:"Entrar / Criar Conta Grátis",
     reviewsHeading:"Avaliações", reviewFormTitle:"✍️ A sua avaliação", reviewPh:"Partilhe a sua experiência com esta empresa...", reviewSubmit:"Publicar Avaliação", reviewWrite:"+ Escrever Avaliação",
     closeBtn:"Fechar",
@@ -423,7 +423,7 @@ const translations = {
     loadingGeneric:"Loading...",
     statusTitle:"Registration Status", statusPrompt:"Enter the email you registered your company with to check its status.", statusVerify:"Check",
     dpDragClose:"pull to close", dpCloseTitle:"Close", dpCallTitle:"Call", dpShareTitle:"Share",
-    dpDirectionsTitle:"Directions", routeLocating:"Getting your location…", routeNoLocation:"Could not get your location.", routeError:"Could not calculate the route.", routeGps:"Start GPS", routeStepsBtn:"Steps", routeArrived:"You have arrived!", navMsgs:"Messages", nearMe:"Near me", sortDist:"Distance", sortRating2:"Rating", sortName2:"Name", sheetHint:"Tap \"View list\" to see the companies", refreshing:"Refreshing…", regPortfolio:"Work portfolio", regPortfolioPick:"Add photos…", regPortfolioHint:"Up to 6 photos of completed work. Automatically compressed; shown on the company page.", regPortfolioMax:"Maximum 6 portfolio photos", dpNoEmail:"This company has no registered email yet — contact them by phone or via their website.", navMenu:"Menu", chipsMore:"More…", chipsLess:"Less", proofCountries:"countries", proofSpecialties:"specialties", dpMoreInfo:"Additional information",
+    dpDirectionsTitle:"Directions", routeLocating:"Getting your location…", routeNoLocation:"Could not get your location.", routeError:"Could not calculate the route.", routeGps:"Start GPS", routeStepsBtn:"Steps", routeArrived:"You have arrived!", navMsgs:"Messages", nearMe:"Near me", sortDist:"Distance", sortRating2:"Rating", sortName2:"Name", sheetHint:"Tap \"View list\" to see the companies", refreshing:"Refreshing…", regPortfolio:"Work portfolio", regPortfolioPick:"Add photos…", regPortfolioHint:"Up to 6 photos of completed work. Automatically compressed; shown on the company page.", regPortfolioMax:"Maximum 6 portfolio photos", dpNoEmail:"This company has no registered email yet — contact them by phone or via their website.", navMenu:"Menu", chipsMore:"More…", chipsLess:"Less", proofCountries:"countries", proofSpecialties:"specialties", exploreByCountry:"Explore by country", dpMoreInfo:"Additional information",
     loginGateTitle:"Sign in to view contacts", loginGateDesc:"Create a free account to access contacts, address, reviews and request quotes.", loginGateBtn:"Sign in / Create free account",
     reviewsHeading:"Reviews", reviewFormTitle:"✍️ Your review", reviewPh:"Share your experience with this company...", reviewSubmit:"Publish Review", reviewWrite:"+ Write Review",
     closeBtn:"Close",
@@ -826,7 +826,7 @@ const translations = {
     loadingGeneric:"Chargement...",
     statusTitle:"Statut de l'inscription", statusPrompt:"Saisissez l'e-mail utilisé pour enregistrer votre entreprise afin de vérifier le statut.", statusVerify:"Vérifier",
     dpDragClose:"tirer pour fermer", dpCloseTitle:"Fermer", dpCallTitle:"Appeler", dpShareTitle:"Partager",
-    dpDirectionsTitle:"Itinéraire", routeLocating:"Localisation en cours…", routeNoLocation:"Impossible d'obtenir votre position.", routeError:"Impossible de calculer l'itinéraire.", routeGps:"Démarrer GPS", routeStepsBtn:"Étapes", routeArrived:"Vous êtes arrivé !", navMsgs:"Messages", nearMe:"Près de moi", sortDist:"Distance", sortRating2:"Note", sortName2:"Nom", sheetHint:"Touchez \"Voir la liste\" pour voir les entreprises", refreshing:"Actualisation…", regPortfolio:"Portfolio de travaux", regPortfolioPick:"Ajouter des photos…", regPortfolioHint:"Jusqu à 6 photos de travaux terminés. Compressées automatiquement ; affichées sur la fiche.", regPortfolioMax:"Maximum 6 photos", dpNoEmail:"Cette entreprise n a pas encore d email enregistré — contactez-la par téléphone ou via son site.", navMenu:"Menu", chipsMore:"Plus…", chipsLess:"Moins", proofCountries:"pays", proofSpecialties:"spécialités", dpMoreInfo:"Plus d'informations",
+    dpDirectionsTitle:"Itinéraire", routeLocating:"Localisation en cours…", routeNoLocation:"Impossible d'obtenir votre position.", routeError:"Impossible de calculer l'itinéraire.", routeGps:"Démarrer GPS", routeStepsBtn:"Étapes", routeArrived:"Vous êtes arrivé !", navMsgs:"Messages", nearMe:"Près de moi", sortDist:"Distance", sortRating2:"Note", sortName2:"Nom", sheetHint:"Touchez \"Voir la liste\" pour voir les entreprises", refreshing:"Actualisation…", regPortfolio:"Portfolio de travaux", regPortfolioPick:"Ajouter des photos…", regPortfolioHint:"Jusqu à 6 photos de travaux terminés. Compressées automatiquement ; affichées sur la fiche.", regPortfolioMax:"Maximum 6 photos", dpNoEmail:"Cette entreprise n a pas encore d email enregistré — contactez-la par téléphone ou via son site.", navMenu:"Menu", chipsMore:"Plus…", chipsLess:"Moins", proofCountries:"pays", proofSpecialties:"spécialités", exploreByCountry:"Explorer par pays", dpMoreInfo:"Plus d'informations",
     loginGateTitle:"Connectez-vous pour voir les contacts", loginGateDesc:"Créez un compte gratuit pour accéder aux contacts, à l'adresse, aux avis et demander des devis.", loginGateBtn:"Se connecter / Créer un compte gratuit",
     reviewsHeading:"Avis", reviewFormTitle:"✍️ Votre avis", reviewPh:"Partagez votre expérience avec cette entreprise...", reviewSubmit:"Publier l'avis", reviewWrite:"+ Écrire un avis",
     closeBtn:"Fermer",
@@ -1233,7 +1233,7 @@ const translations = {
     loadingGeneric:"Cargando...",
     statusTitle:"Estado del registro", statusPrompt:"Introduce el correo con el que registraste tu empresa para verificar el estado.", statusVerify:"Verificar",
     dpDragClose:"desliza para cerrar", dpCloseTitle:"Cerrar", dpCallTitle:"Llamar", dpShareTitle:"Compartir",
-    dpDirectionsTitle:"Cómo llegar", routeLocating:"Obteniendo su ubicación…", routeNoLocation:"No se pudo obtener su ubicación.", routeError:"No se pudo calcular la ruta.", routeGps:"Iniciar GPS", routeStepsBtn:"Pasos", routeArrived:"¡Ha llegado a su destino!", navMsgs:"Mensajes", nearMe:"Cerca de mí", sortDist:"Distancia", sortRating2:"Valoración", sortName2:"Nombre", sheetHint:"Toque \"Ver lista\" para ver las empresas", refreshing:"Actualizando…", regPortfolio:"Portafolio de trabajos", regPortfolioPick:"Añadir fotos…", regPortfolioHint:"Hasta 6 fotos de obras terminadas. Se comprimen automáticamente y aparecen en la ficha.", regPortfolioMax:"Máximo 6 fotos", dpNoEmail:"Esta empresa aún no tiene email registrado — contacte por teléfono o por su web.", navMenu:"Menú", chipsMore:"Más…", chipsLess:"Menos", proofCountries:"países", proofSpecialties:"especialidades", dpMoreInfo:"Más información",
+    dpDirectionsTitle:"Cómo llegar", routeLocating:"Obteniendo su ubicación…", routeNoLocation:"No se pudo obtener su ubicación.", routeError:"No se pudo calcular la ruta.", routeGps:"Iniciar GPS", routeStepsBtn:"Pasos", routeArrived:"¡Ha llegado a su destino!", navMsgs:"Mensajes", nearMe:"Cerca de mí", sortDist:"Distancia", sortRating2:"Valoración", sortName2:"Nombre", sheetHint:"Toque \"Ver lista\" para ver las empresas", refreshing:"Actualizando…", regPortfolio:"Portafolio de trabajos", regPortfolioPick:"Añadir fotos…", regPortfolioHint:"Hasta 6 fotos de obras terminadas. Se comprimen automáticamente y aparecen en la ficha.", regPortfolioMax:"Máximo 6 fotos", dpNoEmail:"Esta empresa aún no tiene email registrado — contacte por teléfono o por su web.", navMenu:"Menú", chipsMore:"Más…", chipsLess:"Menos", proofCountries:"países", proofSpecialties:"especialidades", exploreByCountry:"Explorar por país", dpMoreInfo:"Más información",
     loginGateTitle:"Inicia sesión para ver los contactos", loginGateDesc:"Crea una cuenta gratuita para acceder a contactos, dirección, valoraciones y pedir presupuestos.", loginGateBtn:"Iniciar sesión / Crear cuenta gratis",
     reviewsHeading:"Valoraciones", reviewFormTitle:"✍️ Tu valoración", reviewPh:"Comparte tu experiencia con esta empresa...", reviewSubmit:"Publicar valoración", reviewWrite:"+ Escribir valoración",
     closeBtn:"Cerrar",
@@ -1632,7 +1632,7 @@ const translations = {
     loadingGeneric:"Wird geladen...",
     statusTitle:"Registrierungsstatus", statusPrompt:"Geben Sie die E-Mail-Adresse ein, mit der Sie Ihr Unternehmen registriert haben, um den Status zu prüfen.", statusVerify:"Prüfen",
     dpDragClose:"zum Schließen ziehen", dpCloseTitle:"Schließen", dpCallTitle:"Anrufen", dpShareTitle:"Teilen",
-    dpDirectionsTitle:"Route", routeLocating:"Standort wird ermittelt…", routeNoLocation:"Standort konnte nicht ermittelt werden.", routeError:"Route konnte nicht berechnet werden.", routeGps:"GPS starten", routeStepsBtn:"Schritte", routeArrived:"Sie haben Ihr Ziel erreicht!", navMsgs:"Nachrichten", nearMe:"In meiner Nähe", sortDist:"Entfernung", sortRating2:"Bewertung", sortName2:"Name", sheetHint:"Tippen Sie auf \"Liste ansehen\", um die Unternehmen zu sehen", refreshing:"Aktualisierung…", regPortfolio:"Arbeitsportfolio", regPortfolioPick:"Fotos hinzufügen…", regPortfolioHint:"Bis zu 6 Fotos abgeschlossener Arbeiten. Automatisch komprimiert; auf der Firmenseite sichtbar.", regPortfolioMax:"Maximal 6 Fotos", dpNoEmail:"Dieses Unternehmen hat noch keine E-Mail hinterlegt — kontaktieren Sie es telefonisch oder über die Website.", navMenu:"Menü", chipsMore:"Mehr…", chipsLess:"Weniger", proofCountries:"Länder", proofSpecialties:"Fachbereiche", dpMoreInfo:"Weitere Informationen",
+    dpDirectionsTitle:"Route", routeLocating:"Standort wird ermittelt…", routeNoLocation:"Standort konnte nicht ermittelt werden.", routeError:"Route konnte nicht berechnet werden.", routeGps:"GPS starten", routeStepsBtn:"Schritte", routeArrived:"Sie haben Ihr Ziel erreicht!", navMsgs:"Nachrichten", nearMe:"In meiner Nähe", sortDist:"Entfernung", sortRating2:"Bewertung", sortName2:"Name", sheetHint:"Tippen Sie auf \"Liste ansehen\", um die Unternehmen zu sehen", refreshing:"Aktualisierung…", regPortfolio:"Arbeitsportfolio", regPortfolioPick:"Fotos hinzufügen…", regPortfolioHint:"Bis zu 6 Fotos abgeschlossener Arbeiten. Automatisch komprimiert; auf der Firmenseite sichtbar.", regPortfolioMax:"Maximal 6 Fotos", dpNoEmail:"Dieses Unternehmen hat noch keine E-Mail hinterlegt — kontaktieren Sie es telefonisch oder über die Website.", navMenu:"Menü", chipsMore:"Mehr…", chipsLess:"Weniger", proofCountries:"Länder", proofSpecialties:"Fachbereiche", exploreByCountry:"Nach Land erkunden", dpMoreInfo:"Weitere Informationen",
     loginGateTitle:"Anmelden, um Kontakte zu sehen", loginGateDesc:"Erstellen Sie ein kostenloses Konto für Zugriff auf Kontakte, Adresse, Bewertungen und Angebotsanfragen.", loginGateBtn:"Anmelden / Kostenloses Konto erstellen",
     reviewsHeading:"Bewertungen", reviewFormTitle:"✍️ Ihre Bewertung", reviewPh:"Teilen Sie Ihre Erfahrung mit diesem Unternehmen...", reviewSubmit:"Bewertung veröffentlichen", reviewWrite:"+ Bewertung schreiben",
     closeBtn:"Schließen",
@@ -11522,12 +11522,36 @@ function renderCountryPills() {
   if (!box) return;
   const by = _countryCounts();
   const list = Object.entries(by).filter(([cc, n]) => n >= 5 && _COUNTRY_VIEWS[cc])
-    .sort((a, b) => b[1] - a[1]).slice(0, 14);
+    .sort((a, b) => b[1] - a[1]);
   if (list.length < 2) { box.style.display = 'none'; return; }
   box.style.display = '';
-  box.innerHTML = list.map(([cc, n]) =>
-    '<button class="country-pill" onclick="flyToCountry(\'' + cc + '\')" title="' + cc.toUpperCase() + '">' + _flagEmoji(cc) + ' ' + n + '</button>').join('');
+  // nomes localizados nativos (Intl) — 'uk' mapeia para região GB
+  let dn = null;
+  try { dn = new Intl.DisplayNames([currentLang], { type: 'region' }); } catch (_) {}
+  const nome = cc => { try { return dn ? dn.of((_FLAG_CC[cc] || cc).toUpperCase()) : cc.toUpperCase(); } catch (_) { return cc.toUpperCase(); } };
+  const aberto = box.dataset.open === '1';
+  box.innerHTML =
+    '<button class="country-explore-btn" onclick="toggleCountryMenu(event)">🌍 <span>' + escHtml(t('exploreByCountry')) + '</span> <span class="arrow">' + (aberto ? '▴' : '▾') + '</span></button>' +
+    '<div class="country-menu" id="countryMenu"' + (aberto ? '' : ' style="display:none"') + '>' +
+    list.map(([cc, n]) =>
+      '<button class="country-row" onclick="flyToCountry(&#39;' + cc + '&#39;);toggleCountryMenu()">' +
+      '<span class="cr-flag">' + _flagEmoji(cc) + '</span>' +
+      '<span class="cr-name">' + escHtml(nome(cc)) + '</span>' +
+      '<span class="cr-n">' + n + '</span></button>').join('') +
+    '</div>';
 }
+function toggleCountryMenu(e) {
+  if (e) e.stopPropagation();
+  const box = document.getElementById('countryPills');
+  const menu = document.getElementById('countryMenu');
+  if (!box || !menu) return;
+  const abrir = menu.style.display === 'none';
+  menu.style.display = abrir ? '' : 'none';
+  box.dataset.open = abrir ? '1' : '0';
+  const arrow = box.querySelector('.country-explore-btn .arrow');
+  if (arrow) arrow.textContent = abrir ? '▴' : '▾';
+}
+window.toggleCountryMenu = toggleCountryMenu;
 window.renderCountryPills = renderCountryPills;
 
 /* ══ DESKTOP INTERNACIONAL (2/2): autocomplete + ferramentas do painel ══ */
