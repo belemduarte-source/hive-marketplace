@@ -10,7 +10,7 @@ router.get('/', async (req, res, next) => {
   try {
     const { rows } = await pool.query(
       `SELECT r.id, r.score, r.score_quality, r.score_speed, r.score_communication, r.score_value,
-              r.comment, r.reply, r.reply_at, r.created_at,
+              r.comment, r.reply, r.reply_at, r.created_at, r.verified_contact,
               u.name AS author_name
          FROM reviews r
          JOIN users u ON u.id = r.user_id
@@ -107,19 +107,31 @@ router.post('/', requireAuth, async (req, res, next) => {
         return res.status(404).json({ error: 'Empresa não encontrada' });
       }
 
+      // "Contacto verificado": o autor falou com a empresa pela plataforma
+      // (mensagens ou pedido de orçamento) — combate reviews de fachada
+      const { rows: vc } = await client.query(
+        `SELECT 1 FROM messages
+          WHERE company_id = $1
+            AND (client_user_id = $2
+                 OR lower(client_email) = (SELECT lower(email) FROM users WHERE id = $2))
+          LIMIT 1`,
+        [req.params.id, req.user.id]);
+      const verified = !!vc[0];
+
       // Upsert: update if user already reviewed this company
       const { rows } = await client.query(
-        `INSERT INTO reviews (company_id, user_id, score, score_quality, score_speed, score_communication, score_value, comment)
-         VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+        `INSERT INTO reviews (company_id, user_id, score, score_quality, score_speed, score_communication, score_value, comment, verified_contact)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
          ON CONFLICT (company_id, user_id)
          DO UPDATE SET score = EXCLUDED.score,
                        score_quality = EXCLUDED.score_quality,
                        score_speed = EXCLUDED.score_speed,
                        score_communication = EXCLUDED.score_communication,
                        score_value = EXCLUDED.score_value,
-                       comment = EXCLUDED.comment, created_at = NOW()
+                       comment = EXCLUDED.comment, created_at = NOW(),
+                       verified_contact = EXCLUDED.verified_contact
          RETURNING *`,
-        [req.params.id, req.user.id, overall, sq, sp, scm, sv, comment || null]
+        [req.params.id, req.user.id, overall, sq, sp, scm, sv, comment || null, verified]
       );
 
       // Recalculate the company's aggregate rating in the same transaction.

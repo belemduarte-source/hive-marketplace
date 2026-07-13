@@ -2,7 +2,8 @@
   "version": 2,
   "outputDirectory": "frontend",
   "crons": [
-    { "path": "/api/messages/purge", "schedule": "0 4 * * *" }
+    { "path": "/api/messages/purge", "schedule": "0 4 * * *" },
+    { "path": "/api/saved-searches/digest", "schedule": "0 8 * * 1" }
   ],
   "rewrites": [
     { "source": "/api/:path*", "destination": "/api/index.js" },

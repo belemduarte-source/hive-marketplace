@@ -67,10 +67,59 @@ async function sendToToken(token, notification, data) {
   }
 }
 
+// ── Web Push (browsers/PWA) ───────────────────────────────────────────────────
+// Sem configuração manual: o par VAPID é gerado uma vez e persistido em
+// app_settings, por isso funciona sem env vars (ao contrário do FCM acima).
+let _webpush = null;
+try { _webpush = require('web-push'); } catch (_) { /* dependência ainda não instalada */ }
+
+let _vapid = null;
+async function getVapid() {
+  if (!_webpush) throw new Error('web-push não instalado');
+  if (_vapid) return _vapid;
+  const { rows } = await pool.query(`SELECT value FROM app_settings WHERE key = 'vapid'`);
+  if (rows[0]) {
+    _vapid = rows[0].value;
+  } else {
+    const keys = _webpush.generateVAPIDKeys();
+    // duas instâncias frias a gerar em simultâneo convergem para a primeira
+    await pool.query(
+      `INSERT INTO app_settings (key, value) VALUES ('vapid', $1) ON CONFLICT (key) DO NOTHING`,
+      [JSON.stringify(keys)]);
+    const { rows: r2 } = await pool.query(`SELECT value FROM app_settings WHERE key = 'vapid'`);
+    _vapid = r2[0].value;
+  }
+  _webpush.setVapidDetails('mailto:geral@hivex.pt', _vapid.publicKey, _vapid.privateKey);
+  return _vapid;
+}
+
+async function webPushToUser(userId, title, body, data) {
+  if (!_webpush || !userId) return;
+  try {
+    await getVapid();
+    const { rows } = await pool.query(
+      `SELECT id, endpoint, keys FROM push_subscriptions WHERE user_id = $1`, [userId]);
+    const payload = JSON.stringify({ title, body, url: (data && data.url) || '/' });
+    for (const s of rows) {
+      _webpush.sendNotification({ endpoint: s.endpoint, keys: s.keys }, payload)
+        .catch(err => {
+          const code = err && err.statusCode;
+          // subscrições mortas saem na passada
+          if (code === 410 || code === 404) {
+            pool.query(`DELETE FROM push_subscriptions WHERE id = $1`, [s.id]).catch(() => {});
+          }
+        });
+    }
+  } catch (e) { console.warn('[webpush]', e.message); }
+}
+
 // Best-effort push to every device a user has registered. Never throws — a
 // failed notification must not break the request that triggered it.
+// Tenta os dois transportes: FCM (app nativa, se configurado) e Web Push.
 async function pushToUser(userId, title, body, data) {
-  if (!pushEnabled() || !userId) return;
+  if (!userId) return;
+  webPushToUser(userId, title, body, data).catch(() => {});
+  if (!pushEnabled()) return;
   try {
     const { rows } = await pool.query('SELECT token FROM device_tokens WHERE user_id = $1', [userId]);
     await Promise.all(
@@ -83,4 +132,4 @@ async function pushToUser(userId, title, body, data) {
   }
 }
 
-module.exports = { pushEnabled, pushToUser };
+module.exports = { pushEnabled, pushToUser, getVapid };

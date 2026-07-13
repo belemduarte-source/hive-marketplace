@@ -6,6 +6,7 @@ const crypto = require('crypto');
 const pool = require('../db');
 const { requireAuth, optionalAuth, ensureAdminFlag } = require('../middleware/auth');
 const { sendBrandedEmail, esc, companyReplyCtaHtml } = require('../email');
+const { pushToUser, getVapid } = require('../push');
 
 // Same "respond first, email after" pattern used by the contact relay.
 function deferEmail(makePromise, label) {
@@ -285,6 +286,10 @@ router.post('/messages/company/:companyId/reply', requireAuth, async (req, res, 
       [co[0].id, clientEmail, text.slice(0, 4000)]
     );
     await saveChatFiles(ins[0].id, files);
+    // push web/nativo para o cliente (se tiver conta e subscrições)
+    pool.query(`SELECT id FROM users WHERE lower(email) = lower($1)`, [clientEmail])
+      .then(r => { if (r.rows[0]) pushToUser(r.rows[0].id, co[0].name, text.slice(0, 120) || '📎 Documento', { url: '/' }); })
+      .catch(() => {});
     deferEmail(() => sendBrandedEmail({
       to: clientEmail,
       replyTo: co[0].email || undefined,
@@ -322,6 +327,10 @@ router.post('/messages/company/:companyId/client', requireAuth, async (req, res,
       [co[0].id, me[0].id, me[0].name || null, me[0].email, text.slice(0, 4000)]
     );
     await saveChatFiles(ins[0].id, files);
+    if (co[0].created_by) {
+      pushToUser(co[0].created_by, (me[0].name || 'Cliente') + ' → ' + co[0].name,
+        text.slice(0, 120) || '📎 Documento', { url: '/' });
+    }
     if (co[0].email) {
       deferEmail(() => sendBrandedEmail({
         to: co[0].email,
@@ -474,6 +483,93 @@ router.post('/feature-requests', requireAuth, async (req, res, next) => {
     }
     res.status(201).json({ ok: true });
   } catch (e) { next(e); }
+});
+
+// ── WEB PUSH: subscrição do browser ───────────────────────────────────────────
+router.get('/push/pubkey', async (req, res, next) => {
+  try { const v = await getVapid(); res.json({ key: v.publicKey }); } catch (e) { next(e); }
+});
+router.post('/push/subscribe', requireAuth, async (req, res, next) => {
+  try {
+    const b = req.body || {};
+    if (!b.endpoint || !b.keys) return res.status(400).json({ error: 'Subscrição inválida' });
+    await pool.query(
+      `INSERT INTO push_subscriptions (user_id, endpoint, keys) VALUES ($1, $2, $3)
+       ON CONFLICT (endpoint) DO UPDATE SET user_id = EXCLUDED.user_id, keys = EXCLUDED.keys`,
+      [req.user.id, String(b.endpoint).slice(0, 600), JSON.stringify(b.keys)]);
+    res.status(201).json({ ok: true });
+  } catch (e) { next(e); }
+});
+
+// ── ALERTAS DE PESQUISA (digest semanal por email) ───────────────────────────
+router.get('/saved-searches', requireAuth, async (req, res, next) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT id, sector, city, country, created_at FROM saved_searches WHERE user_id = $1 ORDER BY id DESC`,
+      [req.user.id]);
+    res.json(rows);
+  } catch (e) { next(e); }
+});
+router.post('/saved-searches', requireAuth, async (req, res, next) => {
+  try {
+    const b = req.body || {};
+    const sector = String(b.sector || '').toLowerCase().replace(/[^a-z_]/g, '').slice(0, 50);
+    if (!sector) return res.status(400).json({ error: 'Escolha uma área de atividade' });
+    const { rows: me } = await pool.query(`SELECT email FROM users WHERE id = $1`, [req.user.id]);
+    if (!me[0]) return res.status(401).json({ error: 'Sessão inválida' });
+    const { rows: cnt } = await pool.query(
+      `SELECT COUNT(*)::int AS n FROM saved_searches WHERE user_id = $1`, [req.user.id]);
+    if (cnt[0].n >= 5) return res.status(409).json({ error: 'Máximo de 5 alertas guardados' });
+    const { rows } = await pool.query(
+      `INSERT INTO saved_searches (user_id, email, sector, city, country)
+       VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+      [req.user.id, me[0].email, sector,
+       b.city ? String(b.city).slice(0, 60) : null,
+       b.country ? String(b.country).toLowerCase().slice(0, 2) : null]);
+    res.status(201).json({ ok: true, id: rows[0].id });
+  } catch (e) { next(e); }
+});
+router.delete('/saved-searches/:id(\\d+)', requireAuth, async (req, res, next) => {
+  try {
+    await pool.query(`DELETE FROM saved_searches WHERE id = $1 AND user_id = $2`,
+      [req.params.id, req.user.id]);
+    res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+// Cron semanal (segunda 08:00 UTC) — envia só quando há empresas novas.
+router.get('/saved-searches/digest', async (req, res) => {
+  const secret = process.env.CRON_SECRET;
+  const fromCron = !!req.headers['x-vercel-cron'];
+  const authed = secret && req.headers.authorization === `Bearer ${secret}`;
+  if (!fromCron && !authed) return res.status(401).json({ error: 'unauthorized' });
+  const { rows: searches } = await pool.query(`SELECT * FROM saved_searches ORDER BY id LIMIT 500`);
+  let sent = 0;
+  for (const s of searches) {
+    try {
+      const { rows: novas } = await pool.query(
+        `SELECT id, name, city FROM companies
+          WHERE status = 'approved' AND sector = $1
+            AND ($2::text IS NULL OR country = $2)
+            AND ($3::text IS NULL OR city ILIKE '%' || $3 || '%')
+            AND created_at > $4
+          ORDER BY created_at DESC LIMIT 6`,
+        [s.sector, s.country || null, s.city || null, s.last_sent]);
+      if (!novas.length) continue;
+      const lista = novas.map(n =>
+        `<li><a href="https://www.hivex.pt/e/${n.id}"><strong>${esc(n.name)}</strong></a>${n.city ? ' — ' + esc(n.city) : ''}</li>`).join('');
+      await sendBrandedEmail({
+        to: s.email,
+        subject: `[Hivex] ${novas.length} nova(s) empresa(s) de ${s.sector.replace(/_/g, ' ')}${s.city ? ' em ' + s.city : ''}`,
+        title: 'Hivex — novas empresas no seu alerta',
+        bodyHtml: `<p>Há novidades na área que está a acompanhar:</p><ul>${lista}</ul>
+          <p><a href="https://www.hivex.pt/?sector=${encodeURIComponent(s.sector)}${s.city ? '&city=' + encodeURIComponent(s.city) : ''}">Ver no mapa →</a></p>
+          <p style="color:#6b7280;font-size:12px">Recebe este email porque criou um alerta na Hivex. Pode removê-lo no seu perfil.</p>`,
+      });
+      await pool.query(`UPDATE saved_searches SET last_sent = NOW() WHERE id = $1`, [s.id]);
+      sent++;
+    } catch (e) { console.error('[digest]', s.id, e.message); }
+  }
+  res.json({ ok: true, sent });
 });
 
 module.exports = router;

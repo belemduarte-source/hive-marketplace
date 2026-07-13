@@ -3572,3 +3572,6 @@
       .chat-layout.thread-open .chat-main{display:flex !important}
       .chat-back{display:inline-flex}
     }
+
+    /* ── Vaga C: review verificada ── */
+    .rv-verified{display:inline-block;margin-left:7px;background:var(--green-light,#dcfce7);color:#166534;font-size:10.5px;font-weight:800;padding:2px 8px;border-radius:999px;vertical-align:middle}

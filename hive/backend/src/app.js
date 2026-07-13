@@ -792,7 +792,7 @@ app.get('/s/:sector/:city', async (req, res, next) => {
     const BASE = 'https://www.hivex.pt';
     const label = SECTOR_LABELS_PT[sector] || (sector.charAt(0).toUpperCase() + sector.slice(1).replace(/_/g, ' '));
     const cityTitle = rows[0].city || cidade;
-    const title = `${label} em ${cityTitle} — ${rows.length} empresas | Hivex`;
+    const title = `${label} em ${cityTitle} — ${rows.length} ${rows.length === 1 ? 'empresa' : 'empresas'} | Hivex`;
     const desc = `${rows.length} empresas de ${label.toLowerCase()} em ${cityTitle}, com contactos, avaliações e pedido de orçamento grátis na Hivex.`;
     const spaUrl = `/?sector=${encodeURIComponent(sector)}&city=${encodeURIComponent(cityTitle)}`;
     const itemList = {
