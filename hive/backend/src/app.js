@@ -693,8 +693,17 @@ app.get('/sitemap.xml', async (req, res, next) => {
     const { rows } = await require('./db').query(
       `SELECT id, updated_at FROM companies WHERE status = 'approved' ORDER BY id`
     );
+    // Páginas de setor+cidade (≥3 empresas) — aterragens orgânicas reais
+    const { rows: combos } = await require('./db').query(
+      `SELECT sector, city, COUNT(*) AS n FROM companies
+        WHERE status = 'approved' AND city IS NOT NULL AND city <> '' AND sector IS NOT NULL
+        GROUP BY sector, city HAVING COUNT(*) >= 3
+        ORDER BY COUNT(*) DESC LIMIT 2000`);
+    const slug = s => encodeURIComponent(String(s).toLowerCase().trim().replace(/\s+/g, '-'));
     const urls = [
       `<url><loc>${BASE}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`,
+      ...combos.map(c =>
+        `<url><loc>${BASE}/s/${c.sector}/${slug(c.city)}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`),
       ...rows.map(r =>
         `<url><loc>${BASE}/?company=${r.id}</loc><lastmod>${new Date(r.updated_at || Date.now()).toISOString().slice(0, 10)}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`),
     ];
@@ -744,6 +753,78 @@ app.get('/e/:id(\\d+)', async (req, res, next) => {
 </head><body>
 <script>location.replace(${JSON.stringify(dest)});</script>
 <p><a href="${esc(dest)}">${esc(c.name)}</a></p>
+</body></html>`);
+  } catch (e) { next(e); }
+});
+
+// ── Landing SEO: /s/:sector/:city ────────────────────────────────────────────
+// Página HTML real por setor+cidade para os motores de busca ("eletricista
+// braga") — a SPA não dá nada aos crawlers para estas pesquisas. Lista as
+// empresas com links /e/:id (crawláveis) e JSON-LD ItemList; humanos têm um
+// CTA para a app com os filtros aplicados.
+const SECTOR_LABELS_PT = {
+  construcao_geral: 'Construção Geral', pedreiros_trolhas: 'Pedreiros / Trolhas',
+  eletricistas: 'Eletricistas', picheleiros: 'Picheleiros / Canalizadores',
+  canalizacao_saneamento: 'Canalização & Saneamento', climatizacao_avac: 'Climatização / AVAC',
+  pintores: 'Pintores', carpinteiros: 'Carpinteiros', serralharia: 'Serralharia',
+  telhados_coberturas: 'Telhados & Coberturas', isolamento_termico_acustico: 'Isolamento Térmico & Acústico',
+  pavimentos_revestimentos: 'Pavimentos & Revestimentos', azulejos_ceramica: 'Azulejos & Cerâmica',
+  jardineiros: 'Jardineiros', paisagismo_jardins: 'Paisagismo & Jardins',
+  materiais_construcao: 'Materiais de Construção', arquitetura_projetos: 'Arquitetura & Projetos',
+  energias_renovaveis_solar: 'Energias Renováveis / Solar', demolicao: 'Demolição',
+  alvenaria: 'Alvenaria', estucadores: 'Estucadores', vidraceiros: 'Vidraceiros',
+  moveis_medida: 'Móveis por Medida', piscinas: 'Piscinas',
+};
+app.get('/s/:sector/:city', async (req, res, next) => {
+  try {
+    const esc = s => String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    const sector = String(req.params.sector || '').toLowerCase().replace(/[^a-z_]/g, '').slice(0, 50);
+    const cidade = String(req.params.city || '').replace(/-/g, ' ').replace(/[<>"]/g, '').slice(0, 60);
+    if (!sector || !cidade) return res.redirect(302, '/');
+    const { rows } = await require('./db').query(
+      `SELECT id, name, city, rating, reviews, phone, website
+         FROM companies
+        WHERE status = 'approved' AND sector = $1 AND lower(city) = lower($2)
+        ORDER BY featured DESC NULLS LAST, rating DESC NULLS LAST, reviews DESC NULLS LAST
+        LIMIT 50`, [sector, cidade]);
+    if (!rows.length) return res.redirect(302, '/');
+    const BASE = 'https://www.hivex.pt';
+    const label = SECTOR_LABELS_PT[sector] || (sector.charAt(0).toUpperCase() + sector.slice(1).replace(/_/g, ' '));
+    const cityTitle = rows[0].city || cidade;
+    const title = `${label} em ${cityTitle} — ${rows.length} empresas | Hivex`;
+    const desc = `${rows.length} empresas de ${label.toLowerCase()} em ${cityTitle}, com contactos, avaliações e pedido de orçamento grátis na Hivex.`;
+    const spaUrl = `/?sector=${encodeURIComponent(sector)}&city=${encodeURIComponent(cityTitle)}`;
+    const itemList = {
+      '@context': 'https://schema.org', '@type': 'ItemList', name: title,
+      itemListElement: rows.slice(0, 25).map((r, i) => ({
+        '@type': 'ListItem', position: i + 1, url: `${BASE}/e/${r.id}`, name: r.name,
+      })),
+    };
+    const linhas = rows.map(r =>
+      `<li><a href="/e/${r.id}"><strong>${esc(r.name)}</strong></a>` +
+      (Number(r.rating) > 0 ? ` · ⭐ ${Number(r.rating).toFixed(1)} (${r.reviews || 0})` : '') +
+      `</li>`).join('\n');
+    res.set('Content-Type', 'text/html; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
+    res.send(`<!doctype html><html lang="pt"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(desc)}">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:url" content="${BASE}/s/${esc(sector)}/${esc(req.params.city)}">
+<link rel="canonical" href="${BASE}/s/${esc(sector)}/${esc(req.params.city)}">
+<script type="application/ld+json">${JSON.stringify(itemList)}</script>
+<style>body{font-family:system-ui;max-width:720px;margin:0 auto;padding:28px 18px;background:#0f172a;color:#e2e8f0}a{color:#93c5fd}li{margin:9px 0}h1{font-size:26px}.cta{display:inline-block;margin:18px 0;background:#f97316;color:#fff;padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none}</style>
+</head><body>
+<h1>${esc(label)} em ${esc(cityTitle)}</h1>
+<p>${esc(desc)}</p>
+<a class="cta" href="${esc(spaUrl)}">Ver no mapa e pedir orçamentos →</a>
+<ol>
+${linhas}
+</ol>
+<p><a href="/">Hivex — encontre empresas de construção e serviços</a></p>
 </body></html>`);
   } catch (e) { next(e); }
 });

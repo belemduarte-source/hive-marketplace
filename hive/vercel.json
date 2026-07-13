@@ -8,7 +8,8 @@
     { "source": "/api/:path*", "destination": "/api/index.js" },
     { "source": "/sitemap.xml", "destination": "/api/index.js" },
     { "source": "/e/:id", "destination": "/api/index.js" },
-    { "source": "/((?!api|sitemap\\.xml|e/).*)", "destination": "/index.html" }
+    { "source": "/s/:sector/:city", "destination": "/api/index.js" },
+    { "source": "/((?!api|sitemap\\.xml|e/|s/).*)", "destination": "/index.html" }
   ],
   "headers": [
     {
@@ -56,7 +57,7 @@
       ]
     },
     {
-      "source": "/((?!api|index\\.html|sw\\.js|manifest\\.json|sitemap\\.xml|e/|$).*)",
+      "source": "/((?!api|index\\.html|sw\\.js|manifest\\.json|sitemap\\.xml|e/|s/|$).*)",
       "headers": [
         { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
       ]

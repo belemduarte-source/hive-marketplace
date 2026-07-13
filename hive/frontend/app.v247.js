@@ -11735,7 +11735,23 @@ function _renderSearchSuggest(val) {
     sectors = _suggestIndex.sectors.filter(v => fz(v.label)).slice(0, 2);
     comps = (companies || []).filter(c => fz(c.name)).slice(0, 3);
   }
-  if (!cities.length && !sectors.length && !comps.length) { box.style.display = 'none'; return; }
+  if (!cities.length && !sectors.length && !comps.length) {
+    // catálogo local sem resposta (ainda a carregar, ou nome fora do índice):
+    // pergunta ao servidor (pg_trgm), com guarda de corrida pelo valor atual
+    clearTimeout(window._srvSuggestT);
+    window._srvSuggestT = setTimeout(async () => {
+      try {
+        const rows = await apiFetch('/companies/search?q=' + encodeURIComponent((val || '').trim()));
+        const atual = _normTxt(((document.getElementById('searchUnified') || {}).value || '').trim());
+        if (atual !== q || !rows || !rows.length) return;
+        box.innerHTML = rows.map(r =>
+          '<div class="ss-item" onmousedown="suggestPickRemote(' + r.id + ')"><span class="ss-ico">🏢</span>' +
+          escHtml(r.name) + '<span class="ss-n">' + escHtml(r.city || '') + '</span></div>').join('');
+        box.style.display = 'block';
+      } catch (_) {}
+    }, 280);
+    box.style.display = 'none'; return;
+  }
   box.innerHTML =
     cities.map(c => '<div class="ss-item" onmousedown="suggestPickCity(\'' + escHtml(c.label).replace(/'/g, '&#39;') + '\',' + c.lat + ',' + c.lng + ')"><span class="ss-ico">📍</span>' + escHtml(c.label) + '<span class="ss-n">' + c.n + '</span></div>').join('') +
     sectors.map(s => '<div class="ss-item" onmousedown="suggestPickSector(\'' + s.k + '\')"><span class="ss-ico">🛠️</span>' + escHtml(s.label) + '</div>').join('') +
@@ -12022,3 +12038,49 @@ async function adminDismissError(id, btn) {
 }
 window.adminLoadErrors = adminLoadErrors;
 window.adminDismissError = adminDismissError;
+
+
+/* ══ VAGA B: aterragem com filtros por URL + resultados remotos ══ */
+// Resultado do autocomplete server-side pode não estar no catálogo em memória
+async function suggestPickRemote(id) {
+  _hideSuggest();
+  if ((companies || []).find(c => c.id === id)) { showTab('search'); openDetail(id); return; }
+  try {
+    const d = await api.getCompany(id);
+    const row = d && (d.company || d);
+    if (row && row.id) {
+      companies.push(dbRowToCompany(row));
+      showTab('search');
+      openDetail(Number(row.id));
+    }
+  } catch (_) { showToast(t('searchListEmpty')); }
+}
+window.suggestPickRemote = suggestPickRemote;
+
+// /s/:sector/:city envia humanos para /?sector=X&city=Y — aplica os filtros
+// no arranque (só quando não há deep-link de empresa, que tem prioridade)
+(function () {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const sector = params.get('sector');
+    const city = params.get('city');
+    if (!sector || params.get('company')) return;
+    let tent = 0;
+    const aplicar = () => {
+      tent++;
+      const pronto = typeof toggleSector === 'function' && typeof showTab === 'function' &&
+        (companies || []).length > 0;
+      if (!pronto) { if (tent < 40) setTimeout(aplicar, 250); return; }
+      showTab('search');
+      try { if (!activeSectors.has(sector)) toggleSector(sector); } catch (_) {}
+      if (city) { try { geocodeLocation(city); } catch (_) {} }
+      // limpa os parâmetros para F5 não reaplicar
+      try {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('sector'); url.searchParams.delete('city');
+        history.replaceState({}, '', url.toString());
+      } catch (_) {}
+    };
+    setTimeout(aplicar, 400);
+  } catch (_) {}
+})();

@@ -75,6 +75,23 @@ const LIST_COLS = `
 
 // Serve o logo de uma empresa como imagem cacheável (a lista envia apenas o
 // URL). O ?v= no URL versiona o cache imutável — logo novo = URL novo.
+// GET /api/companies/search?q= — autocomplete server-side (pg_trgm).
+// Tem de estar ANTES de GET /:id (sem regex), senão "search" era lido como id.
+router.get('/search', async (req, res, next) => {
+  try {
+    const q = String(req.query.q || '').trim().slice(0, 80);
+    if (q.length < 2) return res.json([]);
+    const { rows } = await pool.query(
+      `SELECT id, name, city, country, sector
+         FROM companies
+        WHERE status = 'approved' AND (name ILIKE '%' || $1 || '%' OR name % $1)
+        ORDER BY similarity(name, $1) DESC, rating DESC NULLS LAST
+        LIMIT 10`, [q]);
+    res.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=600');
+    res.json(rows);
+  } catch (e) { next(e); }
+});
+
 router.get('/:id(\\d+)/logo', async (req, res, next) => {
   try {
     const { rows } = await pool.query('SELECT logo FROM companies WHERE id = $1', [req.params.id]);
