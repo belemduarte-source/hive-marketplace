@@ -7413,6 +7413,14 @@ function _chatWhen(iso) {
   return d.toLocaleDateString(_chatLocale(), { day: '2-digit', month: '2-digit' });
 }
 function _renderMsgs(msgs, mySender, forceBottom) {
+  try { _renderMsgsInner(msgs, mySender, forceBottom); }
+  catch (e) {
+    console.error('[chat] render falhou:', e);
+    const box = _chatEl('chatMsgs');
+    if (box) box.innerHTML = '<div class="chat-loading" style="color:#ef4444">Erro a mostrar a conversa: ' + escHtml(e && e.message || e) + '</div>';
+  }
+}
+function _renderMsgsInner(msgs, mySender, forceBottom) {
   const box = _chatEl('chatMsgs');
   // WhatsApp: só encosta ao fundo se o utilizador já lá estava (ou 1.ª renderização)
   const nearBottom = forceBottom || !box.childElementCount ||
@@ -7447,7 +7455,8 @@ function _chatEmpty() {
   _chatEl('chatMsgs').innerHTML = '<div class="chat-loading">As mensagens que trocar aparecem aqui.</div>';
 }
 function _chatError(e) {
-  _chatEl('chatMsgs').innerHTML = '<div class="chat-loading" style="color:var(--red)">' + escHtml(e.message || 'Erro') + '</div>';
+  console.error('[chat] erro:', e);
+  _chatEl('chatMsgs').innerHTML = '<div class="chat-loading" style="color:#ef4444">' + escHtml(e.message || 'Erro') + '</div>';
 }
 
 // ── anexos ──
@@ -7482,6 +7491,8 @@ async function chatSend(btn) {
   if (_chatMode === 'owner' && !_chatPeer) { showToast('Escolha uma conversa'); return; }
   if (_chatMode === 'client' && !_chatCompanyId) { showToast('Escolha uma conversa'); return; }
   btn.disabled = true;
+  let _optNode = null;
+  try { _optNode = _chatAppendLocal(text); } catch (_) {}
   try {
     if (_chatMode === 'owner') {
       await apiFetch('/messages/company/' + _chatCompanyId + '/reply',
@@ -7501,6 +7512,7 @@ async function chatSend(btn) {
       await _selectClientThread(_chatCompanyId);
     }
   } catch (e) {
+    if (_optNode) { try { _optNode.remove(); } catch (_) {} }
     showToast(e.message || 'Erro ao enviar');
   } finally {
     btn.disabled = false;
@@ -11907,3 +11919,23 @@ window.chatPreviewImage = chatPreviewImage;
     ta.style.height = Math.min(ta.scrollHeight, 110) + 'px';
   });
 })();
+
+
+// Bolha otimista: mostra a mensagem no instante do envio (🕓 = a enviar);
+// a recarga do fio a seguir ao POST substitui-a pela versão do servidor.
+function _chatAppendLocal(text) {
+  const box = _chatEl('chatMsgs');
+  if (!box) return null;
+  if (box.querySelector('.chat-loading')) box.innerHTML = '';
+  const row = document.createElement('div');
+  row.className = 'chat-row mine';
+  const files = _chatFiles.map(f => '<span class="chat-file">📄 ' + escHtml(f.name) + '</span>').join('');
+  row.innerHTML = '<div class="chat-bubble">' +
+    (text ? '<div class="chat-text">' + escHtml(text) + '</div>' : '') +
+    (files ? '<div class="chat-file-list">' + files + '</div>' : '') +
+    '<div class="chat-meta">' + new Date().toLocaleTimeString(_chatLocale(), { hour: '2-digit', minute: '2-digit' }) +
+    '<span class="chat-ticks" title="A enviar…">🕓</span></div></div>';
+  box.appendChild(row);
+  box.scrollTop = box.scrollHeight;
+  return row;
+}
