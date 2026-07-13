@@ -375,7 +375,7 @@ const translations = {
     footerPrivacy:'Política de Privacidade',
     footerCookies:'Cookies',
     footerRights:'Hivex — Todos os direitos reservados',
-    factSince:'Desde', factHours:'Horário', factVerified:'Verificada', factYear:'ano', factYears:'anos',
+    factSince:'Desde', factHours:'Horário', factVerified:'Verificada', factResponds:'Responde em', factYear:'ano', factYears:'anos',
     review1Author:'TechCorp Lda.',
     review2Author:'Ibérica Solutions SA',
     logoTagline:'Profissionais de Construção em Portugal',
@@ -778,7 +778,7 @@ const translations = {
     footerPrivacy:'Privacy Policy',
     footerCookies:'Cookies',
     footerRights:'Hivex — All rights reserved',
-    factSince:'Since', factHours:'Hours', factVerified:'Verified', factYear:'year', factYears:'years',
+    factSince:'Since', factHours:'Hours', factVerified:'Verified', factResponds:'Replies in', factYear:'year', factYears:'years',
     review1Author:'TechCorp Ltd.',
     review2Author:'Ibérica Solutions SA',
     logoTagline:'Construction Professionals in Portugal',
@@ -1184,7 +1184,7 @@ const translations = {
     footerPrivacy:'Politique de Confidentialité',
     footerCookies:'Cookies',
     footerRights:'Hivex — Tous droits réservés',
-    factSince:'Depuis', factHours:'Horaires', factVerified:'Vérifiée', factYear:'an', factYears:'ans',
+    factSince:'Depuis', factHours:'Horaires', factVerified:'Vérifiée', factResponds:'Répond en', factYear:'an', factYears:'ans',
     review1Author:'TechCorp Sarl',
     review2Author:'Ibérica Solutions SA',
     logoTagline:'Professionnels du Bâtiment au Portugal',
@@ -1585,7 +1585,7 @@ const translations = {
     footerPrivacy:'Política de Privacidad',
     footerCookies:'Cookies',
     footerRights:'Hivex — Todos los derechos reservados',
-    factSince:'Desde', factHours:'Horario', factVerified:'Verificada', factYear:'año', factYears:'años',
+    factSince:'Desde', factHours:'Horario', factVerified:'Verificada', factResponds:'Responde en', factYear:'año', factYears:'años',
     importOSM:'Importar Empresas OSM',
     successTitle:'¡Solicitud Enviada!',
     successSub:'Su solicitud ha sido recibida y está a la espera de validación. Recibirá un correo de confirmación cuando la empresa sea aprobada.',
@@ -1984,7 +1984,7 @@ const translations = {
     footerPrivacy:'Datenschutzerklärung',
     footerCookies:'Cookies',
     footerRights:'Hivex – Alle Rechte vorbehalten',
-    factSince:'Seit', factHours:'Öffnungszeiten', factVerified:'Verifiziert', factYear:'Jahr', factYears:'Jahre',
+    factSince:'Seit', factHours:'Öffnungszeiten', factVerified:'Verifiziert', factResponds:'Antwortet in', factYear:'Jahr', factYears:'Jahre',
     review1Author:'TechCorp GmbH',
     review2Author:'Ibérica Solutions SA',
     logoTagline:'Baufachleute in Portugal',
@@ -6941,6 +6941,13 @@ function _renderDetailPanel(c) {
     if (c.business_hours) {
       items.push(`<span class="dp-fact"><span class="dp-fact-icon">🕒</span><span class="dp-fact-label">${t('factHours')}</span><span class="dp-fact-value">${escHtml(c.business_hours)}</span></span>`);
     }
+    if (c.response_minutes != null && isFinite(Number(c.response_minutes))) {
+      const rm = Number(c.response_minutes);
+      const rmLabel = rm < 90 ? Math.max(1, Math.round(rm)) + ' min'
+        : rm < 2160 ? Math.round(rm / 60) + ' h'
+        : Math.round(rm / 1440) + ' d';
+      items.push(`<span class="dp-fact"><span class="dp-fact-icon">⚡</span><span class="dp-fact-label">${t('factResponds')}</span><span class="dp-fact-value">~${rmLabel}</span></span>`);
+    }
     if (c.verified) {
       items.push(`<span class="dp-fact" title="${escHtml(t('verifiedTooltip') || '')}"><span class="dp-fact-icon" style="color:#16a34a">✓</span><span class="dp-fact-value" style="color:#166534">${t('factVerified')}</span></span>`);
     }
@@ -9898,6 +9905,8 @@ function openProfilePanel() {
   // dbRowToCompany. Coerce both sides so the filter actually matches.
   const myId = Number(user.id);
   const myCompanies = companies.filter(c => c.created_by != null && c.created_by === myId);
+  // estatísticas 30d por empresa (lazy, depois do paint do painel)
+  setTimeout(() => { try { _loadMyCompanyStats(myCompanies); } catch (_) {} }, 60);
 
   const companyCards = myCompanies.length > 0
     ? myCompanies.map(c => `
@@ -9906,6 +9915,7 @@ function openProfilePanel() {
           <div class="profile-company-info" style="cursor:pointer;flex:1" onclick="closeProfilePanel();showTab('search');setTimeout(()=>openDetail(${c.id}),300)">
             <div class="profile-company-name">${c.name}</div>
             <div class="profile-company-city">${c.city||'Portugal'} · <span style="color:${c.status==='approved'?'var(--green)':c.status==='pending'?'#f59e0b':c.status==='removed'?'var(--muted)':'var(--red)'};font-weight:700;font-size:11px">${c.status==='approved'?t('statusApproved'):c.status==='pending'?t('statusPending'):c.status==='removed'?t('statusRemoved'):t('statusRejected')}</span></div>
+            <div class="profile-company-stats" data-cid="${c.id}" style="font-size:11px;color:var(--text-secondary);margin-top:3px"></div>
           </div>
           <button onclick="profileEditCompany(${c.id})" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;color:var(--text-secondary);cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0" title="${t('profileEditTitle')}">✏️</button>
           <button onclick="openInbox(${c.id})" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-size:12px;font-weight:700;color:var(--text-secondary);cursor:pointer;white-space:nowrap;font-family:inherit;flex-shrink:0" title="${t('inboxBtn')}">📨</button>
@@ -10838,11 +10848,12 @@ function closeAdminPanel() {
 function adminSwitchTab(tab) {
   _adminCurrentTab = tab;
   document.querySelectorAll('.admin-tab').forEach((el, i) => {
-    el.classList.toggle('active', ['stats','pending','all','reports'][i] === tab);
+    el.classList.toggle('active', ['stats','pending','all','reports','errors'][i] === tab);
   });
   if (tab === 'stats') adminLoadStats();
   else if (tab === 'pending') adminLoadCompanies('pending');
   else if (tab === 'reports') adminLoadReports('pending');
+  else if (tab === 'errors') adminLoadErrors();
   else adminLoadCompanies();
 }
 
@@ -11939,3 +11950,75 @@ function _chatAppendLocal(text) {
   box.scrollTop = box.scrollHeight;
   return row;
 }
+
+
+/* ══ VAGA A: telemetria de erros + stats do dono + tab Erros ══ */
+// Captura global de erros do frontend → POST /api/client-errors.
+// Máx. 5 erros únicos por sessão; deduplicação local e no servidor (hash).
+(function () {
+  const enviados = new Set();
+  let quota = 5;
+  function reporta(message, stack) {
+    try {
+      message = String(message || '').slice(0, 500);
+      if (!message || quota <= 0) return;
+      const chave = message.slice(0, 120);
+      if (enviados.has(chave)) return;
+      enviados.add(chave); quota--;
+      const body = JSON.stringify({
+        message,
+        stack: String(stack || '').slice(0, 1500),
+        url: location.pathname + location.search,
+      });
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon((window.API_BASE || '/api') + '/client-errors', new Blob([body], { type: 'application/json' }));
+      } else {
+        fetch((window.API_BASE || '/api') + '/client-errors', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body }).catch(() => {});
+      }
+    } catch (_) {}
+  }
+  window.addEventListener('error', e => reporta(e.message, e.error && e.error.stack));
+  window.addEventListener('unhandledrejection', e =>
+    reporta((e.reason && (e.reason.message || String(e.reason))) || 'promise rejeitada', e.reason && e.reason.stack));
+})();
+
+// Estatísticas 30d nos cartões "As minhas empresas" (endpoint já existia)
+async function _loadMyCompanyStats(list) {
+  for (const c of (list || []).slice(0, 8)) {
+    const el = document.querySelector('.profile-company-stats[data-cid="' + c.id + '"]');
+    if (!el) continue;
+    try {
+      const st = await apiFetch('/companies/' + c.id + '/analytics');
+      const n = k => (st && st[k] && st[k].last_30d) || 0;
+      el.textContent = '👁 ' + n('view') + ' · 🌐 ' + n('website_click') + ' · ✉️ ' + n('contact') + ' · 📱 ' + n('whatsapp') + '  (30 d)';
+    } catch (_) { /* sem stats — deixa vazio */ }
+  }
+}
+
+// Admin: separador Erros (telemetria web + api)
+async function adminLoadErrors() {
+  const body = document.getElementById('adminBody');
+  body.innerHTML = '<div id="adminErrList" style="display:flex;flex-direction:column;gap:8px"><div style="text-align:center;padding:32px;color:var(--muted)">' + t('loadingGeneric') + '</div></div>';
+  try {
+    const rows = await apiFetch('/admin/client-errors');
+    const list = document.getElementById('adminErrList');
+    if (!rows.length) { list.innerHTML = '<div style="text-align:center;padding:32px;color:var(--muted)">Sem erros registados 🎉</div>'; return; }
+    list.innerHTML = rows.map(r => `
+      <div style="border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;display:flex;gap:10px;align-items:flex-start">
+        <span style="font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:${r.source === 'api' ? '#7c2d12' : '#1e3a8a'};color:#fff;flex-shrink:0">${escHtml(r.source)}</span>
+        <div style="flex:1;min-width:0">
+          <div style="font-weight:700;font-size:13px;word-break:break-word">${escHtml(r.message || '')}</div>
+          <div style="font-size:11.5px;color:var(--text-secondary);margin-top:2px">${escHtml(r.url || '')} · ${r.count}× · ${new Date(r.last_at).toLocaleString('pt-PT')}</div>
+        </div>
+        <button onclick="adminDismissError(${r.id}, this)" style="background:var(--bg);border:1.5px solid var(--border);border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;color:var(--text-secondary);font-family:inherit;flex-shrink:0">Limpar</button>
+      </div>`).join('');
+  } catch (e) {
+    document.getElementById('adminErrList').innerHTML = '<div style="color:#ef4444;text-align:center;padding:24px">' + escHtml(e.message || 'Erro') + '</div>';
+  }
+}
+async function adminDismissError(id, btn) {
+  try { await apiFetch('/admin/client-errors/' + id, { method: 'DELETE' }); btn.closest('div[style]').parentElement ? btn.closest('div').remove() : null; } catch (_) {}
+  try { btn.closest('#adminErrList > div').remove(); } catch (_) {}
+}
+window.adminLoadErrors = adminLoadErrors;
+window.adminDismissError = adminDismissError;

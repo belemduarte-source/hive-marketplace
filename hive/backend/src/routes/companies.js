@@ -375,6 +375,30 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
       delete company.certidao_permanente;
       delete company.alvara;
     }
+    // Sinal de capacidade de resposta: mediana (min) entre a mensagem de um
+    // cliente e a resposta seguinte da empresa nos últimos 90 dias. Só é
+    // exposto com ≥3 amostras para não rotular empresas por um caso isolado.
+    try {
+      const { rows: rt } = await pool.query(
+        `WITH pares AS (
+           SELECT EXTRACT(EPOCH FROM (r.created_at - m.created_at)) / 60 AS mins
+             FROM messages m
+             JOIN LATERAL (
+               SELECT created_at FROM messages r
+                WHERE r.company_id = m.company_id
+                  AND lower(r.client_email) = lower(m.client_email)
+                  AND r.sender = 'company' AND r.created_at > m.created_at
+                ORDER BY r.created_at ASC LIMIT 1
+             ) r ON TRUE
+            WHERE m.company_id = $1 AND m.sender = 'client'
+              AND m.created_at > NOW() - INTERVAL '90 days'
+         )
+         SELECT (percentile_cont(0.5) WITHIN GROUP (ORDER BY mins))::int AS med,
+                COUNT(*)::int AS n
+           FROM pares`,
+        [req.params.id]);
+      if (rt[0] && rt[0].n >= 3 && rt[0].med != null) company.response_minutes = rt[0].med;
+    } catch (_) { /* sinal opcional — nunca bloqueia o detalhe */ }
     res.json(company);
   } catch (e) {
     next(e);

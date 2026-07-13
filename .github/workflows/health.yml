@@ -1,0 +1,21 @@
+# Vigia a produção de 10 em 10 minutos. Quando o workflow falha, o GitHub
+# envia email ao dono do repositório — alerta de indisponibilidade gratuito.
+name: health
+on:
+  schedule:
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - name: API health (com 2 novas tentativas para evitar falsos alarmes)
+        run: |
+          for i in 1 2 3; do
+            code=$(curl -s -o /tmp/h -w '%{http_code}' --max-time 20 "https://www.hivex.pt/api/health" || echo 000)
+            if [ "$code" = "200" ]; then echo "saudável (tentativa $i)"; exit 0; fi
+            echo "tentativa $i: HTTP $code"; sleep 30
+          done
+          echo "== corpo =="; cat /tmp/h || true
+          exit 1

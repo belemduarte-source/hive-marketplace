@@ -233,4 +233,20 @@ router.get('/visits', async (req, res, next) => {
   }
 });
 
+// ── Telemetria: erros de aplicação (web + api) ───────────────────────────────
+router.get('/client-errors', async (req, res, next) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT id, source, message, url, count, first_at, last_at
+         FROM client_errors ORDER BY last_at DESC LIMIT 100`);
+    res.json(rows);
+  } catch (e) { next(e); }
+});
+router.delete('/client-errors/:id', async (req, res, next) => {
+  try {
+    await pool.query('DELETE FROM client_errors WHERE id = $1', [req.params.id]);
+    res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+
 module.exports = router;

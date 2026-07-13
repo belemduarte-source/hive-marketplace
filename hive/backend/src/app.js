@@ -540,6 +540,64 @@ const MIGRATIONS = [
    )`,
   `CREATE INDEX IF NOT EXISTS idx_message_files_msg ON message_files(message_id)`,
   `CREATE INDEX IF NOT EXISTS idx_messages_created ON messages(created_at)`,
+
+  // v7: telemetria de erros, push, alertas guardados, definições, encomendas
+  // de destaque (Stripe), reviews verificadas, pesquisa trigram
+  `CREATE TABLE IF NOT EXISTS client_errors (
+     id BIGSERIAL PRIMARY KEY,
+     source TEXT NOT NULL DEFAULT 'web',
+     hash TEXT UNIQUE,
+     message TEXT,
+     stack TEXT,
+     url TEXT,
+     ua TEXT,
+     count INT NOT NULL DEFAULT 1,
+     first_at TIMESTAMPTZ DEFAULT NOW(),
+     last_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_client_errors_last ON client_errors(last_at DESC)`,
+  `CREATE TABLE IF NOT EXISTS push_subscriptions (
+     id BIGSERIAL PRIMARY KEY,
+     user_id BIGINT REFERENCES users(id) ON DELETE CASCADE,
+     endpoint TEXT UNIQUE NOT NULL,
+     keys JSONB NOT NULL,
+     created_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE TABLE IF NOT EXISTS saved_searches (
+     id BIGSERIAL PRIMARY KEY,
+     user_id BIGINT REFERENCES users(id) ON DELETE CASCADE,
+     email TEXT NOT NULL,
+     sector TEXT,
+     city TEXT,
+     country TEXT,
+     lat DOUBLE PRECISION,
+     lng DOUBLE PRECISION,
+     radius_km INT DEFAULT 50,
+     last_sent TIMESTAMPTZ DEFAULT NOW(),
+     created_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE TABLE IF NOT EXISTS app_settings (
+     key TEXT PRIMARY KEY,
+     value JSONB NOT NULL,
+     updated_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `CREATE TABLE IF NOT EXISTS feature_orders (
+     id BIGSERIAL PRIMARY KEY,
+     company_id BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+     user_id BIGINT REFERENCES users(id) ON DELETE SET NULL,
+     stripe_session TEXT UNIQUE,
+     status TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','paid','expired','canceled')),
+     months INT NOT NULL DEFAULT 1,
+     amount_cents INT,
+     paid_at TIMESTAMPTZ,
+     expires_at TIMESTAMPTZ,
+     created_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
+  `ALTER TABLE reviews ADD COLUMN IF NOT EXISTS verified_contact BOOLEAN NOT NULL DEFAULT FALSE`,
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS featured_until TIMESTAMPTZ`,
+  `CREATE EXTENSION IF NOT EXISTS pg_trgm`,
+  `CREATE INDEX IF NOT EXISTS idx_companies_name_trgm ON companies USING GIN (name gin_trgm_ops)`,
+  `CREATE INDEX IF NOT EXISTS idx_messages_co_email ON messages(company_id, client_email)`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -548,7 +606,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 6; // v6: chat attachments (message_files) + retention index
+const SCHEMA_VERSION = 7; // v7: telemetria, push, alertas, settings, feature_orders, trgm
 
 async function ensureSchema() {
   if (_migrated) return;
@@ -893,6 +951,29 @@ app.post('/api/assistant', assistantLimiter, async (req, res) => {
     console.error('[assistant] error', e && (e.stack || e.message || e));
     res.status(500).json({ error: 'Erro no assistente.' });
   }
+});
+
+// ── Telemetria de erros do frontend ──────────────────────────────────────────
+// Público (erros acontecem a visitantes anónimos), deduplicado por hash com
+// contador — a tabela não cresce com repetições. Payload minúsculo.
+app.post('/api/client-errors', async (req, res) => {
+  try {
+    const b = req.body || {};
+    const msg = String(b.message || '').slice(0, 500);
+    if (!msg) return res.json({ ok: true });
+    const stack = String(b.stack || '').slice(0, 1500);
+    const url = String(b.url || '').slice(0, 300);
+    const ua = String(req.headers['user-agent'] || '').slice(0, 200);
+    const hash = require('crypto').createHash('sha1')
+      .update('web|' + msg + '|' + stack.slice(0, 300)).digest('hex');
+    await require('./db').query(
+      `INSERT INTO client_errors (source, hash, message, stack, url, ua)
+       VALUES ('web', $1, $2, $3, $4, $5)
+       ON CONFLICT (hash) DO UPDATE
+         SET count = client_errors.count + 1, last_at = NOW(), url = EXCLUDED.url`,
+      [hash, msg, stack, url, ua]);
+    res.json({ ok: true });
+  } catch (_) { res.json({ ok: true }); }
 });
 
 app.use(errorHandler);
