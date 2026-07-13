@@ -11692,23 +11692,14 @@ function setNearbySort(k) {
   try { applyFilters.now(); } catch (_) { applyFilters(); }
 }
 window.setNearbySort = setNearbySort;
+// Os chips de filtros ativos tapavam a lista quando havia muitos setores
+// selecionados (parede de chips) — removidos; os setores ativos continuam
+// visíveis no dropdown de áreas e o painel mostra sempre a lista de empresas.
 function renderNearbyChips() {
   const box = document.getElementById('nearbyChips');
   if (!box) return;
-  const tr = translations[currentLang] || translations.pt;
-  const sc = tr.sectors || {};
-  const chips = [];
-  activeSectors.forEach(k => chips.push('<button class="nb-chip" onclick="toggleSector(\'' + k + '\')">' + escHtml(sc[k] || k) + ' ✕</button>'));
-  const slider = document.getElementById('radiusSlider');
-  const sv = slider ? parseInt(slider.value, 10) : 100;
-  if (sv < 100) {
-    const km = (typeof sliderToKm === 'function') ? Math.round(sliderToKm(sv)) : sv;
-    chips.push('<button class="nb-chip" onclick="document.getElementById(\'radiusSlider\').value=100;updateRadius(100);applyFilters()">' + km + ' km ✕</button>');
-  }
-  const kw = (typeof _keywordFilter !== 'undefined' && _keywordFilter) ? _keywordFilter : '';
-  if (kw) chips.push('<button class="nb-chip" onclick="document.getElementById(\'searchUnified\').value=\'\';_keywordFilter=\'\';applyFilters()">&quot;' + escHtml(kw.slice(0, 18)) + '&quot; ✕</button>');
-  box.innerHTML = chips.join('');
-  box.style.display = chips.length ? '' : 'none';
+  box.innerHTML = '';
+  box.style.display = 'none';
 }
 window.renderNearbyChips = renderNearbyChips;
 
