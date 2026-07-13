@@ -7564,10 +7564,19 @@ window.chatDownload = chatDownload;
 async function requestFeature(companyId, btn) {
   if (btn) btn.disabled = true;
   try {
+    // Com Stripe configurado o destaque é self-service (checkout);
+    // sem Stripe mantém-se o pedido ao admin por email
+    let st = window._billingStatus;
+    if (!st) { try { st = window._billingStatus = await apiFetch('/billing/status'); } catch (_) { st = {}; } }
+    if (st && st.enabled) {
+      const r = await apiFetch('/billing/feature-checkout', { method: 'POST', body: { companyId, months: 1 } });
+      if (r && r.url) { window.location.href = r.url; return; }
+    }
     await api.requestFeature(companyId);
     showToast(t('featureSent'));
   } catch (e) {
     showToast(e.message || 'Erro');
+  } finally {
     if (btn) btn.disabled = false;
   }
 }
@@ -12180,3 +12189,17 @@ async function deleteSearchAlert(id, btn) {
   } catch (e) { showToast(e.message || 'Erro'); }
 }
 window.deleteSearchAlert = deleteSearchAlert;
+
+
+// Retorno do checkout Stripe (?feature=success|cancel)
+(function () {
+  try {
+    const f = new URLSearchParams(location.search).get('feature');
+    if (!f) return;
+    setTimeout(() => {
+      try { showToast(f === 'success' ? '✅ Pagamento confirmado — o destaque fica ativo em instantes!' : 'Pagamento cancelado.'); } catch (_) {}
+    }, 1200);
+    const url = new URL(location.href); url.searchParams.delete('feature');
+    history.replaceState({}, '', url.toString());
+  } catch (_) {}
+})();

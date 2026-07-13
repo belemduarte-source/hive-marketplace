@@ -5,6 +5,28 @@ const { requireAuth, requireAdmin, optionalAuth, ensureAdminFlag } = require('..
 const reviewsRouter = require('./reviews');
 // Item de portfólio aceitável: URL http(s) curto OU imagem inline até ~300KB
 const _pfOk = u => typeof u === 'string' && (/^https?:\/\//.test(u) ? u.length < 2048 : (/^data:image\//.test(u) && u.length < 400000));
+// Portfólio → Vercel Blob quando BLOB_READ_WRITE_TOKEN existe: as fotos saem
+// da BD (base64) para object storage com URL público. Sem token, mantém-se o
+// base64 inline — o renderer do frontend aceita ambos os formatos.
+async function _portfolioToBlob(list) {
+  if (!process.env.BLOB_READ_WRITE_TOKEN || !Array.isArray(list) || !list.length) return list;
+  let put;
+  try { ({ put } = require('@vercel/blob')); } catch (_) { return list; }
+  const out = [];
+  for (const u of list) {
+    if (typeof u !== 'string' || !u.startsWith('data:image/')) { out.push(u); continue; }
+    try {
+      const m = /^data:(image\/[a-z+]+);base64,(.+)$/i.exec(u);
+      if (!m) { out.push(u); continue; }
+      const buf = Buffer.from(m[2], 'base64');
+      const ext = m[1].includes('png') ? 'png' : m[1].includes('webp') ? 'webp' : 'jpg';
+      const nome = 'portfolio/' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8) + '.' + ext;
+      const blob = await put(nome, buf, { access: 'public', contentType: m[1] });
+      out.push(blob.url);
+    } catch (e) { console.warn('[blob] upload falhou, mantém inline:', e.message); out.push(u); }
+  }
+  return out;
+}
 const { sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail, sendContactEmail, sendBrandedEmail, esc } = require('../email');
 const { pushToUser } = require('../push');
 
@@ -569,7 +591,7 @@ router.post('/', requireAuth, async (req, res, next) => {
         description || null,
         foundedSafe,
         business_hours || null,
-        Array.isArray(portfolio_images) ? portfolio_images.filter(_pfOk).slice(0, 6) : [],
+        await _portfolioToBlob(Array.isArray(portfolio_images) ? portfolio_images.filter(_pfOk).slice(0, 6) : []),
         lat,
         lng,
         emoji || '🏢',
@@ -618,7 +640,7 @@ router.put('/:id', requireAuth, async (req, res, next) => {
     const yr = founded_year != null ? parseInt(founded_year, 10) : null;
     const foundedSafe = (yr && yr >= 1800 && yr <= new Date().getFullYear()) ? yr
                       : (founded_year === null ? null : undefined);
-    const photosSafe = Array.isArray(portfolio_images) ? portfolio_images.filter(_pfOk).slice(0, 6) : undefined;
+    const photosSafe = Array.isArray(portfolio_images) ? await _portfolioToBlob(portfolio_images.filter(_pfOk).slice(0, 6)) : undefined;
     // Logo semantics: valid data URL → replace; '' → remove; null/absent/invalid → keep.
     // (This was missing entirely — editing a company silently dropped the
     // uploaded logo, so pre-existing companies could never gain one.)

@@ -30,7 +30,7 @@ jobs:
       - name: Parse-check frontend JS files
         working-directory: hive/frontend
         run: |
-          for f in api.js audit.js serve.js sw.js; do
+          for f in api.js audit.js serve.js sw.js app.v*.js; do
             [ -f "$f" ] && node --check "$f"
           done
 
@@ -53,3 +53,30 @@ jobs:
           "
           node --check _inline_check.js
           rm _inline_check.js
+
+  # Smoke em produção após push no main: espera o deploy automático do Vercel
+  # e verifica os endpoints críticos. Falha → email do GitHub ao dono do repo.
+  smoke-prod:
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    needs: syntax-check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Espera pelo deploy do Vercel
+        run: sleep 120
+      - name: Endpoints críticos
+        run: |
+          fail=0
+          check() {
+            local nome="$1" url="$2"
+            for i in 1 2 3; do
+              code=$(curl -s -o /dev/null -w '%{http_code}' --max-time 20 "$url" || echo 000)
+              if [ "$code" = "200" ]; then echo "OK $nome"; return 0; fi
+              sleep 25
+            done
+            echo "FALHOU $nome: HTTP $code"; fail=1
+          }
+          check "health"    "https://www.hivex.pt/api/health"
+          check "landing"   "https://www.hivex.pt/"
+          check "companies" "https://www.hivex.pt/api/companies?limit=1"
+          check "sitemap"   "https://www.hivex.pt/sitemap.xml"
+          exit $fail

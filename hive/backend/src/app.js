@@ -98,6 +98,10 @@ app.use(cors(corsOptions));
 // Chat messages may carry up to 3 base64 documents of 2 MB each (~8.2 MB of
 // JSON) — give those routes their own parser; everything else keeps the tight
 // 600 kb cap (headroom for an inline company logo data URL).
+// Stripe webhook: corpo RAW obrigatório para verificar a assinatura — tem de
+// ficar ANTES de qualquer express.json()
+app.post('/api/billing/webhook', express.raw({ type: 'application/json' }), require('./routes/billing').webhookHandler);
+
 app.use('/api/messages', express.json({ limit: '9mb' }));
 app.use('/api/companies', express.json({ limit: '4mb' }));  // logo + até 6 fotos de portfólio inline
 app.use(express.json({ limit: '600kb' }));
@@ -678,6 +682,7 @@ app.post('/api/companies/:id/contact', contactLimiter); // guest-contact spam gu
 app.post('/api/claims/:companyId', claimLimiter);       // claim-code email guard
 app.post('/api/quote-requests', rfqLimiter);            // RFQ email fan-out guard
 app.use('/api', marketplaceRouter);
+app.use('/api', require('./routes/billing').router);
 app.use('/api/companies', companiesRouter);
 app.use('/api/auth', authRouter);
 app.use('/api/admin', adminRouter);
