@@ -7039,8 +7039,10 @@ function _renderDetailPanel(c) {
         if (!hint) {
           hint = document.createElement('div');
           hint.id = 'dpNoEmailHint';
-          hint.style.cssText = 'flex:1;min-width:0;font-size:12px;color:var(--muted);align-self:center;line-height:1.35';
-          quoteBar.insertBefore(hint, quoteBar.firstChild);
+          // linha própria a 100% NO FIM da barra — a versão flex:1 no início
+          // disputava a linha com o "Como chegar" e esmagava-o contra o logo
+          hint.style.cssText = 'flex:1 1 100%;min-width:100%;order:99;font-size:12.5px;color:var(--muted);line-height:1.4;margin-top:2px';
+          quoteBar.appendChild(hint);
         }
         hint.textContent = t('dpNoEmail');
         hint.style.display = '';
