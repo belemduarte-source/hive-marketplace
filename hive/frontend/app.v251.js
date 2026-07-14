@@ -47,7 +47,7 @@ const translations = {
     sortBy:'Ordenar Por', sortRating:'Melhor Avaliação', sortReviews:'Mais Avaliados', sortName:'Nome A–Z',
     sectorArea:'Área de Atividade', minRating:'Avaliação Mínima',
     ratingAny:'Qualquer avaliação', ratingOrMore:'ou mais',
-    searchRadius:'Raio de Pesquisa', featured:'Destaque', ignoreRadius:'Não Usar Raio de Pesquisa', nearbyTitle:'Empresas Próximas', contactYourName:'O seu nome', contactYourEmail:'O seu email (para a empresa responder)', contactNameReq:'Indique o seu nome', contactEmailReq:'Indique um email válido', retryBtn:'Tentar novamente', clearFiltersBtn:'Limpar filtros', resultsCount:'empresas encontradas', chatToday:'Hoje', chatYesterday:'Ontem', alertSaveBtn:'Avisar-me de novas', alertSaved:'Alerta criado! Receberá um email quando houver novas empresas.', alertsTitle:'Os meus alertas', alertDeleted:'Alerta removido', pushBtn:'Ativar notificações', pushOn:'Notificações ativas neste dispositivo', rvVerified:'contacto verificado', dpStreetTitle:'Vista de Rua (Street View)', svOpenExternal:'Abrir no Google Maps ↗', svFallback:'Se a vista não carregar, ', svFallbackLink:'abra no Google Maps', claimLink:'🏷 É a sua empresa? Reclame esta ficha', claimTitle:'Reclamar ficha da empresa', claimIntro:'Para provar que gere esta empresa, enviamos um código de 6 dígitos para o email público da ficha. Com a ficha reclamada pode editar os dados, responder a avaliações e ver estatísticas.', claimSendBtn:'Enviar código para o email da ficha', claimSentTo:'Código enviado para', claimVerifyBtn:'Confirmar código', claimSuccess:'Ficha reclamada! Já pode editar os dados e ver as mensagens.', claimNeedLogin:'Inicie sessão para reclamar a ficha', claimCodeInvalid:'Introduza o código de 6 dígitos', rfqCta:'Pedir Orçamentos Grátis', rfqTitle:'Pedir orçamentos', rfqIntro:'Descreva o trabalho — enviamos o pedido às empresas certas da sua zona e as propostas chegam diretamente ao seu email.', rfqSector:'Área de atividade', rfqDesc:'Descrição do trabalho', rfqDescPh:'Ex.: Remodelação completa de casa de banho (~4 m²): substituição de loiças, azulejos e canalização.', rfqCity:'Localidade', rfqTimeline:'Prazo desejado', rfqBudget:'Orçamento indicativo', rfqPhone:'Telefone (opcional)', rfqEmail:'O seu email', rfqSend:'Enviar pedido às empresas', rfqSentA:'Pedido enviado a', rfqSentB:'empresas! As propostas chegarão ao seu email.', rfqDescShort:'Descreva o trabalho com mais detalhe (mínimo 20 caracteres)', rfqCityReq:'Indique a localidade', tlFlex:'Flexível', tlUrgent:'Urgente', tl1m:'No próximo mês', tl3m:'Nos próximos 3 meses', budNS:'Ainda não sei', inboxBtn:'Mensagens de clientes', inboxTitle:'Mensagens de clientes', inboxEmpty:'Ainda não há mensagens.', inboxReplyPh:'Escreva a sua resposta…', inboxReplySend:'Responder', inboxReplySent:'Resposta enviada ao cliente', inboxYou:'Você', featureBtn:'Pedir destaque', featureSent:'Pedido de destaque enviado ao administrador',
+    searchRadius:'Raio de Pesquisa', featured:'Destaque', ignoreRadius:'Não Usar Raio de Pesquisa', nearbyTitle:'Empresas Próximas', contactYourName:'O seu nome', contactYourEmail:'O seu email (para a empresa responder)', contactNameReq:'Indique o seu nome', contactEmailReq:'Indique um email válido', retryBtn:'Tentar novamente', clearFiltersBtn:'Limpar filtros', resultsCount:'empresas encontradas', chatToday:'Hoje', chatYesterday:'Ontem', alertSaveBtn:'Avisar-me de novas', alertSaved:'Alerta criado! Receberá um email quando houver novas empresas.', alertsTitle:'Os meus alertas', alertDeleted:'Alerta removido', pushBtn:'Ativar notificações', pushOn:'Notificações ativas neste dispositivo', rvVerified:'contacto verificado', navHow:'Como funciona', dpCompare:'Comparar', dpStreetTitle:'Vista de Rua (Street View)', svOpenExternal:'Abrir no Google Maps ↗', svFallback:'Se a vista não carregar, ', svFallbackLink:'abra no Google Maps', claimLink:'🏷 É a sua empresa? Reclame esta ficha', claimTitle:'Reclamar ficha da empresa', claimIntro:'Para provar que gere esta empresa, enviamos um código de 6 dígitos para o email público da ficha. Com a ficha reclamada pode editar os dados, responder a avaliações e ver estatísticas.', claimSendBtn:'Enviar código para o email da ficha', claimSentTo:'Código enviado para', claimVerifyBtn:'Confirmar código', claimSuccess:'Ficha reclamada! Já pode editar os dados e ver as mensagens.', claimNeedLogin:'Inicie sessão para reclamar a ficha', claimCodeInvalid:'Introduza o código de 6 dígitos', rfqCta:'Pedir Orçamentos Grátis', rfqTitle:'Pedir orçamentos', rfqIntro:'Descreva o trabalho — enviamos o pedido às empresas certas da sua zona e as propostas chegam diretamente ao seu email.', rfqSector:'Área de atividade', rfqDesc:'Descrição do trabalho', rfqDescPh:'Ex.: Remodelação completa de casa de banho (~4 m²): substituição de loiças, azulejos e canalização.', rfqCity:'Localidade', rfqTimeline:'Prazo desejado', rfqBudget:'Orçamento indicativo', rfqPhone:'Telefone (opcional)', rfqEmail:'O seu email', rfqSend:'Enviar pedido às empresas', rfqSentA:'Pedido enviado a', rfqSentB:'empresas! As propostas chegarão ao seu email.', rfqDescShort:'Descreva o trabalho com mais detalhe (mínimo 20 caracteres)', rfqCityReq:'Indique a localidade', tlFlex:'Flexível', tlUrgent:'Urgente', tl1m:'No próximo mês', tl3m:'Nos próximos 3 meses', budNS:'Ainda não sei', inboxBtn:'Mensagens de clientes', inboxTitle:'Mensagens de clientes', inboxEmpty:'Ainda não há mensagens.', inboxReplyPh:'Escreva a sua resposta…', inboxReplySend:'Responder', inboxReplySent:'Resposta enviada ao cliente', inboxYou:'Você', featureBtn:'Pedir destaque', featureSent:'Pedido de destaque enviado ao administrador',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Novo Registo',
     specialties:'Especialidades',
     mapLive:'Mapa em tempo real', mapCity:'Lisboa, Portugal',
@@ -459,7 +459,7 @@ const translations = {
     sortBy:'Sort By', sortRating:'Best Rating', sortReviews:'Most Reviewed', sortName:'Name A–Z',
     sectorArea:'Activity Area', minRating:'Minimum Rating',
     ratingAny:'Any rating', ratingOrMore:'or more',
-    searchRadius:'Search Radius', featured:'Featured', ignoreRadius:'Don\'t Use Search Radius', nearbyTitle:'Nearby Companies', contactYourName:'Your name', contactYourEmail:'Your email (so the company can reply)', contactNameReq:'Enter your name', contactEmailReq:'Enter a valid email', retryBtn:'Try again', clearFiltersBtn:'Clear filters', resultsCount:'companies found', chatToday:'Today', chatYesterday:'Yesterday', alertSaveBtn:'Alert me to new ones', alertSaved:'Alert created! You will get an email when new companies appear.', alertsTitle:'My alerts', alertDeleted:'Alert removed', pushBtn:'Enable notifications', pushOn:'Notifications active on this device', rvVerified:'verified contact', dpStreetTitle:'Street View', svOpenExternal:'Open in Google Maps ↗', svFallback:'If the view does not load, ', svFallbackLink:'open it in Google Maps', claimLink:'🏷 Is this your business? Claim this listing', claimTitle:'Claim this listing', claimIntro:'To prove you manage this business we send a 6-digit code to the listing\u2019s public email. Once claimed, you can edit the details, reply to reviews and see analytics.', claimSendBtn:'Send code to the listing email', claimSentTo:'Code sent to', claimVerifyBtn:'Confirm code', claimSuccess:'Listing claimed! You can now edit it and see messages.', claimNeedLogin:'Sign in to claim this listing', claimCodeInvalid:'Enter the 6-digit code', rfqCta:'Get Free Quotes', rfqTitle:'Request quotes', rfqIntro:'Describe the job — we send it to the right companies in your area and proposals arrive in your email.', rfqSector:'Activity area', rfqDesc:'Job description', rfqDescPh:'E.g.: Full bathroom renovation (~4 m²): new fixtures, tiles and plumbing.', rfqCity:'Town/City', rfqTimeline:'Desired timeline', rfqBudget:'Indicative budget', rfqPhone:'Phone (optional)', rfqEmail:'Your email', rfqSend:'Send request to companies', rfqSentA:'Request sent to', rfqSentB:'companies! Proposals will arrive by email.', rfqDescShort:'Describe the job in more detail (min. 20 characters)', rfqCityReq:'Enter the town/city', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Next month', tl3m:'Within 3 months', budNS:'Not sure yet', inboxBtn:'Client messages', inboxTitle:'Client messages', inboxEmpty:'No messages yet.', inboxReplyPh:'Write your reply…', inboxReplySend:'Reply', inboxReplySent:'Reply sent to the client', inboxYou:'You', featureBtn:'Request featuring', featureSent:'Feature request sent to the admin',
+    searchRadius:'Search Radius', featured:'Featured', ignoreRadius:'Don\'t Use Search Radius', nearbyTitle:'Nearby Companies', contactYourName:'Your name', contactYourEmail:'Your email (so the company can reply)', contactNameReq:'Enter your name', contactEmailReq:'Enter a valid email', retryBtn:'Try again', clearFiltersBtn:'Clear filters', resultsCount:'companies found', chatToday:'Today', chatYesterday:'Yesterday', alertSaveBtn:'Alert me to new ones', alertSaved:'Alert created! You will get an email when new companies appear.', alertsTitle:'My alerts', alertDeleted:'Alert removed', pushBtn:'Enable notifications', pushOn:'Notifications active on this device', rvVerified:'verified contact', navHow:'How it works', dpCompare:'Compare', dpStreetTitle:'Street View', svOpenExternal:'Open in Google Maps ↗', svFallback:'If the view does not load, ', svFallbackLink:'open it in Google Maps', claimLink:'🏷 Is this your business? Claim this listing', claimTitle:'Claim this listing', claimIntro:'To prove you manage this business we send a 6-digit code to the listing\u2019s public email. Once claimed, you can edit the details, reply to reviews and see analytics.', claimSendBtn:'Send code to the listing email', claimSentTo:'Code sent to', claimVerifyBtn:'Confirm code', claimSuccess:'Listing claimed! You can now edit it and see messages.', claimNeedLogin:'Sign in to claim this listing', claimCodeInvalid:'Enter the 6-digit code', rfqCta:'Get Free Quotes', rfqTitle:'Request quotes', rfqIntro:'Describe the job — we send it to the right companies in your area and proposals arrive in your email.', rfqSector:'Activity area', rfqDesc:'Job description', rfqDescPh:'E.g.: Full bathroom renovation (~4 m²): new fixtures, tiles and plumbing.', rfqCity:'Town/City', rfqTimeline:'Desired timeline', rfqBudget:'Indicative budget', rfqPhone:'Phone (optional)', rfqEmail:'Your email', rfqSend:'Send request to companies', rfqSentA:'Request sent to', rfqSentB:'companies! Proposals will arrive by email.', rfqDescShort:'Describe the job in more detail (min. 20 characters)', rfqCityReq:'Enter the town/city', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Next month', tl3m:'Within 3 months', budNS:'Not sure yet', inboxBtn:'Client messages', inboxTitle:'Client messages', inboxEmpty:'No messages yet.', inboxReplyPh:'Write your reply…', inboxReplySend:'Reply', inboxReplySent:'Reply sent to the client', inboxYou:'You', featureBtn:'Request featuring', featureSent:'Feature request sent to the admin',
     topRated:'Top Rated', verified:'Verified', newEntry:'New Entry',
     specialties:'Specialties',
     mapLive:'Live map', mapCity:'Lisbon, Portugal',
@@ -862,7 +862,7 @@ const translations = {
     sortBy:'Trier Par', sortRating:'Meilleure Évaluation', sortReviews:'Plus Évalués', sortName:'Nom A–Z',
     sectorArea:"Secteur d'Activité", minRating:'Évaluation Minimale',
     ratingAny:'Toute évaluation', ratingOrMore:'ou plus',
-    searchRadius:'Rayon de Recherche', featured:'En Vedette', ignoreRadius:'Ne pas utiliser le rayon', nearbyTitle:'Entreprises à Proximité', contactYourName:'Votre nom', contactYourEmail:'Votre email (pour la réponse de l\'entreprise)', contactNameReq:'Indiquez votre nom', contactEmailReq:'Indiquez un email valide', retryBtn:'Réessayer', clearFiltersBtn:'Effacer les filtres', resultsCount:'entreprises trouvées', chatToday:"Aujourd'hui", chatYesterday:'Hier', alertSaveBtn:'M’alerter des nouveautés', alertSaved:'Alerte créée !', alertsTitle:'Mes alertes', alertDeleted:'Alerte supprimée', pushBtn:'Activer les notifications', pushOn:'Notifications actives', rvVerified:'contact vérifié', dpStreetTitle:'Vue de la rue (Street View)', svOpenExternal:'Ouvrir dans Google Maps ↗', svFallback:'Si la vue ne se charge pas, ', svFallbackLink:'ouvrez-la dans Google Maps', claimLink:'🏷 C\u2019est votre entreprise ? Revendiquez cette fiche', claimTitle:'Revendiquer la fiche', claimIntro:'Pour prouver que vous gérez cette entreprise, nous envoyons un code à 6 chiffres à l\u2019email public de la fiche. Une fois revendiquée, vous pouvez la modifier, répondre aux avis et voir les statistiques.', claimSendBtn:'Envoyer le code à l\u2019email de la fiche', claimSentTo:'Code envoyé à', claimVerifyBtn:'Confirmer le code', claimSuccess:'Fiche revendiquée !', claimNeedLogin:'Connectez-vous pour revendiquer la fiche', claimCodeInvalid:'Saisissez le code à 6 chiffres', rfqCta:'Devis Gratuits', rfqTitle:'Demander des devis', rfqIntro:'Décrivez les travaux — nous envoyons la demande aux bonnes entreprises de votre zone et les propositions arrivent par email.', rfqSector:'Domaine d\u2019activité', rfqDesc:'Description des travaux', rfqDescPh:'Ex. : Rénovation complète de salle de bain (~4 m²).', rfqCity:'Localité', rfqTimeline:'Délai souhaité', rfqBudget:'Budget indicatif', rfqPhone:'Téléphone (optionnel)', rfqEmail:'Votre email', rfqSend:'Envoyer la demande', rfqSentA:'Demande envoyée à', rfqSentB:'entreprises ! Les propositions arriveront par email.', rfqDescShort:'Décrivez les travaux plus en détail (min. 20 caractères)', rfqCityReq:'Indiquez la localité', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Le mois prochain', tl3m:'Sous 3 mois', budNS:'Je ne sais pas encore', inboxBtn:'Messages clients', inboxTitle:'Messages clients', inboxEmpty:'Pas encore de messages.', inboxReplyPh:'Écrivez votre réponse…', inboxReplySend:'Répondre', inboxReplySent:'Réponse envoyée', inboxYou:'Vous', featureBtn:'Demander la mise en avant', featureSent:'Demande envoyée à l\u2019administrateur',
+    searchRadius:'Rayon de Recherche', featured:'En Vedette', ignoreRadius:'Ne pas utiliser le rayon', nearbyTitle:'Entreprises à Proximité', contactYourName:'Votre nom', contactYourEmail:'Votre email (pour la réponse de l\'entreprise)', contactNameReq:'Indiquez votre nom', contactEmailReq:'Indiquez un email valide', retryBtn:'Réessayer', clearFiltersBtn:'Effacer les filtres', resultsCount:'entreprises trouvées', chatToday:"Aujourd'hui", chatYesterday:'Hier', alertSaveBtn:'M’alerter des nouveautés', alertSaved:'Alerte créée !', alertsTitle:'Mes alertes', alertDeleted:'Alerte supprimée', pushBtn:'Activer les notifications', pushOn:'Notifications actives', rvVerified:'contact vérifié', navHow:'Comment ça marche', dpCompare:'Comparer', dpStreetTitle:'Vue de la rue (Street View)', svOpenExternal:'Ouvrir dans Google Maps ↗', svFallback:'Si la vue ne se charge pas, ', svFallbackLink:'ouvrez-la dans Google Maps', claimLink:'🏷 C\u2019est votre entreprise ? Revendiquez cette fiche', claimTitle:'Revendiquer la fiche', claimIntro:'Pour prouver que vous gérez cette entreprise, nous envoyons un code à 6 chiffres à l\u2019email public de la fiche. Une fois revendiquée, vous pouvez la modifier, répondre aux avis et voir les statistiques.', claimSendBtn:'Envoyer le code à l\u2019email de la fiche', claimSentTo:'Code envoyé à', claimVerifyBtn:'Confirmer le code', claimSuccess:'Fiche revendiquée !', claimNeedLogin:'Connectez-vous pour revendiquer la fiche', claimCodeInvalid:'Saisissez le code à 6 chiffres', rfqCta:'Devis Gratuits', rfqTitle:'Demander des devis', rfqIntro:'Décrivez les travaux — nous envoyons la demande aux bonnes entreprises de votre zone et les propositions arrivent par email.', rfqSector:'Domaine d\u2019activité', rfqDesc:'Description des travaux', rfqDescPh:'Ex. : Rénovation complète de salle de bain (~4 m²).', rfqCity:'Localité', rfqTimeline:'Délai souhaité', rfqBudget:'Budget indicatif', rfqPhone:'Téléphone (optionnel)', rfqEmail:'Votre email', rfqSend:'Envoyer la demande', rfqSentA:'Demande envoyée à', rfqSentB:'entreprises ! Les propositions arriveront par email.', rfqDescShort:'Décrivez les travaux plus en détail (min. 20 caractères)', rfqCityReq:'Indiquez la localité', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Le mois prochain', tl3m:'Sous 3 mois', budNS:'Je ne sais pas encore', inboxBtn:'Messages clients', inboxTitle:'Messages clients', inboxEmpty:'Pas encore de messages.', inboxReplyPh:'Écrivez votre réponse…', inboxReplySend:'Répondre', inboxReplySent:'Réponse envoyée', inboxYou:'Vous', featureBtn:'Demander la mise en avant', featureSent:'Demande envoyée à l\u2019administrateur',
     topRated:'Mieux Noté', verified:'Vérifié', newEntry:'Nouveau Enregistrement',
     specialties:'Spécialités',
     mapLive:'Carte en direct', mapCity:'Lisbonne, Portugal',
@@ -1267,7 +1267,7 @@ const translations = {
     sortBy:'Ordenar Por', sortRating:'Mejor Valoradas', sortReviews:'Más Valoradas', sortName:'Nombre A–Z',
     sectorArea:'Área de Actividad', minRating:'Valoración Mínima',
     ratingAny:'Cualquier valoración', ratingOrMore:'o más',
-    searchRadius:'Radio de Búsqueda', featured:'Destacados', ignoreRadius:'No Usar Radio de Búsqueda', nearbyTitle:'Empresas Cercanas', contactYourName:'Su nombre', contactYourEmail:'Su email (para que la empresa responda)', contactNameReq:'Indique su nombre', contactEmailReq:'Indique un email válido', retryBtn:'Intentar de nuevo', clearFiltersBtn:'Borrar filtros', resultsCount:'empresas encontradas', chatToday:'Hoy', chatYesterday:'Ayer', alertSaveBtn:'Avisarme de nuevas', alertSaved:'¡Alerta creada!', alertsTitle:'Mis alertas', alertDeleted:'Alerta eliminada', pushBtn:'Activar notificaciones', pushOn:'Notificaciones activas', rvVerified:'contacto verificado', dpStreetTitle:'Vista de calle (Street View)', svOpenExternal:'Abrir en Google Maps ↗', svFallback:'Si la vista no carga, ', svFallbackLink:'ábrala en Google Maps', claimLink:'🏷 ¿Es su empresa? Reclame esta ficha', claimTitle:'Reclamar ficha de la empresa', claimIntro:'Para demostrar que gestiona esta empresa, enviamos un código de 6 dígitos al email público de la ficha. Una vez reclamada, puede editar los datos, responder a reseñas y ver estadísticas.', claimSendBtn:'Enviar código al email de la ficha', claimSentTo:'Código enviado a', claimVerifyBtn:'Confirmar código', claimSuccess:'¡Ficha reclamada!', claimNeedLogin:'Inicie sesión para reclamar la ficha', claimCodeInvalid:'Introduzca el código de 6 dígitos', rfqCta:'Pedir Presupuestos Gratis', rfqTitle:'Pedir presupuestos', rfqIntro:'Describa el trabajo — lo enviamos a las empresas adecuadas de su zona y las propuestas llegan a su email.', rfqSector:'Área de actividad', rfqDesc:'Descripción del trabajo', rfqDescPh:'Ej.: Reforma completa de baño (~4 m²).', rfqCity:'Localidad', rfqTimeline:'Plazo deseado', rfqBudget:'Presupuesto indicativo', rfqPhone:'Teléfono (opcional)', rfqEmail:'Su email', rfqSend:'Enviar solicitud', rfqSentA:'Solicitud enviada a', rfqSentB:'empresas. Las propuestas llegarán por email.', rfqDescShort:'Describa el trabajo con más detalle (mín. 20 caracteres)', rfqCityReq:'Indique la localidad', tlFlex:'Flexible', tlUrgent:'Urgente', tl1m:'El próximo mes', tl3m:'En 3 meses', budNS:'Aún no lo sé', inboxBtn:'Mensajes de clientes', inboxTitle:'Mensajes de clientes', inboxEmpty:'Aún no hay mensajes.', inboxReplyPh:'Escriba su respuesta…', inboxReplySend:'Responder', inboxReplySent:'Respuesta enviada', inboxYou:'Usted', featureBtn:'Pedir destacado', featureSent:'Solicitud enviada al administrador',
+    searchRadius:'Radio de Búsqueda', featured:'Destacados', ignoreRadius:'No Usar Radio de Búsqueda', nearbyTitle:'Empresas Cercanas', contactYourName:'Su nombre', contactYourEmail:'Su email (para que la empresa responda)', contactNameReq:'Indique su nombre', contactEmailReq:'Indique un email válido', retryBtn:'Intentar de nuevo', clearFiltersBtn:'Borrar filtros', resultsCount:'empresas encontradas', chatToday:'Hoy', chatYesterday:'Ayer', alertSaveBtn:'Avisarme de nuevas', alertSaved:'¡Alerta creada!', alertsTitle:'Mis alertas', alertDeleted:'Alerta eliminada', pushBtn:'Activar notificaciones', pushOn:'Notificaciones activas', rvVerified:'contacto verificado', navHow:'Cómo funciona', dpCompare:'Comparar', dpStreetTitle:'Vista de calle (Street View)', svOpenExternal:'Abrir en Google Maps ↗', svFallback:'Si la vista no carga, ', svFallbackLink:'ábrala en Google Maps', claimLink:'🏷 ¿Es su empresa? Reclame esta ficha', claimTitle:'Reclamar ficha de la empresa', claimIntro:'Para demostrar que gestiona esta empresa, enviamos un código de 6 dígitos al email público de la ficha. Una vez reclamada, puede editar los datos, responder a reseñas y ver estadísticas.', claimSendBtn:'Enviar código al email de la ficha', claimSentTo:'Código enviado a', claimVerifyBtn:'Confirmar código', claimSuccess:'¡Ficha reclamada!', claimNeedLogin:'Inicie sesión para reclamar la ficha', claimCodeInvalid:'Introduzca el código de 6 dígitos', rfqCta:'Pedir Presupuestos Gratis', rfqTitle:'Pedir presupuestos', rfqIntro:'Describa el trabajo — lo enviamos a las empresas adecuadas de su zona y las propuestas llegan a su email.', rfqSector:'Área de actividad', rfqDesc:'Descripción del trabajo', rfqDescPh:'Ej.: Reforma completa de baño (~4 m²).', rfqCity:'Localidad', rfqTimeline:'Plazo deseado', rfqBudget:'Presupuesto indicativo', rfqPhone:'Teléfono (opcional)', rfqEmail:'Su email', rfqSend:'Enviar solicitud', rfqSentA:'Solicitud enviada a', rfqSentB:'empresas. Las propuestas llegarán por email.', rfqDescShort:'Describa el trabajo con más detalle (mín. 20 caracteres)', rfqCityReq:'Indique la localidad', tlFlex:'Flexible', tlUrgent:'Urgente', tl1m:'El próximo mes', tl3m:'En 3 meses', budNS:'Aún no lo sé', inboxBtn:'Mensajes de clientes', inboxTitle:'Mensajes de clientes', inboxEmpty:'Aún no hay mensajes.', inboxReplyPh:'Escriba su respuesta…', inboxReplySend:'Responder', inboxReplySent:'Respuesta enviada', inboxYou:'Usted', featureBtn:'Pedir destacado', featureSent:'Solicitud enviada al administrador',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Nuevo Registro',
     specialties:'Especialidades',
     mapLive:'Mapa en tiempo real', mapCity:'Lisboa, Portugal',
@@ -1666,7 +1666,7 @@ const translations = {
     sortBy:'Sortieren nach', sortRating:'Beste Bewertung', sortReviews:'Meiste Bewertungen', sortName:'Name A–Z',
     sectorArea:'Tätigkeitsbereich', minRating:'Mindestbewertung',
     ratingAny:'Beliebige Bewertung', ratingOrMore:'oder mehr',
-    searchRadius:'Suchradius', featured:'Empfohlen', ignoreRadius:'Suchradius nicht verwenden', nearbyTitle:'Unternehmen in der Nähe', contactYourName:'Ihr Name', contactYourEmail:'Ihre E-Mail (für die Antwort der Firma)', contactNameReq:'Geben Sie Ihren Namen an', contactEmailReq:'Geben Sie eine gültige E-Mail an', retryBtn:'Erneut versuchen', clearFiltersBtn:'Filter zurücksetzen', resultsCount:'Unternehmen gefunden', chatToday:'Heute', chatYesterday:'Gestern', alertSaveBtn:'Bei neuen benachrichtigen', alertSaved:'Alarm erstellt!', alertsTitle:'Meine Alarme', alertDeleted:'Alarm entfernt', pushBtn:'Benachrichtigungen aktivieren', pushOn:'Benachrichtigungen aktiv', rvVerified:'verifizierter Kontakt', dpStreetTitle:'Straßenansicht (Street View)', svOpenExternal:'In Google Maps öffnen ↗', svFallback:'Wenn die Ansicht nicht lädt, ', svFallbackLink:'in Google Maps öffnen', claimLink:'🏷 Ist das Ihr Unternehmen? Eintrag übernehmen', claimTitle:'Eintrag übernehmen', claimIntro:'Zum Nachweis senden wir einen 6-stelligen Code an die öffentliche E-Mail des Eintrags. Danach können Sie Daten bearbeiten, auf Bewertungen antworten und Statistiken sehen.', claimSendBtn:'Code an die Eintrags-E-Mail senden', claimSentTo:'Code gesendet an', claimVerifyBtn:'Code bestätigen', claimSuccess:'Eintrag übernommen!', claimNeedLogin:'Zum Übernehmen bitte anmelden', claimCodeInvalid:'6-stelligen Code eingeben', rfqCta:'Kostenlose Angebote', rfqTitle:'Angebote anfragen', rfqIntro:'Beschreiben Sie die Arbeit — wir senden die Anfrage an passende Firmen in Ihrer Region; Angebote kommen per E-Mail.', rfqSector:'Tätigkeitsbereich', rfqDesc:'Beschreibung der Arbeit', rfqDescPh:'z. B.: Komplette Badsanierung (~4 m²).', rfqCity:'Ort', rfqTimeline:'Gewünschter Zeitrahmen', rfqBudget:'Ungefähres Budget', rfqPhone:'Telefon (optional)', rfqEmail:'Ihre E-Mail', rfqSend:'Anfrage senden', rfqSentA:'Anfrage gesendet an', rfqSentB:'Firmen! Angebote kommen per E-Mail.', rfqDescShort:'Bitte ausführlicher beschreiben (mind. 20 Zeichen)', rfqCityReq:'Ort angeben', tlFlex:'Flexibel', tlUrgent:'Dringend', tl1m:'Im nächsten Monat', tl3m:'In 3 Monaten', budNS:'Weiß noch nicht', inboxBtn:'Kundennachrichten', inboxTitle:'Kundennachrichten', inboxEmpty:'Noch keine Nachrichten.', inboxReplyPh:'Antwort schreiben…', inboxReplySend:'Antworten', inboxReplySent:'Antwort gesendet', inboxYou:'Sie', featureBtn:'Hervorhebung anfragen', featureSent:'Anfrage an den Administrator gesendet',
+    searchRadius:'Suchradius', featured:'Empfohlen', ignoreRadius:'Suchradius nicht verwenden', nearbyTitle:'Unternehmen in der Nähe', contactYourName:'Ihr Name', contactYourEmail:'Ihre E-Mail (für die Antwort der Firma)', contactNameReq:'Geben Sie Ihren Namen an', contactEmailReq:'Geben Sie eine gültige E-Mail an', retryBtn:'Erneut versuchen', clearFiltersBtn:'Filter zurücksetzen', resultsCount:'Unternehmen gefunden', chatToday:'Heute', chatYesterday:'Gestern', alertSaveBtn:'Bei neuen benachrichtigen', alertSaved:'Alarm erstellt!', alertsTitle:'Meine Alarme', alertDeleted:'Alarm entfernt', pushBtn:'Benachrichtigungen aktivieren', pushOn:'Benachrichtigungen aktiv', rvVerified:'verifizierter Kontakt', navHow:'So funktioniert es', dpCompare:'Vergleichen', dpStreetTitle:'Straßenansicht (Street View)', svOpenExternal:'In Google Maps öffnen ↗', svFallback:'Wenn die Ansicht nicht lädt, ', svFallbackLink:'in Google Maps öffnen', claimLink:'🏷 Ist das Ihr Unternehmen? Eintrag übernehmen', claimTitle:'Eintrag übernehmen', claimIntro:'Zum Nachweis senden wir einen 6-stelligen Code an die öffentliche E-Mail des Eintrags. Danach können Sie Daten bearbeiten, auf Bewertungen antworten und Statistiken sehen.', claimSendBtn:'Code an die Eintrags-E-Mail senden', claimSentTo:'Code gesendet an', claimVerifyBtn:'Code bestätigen', claimSuccess:'Eintrag übernommen!', claimNeedLogin:'Zum Übernehmen bitte anmelden', claimCodeInvalid:'6-stelligen Code eingeben', rfqCta:'Kostenlose Angebote', rfqTitle:'Angebote anfragen', rfqIntro:'Beschreiben Sie die Arbeit — wir senden die Anfrage an passende Firmen in Ihrer Region; Angebote kommen per E-Mail.', rfqSector:'Tätigkeitsbereich', rfqDesc:'Beschreibung der Arbeit', rfqDescPh:'z. B.: Komplette Badsanierung (~4 m²).', rfqCity:'Ort', rfqTimeline:'Gewünschter Zeitrahmen', rfqBudget:'Ungefähres Budget', rfqPhone:'Telefon (optional)', rfqEmail:'Ihre E-Mail', rfqSend:'Anfrage senden', rfqSentA:'Anfrage gesendet an', rfqSentB:'Firmen! Angebote kommen per E-Mail.', rfqDescShort:'Bitte ausführlicher beschreiben (mind. 20 Zeichen)', rfqCityReq:'Ort angeben', tlFlex:'Flexibel', tlUrgent:'Dringend', tl1m:'Im nächsten Monat', tl3m:'In 3 Monaten', budNS:'Weiß noch nicht', inboxBtn:'Kundennachrichten', inboxTitle:'Kundennachrichten', inboxEmpty:'Noch keine Nachrichten.', inboxReplyPh:'Antwort schreiben…', inboxReplySend:'Antworten', inboxReplySent:'Antwort gesendet', inboxYou:'Sie', featureBtn:'Hervorhebung anfragen', featureSent:'Anfrage an den Administrator gesendet',
     topRated:'Top-Bewertet', verified:'Verifiziert', newEntry:'Neu eingetragen',
     specialties:'Fachbereiche',
     mapLive:'Live-Karte', mapCity:'Lissabon, Portugal',
@@ -3444,13 +3444,20 @@ function _renderCompareBar() {
   if (goBtn) goBtn.disabled = _compareIds.size < 2;
 }
 
-function openCompareModal() {
+async function openCompareModal() {
   if (_compareIds.size < 2) {
     showToast(t('toastSelectMin2'));
     return;
   }
   const ids = [..._compareIds];
   const cos = ids.map(id => companies.find(x => Number(x.id) === id)).filter(Boolean);
+  // ⚡ response_minutes só vem do detalhe — busca em paralelo (2-3 pedidos)
+  try {
+    const det = await Promise.all(cos.map(c => (c.response_minutes == null && typeof api !== 'undefined') ? api.getCompany(c.id).catch(() => null) : null));
+    det.forEach((d, i) => { const row = d && (d.company || d); if (row && row.response_minutes != null) cos[i].response_minutes = row.response_minutes; });
+  } catch (_) {}
+  const respVals = cos.map(c => (c.response_minutes != null ? Number(c.response_minutes) : Infinity));
+  const bestResp = Math.min.apply(null, respVals);
   const tr = translations[currentLang] || translations.pt;
   const loggedIn = !!JSON.parse(localStorage.getItem('hive_user') || 'null');
 
@@ -3478,6 +3485,8 @@ function openCompareModal() {
       renderer: c => c.rating ? `<span class="compare-co-rating">★ ${c.rating.toFixed(1)}</span>` : `<span class="badge-new">${t('newOnHivex')}</span>` },
     { key:'reviews',  label:'N.º de avaliações', best: c => (c.reviews||0) > 0 && (c.reviews||0) === bestReviews,
       renderer: c => (c.reviews||0) > 0 ? `<strong>${c.reviews}</strong>` : '<span style="color:var(--muted)">0</span>' },
+    { key:'resp',     label:'⚡ Tempo de resposta', best: c => c.response_minutes != null && isFinite(bestResp) && Number(c.response_minutes) === bestResp,
+      renderer: c => c.response_minutes != null ? `<strong>~${_fmtRespMins(Number(c.response_minutes))}</strong>` : '<span style="color:var(--muted)">—</span>' },
     { key:'distance', label:'Distância',       best: c => dist.get(c.id) === bestDist,
       renderer: c => fmtKm(dist.get(c.id)) },
     { key:'city',     label:'Localização',     renderer: c => escHtml(c.city || c.address || '—') },
@@ -5622,12 +5631,14 @@ function _runApplyFilters() {
             const wantKm = Math.min(600, km * 2);
             const wantSlider = wantKm >= 600 ? 100 : Math.round(100 * Math.log(wantKm / 5) / Math.log(120));
             btns += `<button onclick="_expandRadiusTo(${wantSlider})" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px">📍 Aumentar para ${wantKm} km</button>
-            <button onclick="_expandRadiusTo(100)" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:#fff;border:1px solid var(--primary);box-shadow:none">Todo o país</button>`;
+            <button onclick="_expandRadiusTo(100)" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--primary);box-shadow:none">Todo o país</button>`;
           }
-          btns += `<button onclick="clearAllFilters()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:#fff;border:1px solid var(--border);box-shadow:none">✕ ${escHtml(t('clearFiltersBtn'))}</button>`;
+          btns += `<button onclick="clearAllFilters()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--border);box-shadow:none">✕ ${escHtml(t('clearFiltersBtn'))}</button>`;
           if (localStorage.getItem('hive_user')) {
-            btns += `<button onclick="saveSearchAlert()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:#fff;border:1px solid var(--primary);box-shadow:none">🔔 ${escHtml(t('alertSaveBtn'))}</button>`;
+            btns += `<button onclick="saveSearchAlert()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--primary);box-shadow:none">🔔 ${escHtml(t('alertSaveBtn'))}</button>`;
           }
+          // o CTA que resolve de verdade: pedir orçamento com o setor pré-preenchido
+          btns += `<button onclick="openRfqModal('${[...activeSectors][0] || ''}')" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:#16a34a;border:none">📝 ${escHtml(t('rfqCta'))}</button>`;
           html += `<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">${btns}</div>`;
         }
         hintText.innerHTML = html;
@@ -5884,14 +5895,15 @@ function renderSearchList(filtered) {
         const wantKm = Math.min(600, km * 2);
         const wantSlider = wantKm >= 600 ? 100 : Math.round(100 * Math.log(wantKm / 5) / Math.log(120));
         btns += `<button onclick="_expandRadiusTo(${wantSlider})" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px">📍 Aumentar para ${wantKm} km</button>
-        <button onclick="_expandRadiusTo(100)" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:#fff;border:1px solid var(--primary);box-shadow:none">Todo o país</button>`;
+        <button onclick="_expandRadiusTo(100)" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--primary);box-shadow:none">Todo o país</button>`;
       }
       if (activeSectors.size || _keywordFilter || activeTag) {
-        btns += `<button onclick="clearAllFilters()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:#fff;border:1px solid var(--border);box-shadow:none">✕ ${escHtml(t('clearFiltersBtn'))}</button>`;
+        btns += `<button onclick="clearAllFilters()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--border);box-shadow:none">✕ ${escHtml(t('clearFiltersBtn'))}</button>`;
       }
       if (activeSectors.size && localStorage.getItem('hive_user')) {
-        btns += `<button onclick="saveSearchAlert()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:#fff;border:1px solid var(--primary);box-shadow:none">🔔 ${escHtml(t('alertSaveBtn'))}</button>`;
+        btns += `<button onclick="saveSearchAlert()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--primary);box-shadow:none">🔔 ${escHtml(t('alertSaveBtn'))}</button>`;
       }
+      btns += `<button onclick="openRfqModal('${[...activeSectors][0] || ''}')" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:#16a34a;border:none">📝 ${escHtml(t('rfqCta'))}</button>`;
       if (btns) actionsHtml = `<div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">${btns}</div>`;
     }
     listEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1">' +
@@ -5977,7 +5989,7 @@ function _appendListCards(frag, data, start, end) {
         <span>Comparar</span>
       </label>
       <div class="slc-header">
-        ${c.logo ? `<div class="slc-emoji" style="background:url('${c.logo}') center/cover no-repeat"></div>` : `<div class="slc-emoji logo-mono">${companyMonogram(c)}</div>`}
+        ${c.logo ? `<div class="slc-emoji" style="background:url('${c.logo}') center/cover no-repeat"></div>` : _miniLogoHtml(c, 'slc-emoji')}
         <div class="slc-info">
           <div class="slc-name">${c.name}</div>
           <div class="slc-sector-badge"><span style="width:8px;height:8px;border-radius:50%;background:${c.color};display:inline-block;flex-shrink:0"></span>${sectorLabel}</div>
@@ -6109,7 +6121,7 @@ function _appendNearbyCards(listEl, upTo, sentinel) {
       : `<span class="badge-new">${t('newOnHivex')}</span>`;
     const logo = c.logo
       ? `<div class="nc-logo" style="background:url('${c.logo}') center/cover no-repeat"></div>`
-      : `<div class="nc-logo logo-mono">${companyMonogram(c)}</div>`;
+      : _miniLogoHtml(c, 'nc-logo');
     const div = document.createElement('div');
     div.className = 'nearby-card';
     div.dataset.companyId = c.id;
@@ -10546,7 +10558,11 @@ function _openCompanyFromUrl() {
     }
     const id = Number(raw);
     if (!Number.isFinite(id)) return;
-    if (typeof companies === 'undefined' || !companies.find(c => c.id === id)) return;
+    if (typeof companies === 'undefined' || !companies.find(c => c.id === id)) {
+      // pode ser válida mas fora do catálogo em memória — a API decide (toast se não existir)
+      try { suggestPickRemote(id); } catch (_) {}
+      return;
+    }
     // Replace state so the user's first back press leaves the panel rather than
     // landing on an identical URL.
     history.replaceState({ company: id }, '', window.location.href);
@@ -11502,7 +11518,7 @@ function renderLpFeatured() {
       : '<span class="badge-new">' + escHtml(t('newOnHivex')) + '</span>';
     const logo = c.logo
       ? '<div class="nc-logo" style="background:url(\'' + escHtml(c.logo) + '\') center/cover no-repeat"></div>'
-      : '<div class="nc-logo logo-mono">' + companyMonogram(c) + '</div>';
+      : _miniLogoHtml(c, 'nc-logo');
     let openBadge = '';
     try { openBadge = _openBadgeHtml(c); } catch (_) {}
     return '<div class="nearby-card" onclick="openDetail(' + c.id + ')">'
@@ -12203,3 +12219,109 @@ window.deleteSearchAlert = deleteSearchAlert;
     history.replaceState({}, '', url.toString());
   } catch (_) {}
 })();
+
+
+/* ══ LOTE 7: mini-mapas, atalhos de teclado, como funciona ══ */
+function _fmtRespMins(rm) {
+  return rm < 90 ? Math.max(1, Math.round(rm)) + ' min'
+    : rm < 2160 ? Math.round(rm / 60) + ' h'
+    : Math.round(rm / 1440) + ' d';
+}
+window._fmtRespMins = _fmtRespMins;
+
+// Cartões sem logo mostram um recorte do mapa da zona (tiles Carto, sem chaves)
+// com o emoji do setor por cima — identidade visual para todas as fichas.
+function _miniMapStyle(lat, lng, size) {
+  const z = 15, n = 1 << z;
+  const xt = (lng + 180) / 360 * n;
+  const lr = lat * Math.PI / 180;
+  const yt = (1 - Math.log(Math.tan(lr) + 1 / Math.cos(lr)) / Math.PI) / 2 * n;
+  const x = Math.max(0, Math.min(n - 1, Math.floor(xt)));
+  const y = Math.max(0, Math.min(n - 1, Math.floor(yt)));
+  let px = Math.round((xt - x) * 256 - size / 2);
+  let py = Math.round((yt - y) * 256 - size / 2);
+  px = Math.max(0, Math.min(256 - size, px));
+  py = Math.max(0, Math.min(256 - size, py));
+  const claro = document.documentElement.getAttribute('data-theme') === 'light';
+  const estilo = claro ? 'rastertiles/voyager' : 'dark_all';
+  const sub = 'abcd'[(x + y) % 4];
+  return "background-image:url('https://" + sub + ".basemaps.cartocdn.com/" + estilo + "/" + z + "/" + x + "/" + y + ".png');background-position:-" + px + "px -" + py + "px;background-repeat:no-repeat";
+}
+function _miniLogoHtml(c, cls) {
+  const lat = Number(c && c.lat), lng = Number(c && c.lng);
+  if (!isFinite(lat) || !isFinite(lng)) return '<div class="' + cls + ' logo-mono">' + companyMonogram(c) + '</div>';
+  const size = cls === 'slc-emoji' ? 42 : 60;
+  return '<div class="' + cls + ' nc-mini" style="' + _miniMapStyle(lat, lng, size) + '"><span class="nc-mini-dot">' + (c.emoji || '📍') + '</span></div>';
+}
+window._miniLogoHtml = _miniLogoHtml;
+
+// Atalhos: "/" foca a pesquisa; Esc fecha o painel de detalhe (modais têm o seu)
+document.addEventListener('keydown', (e) => {
+  const alvo = e.target || {};
+  const tag = (alvo.tagName || '').toLowerCase();
+  const aEscrever = tag === 'input' || tag === 'textarea' || alvo.isContentEditable;
+  if (e.key === '/' && !aEscrever && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    e.preventDefault();
+    try { showTab('search'); } catch (_) {}
+    setTimeout(() => {
+      const i = document.getElementById('searchUnified');
+      if (i) { i.focus(); i.select(); }
+    }, 120);
+  } else if (e.key === 'Escape' && !aEscrever) {
+    if (document.querySelector('.overlay.open')) return;
+    if (typeof selectedId !== 'undefined' && selectedId != null) { try { closeDetail(); } catch (_) {} }
+  }
+});
+
+// "Como funciona" — 3 passos para clientes, 3 para empresas (pt/en)
+function openHow() {
+  let ov = document.getElementById('howOverlay');
+  if (!ov) {
+    const pt = (currentLang || 'pt') === 'pt';
+    const T = pt ? {
+      titulo: 'Como funciona a Hivex',
+      cli: 'Para quem procura', emp: 'Para empresas',
+      c1: ['🗺️', 'Pesquise no mapa', 'Milhares de empresas de construção e serviços em 31 países, com avaliações e contactos.'],
+      c2: ['💬', 'Fale diretamente', 'Converse por chat, troque documentos e veja quem responde mais rápido.'],
+      c3: ['📝', 'Peça orçamentos grátis', 'Descreva o trabalho uma vez — as empresas certas da sua zona respondem por email.'],
+      e1: ['🏷️', 'Reclame ou registe a ficha', 'Prove que a empresa é sua com um código enviado ao email público.'],
+      e2: ['📨', 'Responda a pedidos', 'Mensagens e pedidos de orçamento chegam ao seu email e à sua área de mensagens.'],
+      e3: ['⭐', 'Destaque-se', 'Fichas destacadas aparecem primeiro nas listas e no mapa.'],
+      ctaCli: 'Explorar o mapa', ctaEmp: 'Registar empresa',
+    } : {
+      titulo: 'How Hivex works',
+      cli: 'For clients', emp: 'For companies',
+      c1: ['🗺️', 'Search the map', 'Thousands of construction & trade companies across 31 countries, with reviews and contacts.'],
+      c2: ['💬', 'Talk directly', 'Chat, exchange documents and see who replies fastest.'],
+      c3: ['📝', 'Request free quotes', 'Describe the job once — the right local companies reply by email.'],
+      e1: ['🏷️', 'Claim or register your listing', 'Prove ownership with a code sent to the public email.'],
+      e2: ['📨', 'Answer requests', 'Messages and quote requests reach your email and inbox.'],
+      e3: ['⭐', 'Stand out', 'Featured listings appear first in lists and on the map.'],
+      ctaCli: 'Explore the map', ctaEmp: 'Register a company',
+    };
+    const passo = p => '<div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px">' +
+      '<span style="font-size:26px;flex-shrink:0">' + p[0] + '</span>' +
+      '<div><div style="font-weight:800;font-size:15.5px">' + p[1] + '</div>' +
+      '<div style="font-size:13.5px;color:var(--text-secondary);line-height:1.5">' + p[2] + '</div></div></div>';
+    ov = document.createElement('div');
+    ov.id = 'howOverlay';
+    ov.className = 'overlay';
+    ov.setAttribute('role', 'dialog');
+    ov.setAttribute('aria-modal', 'true');
+    ov.addEventListener('click', (e) => { if (e.target === ov) ov.classList.remove('open'); });
+    ov.innerHTML = '<div class="modal" style="max-width:760px">' +
+      '<button class="modal-close" onclick="document.getElementById(\'howOverlay\').classList.remove(\'open\')" aria-label="Fechar">×</button>' +
+      '<h2 class="legal-title" style="font-size:26px;margin-bottom:18px">' + T.titulo + '</h2>' +
+      '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px">' +
+      '<div><div style="font-weight:800;color:var(--primary);margin-bottom:12px;font-size:14px;text-transform:uppercase;letter-spacing:.5px">' + T.cli + '</div>' +
+      passo(T.c1) + passo(T.c2) + passo(T.c3) +
+      '<button class="btn-submit" style="width:100%;margin-top:4px" onclick="document.getElementById(\'howOverlay\').classList.remove(\'open\');showTab(\'search\')">' + T.ctaCli + '</button></div>' +
+      '<div><div style="font-weight:800;color:#f59e0b;margin-bottom:12px;font-size:14px;text-transform:uppercase;letter-spacing:.5px">' + T.emp + '</div>' +
+      passo(T.e1) + passo(T.e2) + passo(T.e3) +
+      '<button class="btn-submit" style="width:100%;margin-top:4px;background:#f59e0b" onclick="document.getElementById(\'howOverlay\').classList.remove(\'open\');openRegister()">' + T.ctaEmp + '</button></div>' +
+      '</div></div>';
+    document.body.appendChild(ov);
+  }
+  ov.classList.add('open');
+}
+window.openHow = openHow;

@@ -157,7 +157,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v250.css"/>
+  <link rel="stylesheet" href="app.v251.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -511,6 +511,10 @@
     <!-- Auth area: populated dynamically by updateNavAuth() when logged in.
          Logged-out users use the single login button in the top-right of the nav. -->
     <div id="mobileAuthArea"></div>
+    <button class="mobile-nav-link" onclick="openHow();closeMobileNavPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+      <span data-i18n="navHow">Como funciona</span>
+    </button>
     <button class="mobile-nav-link" onclick="openHelp();closeMobileNavPanel()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       <span data-i18n="navHelp">Ajuda</span>
@@ -998,6 +1002,7 @@
       <div class="footer-col">
         <h4 class="footer-title" data-i18n="footerLegal">Legal</h4>
         <a class="footer-link" href="#legal/terms" onclick="openLegal('terms');return false" data-i18n="footerTerms">Termos de Serviço</a>
+        <a class="footer-link" href="#how" onclick="openHow();return false" data-i18n="navHow">Como funciona</a>
         <a class="footer-link" href="#legal/privacy" onclick="openLegal('privacy');return false" data-i18n="footerPrivacy">Política de Privacidade</a>
         <a class="footer-link" href="#legal/cookies" onclick="openLegal('cookies');return false" data-i18n="footerCookies">Cookies</a>
         <a class="footer-link" href="#legal/rgpd" onclick="openLegal('rgpd');return false" data-i18n="footerRgpd">RGPD</a>
@@ -2329,7 +2334,7 @@
 <script defer src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v250.js"></script>
+<script defer src="app.v251.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
