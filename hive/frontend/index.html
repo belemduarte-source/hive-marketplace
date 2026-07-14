@@ -185,10 +185,20 @@
    Below 1024px the mobile/tablet layout keeps its native sizing. */
 (function () {
   var DESIGN = 1440, MAXZ = 1.12;
+  // Browsers sem CSS zoom (Firefox <126): aplicar as compensações /var(--z)
+  // sem o zoom respetivo inchava o layout — nesses, renderiza 1:1 nativo.
+  var ZOOM_OK = (function () {
+    try { return typeof CSS !== 'undefined' && CSS.supports && CSS.supports('zoom', '1'); }
+    catch (_) { return false; }
+  })();
   function zoomFor(w, dpr) {
     if (w < 1024) return 1;
     var z = Math.sqrt(w / DESIGN);                 // dampened width-following
-    var minz = dpr > 1.01 ? 1.0 : 0.95;            // respect the OS scale
+    // Piso: em ecrãs com scaling do SO (dpr>1) nunca mais de ~8% abaixo do
+    // 1:1 — respeita o pedido de UI maior SEM forçar zoom 1.0 em janelas de
+    // 1024-1366px CSS (portáteis com Windows a 125/150%), onde o design de
+    // 1440px ficava gigante. Foi essa a queixa dos clientes.
+    var minz = dpr > 1.01 ? 0.92 : 0.85;
     return Math.round(Math.max(minz, Math.min(MAXZ, z)) * 1000) / 1000;
   }
   var _dprWatch = null;
@@ -196,7 +206,7 @@
     var b = document.body, r = document.documentElement, w = window.innerWidth;
     if (!b) return;
     var dpr = window.devicePixelRatio || 1;
-    if (w < 1024) {
+    if (!ZOOM_OK || w < 1024) {
       b.style.zoom = ''; b.style.width = ''; b.style.height = '';
       b.style.maxWidth = ''; b.style.maxHeight = '';
       r.style.setProperty('--z', '1');
