@@ -12377,3 +12377,19 @@ function profCoShowMore() {
 }
 window.profCoFilterInput = profCoFilterInput;
 window.profCoShowMore = profCoShowMore;
+
+/* ══ Recorrentes aterram no mapa; a Início fica como porta de entrada ══ */
+// 1.ª visita: fica na Início (contexto+confiança). A partir da 2.ª, salta
+// direto para a pesquisa — o mapa reabre na posição guardada da última vez.
+// Marcador próprio (hivex_seen) porque o hivex_vid é criado pelo logger de
+// visitas ANTES deste script correr — no 1.º load já existiria sempre.
+(function () {
+  try {
+    const viu = localStorage.getItem('hivex_seen');
+    localStorage.setItem('hivex_seen', '1');
+    if (!viu) return;
+    const q = new URLSearchParams(location.search);
+    if (q.get('company') || q.get('sector')) return; // deep-links navegam sozinhos
+    setTimeout(() => { try { showTab('search'); } catch (_) {} }, 60);
+  } catch (_) {}
+})();
