@@ -20,6 +20,18 @@ jobs:
         working-directory: hive
         run: node -e "JSON.parse(require('fs').readFileSync('vercel.json','utf8'))"
 
+      - name: Assets referenciados existem (guarda anti-outage)
+        working-directory: hive/frontend
+        run: |
+          node -e "
+            const fs = require('fs');
+            const html = fs.readFileSync('index.html', 'utf8');
+            const refs = [...new Set(html.match(/app\.v\d+\.(?:js|css)/g) || [])];
+            const falta = refs.filter(r => !fs.existsSync(r));
+            if (falta.length) { console.error('index.html referencia ficheiros inexistentes:', falta.join(', ')); process.exit(1); }
+            console.log('ok:', refs.join(', '));
+          "
+
       - name: Parse-check backend JS
         working-directory: hive/backend
         run: |
@@ -79,4 +91,10 @@ jobs:
           check "landing"   "https://www.hivex.pt/"
           check "companies" "https://www.hivex.pt/api/companies?limit=1"
           check "sitemap"   "https://www.hivex.pt/sitemap.xml"
+          # o JS que a landing referencia tem de servir como javascript —
+          # apanha em minutos a classe de outage "index a apontar para
+          # asset removido" (aconteceu a 2026-07-13)
+          jsref=$(curl -s --max-time 20 "https://www.hivex.pt/" | grep -o 'app\.v[0-9]*\.js' | head -1)
+          ct=$(curl -s -o /dev/null -w '%{content_type}' --max-time 20 "https://www.hivex.pt/$jsref" || echo none)
+          case "$ct" in *javascript*) echo "OK bundle $jsref ($ct)";; *) echo "FALHOU bundle $jsref: $ct"; fail=1;; esac
           exit $fail
