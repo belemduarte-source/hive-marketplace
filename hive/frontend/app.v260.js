@@ -3566,17 +3566,24 @@ async function loadCompaniesFromDB(opts) {
       // responder HTML com 200; servidor a ignorar limit/offset) termina o
       // loop — senão ficava num ciclo infinito de pedidos. Teto de 60 páginas
       // (30k empresas) como último recurso.
+      // Páginas em RONDAS DE 4 EM PARALELO (8 sequenciais custavam 2-3s).
+      // Mantém todas as guardas anti-loop: não-array, página repetida,
+      // página ≠500 linhas, teto de 60 páginas.
       data = [];
       let prevFirstId = null;
-      for (let off = 0, pages = 0; pages < 60; off += 500, pages++) {
-        const page = await api.getCompanies({ limit: 500, offset: off });
-        const rows = Array.isArray(page) ? page : (page && Array.isArray(page.companies)) ? page.companies : null;
-        if (!rows || !rows.length) break;
-        const firstId = rows[0] && rows[0].id;
-        if (firstId != null && firstId === prevFirstId) break; // offset ignorado → página repetida
-        prevFirstId = firstId;
-        data = data.concat(rows);
-        if (rows.length !== 500) break; // página curta = fim; página >500 = limit ignorado, já veio tudo
+      let fim = false;
+      for (let ronda = 0; !fim && ronda < 15; ronda++) {
+        const lote = await Promise.all([0, 1, 2, 3].map(k =>
+          api.getCompanies({ limit: 500, offset: (ronda * 4 + k) * 500 }).catch(() => null)));
+        for (const page of lote) {
+          const rows = Array.isArray(page) ? page : (page && Array.isArray(page.companies)) ? page.companies : null;
+          if (!rows || !rows.length) { fim = true; break; }
+          const firstId = rows[0] && rows[0].id;
+          if (firstId != null && firstId === prevFirstId) { fim = true; break; } // offset ignorado
+          prevFirstId = firstId;
+          data = data.concat(rows);
+          if (rows.length !== 500) { fim = true; break; } // página curta = fim
+        }
       }
     }
     if (!scoped) _fullCatalogueLoaded = true;

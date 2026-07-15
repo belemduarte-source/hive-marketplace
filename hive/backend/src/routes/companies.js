@@ -227,7 +227,7 @@ router.get('/', optionalAuth, async (req, res, next) => {
         delete row.alvara;
         delete row.certidao_permanente;
       }
-      res.set('Cache-Control', 'public, max-age=0, s-maxage=60, stale-while-revalidate=300');
+      res.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=3600');
     }
     res.json(rows);
   } catch (e) {
