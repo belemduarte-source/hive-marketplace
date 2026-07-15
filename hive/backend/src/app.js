@@ -602,6 +602,10 @@ const MIGRATIONS = [
   `CREATE EXTENSION IF NOT EXISTS pg_trgm`,
   `CREATE INDEX IF NOT EXISTS idx_companies_name_trgm ON companies USING GIN (name gin_trgm_ops)`,
   `CREATE INDEX IF NOT EXISTS idx_messages_co_email ON messages(company_id, client_email)`,
+
+  // v8: missão e visão (extraídas do site oficial quando declaradas)
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS mission TEXT`,
+  `ALTER TABLE companies ADD COLUMN IF NOT EXISTS vision TEXT`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -610,7 +614,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 7; // v7: telemetria, push, alertas, settings, feature_orders, trgm
+const SCHEMA_VERSION = 8; // v8: companies.mission + companies.vision
 
 async function ensureSchema() {
   if (_migrated) return;

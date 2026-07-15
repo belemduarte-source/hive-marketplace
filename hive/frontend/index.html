@@ -158,7 +158,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v256.css"/>
+  <link rel="stylesheet" href="app.v257.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -1391,12 +1391,12 @@
       <span>WhatsApp</span>
     </button>
     <div class="dp-more-wrap">
-      <button class="btn-quote-secondary qs-more" onclick="toggleDpMore(event)" aria-haspopup="true" aria-label="Mais ações" title="Mais ações">⋯</button>
+      <button class="btn-quote-secondary qs-more" onclick="toggleDpMoreMenu(event)" aria-haspopup="true" aria-label="Mais ações" title="Mais ações">⋯</button>
       <div class="dp-more-menu" id="dpMoreMenu">
-        <button class="dp-more-item" onclick="toggleDpMore();shareCompany()">↗ <span data-i18n="dpShareTitle">Partilhar</span></button>
-        <button class="dp-more-item" onclick="toggleDpMore();openStreetView()">🛣️ <span data-i18n="dpStreetTitle">Vista de Rua</span></button>
-        <button class="dp-more-item" onclick="toggleDpMore();toggleCompare(selectedId)">⇄ <span data-i18n="dpCompare">Comparar</span></button>
-        <button class="dp-more-item qs-report" onclick="toggleDpMore();openReportModal()">🚩 <span data-i18n="dpReportTitle">Reportar listagem</span></button>
+        <button class="dp-more-item" onclick="toggleDpMoreMenu();shareCompany()">↗ <span data-i18n="dpShareTitle">Partilhar</span></button>
+        <button class="dp-more-item" onclick="toggleDpMoreMenu();openStreetView()">🛣️ <span data-i18n="dpStreetTitle">Vista de Rua</span></button>
+        <button class="dp-more-item" onclick="toggleDpMoreMenu();toggleCompare(selectedId)">⇄ <span data-i18n="dpCompare">Comparar</span></button>
+        <button class="dp-more-item qs-report" onclick="toggleDpMoreMenu();openReportModal()">🚩 <span data-i18n="dpReportTitle">Reportar listagem</span></button>
       </div>
     </div>
   </div>
@@ -1426,6 +1426,16 @@
         <span data-i18n="dpMoreInfo">Mais informação</span><span class="dp-more-arrow">▾</span>
       </button>
       <div id="dpMoreInfo" class="dp-more-body" hidden>
+
+    <!-- Missão & Visão — extraídas do site oficial; ocultas quando não existem -->
+    <div id="dpMissionWrap" style="display:none">
+      <div class="dp-section-title">🎯 <span data-i18n="dpMission">Missão</span></div>
+      <p id="dpMissionTxt" style="font-size:13.5px;line-height:1.6;color:var(--text-secondary);margin:0 0 14px"></p>
+    </div>
+    <div id="dpVisionWrap" style="display:none">
+      <div class="dp-section-title">🔭 <span data-i18n="dpVision">Visão</span></div>
+      <p id="dpVisionTxt" style="font-size:13.5px;line-height:1.6;color:var(--text-secondary);margin:0 0 14px"></p>
+    </div>
 
     <!-- Quick-fact pills (founded year, business hours) — hidden if no data -->
     <div class="dp-facts" id="dpFacts" style="display:none"></div>
@@ -2327,7 +2337,7 @@
 <script defer src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v256.js"></script>
+<script defer src="app.v257.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
