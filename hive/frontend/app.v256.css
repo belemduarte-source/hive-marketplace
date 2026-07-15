@@ -3588,3 +3588,12 @@
     #favBody .mini-list-name{font-size:26px}
     #favBody .mini-list-sub{font-size:22px;margin-top:4px}
     #favBody .mini-list-action{font-size:30px;padding:6px 12px}
+
+    /* ── Simplificação: barra de ações do detalhe + menu ⋯ ── */
+    .dp-quote-bar .btn-quote-secondary{width:auto;min-width:0;padding:0 13px;gap:7px;display:inline-flex;align-items:center;white-space:nowrap;font-size:12.5px;font-weight:700}
+    .dp-quote-bar .qs-more{padding:0 15px;font-size:19px;letter-spacing:1px}
+    .dp-more-wrap{position:relative;margin-left:auto}
+    .dp-more-menu{position:absolute;right:0;top:calc(100% + 6px);background:var(--surface);border:1.5px solid var(--border);border-radius:12px;box-shadow:var(--shadow-lg);display:none;z-index:80;min-width:200px;padding:6px}
+    .dp-more-menu.open{display:block}
+    .dp-more-item{display:flex;gap:9px;align-items:center;width:100%;background:none;border:none;padding:10px 12px;font-size:13.5px;font-weight:600;color:var(--text);cursor:pointer;border-radius:8px;font-family:inherit;text-align:left}
+    .dp-more-item:hover{background:var(--bg)}
