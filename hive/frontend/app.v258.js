@@ -4404,7 +4404,7 @@ function createMarkerIcon(c) {
   const borderColor = featured ? '#f59e0b' : '#ffffff';
   icon = L.divIcon({
     className: '',
-    html: `<div style="width:40px;height:42px;position:relative;cursor:pointer;filter:drop-shadow(0 3px 5px ${glow})${featured ? ' drop-shadow(0 0 2px rgba(245,158,11,.9))' : ''}">${featuredBadge}<div style="position:absolute;inset:0;background:${borderColor};clip-path:${hex}"></div><div style="position:absolute;inset:3px;background:${bg};clip-path:${hex};display:flex;align-items:center;justify-content:center;overflow:hidden">${c.logo ? `<img src="${c.logo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"/>` : `<span style="font-size:12px;font-weight:800;color:#fff;letter-spacing:.3px;display:block;line-height:1;font-family:inherit">${mono}</span>`}</div></div>`,
+    html: `<div class="hx-pin" style="width:40px;height:42px;position:relative;cursor:pointer;filter:drop-shadow(0 3px 5px ${glow})${featured ? ' drop-shadow(0 0 2px rgba(245,158,11,.9))' : ''}">${featuredBadge}<div style="position:absolute;inset:0;background:${borderColor};clip-path:${hex}"></div><div style="position:absolute;inset:3px;background:${bg};clip-path:${hex};display:flex;align-items:center;justify-content:center;overflow:hidden">${c.logo ? `<img src="${c.logo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"/>` : `<span style="font-size:12px;font-weight:800;color:#fff;letter-spacing:.3px;display:block;line-height:1;font-family:inherit">${mono}</span>`}</div></div>`,
     iconSize:[40,42], iconAnchor:[20,42], popupAnchor:[0,-44]
   });
   _markerIconCache.set(key, icon);
@@ -11796,6 +11796,16 @@ function _savedMapView() {
 (function () {
   if (!map) return;
   let _mvT = null;
+  // Pins crescem suavemente ao aproximar (40px até z9, ×1.6 ao nível de rua)
+  const _ajustaPin = () => {
+    try {
+      const z = map.getZoom();
+      const esc = Math.min(1.6, Math.max(1, 1 + (z - 9) * 0.09));
+      map.getContainer().style.setProperty('--pinScale', esc.toFixed(2));
+    } catch (_) {}
+  };
+  _ajustaPin();
+  map.on('zoomend', _ajustaPin);
   map.on('moveend zoomend', () => {
     clearTimeout(_mvT);
     _mvT = setTimeout(() => {

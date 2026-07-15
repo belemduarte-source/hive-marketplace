@@ -3597,3 +3597,6 @@
     .dp-more-menu.open{display:block}
     .dp-more-item{display:flex;gap:9px;align-items:center;width:100%;background:none;border:none;padding:10px 12px;font-size:13.5px;font-weight:600;color:var(--text);cursor:pointer;border-radius:8px;font-family:inherit;text-align:left}
     .dp-more-item:hover{background:var(--bg)}
+
+    /* ── Pins com escala por zoom (ancorados na ponta) ── */
+    .hx-pin{transform:scale(var(--pinScale,1));transform-origin:50% 100%;transition:transform .15s ease}
