@@ -3615,3 +3615,6 @@
     .dp-cred-doc em, .dp-cred-doc i:not([data-lucide]), .dp-cred-doc span{font-size:22px}
     .dp-address{font-size:28px;padding:14px 16px}
     .dp-section-title{font-size:29px}
+
+    /* ── Filtro por país ativo ── */
+    .country-explore-btn.cf-ativo{border-color:var(--primary);box-shadow:0 0 0 2px rgba(37,99,235,.18)}
