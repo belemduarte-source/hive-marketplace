@@ -158,7 +158,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v266.css"/>
+  <link rel="stylesheet" href="app.v267.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -759,7 +759,6 @@
         </button>
 
       </div><!-- /lp-searchbar -->
-      <button type="button" class="lp-recs-btn" onclick="openRecs()">⭐ <span data-i18n="recsTitle">Top 3 por área</span></button>
     </div><!-- /lp-search-wrap -->
 
 
@@ -1061,13 +1060,17 @@
     <button class="ub-btn" id="btnSearch" onclick="applyFilters();showToast(t('searchUpdated'))">
       <i data-lucide="search"></i><span data-i18n="btnSearch">Pesquisar</span>
     </button>
-    <button type="button" class="ub-recs-btn" onclick="openRecs()">⭐ <span data-i18n="recsBtn">Top 3</span></button>
     <!-- Mobile-only Filtros button inside the search row -->
     <button class="ub-filtros-btn" id="ubFiltrosBtn" onclick="toggleMobileFilter()" aria-expanded="false">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 3H2l8 9.46V19l4 2v-8.54z"/></svg>
       <span data-i18n="filterTitle">Filtros</span>
     </button>
   </div>
+  <button type="button" class="ub-recs-cta" onclick="openRecs()">
+    <span class="urc-ico">✨</span>
+    <span class="urc-txt"><span data-i18n="recsBtn">Precisa de ajuda a escolher?</span><span class="urc-sub" data-i18n="recsBtnSub">Responda a algumas perguntas e receba as 3 melhores empresas em menos de 1 minuto</span></span>
+    <span class="urc-arrow" aria-hidden="true">→</span>
+  </button>
   <div class="ub-divider"></div>
   <div class="ub-sectors-label" id="ubSectorsLabel">Áreas de Atividade</div>
   <div class="ub-sectors-wrap">
@@ -2293,8 +2296,8 @@
 <div class="overlay" id="recsOverlay" onclick="if(event.target===this)closeRecs()" role="dialog" aria-modal="true" aria-labelledby="recsTitle">
   <div class="modal recs-modal">
     <button class="modal-close" onclick="closeRecs()" aria-label="Fechar" style="position:absolute;top:14px;right:14px;background:none;border:0;font-size:22px;color:var(--muted);cursor:pointer">×</button>
-    <h2 id="recsTitle" style="font-size:20px;font-weight:800;margin:0 0 6px;color:var(--text)">⭐ <span data-i18n="recsTitle">Top 3 por área</span></h2>
-    <p class="recs-intro" data-i18n="recsIntro">Diz-nos o que procuras e onde: recomendamos as 3 melhores empresas de cada área, pontuadas pela proximidade, pela ficha completa (site, alvará, contactos…) e pelas avaliações de clientes.</p>
+    <h2 id="recsTitle" class="recs-h2">💬 <span data-i18n="recsTitle">Precisa de ajuda para encontrar as empresas certas?</span></h2>
+    <p class="recs-intro" data-i18n="recsIntro">Preencha o formulário e obtenha, em menos de 1 minuto, as empresas que melhor se adequam ao que procura.</p>
     <div class="recs-sec-head"><span data-i18n="recsAreas">Áreas de atividade</span> <span id="recsSelCount" class="recs-count"></span></div>
     <input id="recsFilter" class="recs-filter" data-i18n-ph="recsFilterPh" placeholder="filtrar áreas…" oninput="_recsRenderChips(this.value)"/>
     <div id="recsChips" class="recs-chips"></div>
@@ -2365,7 +2368,7 @@
 <script defer src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v266.js"></script>
+<script defer src="app.v267.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
