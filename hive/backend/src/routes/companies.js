@@ -215,16 +215,17 @@ router.get('/', optionalAuth, async (req, res, next) => {
       }
     }
 
-    // Alvará and certidão permanente are private credentials — visible only to
-    // authenticated users. Anonymous traffic gets them redacted, and only that
-    // redacted response is ever edge-cached.
+    // Certidão permanente is a private credential (the code unlocks the full
+    // commercial-registry record) — redacted for anonymous traffic, and only
+    // that redacted response is ever edge-cached. The alvará NUMBER is public
+    // information (openly searchable on impic.pt) and stays visible as a
+    // trust signal.
     if (req.user) {
       // Logged-in users (especially owners who just edited their listing) bypass
       // the edge cache entirely and always see fresh, credential-bearing data.
       res.set('Cache-Control', 'private, max-age=0, no-store');
     } else {
       for (const row of rows) {
-        delete row.alvara;
         delete row.certidao_permanente;
       }
       res.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=3600');
@@ -390,8 +391,8 @@ router.get('/check-nif', requireAuth, async (req, res, next) => {
 });
 
 // GET /api/companies/:id — public, only approved.
-// Private credentials (certidão permanente, alvará) are redacted for anonymous
-// visitors — any authenticated user can see them.
+// Certidão permanente is redacted for anonymous visitors (the code unlocks the
+// company's registry record); the alvará number is public IMPIC information.
 router.get('/:id', optionalAuth, async (req, res, next) => {
   try {
     const { rows } = await pool.query(
@@ -412,7 +413,6 @@ router.get('/:id', optionalAuth, async (req, res, next) => {
     }
     if (!req.user) {
       delete company.certidao_permanente;
-      delete company.alvara;
     }
     // Sinal de capacidade de resposta: mediana (min) entre a mensagem de um
     // cliente e a resposta seguinte da empresa nos últimos 90 dias. Só é
