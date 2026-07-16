@@ -2602,23 +2602,18 @@ function heroSearch() {
   _keywordFilter = '';
 
   if (mode === 'company' && companyName) {
-    // Select all sectors so the keyword filter can search across everything
-    Object.values(SECTOR_HIERARCHY).forEach(group =>
-      Object.values(group.categories).forEach(cat =>
-        Object.keys(cat.subcategories).forEach(k => activeSectors.add(k))
-      )
-    );
+    // Sem filtro de setor = pesquisa por palavra-chave sobre TUDO. (Encher o
+    // activeSectors com a hierarquia excluía empresas cujos setores novos das
+    // vagas não constam dela — "todas as áreas + cidade + raio" dava zero.)
+    activeSectors.clear();
     _keywordFilter = companyName;
     const uniInput = document.getElementById('searchUnified');
     if (uniInput) uniInput.value = companyName;
   } else if (service && service !== '__all__') {
     activeSectors.add(service);
   } else if (service === '__all__') {
-    Object.values(SECTOR_HIERARCHY).forEach(group =>
-      Object.values(group.categories).forEach(cat =>
-        Object.keys(cat.subcategories).forEach(k => activeSectors.add(k))
-      )
-    );
+    // "Todos os serviços" = nenhum filtro de setor (mostra tudo)
+    activeSectors.clear();
   }
 
   if (location) {
