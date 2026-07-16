@@ -170,7 +170,7 @@ router.get('/', optionalAuth, async (req, res, next) => {
     let pageClause = '';
     const lim = parseInt(limit, 10);
     if (Number.isFinite(lim) && lim > 0) {
-      params.push(Math.min(lim, 500));
+      params.push(Math.min(lim, 1000));
       pageClause += ` LIMIT $${params.length}`;
       const off = parseInt(offset, 10);
       if (Number.isFinite(off) && off > 0) {

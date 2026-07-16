@@ -3558,8 +3558,15 @@ async function loadCompaniesFromDB(opts) {
     // pesava ~1,5MB — mau em rede móvel); a fase scoped (só PT) fica inteira.
     let data;
     if (scoped) {
+      // Snapshot local (IndexedDB): visitas repetidas pintam o catálogo
+      // completo em <1s sem rede; o refresh integral continua em fundo.
+      const snap = await _idbCatalogo('get').catch(() => null);
+      if (snap && Array.isArray(snap.rows) && snap.rows.length > 200 && Date.now() - snap.t < 24 * 3600e3) {
+        data = snap.rows;
+      } else {
       data = await api.getCompanies({ country: 'pt' });
       if (!Array.isArray(data)) data = (data && Array.isArray(data.companies)) ? data.companies : [];
+      }
     } else {
       // Só continua com uma página-array de exatamente 500 linhas. Qualquer
       // outra coisa (resposta não-JSON → {}, ex.: portal cativo de WiFi a
@@ -3574,7 +3581,7 @@ async function loadCompaniesFromDB(opts) {
       let fim = false;
       for (let ronda = 0; !fim && ronda < 15; ronda++) {
         const lote = await Promise.all([0, 1, 2, 3].map(k =>
-          api.getCompanies({ limit: 500, offset: (ronda * 4 + k) * 500 }).catch(() => null)));
+          api.getCompanies({ limit: 1000, offset: (ronda * 4 + k) * 1000 }).catch(() => null)));
         for (const page of lote) {
           const rows = Array.isArray(page) ? page : (page && Array.isArray(page.companies)) ? page.companies : null;
           if (!rows || !rows.length) { fim = true; break; }
@@ -3582,11 +3589,11 @@ async function loadCompaniesFromDB(opts) {
           if (firstId != null && firstId === prevFirstId) { fim = true; break; } // offset ignorado
           prevFirstId = firstId;
           data = data.concat(rows);
-          if (rows.length !== 500) { fim = true; break; } // página curta = fim
+          if (rows.length !== 1000) { fim = true; break; } // página curta = fim
         }
       }
     }
-    if (!scoped) _fullCatalogueLoaded = true;
+    if (!scoped) { _fullCatalogueLoaded = true; try { _idbCatalogo('put', data); } catch (_) {} }
     // Clear only now that fresh data is in hand — clearing before the await
     // would let a failed background refresh wipe what's already on screen.
     companies.length = 0;
@@ -12397,3 +12404,30 @@ function clearCountryFilter() {
   try { applyFilters.now(); } catch (_) { applyFilters(); }
 }
 window.clearCountryFilter = clearCountryFilter;
+
+/* ══ Snapshot do catálogo em IndexedDB (velocidade em visitas repetidas) ══ */
+function _idbCatalogo(op, rows) {
+  return new Promise((res) => {
+    try {
+      const open = indexedDB.open('hivex', 1);
+      open.onupgradeneeded = () => { try { open.result.createObjectStore('kv'); } catch (_) {} };
+      open.onsuccess = () => {
+        try {
+          const db = open.result;
+          const tx = db.transaction('kv', op === 'get' ? 'readonly' : 'readwrite');
+          const st = tx.objectStore('kv');
+          if (op === 'get') {
+            const g = st.get('catalogo');
+            g.onsuccess = () => res(g.result || null);
+            g.onerror = () => res(null);
+          } else {
+            st.put({ t: Date.now(), rows: rows }, 'catalogo');
+            tx.oncomplete = () => res(true);
+            tx.onerror = () => res(false);
+          }
+        } catch (_) { res(null); }
+      };
+      open.onerror = () => res(null);
+    } catch (_) { res(null); }
+  });
+}
