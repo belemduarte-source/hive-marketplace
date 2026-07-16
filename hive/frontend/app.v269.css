@@ -3723,3 +3723,21 @@
 .recs-modal .modal-close{color:var(--muted)}
 
 #recsOverlay{z-index:600}
+
+/* ═══ Recs: entrada agarrada ao topo do painel de filtros ═══ */
+.filter-recs-cta{display:flex;align-items:center;gap:11px;width:100%;border:0;cursor:pointer;text-align:left;padding:15px 16px;background:linear-gradient(135deg,#2563eb,#1e3a8a);color:#fff;border-bottom:1px solid rgba(255,255,255,.14)}
+.filter-recs-cta:hover{filter:brightness(1.09)}
+.filter-recs-cta .frc-ico{font-size:25px;flex:none;line-height:1}
+.filter-recs-cta .frc-txt{flex:1;min-width:0}
+.filter-recs-cta .frc-title{display:block;font-weight:800;font-size:16.5px;line-height:1.25;color:#fff}
+.filter-recs-cta .frc-sub{display:block;font-weight:600;font-size:13px;line-height:1.3;color:#dbe6ff;margin-top:3px}
+.filter-recs-cta .frc-arrow{font-size:23px;flex:none;font-weight:800;opacity:.92}
+
+/* ═══ Painel de filtros: cores e layout melhorados ═══ */
+.rating-stars-f{color:#f59e0b !important;text-shadow:none}
+.filter-opt:has(input:checked){background:rgba(37,99,235,.14);box-shadow:inset 3px 0 0 var(--primary)}
+.filter-opt:has(input:checked) label{color:var(--text);font-weight:800}
+.filter-section-title [data-lucide],.radius-label [data-lucide]{color:var(--primary)}
+.radius-marks span{font-size:17px;color:var(--muted);font-weight:700}
+.radius-ignore{margin-top:16px;padding:11px 13px;background:var(--bg);border:1px solid var(--border);border-radius:10px;font-size:16px}
+.radius-ignore:hover{border-color:var(--primary)}
