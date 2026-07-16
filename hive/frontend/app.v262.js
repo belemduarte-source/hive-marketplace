@@ -11669,7 +11669,7 @@ function renderCountryPills() {
   box.innerHTML =
     '<button class="country-explore-btn' + (sel ? ' cf-ativo' : '') + '" onclick="toggleCountryMenu(event)">' + rotulo + ' <span class="arrow">' + (aberto ? '▴' : '▾') + '</span></button>' +
     '<div class="country-menu" id="countryMenu"' + (aberto ? '' : ' style="display:none"') + '>' +
-    (sel ? '<button class="country-row" onclick="clearCountryFilter();toggleCountryMenu()"><span class="cr-flag">🌍</span><span class="cr-name">' + escHtml(t('allCountries')) + '</span></button>' : '') +
+    '<button class="country-row' + (sel ? '' : ' cr-atual') + '" onclick="clearCountryFilter();toggleCountryMenu()"><span class="cr-flag">🌍</span><span class="cr-name">' + escHtml(t('allCountries')) + '</span></button>' +
     (list.length ? list.map(([cc, n]) =>
       '<button class="country-row" onclick="flyToCountry(&#39;' + cc + '&#39;);toggleCountryMenu()">' +
       '<span class="cr-flag">' + _flagEmoji(cc) + '</span>' +
@@ -12393,6 +12393,7 @@ document.addEventListener('click', (e) => {
 function clearCountryFilter() {
   window._countryFilter = null;
   try { renderCountryPills(); } catch (_) {}
+  try { if (map) { map.setView([45, -25], 3, { animate: true }); currentMapCenter = [45, -25]; invalidateDistanceCache(); } } catch (_) {}
   try { applyFilters.now(); } catch (_) { applyFilters(); }
 }
 window.clearCountryFilter = clearCountryFilter;
