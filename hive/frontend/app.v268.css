@@ -3688,27 +3688,38 @@
 .ub-recs-cta .urc-arrow{font-size:22px;flex:none;font-weight:800}
 @media(max-width:768px){.ub-recs-cta .urc-sub{display:none}.ub-recs-cta{padding:11px 14px}}
 
-/* ═══ Recs: formulário sempre claro e legível (corrige branco-sobre-branco no tema escuro) ═══ */
-.recs-modal{background:#ffffff;color:#1f2937}
-.recs-modal .recs-h2{font-size:21px;font-weight:800;margin:0 0 8px;color:#0f172a;line-height:1.3}
-.recs-modal .recs-intro{color:#475569;font-size:15px}
-.recs-modal .recs-sec-head{color:#0f172a}
-.recs-modal .recs-filter,.recs-modal .recs-city{background:#ffffff;color:#1f2937;border:1px solid #cbd5e1}
-.recs-modal .recs-filter::placeholder,.recs-modal .recs-city::placeholder{color:#94a3b8}
-.recs-modal .recs-chips{background:#f8fafc;border:1px solid #e2e8f0}
-.recs-modal .recs-group-t{color:#64748b}
-.recs-modal .recs-chip{background:#ffffff;color:#1f2937;border:1.5px solid #cbd5e1}
-.recs-modal .recs-chip.on{background:#2563eb;color:#ffffff;border-color:#2563eb}
-.recs-modal .recs-btn-sec{background:#ffffff;color:#1f2937;border:1.5px solid #cbd5e1}
-.recs-modal .recs-btn-sec:hover{border-color:#2563eb}
-.recs-modal .recs-loc-label{color:#2563eb}
-.recs-modal .recs-card{background:#ffffff;color:#1f2937;border:1px solid #e2e8f0}
-.recs-modal .recs-card-nome b,.recs-modal .recs-area-t{color:#0f172a}
-.recs-modal .recs-area-n,.recs-modal .recs-dim,.recs-modal .recs-bar-row{color:#64748b}
-.recs-modal .recs-donut b{background:#ffffff;color:#1f2937}
-.recs-modal .recs-chips-mini span{background:#ffffff;color:#1f2937;border:1px solid #cbd5e1}
-.recs-modal .recs-bar{background:#e9eef5}
-.recs-modal .recs-none{color:#64748b;border:1px dashed #cbd5e1}
-.recs-modal .modal-close{color:#64748b}
+/* ═══ Recs: painel fiel ao tema (fundo = cor da página) + elementos ampliados ═══ */
+.recs-modal{background:var(--bg);color:var(--text)}
+.recs-modal .recs-h2{font-size:23px;font-weight:800;margin:0 0 8px;color:var(--text);line-height:1.3}
+.recs-modal .recs-intro{color:var(--text-secondary);font-size:15.5px}
+.recs-modal .recs-sec-head{color:var(--text);font-size:17px;margin-top:20px}
+.recs-modal .recs-chips{background:transparent;border:1px solid var(--border);max-height:320px}
+.recs-modal .recs-group-t{color:var(--muted);font-size:12.5px}
+.recs-modal .recs-chip{background:var(--surface);color:var(--text);border:1.5px solid var(--border);padding:12px 20px;font-size:15.5px}
+.recs-modal .recs-chip.on{background:var(--primary);color:#fff;border-color:var(--primary);font-weight:700}
+.recs-modal .recs-city{background:var(--surface);color:var(--text);border:1.5px solid var(--border);padding:14px 16px;font-size:16px;min-width:220px}
+.recs-modal .recs-city::placeholder{color:var(--muted)}
+.recs-modal .recs-btn-sec{background:var(--surface);color:var(--text);border:1.5px solid var(--border);padding:14px 18px;font-size:15.5px;font-weight:600}
+.recs-modal .recs-btn-sec:hover{border-color:var(--primary)}
+.recs-modal .recs-loc-label{color:var(--primary);font-size:15px;font-weight:800}
+/* localização + raio ampliados */
+.recs-modal .recs-loc-row{gap:10px}
+.recs-modal .recs-radius-wrap{margin:16px 0 4px}
+.recs-modal .recs-radius-top{font-weight:800;font-size:17px;margin-bottom:10px}
+.recs-modal .recs-radius-wrap input[type=range]{width:100%;height:8px;accent-color:var(--primary);cursor:pointer}
+.recs-modal .recs-radius-under{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
+.recs-modal .recs-radius-under .recs-r-end{font-size:13px;color:var(--muted);font-weight:600}
+.recs-modal #recsRadiusVal{font-size:24px;font-weight:800;color:var(--primary);line-height:1}
+/* resultados */
+.recs-modal .recs-card{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.recs-modal .recs-card-nome b{color:var(--text)}
+.recs-modal .recs-area-t{color:var(--text);font-size:25px;font-weight:800;border-bottom:2px solid var(--border);padding-bottom:8px;margin-bottom:14px}
+.recs-modal .recs-area-n{font-size:14px}
+.recs-modal .recs-area-n,.recs-modal .recs-dim,.recs-modal .recs-bar-row{color:var(--muted)}
+.recs-modal .recs-donut b{background:var(--surface);color:var(--text)}
+.recs-modal .recs-chips-mini span{background:var(--surface);color:var(--text);border:1px solid var(--border)}
+.recs-modal .recs-bar{background:var(--border)}
+.recs-modal .recs-none{color:var(--muted);border:1px dashed var(--border)}
+.recs-modal .modal-close{color:var(--muted)}
 
 #recsOverlay{z-index:600}
