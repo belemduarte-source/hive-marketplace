@@ -65,6 +65,7 @@ const translations = {
     detailNoActivities:'Sem áreas de atividade indicadas',
     credRequired:'Obrigatória', credOptional:'Opcional',
     credLoginToView:'Inicie sessão para ver',
+    recsTitle:'Top 3 por área', recsBtn:'Top 3', recsIntro:'Diz-nos o que procuras e onde: recomendamos as 3 melhores empresas de cada área, pontuadas pela proximidade, pela ficha completa (site, alvará, contactos…) e pelas avaliações de clientes.', recsAreas:'Áreas de atividade', recsFilterPh:'filtrar áreas…', recsLocationT:'Localização', recsUseGps:'Usar a minha localização', recsCityPh:'ou escreve uma cidade…', recsCityNotFound:'Cidade não encontrada', recsRadius:'Raio', recsGo:'Recomendar empresas', recsMyLocation:'A minha localização', recsMapCenter:'Centro do mapa', recsNoLoc:'Sem localização definida', recsPickOne:'Escolhe pelo menos uma área', recsLocNeeded:'Define primeiro a localização (GPS ou cidade)', recsInRadius:'no raio de', recsNoResults:'Sem empresas desta área no raio escolhido — experimenta aumentar o raio.', recsProximity:'Proximidade', recsProfileScore:'Ficha', recsReviewsScore:'Avaliações', recsSeeProfile:'Ver ficha',
     alvaraNotApplicable:'Não aplicável', certidaoPending:'Em verificação',
     popupCertOk:'Certidão registada', popupAlvaraOk:'Alvará',
     noRatings:'Sem avaliações', reviews:'reviews',
@@ -477,6 +478,7 @@ const translations = {
     detailNoActivities:'No areas of activity listed',
     credRequired:'Required', credOptional:'Optional',
     credLoginToView:'Sign in to view',
+    recsTitle:'Top 3 by trade', recsBtn:'Top 3', recsIntro:'Tell us what you need and where: we recommend the 3 best companies for each trade, scored by proximity, profile completeness (website, licence, contacts…) and customer reviews.', recsAreas:'Areas of activity', recsFilterPh:'filter areas…', recsLocationT:'Location', recsUseGps:'Use my location', recsCityPh:'or type a city…', recsCityNotFound:'City not found', recsRadius:'Radius', recsGo:'Recommend companies', recsMyLocation:'My location', recsMapCenter:'Map centre', recsNoLoc:'No location set', recsPickOne:'Pick at least one area', recsLocNeeded:'Set a location first (GPS or city)', recsInRadius:'within', recsNoResults:'No companies for this trade within the radius — try increasing it.', recsProximity:'Proximity', recsProfileScore:'Profile', recsReviewsScore:'Reviews', recsSeeProfile:'View profile',
     alvaraNotApplicable:'Not applicable', certidaoPending:'Pending verification',
     popupCertOk:'Certificate on file', popupAlvaraOk:'Licence',
     noRatings:'No reviews', reviews:'reviews',
@@ -880,6 +882,7 @@ const translations = {
     detailNoActivities:'Aucun domaine d\'activité indiqué',
     credRequired:'Obligatoire', credOptional:'Facultatif',
     credLoginToView:'Connectez-vous pour voir',
+    recsTitle:'Top 3 par métier', recsBtn:'Top 3', recsIntro:'Dites-nous ce que vous cherchez et où : nous recommandons les 3 meilleures entreprises de chaque métier, notées selon la proximité, la fiche complète (site, licence, contacts…) et les avis clients.', recsAreas:'Domaines d’activité', recsFilterPh:'filtrer les domaines…', recsLocationT:'Localisation', recsUseGps:'Utiliser ma position', recsCityPh:'ou saisissez une ville…', recsCityNotFound:'Ville introuvable', recsRadius:'Rayon', recsGo:'Recommander des entreprises', recsMyLocation:'Ma position', recsMapCenter:'Centre de la carte', recsNoLoc:'Aucune position définie', recsPickOne:'Choisissez au moins un domaine', recsLocNeeded:'Définissez d’abord la position (GPS ou ville)', recsInRadius:'dans un rayon de', recsNoResults:'Aucune entreprise de ce métier dans le rayon — augmentez-le.', recsProximity:'Proximité', recsProfileScore:'Fiche', recsReviewsScore:'Avis', recsSeeProfile:'Voir la fiche',
     alvaraNotApplicable:'Non applicable', certidaoPending:'En vérification',
     popupCertOk:'Certificat enregistré', popupAlvaraOk:'Licence',
     noRatings:'Sans avis', reviews:'avis',
@@ -1285,6 +1288,7 @@ const translations = {
     detailNoActivities:'Sin áreas de actividad indicadas',
     credRequired:'Obligatorio', credOptional:'Opcional',
     credLoginToView:'Inicia sesión para ver',
+    recsTitle:'Top 3 por sector', recsBtn:'Top 3', recsIntro:'Dinos qué buscas y dónde: recomendamos las 3 mejores empresas de cada sector, puntuadas por cercanía, ficha completa (web, licencia, contactos…) y reseñas de clientes.', recsAreas:'Áreas de actividad', recsFilterPh:'filtrar áreas…', recsLocationT:'Ubicación', recsUseGps:'Usar mi ubicación', recsCityPh:'o escribe una ciudad…', recsCityNotFound:'Ciudad no encontrada', recsRadius:'Radio', recsGo:'Recomendar empresas', recsMyLocation:'Mi ubicación', recsMapCenter:'Centro del mapa', recsNoLoc:'Sin ubicación definida', recsPickOne:'Elige al menos un área', recsLocNeeded:'Define primero la ubicación (GPS o ciudad)', recsInRadius:'en un radio de', recsNoResults:'No hay empresas de este sector en el radio — prueba a aumentarlo.', recsProximity:'Cercanía', recsProfileScore:'Ficha', recsReviewsScore:'Reseñas', recsSeeProfile:'Ver ficha',
     alvaraNotApplicable:'No aplicable', certidaoPending:'En verificación',
     popupCertOk:'Certificado registrado', popupAlvaraOk:'Licencia',
     noRatings:'Sin valoraciones', reviews:'reseñas',
@@ -1684,6 +1688,7 @@ const translations = {
     detailNoActivities:'Keine Tätigkeitsbereiche angegeben',
     credRequired:'Erforderlich', credOptional:'Optional',
     credLoginToView:'Zum Anzeigen anmelden',
+    recsTitle:'Top 3 pro Gewerk', recsBtn:'Top 3', recsIntro:'Sagen Sie uns, was Sie suchen und wo: Wir empfehlen die 3 besten Betriebe je Gewerk — bewertet nach Nähe, Profilvollständigkeit (Website, Lizenz, Kontakte…) und Kundenbewertungen.', recsAreas:'Gewerke', recsFilterPh:'Gewerke filtern…', recsLocationT:'Standort', recsUseGps:'Meinen Standort verwenden', recsCityPh:'oder Stadt eingeben…', recsCityNotFound:'Stadt nicht gefunden', recsRadius:'Radius', recsGo:'Betriebe empfehlen', recsMyLocation:'Mein Standort', recsMapCenter:'Kartenmitte', recsNoLoc:'Kein Standort gesetzt', recsPickOne:'Mindestens ein Gewerk wählen', recsLocNeeded:'Zuerst Standort festlegen (GPS oder Stadt)', recsInRadius:'im Umkreis von', recsNoResults:'Keine Betriebe dieses Gewerks im Radius — vergrößern Sie ihn.', recsProximity:'Nähe', recsProfileScore:'Profil', recsReviewsScore:'Bewertungen', recsSeeProfile:'Profil ansehen',
     alvaraNotApplicable:'Nicht zutreffend', certidaoPending:'In Prüfung',
     popupCertOk:'Auszug hinterlegt', popupAlvaraOk:'Lizenz',
     noRatings:'Noch keine Bewertungen', reviews:'Bewertungen',
@@ -12426,3 +12431,182 @@ function _idbCatalogo(op, rows) {
     } catch (_) { res(null); }
   });
 }
+
+// ═══════════ RECOMENDAÇÕES: TOP 3 POR ÁREA (scorecard) ═══════════
+// Pontuação 0-100 por empresa dentro do raio escolhido:
+//   40% proximidade (decay linear até ao raio)
+//   30% ficha completa (site 2, email 1.5, tel 1.5, alvará 2, logo 1, descrição 1, verificada 1 → /10)
+//   30% avaliações (média bayesiana: prior 3.5★ com peso de 5 avaliações,
+//       para que 1×5★ não bata 20×4.8★ nem a ausência de avaliações domine)
+const _recsSel = new Set();
+let _recsLoc = null;
+
+const _recsEsc = s => String(s == null ? '' : s).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+
+function _recsGrupos() {
+  const out = [];
+  for (const g of Object.values(SECTOR_HIERARCHY)) {
+    const grupo = { label: g.label, subs: [] };
+    for (const c of Object.values(g.categories || {}))
+      for (const [k, lbl] of Object.entries(c.subcategories || {})) grupo.subs.push([k, lbl]);
+    if (grupo.subs.length) out.push(grupo);
+  }
+  return out;
+}
+function _recsLabel(k) {
+  for (const g of Object.values(SECTOR_HIERARCHY))
+    for (const c of Object.values(g.categories || {}))
+      if (c.subcategories && c.subcategories[k]) return c.subcategories[k];
+  return String(k).replace(/_/g, ' ');
+}
+function openRecs() {
+  const ov = document.getElementById('recsOverlay');
+  if (!ov) return;
+  _recsRenderChips((document.getElementById('recsFilter') || {}).value || '');
+  if (!_recsLoc) {
+    try {
+      if (typeof map !== 'undefined' && map && map.getCenter) {
+        const c = map.getCenter();
+        _recsLoc = { lat: c.lat, lng: c.lng, label: t('recsMapCenter') };
+      }
+    } catch (_) {}
+  }
+  _recsPaintLoc();
+  ov.classList.add('open');
+  try { refreshLucide(); } catch (_) {}
+}
+function closeRecs() {
+  const ov = document.getElementById('recsOverlay');
+  if (ov) ov.classList.remove('open');
+}
+function _recsRenderChips(filtro) {
+  const wrap = document.getElementById('recsChips');
+  if (!wrap) return;
+  const f = String(filtro || '').toLowerCase();
+  let html = '';
+  for (const g of _recsGrupos()) {
+    const subs = g.subs.filter(([k, lbl]) => !f || lbl.toLowerCase().includes(f) || k.includes(f));
+    if (!subs.length) continue;
+    html += '<div class="recs-group"><div class="recs-group-t">' + _recsEsc(g.label) + '</div><div class="recs-group-c">';
+    for (const [k, lbl] of subs)
+      html += '<button type="button" class="recs-chip' + (_recsSel.has(k) ? ' on' : '') + '" onclick="recsToggleSector(\'' + k + '\', this)">' + _recsEsc(lbl) + '</button>';
+    html += '</div></div>';
+  }
+  wrap.innerHTML = html || '<div class="recs-none">—</div>';
+  _recsPaintCount();
+}
+function recsToggleSector(k, el) {
+  if (_recsSel.has(k)) _recsSel.delete(k); else _recsSel.add(k);
+  if (el) el.classList.toggle('on', _recsSel.has(k));
+  _recsPaintCount();
+}
+function _recsPaintCount() {
+  const n = document.getElementById('recsSelCount');
+  if (n) n.textContent = _recsSel.size ? '(' + _recsSel.size + ')' : '';
+}
+function recsUseGps() {
+  if (!navigator.geolocation) { showToast(t('recsLocNeeded')); return; }
+  navigator.geolocation.getCurrentPosition(
+    p => { _recsLoc = { lat: p.coords.latitude, lng: p.coords.longitude, label: t('recsMyLocation') }; _recsPaintLoc(); },
+    () => showToast(t('recsLocNeeded')),
+    { enableHighAccuracy: false, timeout: 9000, maximumAge: 120000 });
+}
+function recsGeocodeCity() {
+  const inp = document.getElementById('recsCity');
+  const v = (inp && inp.value || '').trim();
+  if (v.length < 2) return;
+  fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q=' + encodeURIComponent(v))
+    .then(r => r.json())
+    .then(j => {
+      if (!j || !j.length) { showToast(t('recsCityNotFound')); return; }
+      _recsLoc = { lat: +j[0].lat, lng: +j[0].lon, label: v };
+      _recsPaintLoc();
+    })
+    .catch(() => showToast(t('recsCityNotFound')));
+}
+function _recsPaintLoc() {
+  const el = document.getElementById('recsLocLabel');
+  if (el) el.textContent = _recsLoc ? '📍 ' + _recsLoc.label : t('recsNoLoc');
+}
+function _recsFicha(c) {
+  let p = 0;
+  if (c.website) p += 2;
+  if (c.email) p += 1.5;
+  if (c.phone) p += 1.5;
+  if (c.alvara) p += 2;
+  if (c.logo) p += 1;
+  if (c.description) p += 1;
+  if (c.verified) p += 1;
+  return Math.min(1, p / 10);
+}
+function _recsAval(c) {
+  const r = +c.rating || 0, n = +c.reviews || 0;
+  return ((r * n + 3.5 * 5) / (n + 5)) / 5;
+}
+function recsRun() {
+  if (!_recsSel.size) { showToast(t('recsPickOne')); return; }
+  if (!_recsLoc) { showToast(t('recsLocNeeded')); return; }
+  const raio = +((document.getElementById('recsRadius') || {}).value || 50);
+  let html = '';
+  for (const k of _recsSel) {
+    const cand = [];
+    for (const c of companies) {
+      if (!isFinite(+c.lat) || !isFinite(+c.lng)) continue;
+      if (c.sector !== k && !(Array.isArray(c.sectors) && c.sectors.includes(k))) continue;
+      const d = _getCachedDistance(_recsLoc.lat, _recsLoc.lng, c);
+      if (!isFinite(d) || d > raio) continue;
+      const prox = Math.max(0, 1 - d / raio);
+      const ficha = _recsFicha(c);
+      const aval = _recsAval(c);
+      const total = Math.round(100 * (0.4 * prox + 0.3 * ficha + 0.3 * aval));
+      cand.push({ c, d, prox, ficha, aval, total });
+    }
+    cand.sort((a, b) => b.total - a.total || a.d - b.d);
+    html += '<div class="recs-area"><div class="recs-area-t">' + _recsEsc(_recsLabel(k)) +
+      ' <span class="recs-area-n">' + cand.length + ' ' + _recsEsc(t('recsInRadius')) + ' ' + raio + ' km</span></div>';
+    const top = cand.slice(0, 3);
+    html += top.length
+      ? '<div class="recs-cards">' + top.map(_recsCard).join('') + '</div>'
+      : '<div class="recs-none">' + _recsEsc(t('recsNoResults')) + '</div>';
+    html += '</div>';
+  }
+  const out = document.getElementById('recsResults');
+  if (out) {
+    out.innerHTML = html;
+    try { out.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); } catch (_) {}
+  }
+}
+function _recsCard(x, i) {
+  const c = x.c;
+  const medalha = ['🥇', '🥈', '🥉'][i] || '';
+  const logo = c.logo
+    ? '<img class="recs-logo" src="' + _recsEsc(c.logo) + '" alt="" loading="lazy"/>'
+    : '<span class="recs-logo recs-logo-emoji">' + (c.emoji || '🏗️') + '</span>';
+  const nAval = +c.reviews || 0;
+  const estrelas = nAval
+    ? '★ ' + (+c.rating || 0).toFixed(1) + ' <span class="recs-dim">(' + nAval + ')</span>'
+    : '';
+  const chips = [];
+  if (c.website) chips.push('🌐 Site');
+  if (c.alvara) chips.push('📜 ' + _recsEsc(c.alvara));
+  if (c.phone || c.email) chips.push('📞');
+  if (c.verified) chips.push('✔');
+  const barra = (lbl, v) =>
+    '<div class="recs-bar-row"><span>' + _recsEsc(lbl) + '</span><div class="recs-bar"><i style="width:' + Math.round(v * 100) + '%"></i></div></div>';
+  return '<div class="recs-card" onclick="closeRecs();openDetail(' + Number(c.id) + ')">' +
+    '<div class="recs-card-top"><span class="recs-medal">' + medalha + '</span>' + logo +
+    '<div class="recs-card-nome"><b>' + _recsEsc(c.name) + '</b>' +
+    '<div class="recs-dim">' + _recsEsc(c.city || '') + ' · ' + x.d.toFixed(1) + ' km' + (estrelas ? ' · ' + estrelas : '') + '</div></div>' +
+    '<div class="recs-donut" style="background:conic-gradient(var(--primary) ' + (x.total * 3.6) + 'deg, var(--border, #e2e8f0) 0)"><b>' + x.total + '</b></div></div>' +
+    barra(t('recsProximity'), x.prox) + barra(t('recsProfileScore'), x.ficha) + barra(t('recsReviewsScore'), x.aval) +
+    '<div class="recs-chips-mini">' + chips.map(ch => '<span>' + ch + '</span>').join('') + '</div>' +
+    '<button type="button" class="recs-ver" onclick="event.stopPropagation();closeRecs();openDetail(' + Number(c.id) + ')">' + _recsEsc(t('recsSeeProfile')) + ' →</button>' +
+    '</div>';
+}
+window.openRecs = openRecs;
+window.closeRecs = closeRecs;
+window.recsToggleSector = recsToggleSector;
+window.recsUseGps = recsUseGps;
+window.recsGeocodeCity = recsGeocodeCity;
+window.recsRun = recsRun;
+window._recsRenderChips = _recsRenderChips;
