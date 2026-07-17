@@ -3740,3 +3740,7 @@
 .radius-marks span{font-size:17px;color:var(--muted);font-weight:700}
 .radius-ignore{margin-top:16px;padding:11px 13px;background:var(--bg);border:1px solid var(--border);border-radius:10px;font-size:16px}
 .radius-ignore:hover{border-color:var(--primary)}
+
+/* passos numerados do formulário de recomendações */
+.recs-step{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;font-size:14px;font-weight:800;flex:none;margin-right:2px}
+.recs-sec-head{display:flex;align-items:center;gap:8px}
