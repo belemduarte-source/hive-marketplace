@@ -5024,11 +5024,11 @@ function mspOpenSheet(type) {
       .find(r => r.checked) || {}).value || '';
     const opts = [
       {val:'',        label:'Qualquer'},
-      {val:'0-3',     label:'★★★☆☆ 0 – 3.0'},
-      {val:'3-4',     label:'★★★★☆ 3.0 – 4.0'},
-      {val:'4-4.5',   label:'★★★★☆ 4.0 – 4.5'},
-      {val:'4.5-4.8', label:'★★★★★ 4.5 – 4.8'},
       {val:'4.8-5',   label:'★★★★★ 4.8 – 5.0'},
+      {val:'4.5-4.8', label:'★★★★★ 4.5 – 4.8'},
+      {val:'4-4.5',   label:'★★★★☆ 4.0 – 4.5'},
+      {val:'3-4',     label:'★★★★☆ 3.0 – 4.0'},
+      {val:'0-3',     label:'★★★☆☆ 0 – 3.0'},
     ];
     body.innerHTML = `<div class="msp-sheet-row">${opts.map(o =>
       `<button class="msp-sheet-btn${o.val===current?' active':''}" data-rating="${o.val}"
