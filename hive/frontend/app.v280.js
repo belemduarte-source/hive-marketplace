@@ -3579,7 +3579,8 @@ async function loadCompaniesFromDB(opts) {
       data = [];
       let prevFirstId = null;
       let fim = false;
-      for (let ronda = 0; !fim && ronda < 15; ronda++) {
+      // Teto de 30 rondas = 120k empresas (catálogo já passa das 54k).
+      for (let ronda = 0; !fim && ronda < 30; ronda++) {
         const lote = await Promise.all([0, 1, 2, 3].map(k =>
           api.getCompanies({ limit: 1000, offset: (ronda * 4 + k) * 1000 }).catch(() => null)));
         for (const page of lote) {
