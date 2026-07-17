@@ -45,7 +45,7 @@ const translations = {
     importOSM:'Importar Empresas OSM',
     filterTitle:'Filtros', clearAll:'Limpar Tudo', companiesFound:'empresas encontradas',
     sortBy:'Ordenar Por', sortRating:'Melhor Avaliação', sortReviews:'Mais Avaliados', sortName:'Nome A–Z',
-    sectorArea:'Área de Atividade', minRating:'Avaliação Mínima',
+    sectorArea:'Área de Atividade', minRating:'Avaliação',
     ratingAny:'Qualquer avaliação', ratingOrMore:'ou mais',
     searchRadius:'Raio de Pesquisa', featured:'Destaque', ignoreRadius:'Não Usar Raio de Pesquisa', nearbyTitle:'Empresas Próximas', contactYourName:'O seu nome', contactYourEmail:'O seu email (para a empresa responder)', contactNameReq:'Indique o seu nome', contactEmailReq:'Indique um email válido', retryBtn:'Tentar novamente', clearFiltersBtn:'Limpar filtros', resultsCount:'empresas encontradas', chatToday:'Hoje', chatYesterday:'Ontem', alertSaveBtn:'Avisar-me de novas', alertSaved:'Alerta criado! Receberá um email quando houver novas empresas.', alertsTitle:'Os meus alertas', alertDeleted:'Alerta removido', pushBtn:'Ativar notificações', pushOn:'Notificações ativas neste dispositivo', rvVerified:'contacto verificado', navHow:'Como funciona', dpCompare:'Comparar', dpMission:'Missão', dpVision:'Visão', allCountries:'Todos os países', profFilterPh:'Filtrar por nome ou cidade…', profShowMore:'Mostrar mais', profShowing:'A mostrar', dpStreetTitle:'Vista de Rua (Street View)', svOpenExternal:'Abrir no Google Maps ↗', svFallback:'Se a vista não carregar, ', svFallbackLink:'abra no Google Maps', claimLink:'🏷 É a sua empresa? Reclame esta ficha', claimTitle:'Reclamar ficha da empresa', claimIntro:'Para provar que gere esta empresa, enviamos um código de 6 dígitos para o email público da ficha. Com a ficha reclamada pode editar os dados, responder a avaliações e ver estatísticas.', claimSendBtn:'Enviar código para o email da ficha', claimSentTo:'Código enviado para', claimVerifyBtn:'Confirmar código', claimSuccess:'Ficha reclamada! Já pode editar os dados e ver as mensagens.', claimNeedLogin:'Inicie sessão para reclamar a ficha', claimCodeInvalid:'Introduza o código de 6 dígitos', rfqCta:'Pedir Orçamentos Grátis', rfqTitle:'Pedir orçamentos', rfqIntro:'Descreva o trabalho — enviamos o pedido às empresas certas da sua zona e as propostas chegam diretamente ao seu email.', rfqSector:'Área de atividade', rfqDesc:'Descrição do trabalho', rfqDescPh:'Ex.: Remodelação completa de casa de banho (~4 m²): substituição de loiças, azulejos e canalização.', rfqCity:'Localidade', rfqTimeline:'Prazo desejado', rfqBudget:'Orçamento indicativo', rfqPhone:'Telefone (opcional)', rfqEmail:'O seu email', rfqSend:'Enviar pedido às empresas', rfqSentA:'Pedido enviado a', rfqSentB:'empresas! As propostas chegarão ao seu email.', rfqDescShort:'Descreva o trabalho com mais detalhe (mínimo 20 caracteres)', rfqCityReq:'Indique a localidade', tlFlex:'Flexível', tlUrgent:'Urgente', tl1m:'No próximo mês', tl3m:'Nos próximos 3 meses', budNS:'Ainda não sei', inboxBtn:'Mensagens de clientes', inboxTitle:'Mensagens de clientes', inboxEmpty:'Ainda não há mensagens.', inboxReplyPh:'Escreva a sua resposta…', inboxReplySend:'Responder', inboxReplySent:'Resposta enviada ao cliente', inboxYou:'Você', featureBtn:'Pedir destaque', featureSent:'Pedido de destaque enviado ao administrador',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Novo Registo',
@@ -458,7 +458,7 @@ const translations = {
     importOSM:'Import OSM Companies',
     filterTitle:'Filters', clearAll:'Clear All', companiesFound:'companies found',
     sortBy:'Sort By', sortRating:'Best Rating', sortReviews:'Most Reviewed', sortName:'Name A–Z',
-    sectorArea:'Activity Area', minRating:'Minimum Rating',
+    sectorArea:'Activity Area', minRating:'Rating',
     ratingAny:'Any rating', ratingOrMore:'or more',
     searchRadius:'Search Radius', featured:'Featured', ignoreRadius:'Don\'t Use Search Radius', nearbyTitle:'Nearby Companies', contactYourName:'Your name', contactYourEmail:'Your email (so the company can reply)', contactNameReq:'Enter your name', contactEmailReq:'Enter a valid email', retryBtn:'Try again', clearFiltersBtn:'Clear filters', resultsCount:'companies found', chatToday:'Today', chatYesterday:'Yesterday', alertSaveBtn:'Alert me to new ones', alertSaved:'Alert created! You will get an email when new companies appear.', alertsTitle:'My alerts', alertDeleted:'Alert removed', pushBtn:'Enable notifications', pushOn:'Notifications active on this device', rvVerified:'verified contact', navHow:'How it works', dpCompare:'Compare', dpMission:'Mission', dpVision:'Vision', allCountries:'All countries', profFilterPh:'Filter by name or city…', profShowMore:'Show more', profShowing:'Showing', dpStreetTitle:'Street View', svOpenExternal:'Open in Google Maps ↗', svFallback:'If the view does not load, ', svFallbackLink:'open it in Google Maps', claimLink:'🏷 Is this your business? Claim this listing', claimTitle:'Claim this listing', claimIntro:'To prove you manage this business we send a 6-digit code to the listing\u2019s public email. Once claimed, you can edit the details, reply to reviews and see analytics.', claimSendBtn:'Send code to the listing email', claimSentTo:'Code sent to', claimVerifyBtn:'Confirm code', claimSuccess:'Listing claimed! You can now edit it and see messages.', claimNeedLogin:'Sign in to claim this listing', claimCodeInvalid:'Enter the 6-digit code', rfqCta:'Get Free Quotes', rfqTitle:'Request quotes', rfqIntro:'Describe the job — we send it to the right companies in your area and proposals arrive in your email.', rfqSector:'Activity area', rfqDesc:'Job description', rfqDescPh:'E.g.: Full bathroom renovation (~4 m²): new fixtures, tiles and plumbing.', rfqCity:'Town/City', rfqTimeline:'Desired timeline', rfqBudget:'Indicative budget', rfqPhone:'Phone (optional)', rfqEmail:'Your email', rfqSend:'Send request to companies', rfqSentA:'Request sent to', rfqSentB:'companies! Proposals will arrive by email.', rfqDescShort:'Describe the job in more detail (min. 20 characters)', rfqCityReq:'Enter the town/city', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Next month', tl3m:'Within 3 months', budNS:'Not sure yet', inboxBtn:'Client messages', inboxTitle:'Client messages', inboxEmpty:'No messages yet.', inboxReplyPh:'Write your reply…', inboxReplySend:'Reply', inboxReplySent:'Reply sent to the client', inboxYou:'You', featureBtn:'Request featuring', featureSent:'Feature request sent to the admin',
     topRated:'Top Rated', verified:'Verified', newEntry:'New Entry',
@@ -862,7 +862,7 @@ const translations = {
     importOSM:'Importer Entreprises OSM',
     filterTitle:'Filtres', clearAll:'Tout Effacer', companiesFound:'entreprises trouvées',
     sortBy:'Trier Par', sortRating:'Meilleure Évaluation', sortReviews:'Plus Évalués', sortName:'Nom A–Z',
-    sectorArea:"Secteur d'Activité", minRating:'Évaluation Minimale',
+    sectorArea:"Secteur d'Activité", minRating:'Évaluation',
     ratingAny:'Toute évaluation', ratingOrMore:'ou plus',
     searchRadius:'Rayon de Recherche', featured:'En Vedette', ignoreRadius:'Ne pas utiliser le rayon', nearbyTitle:'Entreprises à Proximité', contactYourName:'Votre nom', contactYourEmail:'Votre email (pour la réponse de l\'entreprise)', contactNameReq:'Indiquez votre nom', contactEmailReq:'Indiquez un email valide', retryBtn:'Réessayer', clearFiltersBtn:'Effacer les filtres', resultsCount:'entreprises trouvées', chatToday:"Aujourd'hui", chatYesterday:'Hier', alertSaveBtn:'M’alerter des nouveautés', alertSaved:'Alerte créée !', alertsTitle:'Mes alertes', alertDeleted:'Alerte supprimée', pushBtn:'Activer les notifications', pushOn:'Notifications actives', rvVerified:'contact vérifié', navHow:'Comment ça marche', dpCompare:'Comparer', dpMission:'Mission', dpVision:'Vision', allCountries:'Tous les pays', profFilterPh:'Filtrer par nom ou ville…', profShowMore:'Afficher plus', profShowing:'Affichage de', dpStreetTitle:'Vue de la rue (Street View)', svOpenExternal:'Ouvrir dans Google Maps ↗', svFallback:'Si la vue ne se charge pas, ', svFallbackLink:'ouvrez-la dans Google Maps', claimLink:'🏷 C\u2019est votre entreprise ? Revendiquez cette fiche', claimTitle:'Revendiquer la fiche', claimIntro:'Pour prouver que vous gérez cette entreprise, nous envoyons un code à 6 chiffres à l\u2019email public de la fiche. Une fois revendiquée, vous pouvez la modifier, répondre aux avis et voir les statistiques.', claimSendBtn:'Envoyer le code à l\u2019email de la fiche', claimSentTo:'Code envoyé à', claimVerifyBtn:'Confirmer le code', claimSuccess:'Fiche revendiquée !', claimNeedLogin:'Connectez-vous pour revendiquer la fiche', claimCodeInvalid:'Saisissez le code à 6 chiffres', rfqCta:'Devis Gratuits', rfqTitle:'Demander des devis', rfqIntro:'Décrivez les travaux — nous envoyons la demande aux bonnes entreprises de votre zone et les propositions arrivent par email.', rfqSector:'Domaine d\u2019activité', rfqDesc:'Description des travaux', rfqDescPh:'Ex. : Rénovation complète de salle de bain (~4 m²).', rfqCity:'Localité', rfqTimeline:'Délai souhaité', rfqBudget:'Budget indicatif', rfqPhone:'Téléphone (optionnel)', rfqEmail:'Votre email', rfqSend:'Envoyer la demande', rfqSentA:'Demande envoyée à', rfqSentB:'entreprises ! Les propositions arriveront par email.', rfqDescShort:'Décrivez les travaux plus en détail (min. 20 caractères)', rfqCityReq:'Indiquez la localité', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Le mois prochain', tl3m:'Sous 3 mois', budNS:'Je ne sais pas encore', inboxBtn:'Messages clients', inboxTitle:'Messages clients', inboxEmpty:'Pas encore de messages.', inboxReplyPh:'Écrivez votre réponse…', inboxReplySend:'Répondre', inboxReplySent:'Réponse envoyée', inboxYou:'Vous', featureBtn:'Demander la mise en avant', featureSent:'Demande envoyée à l\u2019administrateur',
     topRated:'Mieux Noté', verified:'Vérifié', newEntry:'Nouveau Enregistrement',
@@ -1268,7 +1268,7 @@ const translations = {
     searchUpdated:'¡Búsqueda actualizada!',
     filterTitle:'Filtros', clearAll:'Borrar Todo', companiesFound:'empresas encontradas',
     sortBy:'Ordenar Por', sortRating:'Mejor Valoradas', sortReviews:'Más Valoradas', sortName:'Nombre A–Z',
-    sectorArea:'Área de Actividad', minRating:'Valoración Mínima',
+    sectorArea:'Área de Actividad', minRating:'Valoración',
     ratingAny:'Cualquier valoración', ratingOrMore:'o más',
     searchRadius:'Radio de Búsqueda', featured:'Destacados', ignoreRadius:'No Usar Radio de Búsqueda', nearbyTitle:'Empresas Cercanas', contactYourName:'Su nombre', contactYourEmail:'Su email (para que la empresa responda)', contactNameReq:'Indique su nombre', contactEmailReq:'Indique un email válido', retryBtn:'Intentar de nuevo', clearFiltersBtn:'Borrar filtros', resultsCount:'empresas encontradas', chatToday:'Hoy', chatYesterday:'Ayer', alertSaveBtn:'Avisarme de nuevas', alertSaved:'¡Alerta creada!', alertsTitle:'Mis alertas', alertDeleted:'Alerta eliminada', pushBtn:'Activar notificaciones', pushOn:'Notificaciones activas', rvVerified:'contacto verificado', navHow:'Cómo funciona', dpCompare:'Comparar', dpMission:'Misión', dpVision:'Visión', allCountries:'Todos los países', profFilterPh:'Filtrar por nombre o ciudad…', profShowMore:'Mostrar más', profShowing:'Mostrando', dpStreetTitle:'Vista de calle (Street View)', svOpenExternal:'Abrir en Google Maps ↗', svFallback:'Si la vista no carga, ', svFallbackLink:'ábrala en Google Maps', claimLink:'🏷 ¿Es su empresa? Reclame esta ficha', claimTitle:'Reclamar ficha de la empresa', claimIntro:'Para demostrar que gestiona esta empresa, enviamos un código de 6 dígitos al email público de la ficha. Una vez reclamada, puede editar los datos, responder a reseñas y ver estadísticas.', claimSendBtn:'Enviar código al email de la ficha', claimSentTo:'Código enviado a', claimVerifyBtn:'Confirmar código', claimSuccess:'¡Ficha reclamada!', claimNeedLogin:'Inicie sesión para reclamar la ficha', claimCodeInvalid:'Introduzca el código de 6 dígitos', rfqCta:'Pedir Presupuestos Gratis', rfqTitle:'Pedir presupuestos', rfqIntro:'Describa el trabajo — lo enviamos a las empresas adecuadas de su zona y las propuestas llegan a su email.', rfqSector:'Área de actividad', rfqDesc:'Descripción del trabajo', rfqDescPh:'Ej.: Reforma completa de baño (~4 m²).', rfqCity:'Localidad', rfqTimeline:'Plazo deseado', rfqBudget:'Presupuesto indicativo', rfqPhone:'Teléfono (opcional)', rfqEmail:'Su email', rfqSend:'Enviar solicitud', rfqSentA:'Solicitud enviada a', rfqSentB:'empresas. Las propuestas llegarán por email.', rfqDescShort:'Describa el trabajo con más detalle (mín. 20 caracteres)', rfqCityReq:'Indique la localidad', tlFlex:'Flexible', tlUrgent:'Urgente', tl1m:'El próximo mes', tl3m:'En 3 meses', budNS:'Aún no lo sé', inboxBtn:'Mensajes de clientes', inboxTitle:'Mensajes de clientes', inboxEmpty:'Aún no hay mensajes.', inboxReplyPh:'Escriba su respuesta…', inboxReplySend:'Responder', inboxReplySent:'Respuesta enviada', inboxYou:'Usted', featureBtn:'Pedir destacado', featureSent:'Solicitud enviada al administrador',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Nuevo Registro',
@@ -1668,7 +1668,7 @@ const translations = {
     searchUpdated:'Suche aktualisiert!',
     filterTitle:'Filter', clearAll:'Alle löschen', companiesFound:'Unternehmen',
     sortBy:'Sortieren nach', sortRating:'Beste Bewertung', sortReviews:'Meiste Bewertungen', sortName:'Name A–Z',
-    sectorArea:'Tätigkeitsbereich', minRating:'Mindestbewertung',
+    sectorArea:'Tätigkeitsbereich', minRating:'Bewertung',
     ratingAny:'Beliebige Bewertung', ratingOrMore:'oder mehr',
     searchRadius:'Suchradius', featured:'Empfohlen', ignoreRadius:'Suchradius nicht verwenden', nearbyTitle:'Unternehmen in der Nähe', contactYourName:'Ihr Name', contactYourEmail:'Ihre E-Mail (für die Antwort der Firma)', contactNameReq:'Geben Sie Ihren Namen an', contactEmailReq:'Geben Sie eine gültige E-Mail an', retryBtn:'Erneut versuchen', clearFiltersBtn:'Filter zurücksetzen', resultsCount:'Unternehmen gefunden', chatToday:'Heute', chatYesterday:'Gestern', alertSaveBtn:'Bei neuen benachrichtigen', alertSaved:'Alarm erstellt!', alertsTitle:'Meine Alarme', alertDeleted:'Alarm entfernt', pushBtn:'Benachrichtigungen aktivieren', pushOn:'Benachrichtigungen aktiv', rvVerified:'verifizierter Kontakt', navHow:'So funktioniert es', dpCompare:'Vergleichen', dpMission:'Mission', dpVision:'Vision', allCountries:'Alle Länder', profFilterPh:'Nach Name oder Stadt filtern…', profShowMore:'Mehr anzeigen', profShowing:'Zeige', dpStreetTitle:'Straßenansicht (Street View)', svOpenExternal:'In Google Maps öffnen ↗', svFallback:'Wenn die Ansicht nicht lädt, ', svFallbackLink:'in Google Maps öffnen', claimLink:'🏷 Ist das Ihr Unternehmen? Eintrag übernehmen', claimTitle:'Eintrag übernehmen', claimIntro:'Zum Nachweis senden wir einen 6-stelligen Code an die öffentliche E-Mail des Eintrags. Danach können Sie Daten bearbeiten, auf Bewertungen antworten und Statistiken sehen.', claimSendBtn:'Code an die Eintrags-E-Mail senden', claimSentTo:'Code gesendet an', claimVerifyBtn:'Code bestätigen', claimSuccess:'Eintrag übernommen!', claimNeedLogin:'Zum Übernehmen bitte anmelden', claimCodeInvalid:'6-stelligen Code eingeben', rfqCta:'Kostenlose Angebote', rfqTitle:'Angebote anfragen', rfqIntro:'Beschreiben Sie die Arbeit — wir senden die Anfrage an passende Firmen in Ihrer Region; Angebote kommen per E-Mail.', rfqSector:'Tätigkeitsbereich', rfqDesc:'Beschreibung der Arbeit', rfqDescPh:'z. B.: Komplette Badsanierung (~4 m²).', rfqCity:'Ort', rfqTimeline:'Gewünschter Zeitrahmen', rfqBudget:'Ungefähres Budget', rfqPhone:'Telefon (optional)', rfqEmail:'Ihre E-Mail', rfqSend:'Anfrage senden', rfqSentA:'Anfrage gesendet an', rfqSentB:'Firmen! Angebote kommen per E-Mail.', rfqDescShort:'Bitte ausführlicher beschreiben (mind. 20 Zeichen)', rfqCityReq:'Ort angeben', tlFlex:'Flexibel', tlUrgent:'Dringend', tl1m:'Im nächsten Monat', tl3m:'In 3 Monaten', budNS:'Weiß noch nicht', inboxBtn:'Kundennachrichten', inboxTitle:'Kundennachrichten', inboxEmpty:'Noch keine Nachrichten.', inboxReplyPh:'Antwort schreiben…', inboxReplySend:'Antworten', inboxReplySent:'Antwort gesendet', inboxYou:'Sie', featureBtn:'Hervorhebung anfragen', featureSent:'Anfrage an den Administrator gesendet',
     topRated:'Top-Bewertet', verified:'Verifiziert', newEntry:'Neu eingetragen',
@@ -5019,19 +5019,20 @@ function mspOpenSheet(type) {
     ).join('')}</div>`;
 
   } else if (type === 'rating') {
-    title.textContent = 'Avaliação Mínima';
-    const current = parseFloat([...document.querySelectorAll('input[name="minRating"]')]
-      .find(r => r.checked)?.value || '0');
+    title.textContent = t('minRating') || 'Avaliação';
+    const current = ([...document.querySelectorAll('input[name="minRating"]')]
+      .find(r => r.checked) || {}).value || '';
     const opts = [
-      {val:0,   label:'Qualquer'},
-      {val:4.0, label:'★★★★☆ 4.0+'},
-      {val:4.5, label:'★★★★☆ 4.5+'},
-      {val:4.8, label:'★★★★★ 4.8+'},
-      {val:5.0, label:'★★★★★ 5.0'},
+      {val:'',        label:'Qualquer'},
+      {val:'0-3',     label:'★★★☆☆ 0 – 3.0'},
+      {val:'3-4',     label:'★★★★☆ 3.0 – 4.0'},
+      {val:'4-4.5',   label:'★★★★☆ 4.0 – 4.5'},
+      {val:'4.5-4.8', label:'★★★★★ 4.5 – 4.8'},
+      {val:'4.8-5',   label:'★★★★★ 4.8 – 5.0'},
     ];
     body.innerHTML = `<div class="msp-sheet-row">${opts.map(o =>
       `<button class="msp-sheet-btn${o.val===current?' active':''}" data-rating="${o.val}"
-        onclick="mspSetRating(${o.val});mspCloseSheet()">${o.label}</button>`
+        onclick="mspSetRating('${o.val}');mspCloseSheet()">${o.label}</button>`
     ).join('')}</div>`;
 
   } else if (type === 'status') {
@@ -5191,10 +5192,10 @@ function mspUpdateChips() {
   // Rating chip
   const ratingChip  = document.getElementById('mspChipRating');
   const ratingLabel = document.getElementById('mspChipRatingLabel');
-  const ratingVal = parseFloat([...document.querySelectorAll('input[name="minRating"]')].find(r=>r.checked)?.value||'0');
-  const ratingActive = ratingVal > 0;
+  const ratingVal = (([...document.querySelectorAll('input[name="minRating"]')].find(r=>r.checked)||{}).value) || '';
+  const ratingActive = !!ratingVal;
   if (ratingChip)  ratingChip.classList.toggle('active', ratingActive);
-  if (ratingLabel) ratingLabel.textContent = ratingActive ? `★ ${ratingVal}+` : 'Avaliação';
+  if (ratingLabel) ratingLabel.textContent = ratingActive ? ('★ ' + ratingVal.replace('-', '–')) : 'Avaliação';
 
   // Status chip
   const statusChip  = document.getElementById('mspChipStatus');
@@ -5236,7 +5237,7 @@ function mspUpdateChips() {
 function mspClearAll() {
   activeSectors.clear();
   ['sortAll'].forEach(id => { const el = document.getElementById(id); if(el) el.checked = true; });
-  document.querySelectorAll('input[name="minRating"]').forEach(r => r.checked = (parseFloat(r.value)===0));
+  document.querySelectorAll('input[name="minRating"]').forEach(r => r.checked = (r.value === ''));
   ['filterTopRated','filterVerified','filterNew'].forEach(id => { const el = document.getElementById(id); if(el) el.checked = false; });
   updateSectorActiveStates();
   applyFilters();
@@ -5306,7 +5307,7 @@ function mspSetSort(value) {
 
 function mspSetRating(value) {
   document.querySelectorAll('input[name="minRating"]').forEach(r => {
-    r.checked = parseFloat(r.value) === value;
+    r.checked = r.value === String(value);
   });
   applyFilters();
   mspUpdateChips();
@@ -5525,7 +5526,8 @@ function getFiltered() {
   const cc = radiusCircle ? radiusCircle.getLatLng() : { lat: currentMapCenter[0], lng: currentMapCenter[1] };
 
   const ratingEl  = document.querySelector('input[name="minRating"]:checked');
-  const minRating = ratingEl ? parseFloat(ratingEl.value) : 0;
+  // faixa "min-max" (ex. "4-4.5"); valor vazio = qualquer avaliação
+  const ratingBand = ratingEl && ratingEl.value ? ratingEl.value.split('-').map(Number) : null;
   const filterTopRated = document.getElementById('filterTopRated')?.checked;
   const filterVerified = document.getElementById('filterVerified')?.checked;
   const filterNew      = document.getElementById('filterNew')?.checked;
@@ -5554,7 +5556,7 @@ function getFiltered() {
       if (_getCachedDistance(cc.lat, cc.lng, c) > searchRadius) continue;
     }
     // Rating
-    if (minRating > 0 && c.rating < minRating) continue;
+    if (ratingBand) { const _r = +c.rating || 0; if (_r < ratingBand[0] || _r > ratingBand[1]) continue; }
     // Checkboxes
     if (filterTopRated && !c.topRated) continue;
     if (filterVerified && c.verified !== true) continue;
