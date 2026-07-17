@@ -3744,3 +3744,21 @@
 /* passos numerados do formulário de recomendações */
 .recs-step{display:inline-flex;align-items:center;justify-content:center;width:26px;height:26px;border-radius:50%;background:var(--primary);color:#fff;font-size:14px;font-weight:800;flex:none;margin-right:2px}
 .recs-sec-head{display:flex;align-items:center;gap:8px}
+
+/* melhorias do formulário de recomendações: acordeão, contadores, resumo, ações */
+.recs-summary{margin:14px 0 8px;font-size:15px;font-weight:700;color:var(--text)}
+.recs-sum-falta{color:#f59e0b;font-weight:700}
+.recs-go.off{opacity:.5;cursor:not-allowed}
+.recs-group-h{display:flex;align-items:center;gap:8px;width:100%;background:none;border:0;cursor:pointer;padding:10px 4px;color:var(--text);text-align:left}
+.recs-group-chev{color:var(--primary);font-size:13px;width:14px;flex:none}
+.recs-group-h .recs-group-t{margin-bottom:0;font-size:13.5px}
+.recs-group-n{margin-left:auto;color:var(--muted);font-size:12.5px;font-weight:700}
+.recs-group-sel{background:var(--primary);color:#fff;border-radius:99px;padding:2px 9px;font-size:12px;font-weight:800;margin-left:8px}
+.recs-group{margin-bottom:0;border-bottom:1px solid var(--border-light,rgba(128,128,128,.18))}
+.recs-group .recs-group-c{padding:2px 0 12px}
+.recs-chip-n{opacity:.75;font-weight:800;margin-left:4px;font-size:12px}
+.recs-chip.zero{opacity:.5}
+.recs-cmp{margin-top:10px;border:1.5px solid var(--border);background:var(--surface);color:var(--text);border-radius:10px;padding:9px 16px;font-weight:700;font-size:13.5px;cursor:pointer}
+.recs-cmp:hover{border-color:var(--primary);color:var(--primary)}
+.recs-widen{margin-left:8px;border:1.5px solid var(--primary);background:none;color:var(--primary);border-radius:8px;padding:6px 12px;font-weight:800;font-size:13px;cursor:pointer}
+.recs-widen:hover{background:var(--primary);color:#fff}

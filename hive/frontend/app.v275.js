@@ -65,7 +65,7 @@ const translations = {
     detailNoActivities:'Sem áreas de atividade indicadas',
     credRequired:'Obrigatória', credOptional:'Opcional',
     credLoginToView:'Inicie sessão para ver',
-    recsTitle:'Precisa de ajuda para encontrar as empresas certas?', recsBtn:'Encontramos as melhores empresas por si', recsBtnSub:'Responda a 3 perguntas e receba o Top 3 para o seu projeto', recsIntro:'Preencha o formulário e obtenha, em menos de 1 minuto, as empresas que melhor se adequam ao que procura.', recsAreas:'Áreas de atividade', recsFilterPh:'filtrar áreas…', recsLocationT:'Localização', recsUseGps:'Usar a minha localização', recsCityPh:'ou escreve uma cidade…', recsCityNotFound:'Cidade não encontrada', recsRadius:'Raio', recsGo:'Recomendar empresas', recsMyLocation:'A minha localização', recsMapCenter:'Centro do mapa', recsNoLoc:'Sem localização definida', recsPickOne:'Escolhe pelo menos uma área', recsLocNeeded:'Define primeiro a localização (GPS ou cidade)', recsInRadius:'no raio de', recsNoResults:'Sem empresas desta área no raio escolhido — experimenta aumentar o raio.', recsProximity:'Proximidade', recsProfileScore:'Ficha', recsReviewsScore:'Avaliações', recsSeeProfile:'Ver ficha',
+    recsTitle:'Precisa de ajuda para encontrar as empresas certas?', recsBtn:'Encontramos as melhores empresas por si', recsBtnSub:'Responda a 3 perguntas e receba o Top 3 para o seu projeto', recsIntro:'Preencha o formulário e obtenha, em menos de 1 minuto, as empresas que melhor se adequam ao que procura.', recsAreas:'Áreas de atividade', recsFilterPh:'filtrar áreas…', recsLocationT:'Localização', recsUseGps:'Usar a minha localização', recsCityPh:'ou escreve uma cidade…', recsCityNotFound:'Cidade não encontrada', recsRadius:'Raio', recsGo:'Recomendar empresas', recsMyLocation:'A minha localização', recsMapCenter:'Centro do mapa', recsNoLoc:'Sem localização definida', recsPickOne:'Escolhe pelo menos uma área', recsLocNeeded:'Define primeiro a localização (GPS ou cidade)', recsInRadius:'no raio de', recsNoResults:'Sem empresas desta área no raio escolhido — experimenta aumentar o raio.', recsProximity:'Proximidade', recsProfileScore:'Ficha', recsReviewsScore:'Avaliações', recsSeeProfile:'Ver ficha', recsAreasWord:'áreas', recsWiden:'Procurar num raio maior', recsCompare:'Comparar estes 3',
     alvaraNotApplicable:'Não aplicável', certidaoPending:'Em verificação',
     popupCertOk:'Certidão registada', popupAlvaraOk:'Alvará',
     noRatings:'Sem avaliações', reviews:'reviews',
@@ -478,7 +478,7 @@ const translations = {
     detailNoActivities:'No areas of activity listed',
     credRequired:'Required', credOptional:'Optional',
     credLoginToView:'Sign in to view',
-    recsTitle:'Need help finding the right companies?', recsBtn:'We find the best companies for you', recsBtnSub:'Answer 3 questions and get the top 3 for your project', recsIntro:'Fill in the form and get, in under a minute, the companies that best match what you need.', recsAreas:'Areas of activity', recsFilterPh:'filter areas…', recsLocationT:'Location', recsUseGps:'Use my location', recsCityPh:'or type a city…', recsCityNotFound:'City not found', recsRadius:'Radius', recsGo:'Recommend companies', recsMyLocation:'My location', recsMapCenter:'Map centre', recsNoLoc:'No location set', recsPickOne:'Pick at least one area', recsLocNeeded:'Set a location first (GPS or city)', recsInRadius:'within', recsNoResults:'No companies for this trade within the radius — try increasing it.', recsProximity:'Proximity', recsProfileScore:'Profile', recsReviewsScore:'Reviews', recsSeeProfile:'View profile',
+    recsTitle:'Need help finding the right companies?', recsBtn:'We find the best companies for you', recsBtnSub:'Answer 3 questions and get the top 3 for your project', recsIntro:'Fill in the form and get, in under a minute, the companies that best match what you need.', recsAreas:'Areas of activity', recsFilterPh:'filter areas…', recsLocationT:'Location', recsUseGps:'Use my location', recsCityPh:'or type a city…', recsCityNotFound:'City not found', recsRadius:'Radius', recsGo:'Recommend companies', recsMyLocation:'My location', recsMapCenter:'Map centre', recsNoLoc:'No location set', recsPickOne:'Pick at least one area', recsLocNeeded:'Set a location first (GPS or city)', recsInRadius:'within', recsNoResults:'No companies for this trade within the radius — try increasing it.', recsProximity:'Proximity', recsProfileScore:'Profile', recsReviewsScore:'Reviews', recsSeeProfile:'View profile', recsAreasWord:'areas', recsWiden:'Search a wider radius', recsCompare:'Compare these 3',
     alvaraNotApplicable:'Not applicable', certidaoPending:'Pending verification',
     popupCertOk:'Certificate on file', popupAlvaraOk:'Licence',
     noRatings:'No reviews', reviews:'reviews',
@@ -882,7 +882,7 @@ const translations = {
     detailNoActivities:'Aucun domaine d\'activité indiqué',
     credRequired:'Obligatoire', credOptional:'Facultatif',
     credLoginToView:'Connectez-vous pour voir',
-    recsTitle:'Besoin d’aide pour trouver les bonnes entreprises ?', recsBtn:'Nous trouvons les meilleures entreprises pour vous', recsBtnSub:'Répondez à 3 questions et obtenez le Top 3 pour votre projet', recsIntro:'Remplissez le formulaire et obtenez, en moins d’une minute, les entreprises qui correspondent le mieux à votre besoin.', recsAreas:'Domaines d’activité', recsFilterPh:'filtrer les domaines…', recsLocationT:'Localisation', recsUseGps:'Utiliser ma position', recsCityPh:'ou saisissez une ville…', recsCityNotFound:'Ville introuvable', recsRadius:'Rayon', recsGo:'Recommander des entreprises', recsMyLocation:'Ma position', recsMapCenter:'Centre de la carte', recsNoLoc:'Aucune position définie', recsPickOne:'Choisissez au moins un domaine', recsLocNeeded:'Définissez d’abord la position (GPS ou ville)', recsInRadius:'dans un rayon de', recsNoResults:'Aucune entreprise de ce métier dans le rayon — augmentez-le.', recsProximity:'Proximité', recsProfileScore:'Fiche', recsReviewsScore:'Avis', recsSeeProfile:'Voir la fiche',
+    recsTitle:'Besoin d’aide pour trouver les bonnes entreprises ?', recsBtn:'Nous trouvons les meilleures entreprises pour vous', recsBtnSub:'Répondez à 3 questions et obtenez le Top 3 pour votre projet', recsIntro:'Remplissez le formulaire et obtenez, en moins d’une minute, les entreprises qui correspondent le mieux à votre besoin.', recsAreas:'Domaines d’activité', recsFilterPh:'filtrer les domaines…', recsLocationT:'Localisation', recsUseGps:'Utiliser ma position', recsCityPh:'ou saisissez une ville…', recsCityNotFound:'Ville introuvable', recsRadius:'Rayon', recsGo:'Recommander des entreprises', recsMyLocation:'Ma position', recsMapCenter:'Centre de la carte', recsNoLoc:'Aucune position définie', recsPickOne:'Choisissez au moins un domaine', recsLocNeeded:'Définissez d’abord la position (GPS ou ville)', recsInRadius:'dans un rayon de', recsNoResults:'Aucune entreprise de ce métier dans le rayon — augmentez-le.', recsProximity:'Proximité', recsProfileScore:'Fiche', recsReviewsScore:'Avis', recsSeeProfile:'Voir la fiche', recsAreasWord:'domaines', recsWiden:'Chercher dans un rayon plus large', recsCompare:'Comparer ces 3',
     alvaraNotApplicable:'Non applicable', certidaoPending:'En vérification',
     popupCertOk:'Certificat enregistré', popupAlvaraOk:'Licence',
     noRatings:'Sans avis', reviews:'avis',
@@ -1288,7 +1288,7 @@ const translations = {
     detailNoActivities:'Sin áreas de actividad indicadas',
     credRequired:'Obligatorio', credOptional:'Opcional',
     credLoginToView:'Inicia sesión para ver',
-    recsTitle:'¿Necesitas ayuda para encontrar las empresas adecuadas?', recsBtn:'Encontramos las mejores empresas para ti', recsBtnSub:'Responde a 3 preguntas y recibe el Top 3 para tu proyecto', recsIntro:'Rellena el formulario y obtén, en menos de un minuto, las empresas que mejor se adaptan a lo que buscas.', recsAreas:'Áreas de actividad', recsFilterPh:'filtrar áreas…', recsLocationT:'Ubicación', recsUseGps:'Usar mi ubicación', recsCityPh:'o escribe una ciudad…', recsCityNotFound:'Ciudad no encontrada', recsRadius:'Radio', recsGo:'Recomendar empresas', recsMyLocation:'Mi ubicación', recsMapCenter:'Centro del mapa', recsNoLoc:'Sin ubicación definida', recsPickOne:'Elige al menos un área', recsLocNeeded:'Define primero la ubicación (GPS o ciudad)', recsInRadius:'en un radio de', recsNoResults:'No hay empresas de este sector en el radio — prueba a aumentarlo.', recsProximity:'Cercanía', recsProfileScore:'Ficha', recsReviewsScore:'Reseñas', recsSeeProfile:'Ver ficha',
+    recsTitle:'¿Necesitas ayuda para encontrar las empresas adecuadas?', recsBtn:'Encontramos las mejores empresas para ti', recsBtnSub:'Responde a 3 preguntas y recibe el Top 3 para tu proyecto', recsIntro:'Rellena el formulario y obtén, en menos de un minuto, las empresas que mejor se adaptan a lo que buscas.', recsAreas:'Áreas de actividad', recsFilterPh:'filtrar áreas…', recsLocationT:'Ubicación', recsUseGps:'Usar mi ubicación', recsCityPh:'o escribe una ciudad…', recsCityNotFound:'Ciudad no encontrada', recsRadius:'Radio', recsGo:'Recomendar empresas', recsMyLocation:'Mi ubicación', recsMapCenter:'Centro del mapa', recsNoLoc:'Sin ubicación definida', recsPickOne:'Elige al menos un área', recsLocNeeded:'Define primero la ubicación (GPS o ciudad)', recsInRadius:'en un radio de', recsNoResults:'No hay empresas de este sector en el radio — prueba a aumentarlo.', recsProximity:'Cercanía', recsProfileScore:'Ficha', recsReviewsScore:'Reseñas', recsSeeProfile:'Ver ficha', recsAreasWord:'áreas', recsWiden:'Buscar en un radio mayor', recsCompare:'Comparar estas 3',
     alvaraNotApplicable:'No aplicable', certidaoPending:'En verificación',
     popupCertOk:'Certificado registrado', popupAlvaraOk:'Licencia',
     noRatings:'Sin valoraciones', reviews:'reseñas',
@@ -1688,7 +1688,7 @@ const translations = {
     detailNoActivities:'Keine Tätigkeitsbereiche angegeben',
     credRequired:'Erforderlich', credOptional:'Optional',
     credLoginToView:'Zum Anzeigen anmelden',
-    recsTitle:'Brauchen Sie Hilfe, die richtigen Betriebe zu finden?', recsBtn:'Wir finden die besten Betriebe für Sie', recsBtnSub:'Beantworten Sie 3 Fragen und erhalten Sie die Top 3 für Ihr Projekt', recsIntro:'Füllen Sie das Formular aus und erhalten Sie in unter einer Minute die Betriebe, die am besten zu Ihrer Suche passen.', recsAreas:'Gewerke', recsFilterPh:'Gewerke filtern…', recsLocationT:'Standort', recsUseGps:'Meinen Standort verwenden', recsCityPh:'oder Stadt eingeben…', recsCityNotFound:'Stadt nicht gefunden', recsRadius:'Radius', recsGo:'Betriebe empfehlen', recsMyLocation:'Mein Standort', recsMapCenter:'Kartenmitte', recsNoLoc:'Kein Standort gesetzt', recsPickOne:'Mindestens ein Gewerk wählen', recsLocNeeded:'Zuerst Standort festlegen (GPS oder Stadt)', recsInRadius:'im Umkreis von', recsNoResults:'Keine Betriebe dieses Gewerks im Radius — vergrößern Sie ihn.', recsProximity:'Nähe', recsProfileScore:'Profil', recsReviewsScore:'Bewertungen', recsSeeProfile:'Profil ansehen',
+    recsTitle:'Brauchen Sie Hilfe, die richtigen Betriebe zu finden?', recsBtn:'Wir finden die besten Betriebe für Sie', recsBtnSub:'Beantworten Sie 3 Fragen und erhalten Sie die Top 3 für Ihr Projekt', recsIntro:'Füllen Sie das Formular aus und erhalten Sie in unter einer Minute die Betriebe, die am besten zu Ihrer Suche passen.', recsAreas:'Gewerke', recsFilterPh:'Gewerke filtern…', recsLocationT:'Standort', recsUseGps:'Meinen Standort verwenden', recsCityPh:'oder Stadt eingeben…', recsCityNotFound:'Stadt nicht gefunden', recsRadius:'Radius', recsGo:'Betriebe empfehlen', recsMyLocation:'Mein Standort', recsMapCenter:'Kartenmitte', recsNoLoc:'Kein Standort gesetzt', recsPickOne:'Mindestens ein Gewerk wählen', recsLocNeeded:'Zuerst Standort festlegen (GPS oder Stadt)', recsInRadius:'im Umkreis von', recsNoResults:'Keine Betriebe dieses Gewerks im Radius — vergrößern Sie ihn.', recsProximity:'Nähe', recsProfileScore:'Profil', recsReviewsScore:'Bewertungen', recsSeeProfile:'Profil ansehen', recsAreasWord:'Gewerke', recsWiden:'Größeren Radius durchsuchen', recsCompare:'Diese 3 vergleichen',
     alvaraNotApplicable:'Nicht zutreffend', certidaoPending:'In Prüfung',
     popupCertOk:'Auszug hinterlegt', popupAlvaraOk:'Lizenz',
     noRatings:'Noch keine Bewertungen', reviews:'Bewertungen',
@@ -12464,7 +12464,20 @@ function _recsLabel(k) {
 function openRecs() {
   const ov = document.getElementById('recsOverlay');
   if (!ov) return;
-  _recsRenderChips((document.getElementById('recsFilter') || {}).value || '');
+  // memória da última pesquisa (só quando o formulário está virgem)
+  if (!_recsLoc && !_recsSel.size) {
+    try {
+      const sv = JSON.parse(localStorage.getItem(_RECS_LS) || 'null');
+      if (sv) {
+        if (sv.loc && isFinite(+sv.loc.lat)) _recsLoc = sv.loc;
+        (sv.sel || []).forEach(k => _recsSel.add(k));
+        if (sv.raio) {
+          const sl = document.getElementById('recsRadius');
+          if (sl) { sl.value = sv.raio; const v = document.getElementById('recsRadiusVal'); if (v) v.textContent = sv.raio + ' km'; }
+        }
+      }
+    } catch (_) {}
+  }
   if (!_recsLoc) {
     try {
       if (typeof map !== 'undefined' && map && map.getCenter) {
@@ -12473,7 +12486,16 @@ function openRecs() {
       }
     } catch (_) {}
   }
+  // abre os grupos com áreas escolhidas; senão, o primeiro
+  if (!_recsOpenGroups.size) {
+    const gs = _recsGrupos();
+    let abriu = false;
+    gs.forEach((g, i) => { if (g.subs.some(([k]) => _recsSel.has(k))) { _recsOpenGroups.add(i); abriu = true; } });
+    if (!abriu && gs.length) _recsOpenGroups.add(0);
+  }
+  _recsRenderChips('');
   _recsPaintLoc();
+  _recsRefreshUi();
   ov.classList.add('open');
   try { refreshLucide(); } catch (_) {}
 }
@@ -12484,23 +12506,43 @@ function closeRecs() {
 function _recsRenderChips(filtro) {
   const wrap = document.getElementById('recsChips');
   if (!wrap) return;
-  const f = String(filtro || '').toLowerCase();
+  const st = wrap.scrollTop;
+  const cont = _recsCounts();
+  const gs = _recsGrupos();
   let html = '';
-  for (const g of _recsGrupos()) {
-    const subs = g.subs.filter(([k, lbl]) => !f || lbl.toLowerCase().includes(f) || k.includes(f));
-    if (!subs.length) continue;
-    html += '<div class="recs-group"><div class="recs-group-t">' + _recsEsc(g.label) + '</div><div class="recs-group-c">';
-    for (const [k, lbl] of subs)
-      html += '<button type="button" class="recs-chip' + (_recsSel.has(k) ? ' on' : '') + '" onclick="recsToggleSector(\'' + k + '\', this)">' + _recsEsc(lbl) + '</button>';
-    html += '</div></div>';
-  }
+  gs.forEach((g, gi) => {
+    const subs = g.subs;
+    if (!subs.length) return;
+    const aberto = _recsOpenGroups.has(gi);
+    const nSel = subs.filter(([k]) => _recsSel.has(k)).length;
+    const nEmp = cont ? subs.reduce((s, [k]) => s + (cont[k] || 0), 0) : null;
+    html += '<div class="recs-group' + (aberto ? ' open' : '') + '">' +
+      '<button type="button" class="recs-group-h" onclick="_recsToggleGroup(' + gi + ')">' +
+      '<span class="recs-group-chev">' + (aberto ? '▾' : '▸') + '</span>' +
+      '<span class="recs-group-t">' + _recsEsc(g.label) + '</span>' +
+      (nSel ? '<span class="recs-group-sel">' + nSel + ' ✓</span>' : '') +
+      (nEmp !== null ? '<span class="recs-group-n">' + nEmp + '</span>' : '') +
+      '</button>';
+    if (aberto) {
+      html += '<div class="recs-group-c">';
+      for (const [k, lbl] of subs) {
+        const n = cont ? (cont[k] || 0) : null;
+        html += '<button type="button" class="recs-chip' + (_recsSel.has(k) ? ' on' : '') + (n === 0 ? ' zero' : '') + '" onclick="recsToggleSector(\'' + k + '\', this)">' +
+          _recsEsc(lbl) + (n !== null ? ' <span class="recs-chip-n">' + n + '</span>' : '') + '</button>';
+      }
+      html += '</div>';
+    }
+    html += '</div>';
+  });
   wrap.innerHTML = html || '<div class="recs-none">—</div>';
+  wrap.scrollTop = st;
   _recsPaintCount();
 }
 function recsToggleSector(k, el) {
   if (_recsSel.has(k)) _recsSel.delete(k); else _recsSel.add(k);
   if (el) el.classList.toggle('on', _recsSel.has(k));
-  _recsPaintCount();
+  _recsRenderChips('');
+  _recsRefreshUi();
 }
 function _recsPaintCount() {
   const n = document.getElementById('recsSelCount');
@@ -12509,7 +12551,7 @@ function _recsPaintCount() {
 function recsUseGps() {
   if (!navigator.geolocation) { showToast(t('recsLocNeeded')); return; }
   navigator.geolocation.getCurrentPosition(
-    p => { _recsLoc = { lat: p.coords.latitude, lng: p.coords.longitude, label: t('recsMyLocation') }; _recsPaintLoc(); },
+    p => { _recsLoc = { lat: p.coords.latitude, lng: p.coords.longitude, label: t('recsMyLocation') }; _recsPaintLoc(); _recsRenderChips(''); _recsRefreshUi(); },
     () => showToast(t('recsLocNeeded')),
     { enableHighAccuracy: false, timeout: 9000, maximumAge: 120000 });
 }
@@ -12523,6 +12565,8 @@ function recsGeocodeCity() {
       if (!j || !j.length) { showToast(t('recsCityNotFound')); return; }
       _recsLoc = { lat: +j[0].lat, lng: +j[0].lon, label: v };
       _recsPaintLoc();
+      _recsRenderChips('');
+      _recsRefreshUi();
     })
     .catch(() => showToast(t('recsCityNotFound')));
 }
@@ -12549,6 +12593,7 @@ function recsRun() {
   if (!_recsSel.size) { showToast(t('recsPickOne')); return; }
   if (!_recsLoc) { showToast(t('recsLocNeeded')); return; }
   const raio = +((document.getElementById('recsRadius') || {}).value || 50);
+  try { localStorage.setItem(_RECS_LS, JSON.stringify({ loc: _recsLoc, raio: raio, sel: [..._recsSel] })); } catch (_) {}
   let html = '';
   for (const k of _recsSel) {
     const cand = [];
@@ -12567,9 +12612,13 @@ function recsRun() {
     html += '<div class="recs-area"><div class="recs-area-t">' + _recsEsc(_recsLabel(k)) +
       ' <span class="recs-area-n">' + cand.length + ' ' + _recsEsc(t('recsInRadius')) + ' ' + raio + ' km</span></div>';
     const top = cand.slice(0, 3);
-    html += top.length
-      ? '<div class="recs-cards">' + top.map(_recsCard).join('') + '</div>'
-      : '<div class="recs-none">' + _recsEsc(t('recsNoResults')) + '</div>';
+    if (top.length) {
+      html += '<div class="recs-cards">' + top.map(_recsCard).join('') + '</div>';
+      if (top.length >= 2) html += '<button type="button" class="recs-cmp" onclick="recsCompareTop(\'' + top.map(x => x.c.id).join(',') + '\')">⚖ ' + _recsEsc(t('recsCompare')) + '</button>';
+    } else {
+      html += '<div class="recs-none">' + _recsEsc(t('recsNoResults')) +
+        (raio < 200 ? ' <button type="button" class="recs-widen" onclick="recsWiden()">' + _recsEsc(t('recsWiden')) + ' (' + Math.min(200, raio * 2) + ' km)</button>' : '') + '</div>';
+    }
     html += '</div>';
   }
   const out = document.getElementById('recsResults');
@@ -12605,6 +12654,78 @@ function _recsCard(x, i) {
     '<button type="button" class="recs-ver" onclick="event.stopPropagation();closeRecs();openDetail(' + Number(c.id) + ')">' + _recsEsc(t('recsSeeProfile')) + ' →</button>' +
     '</div>';
 }
+const _RECS_LS = 'hive_recs_state';
+const _recsOpenGroups = new Set();
+let _recsRadiusTimer = null;
+
+function _recsRaio() { return +((document.getElementById('recsRadius') || {}).value || 50); }
+
+// contagem de empresas por área dentro do raio (uma passagem pelo catálogo)
+function _recsCounts() {
+  if (!_recsLoc) return null;
+  const raio = _recsRaio();
+  const n = {};
+  for (const c of companies) {
+    if (!isFinite(+c.lat) || !isFinite(+c.lng)) continue;
+    const d = _getCachedDistance(_recsLoc.lat, _recsLoc.lng, c);
+    if (!isFinite(d) || d > raio) continue;
+    const vistos = new Set();
+    if (c.sector) vistos.add(c.sector);
+    if (Array.isArray(c.sectors)) c.sectors.forEach(s => vistos.add(s));
+    for (const s of vistos) n[s] = (n[s] || 0) + 1;
+  }
+  return n;
+}
+
+function _recsToggleGroup(gi) {
+  if (_recsOpenGroups.has(gi)) _recsOpenGroups.delete(gi); else _recsOpenGroups.add(gi);
+  _recsRenderChips('');
+}
+
+function _recsRefreshUi() {
+  const s = document.getElementById('recsSummary');
+  const go = document.querySelector('.recs-go');
+  const falta = [];
+  if (!_recsLoc) falta.push(t('recsLocNeeded'));
+  if (!_recsSel.size) falta.push(t('recsPickOne'));
+  if (s) {
+    s.innerHTML = falta.length
+      ? '<span class="recs-sum-falta">⚠ ' + _recsEsc(falta.join(' · ')) + '</span>'
+      : '📍 ' + _recsEsc(_recsLoc.label) + ' · ' + _recsRaio() + ' km · ' + _recsSel.size + ' ' + _recsEsc(t('recsAreasWord'));
+  }
+  if (go) { go.disabled = !!falta.length; go.classList.toggle('off', !!falta.length); }
+}
+
+function _recsOnRadius() {
+  clearTimeout(_recsRadiusTimer);
+  _recsRadiusTimer = setTimeout(() => { _recsRenderChips(''); _recsRefreshUi(); }, 250);
+}
+
+function recsWiden() {
+  const sl = document.getElementById('recsRadius');
+  if (!sl) return;
+  sl.value = Math.min(200, (+sl.value || 50) * 2);
+  const v = document.getElementById('recsRadiusVal'); if (v) v.textContent = sl.value + ' km';
+  _recsRenderChips('');
+  _recsRefreshUi();
+  recsRun();
+}
+
+function recsCompareTop(csv) {
+  try {
+    _compareIds.clear();
+    String(csv).split(',').slice(0, 3).forEach(id => _compareIds.add(Number(id)));
+    _saveCompare();
+    _renderCompareBar();
+    closeRecs();
+    openCompareModal();
+  } catch (_) {}
+}
+
+window._recsToggleGroup = _recsToggleGroup;
+window._recsOnRadius = _recsOnRadius;
+window.recsWiden = recsWiden;
+window.recsCompareTop = recsCompareTop;
 window.openRecs = openRecs;
 window.closeRecs = closeRecs;
 window.recsToggleSector = recsToggleSector;
