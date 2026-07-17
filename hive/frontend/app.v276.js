@@ -11119,12 +11119,29 @@ async function adminLoadCompanies(status) {
 
 let _adminRows = [];
 
+let _adminSearchTimer = null;
 function adminFilterRows(q) {
-  if (!q) { renderAdminRows(_adminRows); return; }
-  const lq = q.toLowerCase();
-  renderAdminRows(_adminRows.filter(r =>
-    r.name.toLowerCase().includes(lq) || (r.email||'').toLowerCase().includes(lq)
+  // resposta instantânea sobre as linhas já carregadas…
+  const lq = (q || '').toLowerCase();
+  renderAdminRows(!lq ? _adminRows : _adminRows.filter(r =>
+    r.name.toLowerCase().includes(lq) || (r.email || '').toLowerCase().includes(lq)
   ));
+  // …e pesquisa no SERVIDOR: a lista local só tem as 200 mais recentes;
+  // o catálogo completo vive na base de dados (q = ILIKE nome/email).
+  clearTimeout(_adminSearchTimer);
+  _adminSearchTimer = setTimeout(async () => {
+    try {
+      const status = (document.getElementById('adminStatusFilter') || {}).value || '';
+      const params = {};
+      if (status) params.status = status;
+      if (q) params.q = q;
+      const rows = await api.adminCompanies(params);
+      const atual = (document.getElementById('adminSearchQ') || {}).value || '';
+      if (atual !== q) return; // resposta obsoleta: o admin continuou a escrever
+      _adminRows = rows;
+      renderAdminRows(rows);
+    } catch (_) {}
+  }, 300);
 }
 
 function adminReloadWithStatus(status) {
