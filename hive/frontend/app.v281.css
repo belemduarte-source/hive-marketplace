@@ -3786,3 +3786,17 @@
 .fc-act-rota{border-color:var(--primary);color:var(--primary)}
 .fc-act-rota:hover{background:var(--primary);color:#fff}
 .fc-ver{margin-top:12px;font-size:13.5px}
+
+/* Destacadas v3: contraste do cartão + fontes ~30% maiores (botões e setor) */
+.fc-card{background:var(--surface);border:1px solid var(--border);box-shadow:0 2px 10px rgba(0,0,0,.10)}
+[data-theme="dark"] .fc-card{background:#1a2742 !important;border-color:#33456b !important;box-shadow:0 3px 14px rgba(0,0,0,.35)}
+[data-theme="dark"] .fc-card:hover{border-color:var(--primary) !important}
+.fc-card .fc-nome{font-size:19px}
+.fc-card .nc-sector{font-size:17.5px !important;font-weight:700;margin-top:6px}
+.fc-card .nc-sector .nc-dot{width:11px;height:11px}
+.fc-local{font-size:16px;margin-top:6px}
+.fc-conf{font-size:17px;margin-top:12px}
+.fc-conf .fc-chip{font-size:15px;padding:4px 10px}
+.fc-actions{gap:9px;margin-top:14px}
+.fc-act{font-size:17px;padding:11px 16px;border-radius:12px}
+.fc-ver{font-size:17px;margin-top:14px}
