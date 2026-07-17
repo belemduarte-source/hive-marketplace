@@ -3805,3 +3805,12 @@
 .fc-logo-xl{width:96px;height:96px;border-radius:16px}
 .fc-logo-emoji{font-size:46px}
 .fc-top{gap:16px;align-items:center}
+
+/* Entrada das recomendações: tratamento premium (crachá-alvo, tinta, seta circular) */
+.filter-recs-cta{position:relative;display:flex;align-items:center;gap:13px;width:100%;border:0;border-bottom:1px solid var(--border);cursor:pointer;text-align:left;padding:16px;background:linear-gradient(90deg,rgba(37,99,235,.10),rgba(37,99,235,0) 70%),var(--surface);box-shadow:inset 3px 0 0 var(--primary);transition:background .15s}
+.filter-recs-cta:hover{background:linear-gradient(90deg,rgba(37,99,235,.18),rgba(37,99,235,.04) 80%),var(--surface)}
+.filter-recs-cta .frc-badge{display:flex;align-items:center;justify-content:center;width:40px;height:40px;border-radius:50%;background:var(--primary-light,#dbeafe);color:var(--primary);flex:none}
+[data-theme="dark"] .filter-recs-cta .frc-badge{background:rgba(59,130,246,.22)}
+.filter-recs-cta .frc-title{display:block;font-weight:800;font-size:18px;line-height:1.3;color:var(--text)}
+.filter-recs-cta .frc-arrow{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--primary);color:var(--primary);font-size:18px;font-weight:800;flex:none;transition:transform .15s,background .15s,color .15s}
+.filter-recs-cta:hover .frc-arrow{background:var(--primary);color:#fff;transform:translateX(3px)}
