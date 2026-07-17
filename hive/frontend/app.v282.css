@@ -3800,3 +3800,8 @@
 .fc-actions{gap:9px;margin-top:14px}
 .fc-act{font-size:17px;padding:11px 16px;border-radius:12px}
 .fc-ver{font-size:17px;margin-top:14px}
+
+/* Destacadas: logo maior para preencher o cartão */
+.fc-logo-xl{width:96px;height:96px;border-radius:16px}
+.fc-logo-emoji{font-size:46px}
+.fc-top{gap:16px;align-items:center}
