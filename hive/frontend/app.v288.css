@@ -3845,3 +3845,8 @@
 .dp-quote-bar .btn-quote-secondary{height:72px !important;width:auto !important;font-size:22px;padding:0 26px;gap:11px;border-radius:16px}
 .dp-quote-bar .btn-quote-secondary svg{width:32px;height:32px}
 .dp-quote-bar .qs-more{font-size:30px;padding:0 28px}
+
+/* Cabeçalho das Destacadas: maior e centrado (pedido) */
+.lp-feat-head{font-size:23px !important;justify-content:center !important;text-align:center;padding:8px 4px 14px !important}
+.lp-feat-head svg{width:25px !important;height:25px !important}
+#lpFeatCount{font-size:16px !important}

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hive-v313';
+const CACHE_NAME = 'hive-v314';
 const HTML_FALLBACK = '/index.html';
 const ASSETS = [
   '/manifest.json',
