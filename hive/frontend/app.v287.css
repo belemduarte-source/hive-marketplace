@@ -3840,3 +3840,8 @@
 .fc-foot .fc-ver{margin-top:0;flex:none}
 .fc-actions{margin-top:10px;gap:8px}
 .fc-act{font-size:15px;padding:9px 13px}
+
+/* Ligar / WhatsApp / ⋯ na ficha: pelo menos o dobro (pedido) */
+.dp-quote-bar .btn-quote-secondary{height:72px !important;width:auto !important;font-size:22px;padding:0 26px;gap:11px;border-radius:16px}
+.dp-quote-bar .btn-quote-secondary svg{width:32px;height:32px}
+.dp-quote-bar .qs-more{font-size:30px;padding:0 28px}
