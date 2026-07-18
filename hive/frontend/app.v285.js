@@ -4291,6 +4291,7 @@ try {
   map = L.map('map', {
     center: PORTUGAL_CENTER,
     zoom: 7,
+    minZoom: 2,                   // vista mundial; não deixa afastar mais que isso
     zoomControl: true,
     preferCanvas: true,
     fadeAnimation: false,
