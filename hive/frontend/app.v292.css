@@ -3900,3 +3900,6 @@
 .recs-modal #recsRadiusVal{font-size:27px}
 .recs-modal .recs-summary{font-size:17px}
 .recs-modal .recs-intro{font-size:16.5px}
+
+/* botão GPS ativo quando a localização escolhida é a do utilizador */
+.recs-modal .recs-btn-sec.on{background:var(--primary);border-color:var(--primary);color:#fff;font-weight:800}

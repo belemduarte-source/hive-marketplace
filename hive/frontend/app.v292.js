@@ -12696,7 +12696,12 @@ function recsGeocodeCity() {
 }
 function _recsPaintLoc() {
   const el = document.getElementById('recsLocLabel');
-  if (el) el.textContent = _recsLoc ? '📍 ' + _recsLoc.label : t('recsNoLoc');
+  const btn = document.querySelector('.recs-loc-row .recs-btn-sec');
+  // quando a localização É o GPS, o estado vive no próprio botão (fica azul);
+  // o rótulo por baixo só aparece para cidade escrita/centro do mapa — sem duplicar
+  const ehGps = !!(_recsLoc && _recsLoc.label === t('recsMyLocation'));
+  if (btn) btn.classList.toggle('on', ehGps);
+  if (el) el.textContent = !_recsLoc ? t('recsNoLoc') : (ehGps ? '' : '📍 ' + _recsLoc.label);
 }
 function _recsFicha(c) {
   let p = 0;
