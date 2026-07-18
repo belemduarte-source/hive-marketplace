@@ -11521,6 +11521,9 @@ function renderLpFeatured() {
       ? '<div class="fc-logo-xl" style="background:#fff url(\'' + escHtml(c.logo) + '\') center/contain no-repeat"></div>'
       : '<div class="fc-logo-xl fc-logo-emoji" style="background:' + (c.color || getSectorColor(c)) + '22">' + (c.emoji || '🏗️') + '</div>';
     const local = (c.city || '').trim() || String(c.address || '').split(',')[0].trim();
+    // descrição real (o que a empresa faz) — a informação com mais valor;
+    // sem descrição, cai para a morada
+    const descTxt = String(c.description || c.address || '').replace(/\s+/g, ' ').trim();
     // ações diretas: ligar / email / site / como chegar (não abrem a ficha)
     const acoes = [];
     if (c.phone) acoes.push('<a class="fc-act" href="tel:' + escHtml(String(c.phone).replace(/\s+/g, '')) + '" onclick="event.stopPropagation()">📞 ' + escHtml(t('fcCall')) + '</a>');
@@ -11530,12 +11533,13 @@ function renderLpFeatured() {
     return '<div class="nearby-card fc-card" onclick="openDetail(' + c.id + ')">'
       + '<div class="fc-top">' + logo
       + '<div class="fc-main"><div class="nc-name fc-nome">' + escHtml(c.name) + '</div>'
-      + '<div class="nc-sector"><span class="nc-dot" style="background:' + (c.color || getSectorColor(c)) + '"></span>' + escHtml(sectorLabel) + '</div>'
-      + (local ? '<div class="fc-local">📍 ' + escHtml(local) + '</div>' : '')
+      + '<div class="nc-sector fc-meta"><span class="nc-dot" style="background:' + (c.color || getSectorColor(c)) + '"></span>' + escHtml(sectorLabel)
+      + (local ? ' <span class="fc-meta-sep">·</span> 📍 ' + escHtml(local) : '') + '</div>'
       + '</div></div>'
-      + '<div class="nc-rating fc-conf">' + conf + '</div>'
+      + (descTxt ? '<div class="fc-desc">' + escHtml(descTxt.slice(0, 200)) + '</div>' : '')
+      + '<div class="fc-foot"><span class="fc-conf-inline">' + conf + '</span>'
+      + '<span class="fc-ver">' + escHtml(t('recsSeeProfile')) + ' →</span></div>'
       + (acoes.length ? '<div class="fc-actions">' + acoes.join('') + '</div>' : '')
-      + '<div class="fc-ver">' + escHtml(t('recsSeeProfile')) + ' →</div>'
       + '</div>';
   };
   const listHtml = feat.map(item).join('');
