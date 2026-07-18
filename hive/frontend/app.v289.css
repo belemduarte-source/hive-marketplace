@@ -3850,3 +3850,28 @@
 .lp-feat-head{font-size:23px !important;justify-content:center !important;text-align:center;padding:8px 4px 14px !important}
 .lp-feat-head svg{width:25px !important;height:25px !important}
 #lpFeatCount{font-size:16px !important}
+
+/* Comparador v2: contraste entre critérios e colunas das empresas */
+.cmp2{border-collapse:separate;border-spacing:0;width:100%}
+.cmp2 thead th{position:sticky;top:0;z-index:2;background:var(--surface);padding:14px 16px;border-bottom:2.5px solid var(--primary)}
+.cmp2 .compare-co-header{display:flex;align-items:center;gap:10px;font-size:19px;font-weight:800;color:var(--text);text-align:left}
+.cmp2 tbody th{background:var(--bg);color:var(--muted);font-size:12.5px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;text-align:left;padding:16px;width:172px;border-bottom:1px solid var(--border)}
+.cmp2 td{padding:16px;border-bottom:1px solid var(--border);border-left:1.5px solid var(--border);font-size:16px;color:var(--text);vertical-align:middle}
+.cmp2 td:nth-child(3){background:rgba(37,99,235,.045)}
+.cmp2 td:nth-child(4){background:rgba(245,158,11,.05)}
+.cmp2 tbody tr:hover td{background:rgba(37,99,235,.09)}
+.cmp2 .compare-best{box-shadow:inset 3px 0 0 var(--green,#10b981)}
+.cmp2 .cmp-sub{color:var(--muted);font-size:13.5px}
+.cmp2 .cmp-vazio{color:var(--muted);opacity:.6}
+.cmp2 .cmp-ct{display:inline-flex;align-items:center;justify-content:center;width:46px;height:46px;border-radius:12px;border:1.5px solid var(--border);background:var(--surface);font-size:20px;text-decoration:none;margin-right:8px}
+.cmp2 .cmp-ct:hover{border-color:var(--primary)}
+.cmp2 .compare-doc-badge{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:8px;padding:5px 10px;font-size:13.5px;font-weight:700;margin:2px 6px 2px 0}
+.cmp2 .cmp-empate{padding:26px 18px;color:var(--muted);font-size:15.5px;text-align:center}
+.cmp2 .cmp-acao td{border-left:1.5px solid var(--border)}
+[data-theme="dark"] .cmp2 thead th{background:#16223d}
+[data-theme="dark"] .cmp2 tbody th{background:#0d1626;color:#9fb3d9}
+[data-theme="dark"] .cmp2 td{border-color:#2b3c5f;border-left-color:#2b3c5f}
+[data-theme="dark"] .cmp2 td:nth-child(3){background:rgba(59,130,246,.08)}
+[data-theme="dark"] .cmp2 td:nth-child(4){background:rgba(245,158,11,.07)}
+[data-theme="dark"] .cmp2 .compare-doc-badge{background:#1c2b4c;border-color:#41577f;color:#e8eeff}
+[data-theme="dark"] .cmp2 .cmp-ct{background:#1c2b4c;border-color:#41577f}

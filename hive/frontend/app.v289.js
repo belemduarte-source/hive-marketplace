@@ -3478,46 +3478,97 @@ async function openCompareModal() {
   // Credentials/contacts are redacted server-side for anonymous visitors.
   const lockedCell = '<span style="color:var(--muted)">🔒 requer sessão</span>';
 
-  // Build a side-by-side table. First column is the field labels.
+  // Tabela lado-a-lado SÓ com linhas que distinguem as empresas: linha vazia
+  // em todas, ou com o mesmo valor em todas, é ruído e sai. O selo "Melhor"
+  // só aparece quando há UM vencedor único (empate = sem selo).
+  const logoDe = c => c.logo
+    ? `<span class="compare-co-logo" style="background-image:url('${c.logo}')"></span>`
+    : `<span class="compare-co-emoji logo-mono">${companyMonogram(c)}</span>`;
   const fields = [
-    { key:'header',   label:'',                renderer: c => `<div class="compare-co-header">${c.logo ? `<span class="compare-co-logo" style="background-image:url('${c.logo}')"></span>` : `<span class="compare-co-emoji logo-mono">${companyMonogram(c)}</span>`}${escHtml(c.name)}</div>` },
-    { key:'score',    label:'Pontuação média', best: c => (c.rating||0) > 0 && c.rating === bestScore,
-      renderer: c => c.rating ? `<span class="compare-co-rating">★ ${c.rating.toFixed(1)}</span>` : `<span class="badge-new">${t('newOnHivex')}</span>` },
-    { key:'reviews',  label:'N.º de avaliações', best: c => (c.reviews||0) > 0 && (c.reviews||0) === bestReviews,
-      renderer: c => (c.reviews||0) > 0 ? `<strong>${c.reviews}</strong>` : '<span style="color:var(--muted)">0</span>' },
-    { key:'resp',     label:'⚡ Tempo de resposta', best: c => c.response_minutes != null && isFinite(bestResp) && Number(c.response_minutes) === bestResp,
-      renderer: c => c.response_minutes != null ? `<strong>~${_fmtRespMins(Number(c.response_minutes))}</strong>` : '<span style="color:var(--muted)">—</span>' },
-    { key:'distance', label:'Distância',       best: c => dist.get(c.id) === bestDist,
-      renderer: c => fmtKm(dist.get(c.id)) },
-    { key:'city',     label:'Localização',     renderer: c => escHtml(c.city || c.address || '—') },
-    { key:'docs',     label:'Documentação',    best: c => loggedIn && docCount(c) > 0 && docCount(c) === bestDocs,
-      renderer: c => {
+    { label:'Pontuação', mode:'max',
+      val: c => (c.rating||0) + '|' + (c.reviews||0),
+      bestVal: c => c.rating || 0,
+      render: c => c.rating ? `<span class="compare-co-rating">★ ${c.rating.toFixed(1)}</span> <span class="cmp-sub">(${c.reviews||0} aval.)</span>` : null },
+    { label:'⚡ Tempo de resposta', mode:'min',
+      val: c => c.response_minutes != null ? Number(c.response_minutes) : '',
+      bestVal: c => c.response_minutes != null ? Number(c.response_minutes) : null,
+      render: c => c.response_minutes != null ? `<strong>~${_fmtRespMins(Number(c.response_minutes))}</strong>` : null },
+    { label:'Distância', mode:'min',
+      val: c => fmtKm(dist.get(c.id)),
+      bestVal: c => dist.get(c.id),
+      render: c => `<strong>${fmtKm(dist.get(c.id))}</strong>` },
+    { label:'Localização',
+      val: c => String(c.city || c.address || ''),
+      render: c => c.city || c.address ? escHtml(c.city || c.address) : null },
+    { label:'Documentação', mode:'max',
+      val: c => loggedIn ? (c.alvara ? 'A' : '') + (c.certidao_permanente ? 'C' : '') : '',
+      bestVal: c => loggedIn ? docCount(c) : null,
+      render: c => {
         if (!loggedIn) return lockedCell;
-        const badges = [];
-        if (c.alvara) badges.push('<span class="compare-doc-badge">⚒ Alvará</span>');
-        if (c.certidao_permanente) badges.push('<span class="compare-doc-badge ok">✓ Certidão Permanente</span>');
-        return badges.join(' ') || '<span style="color:var(--muted)">—</span>';
+        const b = [];
+        if (c.alvara) b.push(`<span class="compare-doc-badge">📜 Alvará ${escHtml(String(c.alvara).split(' ')[0])}</span>`);
+        if (c.certidao_permanente) b.push('<span class="compare-doc-badge">✓ Certidão</span>');
+        return b.join(' ') || null;
       } },
-    { key:'verified', label:'Verificada',      renderer: c => c.verified ? '<span style="color:#16a34a;font-weight:700">✓ Sim</span>' : '<span style="color:var(--muted)">—</span>' },
-    { key:'sector',   label:'Setor principal', renderer: c => escHtml((tr.sectors && tr.sectors[c.sector]) || c.sector || '—') },
-    { key:'sectors',  label:'Áreas',           renderer: c => (c.sectors||[]).map(s => `<span class="tag" style="margin-right:4px">${escHtml((tr.sectors&&tr.sectors[s])||s)}</span>`).join('') || '—' },
-    { key:'phone',    label:'Telefone',        renderer: c => c.phone ? `<a href="tel:${escHtml(c.phone)}">${escHtml(c.phone)}</a>` : (loggedIn ? '<span style="color:var(--muted)">—</span>' : lockedCell) },
-    { key:'email',    label:'Email',           renderer: c => c.email ? `<a href="mailto:${escHtml(c.email)}">${escHtml(c.email)}</a>` : (loggedIn ? '<span style="color:var(--muted)">—</span>' : lockedCell) },
-    { key:'website',  label:'Website',         renderer: c => c.website ? `<a href="${escHtml(c.website)}" target="_blank" rel="noopener">${escHtml(c.website)}</a>` : '<span style="color:var(--muted)">—</span>' },
-    { key:'tags',     label:'Especialidades',  renderer: c => (c.tags||[]).slice(0, 6).map(tag => `<span class="tag" style="margin-right:4px">${escHtml(tag)}</span>`).join('') || '—' },
-    { key:'action',   label:'',                renderer: c => `<button class="btn-submit" style="font-size:22px;padding:15px 34px" onclick="closeCompareModal();setTimeout(()=>openDetail(${c.id}),200)">Ver perfil</button>` },
+    { label:'Verificada', mode:'max',
+      val: c => c.verified ? 1 : 0,
+      bestVal: c => c.verified ? 1 : 0,
+      render: c => c.verified ? '<span style="color:#16a34a;font-weight:800">✓ Sim</span>' : null },
+    { label:'Setor principal',
+      val: c => String(c.sector || ''),
+      render: c => c.sector ? escHtml((tr.sectors && tr.sectors[c.sector]) || c.sector) : null },
+    { label:'Contactos',
+      val: c => (c.phone?'T':'') + (c.email?'E':'') + (c.website?'W':''),
+      render: c => {
+        const a = [];
+        if (c.phone) a.push(`<a class="cmp-ct" href="tel:${escHtml(String(c.phone).replace(/\s+/g,''))}" title="${escHtml(c.phone)}">📞</a>`);
+        if (c.email) a.push(`<a class="cmp-ct" href="mailto:${escHtml(c.email)}" title="${escHtml(c.email)}">✉️</a>`);
+        if (c.website) a.push(`<a class="cmp-ct" href="${escHtml(c.website)}" target="_blank" rel="noopener" title="${escHtml(c.website)}">🌐</a>`);
+        return a.join('') || null;
+      } },
+    { label:'Especialidades',
+      val: c => (c.tags||[]).slice(0,4).join(','),
+      render: c => (c.tags||[]).slice(0,4).map(tag => `<span class="tag">${escHtml(tag)}</span>`).join(' ') || null },
   ];
 
-  let html = '<table class="compare-table"><tbody>';
-  fields.forEach(f => {
-    html += '<tr>';
-    html += `<th>${f.label}</th>`;
-    cos.forEach(c => {
-      const isBest = !!(f.best && f.best(c));
-      html += `<td${isBest ? ' class="compare-best"' : ''}>${f.renderer(c)}${isBest ? ' <span class="compare-best-chip">Melhor</span>' : ''}</td>`;
+  // filtra: fica só o que distingue
+  const rows = fields.filter(f => {
+    const rendered = cos.map(c => f.render(c));
+    if (rendered.every(r => r == null || r === '')) return false;
+    const vals = cos.map(c => JSON.stringify(f.val(c)));
+    if (vals.every(v => v === vals[0])) return false;
+    return true;
+  });
+  // vencedor único por linha
+  rows.forEach(f => {
+    if (!f.mode || !f.bestVal) return;
+    const nums = cos.map(c => { const v = f.bestVal(c); return (v != null && isFinite(v)) ? Number(v) : null; });
+    const validos = nums.filter(v => v != null);
+    if (!validos.length) return;
+    const alvo = f.mode === 'max' ? Math.max.apply(null, validos) : Math.min.apply(null, validos);
+    if (f.mode === 'max' && alvo <= 0) return;
+    const vence = nums.map(v => v === alvo);
+    if (vence.filter(Boolean).length === 1) f.vence = vence;
+  });
+
+  let html = '<table class="compare-table cmp2"><thead><tr><th></th>' +
+    cos.map(c => `<th class="cmp-co"><div class="compare-co-header">${logoDe(c)}<span>${escHtml(c.name)}</span></div></th>`).join('') +
+    '</tr></thead><tbody>';
+  if (!rows.length) {
+    html += `<tr><td colspan="${cos.length + 1}" class="cmp-empate">Estas empresas estão empatadas nos critérios principais — vê os perfis para os detalhes.</td></tr>`;
+  }
+  rows.forEach(f => {
+    html += `<tr><th>${f.label}</th>`;
+    cos.forEach((c, i) => {
+      const isBest = !!(f.vence && f.vence[i]);
+      const conteudo = f.render(c);
+      html += `<td${isBest ? ' class="compare-best"' : ''}>${(conteudo == null || conteudo === '') ? '<span class="cmp-vazio">—</span>' : conteudo}${isBest ? ' <span class="compare-best-chip">Melhor</span>' : ''}</td>`;
     });
     html += '</tr>';
   });
+  html += '<tr class="cmp-acao"><th></th>' +
+    cos.map(c => `<td><button class="btn-submit" style="font-size:20px;padding:14px 30px" onclick="closeCompareModal();setTimeout(()=>openDetail(${c.id}),200)">Ver perfil</button></td>`).join('') +
+    '</tr>';
   html += '</tbody></table>';
 
   document.getElementById('compareBody').innerHTML = html;
