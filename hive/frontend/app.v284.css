@@ -3814,3 +3814,17 @@
 .filter-recs-cta .frc-title{display:block;font-weight:800;font-size:18px;line-height:1.3;color:var(--text)}
 .filter-recs-cta .frc-arrow{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;border:1.5px solid var(--primary);color:var(--primary);font-size:18px;font-weight:800;flex:none;transition:transform .15s,background .15s,color .15s}
 .filter-recs-cta:hover .frc-arrow{background:var(--primary);color:#fff;transform:translateX(3px)}
+
+/* Destacadas v4: mais contraste no tema escuro (cartão, painel, botões, texto) */
+[data-theme="dark"] .lp-feat-panel{background:linear-gradient(180deg,rgba(59,130,246,.07),rgba(59,130,246,.02)),#0e1830;border:1px solid #2c3e63;border-radius:14px}
+[data-theme="dark"] .fc-card{background:#243459 !important;border:1.5px solid #4a5f92 !important;box-shadow:0 4px 18px rgba(0,0,0,.45)}
+[data-theme="dark"] .fc-card:hover{border-color:#6d8dd6 !important}
+[data-theme="dark"] .fc-card .fc-nome{color:#ffffff}
+[data-theme="dark"] .fc-card .nc-sector{color:#dbe6ff}
+[data-theme="dark"] .fc-local{color:#b9c8e8}
+[data-theme="dark"] .fc-act{background:#2f4270;border-color:#597099;color:#ffffff}
+[data-theme="dark"] .fc-act:hover{border-color:#8fb0ff;color:#ffffff;background:#3a5088}
+[data-theme="dark"] .fc-act-rota{border-color:#7ea6ff;color:#a9c4ff;background:rgba(59,130,246,.14)}
+[data-theme="dark"] .fc-act-rota:hover{background:var(--primary);color:#fff}
+[data-theme="dark"] .fc-chip{background:#182648;border-color:#4a5f92;color:#e8eeff}
+[data-theme="dark"] .fc-ver{color:#8fb0ff}
