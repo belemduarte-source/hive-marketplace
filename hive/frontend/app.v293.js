@@ -4581,7 +4581,8 @@ function addCompanyMarker(c) {
   const m = L.marker([c.lat, c.lng], { icon: createMarkerIcon(c) });
   // Lazy popup: content built only when the popup is actually opened,
   // so language changes and filter runs don't rebuild HTML for all markers
-  m.bindPopup(() => buildPopupHtml(c), { maxWidth: 400, minWidth: 300 });
+  if (window.matchMedia('(min-width:769px)').matches)
+    m.bindPopup(() => buildPopupHtml(c), { maxWidth: 400, minWidth: 300 });
   // When the mobile results-sheet is open, a pin tap highlights that company's
   // card in the list instead of opening the full detail; otherwise open detail.
   m.on('click', () => {
@@ -6939,7 +6940,7 @@ async function openDetail(id) {
   try { _sizeDetailPanel(); } catch (_) {}
   document.getElementById('detailPanel').classList.add('open');
   if (map) map.flyTo([c.lat, c.lng], 15, { animate: true, duration: 1.2 });
-  setTimeout(() => markerMap[c.id]?.openPopup(), 1300);
+  setTimeout(() => { if (window.matchMedia('(min-width:769px)').matches) markerMap[c.id]?.openPopup(); }, 1300);
 
   try {
     const fresh = await api.getCompany(id);
@@ -12862,3 +12863,13 @@ window.recsUseGps = recsUseGps;
 window.recsGeocodeCity = recsGeocodeCity;
 window.recsRun = recsRun;
 window._recsRenderChips = _recsRenderChips;
+
+
+// ── Mobile: chips de filtros dentro da unified-bar (a sidebar está escondida) ──
+try {
+  if (window.matchMedia('(max-width:768px)').matches) {
+    const _msp = document.getElementById('mobileSearchPanel');
+    const _ub = document.querySelector('.unified-bar');
+    if (_msp && _ub && _msp.parentElement !== _ub) _ub.appendChild(_msp);
+  }
+} catch (_) {}
