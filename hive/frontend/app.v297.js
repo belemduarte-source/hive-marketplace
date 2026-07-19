@@ -4571,9 +4571,14 @@ function ensureClusterGroup() {
   markerClusterGroup = L.markerClusterGroup({
     maxClusterRadius: 60,
     spiderfyOnMaxZoom: true,
+    spiderfyDistanceMultiplier: 1.6,
     showCoverageOnHover: false,
     zoomToBoundsOnClick: true,
-    disableClusteringAtZoom: 16,
+    // Sem disableClusteringAtZoom: empresas COLOCALIZADAS (ex.: geocodificadas
+    // à mesma freguesia) agrupam-se num só balão em qualquer zoom e abrem em
+    // leque ao clicar — em vez de empilharem umas sobre as outras. Com
+    // maxClusterRadius 60px, ao zoom máximo só ~7m agrupam (as genuinamente
+    // no mesmo ponto); empresas distintas continuam individuais.
     // Perf knobs that matter on mobile + large datasets:
     //  • chunkedLoading lets the cluster batch-add markers in async chunks
     //    instead of blocking the main thread for hundreds of ms.
