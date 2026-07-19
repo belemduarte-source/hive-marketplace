@@ -3915,10 +3915,11 @@
   .msp-chip{background:var(--surface);box-shadow:0 3px 10px rgba(0,0,0,.18)}
   .msp-chip-recs{border-color:var(--primary);color:var(--primary);font-weight:800}
   /* 3. chips de áreas da unified-bar visíveis + alvo de toque digno */
-  .ub-sectors-wrap{display:flex !important;background:transparent !important;padding:8px 0 0 !important;overflow:visible !important}
-  .ub-sectors .cat-item{min-height:38px !important}
+  /* Fila de áreas do desktop escondida no mobile (renderizava pílulas vazias);
+     a seleção de áreas vive no chip 'Área' -> folha msp, que é o padrão certo. */
+  .ub-sectors-wrap{display:none !important}
   /* 4. duplicado do sheet de área (os chips da unified-bar cobrem isso) */
-  #mspChipArea{display:none}
+  /* chip 'Área' visível: é agora o único caminho de seleção de áreas no mobile */
   /* 5. barra de ações da ficha em tamanho mobile + menu ⋯ abre para CIMA */
   .dp-quote-bar .btn-quote-secondary{height:48px !important;font-size:14px !important;padding:0 14px !important;gap:7px !important;border-radius:12px !important}
   .dp-quote-bar .btn-quote-secondary svg{width:20px !important;height:20px !important}
