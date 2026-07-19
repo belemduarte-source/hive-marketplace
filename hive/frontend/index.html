@@ -158,7 +158,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v293.css"/>
+  <link rel="stylesheet" href="app.v294.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -518,6 +518,10 @@
     <!-- Auth area: populated dynamically by updateNavAuth() when logged in.
          Logged-out users use the single login button in the top-right of the nav. -->
     <div id="mobileAuthArea"></div>
+    <button class="mobile-nav-link" id="mnInstall" style="display:none" onclick="_hivexInstall();closeMobileNavPanel()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2"/><line x1="12" y1="18" x2="12" y2="18"/></svg>
+      <span data-i18n="installApp">Instalar a app</span>
+    </button>
     <button class="mobile-nav-link" onclick="openHow();closeMobileNavPanel()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
       <span data-i18n="navHow">Como funciona</span>
@@ -759,6 +763,7 @@
         </button>
 
       </div><!-- /lp-searchbar -->
+      <button type="button" class="lp-near-me" onclick="showTab('search');detectUserLocation(false)">📍 <span data-i18n="heroNearMe">Empresas perto de mim</span></button>
     </div><!-- /lp-search-wrap -->
 
 
@@ -1055,7 +1060,7 @@
   <div class="ub-search">
     <div class="ub-input ub-flex1">
       <i data-lucide="search" class="ub-ico"></i>
-      <input id="searchUnified" type="text" placeholder="Cidade, empresa ou atividade..." oninput="handleUnifiedSearch(this.value)"/>
+      <input id="searchUnified" type="text" placeholder="Cidade, empresa ou atividade..." enterkeyhint="search" autocomplete="off" autocorrect="off" autocapitalize="none" oninput="handleUnifiedSearch(this.value)" onfocus="_renderSearchSuggest(this.value)"/>
       <button class="btn-locate" id="btnLocate" onclick="detectUserLocation()" title="Usar localização atual" aria-label="Usar a minha localização atual"><i data-lucide="crosshair" aria-hidden="true"></i></button>
     </div>
     <button class="ub-btn" id="btnSearch" onclick="applyFilters();showToast(t('searchUpdated'))">
@@ -2205,7 +2210,7 @@
                      onchange="chatFilesPicked(this)"/>
               <i data-lucide="paperclip"></i>
             </label>
-            <textarea id="chatComposeInput" rows="1" placeholder="Escreva a sua mensagem…"></textarea>
+            <textarea id="chatComposeInput" rows="1" enterkeyhint="send" placeholder="Escreva a sua mensagem…"></textarea>
             <button class="btn-submit chat-send" onclick="chatSend(this)">Enviar</button>
           </div>
         </div>
@@ -2380,7 +2385,7 @@
 <script defer src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v293.js"></script>
+<script defer src="app.v294.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

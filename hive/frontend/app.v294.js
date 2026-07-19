@@ -65,7 +65,7 @@ const translations = {
     detailNoActivities:'Sem áreas de atividade indicadas',
     credRequired:'Obrigatória', credOptional:'Opcional',
     credLoginToView:'Inicie sessão para ver',
-    recsTitle:'Precisa de ajuda para encontrar as empresas certas?', recsBtn:'Encontramos as melhores empresas por si', recsBtnSub:'Responda a 3 perguntas e receba o Top 3 para o seu projeto', recsIntro:'Preencha o formulário e obtenha, em menos de 1 minuto, as empresas que melhor se adequam ao que procura.', recsAreas:'Áreas de atividade', recsFilterPh:'filtrar áreas…', recsLocationT:'Localização', recsUseGps:'Usar a minha localização', recsCityPh:'ou escreve uma cidade…', recsCityNotFound:'Cidade não encontrada', recsRadius:'Raio', recsGo:'Recomendar empresas', recsMyLocation:'A minha localização', recsMapCenter:'Centro do mapa', recsNoLoc:'Sem localização definida', recsPickOne:'Escolhe pelo menos uma área', recsLocNeeded:'Define primeiro a localização (GPS ou cidade)', recsInRadius:'no raio de', recsNoResults:'Sem empresas desta área no raio escolhido — experimenta aumentar o raio.', recsProximity:'Proximidade', recsProfileScore:'Ficha', recsReviewsScore:'Avaliações', recsSeeProfile:'Ver ficha', recsAreasWord:'áreas', fcAlvara:'Alvará', fcCall:'Ligar', fcRoute:'Como chegar', cmpSameArea:'Para comparar, escolha empresas da mesma área de atividade', recsWiden:'Procurar num raio maior', recsCompare:'Comparar estes 3',
+    recsTitle:'Precisa de ajuda para encontrar as empresas certas?', recsBtn:'Encontramos as melhores empresas por si', recsBtnSub:'Responda a 3 perguntas e receba o Top 3 para o seu projeto', recsIntro:'Preencha o formulário e obtenha, em menos de 1 minuto, as empresas que melhor se adequam ao que procura.', recsAreas:'Áreas de atividade', recsFilterPh:'filtrar áreas…', recsLocationT:'Localização', recsUseGps:'Usar a minha localização', recsCityPh:'ou escreve uma cidade…', recsCityNotFound:'Cidade não encontrada', recsRadius:'Raio', recsGo:'Recomendar empresas', recsMyLocation:'A minha localização', recsMapCenter:'Centro do mapa', recsNoLoc:'Sem localização definida', recsPickOne:'Escolhe pelo menos uma área', recsLocNeeded:'Define primeiro a localização (GPS ou cidade)', recsInRadius:'no raio de', recsNoResults:'Sem empresas desta área no raio escolhido — experimenta aumentar o raio.', recsProximity:'Proximidade', recsProfileScore:'Ficha', recsReviewsScore:'Avaliações', recsSeeProfile:'Ver ficha', recsAreasWord:'áreas', fcAlvara:'Alvará', fcCall:'Ligar', fcRoute:'Como chegar', cmpSameArea:'Para comparar, escolha empresas da mesma área de atividade', heroNearMe:'Empresas perto de mim', installApp:'Instalar a app', iosInstallHint:'No Safari: toque em Partilhar e depois em \'Adicionar ao ecrã principal\'.', ssRecent:'Recentes', ssPopular:'Mais procuradas', offlineBanner:'Sem ligação — a mostrar dados guardados', ctTplQuote:'Pedir orçamento', ctTplVisit:'Pedir visita técnica', ctTplAvail:'Disponibilidade', ctTplQuoteTxt:'Olá! Gostaria de pedir um orçamento para um trabalho de {setor} em {cidade}. Podem contactar-me? Obrigado.', ctTplVisitTxt:'Olá! Gostaria de agendar uma visita técnica em {cidade} para avaliar um trabalho. Qual é a vossa disponibilidade?', ctTplAvailTxt:'Olá! Têm disponibilidade para um novo trabalho nas próximas semanas? Obrigado.', recsWiden:'Procurar num raio maior', recsCompare:'Comparar estes 3',
     alvaraNotApplicable:'Não aplicável', certidaoPending:'Em verificação',
     popupCertOk:'Certidão registada', popupAlvaraOk:'Alvará',
     noRatings:'Sem avaliações', reviews:'reviews',
@@ -478,7 +478,7 @@ const translations = {
     detailNoActivities:'No areas of activity listed',
     credRequired:'Required', credOptional:'Optional',
     credLoginToView:'Sign in to view',
-    recsTitle:'Need help finding the right companies?', recsBtn:'We find the best companies for you', recsBtnSub:'Answer 3 questions and get the top 3 for your project', recsIntro:'Fill in the form and get, in under a minute, the companies that best match what you need.', recsAreas:'Areas of activity', recsFilterPh:'filter areas…', recsLocationT:'Location', recsUseGps:'Use my location', recsCityPh:'or type a city…', recsCityNotFound:'City not found', recsRadius:'Radius', recsGo:'Recommend companies', recsMyLocation:'My location', recsMapCenter:'Map centre', recsNoLoc:'No location set', recsPickOne:'Pick at least one area', recsLocNeeded:'Set a location first (GPS or city)', recsInRadius:'within', recsNoResults:'No companies for this trade within the radius — try increasing it.', recsProximity:'Proximity', recsProfileScore:'Profile', recsReviewsScore:'Reviews', recsSeeProfile:'View profile', recsAreasWord:'areas', fcAlvara:'Licence', fcCall:'Call', fcRoute:'Directions', cmpSameArea:'To compare, choose companies from the same activity area', recsWiden:'Search a wider radius', recsCompare:'Compare these 3',
+    recsTitle:'Need help finding the right companies?', recsBtn:'We find the best companies for you', recsBtnSub:'Answer 3 questions and get the top 3 for your project', recsIntro:'Fill in the form and get, in under a minute, the companies that best match what you need.', recsAreas:'Areas of activity', recsFilterPh:'filter areas…', recsLocationT:'Location', recsUseGps:'Use my location', recsCityPh:'or type a city…', recsCityNotFound:'City not found', recsRadius:'Radius', recsGo:'Recommend companies', recsMyLocation:'My location', recsMapCenter:'Map centre', recsNoLoc:'No location set', recsPickOne:'Pick at least one area', recsLocNeeded:'Set a location first (GPS or city)', recsInRadius:'within', recsNoResults:'No companies for this trade within the radius — try increasing it.', recsProximity:'Proximity', recsProfileScore:'Profile', recsReviewsScore:'Reviews', recsSeeProfile:'View profile', recsAreasWord:'areas', fcAlvara:'Licence', fcCall:'Call', fcRoute:'Directions', cmpSameArea:'To compare, choose companies from the same activity area', heroNearMe:'Companies near me', installApp:'Install the app', iosInstallHint:'In Safari: tap Share, then \'Add to Home Screen\'.', ssRecent:'Recent', ssPopular:'Most searched', offlineBanner:'Offline — showing saved data', ctTplQuote:'Request a quote', ctTplVisit:'Request a site visit', ctTplAvail:'Availability', ctTplQuoteTxt:'Hello! I would like a quote for {setor} work in {cidade}. Could you contact me? Thank you.', ctTplVisitTxt:'Hello! I would like to schedule a site visit in {cidade} to assess a job. What is your availability?', ctTplAvailTxt:'Hello! Do you have availability for a new job in the coming weeks? Thank you.', recsWiden:'Search a wider radius', recsCompare:'Compare these 3',
     alvaraNotApplicable:'Not applicable', certidaoPending:'Pending verification',
     popupCertOk:'Certificate on file', popupAlvaraOk:'Licence',
     noRatings:'No reviews', reviews:'reviews',
@@ -882,7 +882,7 @@ const translations = {
     detailNoActivities:'Aucun domaine d\'activité indiqué',
     credRequired:'Obligatoire', credOptional:'Facultatif',
     credLoginToView:'Connectez-vous pour voir',
-    recsTitle:'Besoin d’aide pour trouver les bonnes entreprises ?', recsBtn:'Nous trouvons les meilleures entreprises pour vous', recsBtnSub:'Répondez à 3 questions et obtenez le Top 3 pour votre projet', recsIntro:'Remplissez le formulaire et obtenez, en moins d’une minute, les entreprises qui correspondent le mieux à votre besoin.', recsAreas:'Domaines d’activité', recsFilterPh:'filtrer les domaines…', recsLocationT:'Localisation', recsUseGps:'Utiliser ma position', recsCityPh:'ou saisissez une ville…', recsCityNotFound:'Ville introuvable', recsRadius:'Rayon', recsGo:'Recommander des entreprises', recsMyLocation:'Ma position', recsMapCenter:'Centre de la carte', recsNoLoc:'Aucune position définie', recsPickOne:'Choisissez au moins un domaine', recsLocNeeded:'Définissez d’abord la position (GPS ou ville)', recsInRadius:'dans un rayon de', recsNoResults:'Aucune entreprise de ce métier dans le rayon — augmentez-le.', recsProximity:'Proximité', recsProfileScore:'Fiche', recsReviewsScore:'Avis', recsSeeProfile:'Voir la fiche', recsAreasWord:'domaines', fcAlvara:'Licence', fcCall:'Appeler', fcRoute:'Itinéraire', cmpSameArea:'Pour comparer, choisissez des entreprises du même domaine d’activité', recsWiden:'Chercher dans un rayon plus large', recsCompare:'Comparer ces 3',
+    recsTitle:'Besoin d’aide pour trouver les bonnes entreprises ?', recsBtn:'Nous trouvons les meilleures entreprises pour vous', recsBtnSub:'Répondez à 3 questions et obtenez le Top 3 pour votre projet', recsIntro:'Remplissez le formulaire et obtenez, en moins d’une minute, les entreprises qui correspondent le mieux à votre besoin.', recsAreas:'Domaines d’activité', recsFilterPh:'filtrer les domaines…', recsLocationT:'Localisation', recsUseGps:'Utiliser ma position', recsCityPh:'ou saisissez une ville…', recsCityNotFound:'Ville introuvable', recsRadius:'Rayon', recsGo:'Recommander des entreprises', recsMyLocation:'Ma position', recsMapCenter:'Centre de la carte', recsNoLoc:'Aucune position définie', recsPickOne:'Choisissez au moins un domaine', recsLocNeeded:'Définissez d’abord la position (GPS ou ville)', recsInRadius:'dans un rayon de', recsNoResults:'Aucune entreprise de ce métier dans le rayon — augmentez-le.', recsProximity:'Proximité', recsProfileScore:'Fiche', recsReviewsScore:'Avis', recsSeeProfile:'Voir la fiche', recsAreasWord:'domaines', fcAlvara:'Licence', fcCall:'Appeler', fcRoute:'Itinéraire', cmpSameArea:'Pour comparer, choisissez des entreprises du même domaine d’activité', heroNearMe:'Entreprises près de moi', installApp:'Installer l’app', iosInstallHint:'Dans Safari : touchez Partager puis \'Sur l’écran d’accueil\'.', ssRecent:'Récents', ssPopular:'Les plus recherchés', offlineBanner:'Hors ligne — données enregistrées', ctTplQuote:'Demander un devis', ctTplVisit:'Demander une visite', ctTplAvail:'Disponibilité', ctTplQuoteTxt:'Bonjour ! Je souhaite un devis pour des travaux de {setor} à {cidade}. Pouvez-vous me contacter ? Merci.', ctTplVisitTxt:'Bonjour ! Je souhaite planifier une visite technique à {cidade} pour évaluer des travaux. Quelles sont vos disponibilités ?', ctTplAvailTxt:'Bonjour ! Avez-vous des disponibilités pour un nouveau chantier dans les prochaines semaines ? Merci.', recsWiden:'Chercher dans un rayon plus large', recsCompare:'Comparer ces 3',
     alvaraNotApplicable:'Non applicable', certidaoPending:'En vérification',
     popupCertOk:'Certificat enregistré', popupAlvaraOk:'Licence',
     noRatings:'Sans avis', reviews:'avis',
@@ -1288,7 +1288,7 @@ const translations = {
     detailNoActivities:'Sin áreas de actividad indicadas',
     credRequired:'Obligatorio', credOptional:'Opcional',
     credLoginToView:'Inicia sesión para ver',
-    recsTitle:'¿Necesitas ayuda para encontrar las empresas adecuadas?', recsBtn:'Encontramos las mejores empresas para ti', recsBtnSub:'Responde a 3 preguntas y recibe el Top 3 para tu proyecto', recsIntro:'Rellena el formulario y obtén, en menos de un minuto, las empresas que mejor se adaptan a lo que buscas.', recsAreas:'Áreas de actividad', recsFilterPh:'filtrar áreas…', recsLocationT:'Ubicación', recsUseGps:'Usar mi ubicación', recsCityPh:'o escribe una ciudad…', recsCityNotFound:'Ciudad no encontrada', recsRadius:'Radio', recsGo:'Recomendar empresas', recsMyLocation:'Mi ubicación', recsMapCenter:'Centro del mapa', recsNoLoc:'Sin ubicación definida', recsPickOne:'Elige al menos un área', recsLocNeeded:'Define primero la ubicación (GPS o ciudad)', recsInRadius:'en un radio de', recsNoResults:'No hay empresas de este sector en el radio — prueba a aumentarlo.', recsProximity:'Cercanía', recsProfileScore:'Ficha', recsReviewsScore:'Reseñas', recsSeeProfile:'Ver ficha', recsAreasWord:'áreas', fcAlvara:'Licencia', fcCall:'Llamar', fcRoute:'Cómo llegar', cmpSameArea:'Para comparar, elige empresas de la misma área de actividad', recsWiden:'Buscar en un radio mayor', recsCompare:'Comparar estas 3',
+    recsTitle:'¿Necesitas ayuda para encontrar las empresas adecuadas?', recsBtn:'Encontramos las mejores empresas para ti', recsBtnSub:'Responde a 3 preguntas y recibe el Top 3 para tu proyecto', recsIntro:'Rellena el formulario y obtén, en menos de un minuto, las empresas que mejor se adaptan a lo que buscas.', recsAreas:'Áreas de actividad', recsFilterPh:'filtrar áreas…', recsLocationT:'Ubicación', recsUseGps:'Usar mi ubicación', recsCityPh:'o escribe una ciudad…', recsCityNotFound:'Ciudad no encontrada', recsRadius:'Radio', recsGo:'Recomendar empresas', recsMyLocation:'Mi ubicación', recsMapCenter:'Centro del mapa', recsNoLoc:'Sin ubicación definida', recsPickOne:'Elige al menos un área', recsLocNeeded:'Define primero la ubicación (GPS o ciudad)', recsInRadius:'en un radio de', recsNoResults:'No hay empresas de este sector en el radio — prueba a aumentarlo.', recsProximity:'Cercanía', recsProfileScore:'Ficha', recsReviewsScore:'Reseñas', recsSeeProfile:'Ver ficha', recsAreasWord:'áreas', fcAlvara:'Licencia', fcCall:'Llamar', fcRoute:'Cómo llegar', cmpSameArea:'Para comparar, elige empresas de la misma área de actividad', heroNearMe:'Empresas cerca de mí', installApp:'Instalar la app', iosInstallHint:'En Safari: toca Compartir y luego \'Añadir a pantalla de inicio\'.', ssRecent:'Recientes', ssPopular:'Más buscadas', offlineBanner:'Sin conexión — mostrando datos guardados', ctTplQuote:'Pedir presupuesto', ctTplVisit:'Pedir visita técnica', ctTplAvail:'Disponibilidad', ctTplQuoteTxt:'¡Hola! Quisiera un presupuesto para un trabajo de {setor} en {cidade}. ¿Pueden contactarme? Gracias.', ctTplVisitTxt:'¡Hola! Quisiera agendar una visita técnica en {cidade} para evaluar un trabajo. ¿Cuál es su disponibilidad?', ctTplAvailTxt:'¡Hola! ¿Tienen disponibilidad para un nuevo trabajo en las próximas semanas? Gracias.', recsWiden:'Buscar en un radio mayor', recsCompare:'Comparar estas 3',
     alvaraNotApplicable:'No aplicable', certidaoPending:'En verificación',
     popupCertOk:'Certificado registrado', popupAlvaraOk:'Licencia',
     noRatings:'Sin valoraciones', reviews:'reseñas',
@@ -1688,7 +1688,7 @@ const translations = {
     detailNoActivities:'Keine Tätigkeitsbereiche angegeben',
     credRequired:'Erforderlich', credOptional:'Optional',
     credLoginToView:'Zum Anzeigen anmelden',
-    recsTitle:'Brauchen Sie Hilfe, die richtigen Betriebe zu finden?', recsBtn:'Wir finden die besten Betriebe für Sie', recsBtnSub:'Beantworten Sie 3 Fragen und erhalten Sie die Top 3 für Ihr Projekt', recsIntro:'Füllen Sie das Formular aus und erhalten Sie in unter einer Minute die Betriebe, die am besten zu Ihrer Suche passen.', recsAreas:'Gewerke', recsFilterPh:'Gewerke filtern…', recsLocationT:'Standort', recsUseGps:'Meinen Standort verwenden', recsCityPh:'oder Stadt eingeben…', recsCityNotFound:'Stadt nicht gefunden', recsRadius:'Radius', recsGo:'Betriebe empfehlen', recsMyLocation:'Mein Standort', recsMapCenter:'Kartenmitte', recsNoLoc:'Kein Standort gesetzt', recsPickOne:'Mindestens ein Gewerk wählen', recsLocNeeded:'Zuerst Standort festlegen (GPS oder Stadt)', recsInRadius:'im Umkreis von', recsNoResults:'Keine Betriebe dieses Gewerks im Radius — vergrößern Sie ihn.', recsProximity:'Nähe', recsProfileScore:'Profil', recsReviewsScore:'Bewertungen', recsSeeProfile:'Profil ansehen', recsAreasWord:'Gewerke', fcAlvara:'Lizenz', fcCall:'Anrufen', fcRoute:'Route', cmpSameArea:'Zum Vergleichen wählen Sie Betriebe aus demselben Gewerk', recsWiden:'Größeren Radius durchsuchen', recsCompare:'Diese 3 vergleichen',
+    recsTitle:'Brauchen Sie Hilfe, die richtigen Betriebe zu finden?', recsBtn:'Wir finden die besten Betriebe für Sie', recsBtnSub:'Beantworten Sie 3 Fragen und erhalten Sie die Top 3 für Ihr Projekt', recsIntro:'Füllen Sie das Formular aus und erhalten Sie in unter einer Minute die Betriebe, die am besten zu Ihrer Suche passen.', recsAreas:'Gewerke', recsFilterPh:'Gewerke filtern…', recsLocationT:'Standort', recsUseGps:'Meinen Standort verwenden', recsCityPh:'oder Stadt eingeben…', recsCityNotFound:'Stadt nicht gefunden', recsRadius:'Radius', recsGo:'Betriebe empfehlen', recsMyLocation:'Mein Standort', recsMapCenter:'Kartenmitte', recsNoLoc:'Kein Standort gesetzt', recsPickOne:'Mindestens ein Gewerk wählen', recsLocNeeded:'Zuerst Standort festlegen (GPS oder Stadt)', recsInRadius:'im Umkreis von', recsNoResults:'Keine Betriebe dieses Gewerks im Radius — vergrößern Sie ihn.', recsProximity:'Nähe', recsProfileScore:'Profil', recsReviewsScore:'Bewertungen', recsSeeProfile:'Profil ansehen', recsAreasWord:'Gewerke', fcAlvara:'Lizenz', fcCall:'Anrufen', fcRoute:'Route', cmpSameArea:'Zum Vergleichen wählen Sie Betriebe aus demselben Gewerk', heroNearMe:'Betriebe in meiner Nähe', installApp:'App installieren', iosInstallHint:'In Safari: Teilen antippen, dann \'Zum Home-Bildschirm\'.', ssRecent:'Zuletzt', ssPopular:'Meistgesucht', offlineBanner:'Offline — gespeicherte Daten', ctTplQuote:'Angebot anfragen', ctTplVisit:'Besichtigung anfragen', ctTplAvail:'Verfügbarkeit', ctTplQuoteTxt:'Hallo! Ich möchte ein Angebot für {setor}-Arbeiten in {cidade}. Können Sie mich kontaktieren? Danke.', ctTplVisitTxt:'Hallo! Ich möchte eine Besichtigung in {cidade} vereinbaren. Wann haben Sie Zeit?', ctTplAvailTxt:'Hallo! Haben Sie in den nächsten Wochen Kapazität für einen neuen Auftrag? Danke.', recsWiden:'Größeren Radius durchsuchen', recsCompare:'Diese 3 vergleichen',
     alvaraNotApplicable:'Nicht zutreffend', certidaoPending:'In Prüfung',
     popupCertOk:'Auszug hinterlegt', popupAlvaraOk:'Lizenz',
     noRatings:'Noch keine Bewertungen', reviews:'Bewertungen',
@@ -2629,6 +2629,7 @@ function heroSearch() {
   updateSectorActiveStates();
   renderSectorFilters();
   applyFilters.now();
+  if (window.innerWidth <= 768) setTimeout(() => { try { openResultsSheet(); } catch (_) {} }, 350);
 }
 
 // ── HERO CATEGORY STRIP ───────────────────────────────────────────────────
@@ -2689,6 +2690,7 @@ function lpCatSearch(groupKey) {
   updateSectorActiveStates();
   renderSectorFilters();
   applyFilters.now();
+  if (window.innerWidth <= 768) setTimeout(() => { try { openResultsSheet(); } catch (_) {} }, 350);
 }
 
 function renderFeaturedCompanies() {
@@ -3689,6 +3691,19 @@ async function loadCompaniesFromDB(opts) {
     // already on screen (scoped boot or full catalogue) stays, and we simply
     // try again later. Only a failure with nothing loaded shows the error UI.
     if (companies.length > 0) return;
+    // OFFLINE gracioso: sem rede, qualquer snapshot local serve (mesmo >24h)
+    try {
+      const snapOff = await _idbCatalogo('get');
+      if (snapOff && Array.isArray(snapOff.rows) && snapOff.rows.length > 200) {
+        companies.length = 0;
+        snapOff.rows.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+        snapOff.rows.forEach(row => companies.push(dbRowToCompany(row)));
+        nextCompanyId = computeNextCompanyId(companies, nextCompanyId);
+        _offlineBanner(true);
+        try { renderSectorFilters(); updateMarkers(); applyFilters.now(); } catch (_) {}
+        return;
+      }
+    } catch (_) {}
     companies.length = 0;
     // Distinguish between actual network failure (no connection) and a server
     // error response — the latter is much more actionable to debug.
@@ -10929,6 +10944,17 @@ function openContactModal() {
   if (sub) sub.textContent = t('contactSendTo') + ' ' + c.name;
   const msg = document.getElementById('contactMessage');
   if (msg) msg.value = '';
+  // identidade lembrada (convidado) + modelos de um toque
+  try {
+    const saved = JSON.parse(localStorage.getItem('hivex_guest_contact') || 'null');
+    if (!user && saved) {
+      const gn = document.getElementById('contactGuestName');
+      const ge = document.getElementById('contactGuestEmail');
+      if (gn && !gn.value) gn.value = saved.name || '';
+      if (ge && !ge.value) ge.value = saved.email || '';
+    }
+  } catch (_) {}
+  try { _ctRenderTemplates(c); } catch (_) {}
   document.getElementById('contactModal').classList.add('open');
   setTimeout(() => (user ? msg : document.getElementById('contactGuestName'))?.focus(), 200);
 }
@@ -10948,6 +10974,7 @@ async function submitContactForm() {
     if (!gName) { showToast(t('contactNameReq')); document.getElementById('contactGuestName')?.focus(); return; }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(gEmail)) { showToast(t('contactEmailReq')); document.getElementById('contactGuestEmail')?.focus(); return; }
     body.name = gName;
+    try { localStorage.setItem('hivex_guest_contact', JSON.stringify({ name: gName, email: gEmail })); } catch (_) {}
     body.email = gEmail;
     body.website = document.getElementById('contactWebsite')?.value || ''; // honeypot
   }
@@ -11478,7 +11505,22 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
 // Safari doesn't fire this event but supports add-to-home-screen via the
 // share sheet; we surface a one-time hint there too.
 (function() {
-  return; // "Adicionar ao ecrã inicial" / install prompt disabled per user request
+  // Instalação SÓ por iniciativa do utilizador (entrada na gaveta) — sem banners.
+  let _dpEvt = null;
+  const _instalada = () => window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  function _syncInstallEntry() {
+    const el = document.getElementById('mnInstall');
+    if (!el) return;
+    const ios = /iphone|ipad|ipod/i.test(navigator.userAgent);
+    el.style.display = (!_instalada() && (_dpEvt || ios)) ? '' : 'none';
+  }
+  window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); _dpEvt = e; _syncInstallEntry(); });
+  window._hivexInstall = function () {
+    if (_dpEvt) { _dpEvt.prompt(); _dpEvt = null; _syncInstallEntry(); return; }
+    alert(t('iosInstallHint'));
+  };
+  setTimeout(_syncInstallEntry, 800);
+  return; // banners automáticos continuam desativados (decisão do dono)
   const DISMISSED_KEY = 'hive_install_dismissed';
   let deferredPrompt = null;
 
@@ -11649,27 +11691,42 @@ try { renderLpFeatured(); } catch (_) {}
   // Só quando o toque começa na faixa de topo da ficha (cabeçalho, 90px).
   const panel = document.getElementById('detailPanel');
   if (panel) {
-    let sy = null, dy = 0, active = false;
+    let sx = null, sy = null, dx = 0, dy = 0, active = false;
     panel.addEventListener('touchstart', (e) => {
       if (!isMobile()) return;
       const t0 = e.touches[0];
       const r = panel.getBoundingClientRect();
       if (t0.clientY - r.top > 90) return;
-      sy = t0.clientY; dy = 0; active = true;
-      panel.style.transition = 'none';
+      sx = t0.clientX; sy = t0.clientY; dx = 0; dy = 0; active = true;
+      panel.classList.add('dragging');
     }, { passive: true });
     panel.addEventListener('touchmove', (e) => {
       if (!active || sy == null) return;
+      dx = e.touches[0].clientX - sx;
       dy = e.touches[0].clientY - sy;
-      if (dy > 0) panel.style.transform = 'translateY(' + dy + 'px)';
+      // a folha segue o dedo (a regra .open usa var(--dp-drag))
+      if (dy > 0 && Math.abs(dy) >= Math.abs(dx)) panel.style.setProperty('--dp-drag', dy + 'px');
     }, { passive: true });
     const end = () => {
       if (!active) return;
       active = false;
-      panel.style.transition = '';
-      panel.style.transform = '';
-      if (dy > 120) { try { closeDetail(); } catch (_) {} }
-      sy = null; dy = 0;
+      panel.classList.remove('dragging');
+      panel.style.setProperty('--dp-drag', '0px');
+      if (Math.abs(dx) > 60 && Math.abs(dx) > 2 * Math.abs(dy)) {
+        // swipe lateral: empresa anterior/seguinte da lista atual
+        try {
+          const lista = (typeof _listCurrentData !== 'undefined' && _listCurrentData && _listCurrentData.length) ? _listCurrentData : null;
+          if (lista) {
+            const i = lista.findIndex(c => c.id === selectedId);
+            const j = i + (dx < 0 ? 1 : -1);
+            if (i >= 0 && j >= 0 && j < lista.length) {
+              openDetail(lista[j].id);
+              showToast((j + 1) + '/' + lista.length + ' · ' + lista[j].name.slice(0, 28));
+            }
+          }
+        } catch (_) {}
+      } else if (dy > 120) { try { closeDetail(); } catch (_) {} }
+      sx = sy = null; dx = dy = 0;
     };
     panel.addEventListener('touchend', end);
     panel.addEventListener('touchcancel', end);
@@ -11856,6 +11913,7 @@ function _renderSearchSuggest(val) {
     input.addEventListener('keydown', (e) => { if (e.key === 'Escape') box.style.display = 'none'; });
   }
   const q = _normTxt((val || '').trim());
+  if (q.length === 0) { _renderSuggestZero(box); return; }
   if (q.length < 2) { box.style.display = 'none'; return; }
   if (!_suggestIndex) _buildSuggestIndex();
   let cities = _suggestIndex.cities.filter(c => _normTxt(c.label).includes(q))
@@ -11894,6 +11952,7 @@ function _renderSearchSuggest(val) {
 }
 function _hideSuggest() { const b = document.getElementById('searchSuggestBox'); if (b) b.style.display = 'none'; }
 function suggestPickCity(label, lat, lng) {
+  _ssRemember({ t: 'city', label: label, lat: lat, lng: lng });
   _hideSuggest();
   const input = document.getElementById('searchUnified');
   if (input) input.value = label;
@@ -11904,13 +11963,17 @@ function suggestPickCity(label, lat, lng) {
   applyFilters();
 }
 function suggestPickSector(key) {
+  try { _ssRemember({ t: 'sector', k: key, label: ((translations[currentLang] || translations.pt).sectors || {})[key] || key }); } catch (_) {}
   _hideSuggest();
   const input = document.getElementById('searchUnified');
   if (input) input.value = '';
   _keywordFilter = '';
   try { if (!activeSectors.has(key)) toggleSector(key); else applyFilters(); } catch (_) { applyFilters(); }
 }
-function suggestPickCompany(id) { _hideSuggest(); openDetail(id); }
+function suggestPickCompany(id) {
+  try { const c = companies.find(x => x.id === id); if (c) _ssRemember({ t: 'company', id: id, label: c.name.slice(0, 40) }); } catch (_) {}
+  _hideSuggest(); openDetail(id);
+}
 window.suggestPickCity = suggestPickCity;
 window.suggestPickSector = suggestPickSector;
 window.suggestPickCompany = suggestPickCompany;
@@ -12873,3 +12936,114 @@ try {
     if (_msp && _ub && _msp.parentElement !== _ub) _ub.appendChild(_msp);
   }
 } catch (_) {}
+
+
+// ── UX mobile: estado-zero da pesquisa, offline, IP-geo, teclado ──────────────
+function _ssRemember(p) {
+  try {
+    let rec = JSON.parse(localStorage.getItem('hivex_recent_picks') || '[]');
+    rec = [p].concat(rec.filter(x => x.label !== p.label)).slice(0, 3);
+    localStorage.setItem('hivex_recent_picks', JSON.stringify(rec));
+  } catch (_) {}
+}
+function _ssUseRecent(i) {
+  let rec = []; try { rec = JSON.parse(localStorage.getItem('hivex_recent_picks') || '[]'); } catch (_) {}
+  const r = rec[i]; if (!r) return;
+  if (r.t === 'city') suggestPickCity(r.label, r.lat, r.lng);
+  else if (r.t === 'sector') suggestPickSector(r.k);
+  else if (r.t === 'company') suggestPickCompany(r.id);
+}
+function _renderSuggestZero(box) {
+  let html = '<div class="ss-item ss-zero" onmousedown="detectUserLocation(false)">📍 ' + escHtml(t('heroNearMe')) + '</div>';
+  let rec = [];
+  try { rec = JSON.parse(localStorage.getItem('hivex_recent_picks') || '[]'); } catch (_) {}
+  if (rec.length) {
+    html += '<div class="ss-group">' + escHtml(t('ssRecent')) + '</div>';
+    html += rec.slice(0, 3).map((r, i) => '<div class="ss-item" onmousedown="_ssUseRecent(' + i + ')">🕘 ' + escHtml(r.label) + '</div>').join('');
+  }
+  const cont = {};
+  companies.forEach(c => { if (c.sector) cont[c.sector] = (cont[c.sector] || 0) + 1; });
+  const trz = translations[currentLang] || translations.pt;
+  const top = Object.entries(cont).sort((a, b) => b[1] - a[1]).slice(0, 4);
+  if (top.length) {
+    html += '<div class="ss-group">' + escHtml(t('ssPopular')) + '</div>';
+    html += top.map(([k, n]) => '<div class="ss-item" onmousedown="suggestPickSector(\'' + k + '\')">🔧 ' + escHtml((trz.sectors && trz.sectors[k]) || k) + ' <span class="ss-n">' + n + '</span></div>').join('');
+  }
+  box.innerHTML = html;
+  box.style.display = 'block';
+}
+window._ssUseRecent = _ssUseRecent;
+window._renderSearchSuggest = _renderSearchSuggest;
+
+// modelos de mensagem no modal de contacto
+function _ctRenderTemplates(c) {
+  const msg = document.getElementById('contactMessage');
+  if (!msg) return;
+  let bar = document.getElementById('ctTplBar');
+  if (!bar) {
+    bar = document.createElement('div');
+    bar.id = 'ctTplBar';
+    bar.className = 'ct-tpl-bar';
+    msg.parentElement.insertBefore(bar, msg);
+  }
+  const trz = translations[currentLang] || translations.pt;
+  const setor = (trz.sectors && trz.sectors[c.sector]) || c.sector || '';
+  const cidade = c.city || '';
+  const modelos = [
+    { r: 'ctTplQuote', txt: t('ctTplQuoteTxt').replace('{setor}', setor).replace('{cidade}', cidade) },
+    { r: 'ctTplVisit', txt: t('ctTplVisitTxt').replace('{cidade}', cidade) },
+    { r: 'ctTplAvail', txt: t('ctTplAvailTxt') },
+  ];
+  window._ctTplTextos = modelos.map(m => m.txt);
+  bar.innerHTML = modelos.map((m, i) => '<button type="button" class="ct-tpl" onclick="_ctUseTemplate(' + i + ')">' + escHtml(t(m.r)) + '</button>').join('');
+}
+function _ctUseTemplate(i) {
+  const msg = document.getElementById('contactMessage');
+  if (msg && window._ctTplTextos) { msg.value = window._ctTplTextos[i] || ''; msg.focus(); }
+}
+window._ctUseTemplate = _ctUseTemplate;
+
+// barra de offline + recuperação ao voltar a rede
+function _offlineBanner(mostrar) {
+  let b = document.getElementById('offlineBanner');
+  if (!b && mostrar) {
+    b = document.createElement('div');
+    b.id = 'offlineBanner';
+    b.className = 'offline-banner';
+    b.textContent = '📡 ' + t('offlineBanner');
+    document.body.appendChild(b);
+  }
+  if (b) b.style.display = mostrar ? '' : 'none';
+}
+window.addEventListener('online', () => { _offlineBanner(false); try { loadCompaniesFromDB({ full: true }); } catch (_) {} });
+window.addEventListener('offline', () => { if (!companies.length) _offlineBanner(true); });
+
+// Enter na pesquisa: aplica e fecha o teclado
+try {
+  const _su = document.getElementById('searchUnified');
+  if (_su) _su.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); _su.blur(); applyFilters.now(); showToast(t('searchUpdated')); }
+  });
+} catch (_) {}
+
+// arranque relevante: centra na cidade aproximada por IP (sem pedir permissão)
+(async function () {
+  try {
+    try { const st = await navigator.permissions.query({ name: 'geolocation' }); if (st.state === 'granted') return; } catch (_) {}
+    for (let i = 0; i < 30 && (typeof map === 'undefined' || !map); i++) await new Promise(r => setTimeout(r, 300));
+    if (typeof map === 'undefined' || !map) return;
+    await new Promise(r => setTimeout(r, 900));
+    if (map.getZoom() !== 7) return; // o utilizador (ou uma vista guardada) já mexeu
+    let g = null;
+    try { g = JSON.parse(localStorage.getItem('hivex_ip_geo') || 'null'); } catch (_) {}
+    if (!g || Date.now() - (g.t || 0) > 24 * 3600e3) {
+      const r = await fetch('/api/geo', { signal: AbortSignal.timeout(5000) }).then(x => x.ok ? x.json() : null).catch(() => null);
+      if (r && isFinite(+r.lat) && isFinite(+r.lng)) { g = { ...r, t: Date.now() }; try { localStorage.setItem('hivex_ip_geo', JSON.stringify(g)); } catch (_) {} }
+    }
+    if (g && isFinite(+g.lat) && isFinite(+g.lng) && map.getZoom() === 7) {
+      map.setView([+g.lat, +g.lng], 10);
+      try { if (radiusCircle) radiusCircle.setLatLng([+g.lat, +g.lng]); currentMapCenter = [+g.lat, +g.lng]; invalidateDistanceCache(); } catch (_) {}
+      if (g.city) showToast('📍 ' + g.city);
+    }
+  } catch (_) {}
+})();

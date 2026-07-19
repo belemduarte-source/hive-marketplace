@@ -183,6 +183,18 @@ const rfqLimiter = rateLimit({
   skip: _skipRateLimit,
 });
 
+// Cidade aproximada por IP (headers da Vercel) — arranque relevante sem pedir permissão
+app.get('/api/geo', (req, res) => {
+  res.set('Cache-Control', 'private, no-store');
+  const dec = v => { try { return v ? decodeURIComponent(v) : null; } catch (_) { return v || null; } };
+  res.json({
+    city: dec(req.headers['x-vercel-ip-city']),
+    lat: parseFloat(req.headers['x-vercel-ip-latitude']) || null,
+    lng: parseFloat(req.headers['x-vercel-ip-longitude']) || null,
+    cc: (req.headers['x-vercel-ip-country'] || '').toLowerCase() || null,
+  });
+});
+
 app.use('/api/', generalLimiter);
 app.use('/api/auth/', authLimiter);
 
