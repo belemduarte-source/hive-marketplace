@@ -4016,3 +4016,11 @@
 .ct-tpl-bar{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 10px}
 .ct-tpl{border:1.5px solid var(--border);background:var(--surface);color:var(--text);border-radius:99px;padding:8px 14px;font-size:13.5px;font-weight:700;cursor:pointer}
 .ct-tpl:active,.ct-tpl:hover{border-color:var(--primary);color:var(--primary)}
+
+/* Simplificação mobile: hero com uma só caixa + sem categorias; gaveta enxuta */
+@media (max-width: 768px) {
+  .lp-sb-tabs{display:none !important}          /* #2: sem os 3 modos de pesquisa */
+  .lp-hero-cats,.lp-hero-cats-label{display:none !important}  /* #3: categorias vivem no chip 'Área' do mapa */
+}
+
+@media (max-width: 768px){ .lp-search-compact .lp-sb-label{display:none !important} }
