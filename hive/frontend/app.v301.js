@@ -3650,6 +3650,7 @@ let _fullCatalogueLoaded = false;
 async function loadCompaniesFromDB(opts) {
   const scoped = !(opts && opts.full) && !_fullCatalogueLoaded;
   let loadErrMsg = null; // set on failure; injected into the map hint AFTER the render pipeline (which overwrites the hint)
+  let veioDaRede = true; // dados desta corrida vieram da rede (vs snapshot local) — lido depois do try
   try {
     // The catalogue is Portugal-only. Scoping this fetch by the VISITOR's
     // country (_userCountry from geolocation) made every company vanish for
@@ -3660,10 +3661,12 @@ async function loadCompaniesFromDB(opts) {
     let data;
     if (scoped) {
       // Snapshot local (IndexedDB): visitas repetidas pintam o catálogo
-      // completo em <1s sem rede; o refresh integral continua em fundo.
-      const snap = await _idbCatalogo('get').catch(() => null);
+      // completo em <1s sem rede; o refresh continua em fundo.
+      // opts.refresh força ida à rede — é o que mantém o snapshot fresco em
+      // móvel, onde o carregamento total (que antes o reescrevia) não corre.
+      const snap = (opts && opts.refresh) ? null : await _idbCatalogo('get').catch(() => null);
       if (snap && Array.isArray(snap.rows) && snap.rows.length > 200 && Date.now() - snap.t < 24 * 3600e3) {
-        data = snap.rows;
+        data = snap.rows; veioDaRede = false;
       } else {
       data = await api.getCompanies({ country: 'pt' });
       if (!Array.isArray(data)) data = (data && Array.isArray(data.companies)) ? data.companies : [];
@@ -3695,7 +3698,11 @@ async function loadCompaniesFromDB(opts) {
         }
       }
     }
-    if (!scoped) { _fullCatalogueLoaded = true; try { _idbCatalogo('put', data); } catch (_) {} }
+    if (!scoped) _fullCatalogueLoaded = true;
+    // Grava o snapshot sempre que os dados vieram da REDE (catálogo completo ou
+    // só PT). Antes só gravava no completo — em móvel, onde esse não corre, o
+    // snapshot nunca refrescava e mostrava empresas já removidas.
+    if (veioDaRede) { try { _idbCatalogo('put', data); } catch (_) {} }
     // Clear only now that fresh data is in hand — clearing before the await
     // would let a failed background refresh wipe what's already on screen.
     companies.length = 0;
@@ -3818,13 +3825,19 @@ async function loadCompaniesFromDB(opts) {
   // Background phase: pull the rest of the catalogue (other countries) once,
   // shortly after first paint. Re-runs this same function un-scoped — the
   // ingest pipeline is idempotent, so the merge is just a full re-ingest.
-  if (scoped && !loadErrMsg) {
+  // `!opts.refresh` é essencial: sem isso um refresh agendava outro refresh,
+  // em ciclo infinito de pedidos.
+  if (scoped && !loadErrMsg && !(opts && opts.refresh)) {
     // O catálogo completo são 47k+ empresas — ~32MB em ~48 pedidos. Em
     // telemóvel ou rede lenta/poupança de dados isso é castigo puro: o
     // mercado principal (PT) já está carregado e a pesquisa fora de PT vai ao
     // servidor. Nesses casos carrega-se só a pedido (ver flyToCountry).
     if (_deveCarregarCatalogoTodo()) {
       setTimeout(() => { loadCompaniesFromDB({ full: true }).catch(() => {}); }, 2500);
+    } else if (!veioDaRede) {
+      // Móvel/rede lenta que pintou a partir do snapshot: refresca só PT
+      // (barato) para o snapshot não envelhecer nem mostrar empresas removidas.
+      setTimeout(() => { loadCompaniesFromDB({ refresh: true }).catch(() => {}); }, 3000);
     }
   }
 }
