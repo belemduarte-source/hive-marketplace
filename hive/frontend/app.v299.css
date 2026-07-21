@@ -4024,3 +4024,9 @@
 }
 
 @media (max-width: 768px){ .lp-search-compact .lp-sb-label{display:none !important} }
+
+/* Selo de confianca "Alvara IMPIC" (empresa licenciada) */
+.badge-alvara{display:inline-flex;align-items:center;gap:4px;font-size:11px;font-weight:800;color:#1e40af;background:#eff6ff;border:1px solid rgba(37,99,235,.3);border-radius:6px;padding:2px 7px;line-height:1.5;white-space:nowrap;vertical-align:middle}
+.nc-cred{margin-top:4px}
+.fc-card .badge-alvara.fc-alvara{font-size:12.5px;margin-top:5px;padding:3px 9px}
+@media (prefers-color-scheme: dark){.badge-alvara{color:#bfdbfe;background:rgba(37,99,235,.18);border-color:rgba(37,99,235,.45)}}

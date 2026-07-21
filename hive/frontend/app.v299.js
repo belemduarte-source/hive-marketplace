@@ -62,6 +62,7 @@ const translations = {
     detailSpecialties:'Especialidades', detailReviews:'Avaliações Verificadas',
     detailCredentials:'Credenciais & Áreas de Atividade',
     detailActivities:'Áreas de Atividade', detailAlvara:'Alvará', detailCertidao:'Certidão Permanente',
+    alvaraImpic:'Alvará IMPIC', alvaraImpicTip:'Empresa com alvará de construção registado no IMPIC, a autoridade pública portuguesa da construção.',
     detailNoActivities:'Sem áreas de atividade indicadas',
     credRequired:'Obrigatória', credOptional:'Opcional',
     credLoginToView:'Inicie sessão para ver',
@@ -475,6 +476,7 @@ const translations = {
     detailSpecialties:'Specialties', detailReviews:'Verified Reviews',
     detailCredentials:'Credentials & Areas of Activity',
     detailActivities:'Areas of Activity', detailAlvara:'Alvará (Licence)', detailCertidao:'Permanent Certificate',
+    alvaraImpic:'IMPIC Licence', alvaraImpicTip:'Holds a construction licence registered with IMPIC, the Portuguese public construction authority.',
     detailNoActivities:'No areas of activity listed',
     credRequired:'Required', credOptional:'Optional',
     credLoginToView:'Sign in to view',
@@ -879,6 +881,7 @@ const translations = {
     detailSpecialties:'Spécialités', detailReviews:'Avis Vérifiés',
     detailCredentials:'Accréditations & Domaines d\'activité',
     detailActivities:'Domaines d\'activité', detailAlvara:'Alvará (Licence)', detailCertidao:'Certificat Permanent',
+    alvaraImpic:'Licence IMPIC', alvaraImpicTip:'Licence de construction enregistrée auprès de IMPIC, autorité publique portugaise de la construction.',
     detailNoActivities:'Aucun domaine d\'activité indiqué',
     credRequired:'Obligatoire', credOptional:'Facultatif',
     credLoginToView:'Connectez-vous pour voir',
@@ -1285,6 +1288,7 @@ const translations = {
     detailSpecialties:'Especialidades', detailReviews:'Valoraciones Verificadas',
     detailCredentials:'Credenciales y Áreas de Actividad',
     detailActivities:'Áreas de Actividad', detailAlvara:'Alvará (Licencia)', detailCertidao:'Certificado Permanente',
+    alvaraImpic:'Licencia IMPIC', alvaraImpicTip:'Licencia de construcción registrada en el IMPIC, autoridad pública portuguesa de la construcción.',
     detailNoActivities:'Sin áreas de actividad indicadas',
     credRequired:'Obligatorio', credOptional:'Opcional',
     credLoginToView:'Inicia sesión para ver',
@@ -1685,6 +1689,7 @@ const translations = {
     detailSpecialties:'Fachbereiche', detailReviews:'Verifizierte Bewertungen',
     detailCredentials:'Nachweise & Tätigkeitsbereiche',
     detailActivities:'Tätigkeitsbereiche', detailAlvara:'Alvará (Lizenz)', detailCertidao:'Handelsregisterauszug',
+    alvaraImpic:'IMPIC-Lizenz', alvaraImpicTip:'Bei IMPIC registrierte Baugenehmigung (portugiesische Baubehörde).',
     detailNoActivities:'Keine Tätigkeitsbereiche angegeben',
     credRequired:'Erforderlich', credOptional:'Optional',
     credLoginToView:'Zum Anzeigen anmelden',
@@ -4561,8 +4566,9 @@ function buildPopupHtml(c) {
   const certBadge = c.certidao_permanente
     ? `<span style="font-size:14px;color:#166534;background:#dcfce7;border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;gap:4px;font-weight:700">✓ ${escHtml(tr.popupCertOk || 'Certidão registada')}</span>`
     : '';
+  const _alvNum = c.alvara ? (String(c.alvara).match(/\d+/) || [''])[0] : '';
   const alvaraBadge = c.alvara
-    ? `<span style="font-size:14px;color:#1e40af;background:#eff6ff;border:1px solid rgba(37,99,235,.25);border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;gap:4px;font-weight:700">⚒ ${escHtml(tr.popupAlvaraOk || 'Alvará')}</span>`
+    ? `<span style="font-size:14px;color:#1e40af;background:#eff6ff;border:1px solid rgba(37,99,235,.25);border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;gap:4px;font-weight:700">🛡️ ${escHtml(c.country === 'pt' ? (tr.alvaraImpic || 'Alvará IMPIC') : (tr.popupAlvaraOk || 'Alvará'))}${(_alvNum && c.country === 'pt') ? ' ' + escHtml(_alvNum) : ''}</span>`
     : '';
   const newBadge = c.isNew
     ? `<span style="font-size:14px;color:#166534;background:#dcfce7;border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;font-weight:700">${escHtml(tr.popupNewBadge)}</span>`
@@ -6302,6 +6308,7 @@ function _appendNearbyCards(listEl, upTo, sentinel) {
         <div class="nc-main">
           <div class="nc-name">${escHtml(c.name)}${c.verified ? ' <span class="badge-verified" title="Empresa verificada">✓ Verificada</span>' : ''}</div>
           <div class="nc-sector"><span class="nc-dot" style="background:${c.color}"></span>${escHtml(sectorLabel)}</div>
+          ${alvaraBadgeHtml(c) ? '<div class="nc-cred">' + alvaraBadgeHtml(c) + '</div>' : ''}
         </div>
         <div class="nc-side">${c.featured ? '<span class="nc-feat-badge">★ ' + escHtml(t('featuredBadge')) + '</span>' : ''}<span class="nc-dist">${distStr}</span></div>
       </div>
@@ -7050,7 +7057,7 @@ function _renderDetailPanel(c) {
   if (c.logo) { _dpLogoEl.textContent = ''; _dpLogoEl.classList.remove('logo-mono'); _dpLogoEl.style.background = 'url("' + c.logo + '") center/cover no-repeat'; }
   else        { _dpLogoEl.textContent = companyMonogram(c); _dpLogoEl.classList.add('logo-mono'); _dpLogoEl.style.background = ''; }
   document.getElementById('dpName').innerHTML =
-    escHtml(c.name) + (c.verified ? ' <span class="badge-verified" title="Empresa verificada">✓ Verificada</span>' : '');
+    escHtml(c.name) + (c.verified ? ' <span class="badge-verified" title="Empresa verificada">✓ Verificada</span>' : '') + alvaraBadgeHtml(c);
 
   // Sub-line: primary activity + city, plus a compact rating when present.
   // The raw CAE classification code is intentionally dropped — it carries no
@@ -11656,6 +11663,14 @@ document.querySelectorAll('[data-sector-link]').forEach(el => {
    Lista todas as empresas featured; quando não cabem no painel, o conteúdo
    é duplicado e roda em loop contínuo lento (~6s por empresa; pausa no
    hover). Chamado por updateLandingStats() sempre que o Início é mostrado. */
+function alvaraBadgeHtml(c, cls) {
+  if (!c || !c.alvara || c.country !== 'pt') return '';
+  const num = (String(c.alvara).match(/\d+/) || [''])[0];
+  const lbl = (typeof t === 'function' && t('alvaraImpic')) || 'Alvará IMPIC';
+  const tip = (typeof t === 'function' && t('alvaraImpicTip')) || '';
+  return '<span class="badge-alvara' + (cls ? ' ' + cls : '') + '" title="' + escHtml(tip) + '">🛡️ ' + escHtml(lbl) + (num ? ' ' + escHtml(num) : '') + '</span>';
+}
+
 function renderLpFeatured() {
   const panel = document.getElementById('lpFeatPanel');
   const track = document.getElementById('lpFeatTrack');
@@ -11682,8 +11697,6 @@ function renderLpFeatured() {
     let conf;
     if (rv > 0) {
       conf = '<span class="nc-stars">' + '★'.repeat(Math.round(rv)) + '</span> <strong>' + rv.toFixed(1) + '</strong> <span class="nc-reviews">(' + (c.reviews || 0) + ')</span>';
-    } else if (c.alvara) {
-      conf = '<span class="fc-chip">📜 ' + escHtml(t('fcAlvara')) + ' ' + escHtml(c.alvara) + '</span>';
     } else if (c.verified) {
       conf = '<span class="badge-verified">✓ Verificada</span>';
     } else {
@@ -11705,7 +11718,7 @@ function renderLpFeatured() {
     if (isFinite(+c.lat) && isFinite(+c.lng)) acoes.push('<a class="fc-act fc-act-rota" href="https://www.google.com/maps/dir/?api=1&destination=' + (+c.lat) + ',' + (+c.lng) + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">🧭 ' + escHtml(t('fcRoute')) + '</a>');
     return '<div class="nearby-card fc-card" onclick="openDetail(' + c.id + ')">'
       + '<div class="fc-top">' + logo
-      + '<div class="fc-main"><div class="nc-name fc-nome">' + escHtml(c.name) + '</div>'
+      + '<div class="fc-main"><div class="nc-name fc-nome">' + escHtml(c.name) + '</div>' + alvaraBadgeHtml(c, 'fc-alvara')
       + '<div class="nc-sector fc-meta"><span class="nc-dot" style="background:' + (c.color || getSectorColor(c)) + '"></span>' + escHtml(sectorLabel)
       + (local ? ' <span class="fc-meta-sep">·</span> 📍 ' + escHtml(local) : '') + '</div>'
       + '</div></div>'
