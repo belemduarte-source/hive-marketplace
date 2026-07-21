@@ -73,6 +73,7 @@ const translations = {
     review1:'"Excelente parceiro, entregou dentro do prazo e com qualidade acima do esperado."',
     review2:'"Boa comunicação e preços competitivos. Recomendado para projetos de médio prazo."',
     sectors:{
+      construcao_geral:'Construção Geral / Empreiteiros',
       pedreiros:'Pedreiros / Trolhas', escavacao:'Escavação & Terraplanagem', betao_cimento:'Betão & Cimento',
       estruturas_metalicas:'Estruturas Metálicas', demolicao:'Demolição', alvenaria:'Alvenaria',
       cofragem:'Cofragem & Armação', impermeabilizacao:'Impermeabilização',
@@ -487,6 +488,7 @@ const translations = {
     review1:'"Excellent partner, delivered on time and with quality above expectations."',
     review2:'"Good communication and competitive prices. Recommended for medium-term projects."',
     sectors:{
+      construcao_geral:'General Construction / Contractors',
       pedreiros:'Bricklayers & Masons', escavacao:'Excavation & Earthworks', betao_cimento:'Concrete & Cement Work',
       estruturas_metalicas:'Steel Frame Structures', demolicao:'Demolition', alvenaria:'Masonry',
       cofragem:'Formwork & Reinforcement', impermeabilizacao:'Waterproofing & Tanking',
@@ -892,6 +894,7 @@ const translations = {
     review1:'"Excellent partenaire, livré dans les délais et avec une qualité supérieure aux attentes."',
     review2:'"Bonne communication et prix compétitifs. Recommandé pour des projets à moyen terme."',
     sectors:{
+      construcao_geral:'Construction Générale / Entrepreneurs',
       pedreiros:'Maçons & Briqueteurs', escavacao:'Terrassement & Excavation', betao_cimento:'Béton & Ciment',
       estruturas_metalicas:'Charpente & Structures Métalliques', demolicao:'Démolition', alvenaria:'Maçonnerie',
       cofragem:'Coffrage & Ferraillage', impermeabilizacao:'Étanchéité & Imperméabilisation',
@@ -1299,6 +1302,7 @@ const translations = {
     review1:'"Excelente socio, entregó a tiempo y con calidad superior a lo esperado."',
     review2:'"Buena comunicación y precios competitivos. Recomendado para proyectos a medio plazo."',
     sectors:{
+      construcao_geral:'Construcción General / Contratistas',
       pedreiros:'Albañiles', escavacao:'Movimiento de Tierras & Excavación', betao_cimento:'Hormigón & Cemento',
       estruturas_metalicas:'Estructuras Metálicas', demolicao:'Demolición', alvenaria:'Albañilería & Mampostería',
       cofragem:'Encofrado & Ferrallado', impermeabilizacao:'Impermeabilización & Aislamiento Hidrófugo',
@@ -1700,6 +1704,7 @@ const translations = {
     review1:'"Ausgezeichneter Partner – pünktliche Lieferung, Qualität hat unsere Erwartungen übertroffen."',
     review2:'"Gute Kommunikation, wettbewerbsfähige Preise. Empfehlenswert für mittlere Projekte."',
     sectors:{
+      construcao_geral:'Hochbau / Bauunternehmen',
       pedreiros:'Maurer & Verputzer', escavacao:'Erdarbeiten & Baugrubenaushub', betao_cimento:'Betonbau',
       estruturas_metalicas:'Stahlbau & Tragkonstruktionen', demolicao:'Abbrucharbeiten', alvenaria:'Mauerwerk & Ziegelarbeiten',
       cofragem:'Schalung & Bewehrung', impermeabilizacao:'Abdichtung & Feuchtigkeitsschutz',
