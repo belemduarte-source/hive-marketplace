@@ -3656,6 +3656,7 @@ async function loadCompaniesFromDB(opts) {
   const scoped = !(opts && opts.full) && !_fullCatalogueLoaded;
   let loadErrMsg = null; // set on failure; injected into the map hint AFTER the render pipeline (which overwrites the hint)
   let veioDaRede = true; // dados desta corrida vieram da rede (vs snapshot local) — lido depois do try
+  let _tNaoPTherdado = 0; // idade dos dados não-PT no snapshot a escrever (0 = sem dados não-PT)
   try {
     // The catalogue is Portugal-only. Scoping this fetch by the VISITOR's
     // country (_userCountry from geolocation) made every company vanish for
@@ -3669,12 +3670,32 @@ async function loadCompaniesFromDB(opts) {
       // completo em <1s sem rede; o refresh continua em fundo.
       // opts.refresh força ida à rede — é o que mantém o snapshot fresco em
       // móvel, onde o carregamento total (que antes o reescrevia) não corre.
-      const snap = (opts && opts.refresh) ? null : await _idbCatalogo('get').catch(() => null);
+      // O snapshot antigo é lido SEMPRE (mesmo no refresh) — serve de fonte
+      // dos outros países no merge abaixo.
+      const snapAntigo = await _idbCatalogo('get').catch(() => null);
+      const snap = (opts && opts.refresh) ? null : snapAntigo;
       if (snap && Array.isArray(snap.rows) && snap.rows.length > 200 && Date.now() - snap.t < 24 * 3600e3) {
         data = snap.rows; veioDaRede = false;
       } else {
       data = await api.getCompanies({ country: 'pt' });
       if (!Array.isArray(data)) data = (data && Array.isArray(data.companies)) ? data.companies : [];
+      // MERGE: um fetch só-PT não pode apagar os outros países — nem do ecrã
+      // nem do snapshot. (Foi um bug real: o refresh de 3s reescrevia tudo com
+      // só PT e as empresas estrangeiras desapareciam até "mexer nos filtros".)
+      // Guardas da revisão: (1) teto de 7 dias na idade dos dados não-PT
+      // (tNaoPT), senão empresas estrangeiras removidas da BD ressuscitavam
+      // para sempre em móvel; (2) só country string ≠'pt' (case-insensitive) —
+      // linhas sem país não são "estrangeiras"; (3) ids comparados como string
+      // (snapshot antigo pode ter ids string e o fetch ids numéricos).
+      if (snapAntigo && Array.isArray(snapAntigo.rows)) {
+        const idadeNaoPT = Date.now() - (snapAntigo.tNaoPT || snapAntigo.t || 0);
+        if (idadeNaoPT < 7 * 24 * 3600e3) {
+          const idsPT = new Set(data.map(r => r && String(r.id)));
+          const naoPT = snapAntigo.rows.filter(r => r && typeof r.country === 'string'
+            && r.country.toLowerCase() !== 'pt' && !idsPT.has(String(r.id)));
+          if (naoPT.length) { data = data.concat(naoPT); _tNaoPTherdado = snapAntigo.tNaoPT || snapAntigo.t || 0; }
+        }
+      }
       }
     } else {
       // Só continua com uma página-array de exatamente 500 linhas. Qualquer
@@ -3703,11 +3724,11 @@ async function loadCompaniesFromDB(opts) {
         }
       }
     }
-    if (!scoped) _fullCatalogueLoaded = true;
+    if (!scoped) { _fullCatalogueLoaded = true; _tNaoPTherdado = Date.now(); } // completo = não-PT acabado de buscar
     // Grava o snapshot sempre que os dados vieram da REDE (catálogo completo ou
     // só PT). Antes só gravava no completo — em móvel, onde esse não corre, o
     // snapshot nunca refrescava e mostrava empresas já removidas.
-    if (veioDaRede) { try { _idbCatalogo('put', data); } catch (_) {} }
+    if (veioDaRede) { try { _idbCatalogo('put', data, { tNaoPT: _tNaoPTherdado }); } catch (_) {} }
     // Clear only now that fresh data is in hand — clearing before the await
     // would let a failed background refresh wipe what's already on screen.
     companies.length = 0;
@@ -3845,16 +3866,29 @@ async function loadCompaniesFromDB(opts) {
       setTimeout(() => { loadCompaniesFromDB({ refresh: true }).catch(() => {}); }, 3000);
     }
   }
+  // Países carregados a pedido (garantirPais) vivem só em memória, não no
+  // snapshot — um rebuild scoped apagava-os do mapa enquanto o utilizador os
+  // via (corrida real: tocar num país antes do refresh dos 3s). Recarrega-os.
+  if (scoped && !loadErrMsg && _paisesCarregados.size > 1) {
+    for (const cc of [..._paisesCarregados]) {
+      if (cc === 'pt') continue;
+      _paisesCarregados.delete(cc);
+      try { garantirPais(cc); } catch (_) {}
+    }
+  }
 }
 
 // Vale a pena pré-carregar o catálogo internacional inteiro em fundo?
-// Não em móvel, ligação lenta ou modo de poupança de dados.
+// Não em móvel, 2G real ou modo de poupança de dados.
+// NÃO se salta por effectiveType '3g': o Chrome rotula '3g' ligações
+// perfeitamente normais (basta RTT alto), e saltar por isso deixava o desktop
+// "às vezes" só com empresas PT — o sintoma reportado pelo utilizador.
 function _deveCarregarCatalogoTodo() {
   try {
     const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
     if (c) {
       if (c.saveData) return false;
-      if (/2g/.test(c.effectiveType || '') || c.effectiveType === '3g') return false;
+      if (/(^|-)2g$/.test(c.effectiveType || '')) return false; // slow-2g, 2g
     }
     if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) return false;
   } catch (_) {}
@@ -12733,7 +12767,7 @@ function clearCountryFilter() {
 window.clearCountryFilter = clearCountryFilter;
 
 /* ══ Snapshot do catálogo em IndexedDB (velocidade em visitas repetidas) ══ */
-function _idbCatalogo(op, rows) {
+function _idbCatalogo(op, rows, meta) {
   return new Promise((res) => {
     try {
       const open = indexedDB.open('hivex', 1);
@@ -12748,7 +12782,12 @@ function _idbCatalogo(op, rows) {
             g.onsuccess = () => res(g.result || null);
             g.onerror = () => res(null);
           } else {
-            st.put({ t: Date.now(), rows: rows }, 'catalogo');
+            // tNaoPT = quando os dados NÃO-PT foram buscados à rede pela última
+            // vez (só o carregamento completo os refresca). Permite pôr um teto
+            // de idade ao merge só-PT — sem isto, linhas estrangeiras removidas
+            // da BD ressuscitavam para sempre em móvel (re-seladas como frescas
+            // a cada refresh).
+            st.put({ t: Date.now(), tNaoPT: (meta && meta.tNaoPT) || 0, rows: rows }, 'catalogo');
             tx.oncomplete = () => res(true);
             tx.onerror = () => res(false);
           }
