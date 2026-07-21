@@ -3819,9 +3819,50 @@ async function loadCompaniesFromDB(opts) {
   // shortly after first paint. Re-runs this same function un-scoped — the
   // ingest pipeline is idempotent, so the merge is just a full re-ingest.
   if (scoped && !loadErrMsg) {
-    setTimeout(() => { loadCompaniesFromDB({ full: true }).catch(() => {}); }, 2500);
+    // O catálogo completo são 47k+ empresas — ~32MB em ~48 pedidos. Em
+    // telemóvel ou rede lenta/poupança de dados isso é castigo puro: o
+    // mercado principal (PT) já está carregado e a pesquisa fora de PT vai ao
+    // servidor. Nesses casos carrega-se só a pedido (ver flyToCountry).
+    if (_deveCarregarCatalogoTodo()) {
+      setTimeout(() => { loadCompaniesFromDB({ full: true }).catch(() => {}); }, 2500);
+    }
   }
 }
+
+// Vale a pena pré-carregar o catálogo internacional inteiro em fundo?
+// Não em móvel, ligação lenta ou modo de poupança de dados.
+function _deveCarregarCatalogoTodo() {
+  try {
+    const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+    if (c) {
+      if (c.saveData) return false;
+      if (/2g/.test(c.effectiveType || '') || c.effectiveType === '3g') return false;
+    }
+    if (window.matchMedia && window.matchMedia('(max-width: 768px)').matches) return false;
+  } catch (_) {}
+  return true;
+}
+
+// Garante que as empresas de um país estão carregadas (usado quando o
+// pré-carregamento total foi saltado). Idempotente e silencioso.
+const _paisesCarregados = new Set(['pt']);
+async function garantirPais(cc) {
+  cc = String(cc || '').toLowerCase();
+  if (!cc || _fullCatalogueLoaded || _paisesCarregados.has(cc)) return;
+  _paisesCarregados.add(cc);
+  try {
+    const rows = await api.getCompanies({ country: cc });
+    const lista = Array.isArray(rows) ? rows : (rows && Array.isArray(rows.companies)) ? rows.companies : [];
+    if (!lista.length) return;
+    const vistos = new Set(companies.map(c => c.id));
+    const novos = lista.map(dbRowToCompany).filter(c => !vistos.has(c.id));
+    if (!novos.length) return;
+    companies.push(...novos);
+    novos.forEach(c => { try { addCompanyMarker(c); } catch (_) {} });
+    try { applyFilters.now ? applyFilters.now() : applyFilters(); } catch (_) {}
+  } catch (_) { _paisesCarregados.delete(cc); }
+}
+window.garantirPais = garantirPais;
 
 // Retry handler for the "couldn't load companies" dead end (button lives in
 // the map empty-hint). Retries un-scoped so it can't fail into a smaller set.
@@ -4589,7 +4630,19 @@ function ensureClusterGroup() {
   if (markerClusterGroup) return markerClusterGroup;
   if (!map || typeof L === 'undefined' || !L.markerClusterGroup) return null;
   markerClusterGroup = L.markerClusterGroup({
-    maxClusterRadius: 60,
+    // Raio de agrupamento em função do ZOOM. Antes era 60px fixo: ao abrir uma
+    // ficha o mapa voa para zoom 15, onde 60px ≈ 216m — as empresas vizinhas
+    // desapareciam todas dentro de um balão com um número. Agora, quanto mais
+    // perto, menor o raio: ao zoom da ficha só agrupa a ~35m, e a partir do
+    // zoom 16 praticamente só as que estão MESMO no mesmo ponto (essas ainda
+    // abrem em leque ao clicar, em vez de empilharem invisíveis).
+    maxClusterRadius: function (zoom) {
+      if (zoom >= 17) return 4;
+      if (zoom >= 16) return 8;
+      if (zoom >= 15) return 12;   // zoom da ficha: ~35m
+      if (zoom >= 13) return 28;
+      return 60;                   // vista de país/região: agrupa p/ legibilidade + performance
+    },
     spiderfyOnMaxZoom: true,
     spiderfyDistanceMultiplier: 1.6,
     showCoverageOnHover: false,
@@ -11872,6 +11925,9 @@ function flyToCountry(cc) {
   if (!v || typeof map === 'undefined' || !map) return;
   window._countryFilter = cc;
   try { renderCountryPills(); } catch (_) {}
+  // Em móvel/rede lenta o catálogo internacional não é pré-carregado — traz
+  // este país a pedido (não bloqueia a animação do mapa).
+  try { garantirPais(cc); } catch (_) {}
   map.setView([v[0], v[1]], v[2], { animate: true });
   currentMapCenter = [v[0], v[1]];
   try { invalidateDistanceCache(); } catch (_) {}
