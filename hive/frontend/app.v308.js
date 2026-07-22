@@ -4822,33 +4822,48 @@ function _geocodePlaceWorldwide(q) {
   return fetch('https://photon.komoot.io/api/?limit=5&lang=default&q=' + encodeURIComponent(q))
     .then(r => r.json())
     .then(j => {
-      for (const f of (j && j.features) || []) {
-        const p = f.properties || {};
+      // Percorre por ORDEM DE IMPORTÂNCIA. Se a 1ª povoação da lista foi
+      // rejeitada só pelo nome (exónimo: "Munich" vs "München"), não aceitamos
+      // às cegas uma homónima menor mais abaixo (Munich, Dakota do Norte!) —
+      // deixamos o Nominatim (multilingue) decidir.
+      let aceite = null, idxAceite = -1, idxPrimeiraPovoacao = -1;
+      const feats = (j && j.features) || [];
+      for (let i = 0; i < feats.length; i++) {
+        const p = feats[i].properties || {};
         const povoacao = (p.osm_key === 'place' && _POVOACAO.has(p.osm_value))
           || (p.osm_key === 'boundary' && p.osm_value === 'administrative');
         if (!povoacao) continue;
+        if (idxPrimeiraPovoacao < 0) idxPrimeiraPovoacao = i;
         const nome = norm(p.name);
         if (!nome || !(nome.startsWith(alvo) || alvo.startsWith(nome))) continue;
-        const [lng, lat] = f.geometry.coordinates;
-        const v = p.osm_value;
-        const zoom = v === 'country' ? 6 : (v === 'state' || v === 'province' || v === 'region') ? 8 :
-                     (v === 'county') ? 9 : (v === 'city' || v === 'municipality') ? 11 :
-                     v === 'town' ? 12 : 13;
-        return { lat, lng, zoom, label: p.name || q, cc: (p.countrycode || '').toLowerCase() };
+        if (!aceite) {
+          const [lng, lat] = feats[i].geometry.coordinates;
+          const v = p.osm_value;
+          const zoom = v === 'country' ? 6 : (v === 'state' || v === 'province' || v === 'region') ? 8 :
+                       (v === 'county') ? 9 : (v === 'city' || v === 'municipality') ? 11 :
+                       v === 'town' ? 12 : 13;
+          aceite = { lat, lng, zoom, label: p.name || q, cc: (p.countrycode || '').toLowerCase() };
+          idxAceite = i;
+        }
       }
-      // 2ª oportunidade (exónimos/escrita nativa, ex.: "München" com lang=en):
-      // Nominatim restrito a POVOAÇÕES — palavras de atividade continuam a dar null.
+      if (aceite && idxAceite === idxPrimeiraPovoacao) return aceite; // o topo casa com o texto → confiança total
+      // 2ª oportunidade (exónimos/escrita nativa): Nominatim restrito a
+      // POVOAÇÕES — palavras de atividade continuam a dar null.
       return fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&featuretype=settlement&addressdetails=1&q=' + encodeURIComponent(q))
         .then(r => r.json())
         .then(d => {
           const it = d && d[0];
-          if (!it || it.class !== 'place') return null;
-          const zoom = it.type === 'village' || it.type === 'hamlet' ? 13 : it.type === 'town' ? 12 : 11;
+          // povoações vêm como place/* OU boundary/administrative (ex.: Tóquio, Munique)
+          if (!it || !(it.class === 'place' || (it.class === 'boundary' && it.type === 'administrative'))) return aceite;
+          const at = it.addresstype || it.type;
+          const zoom = at === 'village' || at === 'hamlet' ? 13 : at === 'town' ? 12 :
+                       (at === 'state' || at === 'province' || at === 'region') ? 8 :
+                       at === 'country' ? 6 : 11;
           return { lat: parseFloat(it.lat), lng: parseFloat(it.lon), zoom,
                    label: (it.display_name || q).split(',')[0],
                    cc: ((it.address || {}).country_code || '').toLowerCase() };
         })
-        .catch(() => null);
+        .catch(() => aceite);
     })
     .catch(() => null);
 }
