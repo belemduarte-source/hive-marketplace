@@ -2737,7 +2737,7 @@ function renderFeaturedCompanies() {
     return `
       <div class="lp-company-card" style="--cc:${(typeof getSectorColor === 'function' ? getSectorColor(c) : (c.color || '#2563eb'))}" onclick="lpOpenCompany(${c.id})">
         <div class="lp-cc-header">
-          <div class="lp-cc-emoji${c.logo ? '' : ' logo-mono'}"${c.logo ? ` style="background:url('${c.logo}') center/cover no-repeat"` : ''}>${c.logo ? '' : companyMonogram(c)}</div>
+          <div class="lp-cc-emoji${c.logo ? '' : ' logo-mono'}" style="${c.logo ? `background:url('${c.logo}') center/cover no-repeat` : `--mc:${(typeof getSectorColor === 'function' ? getSectorColor(c) : (c.color || '#2563eb'))}`}">${c.logo ? '' : companyMonogram(c)}</div>
           <div class="lp-cc-info">
             <div class="lp-cc-name" title="${c.name}">${c.name}</div>
             <div class="lp-cc-sector">${sectorLabel}</div>
@@ -3538,7 +3538,7 @@ async function openCompareModal() {
   // só aparece quando há UM vencedor único (empate = sem selo).
   const logoDe = c => c.logo
     ? `<span class="compare-co-logo" style="background-image:url('${c.logo}')"></span>`
-    : `<span class="compare-co-emoji logo-mono">${companyMonogram(c)}</span>`;
+    : `<span class="compare-co-emoji logo-mono" style="--mc:${getSectorColor(c)}">${companyMonogram(c)}</span>`;
   const fields = [
     { label:'Pontuação', mode:'max',
       val: c => (c.rating||0) + '|' + (c.reviews||0),
@@ -7160,7 +7160,7 @@ function _renderDetailPanel(c) {
   const tr = translations[currentLang];
   const _dpLogoEl = document.getElementById('dpLogo');
   if (c.logo) { _dpLogoEl.textContent = ''; _dpLogoEl.classList.remove('logo-mono'); _dpLogoEl.style.background = 'url("' + c.logo + '") center/cover no-repeat'; }
-  else        { _dpLogoEl.textContent = companyMonogram(c); _dpLogoEl.classList.add('logo-mono'); _dpLogoEl.style.background = ''; }
+  else        { _dpLogoEl.textContent = companyMonogram(c); _dpLogoEl.classList.add('logo-mono'); _dpLogoEl.style.background = ''; try { _dpLogoEl.style.setProperty('--mc', getSectorColor(c)); } catch (_) {} }
   document.getElementById('dpName').innerHTML =
     escHtml(c.name) + (c.verified ? ' <span class="badge-verified" title="Empresa verificada">✓ Verificada</span>' : '') + alvaraBadgeHtml(c);
 
@@ -11810,7 +11810,7 @@ function renderLpFeatured() {
     // logo GRANDE, inteiro (contain sobre fundo branco), nunca cortado
     const logo = c.logo
       ? '<div class="fc-logo-xl" style="background:#fff url(\'' + escHtml(c.logo) + '\') center/contain no-repeat"></div>'
-      : '<div class="fc-logo-xl fc-logo-emoji" style="background:' + (c.color || getSectorColor(c)) + '22">' + (c.emoji || '🏗️') + '</div>';
+      : '<div class="fc-logo-xl logo-mono" style="--mc:' + (c.color || getSectorColor(c)) + '">' + companyMonogram(c) + '</div>';
     const local = (c.city || '').trim() || String(c.address || '').split(',')[0].trim();
     // descrição real (o que a empresa faz) — a informação com mais valor;
     // sem descrição, cai para a morada
