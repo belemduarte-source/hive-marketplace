@@ -4815,8 +4815,11 @@ function _geocodePlaceWorldwide(q) {
   const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
   const alvo = norm(String(q).split(',')[0]);
   if (!alvo) return Promise.resolve(null);
-  // lang=en: nomes em latim, senão "Tokyo" devolvia 東京都 e o guardião de nome rejeitava
-  return fetch('https://photon.komoot.io/api/?limit=5&lang=en&q=' + encodeURIComponent(q))
+  // lang=default (nomes NATIVOS): "München" tem de casar com a cidade de Munique,
+  // não com uma aldeia homónima (com lang=en a cidade chama-se "Munich" e o
+  // guardião rejeitava-a). Exónimos ("Tokyo", "Munich") caem na 2ª oportunidade
+  // Nominatim abaixo, que conhece os nomes multilingues.
+  return fetch('https://photon.komoot.io/api/?limit=5&lang=default&q=' + encodeURIComponent(q))
     .then(r => r.json())
     .then(j => {
       for (const f of (j && j.features) || []) {
