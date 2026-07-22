@@ -4815,7 +4815,8 @@ function _geocodePlaceWorldwide(q) {
   const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
   const alvo = norm(String(q).split(',')[0]);
   if (!alvo) return Promise.resolve(null);
-  return fetch('https://photon.komoot.io/api/?limit=5&lang=default&q=' + encodeURIComponent(q))
+  // lang=en: nomes em latim, senão "Tokyo" devolvia 東京都 e o guardião de nome rejeitava
+  return fetch('https://photon.komoot.io/api/?limit=5&lang=en&q=' + encodeURIComponent(q))
     .then(r => r.json())
     .then(j => {
       for (const f of (j && j.features) || []) {
@@ -4832,7 +4833,19 @@ function _geocodePlaceWorldwide(q) {
                      v === 'town' ? 12 : 13;
         return { lat, lng, zoom, label: p.name || q, cc: (p.countrycode || '').toLowerCase() };
       }
-      return null;
+      // 2ª oportunidade (exónimos/escrita nativa, ex.: "München" com lang=en):
+      // Nominatim restrito a POVOAÇÕES — palavras de atividade continuam a dar null.
+      return fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&featuretype=settlement&addressdetails=1&q=' + encodeURIComponent(q))
+        .then(r => r.json())
+        .then(d => {
+          const it = d && d[0];
+          if (!it || it.class !== 'place') return null;
+          const zoom = it.type === 'village' || it.type === 'hamlet' ? 13 : it.type === 'town' ? 12 : 11;
+          return { lat: parseFloat(it.lat), lng: parseFloat(it.lon), zoom,
+                   label: (it.display_name || q).split(',')[0],
+                   cc: ((it.address || {}).country_code || '').toLowerCase() };
+        })
+        .catch(() => null);
     })
     .catch(() => null);
 }
