@@ -4805,10 +4805,57 @@ function toggleIgnoreRadius() {
 }
 window.toggleIgnoreRadius = toggleIgnoreRadius;
 
-// Geocode location and center map
+// ── PESQUISA DE LUGARES MUNDIAL ──────────────────────────────────────────────
+// Photon (komoot) reconhece cidades/vilas de TODO o mundo e ordena por
+// importância ("Paris" → Paris FR, não Paris no Texas nem uma empresa "Paris").
+// Só aceitamos POVOAÇÕES/fronteiras administrativas cujo nome bate com o texto —
+// nunca POIs — para uma pesquisa de atividade não saltar para uma aldeia homónima.
+const _POVOACAO = new Set(['city', 'town', 'village', 'municipality', 'hamlet', 'suburb', 'borough', 'quarter', 'district', 'state', 'province', 'county', 'region', 'country', 'island']);
+function _geocodePlaceWorldwide(q) {
+  const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
+  const alvo = norm(String(q).split(',')[0]);
+  if (!alvo) return Promise.resolve(null);
+  return fetch('https://photon.komoot.io/api/?limit=5&lang=default&q=' + encodeURIComponent(q))
+    .then(r => r.json())
+    .then(j => {
+      for (const f of (j && j.features) || []) {
+        const p = f.properties || {};
+        const povoacao = (p.osm_key === 'place' && _POVOACAO.has(p.osm_value))
+          || (p.osm_key === 'boundary' && p.osm_value === 'administrative');
+        if (!povoacao) continue;
+        const nome = norm(p.name);
+        if (!nome || !(nome.startsWith(alvo) || alvo.startsWith(nome))) continue;
+        const [lng, lat] = f.geometry.coordinates;
+        const v = p.osm_value;
+        const zoom = v === 'country' ? 6 : (v === 'state' || v === 'province' || v === 'region') ? 8 :
+                     (v === 'county') ? 9 : (v === 'city' || v === 'municipality') ? 11 :
+                     v === 'town' ? 12 : 13;
+        return { lat, lng, zoom, label: p.name || q, cc: (p.countrycode || '').toLowerCase() };
+      }
+      return null;
+    })
+    .catch(() => null);
+}
+function _flyToPlace(hit) {
+  try { if (typeof map !== 'undefined' && map) map.setView([hit.lat, hit.lng], hit.zoom, { animate: true }); } catch (_) {}
+  currentMapCenter = [hit.lat, hit.lng];
+  try { invalidateDistanceCache(); } catch (_) {}
+  try { if (typeof radiusCircle !== 'undefined' && radiusCircle) radiusCircle.setLatLng([hit.lat, hit.lng]); } catch (_) {}
+  // Em móvel/rede lenta o catálogo internacional não está pré-carregado —
+  // voar para outro país traz as empresas dele a pedido.
+  try { if (hit.cc && hit.cc !== 'pt') garantirPais(hit.cc); } catch (_) {}
+  showToast(hit.label);
+}
+
+// Geocode location and center map — mundial (Photon primeiro, Nominatim como recurso)
 function geocodeLocation(location) {
   if (!location || location.trim() === '') return;
-
+  _geocodePlaceWorldwide(location).then(hit => {
+    if (hit) { _flyToPlace(hit); return; }
+    _geocodeLocationNominatim(location);
+  });
+}
+function _geocodeLocationNominatim(location) {
   const query = encodeURIComponent(location);
   // Search worldwide without country restrictions
   fetch(`https://nominatim.openstreetmap.org/search?q=${query}&format=json&limit=1`)
@@ -5704,9 +5751,16 @@ function handleUnifiedSearch(val) {
   val = val.trim();
   // Known Portuguese city patterns — geocode the location, do NOT use as keyword filter
   const cityPatterns = /portugal|lisboa|porto|braga|faro|coimbra|aveiro|leiria|viseu|setúbal|setubal|évora|evora|arouca|guimarães|guimaraes|funchal|sintra|cascais|almada|amadora|vila nova|santarém|santarem|beja|castelo branco|viana|bragança|braganca|guarda|portalegre/i;
+  // "Cidade, País" genérico (qualquer país do mundo) — com debounce, para não
+  // bombardear o geocoder a cada tecla enquanto o utilizador escreve.
+  const padraoMundial = /^.{2,},\s*[a-zà-ÿ][a-zà-ÿ .-]{2,}$/i;
   if (cityPatterns.test(val) || /,\s*(pt|portugal)/i.test(val)) {
     geocodeLocation(val);
     _keywordFilter = '';  // location, not keyword
+  } else if (padraoMundial.test(val)) {
+    clearTimeout(handleUnifiedSearch._tGeo);
+    handleUnifiedSearch._tGeo = setTimeout(() => geocodeLocation(val), 650);
+    _keywordFilter = '';  // localização, não palavra-chave
   } else {
     _keywordFilter = val;  // actual keyword search
   }
@@ -5721,31 +5775,25 @@ function handleUnifiedSearch(val) {
 function submitUnifiedSearch(val) {
   if (!val || !val.trim()) { _keywordFilter = ''; applyFilters(); return; }
   val = val.trim();
-  const companyMatch = (typeof companies !== 'undefined' ? companies : []).some(c => {
-    try { return fuzzySearch(val, c); } catch (_) { return false; }
-  });
-  if (companyMatch) { _keywordFilter = val; applyFilters(); return; }
-  fetch(`https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(val)}`)
-    .then(r => r.json())
-    .then(data => {
-      if (data && data.length > 0) {
-        const p = data[0], lat = parseFloat(p.lat), lng = parseFloat(p.lon);
-        const zoom = (p.type === 'amenity' || p.type === 'building') ? 16 :
-                     p.type === 'village' ? 13 : p.type === 'town' ? 12 :
-                     p.type === 'city' ? 11 : p.type === 'county' ? 10 : 12;
-        if (typeof map !== 'undefined' && map) map.setView([lat, lng], zoom, { animate: true });
-        currentMapCenter = [lat, lng];
-        if (typeof invalidateDistanceCache === 'function') invalidateDistanceCache();
-        if (typeof radiusCircle !== 'undefined' && radiusCircle) radiusCircle.setLatLng([lat, lng]);
-        _keywordFilter = '';
-        showToast(`${(p.display_name || val).split(',')[0]}`);
-      } else {
-        _keywordFilter = val; // not a place → keyword filter
-        showToast(t('toastPlaceNotFound'));
-      }
+  // LUGAR PRIMEIRO, mundial. Antes, uma empresa chamada "Paris" na América
+  // ganhava à cidade de Paris — o mapa voava para a empresa. O geocoder só
+  // devolve povoações cujo nome bate com o texto, por isso pesquisas de
+  // atividade/empresa ("eletricista", "Farcimar") caem naturalmente no filtro
+  // de palavra-chave em baixo.
+  _geocodePlaceWorldwide(val).then(hit => {
+    if (hit) {
+      _flyToPlace(hit);
+      _keywordFilter = '';
       applyFilters();
-    })
-    .catch(() => { _keywordFilter = val; applyFilters(); });
+      return;
+    }
+    const companyMatch = (typeof companies !== 'undefined' ? companies : []).some(c => {
+      try { return fuzzySearch(val, c); } catch (_) { return false; }
+    });
+    _keywordFilter = val;
+    if (!companyMatch) showToast(t('toastPlaceNotFound'));
+    applyFilters();
+  });
 }
 window.submitUnifiedSearch = submitUnifiedSearch;
 
