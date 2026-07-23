@@ -6,7 +6,7 @@ const jwt = require('jsonwebtoken');
 const { OAuth2Client } = require('google-auth-library');
 const pool = require('../db');
 const { requireAuth } = require('../middleware/auth');
-const { sendPasswordResetEmail, sendBrandedEmail, esc } = require('../email');
+const { sendPasswordResetEmail, sendBrandedEmail, sendWelcomeEmail, esc } = require('../email');
 
 const COOKIE_OPTS = {
   httpOnly: true,
@@ -188,16 +188,17 @@ router.post('/register', async (req, res, next) => {
     }
 
     const passwordHash = await bcrypt.hash(password, 10);
+    // Sem verificação obrigatória (decisão do dono, 2026-07): a conta nasce
+    // ATIVA — clicar num link/código de email era fricção e os emails nem
+    // sempre chegavam. Em vez disso segue um email de boas-vindas best-effort.
     const { rows } = await pool.query(
-      `INSERT INTO users (name, email, password_hash) VALUES ($1, $2, $3) RETURNING *`,
+      `INSERT INTO users (name, email, password_hash, email_verified) VALUES ($1, $2, $3, TRUE) RETURNING *`,
       [name, email.toLowerCase(), passwordHash]
     );
     const user = rows[0];
 
-    // Kick off the confirmation email — but never block or fail the signup on
-    // SMTP hiccups; the user can hit "reenviar código" from the verify modal.
-    sendUserVerifyCode(user).catch(err =>
-      console.error('[auth] verify email send failed for', user.email, err.message));
+    sendWelcomeEmail(user).catch(err =>
+      console.error('[auth] welcome email send failed for', user.email, err.message));
 
     const token = signToken(user);
     res.cookie('hive_token', token, COOKIE_OPTS);

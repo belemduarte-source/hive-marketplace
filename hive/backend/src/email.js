@@ -355,6 +355,32 @@ async function sendBrandedEmail({ to, replyTo, subject, title, bodyHtml }) {
   });
 }
 
+/**
+ * Email de boas-vindas no registo de conta (sem verificação obrigatória:
+ * a conta fica ativa imediatamente e este email é apenas um acolhimento).
+ * Best-effort — nunca bloqueia o registo.
+ */
+async function sendWelcomeEmail(user) {
+  await sendBrandedEmail({
+    to: user.email,
+    subject: 'Bem-vindo à Hivex! 🐝',
+    title: `Bem-vindo à Hivex, ${user.name || ''}!`.trim(),
+    bodyHtml: `
+    <p style="margin-top:0">A sua conta está <strong>ativa</strong> — não precisa de confirmar nada.</p>
+    <p>Com a Hivex pode, desde já:</p>
+    <ul style="padding-left:20px;margin:12px 0 20px">
+      <li>🔎 Encontrar <strong>milhares de empresas de construção</strong> perto de si, em Portugal e em todo o mundo;</li>
+      <li>⭐ Comparar empresas e receber as <strong>3 melhores recomendações</strong> para o seu projeto;</li>
+      <li>📩 Pedir orçamentos a várias empresas de uma só vez e falar com elas por mensagem;</li>
+      <li>🏗️ Registar a <strong>sua própria empresa</strong> e aparecer no mapa.</li>
+    </ul>
+    <p style="text-align:center;margin:26px 0">
+      <a href="https://www.hivex.pt" style="display:inline-block;background:#f97316;color:#fff;padding:14px 34px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px">Começar a explorar →</a>
+    </p>
+    <p style="color:#6b7280;font-size:13px">Precisa de ajuda? Basta responder a este email.</p>`,
+  });
+}
+
 // Minimal HTML escaping
 function esc(str) {
   return String(str)
@@ -366,5 +392,5 @@ function esc(str) {
 
 module.exports = {
   sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail,
-  sendContactEmail, sendPasswordResetEmail, sendBrandedEmail, esc, companyReplyCtaHtml,
+  sendContactEmail, sendPasswordResetEmail, sendBrandedEmail, sendWelcomeEmail, esc, companyReplyCtaHtml,
 };

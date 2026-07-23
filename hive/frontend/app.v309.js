@@ -224,7 +224,7 @@ const translations = {
     navLogin:'Entrar / Registar', navHelp:'Ajuda',
     themeToDark:'Escuro', themeToLight:'Claro', themeModeDark:'Modo escuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidade', avatarLogout:'Terminar Sessão', avatarFaqHelp:'FAQ & Ajuda',
-    lpHeroRegisterCta:'Registe a sua Empresa', lpHeroRegisterHint:'É uma empresa? Apareça no mapa em minutos.',
+    lpHeroRegisterCta:'Criar conta grátis', lpHeroRegisterHint:'Peça orçamentos, guarde favoritos e registe a sua empresa.',
     lpHeroLoginHint:'Já tem conta?', lpHeroLoginLink:'Entrar',
     lpHeroTitle:'Encontre os melhores<br><span class="hero-accent">profissionais</span> de construção',
     lpHeroSub:'Compare avaliações e peça orçamentos em minutos.',
@@ -640,7 +640,7 @@ const translations = {
     themeToDark:'Dark', themeToLight:'Light', themeModeDark:'Dark mode', themeModeLight:'Light mode',
     testimonialPhrases:['Excellent professionalism and quality of work.','Very punctual and impeccable work. Recommended!','Great value for money. Will hire again.','Very competent and organised team.','Exceeded expectations. First-class work.','Serious, trustworthy professionals.','Fast, efficient service. Very satisfied.','Excellent service from start to finish.','Met the deadline and the budget. Recommended!','Careful work and very friendly.'],
     navFavourites:'Favourites', navFaq:'FAQ', navPrivacy:'Privacy', avatarLogout:'Sign out', avatarFaqHelp:'FAQ & Help',
-    lpHeroRegisterCta:'Register your Company', lpHeroRegisterHint:'Are you a company? Get on the map in minutes.',
+    lpHeroRegisterCta:'Create free account', lpHeroRegisterHint:'Request quotes, save favourites and register your company.',
     lpHeroLoginHint:'Already have an account?', lpHeroLoginLink:'Sign in',
     lpHeroTitle:'Find the best<br><span class="hero-accent">construction</span> professionals',
     lpHeroSub:'Compare reviews and request quotes in minutes.',
@@ -1049,7 +1049,7 @@ const translations = {
     themeToDark:'Sombre', themeToLight:'Clair', themeModeDark:'Mode sombre', themeModeLight:'Mode clair',
     testimonialPhrases:['Professionnalisme et qualité de travail excellents.','Très ponctuels et travail impeccable. Je recommande !','Excellent rapport qualité-prix. Je ferai de nouveau appel à eux.','Équipe très compétente et organisée.','Ont dépassé les attentes. Travail de premier ordre.','Des professionnels sérieux et de confiance.','Service rapide et efficace. Très satisfait.','Excellent accueil du début à la fin.','Délais et budget respectés. Je recommande !','Travail soigné et beaucoup de sympathie.'],
     navFavourites:'Favoris', navFaq:'FAQ', navPrivacy:'Confidentialité', avatarLogout:'Se déconnecter', avatarFaqHelp:'FAQ & Aide',
-    lpHeroRegisterCta:'Inscrivez votre Entreprise', lpHeroRegisterHint:"Vous êtes une entreprise ? Apparaissez sur la carte en quelques minutes.",
+    lpHeroRegisterCta:'Créer un compte gratuit', lpHeroRegisterHint:"Demandez des devis, enregistrez des favoris et inscrivez votre entreprise.",
     lpHeroLoginHint:'Vous avez déjà un compte ?', lpHeroLoginLink:'Connexion',
     lpHeroTitle:'Trouvez les meilleurs<br><span class="hero-accent">professionnels</span> du bâtiment',
     lpHeroSub:'Comparez les avis et demandez des devis en quelques minutes.',
@@ -1454,7 +1454,7 @@ const translations = {
     themeToDark:'Oscuro', themeToLight:'Claro', themeModeDark:'Modo oscuro', themeModeLight:'Modo claro',
     testimonialPhrases:['Excelente profesionalidad y calidad de trabajo.','Muy puntuales y trabajo impecable. ¡Recomendado!','Gran relación calidad-precio. Volveré a contratar.','Equipo muy competente y organizado.','Superaron las expectativas. Trabajo de primera.','Profesionales serios y de confianza.','Servicio rápido y eficiente. Muy satisfecho.','Atención excelente de principio a fin.','Cumplieron los plazos y el presupuesto. ¡Recomendado!','Trabajo cuidado y mucha simpatía.'],
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidad', avatarLogout:'Cerrar sesión', avatarFaqHelp:'FAQ y Ayuda',
-    lpHeroRegisterCta:'Registre su Empresa', lpHeroRegisterHint:'¿Es una empresa? Aparezca en el mapa en minutos.',
+    lpHeroRegisterCta:'Crear cuenta gratis', lpHeroRegisterHint:'Pida presupuestos, guarde favoritos y registre su empresa.',
     lpHeroLoginHint:'¿Ya tiene cuenta?', lpHeroLoginLink:'Entrar',
     lpHeroTitle:'Encuentre los mejores<br><span class="hero-accent">profesionales</span> de la construcción',
     lpHeroSub:'Compare valoraciones y solicite presupuestos en minutos.',
@@ -1856,7 +1856,7 @@ const translations = {
     themeToDark:'Dunkel', themeToLight:'Hell', themeModeDark:'Dunkelmodus', themeModeLight:'Heller Modus',
     testimonialPhrases:['Hervorragende Professionalität und Arbeitsqualität.','Sehr pünktlich und tadellose Arbeit. Empfehlenswert!','Tolles Preis-Leistungs-Verhältnis. Gerne wieder.','Sehr kompetentes und organisiertes Team.','Haben die Erwartungen übertroffen. Erstklassige Arbeit.','Seriöse und vertrauenswürdige Fachleute.','Schneller und effizienter Service. Sehr zufrieden.','Ausgezeichneter Service von Anfang bis Ende.','Termin und Budget eingehalten. Empfehlenswert!','Sorgfältige Arbeit und sehr freundlich.'],
     navFavourites:'Favoriten', navFaq:'FAQ', navPrivacy:'Datenschutz', avatarLogout:'Abmelden', avatarFaqHelp:'FAQ & Hilfe',
-    lpHeroRegisterCta:'Unternehmen registrieren', lpHeroRegisterHint:'Sind Sie ein Unternehmen? In Minuten auf der Karte erscheinen.',
+    lpHeroRegisterCta:'Kostenloses Konto erstellen', lpHeroRegisterHint:'Angebote anfragen, Favoriten speichern und Ihren Betrieb registrieren.',
     lpHeroLoginHint:'Schon ein Konto?', lpHeroLoginLink:'Anmelden',
     lpHeroTitle:'Die besten<br><span class="hero-accent">Baufachleute</span> finden',
     lpHeroSub:'Bewertungen vergleichen und Angebote in Minuten anfragen.',
@@ -9687,9 +9687,9 @@ function updateNavAuth() {
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
         <span data-i18n="navLogin">${t('navLogin')}</span>
       </button>
-      <button class="mobile-nav-link" onclick="closeMobileNavPanel();openRegister()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        <span>${t('avatarRegisterCompany') || 'Anunciar Empresa'}</span>
+      <button class="mobile-nav-link" onclick="closeMobileNavPanel();openLogin();try{switchLoginTab('register')}catch(_){}">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+        <span>${t('lpHeroRegisterCta') || 'Criar conta'}</span>
       </button>`;
     if (mobileTopAuth) mobileTopAuth.innerHTML = `<button class="mobile-top-login" onclick="openLogin()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span data-i18n="navLogin">${t('navLogin')}</span></button>`;
     if (heroCta) heroCta.hidden = true;
