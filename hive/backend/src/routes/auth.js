@@ -173,7 +173,7 @@ router.post('/register', async (req, res, next) => {
     const email = normalizeEmail(req.body && req.body.email);
     if (!name || !email || !password) return res.status(400).json({ error: 'name, email e password são obrigatórios' });
     if (!isValidEmail(email)) return res.status(400).json({ error: 'Email inválido' });
-    if (password.length < 8) return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 8 caracteres' });
+    if (password.length < 8 || !/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 8 caracteres, incluindo letras e números' });
     if (passwordTooWeak(password)) return res.status(400).json({ error: 'Esta palavra-passe é demasiado comum. Escolha outra.' });
 
     if (!(await verifyTurnstile(turnstileToken, req.ip))) {
@@ -435,7 +435,7 @@ router.post('/reset-password', async (req, res, next) => {
   try {
     const { token, password } = req.body || {};
     if (!token || !password) return res.status(400).json({ error: 'token e password são obrigatórios' });
-    if (password.length < 8) return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 8 caracteres' });
+    if (password.length < 8 || !/[a-zA-Z]/.test(password) || !/[0-9]/.test(password)) return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 8 caracteres, incluindo letras e números' });
 
     const { rows } = await pool.query(
       'SELECT id FROM users WHERE password_reset_token = $1 AND password_reset_expires_at > NOW()',
@@ -462,7 +462,7 @@ router.post('/change-password', requireAuth, async (req, res, next) => {
   try {
     const { currentPassword, newPassword } = req.body || {};
     if (!newPassword || newPassword.length < 8) {
-      return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 8 caracteres' });
+      return res.status(400).json({ error: 'A palavra-passe deve ter pelo menos 8 caracteres, incluindo letras e números' });
     }
     if (passwordTooWeak(newPassword)) {
       return res.status(400).json({ error: 'Esta palavra-passe é demasiado comum. Escolha outra.' });

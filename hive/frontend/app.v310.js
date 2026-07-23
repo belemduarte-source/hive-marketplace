@@ -321,7 +321,7 @@ const translations = {
     authTabLogin:'Entrar', authTabRegister:'Criar Conta',
     authDividerEmail:'ou continue com email', authDividerData:'ou preencha os dados',
     authEmailLabel:'Email', authPasswordLabel:'Palavra-passe',
-    authPasswordPh:'Mínimo 8 caracteres', authPasswordHint:'Mínimo 8 caracteres.',
+    authPasswordPh:'Mín. 8 caracteres, letras e números', authPasswordHint:'Mínimo 8 caracteres, com letras e números.',
     authLoginSubmit:'Entrar', authRegisterSubmit:'Criar Conta',
     authNoAccount:'Ainda não tem conta?', authHasAccount:'Já tem conta?',
     capsLockOn:'⚠️ Caps Lock está ativado', pwdToggleAria:'Mostrar/ocultar palavra-passe',
@@ -342,7 +342,7 @@ const translations = {
     toastLoggedOut:'Sessão terminada',
     toastGoogleFailed:'Falha ao iniciar sessão com Google',
     toastRegisterFailed:'Erro ao criar conta',
-    toastPasswordTooShort:'A palavra-passe deve ter pelo menos 8 caracteres',
+    toastPasswordTooShort:'A palavra-passe deve ter pelo menos 8 caracteres, incluindo letras e números',
     regAuthNameLabel:'Nome completo',
     regAuthNamePh:'O seu nome',
     lpTabCompany:'Por Empresa',
@@ -728,7 +728,7 @@ const translations = {
     authTabLogin:'Log in', authTabRegister:'Create Account',
     authDividerEmail:'or continue with email', authDividerData:'or fill in your details',
     authEmailLabel:'Email', authPasswordLabel:'Password',
-    authPasswordPh:'At least 8 characters', authPasswordHint:'At least 8 characters.',
+    authPasswordPh:'Min. 8 characters, letters & numbers', authPasswordHint:'At least 8 characters, with letters and numbers.',
     authLoginSubmit:'Log in', authRegisterSubmit:'Create Account',
     authNoAccount:'Don’t have an account yet?', authHasAccount:'Already have an account?',
     capsLockOn:'⚠️ Caps Lock is on', pwdToggleAria:'Show/hide password',
@@ -748,7 +748,7 @@ const translations = {
     toastLoggedOut:'Signed out',
     toastGoogleFailed:'Google sign-in failed',
     toastRegisterFailed:'Account creation failed',
-    toastPasswordTooShort:'Password must be at least 8 characters',
+    toastPasswordTooShort:'Password must be at least 8 characters, including letters and numbers',
     regAuthNameLabel:'Full name',
     regAuthNamePh:'Your name',
     lpTabCompany:'By Company',
@@ -1137,7 +1137,7 @@ const translations = {
     authTabLogin:'Connexion', authTabRegister:'Créer un compte',
     authDividerEmail:'ou continuer avec un email', authDividerData:'ou remplissez les informations',
     authEmailLabel:'Email', authPasswordLabel:'Mot de passe',
-    authPasswordPh:'Au moins 8 caractères', authPasswordHint:'Au moins 8 caractères.',
+    authPasswordPh:'Min. 8 caractères, lettres et chiffres', authPasswordHint:'Au moins 8 caractères, avec lettres et chiffres.',
     authLoginSubmit:'Connexion', authRegisterSubmit:'Créer un compte',
     authNoAccount:'Pas encore de compte ?', authHasAccount:'Vous avez déjà un compte ?',
     capsLockOn:'⚠️ Verr. Maj est activée', pwdToggleAria:'Afficher/masquer le mot de passe',
@@ -1157,7 +1157,7 @@ const translations = {
     toastLoggedOut:'Déconnecté',
     toastGoogleFailed:'Échec de la connexion Google',
     toastRegisterFailed:'Échec de la création du compte',
-    toastPasswordTooShort:'Le mot de passe doit contenir au moins 8 caractères',
+    toastPasswordTooShort:'Le mot de passe doit contenir au moins 8 caractères, avec lettres et chiffres',
     regAuthNameLabel:'Nom complet',
     regAuthNamePh:'Votre nom',
     lpTabCompany:'Par Entreprise',
@@ -1541,7 +1541,7 @@ const translations = {
     authTabLogin:'Entrar', authTabRegister:'Crear Cuenta',
     authDividerEmail:'o continúa con email', authDividerData:'o rellene los datos',
     authEmailLabel:'Email', authPasswordLabel:'Contraseña',
-    authPasswordPh:'Mínimo 8 caracteres', authPasswordHint:'Mínimo 8 caracteres.',
+    authPasswordPh:'Mín. 8 caracteres, letras y números', authPasswordHint:'Mínimo 8 caracteres, con letras y números.',
     authLoginSubmit:'Entrar', authRegisterSubmit:'Crear Cuenta',
     authNoAccount:'¿Aún no tienes cuenta?', authHasAccount:'¿Ya tienes cuenta?',
     capsLockOn:'⚠️ Bloq Mayús está activado', pwdToggleAria:'Mostrar/ocultar contraseña',
@@ -1561,7 +1561,7 @@ const translations = {
     toastLoggedOut:'Sesión finalizada',
     toastGoogleFailed:'Error al iniciar sesión con Google',
     toastRegisterFailed:'Error al crear la cuenta',
-    toastPasswordTooShort:'La contraseña debe tener al menos 8 caracteres',
+    toastPasswordTooShort:'La contraseña debe tener al menos 8 caracteres, con letras y números',
     regAuthNameLabel:'Nombre completo',
     regAuthNamePh:'Su nombre',
     lpTabCompany:'Por Empresa',
@@ -1942,7 +1942,7 @@ const translations = {
     authTabLogin:'Anmelden', authTabRegister:'Konto erstellen',
     authDividerEmail:'oder mit E-Mail fortfahren', authDividerData:'oder Daten eingeben',
     authEmailLabel:'E-Mail', authPasswordLabel:'Passwort',
-    authPasswordPh:'Mindestens 8 Zeichen', authPasswordHint:'Mindestens 8 Zeichen.',
+    authPasswordPh:'Mind. 8 Zeichen, Buchstaben und Zahlen', authPasswordHint:'Mindestens 8 Zeichen, mit Buchstaben und Zahlen.',
     authLoginSubmit:'Anmelden', authRegisterSubmit:'Konto erstellen',
     authNoAccount:'Noch kein Konto?', authHasAccount:'Sie haben bereits ein Konto?',
     capsLockOn:'⚠️ Feststelltaste ist aktiviert', pwdToggleAria:'Passwort ein-/ausblenden',
@@ -1962,7 +1962,7 @@ const translations = {
     toastLoggedOut:'Abgemeldet',
     toastGoogleFailed:'Google-Anmeldung fehlgeschlagen',
     toastRegisterFailed:'Konto konnte nicht erstellt werden',
-    toastPasswordTooShort:'Das Passwort muss mindestens 8 Zeichen lang sein',
+    toastPasswordTooShort:'Das Passwort muss mindestens 8 Zeichen lang sein und Buchstaben und Zahlen enthalten',
     avatarRegisterCompany:'Unternehmen registrieren',
     regAuthNameLabel:'Vollständiger Name',
     regAuthNamePh:'Ihr Name',
@@ -9167,7 +9167,7 @@ async function submitResetPassword() {
   const token = document.getElementById('resetToken').value;
   const pass  = document.getElementById('resetPass').value;
   const btn   = document.getElementById('resetSubmitBtn');
-  if (!pass || pass.length < 8) { showToast(t('toastPasswordTooShort')); return; }
+  if (!pass || pass.length < 8 || !/[a-zA-Z]/.test(pass) || !/[0-9]/.test(pass)) { showToast(t('toastPasswordTooShort')); return; }
   setBusy(btn, true);
   try {
     await api.resetPassword(token, pass);
@@ -9479,7 +9479,7 @@ async function doRegister() {
   if (!email) { _setFieldError('regAuthEmail', 'Email é obrigatório'); bad = true; }
   else if (!_AUTH_EMAIL_RE.test(email)) { _setFieldError('regAuthEmail', 'Email inválido'); bad = true; }
   if (!pass)              { _setFieldError('regAuthPass', 'Palavra-passe é obrigatória'); bad = true; }
-  else if (pass.length < 8) { _setFieldError('regAuthPass', t('toastPasswordTooShort')); bad = true; }
+  else if (pass.length < 8 || !/[a-zA-Z]/.test(pass) || !/[0-9]/.test(pass)) { _setFieldError('regAuthPass', t('toastPasswordTooShort')); bad = true; }
   if (bad) return;
   // Pull a Turnstile token if the widget is active; backend treats missing
   // tokens as failures only when TURNSTILE_SECRET_KEY is configured.

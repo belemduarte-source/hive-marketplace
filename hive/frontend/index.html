@@ -158,7 +158,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v309.css"/>
+  <link rel="stylesheet" href="app.v310.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   <script defer src="/_vercel/insights/script.js"></script>
   <script defer src="/_vercel/speed-insights/script.js"></script>
@@ -1578,7 +1578,9 @@
       <form id="loginForm" onsubmit="event.preventDefault();doLogin()" novalidate>
         <div class="form-row">
           <label for="loginEmail" data-i18n="authEmailLabel">Email</label>
-          <input type="email" id="loginEmail" name="email" placeholder="email@exemplo.com" autocomplete="email" inputmode="email" required aria-required="true"/>
+          <!-- type=text+autocomplete=off+nome neutro: impede o Chrome de ancorar
+               o "Gerir palavras-passe" à barra do email (fica só na password) -->
+          <input type="text" id="loginEmail" name="user-mail" placeholder="email@exemplo.com" autocomplete="off" inputmode="email" spellcheck="false" required aria-required="true"/>
           <div class="field-error" id="loginEmailErr" hidden></div>
         </div>
         <div class="form-row">
@@ -1610,13 +1612,13 @@
         </div>
         <div class="form-row">
           <label for="regAuthEmail"><span data-i18n="authEmailLabel">Email</span> <span class="req">*</span></label>
-          <input type="email" id="regAuthEmail" name="email" placeholder="email@exemplo.com" autocomplete="email" inputmode="email" required aria-required="true"/>
+          <input type="text" id="regAuthEmail" name="user-mail" placeholder="email@exemplo.com" autocomplete="off" inputmode="email" spellcheck="false" required aria-required="true"/>
           <div class="field-error" id="regAuthEmailErr" hidden></div>
         </div>
         <div class="form-row">
           <label for="regAuthPass"><span data-i18n="authPasswordLabel">Palavra-passe</span> <span class="req">*</span></label>
           <div class="pwd-wrap">
-            <input type="password" id="regAuthPass" name="new-password" data-i18n-ph="authPasswordPh" placeholder="Mínimo 8 caracteres" autocomplete="new-password" required minlength="8" aria-required="true" aria-describedby="regAuthPassHint"/>
+            <input type="password" id="regAuthPass" name="new-password" data-i18n-ph="authPasswordPh" placeholder="Mín. 8 caracteres, letras e números" autocomplete="new-password" required minlength="8" aria-required="true" aria-describedby="regAuthPassHint"/>
             <button type="button" class="pwd-toggle" data-i18n-aria="pwdToggleAria" aria-label="Mostrar/ocultar palavra-passe" onclick="togglePassword('regAuthPass', this)" tabindex="-1">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </button>
@@ -2383,7 +2385,7 @@
 <script defer src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v309.js"></script>
+<script defer src="app.v310.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
