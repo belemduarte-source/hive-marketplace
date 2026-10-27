@@ -25,6 +25,14 @@
       "destination": "/api/index.js"
     },
     {
+      "source": "/(sitemap-[a-z0-9-]+\\.xml)",
+      "destination": "/api/index.js"
+    },
+    {
+      "source": "/c/:idslug",
+      "destination": "/api/index.js"
+    },
+    {
       "source": "/e/:id",
       "destination": "/api/index.js"
     },
@@ -33,7 +41,7 @@
       "destination": "/api/index.js"
     },
     {
-      "source": "/((?!api|sitemap\\.xml|e/|s/|.*\\.(?:js|css|map|png|jpe?g|webp|gif|svg|ico|json|txt|xml|webmanifest|woff2?)$).*)",
+      "source": "/((?!api|sitemap|e/|s/|c/|.*\\.(?:js|css|map|png|jpe?g|webp|gif|svg|ico|json|txt|xml|webmanifest|woff2?)$).*)",
       "destination": "/index.html"
     }
   ],
@@ -125,7 +133,7 @@
       ]
     },
     {
-      "source": "/((?!api|index\\.html|sw\\.js|manifest\\.json|sitemap\\.xml|e/|s/|$).*)",
+      "source": "/((?!api|index\\.html|sw\\.js|manifest\\.json|sitemap|e/|s/|c/|$).*)",
       "headers": [
         {
           "key": "Cache-Control",

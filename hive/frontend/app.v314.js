@@ -7989,6 +7989,19 @@ async function requestFeature(companyId, btn) {
 window.requestFeature = requestFeature;
 
 // ── SEO: LocalBusiness JSON-LD + meta por empresa ─────────────────────────────
+// Slug canónico — tem de coincidir com hivexSlugify no backend (app.js)
+function _companySlug(s) {
+  return String(s == null ? '' : s)
+    .replace(/ß/g, 'ss').replace(/[æÆ]/g, 'ae').replace(/[øØ]/g, 'o').replace(/[œŒ]/g, 'oe').replace(/[łŁ]/g, 'l')
+    .normalize('NFD').replace(/[̀-ͯ]/g, '')
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .slice(0, 80) || 'empresa';
+}
+function _companyPath(c) { return '/c/' + c.id + '-' + _companySlug(c.name); }
+window._companyPath = _companyPath;
+
 function _injectCompanySeo(c) {
   const old = document.getElementById('companyJsonLd');
   if (old) old.remove();
@@ -7999,7 +8012,7 @@ function _injectCompanySeo(c) {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name: c.name,
-    url: 'https://www.hivex.pt/?company=' + c.id,
+    url: 'https://www.hivex.pt' + _companyPath(c),
     address: { '@type': 'PostalAddress', streetAddress: c.address || undefined, addressLocality: c.city || undefined, postalCode: c.postalCode || c.postal_code || undefined, addressCountry: 'PT' },
     geo: { '@type': 'GeoCoordinates', latitude: c.lat, longitude: c.lng },
     telephone: c.phone || undefined,
@@ -8012,6 +8025,14 @@ function _injectCompanySeo(c) {
   const desc = (c.description || (c.name + ' — ' + (c.city || 'Portugal'))).slice(0, 155);
   let meta = document.querySelector('meta[name="description"]');
   if (meta) meta.setAttribute('content', desc);
+  // Canonical/og:url dinâmicas: com o painel aberto a página "é" /c/{id}-{slug}
+  try {
+    const href = 'https://www.hivex.pt' + _companyPath(c);
+    const link = document.querySelector('link[rel="canonical"]');
+    if (link) link.setAttribute('href', href);
+    const og = document.querySelector('meta[property="og:url"]');
+    if (og) og.setAttribute('content', href);
+  } catch (_) {}
 }
 
 // ── WHATSAPP CONTACT ──────────────────────────────────────────────────────────
@@ -10889,7 +10910,17 @@ _addOpenDetailHook((id) => {
   const c = companies.find(x => x.id === id);
   if (c) document.title = c.name + ' — Hivex B2B Marketplace';
 });
-_addCloseDetailHook(() => { document.title = 'Hivex – B2B Marketplace'; });
+_addCloseDetailHook(() => {
+  document.title = 'Hivex – B2B Marketplace';
+  try {
+    const link = document.querySelector('link[rel="canonical"]');
+    if (link) link.setAttribute('href', 'https://www.hivex.pt/');
+    const og = document.querySelector('meta[property="og:url"]');
+    if (og) og.setAttribute('content', 'https://www.hivex.pt/');
+    const jd = document.getElementById('companyJsonLd');
+    if (jd) jd.remove();
+  } catch (_) {}
+});
 
 // Sector landing page
 function openSectorLanding(sector) {

@@ -705,32 +705,82 @@ app.use('/api/admin', adminRouter);
 app.use('/api/favourites', favouritesRouter);
 
 // ── Sitemap ──────────────────────────────────────────────────────────────────
-// Dynamic sitemap for crawlers: home + every approved company deep link +
-// sector landing hashes are client-routed, so we expose the ?company= URLs
-// (server rewrites serve index.html for them). Cached at the CDN for 1h.
+// sitemap.xml é agora um ÍNDICE (sitemapindex) → sitemap-static.xml +
+// sitemap-s.xml (setor+cidade) + sitemap-c-N.xml (empresas /c/, ≤40k por
+// ficheiro; o limite do protocolo é 50k URLs / 50MB). Cached no CDN por 1h.
+
+// Slug canónico de empresa: minúsculas, sem acentos, não-alfanumérico → '-'.
+// Tem de coincidir com _companySlug() no frontend.
+const hivexSlugify = s => String(s == null ? '' : s)
+  .replace(/ß/g, 'ss').replace(/[æÆ]/g, 'ae').replace(/[øØ]/g, 'o').replace(/[œŒ]/g, 'oe').replace(/[łŁ]/g, 'l')
+  .normalize('NFD').replace(/[̀-ͯ]/g, '')
+  .toLowerCase()
+  .replace(/[^a-z0-9]+/g, '-')
+  .replace(/^-+|-+$/g, '')
+  .slice(0, 80) || 'empresa';
+
+const SITEMAP_BASE = 'https://www.hivex.pt';
+const SITEMAP_PAGE_SIZE = 40000;
+const _smSend = (res, body) => {
+  res.set('Content-Type', 'application/xml');
+  res.set('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>\n` + body);
+};
+
 app.get('/sitemap.xml', async (req, res, next) => {
   try {
-    const BASE = 'https://www.hivex.pt';
     const { rows } = await require('./db').query(
-      `SELECT id, updated_at FROM companies WHERE status = 'approved' ORDER BY id`
-    );
-    // Páginas de setor+cidade (≥3 empresas) — aterragens orgânicas reais
+      `SELECT COUNT(*)::int AS n, MAX(updated_at) AS last FROM companies WHERE status = 'approved'`);
+    const pages = Math.max(1, Math.ceil((rows[0].n || 0) / SITEMAP_PAGE_SIZE));
+    const lastmod = new Date(rows[0].last || Date.now()).toISOString().slice(0, 10);
+    const locs = [
+      `${SITEMAP_BASE}/sitemap-static.xml`,
+      `${SITEMAP_BASE}/sitemap-s.xml`,
+      ...Array.from({ length: pages }, (_, i) => `${SITEMAP_BASE}/sitemap-c-${i + 1}.xml`),
+    ];
+    _smSend(res, `<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+      locs.map(u => `<sitemap><loc>${u}</loc><lastmod>${lastmod}</lastmod></sitemap>`).join('\n') +
+      `\n</sitemapindex>`);
+  } catch (e) { next(e); }
+});
+
+app.get('/sitemap-static.xml', (req, res) => {
+  _smSend(res, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+    `<url><loc>${SITEMAP_BASE}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>` +
+    `\n</urlset>`);
+});
+
+// Setor+cidade (≥3 empresas). ATENÇÃO: mantém o slug antigo (acentos
+// percent-encoded) — a rota /s/ desfaz '-'→' ' e compara lower(city); um slug
+// sem acentos deixaria de encontrar a cidade na BD.
+app.get('/sitemap-s.xml', async (req, res, next) => {
+  try {
     const { rows: combos } = await require('./db').query(
       `SELECT sector, city, COUNT(*) AS n FROM companies
         WHERE status = 'approved' AND city IS NOT NULL AND city <> '' AND sector IS NOT NULL
         GROUP BY sector, city HAVING COUNT(*) >= 3
         ORDER BY COUNT(*) DESC LIMIT 2000`);
-    const slug = s => encodeURIComponent(String(s).toLowerCase().trim().replace(/\s+/g, '-'));
-    const urls = [
-      `<url><loc>${BASE}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`,
-      ...combos.map(c =>
-        `<url><loc>${BASE}/s/${c.sector}/${slug(c.city)}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`),
-      ...rows.map(r =>
-        `<url><loc>${BASE}/?company=${r.id}</loc><lastmod>${new Date(r.updated_at || Date.now()).toISOString().slice(0, 10)}</lastmod><changefreq>weekly</changefreq><priority>0.8</priority></url>`),
-    ];
-    res.set('Content-Type', 'application/xml');
-    res.set('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
-    res.send(`<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>`);
+    const slugS = s => encodeURIComponent(String(s).toLowerCase().trim().replace(/\s+/g, '-'));
+    _smSend(res, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+      combos.map(c =>
+        `<url><loc>${SITEMAP_BASE}/s/${c.sector}/${slugS(c.city)}</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>`).join('\n') +
+      `\n</urlset>`);
+  } catch (e) { next(e); }
+});
+
+// Empresas paginadas por id: /sitemap-c-1.xml, /sitemap-c-2.xml, …
+// Regex literal: o path-to-regexp do Express 4 não casa ':n(\\d+).xml'.
+app.get(/^\/sitemap-c-(\d+)\.xml$/, async (req, res, next) => {
+  try {
+    const n = Math.max(1, parseInt(req.params[0], 10) || 1);
+    const { rows } = await require('./db').query(
+      `SELECT id, name, updated_at FROM companies WHERE status = 'approved'
+        ORDER BY id LIMIT $1 OFFSET $2`, [SITEMAP_PAGE_SIZE, (n - 1) * SITEMAP_PAGE_SIZE]);
+    if (!rows.length) return res.status(404).type('text/plain').send('not found');
+    _smSend(res, `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n` +
+      rows.map(r =>
+        `<url><loc>${SITEMAP_BASE}/c/${r.id}-${hivexSlugify(r.name)}</loc><lastmod>${new Date(r.updated_at || Date.now()).toISOString().slice(0, 10)}</lastmod><changefreq>monthly</changefreq><priority>0.6</priority></url>`).join('\n') +
+      `\n</urlset>`);
   } catch (e) { next(e); }
 });
 
@@ -769,7 +819,7 @@ app.get('/e/:id(\\d+)', async (req, res, next) => {
 <meta property="og:image" content="${esc(img)}">
 <meta property="og:url" content="${BASE}/e/${c.id}">
 <meta name="twitter:card" content="summary">
-<link rel="canonical" href="${BASE}${esc(dest)}">
+<link rel="canonical" href="${BASE}/c/${c.id}-${hivexSlugify(c.name)}">
 <meta http-equiv="refresh" content="0;url=${esc(dest)}">
 </head><body>
 <script>location.replace(${JSON.stringify(dest)});</script>
@@ -819,11 +869,11 @@ app.get('/s/:sector/:city', async (req, res, next) => {
     const itemList = {
       '@context': 'https://schema.org', '@type': 'ItemList', name: title,
       itemListElement: rows.slice(0, 25).map((r, i) => ({
-        '@type': 'ListItem', position: i + 1, url: `${BASE}/e/${r.id}`, name: r.name,
+        '@type': 'ListItem', position: i + 1, url: `${BASE}/c/${r.id}-${hivexSlugify(r.name)}`, name: r.name,
       })),
     };
     const linhas = rows.map(r =>
-      `<li><a href="/e/${r.id}"><strong>${esc(r.name)}</strong></a>` +
+      `<li><a href="/c/${r.id}-${hivexSlugify(r.name)}"><strong>${esc(r.name)}</strong></a>` +
       (Number(r.rating) > 0 ? ` · ⭐ ${Number(r.rating).toFixed(1)} (${r.reviews || 0})` : '') +
       `</li>`).join('\n');
     res.set('Content-Type', 'text/html; charset=utf-8');
@@ -846,6 +896,93 @@ app.get('/s/:sector/:city', async (req, res, next) => {
 <ol>
 ${linhas}
 </ol>
+<p><a href="/">Hivex — encontre empresas de construção e serviços</a></p>
+</body></html>`);
+  } catch (e) { next(e); }
+});
+
+// ── Página de empresa indexável: /c/:id-:slug ────────────────────────────────
+// HTML real por empresa (modelo = rota /s/): título/descrição próprios,
+// canonical para a própria /c/, og:, JSON-LD LocalBusiness, resumo legível e
+// CTA para a SPA (/?company=id — deep-link já suportado pelo frontend). Sem
+// redirect automático. Telefone/email ficam fora do JSON-LD: na app os
+// contactos estão atrás de login.
+app.get('/c/:idslug', async (req, res, next) => {
+  try {
+    const esc = s => String(s == null ? '' : s)
+      .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+    const id = parseInt(req.params.idslug, 10);
+    if (!Number.isFinite(id) || id <= 0) return res.status(404).set('Cache-Control', 'public, max-age=0, s-maxage=600').type('html').send('<!doctype html><html lang="pt"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Empresa não disponível | Hivex</title></head><body style="font-family:system-ui;padding:40px;text-align:center;background:#0f172a;color:#e2e8f0"><h1>Esta empresa já não está disponível na Hivex</h1><p><a style="color:#93c5fd" href="/">Encontrar outras empresas →</a></p></body></html>');
+    const { rows } = await require('./db').query(
+      `SELECT id, name, sector, city, zone, address, postal_code, country,
+              lat, lng, phone, email, website, rating, reviews, description,
+              (logo IS NOT NULL AND logo LIKE 'data:image%') AS has_logo,
+              CASE WHEN logo IS NOT NULL THEN left(md5(logo), 10) END AS logo_v
+         FROM companies WHERE id = $1 AND status = 'approved'`, [id]);
+    const c = rows[0];
+    if (!c) return res.status(404).set('Cache-Control', 'public, max-age=0, s-maxage=600').type('html').send('<!doctype html><html lang="pt"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Empresa não disponível | Hivex</title></head><body style="font-family:system-ui;padding:40px;text-align:center;background:#0f172a;color:#e2e8f0"><h1>Esta empresa já não está disponível na Hivex</h1><p><a style="color:#93c5fd" href="/">Encontrar outras empresas →</a></p></body></html>');
+    const BASE = 'https://www.hivex.pt';
+    const slugCanon = `${c.id}-${hivexSlugify(c.name)}`;
+    // Slug errado/antigo → 301 para a forma canónica (evita conteúdo duplicado)
+    if (req.params.idslug !== slugCanon) return res.redirect(301, `/c/${slugCanon}`);
+    const canonical = `${BASE}/c/${slugCanon}`;
+    const label = SECTOR_LABELS_PT[c.sector] ||
+      (c.sector ? c.sector.charAt(0).toUpperCase() + c.sector.slice(1).replace(/_/g, ' ') : 'Empresa');
+    const title = `${c.name} — ${label}${c.city ? ' em ' + c.city : ''} | Hivex`;
+    const desc = ((c.description ? String(c.description).replace(/\s+/g, ' ').slice(0, 120) + ' · ' : '') +
+      `${label}${c.city ? ' em ' + c.city : ''}. Contactos, avaliações e orçamento grátis na Hivex.`).slice(0, 160);
+    const img = c.has_logo ? `${BASE}/api/companies/${c.id}/logo?v=${c.logo_v}` : `${BASE}/og-cover.png?v=1`;
+    const spaUrl = `/?company=${c.id}`;
+    const ld = {
+      '@context': 'https://schema.org',
+      '@type': 'LocalBusiness',
+      '@id': canonical,
+      name: c.name,
+      url: canonical,
+      address: {
+        '@type': 'PostalAddress',
+        ...(c.address ? { streetAddress: c.address } : {}),
+        ...(c.postal_code ? { postalCode: c.postal_code } : {}),
+        ...(c.city ? { addressLocality: c.city } : {}),
+        addressCountry: String(c.country || 'PT').toUpperCase(),
+      },
+      geo: { '@type': 'GeoCoordinates', latitude: c.lat, longitude: c.lng },
+      ...(c.website ? { sameAs: [c.website] } : {}),
+      ...(Number(c.rating) > 0 ? { aggregateRating: {
+        '@type': 'AggregateRating', ratingValue: Number(c.rating), reviewCount: Number(c.reviews) || 0 } } : {}),
+      ...(c.has_logo ? { image: img } : {}),
+    };
+    const sCity = c.sector && c.city
+      ? `/s/${c.sector}/${encodeURIComponent(String(c.city).toLowerCase().trim().replace(/\s+/g, '-'))}` : null;
+    const contactos = [
+      c.phone ? '✓ Telefone' : null,
+      c.email ? '✓ Email' : null,
+      c.website ? '✓ Website' : null,
+    ].filter(Boolean).join(' · ');
+    res.set('Content-Type', 'text/html; charset=utf-8');
+    res.set('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
+    res.send(`<!doctype html><html lang="pt"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(desc)}">
+<meta property="og:type" content="business.business">
+<meta property="og:site_name" content="Hivex">
+<meta property="og:title" content="${esc(title)}">
+<meta property="og:description" content="${esc(desc)}">
+<meta property="og:image" content="${esc(img)}">
+<meta property="og:url" content="${canonical}">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="${canonical}">
+<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>
+<style>body{font-family:system-ui;max-width:720px;margin:0 auto;padding:28px 18px;background:#0f172a;color:#e2e8f0}a{color:#93c5fd}h1{font-size:26px}.meta{color:#94a3b8;margin:6px 0 14px}.cta{display:inline-block;margin:18px 0;background:#f97316;color:#fff;padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none}</style>
+</head><body>
+<h1>${esc(c.name)}</h1>
+<p class="meta">${esc(label)}${c.city ? ' · ' + esc(c.city) : ''}${c.zone ? ' · ' + esc(c.zone) : ''}${Number(c.rating) > 0 ? ' · ⭐ ' + Number(c.rating).toFixed(1) + '/5 (' + (c.reviews || 0) + ')' : ''}</p>
+${c.description ? `<p>${esc(String(c.description).slice(0, 500))}</p>` : ''}
+${c.address || c.postal_code ? `<p>📍 ${esc([c.address, c.postal_code, c.city].filter(Boolean).join(', '))}</p>` : ''}
+${contactos ? `<p>${esc(contactos)} — disponíveis na ficha completa.</p>` : ''}
+<a class="cta" href="${esc(spaUrl)}">Ver no mapa, contactar e pedir orçamento →</a>
+${sCity ? `<p>Mais ${esc(label.toLowerCase())} em ${esc(c.city)}: <a href="${esc(sCity)}">ver lista completa</a></p>` : ''}
 <p><a href="/">Hivex — encontre empresas de construção e serviços</a></p>
 </body></html>`);
   } catch (e) { next(e); }

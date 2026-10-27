@@ -1,4 +1,4 @@
-const CACHE_NAME = 'hive-v339';
+const CACHE_NAME = 'hive-v340';
 const HTML_FALLBACK = '/index.html';
 const ASSETS = [
   '/manifest.json',
@@ -70,7 +70,10 @@ self.addEventListener('fetch', e => {
     e.respondWith((async () => {
       try {
         const fresh = await fetch(e.request);
-        if (fresh.ok) {
+        // Só a shell (/ ou /index.html) pode alimentar o fallback offline —
+        // páginas pré-renderizadas (/c/, /s/, /e/) envenenariam o arranque
+        // offline com a ficha de UMA empresa em vez da app.
+        if (fresh.ok && (url.pathname === '/' || url.pathname === '/index.html')) {
           const cache = await caches.open(CACHE_NAME);
           cache.put(HTML_FALLBACK, fresh.clone()).catch(() => {});
         }
