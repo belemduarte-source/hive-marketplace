@@ -28,7 +28,7 @@ const translations = {
     // ── JS-string coverage (toasts, dynamic labels) ──
     contactSendTo:"Enviar mensagem para", sendingBtn:"A enviar...",
     toastSelectMin2:"Selecione pelo menos 2 empresas para comparar.", toastMapUnavailable:"⚠️ Mapa indisponível — verifique a sua ligação", toastPlaceNotFound:"Local não encontrado. Tente outro nome.", toastLocationDetected:"Localização detetada!",
-    toastEnterEmail:"Indique o seu email", toastEnterEmail2:"Introduza um email", toastPwdReset:"Palavra-passe redefinida! Pode iniciar sessão.", toastLoginToRegister:"Inicie sessão para registar a sua empresa.", toastPwdChanged:"Palavra-passe alterada.", toastAccountDeleted:"Conta eliminada.",
+    toastEnterEmail:"Indique o seu email", toastEnterEmail2:"Introduza um email", toastPwdReset:"Palavra-passe redefinida! Pode iniciar sessão.", toastLoginToRegister:"Inicie sessão para registar a sua empresa.", toastPwdChanged:"Palavra-passe alterada.", toastAccountDeleted:"Conta eliminada.", toastCompanyGone:"Esta empresa já não está disponível na Hivex.",
     toastSelectRating:"Selecione uma classificação (1-5 estrelas)", toastReviewPublished:"Avaliação publicada!", toastWriteReply:"Escreva uma resposta", toastReplyPublished:"Resposta publicada", toastMsgTooShort:"Mensagem demasiado curta", toastMsgSent:"Mensagem enviada com sucesso!",
     toastReportUpdated:"Reporte atualizado", toastCompanyApproved:"Empresa aprovada", toastCompanyRejected:"Empresa rejeitada", toastCompanyRemoved:"🗑️ Empresa removida", toastLoadingStats:"A carregar estatísticas...", toastStatsError:"Erro ao carregar estatísticas",
     compareMaxPrefix:"Pode comparar até", compareMaxSuffix:"empresas. Remova uma para adicionar outra.", showingPrefix:"A mostrar", showingMid:"empresas em",
@@ -442,7 +442,7 @@ const translations = {
     // ── JS-string coverage (toasts, dynamic labels) ──
     contactSendTo:"Send message to", sendingBtn:"Sending...",
     toastSelectMin2:"Select at least 2 companies to compare.", toastMapUnavailable:"⚠️ Map unavailable — check your connection", toastPlaceNotFound:"Place not found. Try another name.", toastLocationDetected:"Location detected!",
-    toastEnterEmail:"Enter your email", toastEnterEmail2:"Enter an email", toastPwdReset:"Password reset! You can sign in.", toastLoginToRegister:"Sign in to register your company.", toastPwdChanged:"Password changed.", toastAccountDeleted:"Account deleted.",
+    toastEnterEmail:"Enter your email", toastEnterEmail2:"Enter an email", toastPwdReset:"Password reset! You can sign in.", toastLoginToRegister:"Sign in to register your company.", toastPwdChanged:"Password changed.", toastAccountDeleted:"Account deleted.", toastCompanyGone:"This company is no longer available on Hivex.",
     toastSelectRating:"Select a rating (1-5 stars)", toastReviewPublished:"Review published!", toastWriteReply:"Write a reply", toastReplyPublished:"Reply published", toastMsgTooShort:"Message too short", toastMsgSent:"Message sent successfully!",
     toastReportUpdated:"Report updated", toastCompanyApproved:"Company approved", toastCompanyRejected:"Company rejected", toastCompanyRemoved:"🗑️ Company removed", toastLoadingStats:"Loading statistics...", toastStatsError:"Error loading statistics",
     compareMaxPrefix:"You can compare up to", compareMaxSuffix:"companies. Remove one to add another.", showingPrefix:"Showing", showingMid:"companies in",
@@ -848,7 +848,7 @@ const translations = {
     // ── JS-string coverage (toasts, dynamic labels) ──
     contactSendTo:"Envoyer un message à", sendingBtn:"Envoi...",
     toastSelectMin2:"Sélectionnez au moins 2 entreprises à comparer.", toastMapUnavailable:"⚠️ Carte indisponible — vérifiez votre connexion", toastPlaceNotFound:"Lieu introuvable. Essayez un autre nom.", toastLocationDetected:"Localisation détectée !",
-    toastEnterEmail:"Indiquez votre e-mail", toastEnterEmail2:"Saisissez un e-mail", toastPwdReset:"Mot de passe réinitialisé ! Vous pouvez vous connecter.", toastLoginToRegister:"Connectez-vous pour enregistrer votre entreprise.", toastPwdChanged:"Mot de passe modifié.", toastAccountDeleted:"Compte supprimé.",
+    toastEnterEmail:"Indiquez votre e-mail", toastEnterEmail2:"Saisissez un e-mail", toastPwdReset:"Mot de passe réinitialisé ! Vous pouvez vous connecter.", toastLoginToRegister:"Connectez-vous pour enregistrer votre entreprise.", toastPwdChanged:"Mot de passe modifié.", toastAccountDeleted:"Compte supprimé.", toastCompanyGone:"Cette entreprise n'est plus disponible sur Hivex.",
     toastSelectRating:"Sélectionnez une note (1-5 étoiles)", toastReviewPublished:"Avis publié !", toastWriteReply:"Écrivez une réponse", toastReplyPublished:"Réponse publiée", toastMsgTooShort:"Message trop court", toastMsgSent:"Message envoyé avec succès !",
     toastReportUpdated:"Signalement mis à jour", toastCompanyApproved:"Entreprise approuvée", toastCompanyRejected:"Entreprise rejetée", toastCompanyRemoved:"🗑️ Entreprise supprimée", toastLoadingStats:"Chargement des statistiques...", toastStatsError:"Erreur lors du chargement des statistiques",
     compareMaxPrefix:"Vous pouvez comparer jusqu'à", compareMaxSuffix:"entreprises. Retirez-en une pour en ajouter une autre.", showingPrefix:"Affichage de", showingMid:"entreprises à",
@@ -1258,7 +1258,7 @@ const translations = {
     // ── JS-string coverage (toasts, dynamic labels) ──
     contactSendTo:"Enviar mensaje a", sendingBtn:"Enviando...",
     toastSelectMin2:"Selecciona al menos 2 empresas para comparar.", toastMapUnavailable:"⚠️ Mapa no disponible — comprueba tu conexión", toastPlaceNotFound:"Lugar no encontrado. Prueba otro nombre.", toastLocationDetected:"¡Ubicación detectada!",
-    toastEnterEmail:"Indica tu correo", toastEnterEmail2:"Introduce un correo", toastPwdReset:"¡Contraseña restablecida! Ya puedes iniciar sesión.", toastLoginToRegister:"Inicia sesión para registrar tu empresa.", toastPwdChanged:"Contraseña cambiada.", toastAccountDeleted:"Cuenta eliminada.",
+    toastEnterEmail:"Indica tu correo", toastEnterEmail2:"Introduce un correo", toastPwdReset:"¡Contraseña restablecida! Ya puedes iniciar sesión.", toastLoginToRegister:"Inicia sesión para registrar tu empresa.", toastPwdChanged:"Contraseña cambiada.", toastAccountDeleted:"Cuenta eliminada.", toastCompanyGone:"Esta empresa ya no está disponible en Hivex.",
     toastSelectRating:"Selecciona una valoración (1-5 estrellas)", toastReviewPublished:"¡Valoración publicada!", toastWriteReply:"Escribe una respuesta", toastReplyPublished:"Respuesta publicada", toastMsgTooShort:"Mensaje demasiado corto", toastMsgSent:"¡Mensaje enviado con éxito!",
     toastReportUpdated:"Reporte actualizado", toastCompanyApproved:"Empresa aprobada", toastCompanyRejected:"Empresa rechazada", toastCompanyRemoved:"🗑️ Empresa eliminada", toastLoadingStats:"Cargando estadísticas...", toastStatsError:"Error al cargar estadísticas",
     compareMaxPrefix:"Puedes comparar hasta", compareMaxSuffix:"empresas. Quita una para añadir otra.", showingPrefix:"Mostrando", showingMid:"empresas en",
@@ -1660,7 +1660,7 @@ const translations = {
     // ── JS-string coverage (toasts, dynamic labels) ──
     contactSendTo:"Nachricht senden an", sendingBtn:"Wird gesendet...",
     toastSelectMin2:"Wählen Sie mindestens 2 Unternehmen zum Vergleich.", toastMapUnavailable:"⚠️ Karte nicht verfügbar — prüfen Sie Ihre Verbindung", toastPlaceNotFound:"Ort nicht gefunden. Versuchen Sie einen anderen Namen.", toastLocationDetected:"Standort erkannt!",
-    toastEnterEmail:"Geben Sie Ihre E-Mail-Adresse an", toastEnterEmail2:"Geben Sie eine E-Mail-Adresse ein", toastPwdReset:"Passwort zurückgesetzt! Sie können sich anmelden.", toastLoginToRegister:"Melden Sie sich an, um Ihr Unternehmen zu registrieren.", toastPwdChanged:"Passwort geändert.", toastAccountDeleted:"Konto gelöscht.",
+    toastEnterEmail:"Geben Sie Ihre E-Mail-Adresse an", toastEnterEmail2:"Geben Sie eine E-Mail-Adresse ein", toastPwdReset:"Passwort zurückgesetzt! Sie können sich anmelden.", toastLoginToRegister:"Melden Sie sich an, um Ihr Unternehmen zu registrieren.", toastPwdChanged:"Passwort geändert.", toastAccountDeleted:"Konto gelöscht.", toastCompanyGone:"Dieses Unternehmen ist auf Hivex nicht mehr verfügbar.",
     toastSelectRating:"Wählen Sie eine Bewertung (1-5 Sterne)", toastReviewPublished:"Bewertung veröffentlicht!", toastWriteReply:"Schreiben Sie eine Antwort", toastReplyPublished:"Antwort veröffentlicht", toastMsgTooShort:"Nachricht zu kurz", toastMsgSent:"Nachricht erfolgreich gesendet!",
     toastReportUpdated:"Meldung aktualisiert", toastCompanyApproved:"Unternehmen genehmigt", toastCompanyRejected:"Unternehmen abgelehnt", toastCompanyRemoved:"🗑️ Unternehmen entfernt", toastLoadingStats:"Statistiken werden geladen...", toastStatsError:"Fehler beim Laden der Statistiken",
     compareMaxPrefix:"Sie können bis zu", compareMaxSuffix:"Unternehmen vergleichen. Entfernen Sie eines, um ein weiteres hinzuzufügen.", showingPrefix:"Zeige", showingMid:"Unternehmen in",
@@ -3797,6 +3797,14 @@ async function loadCompaniesFromDB(opts) {
   for (const id in markerMap) delete markerMap[id];
   if (typeof _visibleMarkerIds !== 'undefined') _visibleMarkerIds = new Set();
 
+  // A empresa aberta por deep link pode estar fora deste fetch (estrangeira no
+  // scoped só-PT, ou pendente do dono): repô-la aqui, dentro da ingestão, e não
+  // no wrapper — o 1.º load do arranque corre a função original.
+  try {
+    const dl = window._deepLinkRow;
+    if (dl && !companies.find(c => c.id === Number(dl.id))) companies.push(dbRowToCompany(dl));
+  } catch (_) {}
+
   // Collapse duplicate records so each business is a single pin. Mutate the
   // shared `companies` array in place (it's a const used elsewhere by reference).
   const _deduped = dedupeCompanies(companies);
@@ -4722,6 +4730,9 @@ function ensureClusterGroup() {
 
 function addCompanyMarker(c) {
   if (!map || typeof L === 'undefined') return;
+  // Sem coordenadas válidas não há pin — L.marker lançava "Invalid LatLng
+  // object: (NaN, NaN)" e abortava o ingest inteiro do catálogo.
+  if (!Number.isFinite(parseFloat(c.lat)) || !Number.isFinite(parseFloat(c.lng))) return;
   const m = L.marker([c.lat, c.lng], { icon: createMarkerIcon(c) });
   // Lazy popup: content built only when the popup is actually opened,
   // so language changes and filter runs don't rebuild HTML for all markers
@@ -7194,7 +7205,9 @@ async function openDetail(id) {
   _renderDetailPanel(c);
   try { _sizeDetailPanel(); } catch (_) {}
   document.getElementById('detailPanel').classList.add('open');
-  if (map) map.flyTo([c.lat, c.lng], 15, { animate: true, duration: 1.2 });
+  const _dpLat = parseFloat(c.lat), _dpLng = parseFloat(c.lng);
+  if (map && Number.isFinite(_dpLat) && Number.isFinite(_dpLng))
+    map.flyTo([_dpLat, _dpLng], 15, { animate: true, duration: 1.2 });
   setTimeout(() => { if (window.matchMedia('(min-width:769px)').matches) markerMap[c.id]?.openPopup(); }, 1300);
 
   try {
@@ -8009,6 +8022,7 @@ function openWhatsAppContact() {
   if (phone) {
     const msg = encodeURIComponent(`Olá! Vi o perfil da ${c.name} na plataforma Hivex e gostaria de solicitar mais informações.`);
     window.open(`https://wa.me/${phone}?text=${msg}`, '_blank', 'noopener');
+    try { api.trackEvent(c.id, 'whatsapp'); } catch (_) {}
     showToast(t('toastWhatsapp'));
   } else if (c.email) {
     openEmail();
@@ -8236,7 +8250,7 @@ const LEGAL_DOCS = {
         <ul>
           <li><strong>Conta:</strong> nome, e-mail, palavra-passe (cifrada com bcrypt) ou identificador Google. Telefone se for empresa.</li>
           <li><strong>Empresa:</strong> dados públicos comerciais (nome, CAE, morada, contactos) + código da Certidão Permanente (apenas visível ao próprio e à equipa Hivex).</li>
-          <li><strong>Utilização:</strong> eventos analíticos básicos (visualizações de perfis, cliques) — apenas se aceitar cookies analíticos.</li>
+          <li><strong>Utilização:</strong> contadores anónimos e agregados (aberturas de perfis, cliques de contacto) — sem cookies nem identificadores, nunca associados a si.</li>
           <li><strong>Localização:</strong> coordenadas só se autorizar o navegador a partilhá-las; nunca são guardadas no servidor.</li>
         </ul>
         <h3>3. Para que usamos os dados</h3>
@@ -8247,9 +8261,9 @@ const LEGAL_DOCS = {
           <li>Prevenir fraude e abuso (rate-limiting baseado em IP).</li>
         </ul>
         <h3>4. Base legal</h3>
-        <p>Execução do contrato (Art. 6.º, n.º 1, alínea b)) para conta e perfil; consentimento (alínea a)) para cookies analíticos; interesse legítimo (alínea f)) para prevenção de fraude.</p>
+        <p>Execução do contrato (Art. 6.º, n.º 1, alínea b)) para conta e perfil; consentimento (alínea a)) para cookies de publicidade (ver ponto 5.1); interesse legítimo (alínea f)) para contadores de utilização anónimos e prevenção de fraude.</p>
         <h3>5. Partilha com terceiros</h3>
-        <p>Não vendemos dados. Partilhamos apenas com sub-processadores estritamente necessários: <strong>Vercel</strong> (hospedagem), <strong>Neon/Postgres</strong> (base de dados), <strong>Google</strong> (Sign-in opcional e publicidade — ver ponto 5.1), <strong>OpenStreetMap/Carto</strong> (tiles do mapa). Todos cumprem o RGPD.</p>
+        <p>Não vendemos dados. Partilhamos apenas com sub-processadores estritamente necessários: <strong>Vercel</strong> (hospedagem), <strong>Neon/Postgres</strong> (base de dados), <strong>Google</strong> (Sign-in opcional e publicidade — ver ponto 5.1), <strong>OpenStreetMap</strong> (tiles do mapa). Todos cumprem o RGPD.</p>
         <h3>5.1 Publicidade (Google AdSense)</h3>
         <p>A Hivex pode apresentar anúncios fornecidos pelo <strong>Google AdSense</strong>. Fornecedores terceiros, incluindo a Google, utilizam cookies para apresentar anúncios com base em visitas anteriores do utilizador a este e a outros sites. A Google utiliza cookies de publicidade para apresentar anúncios; pode <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">desativar a publicidade personalizada</a> nas Definições de anúncios da Google ou recusar cookies de fornecedores terceiros em <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Mais informação na <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">política da Google sobre como utiliza dados de sites parceiros</a>. No Espaço Económico Europeu, Reino Unido e Suíça, os anúncios e respetivos cookies só são ativados <strong>após o seu consentimento</strong>, recolhido através do nosso banner de cookies — sem consentimento não são utilizados cookies de publicidade personalizada.</p>
         <h3>6. Período de conservação</h3>
@@ -8278,13 +8292,13 @@ const LEGAL_DOCS = {
           <li><code>hive_lang</code> — preferência de idioma (PT/EN/FR/ES/DE), guardada em localStorage.</li>
           <li><code>hive_cookie_consent</code> — regista a sua escolha sobre este banner.</li>
         </ul>
-        <p><strong>Analíticos (apenas com consentimento):</strong></p>
+        <p><strong>Contadores de utilização (anónimos, sem cookies):</strong></p>
         <ul>
-          <li>Eventos agregados de utilização (cliques em perfis, contactos), sem identificação pessoal.</li>
+          <li>Contamos aberturas de perfil e cliques de contacto de forma agregada — apenas o perfil e o tipo de ação, sem cookies, sem identificadores e sem dados pessoais.</li>
         </ul>
-        <p>Não usamos cookies de publicidade nem partilhamos dados com redes de tracking.</p>
+        <p><strong>Publicidade (apenas com consentimento):</strong> se aceitar no banner, a Google (AdSense) pode colocar cookies de publicidade — ver ponto 5.1 da Política de Privacidade. Se rejeitar, não são ativados. Não vendemos dados nem os partilhamos com outras redes de tracking.</p>
         <h3>3. Como gerir</h3>
-        <p>Pode aceitar ou rejeitar cookies analíticos no banner que aparece na primeira visita, e mudar de ideias a qualquer momento limpando os cookies do site no seu navegador. Cookies estritamente necessários não podem ser desativados sem comprometer o funcionamento da plataforma.</p>
+        <p>Pode aceitar ou rejeitar os cookies de publicidade no banner da primeira visita e mudar de ideias a qualquer momento limpando os cookies do site no seu navegador (o banner volta a aparecer). Os contadores de utilização não usam cookies nem identificadores, pelo que não há nada a desativar. Cookies estritamente necessários não podem ser desativados sem comprometer o funcionamento da plataforma.</p>
         <h3>4. Contacto</h3>
         <p><a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a></p>
       `,
@@ -8351,7 +8365,7 @@ LEGAL_DOCS.en = {
     <ul>
       <li><strong>Account:</strong> name, e-mail, password (encrypted with bcrypt) or Google identifier. Phone if a company.</li>
       <li><strong>Company:</strong> public commercial data (name, business code, address, contacts) + Permanent Certificate code (only visible to the owner and the Hivex team).</li>
-      <li><strong>Usage:</strong> basic analytics events (profile views, clicks) — only if you accept analytics cookies.</li>
+      <li><strong>Usage:</strong> anonymous, aggregate counters (profile opens, contact clicks) — no cookies or identifiers, never linked to you.</li>
       <li><strong>Location:</strong> coordinates only if you allow the browser to share them; never stored on the server.</li>
     </ul>
     <h3>3. Why we use the data</h3>
@@ -8362,9 +8376,11 @@ LEGAL_DOCS.en = {
       <li>Prevent fraud and abuse (IP-based rate-limiting).</li>
     </ul>
     <h3>4. Legal basis</h3>
-    <p>Performance of the contract (Art. 6(1)(b)) for account and profile; consent ((a)) for analytics cookies; legitimate interest ((f)) for fraud prevention.</p>
+    <p>Performance of the contract (Art. 6(1)(b)) for account and profile; consent ((a)) for advertising cookies (see section 5.1); legitimate interest ((f)) for anonymous usage counters and fraud prevention.</p>
     <h3>5. Sharing with third parties</h3>
-    <p>We do not sell data. We share only with strictly necessary sub-processors: <strong>Vercel</strong> (hosting), <strong>Neon/Postgres</strong> (database), <strong>Google</strong> (optional Sign-in), <strong>OpenStreetMap/Carto</strong> (map tiles). All are GDPR compliant.</p>
+    <p>We do not sell data. We share only with strictly necessary sub-processors: <strong>Vercel</strong> (hosting), <strong>Neon/Postgres</strong> (database), <strong>Google</strong> (optional Sign-in and advertising — see section 5.1), <strong>OpenStreetMap</strong> (map tiles). All are GDPR compliant.</p>
+    <h3>5.1 Advertising (Google AdSense)</h3>
+    <p>Hivex may display ads provided by <strong>Google AdSense</strong>. Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this and other websites. Google uses advertising cookies to serve ads; you can <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">opt out of personalised advertising</a> in Google's Ads Settings, or opt out of third-party vendors' cookies at <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. More information in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Google's policy on how it uses data from partner sites</a>. In the European Economic Area, the United Kingdom and Switzerland, ads and their cookies are only enabled <strong>after your consent</strong>, collected through our cookie banner — without consent, no personalised advertising cookies are used.</p>
     <h3>6. Retention period</h3>
     <p>We keep the data while the account is active. After deletion, account data is erased within 30 days. Security logs: 12 months. Approved companies remain visible in the directory until a removal request.</p>
     <h3>7. Your rights</h3>
@@ -8387,13 +8403,13 @@ LEGAL_DOCS.en = {
       <li><code>hive_lang</code> — language preference (PT/EN/FR/ES/DE), stored in localStorage.</li>
       <li><code>hive_cookie_consent</code> — records your choice about this banner.</li>
     </ul>
-    <p><strong>Analytics (only with consent):</strong></p>
+    <p><strong>Usage counters (anonymous, cookie-free):</strong></p>
     <ul>
-      <li>Aggregated usage events (profile clicks, contacts), with no personal identification.</li>
+      <li>We count profile opens and contact clicks in aggregate — just the profile and the action type, with no cookies, no identifiers and no personal data.</li>
     </ul>
-    <p>We do not use advertising cookies or share data with tracking networks.</p>
+    <p><strong>Advertising (only with consent):</strong> if you accept in the banner, Google (AdSense) may set advertising cookies — see section 5.1 of the Privacy Policy. If you reject, they are not enabled. We do not sell data or share it with other tracking networks.</p>
     <h3>3. How to manage</h3>
-    <p>You can accept or reject analytics cookies in the banner shown on your first visit, and change your mind at any time by clearing the site's cookies in your browser. Strictly necessary cookies cannot be disabled without compromising the platform's operation.</p>
+    <p>You can accept or reject advertising cookies in the banner shown on your first visit, and change your mind at any time by clearing the site's cookies in your browser (the banner will reappear). Usage counters use no cookies or identifiers, so there is nothing to disable. Strictly necessary cookies cannot be disabled without compromising the platform's operation.</p>
     <h3>4. Contact</h3>
     <p><a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a></p>
   ` },
@@ -8445,7 +8461,7 @@ LEGAL_DOCS.fr = {
     <ul>
       <li><strong>Compte :</strong> nom, e-mail, mot de passe (chiffré avec bcrypt) ou identifiant Google. Téléphone s'il s'agit d'une entreprise.</li>
       <li><strong>Entreprise :</strong> données commerciales publiques (nom, code d'activité, adresse, contacts) + code de Certificat Permanent (visible uniquement par le propriétaire et l'équipe Hivex).</li>
-      <li><strong>Utilisation :</strong> événements analytiques de base (vues de profils, clics) — uniquement si vous acceptez les cookies analytiques.</li>
+      <li><strong>Utilisation :</strong> compteurs anonymes et agrégés (ouvertures de profils, clics de contact) — sans cookies ni identifiants, jamais associés à vous.</li>
       <li><strong>Localisation :</strong> coordonnées uniquement si vous autorisez le navigateur à les partager ; jamais enregistrées sur le serveur.</li>
     </ul>
     <h3>3. Pourquoi nous utilisons les données</h3>
@@ -8456,9 +8472,11 @@ LEGAL_DOCS.fr = {
       <li>Prévenir la fraude et les abus (limitation de débit basée sur l'IP).</li>
     </ul>
     <h3>4. Base légale</h3>
-    <p>Exécution du contrat (art. 6, §1, b)) pour le compte et le profil ; consentement (a)) pour les cookies analytiques ; intérêt légitime (f)) pour la prévention de la fraude.</p>
+    <p>Exécution du contrat (art. 6, §1, b)) pour le compte et le profil ; consentement (a)) pour les cookies publicitaires (voir point 5.1) ; intérêt légitime (f)) pour les compteurs d'usage anonymes et la prévention de la fraude.</p>
     <h3>5. Partage avec des tiers</h3>
-    <p>Nous ne vendons pas de données. Nous les partageons uniquement avec les sous-traitants strictement nécessaires : <strong>Vercel</strong> (hébergement), <strong>Neon/Postgres</strong> (base de données), <strong>Google</strong> (connexion facultative), <strong>OpenStreetMap/Carto</strong> (tuiles de la carte). Tous sont conformes au RGPD.</p>
+    <p>Nous ne vendons pas de données. Nous les partageons uniquement avec les sous-traitants strictement nécessaires : <strong>Vercel</strong> (hébergement), <strong>Neon/Postgres</strong> (base de données), <strong>Google</strong> (connexion facultative et publicité — voir point 5.1), <strong>OpenStreetMap</strong> (tuiles de la carte). Tous sont conformes au RGPD.</p>
+    <h3>5.1 Publicité (Google AdSense)</h3>
+    <p>Hivex peut afficher des annonces fournies par <strong>Google AdSense</strong>. Des fournisseurs tiers, dont Google, utilisent des cookies pour diffuser des annonces en fonction des visites antérieures de l'utilisateur sur ce site et sur d'autres sites. Google utilise des cookies publicitaires pour diffuser des annonces ; vous pouvez <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">désactiver la publicité personnalisée</a> dans les Paramètres des annonces Google, ou refuser les cookies de fournisseurs tiers sur <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Plus d'informations dans la <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">politique de Google relative à l'utilisation des données des sites partenaires</a>. Dans l'Espace économique européen, au Royaume-Uni et en Suisse, les annonces et leurs cookies ne sont activés <strong>qu'après votre consentement</strong>, recueilli via notre bannière de cookies — sans consentement, aucun cookie de publicité personnalisée n'est utilisé.</p>
     <h3>6. Durée de conservation</h3>
     <p>Nous conservons les données tant que le compte est actif. Après suppression, les données du compte sont effacées sous 30 jours. Journaux de sécurité : 12 mois. Les entreprises approuvées restent visibles dans l'annuaire jusqu'à une demande de retrait.</p>
     <h3>7. Vos droits</h3>
@@ -8481,13 +8499,13 @@ LEGAL_DOCS.fr = {
       <li><code>hive_lang</code> — préférence de langue (PT/EN/FR/ES/DE), enregistrée dans localStorage.</li>
       <li><code>hive_cookie_consent</code> — enregistre votre choix concernant cette bannière.</li>
     </ul>
-    <p><strong>Analytiques (uniquement avec consentement) :</strong></p>
+    <p><strong>Compteurs d'usage (anonymes, sans cookies) :</strong></p>
     <ul>
-      <li>Événements d'utilisation agrégés (clics sur les profils, contacts), sans identification personnelle.</li>
+      <li>Nous comptons les ouvertures de profils et les clics de contact de manière agrégée — uniquement le profil et le type d'action, sans cookies, sans identifiants et sans données personnelles.</li>
     </ul>
-    <p>Nous n'utilisons pas de cookies publicitaires et ne partageons pas de données avec des réseaux de suivi.</p>
+    <p><strong>Publicité (uniquement avec consentement) :</strong> si vous acceptez dans la bannière, Google (AdSense) peut déposer des cookies publicitaires — voir le point 5.1 de la Politique de confidentialité. Si vous refusez, ils ne sont pas activés. Nous ne vendons pas de données et ne les partageons pas avec d'autres réseaux de suivi.</p>
     <h3>3. Comment les gérer</h3>
-    <p>Vous pouvez accepter ou refuser les cookies analytiques dans la bannière affichée lors de votre première visite, et changer d'avis à tout moment en supprimant les cookies du site dans votre navigateur. Les cookies strictement nécessaires ne peuvent pas être désactivés sans compromettre le fonctionnement de la plateforme.</p>
+    <p>Vous pouvez accepter ou refuser les cookies publicitaires dans la bannière affichée lors de votre première visite, et changer d'avis à tout moment en supprimant les cookies du site dans votre navigateur (la bannière réapparaîtra). Les compteurs d'usage n'utilisent ni cookies ni identifiants : il n'y a donc rien à désactiver. Les cookies strictement nécessaires ne peuvent pas être désactivés sans compromettre le fonctionnement de la plateforme.</p>
     <h3>4. Contact</h3>
     <p><a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a></p>
   ` },
@@ -8539,7 +8557,7 @@ LEGAL_DOCS.es = {
     <ul>
       <li><strong>Cuenta:</strong> nombre, correo, contraseña (cifrada con bcrypt) o identificador de Google. Teléfono si es empresa.</li>
       <li><strong>Empresa:</strong> datos comerciales públicos (nombre, código de actividad, dirección, contactos) + código de Certificado Permanente (solo visible para el propietario y el equipo de Hivex).</li>
-      <li><strong>Uso:</strong> eventos analíticos básicos (visualizaciones de perfiles, clics) — solo si aceptas cookies analíticas.</li>
+      <li><strong>Uso:</strong> contadores anónimos y agregados (aperturas de perfiles, clics de contacto): sin cookies ni identificadores, nunca asociados a ti.</li>
       <li><strong>Ubicación:</strong> coordenadas solo si autorizas al navegador a compartirlas; nunca se guardan en el servidor.</li>
     </ul>
     <h3>3. Para qué usamos los datos</h3>
@@ -8550,9 +8568,11 @@ LEGAL_DOCS.es = {
       <li>Prevenir el fraude y el abuso (limitación de tasa basada en IP).</li>
     </ul>
     <h3>4. Base legal</h3>
-    <p>Ejecución del contrato (art. 6, ap. 1, letra b)) para la cuenta y el perfil; consentimiento (letra a)) para las cookies analíticas; interés legítimo (letra f)) para la prevención del fraude.</p>
+    <p>Ejecución del contrato (art. 6, ap. 1, letra b)) para la cuenta y el perfil; consentimiento (letra a)) para las cookies publicitarias (ver punto 5.1); interés legítimo (letra f)) para los contadores de uso anónimos y la prevención del fraude.</p>
     <h3>5. Compartición con terceros</h3>
-    <p>No vendemos datos. Solo los compartimos con los encargados estrictamente necesarios: <strong>Vercel</strong> (alojamiento), <strong>Neon/Postgres</strong> (base de datos), <strong>Google</strong> (inicio de sesión opcional), <strong>OpenStreetMap/Carto</strong> (teselas del mapa). Todos cumplen el RGPD.</p>
+    <p>No vendemos datos. Solo los compartimos con los encargados estrictamente necesarios: <strong>Vercel</strong> (alojamiento), <strong>Neon/Postgres</strong> (base de datos), <strong>Google</strong> (inicio de sesión opcional y publicidad; ver punto 5.1), <strong>OpenStreetMap</strong> (teselas del mapa). Todos cumplen el RGPD.</p>
+    <h3>5.1 Publicidad (Google AdSense)</h3>
+    <p>Hivex puede mostrar anuncios proporcionados por <strong>Google AdSense</strong>. Proveedores externos, incluido Google, utilizan cookies para mostrar anuncios basados en las visitas anteriores del usuario a este y otros sitios web. Google utiliza cookies publicitarias para mostrar anuncios; puedes <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">desactivar la publicidad personalizada</a> en la Configuración de anuncios de Google, o rechazar las cookies de proveedores externos en <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Más información en la <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">política de Google sobre cómo utiliza los datos de sitios asociados</a>. En el Espacio Económico Europeo, el Reino Unido y Suiza, los anuncios y sus cookies solo se activan <strong>tras tu consentimiento</strong>, recogido a través de nuestro banner de cookies; sin consentimiento no se utilizan cookies de publicidad personalizada.</p>
     <h3>6. Periodo de conservación</h3>
     <p>Conservamos los datos mientras la cuenta esté activa. Tras la eliminación, los datos de la cuenta se borran en 30 días. Registros de seguridad: 12 meses. Las empresas aprobadas siguen visibles en el directorio hasta que se solicite su retirada.</p>
     <h3>7. Tus derechos</h3>
@@ -8575,13 +8595,13 @@ LEGAL_DOCS.es = {
       <li><code>hive_lang</code> — preferencia de idioma (PT/EN/FR/ES/DE), guardada en localStorage.</li>
       <li><code>hive_cookie_consent</code> — registra tu elección sobre este banner.</li>
     </ul>
-    <p><strong>Analíticas (solo con consentimiento):</strong></p>
+    <p><strong>Contadores de uso (anónimos, sin cookies):</strong></p>
     <ul>
-      <li>Eventos de uso agregados (clics en perfiles, contactos), sin identificación personal.</li>
+      <li>Contamos aperturas de perfil y clics de contacto de forma agregada: solo el perfil y el tipo de acción, sin cookies, sin identificadores y sin datos personales.</li>
     </ul>
-    <p>No usamos cookies publicitarias ni compartimos datos con redes de rastreo.</p>
+    <p><strong>Publicidad (solo con consentimiento):</strong> si aceptas en el banner, Google (AdSense) puede usar cookies publicitarias; consulta el punto 5.1 de la Política de Privacidad. Si rechazas, no se activan. No vendemos datos ni los compartimos con otras redes de rastreo.</p>
     <h3>3. Cómo gestionarlas</h3>
-    <p>Puedes aceptar o rechazar las cookies analíticas en el banner que aparece en la primera visita, y cambiar de opinión en cualquier momento borrando las cookies del sitio en tu navegador. Las cookies estrictamente necesarias no pueden desactivarse sin comprometer el funcionamiento de la plataforma.</p>
+    <p>Puedes aceptar o rechazar las cookies publicitarias en el banner que aparece en la primera visita, y cambiar de opinión en cualquier momento borrando las cookies del sitio en tu navegador (el banner volverá a aparecer). Los contadores de uso no utilizan cookies ni identificadores, así que no hay nada que desactivar. Las cookies estrictamente necesarias no pueden desactivarse sin comprometer el funcionamiento de la plataforma.</p>
     <h3>4. Contacto</h3>
     <p><a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a></p>
   ` },
@@ -8633,7 +8653,7 @@ LEGAL_DOCS.de = {
     <ul>
       <li><strong>Konto:</strong> Name, E-Mail, Passwort (mit bcrypt verschlüsselt) oder Google-Kennung. Telefon, wenn ein Unternehmen.</li>
       <li><strong>Unternehmen:</strong> öffentliche Geschäftsdaten (Name, Tätigkeitscode, Adresse, Kontakte) + Code des Permanenten Zertifikats (nur für den Inhaber und das Hivex-Team sichtbar).</li>
-      <li><strong>Nutzung:</strong> grundlegende Analyse-Ereignisse (Profilaufrufe, Klicks) — nur wenn Sie Analyse-Cookies akzeptieren.</li>
+      <li><strong>Nutzung:</strong> anonyme, aggregierte Zähler (Profilaufrufe, Kontaktklicks) — ohne Cookies und Kennungen, nie mit Ihnen verknüpft.</li>
       <li><strong>Standort:</strong> Koordinaten nur, wenn Sie dem Browser die Freigabe erlauben; werden nie auf dem Server gespeichert.</li>
     </ul>
     <h3>3. Wofür wir die Daten verwenden</h3>
@@ -8644,9 +8664,11 @@ LEGAL_DOCS.de = {
       <li>Verhinderung von Betrug und Missbrauch (IP-basierte Ratenbegrenzung).</li>
     </ul>
     <h3>4. Rechtsgrundlage</h3>
-    <p>Vertragserfüllung (Art. 6 Abs. 1 lit. b) für Konto und Profil; Einwilligung (lit. a) für Analyse-Cookies; berechtigtes Interesse (lit. f) für die Betrugsprävention.</p>
+    <p>Vertragserfüllung (Art. 6 Abs. 1 lit. b) für Konto und Profil; Einwilligung (lit. a) für Werbe-Cookies (siehe Abschnitt 5.1); berechtigtes Interesse (lit. f) für anonyme Nutzungszähler und die Betrugsprävention.</p>
     <h3>5. Weitergabe an Dritte</h3>
-    <p>Wir verkaufen keine Daten. Wir geben sie nur an die unbedingt notwendigen Auftragsverarbeiter weiter: <strong>Vercel</strong> (Hosting), <strong>Neon/Postgres</strong> (Datenbank), <strong>Google</strong> (optionale Anmeldung), <strong>OpenStreetMap/Carto</strong> (Kartenkacheln). Alle sind DSGVO-konform.</p>
+    <p>Wir verkaufen keine Daten. Wir geben sie nur an die unbedingt notwendigen Auftragsverarbeiter weiter: <strong>Vercel</strong> (Hosting), <strong>Neon/Postgres</strong> (Datenbank), <strong>Google</strong> (optionale Anmeldung und Werbung — siehe Abschnitt 5.1), <strong>OpenStreetMap</strong> (Kartenkacheln). Alle sind DSGVO-konform.</p>
+    <h3>5.1 Werbung (Google AdSense)</h3>
+    <p>Hivex kann Anzeigen von <strong>Google AdSense</strong> einblenden. Drittanbieter, einschließlich Google, verwenden Cookies, um Anzeigen auf Grundlage früherer Besuche eines Nutzers auf dieser und anderen Websites zu schalten. Google verwendet Werbe-Cookies, um Anzeigen zu schalten; Sie können in den Google-Anzeigeneinstellungen <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">personalisierte Werbung deaktivieren</a> oder Cookies von Drittanbietern unter <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a> ablehnen. Weitere Informationen in der <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Richtlinie von Google zur Nutzung von Daten von Partner-Websites</a>. Im Europäischen Wirtschaftsraum, im Vereinigten Königreich und in der Schweiz werden Anzeigen und ihre Cookies erst <strong>nach Ihrer Einwilligung</strong> aktiviert, die über unser Cookie-Banner eingeholt wird — ohne Einwilligung werden keine Cookies für personalisierte Werbung verwendet.</p>
     <h3>6. Aufbewahrungsdauer</h3>
     <p>Wir bewahren die Daten auf, solange das Konto aktiv ist. Nach der Löschung werden Kontodaten innerhalb von 30 Tagen gelöscht. Sicherheitsprotokolle: 12 Monate. Genehmigte Unternehmen bleiben im Verzeichnis sichtbar, bis eine Entfernung beantragt wird.</p>
     <h3>7. Ihre Rechte</h3>
@@ -8669,13 +8691,13 @@ LEGAL_DOCS.de = {
       <li><code>hive_lang</code> — Sprachpräferenz (PT/EN/FR/ES/DE), im localStorage gespeichert.</li>
       <li><code>hive_cookie_consent</code> — speichert Ihre Wahl zu diesem Banner.</li>
     </ul>
-    <p><strong>Analytik (nur mit Einwilligung):</strong></p>
+    <p><strong>Nutzungszähler (anonym, ohne Cookies):</strong></p>
     <ul>
-      <li>Aggregierte Nutzungsereignisse (Profilklicks, Kontakte), ohne persönliche Identifizierung.</li>
+      <li>Wir zählen Profilaufrufe und Kontaktklicks aggregiert — nur das Profil und die Aktionsart, ohne Cookies, ohne Kennungen und ohne personenbezogene Daten.</li>
     </ul>
-    <p>Wir verwenden keine Werbe-Cookies und teilen keine Daten mit Tracking-Netzwerken.</p>
+    <p><strong>Werbung (nur mit Einwilligung):</strong> Wenn Sie im Banner zustimmen, kann Google (AdSense) Werbe-Cookies setzen — siehe Abschnitt 5.1 der Datenschutzerklärung. Wenn Sie ablehnen, werden sie nicht aktiviert. Wir verkaufen keine Daten und teilen sie nicht mit anderen Tracking-Netzwerken.</p>
     <h3>3. Verwaltung</h3>
-    <p>Sie können Analyse-Cookies in dem beim ersten Besuch angezeigten Banner akzeptieren oder ablehnen und Ihre Meinung jederzeit ändern, indem Sie die Cookies der Website in Ihrem Browser löschen. Unbedingt erforderliche Cookies können nicht deaktiviert werden, ohne den Betrieb der Plattform zu beeinträchtigen.</p>
+    <p>Sie können Werbe-Cookies in dem beim ersten Besuch angezeigten Banner akzeptieren oder ablehnen und Ihre Meinung jederzeit ändern, indem Sie die Cookies der Website in Ihrem Browser löschen (das Banner erscheint dann erneut). Die Nutzungszähler verwenden weder Cookies noch Kennungen — es gibt daher nichts zu deaktivieren. Unbedingt erforderliche Cookies können nicht deaktiviert werden, ohne den Betrieb der Plattform zu beeinträchtigen.</p>
     <h3>4. Kontakt</h3>
     <p><a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a></p>
   ` },
@@ -8736,10 +8758,6 @@ function setCookieConsent(value) {
   try { localStorage.setItem(COOKIE_CONSENT_KEY, value); } catch (_) {}
   const banner = document.getElementById('cookieBanner');
   if (banner) banner.hidden = true;
-  // Re-evaluate the analytics tracker now consent state changed
-  if (typeof window.api !== 'undefined' && window.api) {
-    window.api._analyticsAllowed = value === 'accepted';
-  }
   // Update Google Consent Mode so AdSense (and any Google tag) respects the choice.
   if (typeof window.gtag === 'function') {
     const g = value === 'accepted' ? 'granted' : 'denied';
@@ -8754,15 +8772,12 @@ function showCookieBannerIfNeeded() {
   if (banner) banner.hidden = false;
 }
 window.setCookieConsent = setCookieConsent;
-// Wire up the analytics gate: api.trackEvent only fires if user accepted.
-if (typeof window.api !== 'undefined' && window.api && typeof window.api.trackEvent === 'function') {
-  const _origTrack = window.api.trackEvent.bind(window.api);
-  window.api._analyticsAllowed = getCookieConsent() === 'accepted';
-  window.api.trackEvent = function(companyId, type) {
-    if (!window.api._analyticsAllowed) return;
-    return _origTrack(companyId, type);
-  };
-}
+// Nota: api.trackEvent deixou de ser bloqueado pelo consentimento de cookies.
+// Os eventos (view/website_click/whatsapp/streetview) são contadores anónimos
+// e agregados: o servidor guarda apenas company_id + event_type + timestamp e
+// nada é escrito no dispositivo. O gate anterior silenciava TODOS os eventos
+// para visitantes indecisos ou que rejeitaram — era isso que mantinha a tabela
+// `events` a zero (o POST nunca chegava a sair do browser).
 // Show the banner once everything is rendered
 if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => setTimeout(showCookieBannerIfNeeded, 800));
 else setTimeout(showCookieBannerIfNeeded, 800);
@@ -10635,7 +10650,7 @@ window.addEventListener('resize', () => {
           resetBody:'Escolha uma nova palavra-passe (mínimo 8 caracteres).',
           resetSubmit:'Definir palavra-passe',
           cookieTitle:'🍪 Privacidade e cookies',
-          cookieBody:'Cookies necessários para iniciar sessão e idioma. Analíticos só com a sua autorização.',
+          cookieBody:'Cookies necessários para iniciar sessão e idioma. Cookies de publicidade (Google) só com a sua autorização. Sem cookies de analítica — apenas contadores anónimos.',
           cookieMore:'Saber mais',
           cookieAccept:'Aceitar tudo',
           cookieReject:'Rejeitar' },
@@ -10661,7 +10676,7 @@ window.addEventListener('resize', () => {
           resetBody:'Choose a new password (at least 8 characters).',
           resetSubmit:'Set password',
           cookieTitle:'🍪 Privacy and cookies',
-          cookieBody:'Necessary cookies for sign-in and language. Analytics only with your consent.',
+          cookieBody:'Necessary cookies for sign-in and language. Advertising cookies (Google) only with your consent. No analytics cookies — only anonymous usage counters.',
           cookieMore:'Learn more',
           cookieAccept:'Accept all',
           cookieReject:'Reject' },
@@ -10687,7 +10702,7 @@ window.addEventListener('resize', () => {
           resetBody:'Choisissez un nouveau mot de passe (minimum 8 caractères).',
           resetSubmit:'Définir le mot de passe',
           cookieTitle:'🍪 Confidentialité et cookies',
-          cookieBody:'Cookies nécessaires à la connexion et à la langue. Analytiques uniquement avec votre accord.',
+          cookieBody:'Cookies nécessaires à la connexion et à la langue. Cookies publicitaires (Google) uniquement avec votre accord. Aucun cookie analytique — seulement des compteurs anonymes.',
           cookieMore:'En savoir plus',
           cookieAccept:'Tout accepter',
           cookieReject:'Refuser' },
@@ -10713,7 +10728,7 @@ window.addEventListener('resize', () => {
           resetBody:'Elija una nueva contraseña (mínimo 8 caracteres).',
           resetSubmit:'Establecer contraseña',
           cookieTitle:'🍪 Privacidad y cookies',
-          cookieBody:'Cookies necesarias para iniciar sesión e idioma. Analíticas solo con su consentimiento.',
+          cookieBody:'Cookies necesarias para iniciar sesión e idioma. Cookies publicitarias (Google) solo con su consentimiento. Sin cookies analíticas: solo contadores anónimos.',
           cookieMore:'Más información',
           cookieAccept:'Aceptar todo',
           cookieReject:'Rechazar' },
@@ -10739,7 +10754,7 @@ window.addEventListener('resize', () => {
           resetBody:'Wählen Sie ein neues Passwort (mindestens 8 Zeichen).',
           resetSubmit:'Passwort festlegen',
           cookieTitle:'🍪 Datenschutz und Cookies',
-          cookieBody:'Notwendige Cookies für Anmeldung und Sprache. Analyse-Cookies nur mit Ihrer Zustimmung.',
+          cookieBody:'Notwendige Cookies für Anmeldung und Sprache. Werbe-Cookies (Google) nur mit Ihrer Zustimmung. Keine Analyse-Cookies — nur anonyme Nutzungszähler.',
           cookieMore:'Mehr erfahren',
           cookieAccept:'Alle akzeptieren',
           cookieReject:'Ablehnen' }
@@ -10908,6 +10923,12 @@ if (_origLoadCompanies) {
 }
 // Also try on DOMContentLoaded in case companies are already loaded
 document.addEventListener('DOMContentLoaded', () => setTimeout(_handleHashRoute, 1200));
+// Deep-link fast path: abre ?company=<id> imediatamente via GET /companies/:id,
+// sem esperar pelo catálogo (em desktop o completo demora ~30s; em móvel frio o
+// agendamento pós-load nunca corria). Com a empresa fora de memória,
+// _openCompanyFromUrl delega em suggestPickRemote, que faz o fetch unitário e
+// normaliza com dbRowToCompany como qualquer linha do catálogo.
+document.addEventListener('DOMContentLoaded', () => { try { _openCompanyFromUrl(); } catch (_) {} });
 
 // ── DEEP-LINK ROUTING FOR COMPANY DETAIL ─────────────────────────────────────
 // Reads ?company=<id> on initial load and on browser back/forward, opening
@@ -10936,6 +10957,9 @@ function _openCompanyFromUrl() {
     }
     const id = Number(raw);
     if (!Number.isFinite(id)) return;
+    // Já aberto (fast path do arranque) — o re-run agendado 650ms após cada
+    // load do catálogo não deve reabrir, re-renderizar nem re-centrar o painel.
+    if (typeof selectedId !== 'undefined' && selectedId === id) return;
     if (typeof companies === 'undefined' || !companies.find(c => c.id === id)) {
       // pode ser válida mas fora do catálogo em memória — a API decide (toast se não existir)
       try { suggestPickRemote(id); } catch (_) {}
@@ -10971,10 +10995,21 @@ window.addEventListener('popstate', () => {
 // ═══════════════════════════════════════════════════════════════════════════════
 // FEATURE: Analytics event tracking
 // ═══════════════════════════════════════════════════════════════════════════════
-// Hook 3: fire-and-forget view event whenever a detail panel opens
+// Hook 3: fire-and-forget view event whenever a detail panel opens.
+// Guarda anti-duplicação: openDetail re-executa para a MESMA empresa em
+// re-renders (mudança de idioma, popstate, refresh de sessão — p.ex.
+// openDetail(selectedId) após applyLang) — só conta uma vista quando o id
+// aberto muda; fechar o painel rearma a contagem.
+let _lastViewTrackedId = null;
 _addOpenDetailHook((id) => {
+  if (id === _lastViewTrackedId) return;
+  // O wrapper chama os hooks mesmo quando openDetail sai cedo (empresa fora
+  // de memória) — nesse caso o painel não abriu e não há vista a contar.
+  if (!companies.find(c => c.id === id)) return;
+  _lastViewTrackedId = id;
   if (typeof api !== 'undefined') api.trackEvent(id, 'view');
 });
+_addCloseDetailHook(() => { _lastViewTrackedId = null; });
 
 // Track website click
 const _origOpenWebsite = typeof openWebsite === 'function' ? openWebsite : null;
@@ -12505,11 +12540,30 @@ async function suggestPickRemote(id) {
     const d = await api.getCompany(id);
     const row = d && (d.company || d);
     if (row && row.id) {
-      companies.push(dbRowToCompany(row));
+      window._deepLinkRow = row; // sobrevive aos re-ingests (companies.length = 0)
+      const rid = Number(row.id);
+      // Revalidar depois do await: um ingest do catálogo pode ter terminado
+      // entretanto (com esta empresa dentro, ou já aberta pelo re-run pós-load).
+      if (!companies.find(c => c.id === rid)) companies.push(dbRowToCompany(row));
       showTab('search');
-      openDetail(Number(row.id));
+      if (typeof selectedId === 'undefined' || selectedId !== rid) openDetail(rid);
     }
-  } catch (_) { showToast(t('searchListEmpty')); }
+  } catch (e) {
+    if (e && e.status === 404) {
+      // Link antigo (ex.: resposta de IA) para empresa removida/não aprovada:
+      // aviso claro em vez de silêncio, e limpa o parâmetro para F5 não repetir.
+      showToast(t('toastCompanyGone'), 'error');
+      try {
+        const url = new URL(window.location.href);
+        if (url.searchParams.get('company') === String(id)) {
+          url.searchParams.delete('company');
+          history.replaceState({ company: null }, '', url.toString());
+        }
+      } catch (_) {}
+    } else {
+      showToast(t('searchListEmpty'));
+    }
+  }
 }
 window.suggestPickRemote = suggestPickRemote;
 
@@ -12653,7 +12707,7 @@ function _fmtRespMins(rm) {
 }
 window._fmtRespMins = _fmtRespMins;
 
-// Cartões sem logo mostram um recorte do mapa da zona (tiles Carto, sem chaves)
+// Cartões sem logo mostram um recorte do mapa da zona (tiles OSM, sem chaves)
 // com o emoji do setor por cima — identidade visual para todas as fichas.
 function _miniMapStyle(lat, lng, size) {
   const z = 15, n = 1 << z;

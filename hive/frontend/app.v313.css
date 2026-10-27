@@ -2894,6 +2894,13 @@
     [data-theme="dark"] body{background:var(--bg);color:var(--text)}
     [data-theme="dark"] .skeleton{background-image:linear-gradient(90deg,var(--border-light) 0,#26324a 40px,var(--border-light) 80px)}
     [data-theme="dark"]{color-scheme:dark}
+    /* Mapa em modo escuro: o OSM só tem estilo claro — inverte-se apenas o
+       tile-pane (marcadores, círculo de raio e popups ficam intactos). */
+    [data-theme="dark"] .leaflet-tile-pane{filter:invert(1) hue-rotate(180deg) brightness(.92) contrast(.9) saturate(.65)}
+    [data-theme="dark"] .leaflet-container{background:#0f172a}
+    /* Mini-mapas dos cartões: mesmo truque; o emoji leva o contra-filtro. */
+    [data-theme="dark"] .nc-mini{filter:invert(1) hue-rotate(180deg) brightness(.92) saturate(.65);background-color:#f1f5f9}
+    [data-theme="dark"] .nc-mini .nc-mini-dot{filter:invert(1) hue-rotate(180deg) drop-shadow(0 1px 2px rgba(0,0,0,.55))}
     /* Text that was hardcoded dark and sits on themed (now dark) backgrounds —
        remap to the theme text colour so it stays readable in dark mode. */
     [data-theme="dark"] .lp-section-title,
@@ -3208,8 +3215,13 @@
     /* ── MOBILE SIMPLIFICADO (estilo idealista: search-first) ─────────────── */
     /* No telemóvel a página reduz-se ao essencial: barra de topo, pesquisa,
        categorias, mais bem avaliados, números e rodapé. As faixas publicitárias
-       e a secção "Como funciona" saem — ruído num ecrã pequeno. */
-    @media (max-width:768px){
+       e a secção "Como funciona" saem — ruído num ecrã pequeno.
+       Estendido até 1024px: entre 769–1024px o nav usa o layout flex de
+       desktop e o banner completo (badge + título + 8 passos + CTA) não cabe
+       entre o logo, as tabs e a coluna direita — transborda sobre os controlos
+       do nav. De 1025–1559px a grelha nav-map-grid já o esconde (regra própria
+       mais abaixo) e só reaparece ≥1560px na variante compacta texto+CTA. */
+    @media (max-width:1024px){
       .nav-ad{display:none !important}
       .ad-banner-home{display:none !important}
       .lp-steps-section{display:none !important}

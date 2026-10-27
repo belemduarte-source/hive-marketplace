@@ -124,11 +124,17 @@ const api = {
 
   // ── Analytics ──────────────────────────────────────────────────────────────
   trackEvent(companyId, type) {
-    // Fire-and-forget — never throws
-    apiFetch('/companies/' + companyId + '/event', {
-      method: 'POST',
-      body: { type },
-    }).catch(() => {});
+    // Fire-and-forget e ANÓNIMO: credentials:'omit' garante que nem o cookie
+    // de sessão acompanha o pedido — o contador nunca é associável a alguém.
+    try {
+      fetch((window.API_BASE || '/api') + '/companies/' + companyId + '/event', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ type }),
+        credentials: 'omit',
+        keepalive: true,
+      }).catch(() => {});
+    } catch (_) {}
   },
   getAnalytics(companyId) {
     return apiFetch('/companies/' + companyId + '/analytics');
