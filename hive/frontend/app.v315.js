@@ -7206,8 +7206,17 @@ async function openDetail(id) {
   try { _sizeDetailPanel(); } catch (_) {}
   document.getElementById('detailPanel').classList.add('open');
   const _dpLat = parseFloat(c.lat), _dpLng = parseFloat(c.lng);
-  if (map && Number.isFinite(_dpLat) && Number.isFinite(_dpLng))
-    map.flyTo([_dpLat, _dpLng], 15, { animate: true, duration: 1.2 });
+  if (map && Number.isFinite(_dpLat) && Number.isFinite(_dpLng)) {
+    // Num deep link o painel abre antes de o mapa ter tamanho (contentor ainda
+    // escondido): flyTo divide pela largura 0 e o Leaflet lança "Invalid LatLng
+    // (NaN, NaN)", abortando o resto do openDetail. Sem tamanho → setView.
+    try {
+      map.invalidateSize(false);
+      const sz = map.getSize();
+      if (sz.x > 0 && sz.y > 0) map.flyTo([_dpLat, _dpLng], 15, { animate: true, duration: 1.2 });
+      else map.setView([_dpLat, _dpLng], 15, { animate: false });
+    } catch (_) {}
+  }
   setTimeout(() => { if (window.matchMedia('(min-width:769px)').matches) markerMap[c.id]?.openPopup(); }, 1300);
 
   try {
