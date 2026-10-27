@@ -4892,9 +4892,11 @@ function buildPopupHtml(c) {
 let markerClusterGroup = null;
 const _hxClusterShim = {
   _ids: new Set(),
-  clearLayers() { this._ids.clear(); _hxApplyClusterData(); },
-  addLayers(ms) { (ms || []).forEach(m => { if (m && m._cid != null) this._ids.add(m._cid); }); _hxApplyClusterData(); },
-  removeLayers(ms) { (ms || []).forEach(m => { if (m && m._cid != null) this._ids.delete(m._cid); }); _hxApplyClusterData(); },
+  // Listas vazias são no-op (o applyFilters corre a cada tecla; sem isto cada
+  // corrida sem mudanças reindexava os 44k pontos no worker do supercluster).
+  clearLayers() { if (!this._ids.size) return; this._ids.clear(); _hxApplyClusterData(); },
+  addLayers(ms) { if (!ms || !ms.length) return; ms.forEach(m => { if (m && m._cid != null) this._ids.add(m._cid); }); _hxApplyClusterData(); },
+  removeLayers(ms) { if (!ms || !ms.length) return; ms.forEach(m => { if (m && m._cid != null) this._ids.delete(m._cid); }); _hxApplyClusterData(); },
   removeLayer(m) { if (m && m._cid != null) { this._ids.delete(m._cid); _hxApplyClusterData(); } },
 };
 function ensureClusterGroup() {
@@ -4904,12 +4906,20 @@ function ensureClusterGroup() {
 }
 
 let _hxCurrentFC = { type: 'FeatureCollection', features: [] };
+let _hxApplyQueued = false;
+// Coalescido por microtask: um updateMarkers com remoções E adições faz UM
+// setData (uma reindexação no worker), não dois.
 function _hxApplyClusterData() {
-  const feats = [];
-  _hxClusterShim._ids.forEach(id => { const m = markerMap[id]; if (m && m._feature) feats.push(m._feature); });
-  _hxCurrentFC = { type: 'FeatureCollection', features: feats };
-  try { const s = map && map._ml.getSource('hx-companies'); if (s) s.setData(_hxCurrentFC); } catch (_) {}
-  _hxScheduleSync();
+  if (_hxApplyQueued) return;
+  _hxApplyQueued = true;
+  Promise.resolve().then(() => {
+    _hxApplyQueued = false;
+    const feats = [];
+    _hxClusterShim._ids.forEach(id => { const m = markerMap[id]; if (m && m._feature) feats.push(m._feature); });
+    _hxCurrentFC = { type: 'FeatureCollection', features: feats };
+    try { const s = map && map._ml.getSource('hx-companies'); if (s) s.setData(_hxCurrentFC); } catch (_) {}
+    _hxScheduleSync();
+  });
 }
 
 // Fontes/camadas custom: entram no arranque e RE-entram a cada troca de estilo
