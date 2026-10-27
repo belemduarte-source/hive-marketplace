@@ -796,7 +796,7 @@ app.get('/e/:id(\\d+)', async (req, res, next) => {
     const { rows } = await require('./db').query(
       `SELECT id, name, city, sector, rating, reviews, description,
               (logo IS NOT NULL AND logo LIKE 'data:image%') AS has_logo,
-              CASE WHEN logo IS NOT NULL THEN left(md5(logo), 10) END AS logo_v
+              CASE WHEN logo IS NOT NULL THEN extract(epoch from updated_at)::bigint::text END AS logo_v
          FROM companies WHERE id = $1 AND status = 'approved'`, [req.params.id]);
     const c = rows[0];
     const dest = `/?company=${encodeURIComponent(req.params.id)}`;
@@ -917,7 +917,7 @@ app.get('/c/:idslug', async (req, res, next) => {
       `SELECT id, name, sector, city, zone, address, postal_code, country,
               lat, lng, phone, email, website, rating, reviews, description,
               (logo IS NOT NULL AND logo LIKE 'data:image%') AS has_logo,
-              CASE WHEN logo IS NOT NULL THEN left(md5(logo), 10) END AS logo_v
+              CASE WHEN logo IS NOT NULL THEN extract(epoch from updated_at)::bigint::text END AS logo_v
          FROM companies WHERE id = $1 AND status = 'approved'`, [id]);
     const c = rows[0];
     if (!c) return res.status(404).set('Cache-Control', 'public, max-age=0, s-maxage=600').type('html').send('<!doctype html><html lang="pt"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Empresa não disponível | Hivex</title></head><body style="font-family:system-ui;padding:40px;text-align:center;background:#0f172a;color:#e2e8f0"><h1>Esta empresa já não está disponível na Hivex</h1><p><a style="color:#93c5fd" href="/">Encontrar outras empresas →</a></p></body></html>');

@@ -3715,11 +3715,25 @@ async function loadCompaniesFromDB(opts) {
       data = [];
       let prevFirstId = null;
       let fim = false;
+      let incompleto = false;
+      // Página que FALHA (500/rede) não é o fim do catálogo: 3 tentativas com
+      // espera crescente; se persistir, a carga fica incompleta — não se marca
+      // o catálogo como completo nem se grava um snapshot parcial (um 500 a
+      // meio deixava 20k empresas "completas" na cache local durante 24h).
+      const pedirPagina = async (offset) => {
+        for (let tent = 0; ; tent++) {
+          try { return await api.getCompanies({ limit: 1000, offset }); }
+          catch (_) {
+            if (tent >= 2) return { _falhou: true };
+            await new Promise(r => setTimeout(r, 700 * (tent + 1)));
+          }
+        }
+      };
       // Teto de 30 rondas = 120k empresas (catálogo já passa das 54k).
       for (let ronda = 0; !fim && ronda < 30; ronda++) {
-        const lote = await Promise.all([0, 1, 2, 3].map(k =>
-          api.getCompanies({ limit: 1000, offset: (ronda * 4 + k) * 1000 }).catch(() => null)));
+        const lote = await Promise.all([0, 1, 2, 3].map(k => pedirPagina((ronda * 4 + k) * 1000)));
         for (const page of lote) {
+          if (page && page._falhou) { incompleto = true; fim = true; break; }
           const rows = Array.isArray(page) ? page : (page && Array.isArray(page.companies)) ? page.companies : null;
           if (!rows || !rows.length) { fim = true; break; }
           const firstId = rows[0] && rows[0].id;
@@ -3728,6 +3742,15 @@ async function loadCompaniesFromDB(opts) {
           data = data.concat(rows);
           if (rows.length !== 1000) { fim = true; break; } // página curta = fim
         }
+      }
+      if (incompleto) {
+        // Carga de fundo incompleta: fica o que está no ecrã (scoped/snapshot)
+        // e tenta-se de novo mais tarde, no máximo 3 vezes por sessão.
+        window._fullRetries = (window._fullRetries || 0) + 1;
+        if (window._fullRetries <= 3) {
+          setTimeout(() => { try { loadCompaniesFromDB({ full: true }); } catch (_) {} }, 30000 * window._fullRetries);
+        }
+        throw new Error('catálogo incompleto (página falhou após 3 tentativas)');
       }
     }
     if (!scoped) { _fullCatalogueLoaded = true; _tNaoPTherdado = Date.now(); } // completo = não-PT acabado de buscar

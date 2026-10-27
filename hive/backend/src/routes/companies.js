@@ -89,8 +89,8 @@ const LIST_COLS = `
   email, phone, website, facebook, instagram, linkedin, tags,
   lat, lng, rating, reviews, top_rated, verified, is_new, featured,
   emoji, color, pin_type,
-  CASE WHEN logo IS NOT NULL AND logo <> ''
-       THEN '/api/companies/' || id || '/logo?v=' || left(md5(logo), 10)
+  CASE WHEN logo IS NOT NULL
+       THEN '/api/companies/' || id || '/logo?v=' || extract(epoch from updated_at)::bigint
        ELSE NULL END AS logo,
   status, created_by, created_at
 `.trim();
