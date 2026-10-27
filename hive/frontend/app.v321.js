@@ -4715,6 +4715,14 @@ try {
   // 'style.load' dispara no arranque E em cada troca de tema (setStyle limpa
   // fontes/camadas custom — é aqui que tudo o que é nosso volta a entrar).
   _ml.on('style.load', _hxEnsureSources);
+  // No arranque em produção o estilo pode demorar (os ~48 fetches do catálogo
+  // disputam a rede): um setData feito com o estilo ainda a carregar perde-se
+  // e os pins nunca apareciam. Quando o mapa fica mesmo pronto, reaplica o
+  // conjunto atual — barato (uma reindexação) e idempotente.
+  _ml.once('load', () => {
+    try { const s = _ml.getSource('hx-companies'); if (s) s.setData(_hxCurrentFC); } catch (_) {}
+    _hxScheduleSync();
+  });
   _ml.on('moveend', _hxScheduleSync);
   _ml.on('zoomend', _hxScheduleSync);
   _ml.on('sourcedata', (e) => { if (!e || e.sourceId === 'hx-companies') _hxScheduleSync(); });
