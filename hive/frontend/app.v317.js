@@ -7219,12 +7219,16 @@ async function openDetail(id) {
     try {
       map.invalidateSize(false);
       const sz = map.getSize();
-      if (sz.x > 0 && sz.y > 0) map.flyTo([_dpLat, _dpLng], 15, { animate: true, duration: 1.2 });
-      else {
-        map.setView([_dpLat, _dpLng], 15, { animate: false });
-        // A 1.ª exibição do mapa restaura a última vista guardada — o
-        // enquadramento desta empresa tem de vencer (ver _mapEverShown).
+      if (!window._mapEverShown) {
+        // A 1.ª exibição do mapa (rAF do showTab) ainda vai restaurar a última
+        // vista guardada e interromperia o flyTo — o enquadramento desta
+        // empresa fica pendente e é ela que o aplica (ver _mapEverShown).
         window._vistaPendente = [_dpLat, _dpLng];
+        if (sz.x > 0 && sz.y > 0) map.setView([_dpLat, _dpLng], 15, { animate: false });
+      } else if (sz.x > 0 && sz.y > 0) {
+        map.flyTo([_dpLat, _dpLng], 15, { animate: true, duration: 1.2 });
+      } else {
+        map.setView([_dpLat, _dpLng], 15, { animate: false });
       }
     } catch (_) {}
   }
