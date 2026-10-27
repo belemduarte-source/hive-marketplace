@@ -4505,13 +4505,12 @@ try {
     zoomAnimation: true,
     markerZoomAnimation: false,   // marker positions tween over zoom — pricey
   });
-  // CartoDB Voyager: light land, soft-blue sea — better contrast than light_all
-  L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+  // OpenStreetMap standard: CARTO encerrou os basemaps sem chave (telas
+  // "API KEY REQUIRED"); OSM é keyless. Sem {s} (descontinuado) nem {r}
+  // (OSM não serve @2x).
+  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
     maxZoom: 19,
-    // Only request @2x tiles when the device actually has a high-DPR screen
-    // and isn't a low-power mobile (saves up to ~3x bandwidth on cellular).
-    detectRetina: window.devicePixelRatio > 1.5 && (navigator.connection?.effectiveType !== '3g'),
     // Keep low-zoom tiles cached so panning back doesn't refetch
     keepBuffer: 4,
     updateWhenIdle: true,    // skip tile fetches mid-pan, only on settle
@@ -12667,10 +12666,8 @@ function _miniMapStyle(lat, lng, size) {
   let py = Math.round((yt - y) * 256 - size / 2);
   px = Math.max(0, Math.min(256 - size, px));
   py = Math.max(0, Math.min(256 - size, py));
-  const claro = document.documentElement.getAttribute('data-theme') === 'light';
-  const estilo = claro ? 'rastertiles/voyager' : 'dark_all';
-  const sub = 'abcd'[(x + y) % 4];
-  return "background-image:url('https://" + sub + ".basemaps.cartocdn.com/" + estilo + "/" + z + "/" + x + "/" + y + ".png');background-position:-" + px + "px -" + py + "px;background-repeat:no-repeat";
+  // OSM não tem estilo escuro keyless: o mini-mapa fica claro nos dois temas.
+  return "background-image:url('https://tile.openstreetmap.org/" + z + "/" + x + "/" + y + ".png');background-position:-" + px + "px -" + py + "px;background-repeat:no-repeat";
 }
 function _miniLogoHtml(c, cls) {
   const lat = Number(c && c.lat), lng = Number(c && c.lng);
