@@ -4548,11 +4548,27 @@ class HxMap {
   getSize() { const el = this._ml.getContainer(); return { x: el.clientWidth, y: el.clientHeight }; }
   getContainer() { return this._ml.getContainer(); }
   invalidateSize() {
-    // resize() é no-op se as dimensões não mudaram, e frames pintados com o
-    // contentor display:none são descartados — ao voltar a mostrar o mapa é
-    // preciso FORÇAR um frame, senão o canvas fica em branco (bug do 1.º load).
-    try { this._ml.resize(); this._ml.triggerRepaint(); } catch (_) {}
+    try { this._ml.resize(); } catch (_) {}
+    this._kickUntilReady();
     return this;
+  }
+  // O render loop do MapLibre estaciona enquanto o contentor esteve
+  // display:none (tiles nem chegam a ser pedidos — mapa em branco com pins a
+  // "flutuar", visto em produção no 1.º load). Repaints periódicos baratos
+  // destravam-no sempre; param quando loaded() ou ao fim de ~20s, e cada
+  // invalidateSize renova o orçamento.
+  _kickUntilReady() {
+    if (this._kickIv) { this._kickN = 0; return; }
+    this._kickN = 0;
+    this._kickIv = setInterval(() => {
+      try {
+        if (++this._kickN > 50 || this._ml.loaded()) {
+          clearInterval(this._kickIv); this._kickIv = null; return;
+        }
+        this._ml.triggerRepaint();
+      } catch (_) { clearInterval(this._kickIv); this._kickIv = null; }
+    }, 400);
+    try { this._ml.triggerRepaint(); } catch (_) {}
   }
   setView(p, zoom, opts) {
     const ll = _toLL(p), o = { center: [ll.lng, ll.lat], zoom: this._z(zoom) };
@@ -4722,6 +4738,9 @@ try {
   // Nunca deixar um tile/glyph falhado rebentar como erro não tratado na consola.
   _ml.on('error', (ev) => { try { console.warn('map:', ev && ev.error && ev.error.message); } catch (_) {} });
   map = new HxMap(_ml);
+  // Arranque com o mapa ainda escondido: começa já a destravar/pré-carregar
+  // tiles para o separador do mapa abrir pintado.
+  map._kickUntilReady();
   // 'style.load' dispara no arranque E em cada troca de tema (setStyle limpa
   // fontes/camadas custom — é aqui que tudo o que é nosso volta a entrar).
   _ml.on('style.load', _hxEnsureSources);
