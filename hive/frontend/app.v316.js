@@ -2144,8 +2144,14 @@ function showTab(name) {
           // whether to zoom into their location via the locate button. We still
           // request their position so the "you are here" marker + 50 km radius
           // circle are shown — but without changing the zoom.
-          const _sv = (typeof _savedMapView === 'function') ? _savedMapView() : null;
-          if (_sv) {
+          const _vp = window._vistaPendente || null;
+          window._vistaPendente = null;
+          const _sv = _vp ? null : ((typeof _savedMapView === 'function') ? _savedMapView() : null);
+          if (_vp) {
+            // Deep link aberto antes de o mapa ter tamanho: a empresa manda
+            map.setView(_vp, 15, { animate: false });
+            _visitorFocusDone = true;
+          } else if (_sv) {
             // Enquadramento da última visita vence o padrão e o foco por país
             map.setView([_sv.lat, _sv.lng], _sv.z);
             currentMapCenter = [_sv.lat, _sv.lng];
@@ -7214,7 +7220,12 @@ async function openDetail(id) {
       map.invalidateSize(false);
       const sz = map.getSize();
       if (sz.x > 0 && sz.y > 0) map.flyTo([_dpLat, _dpLng], 15, { animate: true, duration: 1.2 });
-      else map.setView([_dpLat, _dpLng], 15, { animate: false });
+      else {
+        map.setView([_dpLat, _dpLng], 15, { animate: false });
+        // A 1.ª exibição do mapa restaura a última vista guardada — o
+        // enquadramento desta empresa tem de vencer (ver _mapEverShown).
+        window._vistaPendente = [_dpLat, _dpLng];
+      }
     } catch (_) {}
   }
   setTimeout(() => { if (window.matchMedia('(min-width:769px)').matches) markerMap[c.id]?.openPopup(); }, 1300);
