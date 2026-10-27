@@ -1,16 +1,27 @@
-const CACHE_NAME = 'hive-v337';
+const CACHE_NAME = 'hive-v338';
 const HTML_FALLBACK = '/index.html';
 const ASSETS = [
   '/manifest.json',
   '/api.js'
 ];
 
+// Na janela de propagação de um deploy, o edge pode responder a um asset em
+// falta com a shell HTML (rewrite SPA) — e esse HTML, guardado sob o caminho
+// do asset, envenena caches durante um ano (headers immutable por caminho).
+// Nunca aceitar text/html para um pedido que não é HTML.
+const htmlPorEngano = (res) => ((res.headers.get('content-type') || '').includes('text/html'));
+
 // Install: cache static assets and a stale-but-loadable HTML fallback so a
 // transient network blip never produces the browser's "offline" page.
 self.addEventListener('install', e => {
   e.waitUntil((async () => {
     const cache = await caches.open(CACHE_NAME);
-    await cache.addAll(ASSETS);
+    for (const a of ASSETS) {
+      try {
+        const r = await fetch(a, { cache: 'no-store' });
+        if (r.ok && !htmlPorEngano(r)) await cache.put(a, r.clone());
+      } catch (_) {}
+    }
     try {
       const html = await fetch(HTML_FALLBACK, { cache: 'no-store' });
       if (html.ok) await cache.put(HTML_FALLBACK, html.clone());
@@ -19,11 +30,21 @@ self.addEventListener('install', e => {
   self.skipWaiting();
 });
 
-// Activate: clean old caches and take control of every open page immediately.
+// Activate: clean old caches, purge poisoned entries (HTML guardado sob um
+// caminho de asset por versões antigas deste SW) and take control immediately.
 self.addEventListener('activate', e => {
   e.waitUntil((async () => {
     const keys = await caches.keys();
     await Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)));
+    try {
+      const cache = await caches.open(CACHE_NAME);
+      for (const req of await cache.keys()) {
+        const p = new URL(req.url).pathname;
+        if (p === '/' || p.endsWith('.html')) continue;
+        const res = await cache.match(req);
+        if (res && htmlPorEngano(res)) await cache.delete(req);
+      }
+    } catch (_) {}
     await self.clients.claim();
   })());
 });
@@ -69,17 +90,23 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  e.respondWith(
-    fetch(e.request)
-      .then(response => {
-        if (response.ok) {
-          const clone = response.clone();
-          caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
-        }
-        return response;
-      })
-      .catch(() => caches.match(e.request))
-  );
+  e.respondWith((async () => {
+    try {
+      let response = await fetch(e.request);
+      // HTML num caminho de asset = resposta envenenada (janela de deploy ou
+      // cache HTTP já envenenada) — repetir furando a cache HTTP do browser.
+      if (htmlPorEngano(response)) {
+        response = await fetch(e.request.url, { cache: 'reload' });
+      }
+      if (response.ok && !htmlPorEngano(response)) {
+        const clone = response.clone();
+        caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone)).catch(() => {});
+      }
+      return response;
+    } catch (_) {
+      return caches.match(e.request);
+    }
+  })());
 });
 
 // ── Web Push ──────────────────────────────────────────────────────────────────
