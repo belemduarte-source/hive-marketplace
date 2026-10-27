@@ -450,7 +450,12 @@
     .slc-tags{display:flex;flex-wrap:wrap;gap:4px}
     .slc-tag{font-size:10px;background:var(--orange-light);color:var(--text);padding:2px 8px;border-radius:10px;font-weight:600}
     .map-panel{flex:1;position:relative;overflow:hidden;min-height:340px} /* short viewports (landscape phones): keep the map usable and let the page scroll */
-    #map{width:100%;height:100%}
+    /* Contra-zoom do fluid zoom (body{zoom:var(--z)}): com zoom herdado, o
+       canvas WebGL renderiza a resolução errada (desfocado) e a âncora do
+       wheel-zoom/duplo-clique desvia ~(z-1)·distância — "impossível aproximar
+       numa empresa". A 1/var(--z) o mapa fica 1:1 nativo: nítido e exato em
+       qualquer portátil. (--z=1 em mobile e em browsers sem CSS zoom.) */
+    #map{width:100%;height:100%;zoom:calc(1/var(--z))}
     /* ── Nearby companies panel — right column, mirrors the filter sidebar ── */
     .nearby-panel{width:502px;min-width:478px;background:var(--surface);border-left:1px solid var(--border);border-top:3px solid var(--primary);display:flex;flex-direction:column;flex-shrink:0;overflow:hidden;box-shadow:-2px 0 8px rgba(0,0,0,.04)}
     .nearby-panel-header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:20px 24px;border-bottom:1px solid var(--border);flex-shrink:0}
@@ -916,8 +921,10 @@
     .maplibregl-marker{cursor:pointer}
     /* Balões de cluster: hexágono favo-de-mel da marca, 3 tamanhos como o
        markercluster (dezenas / centenas / milhares). */
-    .hx-cluster{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-family:inherit;cursor:pointer;clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);background:linear-gradient(180deg,#f59e0b,#d97706);text-shadow:0 1px 2px rgba(120,53,15,.45);transition:transform .12s ease}
-    .hx-cluster:hover{transform:scale(1.08)}
+    /* Sem transition/transform aqui: o MapLibre posiciona o marker por
+       transform inline a cada frame — uma transition fá-los-ia "flutuar". */
+    .hx-cluster{display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-family:inherit;cursor:pointer;clip-path:polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%);background:linear-gradient(180deg,#f59e0b,#d97706);text-shadow:0 1px 2px rgba(120,53,15,.45)}
+    .hx-cluster:hover{filter:brightness(1.12)}
     .hx-cluster-sm{width:34px;height:36px;font-size:12px}
     .hx-cluster-md{width:43px;height:46px;font-size:13px}
     .hx-cluster-lg{width:52px;height:56px;font-size:14px}

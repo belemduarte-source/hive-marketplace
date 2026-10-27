@@ -4547,7 +4547,13 @@ class HxMap {
   getCenter() { const c = this._ml.getCenter(); return { lat: c.lat, lng: c.lng }; }
   getSize() { const el = this._ml.getContainer(); return { x: el.clientWidth, y: el.clientHeight }; }
   getContainer() { return this._ml.getContainer(); }
-  invalidateSize() { try { this._ml.resize(); } catch (_) {} return this; }
+  invalidateSize() {
+    // resize() é no-op se as dimensões não mudaram, e frames pintados com o
+    // contentor display:none são descartados — ao voltar a mostrar o mapa é
+    // preciso FORÇAR um frame, senão o canvas fica em branco (bug do 1.º load).
+    try { this._ml.resize(); this._ml.triggerRepaint(); } catch (_) {}
+    return this;
+  }
   setView(p, zoom, opts) {
     const ll = _toLL(p), o = { center: [ll.lng, ll.lat], zoom: this._z(zoom) };
     if (opts && opts.animate) this._ml.easeTo({ ...o, duration: 800 }); else this._ml.jumpTo(o);
@@ -4600,9 +4606,13 @@ class HxMarker {
   }
   getLatLng() { return { lat: this._ll[1], lng: this._ll[0] }; }
   _buildEl() {
-    const host = document.createElement('div');
-    host.innerHTML = this._opts.htmlFn ? this._opts.htmlFn() : (this._opts.html || '');
-    const el = host.firstElementChild || host;
+    // O conteúdo fica num WRAPPER: o MapLibre reposiciona o marker escrevendo
+    // transform inline no elemento raiz a cada frame — se a raiz fosse o
+    // próprio .hx-pin, pisava o scale por zoom (--pinScale) e a transition de
+    // transform do CSS fazia os pins "flutuar" atrás do mapa ao arrastar.
+    const el = document.createElement('div');
+    el.className = 'hx-mk';
+    el.innerHTML = this._opts.htmlFn ? this._opts.htmlFn() : (this._opts.html || '');
     if (this._opts.zIndex) el.style.zIndex = String(this._opts.zIndex);
     el.addEventListener('click', (e) => {
       e.stopPropagation();
@@ -4715,14 +4725,9 @@ try {
   // 'style.load' dispara no arranque E em cada troca de tema (setStyle limpa
   // fontes/camadas custom — é aqui que tudo o que é nosso volta a entrar).
   _ml.on('style.load', _hxEnsureSources);
-  // No arranque em produção o estilo pode demorar (os ~48 fetches do catálogo
-  // disputam a rede): um setData feito com o estilo ainda a carregar perde-se
-  // e os pins nunca apareciam. Quando o mapa fica mesmo pronto, reaplica o
-  // conjunto atual — barato (uma reindexação) e idempotente.
-  _ml.once('load', () => {
-    try { const s = _ml.getSource('hx-companies'); if (s) s.setData(_hxCurrentFC); } catch (_) {}
-    _hxScheduleSync();
-  });
+  // Rede de segurança do arranque: quando o mapa fica mesmo pronto, uma
+  // sincronização dos markers (idempotente e barata).
+  _ml.once('load', _hxScheduleSync);
   _ml.on('moveend', _hxScheduleSync);
   _ml.on('zoomend', _hxScheduleSync);
   _ml.on('sourcedata', (e) => { if (!e || e.sourceId === 'hx-companies') _hxScheduleSync(); });
