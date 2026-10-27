@@ -180,7 +180,11 @@
    Sets --z so the CSS vw/vh compensations (calc(.../var(--z))) stay correct.
    Below 1024px the mobile/tablet layout keeps its native sizing. */
 (function () {
-  var DESIGN = 1440, MAXZ = 1.12;
+  // MAXZ 1.0: nunca ampliar acima do 1:1 — em ecrãs largos (1920 CSS px a
+  // 100%, portáteis 15.6" comuns) o x1.12 fazia a página abrir "demasiado
+  // grande" (queixa do dono, 2026-10-27); a 1:1 vê-se mais conteúdo e o
+  // tamanho bate certo com as outras apps do utilizador.
+  var DESIGN = 1440, MAXZ = 1;
   // Browsers sem CSS zoom (Firefox <126): aplicar as compensações /var(--z)
   // sem o zoom respetivo inchava o layout — nesses, renderiza 1:1 nativo.
   var ZOOM_OK = (function () {
