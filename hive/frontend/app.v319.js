@@ -2133,7 +2133,7 @@ function showTab(name) {
       renderMobileSearchPanel();
     }
 
-    // Tell Leaflet to recalculate the container size and reload any grey tiles.
+    // Tell the map to recalculate the container size (canvas resize no MapLibre).
     // Must run after the browser has painted the newly-visible container.
     requestAnimationFrame(() => {
       if (map) {
@@ -4520,46 +4520,215 @@ let activeSectors = new Set();
 let _keywordFilter = '';  // separate keyword filter (NOT location text)
 let activeTag     = null;
 
-// ── MAP INIT ──────────────────────────────────────────────────────────────────
+// ── MAP INIT (MapLibre GL + tiles vetoriais OpenFreeMap, sem chave) ───────────
+// Migração Leaflet → MapLibre: zoom suave, texto nítido em qualquer DPI, estilo
+// escuro verdadeiro e 3D (câmara inclina + edifícios extrudem a zoom alto).
+// O resto da app continua a falar "Leaflet" (setView/flyTo/getZoom/markers…):
+// um adaptador fino expõe exatamente essa superfície sobre o MapLibre, para
+// nenhum dos ~40 call sites espalhados pelo ficheiro mudar de semântica.
 const PORTUGAL_CENTER = [39.5, -8.0];
 let map = null;
 let radiusCircle = null;
 
+// Zoom "Leaflet" (tiles 256px) ↔ MapLibre (512px): o mesmo enquadramento fica a
+// -1 nível. O adaptador expõe SEMPRE o zoom Leaflet — vistas guardadas em
+// localStorage, deep links e todas as constantes do ficheiro continuam válidas.
+const _Z_OFF = 1;
+const HX_STYLE_LIGHT = 'https://tiles.openfreemap.org/styles/liberty';
+const HX_STYLE_DARK  = 'https://tiles.openfreemap.org/styles/dark';
+const _hxDark = () => document.documentElement.getAttribute('data-theme') === 'dark';
+// Call sites passam [lat,lng] (arrays) e esperam {lat,lng} dos getters.
+const _toLL = (p) => Array.isArray(p) ? { lat: +p[0], lng: +p[1] } : { lat: +p.lat, lng: +p.lng };
+
+class HxMap {
+  constructor(ml) { this._ml = ml; }
+  _z(l) { return Math.max(0, (l != null ? l : this.getZoom()) - _Z_OFF); }
+  getZoom() { return this._ml.getZoom() + _Z_OFF; }
+  getCenter() { const c = this._ml.getCenter(); return { lat: c.lat, lng: c.lng }; }
+  getSize() { const el = this._ml.getContainer(); return { x: el.clientWidth, y: el.clientHeight }; }
+  getContainer() { return this._ml.getContainer(); }
+  invalidateSize() { try { this._ml.resize(); } catch (_) {} return this; }
+  setView(p, zoom, opts) {
+    const ll = _toLL(p), o = { center: [ll.lng, ll.lat], zoom: this._z(zoom) };
+    if (opts && opts.animate) this._ml.easeTo({ ...o, duration: 800 }); else this._ml.jumpTo(o);
+    return this;
+  }
+  flyTo(p, zoom, opts) {
+    const ll = _toLL(p);
+    this._ml.flyTo({ center: [ll.lng, ll.lat], zoom: this._z(zoom),
+      duration: ((opts && opts.duration) || 1.2) * 1000, essential: true });
+    return this;
+  }
+  panTo(p) { const ll = _toLL(p); this._ml.panTo([ll.lng, ll.lat], { duration: 600 }); return this; }
+  fitBounds(latlngs, opts) {
+    let s = 90, w = 180, n = -90, e = -180;
+    (latlngs || []).forEach(q => { const ll = _toLL(q);
+      if (ll.lat < s) s = ll.lat; if (ll.lat > n) n = ll.lat;
+      if (ll.lng < w) w = ll.lng; if (ll.lng > e) e = ll.lng; });
+    if (s > n) return this;
+    const pad = (opts && opts.padding) ? (Array.isArray(opts.padding) ? opts.padding[0] : opts.padding) : 40;
+    this._ml.fitBounds([[w, s], [e, n]], { padding: pad,
+      maxZoom: (opts && opts.maxZoom != null) ? this._z(opts.maxZoom) : undefined, duration: 800 });
+    return this;
+  }
+  on(evts, fn) { String(evts).split(/\s+/).forEach(ev => this._ml.on(ev, fn)); return this; }
+  once(evts, fn) { String(evts).split(/\s+/).forEach(ev => this._ml.once(ev, fn)); return this; }
+  addLayer(x) { if (x && x.addTo) x.addTo(this); return this; }
+  removeLayer(x) { if (x && x.remove) x.remove(); return this; }
+  hasLayer(x) { return !!(x && x._onMap); }
+}
+
+// Marker com elemento HTML (pins hexagonais com logo/monograma, "está aqui"…).
+// Leve: o DOM só é criado quando o pin fica visível (_show), nunca para os 44k.
+class HxMarker {
+  constructor(latlng, opts) {
+    const ll = _toLL(latlng);
+    this._ll = [ll.lng, ll.lat];
+    this._opts = opts || {};
+    this._m = null; this._onMap = false; this._offset = [0, 0];
+    this._clickFn = null; this._popupFn = null; this._popup = null;
+  }
+  on(ev, fn) { if (ev === 'click') this._clickFn = fn; return this; }
+  bindPopup(fn) { this._popupFn = (typeof fn === 'function') ? fn : () => fn; return this; }
+  addTo() { this._onMap = true; this._show(); return this; }
+  remove() { this._onMap = false; this._hide(); return this; }
+  setLatLng(p) {
+    const ll = _toLL(p); this._ll = [ll.lng, ll.lat];
+    if (this._m) this._m.setLngLat(this._ll);
+    if (this._popup) this._popup.setLngLat(this._ll);
+    return this;
+  }
+  getLatLng() { return { lat: this._ll[1], lng: this._ll[0] }; }
+  _buildEl() {
+    const host = document.createElement('div');
+    host.innerHTML = this._opts.htmlFn ? this._opts.htmlFn() : (this._opts.html || '');
+    const el = host.firstElementChild || host;
+    if (this._opts.zIndex) el.style.zIndex = String(this._opts.zIndex);
+    el.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (this._clickFn) this._clickFn();
+      // Popup só em desktop (no móvel a ficha/folha de resultados é que manda);
+      // decidido AO CLIQUE, não na criação — o viewport pode mudar de classe.
+      if (this._popupFn && (this._opts.popupAlways || window.matchMedia('(min-width:769px)').matches)) this.openPopup();
+    });
+    return el;
+  }
+  _show() {
+    if (this._m || !map || typeof maplibregl === 'undefined') return;
+    try {
+      this._m = new maplibregl.Marker({ element: this._buildEl(),
+        anchor: this._opts.anchor || 'bottom', offset: this._offset })
+        .setLngLat(this._ll).addTo(map._ml);
+    } catch (_) {}
+  }
+  _hide() { if (this._m) { try { this._m.remove(); } catch (_) {} this._m = null; } this.closePopup(); }
+  _setOffset(off) {
+    this._offset = off;
+    if (this._m) { try { this._m.setOffset(off); } catch (_) {} }
+  }
+  openPopup() {
+    if (!this._popupFn || !map || typeof maplibregl === 'undefined') return this;
+    try {
+      // Paridade Leaflet: um único popup aberto de cada vez no mapa inteiro.
+      if (HxMarker._active && HxMarker._active !== this) HxMarker._active.closePopup();
+      HxMarker._active = this;
+      this.closePopup();
+      this._popup = new maplibregl.Popup({
+        offset: { bottom: [0, -50], top: [0, 12], left: [16, -22], right: [-16, -22] },
+        maxWidth: '400px', className: 'hx-popup',
+      }).setLngLat(this._ll).setHTML(this._popupFn()).addTo(map._ml);
+    } catch (_) {}
+    return this;
+  }
+  closePopup() { try { if (this._popup) { this._popup.remove(); this._popup = null; } } catch (_) {} return this; }
+}
+
+// Círculo do raio de pesquisa: polígono GeoJSON (o MapLibre não tem L.circle).
+class HxCircle {
+  constructor(latlng, opts) {
+    const ll = _toLL(latlng);
+    this._c = [ll.lng, ll.lat];
+    this._r = (opts && opts.radius) || 50000;
+    this._fillOp = 0.08; this._lineOp = 1;
+  }
+  addTo() { return this; }
+  _poly() {
+    const [lng, lat] = this._c, latR = lat * Math.PI / 180, pts = [];
+    for (let i = 0; i <= 72; i++) {
+      const a = i * 2 * Math.PI / 72;
+      pts.push([lng + (this._r * Math.cos(a)) / (111320 * Math.max(0.05, Math.cos(latR))),
+                lat + (this._r * Math.sin(a)) / 110574]);
+    }
+    return { type: 'Feature', geometry: { type: 'Polygon', coordinates: [pts] } };
+  }
+  _readd() {
+    if (!map) return;
+    const ml = map._ml;
+    try {
+      if (!ml.getSource('hx-radius')) ml.addSource('hx-radius', { type: 'geojson', data: this._poly() });
+      if (!ml.getLayer('hx-radius-fill')) ml.addLayer({ id: 'hx-radius-fill', type: 'fill', source: 'hx-radius',
+        paint: { 'fill-color': '#64748b', 'fill-opacity': this._fillOp } });
+      if (!ml.getLayer('hx-radius-line')) ml.addLayer({ id: 'hx-radius-line', type: 'line', source: 'hx-radius',
+        paint: { 'line-color': '#64748b', 'line-width': 2, 'line-dasharray': [2.5, 2], 'line-opacity': this._lineOp } });
+    } catch (_) {}
+  }
+  _update() { try { const s = map && map._ml.getSource('hx-radius'); if (s) s.setData(this._poly()); } catch (_) {} }
+  setLatLng(p) { const ll = _toLL(p); this._c = [ll.lng, ll.lat]; this._update(); return this; }
+  getLatLng() { return { lat: this._c[1], lng: this._c[0] }; }
+  setRadius(m) { this._r = m; this._update(); return this; }
+  setStyle(st) {
+    if (!st) return this;
+    if (st.fillOpacity != null) this._fillOp = st.fillOpacity;
+    if (st.opacity != null) this._lineOp = st.opacity;
+    try {
+      const ml = map._ml;
+      if (ml.getLayer('hx-radius-fill')) ml.setPaintProperty('hx-radius-fill', 'fill-opacity', this._fillOp);
+      if (ml.getLayer('hx-radius-line')) ml.setPaintProperty('hx-radius-line', 'line-opacity', this._lineOp);
+    } catch (_) {}
+    return this;
+  }
+}
+
 try {
-  if (typeof L === 'undefined') throw new Error('Leaflet not loaded');
+  if (typeof maplibregl === 'undefined') throw new Error('MapLibre not loaded');
+  // Texto árabe/hebraico nos rótulos mundiais precisa de shaping RTL (os tiles
+  // raster traziam-no pré-renderizado). Lazy: só carrega se aparecer texto RTL.
+  try {
+    maplibregl.setRTLTextPlugin('https://cdn.jsdelivr.net/npm/@mapbox/mapbox-gl-rtl-text@0.2.3/mapbox-gl-rtl-text.min.js', true);
+  } catch (_) {}
   const _tabSearchEl = document.getElementById('tab-search');
   if (_tabSearchEl) { _tabSearchEl.style.display = 'flex'; _tabSearchEl.style.visibility = 'hidden'; }
-  // preferCanvas renders vector overlays (the radius circle, popups) on a
-  // single Canvas instead of one SVG node each — lower memory + smoother on
-  // mobile when the user pans. fadeAnimation off cuts a paint per zoom step.
-  map = L.map('map', {
-    center: PORTUGAL_CENTER,
-    zoom: 7,
-    minZoom: 2,                   // vista mundial; não deixa afastar mais que isso
-    zoomControl: true,
-    preferCanvas: true,
-    fadeAnimation: false,
-    zoomAnimation: true,
-    markerZoomAnimation: false,   // marker positions tween over zoom — pricey
+  const _ml = new maplibregl.Map({
+    container: 'map',
+    style: _hxDark() ? HX_STYLE_DARK : HX_STYLE_LIGHT,
+    center: [PORTUGAL_CENTER[1], PORTUGAL_CENTER[0]],
+    zoom: 7 - _Z_OFF,
+    minZoom: 2 - _Z_OFF,          // vista mundial; não deixa afastar mais que isso
+    maxZoom: 19 - _Z_OFF,
+    maxPitch: 60,
+    attributionControl: { compact: true },
   });
-  // OpenStreetMap standard: CARTO encerrou os basemaps sem chave (telas
-  // "API KEY REQUIRED"); OSM é keyless. Sem {s} (descontinuado) nem {r}
-  // (OSM não serve @2x).
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
-    maxZoom: 19,
-    // Keep low-zoom tiles cached so panning back doesn't refetch
-    keepBuffer: 4,
-    updateWhenIdle: true,    // skip tile fetches mid-pan, only on settle
-    updateWhenZooming: false,
-  }).addTo(map);
+  _ml.addControl(new maplibregl.NavigationControl({ showCompass: false }), 'top-left');
+  // Nunca deixar um tile/glyph falhado rebentar como erro não tratado na consola.
+  _ml.on('error', (ev) => { try { console.warn('map:', ev && ev.error && ev.error.message); } catch (_) {} });
+  map = new HxMap(_ml);
+  // 'style.load' dispara no arranque E em cada troca de tema (setStyle limpa
+  // fontes/camadas custom — é aqui que tudo o que é nosso volta a entrar).
+  _ml.on('style.load', _hxEnsureSources);
+  _ml.on('moveend', _hxScheduleSync);
+  _ml.on('zoomend', _hxScheduleSync);
+  _ml.on('sourcedata', (e) => { if (!e || e.sourceId === 'hx-companies') _hxScheduleSync(); });
+  // 3D: ao aproximar (zoom Leaflet ≥16) a câmara inclina e os edifícios
+  // extrudem; ao afastar volta à vista plana. Histerese evita pingue-pongue.
+  _ml.on('zoomend', _hxAuto3d);
+  _ml.on('pitchend', () => {
+    if (_hxPitchBusy) { _hxPitchBusy = false; return; }
+    _hx3dOn = _ml.getPitch() > 5;   // inclinação manual (2 dedos / botão direito) manda
+  });
   if (_tabSearchEl) { _tabSearchEl.style.display = 'none'; _tabSearchEl.style.visibility = ''; }
   // Slate-blue instead of orange: the radius is context, not a call to action —
   // keeps orange reserved for primary CTAs (credibility pass).
-  radiusCircle = L.circle(PORTUGAL_CENTER, {
-    radius: 600000, color:'#64748b', fillColor:'#64748b',
-    fillOpacity: 0.08, weight: 2, dashArray:'5,4'
-  }).addTo(map);
+  radiusCircle = new HxCircle(PORTUGAL_CENTER, { radius: 600000 });
 } catch(e) {
   console.error('Map init failed:', e);
   // Surface a visible message on the map container so users see something is wrong
@@ -4662,11 +4831,9 @@ function createMarkerIcon(c) {
   // behind the coloured one; drop-shadow respects the clip-path.
   const hex = 'polygon(50% 0,93% 25%,93% 75%,50% 100%,7% 75%,7% 25%)';
   const borderColor = featured ? '#f59e0b' : '#ffffff';
-  icon = L.divIcon({
-    className: '',
-    html: `<div class="hx-pin" style="width:40px;height:42px;position:relative;cursor:pointer;filter:drop-shadow(0 3px 5px ${glow})${featured ? ' drop-shadow(0 0 2px rgba(245,158,11,.9))' : ''}">${featuredBadge}<div style="position:absolute;inset:0;background:${borderColor};clip-path:${hex}"></div><div style="position:absolute;inset:3px;background:${bg};clip-path:${hex};display:flex;align-items:center;justify-content:center;overflow:hidden">${c.logo ? `<img src="${c.logo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"/>` : `<span style="font-size:12px;font-weight:800;color:#fff;letter-spacing:.3px;display:block;line-height:1;font-family:inherit">${mono}</span>`}</div></div>`,
-    iconSize:[40,42], iconAnchor:[20,42], popupAnchor:[0,-44]
-  });
+  // HTML do pin (hexágono com logo/monograma). O adaptador MapLibre cria o
+  // elemento DOM a partir disto apenas quando o pin fica visível no viewport.
+  icon = `<div class="hx-pin" style="width:40px;height:42px;position:relative;cursor:pointer;filter:drop-shadow(0 3px 5px ${glow})${featured ? ' drop-shadow(0 0 2px rgba(245,158,11,.9))' : ''}">${featuredBadge}<div style="position:absolute;inset:0;background:${borderColor};clip-path:${hex}"></div><div style="position:absolute;inset:3px;background:${bg};clip-path:${hex};display:flex;align-items:center;justify-content:center;overflow:hidden">${c.logo ? `<img src="${c.logo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"/>` : `<span style="font-size:12px;font-weight:800;color:#fff;letter-spacing:.3px;display:block;line-height:1;font-family:inherit">${mono}</span>`}</div></div>`;
   _markerIconCache.set(key, icon);
   return icon;
 }
@@ -4712,61 +4879,241 @@ function buildPopupHtml(c) {
   </div>`;
 }
 
-// Marker cluster group for performance with many markers
+// ── CLUSTERING (nativo MapLibre/supercluster) ─────────────────────────────────
+// Os 44k pontos vivem numa fonte GeoJSON com cluster:true (indexada num worker,
+// nunca no main thread). Semântica preservada do markercluster:
+//  • vista de país/região agrupa (raio 48px) para legibilidade + performance;
+//  • a partir do zoom da ficha (15) TODAS as empresas aparecem individuais —
+//    clusterMaxZoom 13 em termos MapLibre (= Leaflet 14);
+//  • colocalizadas (geocodificadas à mesma freguesia) abrem em leque: offset
+//    determinístico em círculo a zoom ≥15, em vez de empilharem invisíveis.
+// O shim markerClusterGroup mantém a interface usada por updateMarkers() e
+// loadCompaniesFromDB (addLayers/removeLayers/clearLayers/removeLayer).
 let markerClusterGroup = null;
+const _hxClusterShim = {
+  _ids: new Set(),
+  clearLayers() { this._ids.clear(); _hxApplyClusterData(); },
+  addLayers(ms) { (ms || []).forEach(m => { if (m && m._cid != null) this._ids.add(m._cid); }); _hxApplyClusterData(); },
+  removeLayers(ms) { (ms || []).forEach(m => { if (m && m._cid != null) this._ids.delete(m._cid); }); _hxApplyClusterData(); },
+  removeLayer(m) { if (m && m._cid != null) { this._ids.delete(m._cid); _hxApplyClusterData(); } },
+};
 function ensureClusterGroup() {
-  if (markerClusterGroup) return markerClusterGroup;
-  if (!map || typeof L === 'undefined' || !L.markerClusterGroup) return null;
-  markerClusterGroup = L.markerClusterGroup({
-    // Raio de agrupamento em função do ZOOM. Antes era 60px fixo: ao abrir uma
-    // ficha o mapa voa para zoom 15, onde 60px ≈ 216m — as empresas vizinhas
-    // desapareciam todas dentro de um balão com um número. Agora, quanto mais
-    // perto, menor o raio: ao zoom da ficha só agrupa a ~35m, e a partir do
-    // zoom 16 praticamente só as que estão MESMO no mesmo ponto (essas ainda
-    // abrem em leque ao clicar, em vez de empilharem invisíveis).
-    maxClusterRadius: function (zoom) {
-      if (zoom >= 17) return 4;
-      if (zoom >= 16) return 8;
-      if (zoom >= 15) return 12;   // zoom da ficha: ~35m
-      if (zoom >= 13) return 28;
-      return 60;                   // vista de país/região: agrupa p/ legibilidade + performance
-    },
-    spiderfyOnMaxZoom: true,
-    spiderfyDistanceMultiplier: 1.6,
-    showCoverageOnHover: false,
-    zoomToBoundsOnClick: true,
-    // Sem disableClusteringAtZoom: empresas COLOCALIZADAS (ex.: geocodificadas
-    // à mesma freguesia) agrupam-se num só balão em qualquer zoom e abrem em
-    // leque ao clicar — em vez de empilharem umas sobre as outras. Com
-    // maxClusterRadius 60px, ao zoom máximo só ~7m agrupam (as genuinamente
-    // no mesmo ponto); empresas distintas continuam individuais.
-    // Perf knobs that matter on mobile + large datasets:
-    //  • chunkedLoading lets the cluster batch-add markers in async chunks
-    //    instead of blocking the main thread for hundreds of ms.
-    //  • removeOutsideVisibleBounds skips DOM creation for markers outside
-    //    the current viewport, then revives them on pan/zoom.
-    chunkedLoading: true,
-    chunkInterval: 100,
-    chunkDelay: 30,
-    removeOutsideVisibleBounds: true,
-    // Disable per-cluster animations on mobile (CPU-heavy).
-    animate: window.matchMedia && window.matchMedia('(max-width: 768px)').matches ? false : true,
-    animateAddingMarkers: false,
-  });
-  map.addLayer(markerClusterGroup);
+  if (!map) return null;
+  markerClusterGroup = _hxClusterShim;
   return markerClusterGroup;
 }
 
+let _hxCurrentFC = { type: 'FeatureCollection', features: [] };
+function _hxApplyClusterData() {
+  const feats = [];
+  _hxClusterShim._ids.forEach(id => { const m = markerMap[id]; if (m && m._feature) feats.push(m._feature); });
+  _hxCurrentFC = { type: 'FeatureCollection', features: feats };
+  try { const s = map && map._ml.getSource('hx-companies'); if (s) s.setData(_hxCurrentFC); } catch (_) {}
+  _hxScheduleSync();
+}
+
+// Fontes/camadas custom: entram no arranque e RE-entram a cada troca de estilo
+// (claro/escuro), porque setStyle limpa tudo o que não é do estilo base.
+function _hxEnsureSources() {
+  if (!map) return;
+  const ml = map._ml;
+  try {
+    if (!ml.getSource('hx-companies')) {
+      ml.addSource('hx-companies', { type: 'geojson', data: _hxCurrentFC,
+        cluster: true, clusterRadius: 48, clusterMaxZoom: 13, buffer: 16 });
+    }
+    // Uma fonte sem camada não carrega tiles — esta camada invisível ancora a
+    // fonte; os balões/pins visíveis são markers HTML sincronizados à parte.
+    if (!ml.getLayer('hx-anchor')) {
+      ml.addLayer({ id: 'hx-anchor', type: 'circle', source: 'hx-companies',
+        paint: { 'circle-radius': 0, 'circle-opacity': 0 } });
+    }
+  } catch (_) {}
+  try { if (radiusCircle) radiusCircle._readd(); } catch (_) {}
+  try { _hxReaddRoute(); } catch (_) {}
+  try { _hxEnsure3D(); } catch (_) {}
+  _hxScheduleSync();
+}
+
+// Edifícios 3D: o estilo liberty (claro) já traz a camada fill-extrusion
+// "building-3d" (render_height/render_min_height do esquema OpenMapTiles);
+// o estilo escuro não — injeta-se uma equivalente com cor adequada ao tema.
+function _hxEnsure3D() {
+  const ml = map._ml;
+  try {
+    if (ml.getLayer('building-3d') || !ml.getSource('openmaptiles')) return;
+    let before;
+    for (const l of (ml.getStyle().layers || [])) { if (l.type === 'symbol') { before = l.id; break; } }
+    ml.addLayer({
+      id: 'building-3d', type: 'fill-extrusion', source: 'openmaptiles',
+      'source-layer': 'building', minzoom: 14,
+      filter: ['!', ['has', 'hide_3d']],
+      paint: {
+        // coalesce: edifícios sem altura no OSM extrudem a 0 em vez de
+        // despejarem avisos "expected number, found null" na consola
+        'fill-extrusion-base': ['coalesce', ['get', 'render_min_height'], 0],
+        'fill-extrusion-height': ['coalesce', ['get', 'render_height'], 0],
+        'fill-extrusion-color': _hxDark() ? 'hsl(221,15%,26%)' : 'hsl(35,8%,85%)',
+        'fill-extrusion-opacity': 0.8,
+      },
+    }, before);
+  } catch (_) {}
+}
+
+// Inclinação automática da câmara: zoom (Leaflet) ≥16 → pitch 55°; <15.3 → 0°.
+let _hx3dOn = false, _hxPitchBusy = false;
+function _hxAuto3d() {
+  if (!map) return;
+  const ml = map._ml, lz = ml.getZoom() + _Z_OFF;
+  if (lz >= 16 && !_hx3dOn) { _hx3dOn = true; _hxPitchBusy = true; ml.easeTo({ pitch: 55, duration: 700 }); }
+  else if (lz < 15.3 && _hx3dOn && ml.getPitch() > 0) { _hx3dOn = false; _hxPitchBusy = true; ml.easeTo({ pitch: 0, duration: 600 }); }
+}
+
+// Sincronização dos markers HTML com o estado do cluster no viewport: o padrão
+// oficial MapLibre (querySourceFeatures + diff por chave). Os markers já
+// visíveis são reposicionados pelo próprio MapLibre a cada frame — aqui só se
+// decide QUEM está visível (balão de cluster vs. pin individual).
+const _hxShown = new Map();
+let _hxSyncQueued = false;
+function _hxScheduleSync() {
+  if (_hxSyncQueued) return;
+  _hxSyncQueued = true;
+  requestAnimationFrame(() => { _hxSyncQueued = false; _hxSync(); });
+}
+function _hxSync() {
+  if (!map) return;
+  const ml = map._ml;
+  let feats;
+  try {
+    if (!ml.getSource('hx-companies')) return;
+    feats = ml.querySourceFeatures('hx-companies');
+  } catch (_) { return; }
+  const lz = map.getZoom();
+  let W = -180, E = 180, S = -90, N = 90;
+  try {
+    const b = ml.getBounds();
+    const mx = (b.getEast() - b.getWest()) * 0.08, my = (b.getNorth() - b.getSouth()) * 0.08;
+    W = b.getWest() - mx; E = b.getEast() + mx; S = b.getSouth() - my; N = b.getNorth() + my;
+  } catch (_) {}
+  const inX = (x) => (x >= W && x <= E) || (x + 360 >= W && x + 360 <= E) || (x - 360 >= W && x - 360 <= E);
+  const seen = new Set(), keep = new Set(), pts = [], clusters = [], groups = {};
+  for (const f of feats) {
+    const co = f.geometry && f.geometry.coordinates;
+    if (!co || co[1] < S || co[1] > N || !inX(co[0])) continue;
+    const p = f.properties || {};
+    if (p.cluster) {
+      const k = 'c' + p.cluster_id;
+      if (!seen.has(k)) { seen.add(k); clusters.push(f); }
+    } else {
+      const k = 'p' + p.id;
+      if (seen.has(k)) continue;
+      seen.add(k); pts.push(f);
+      if (lz >= 14.6) { const g = co[1].toFixed(5) + ',' + co[0].toFixed(5); (groups[g] = groups[g] || []).push(p.id); }
+    }
+  }
+  // Leque para colocalizadas: offsets em círculo, determinísticos (ordenado por
+  // id) para o pin de cada empresa ficar sempre no mesmo sítio do leque.
+  const offs = {};
+  for (const g in groups) {
+    const arr = groups[g];
+    if (arr.length < 2) continue;
+    arr.sort((a, b) => (a > b ? 1 : -1));
+    const n = arr.length, r = Math.min(52, 18 + n * 3);
+    arr.forEach((id, i) => {
+      const a = -Math.PI / 2 + i * 2 * Math.PI / n;
+      offs[id] = [Math.round(r * Math.cos(a)), Math.round(r * Math.sin(a))];
+    });
+  }
+  for (const f of pts) {
+    const id = f.properties.id, m = markerMap[id];
+    if (!m) continue;
+    const k = 'p' + id;
+    keep.add(k);
+    const off = offs[id] || [0, 0];
+    const cur = _hxShown.get(k);
+    if (cur) { if (cur.off[0] !== off[0] || cur.off[1] !== off[1]) { m._setOffset(off); cur.off = off; } }
+    else { m._setOffset(off); m._show(); _hxShown.set(k, { t: 'p', m, off }); }
+  }
+  for (const f of clusters) {
+    const k = 'c' + f.properties.cluster_id;
+    keep.add(k);
+    if (!_hxShown.has(k)) _hxShown.set(k, { t: 'c', m: _hxMakeClusterMarker(f) });
+  }
+  for (const [k, v] of _hxShown) {
+    if (keep.has(k)) continue;
+    if (v.t === 'p') v.m._hide(); else { try { v.m.remove(); } catch (_) {} }
+    _hxShown.delete(k);
+  }
+}
+
+function _hxMakeClusterMarker(f) {
+  const p = f.properties, n = p.point_count;
+  const el = document.createElement('div');
+  el.className = 'hx-cluster ' + (n >= 1000 ? 'hx-cluster-lg' : n >= 100 ? 'hx-cluster-md' : 'hx-cluster-sm');
+  el.innerHTML = '<span>' + (p.point_count_abbreviated || n) + '</span>';
+  const cid = p.cluster_id, co = f.geometry.coordinates.slice();
+  el.addEventListener('click', (e) => {
+    e.stopPropagation();
+    try {
+      const src = map._ml.getSource('hx-companies');
+      Promise.resolve(src.getClusterExpansionZoom(cid)).then(zm => {
+        map._ml.easeTo({ center: co, zoom: Math.min(zm + 0.1, 17), duration: 550 });
+      }).catch(() => {});
+    } catch (_) {}
+  });
+  return new maplibregl.Marker({ element: el }).setLngLat(co).addTo(map._ml);
+}
+
+// Rota (direções OSRM): fonte + camadas de linha, recriadas na troca de tema.
+function _hxReaddRoute() {
+  if (!window._hxRouteGeo || !map) return;
+  const ml = map._ml;
+  try {
+    if (!ml.getSource('hx-route')) ml.addSource('hx-route', { type: 'geojson', data: window._hxRouteGeo });
+    else ml.getSource('hx-route').setData(window._hxRouteGeo);
+    if (!ml.getLayer('hx-route-casing')) ml.addLayer({ id: 'hx-route-casing', type: 'line', source: 'hx-route',
+      layout: { 'line-cap': 'round', 'line-join': 'round' },
+      paint: { 'line-color': '#0b1220', 'line-width': 9, 'line-opacity': 0.25 } });
+    if (!ml.getLayer('hx-route-line')) ml.addLayer({ id: 'hx-route-line', type: 'line', source: 'hx-route',
+      layout: { 'line-cap': 'round', 'line-join': 'round' },
+      paint: { 'line-color': '#1a73e8', 'line-width': 5, 'line-opacity': 0.95 } });
+  } catch (_) {}
+}
+function _drawRoute(latlngs) {
+  window._hxRouteGeo = { type: 'Feature',
+    geometry: { type: 'LineString', coordinates: latlngs.map(p => [p[1], p[0]]) } };
+  _hxReaddRoute();
+  return {
+    remove() {
+      window._hxRouteGeo = null;
+      try {
+        const ml = map._ml;
+        ['hx-route-line', 'hx-route-casing'].forEach(id => { if (ml.getLayer(id)) ml.removeLayer(id); });
+        if (ml.getSource('hx-route')) ml.removeSource('hx-route');
+      } catch (_) {}
+    },
+  };
+}
+
+// Troca de estilo base com o tema (chamado por toggleTheme). O style.load que
+// se segue re-injeta fontes/camadas custom via _hxEnsureSources.
+function _setMapTheme(dark) {
+  if (!map) return;
+  try { map._ml.setStyle(dark ? HX_STYLE_DARK : HX_STYLE_LIGHT); } catch (_) {}
+}
+window._setMapTheme = _setMapTheme;
+
 function addCompanyMarker(c) {
-  if (!map || typeof L === 'undefined') return;
-  // Sem coordenadas válidas não há pin — L.marker lançava "Invalid LatLng
-  // object: (NaN, NaN)" e abortava o ingest inteiro do catálogo.
-  if (!Number.isFinite(parseFloat(c.lat)) || !Number.isFinite(parseFloat(c.lng))) return;
-  const m = L.marker([c.lat, c.lng], { icon: createMarkerIcon(c) });
+  if (!map || typeof maplibregl === 'undefined') return;
+  // Sem coordenadas válidas não há pin (NaN abortava o ingest inteiro do catálogo).
+  const lat = parseFloat(c.lat), lng = parseFloat(c.lng);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+  const m = new HxMarker([lat, lng], { htmlFn: () => createMarkerIcon(c), anchor: 'bottom' });
+  m._cid = c.id;
+  m._feature = { type: 'Feature', geometry: { type: 'Point', coordinates: [lng, lat] }, properties: { id: c.id } };
   // Lazy popup: content built only when the popup is actually opened,
   // so language changes and filter runs don't rebuild HTML for all markers
-  if (window.matchMedia('(min-width:769px)').matches)
-    m.bindPopup(() => buildPopupHtml(c), { maxWidth: 400, minWidth: 300 });
+  m.bindPopup(() => buildPopupHtml(c));
   // When the mobile results-sheet is open, a pin tap highlights that company's
   // card in the list instead of opening the full detail; otherwise open detail.
   m.on('click', () => {
@@ -4774,7 +5121,7 @@ function addCompanyMarker(c) {
     openDetail(c.id);
   });
   markerMap[c.id] = m;
-  // Ensure the cluster layer exists so updateMarkers() has something to add to,
+  // Ensure the cluster store exists so updateMarkers() has something to add to,
   // but DO NOT add this marker yet — visibility is owned by applyFilters() so
   // that filters and the radius constraint are honoured from first paint.
   ensureClusterGroup();
@@ -7127,14 +7474,12 @@ async function routeToCompany(id) {
       // re-filters the map around the user — that would hide every company
       // farther than 50 km. Directions must never change what's on the map.
       try {
-        if (map && typeof L !== 'undefined') {
+        if (map) {
           if (userLocationMarker) { userLocationMarker.remove(); }
-          const youIcon = L.divIcon({
-            className: '',
+          userLocationMarker = new HxMarker(origin, {
             html: '<div style="width:18px;height:18px;background:#2563eb;border:3px solid #fff;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,.5)"></div>',
-            iconSize: [18, 18], iconAnchor: [9, 9],
-          });
-          userLocationMarker = L.marker(origin, { icon: youIcon, zIndexOffset: 1000 }).addTo(map);
+            anchor: 'center', zIndex: 1000,
+          }).addTo(map);
         }
       } catch (_) {}
     } catch (e) { showToast(t('routeNoLocation')); return; }
@@ -7150,11 +7495,8 @@ async function routeToCompany(id) {
     const latlngs = route.geometry.coordinates.map(p => [p[1], p[0]]); // GeoJSON [lng,lat] → [lat,lng]
 
     if (_routeLayer) { _routeLayer.remove(); _routeLayer = null; }
-    _routeLayer = L.layerGroup([
-      L.polyline(latlngs, { color: '#0b1220', weight: 9, opacity: 0.25 }),   // casing
-      L.polyline(latlngs, { color: '#1a73e8', weight: 5, opacity: 0.95 })    // route
-    ]).addTo(map);
-    try { map.fitBounds(L.latLngBounds(latlngs), { padding: [60, 60], maxZoom: 15 }); } catch (_) {}
+    _routeLayer = _drawRoute(latlngs);   // casing escura + linha azul (estilo navegação)
+    try { map.fitBounds(latlngs, { padding: [60, 60], maxZoom: 15 }); } catch (_) {}
 
     const km = route.distance / 1000;
     const kmStr = (km < 10 ? km.toFixed(1) : Math.round(km)) + ' km';
@@ -8937,18 +9279,14 @@ function detectUserLocation(auto = false) {
 
     // Place/update the "you are here" marker
     if (userLocationMarker) { userLocationMarker.remove(); userLocationMarker = null; }
-    if (map && typeof L !== 'undefined') {
-      const youIcon = L.divIcon({
-        className: '',
+    if (map) {
+      userLocationMarker = new HxMarker([lat, lng], {
         html: `<div style="position:relative;width:28px;height:28px">
           <div style="position:absolute;inset:0;background:rgba(37,99,235,.22);border-radius:50%;animation:pulse 2s infinite"></div>
           <div style="position:absolute;inset:6px;background:#2563eb;border-radius:50%;border:2.5px solid #fff;box-shadow:0 2px 10px rgba(37,99,235,.7)"></div>
         </div>`,
-        iconSize: [28, 28],
-        iconAnchor: [14, 14],
-      });
-      userLocationMarker = L.marker([lat, lng], { icon: youIcon, zIndexOffset: 1000 })
-        .addTo(map)
+        anchor: 'center', zIndex: 1000, popupAlways: true,
+      }).addTo(map)
         .bindPopup(`<strong>📍 A sua localização</strong><br><small style="color:#6b7280">Precisão: ±${Math.round(accuracy)} m</small>`);
       if (!auto) userLocationMarker.openPopup();
     }
@@ -10202,7 +10540,7 @@ window.diagnosticCheck = function() {
   console.log('%c║      B2B MARKETPLACE - DIAGNOSTIC       ║', 'color: #2563eb; font-weight: bold;');
   console.log('%c╚═══════════════════════════════════════════╝', 'color: #2563eb; font-weight: bold;');
   console.log('%c✓ map:', 'color: #22c55e;', typeof window.map !== 'undefined' ? '✅' : '❌');
-  console.log('%c✓ Leaflet:', 'color: #22c55e;', typeof L !== 'undefined' ? '✅' : '❌');
+  console.log('%c✓ MapLibre:', 'color: #22c55e;', typeof maplibregl !== 'undefined' ? '✅' : '❌');
   console.log('%c✓ Supabase:', 'color: #22c55e;', sb ? '✅ Configurado' : '⚠️ Não configurado (armazenamento local)');
   console.log('%c✓ Empresas carregadas:', 'color: #22c55e;', companies.length);
 };
@@ -10881,6 +11219,9 @@ function toggleTheme() {
   const dark = document.documentElement.getAttribute('data-theme') === 'dark';
   if (dark) { document.documentElement.removeAttribute('data-theme'); try { localStorage.setItem('hivex_theme', 'light'); } catch (e) {} }
   else { document.documentElement.setAttribute('data-theme', 'dark'); try { localStorage.setItem('hivex_theme', 'dark'); } catch (e) {} }
+  // Mapa vetorial: troca para o estilo base do tema (escuro verdadeiro,
+  // sem o antigo filtro CSS invert sobre tiles raster).
+  try { _setMapTheme(!dark); } catch (_) {}
   _syncThemeToggle();
 }
 function _syncThemeToggle() {

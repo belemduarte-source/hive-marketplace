@@ -86,10 +86,12 @@
   <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png?v=2"/>
 
   <!-- Preconnect to third-party origins so DNS/TLS is warm by the time we
-       actually request leaflet, Google Sign-In, the OSM tile server and
-       Nominatim. Saves ~100-300 ms on first paint. -->
+       actually request MapLibre, Google Sign-In, the vector tile server and
+       Nominatim. Saves ~100-300 ms on first paint. tile.openstreetmap.org
+       continua em uso pelos mini-mapas estáticos dos cartões. -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/>
   <link rel="preconnect" href="https://accounts.google.com" crossorigin/>
+  <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin/>
   <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin/>
   <link rel="dns-prefetch" href="https://nominatim.openstreetmap.org"/>
   <link rel="dns-prefetch" href="https://router.project-osrm.org"/>
@@ -102,13 +104,9 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/800.css"/>
   <!-- CSS do mapa em modo não-bloqueante: só é preciso quando o mapa abre,
        e assim o primeiro paint da landing não espera pelo CDN. -->
-  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" integrity="sha384-b8ANgTJvdlAnWM5YGMpKn7Kodm+1k7NYNG9zdjTCcZcKatzYHwZ0RLdWarbJJVzU" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
-  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.min.css" integrity="sha384-4ej5W7Scxd1gcgoPPEnX+r7eVJnBaGyrzMRjy1ynilla1goyNavl0bUqDOyaHZ9G" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
-  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.min.css" integrity="sha384-oMbBSplUkOVL60gBv+GgcT0m4ZRTkyWvvHZOJBhg3ttuvLc9biWcdgqVkDwRyzzb" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
+  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.css" integrity="sha384-uTttxo/aOKbdE5RlD/SPzSDoDmNvGlUYPjONi2MN/b7c9HPSvW07OIuyP7uL6jxK" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
   <noscript>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css" integrity="sha384-b8ANgTJvdlAnWM5YGMpKn7Kodm+1k7NYNG9zdjTCcZcKatzYHwZ0RLdWarbJJVzU" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.min.css" integrity="sha384-4ej5W7Scxd1gcgoPPEnX+r7eVJnBaGyrzMRjy1ynilla1goyNavl0bUqDOyaHZ9G" crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/MarkerCluster.Default.min.css" integrity="sha384-oMbBSplUkOVL60gBv+GgcT0m4ZRTkyWvvHZOJBhg3ttuvLc9biWcdgqVkDwRyzzb" crossorigin="anonymous"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.css" integrity="sha384-uTttxo/aOKbdE5RlD/SPzSDoDmNvGlUYPjONi2MN/b7c9HPSvW07OIuyP7uL6jxK" crossorigin="anonymous"/>
   </noscript>
   <!-- Native app (Capacitor) bridge: when Hivex runs inside the iOS/Android
        wrapper its origin is capacitor://localhost, so point the API client at the
@@ -158,7 +156,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v318.css"/>
+  <link rel="stylesheet" href="app.v319.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -2378,12 +2376,12 @@
   </div>
 </div>
 
-<!-- defer preserva a ordem (leaflet → cluster → lucide → app) mas deixa o
-     HTML pintar sem esperar pela execução dos scripts. -->
-<script defer src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js" integrity="sha384-u5N8qJeJOO2iqNjIKTdl6KeKsEikMAmCUBPc6sC6uGpgL34aPJ4VgNhuhumedpEk" crossorigin="anonymous"></script>
-<script defer src="https://cdn.jsdelivr.net/npm/leaflet.markercluster@1.5.3/dist/leaflet.markercluster.min.js" integrity="sha384-KbFiBAthtMI2+oEnROIvaxBvMV7z+xRHvBsVJogho6X8HemBKtbb2x9LhwC3vyiV" crossorigin="anonymous"></script>
+<!-- defer preserva a ordem (maplibre → lucide → app) mas deixa o
+     HTML pintar sem esperar pela execução dos scripts. MapLibre GL: tiles
+     vetoriais OpenFreeMap sem chave, clustering nativo e 3D. -->
+<script defer src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js" integrity="sha384-5+cfbwT0iiub6VsQAdn6yz16nr6sDiQoHx6tm4O8OVYXHYOxcffFmCJBL0dgdvGp" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v318.js"></script>
+<script defer src="app.v319.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
