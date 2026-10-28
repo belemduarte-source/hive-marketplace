@@ -2823,10 +2823,18 @@ function updateLandingStats() {
   try {
     const pc = document.getElementById('proofCompanies');
     const pn = document.getElementById('proofCountries');
-    if (pc && companies.length >= 200) pc.textContent = companies.length.toLocaleString('pt-PT');
-    if (pn) {
-      const uniq = new Set(companies.map(c => (c.country || 'pt').toLowerCase()));
-      if (uniq.size > 5) pn.textContent = uniq.size;
+    // espelha também no cartão de boas-vindas (fusão Início+Mapa)
+    const wc = document.getElementById('wProofCompanies');
+    const wn = document.getElementById('wProofCountries');
+    if (companies.length >= 200) {
+      const nTxt = companies.length.toLocaleString('pt-PT');
+      if (pc) pc.textContent = nTxt;
+      if (wc) wc.textContent = nTxt;
+    }
+    const uniq = new Set(companies.map(c => (c.country || 'pt').toLowerCase()));
+    if (uniq.size > 5) {
+      if (pn) pn.textContent = uniq.size;
+      if (wn) wn.textContent = uniq.size;
     }
   } catch (_) {}
 
