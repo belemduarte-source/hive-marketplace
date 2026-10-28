@@ -2088,27 +2088,23 @@ function showTab(name) {
     lastScrollTop = 0;
   } catch(e) { /* lastScrollTop not yet initialised — safe to ignore */ }
 
-  // Hide all tabs
-  home.style.display   = 'none';
-  search.style.display = 'none';
+  // Hide all tabs (o Início antigo foi removido do HTML — guardas por isso)
+  if (home) home.style.display = 'none';
+  if (search) search.style.display = 'none';
   if (about) about.style.display = 'none';
 
-  // Show selected tab
+  // 'home' agora é o mapa com o cartão de boas-vindas por cima (fusão).
+  // Mostra o cartão diretamente — showWelcome() chama showTab e recursava.
   if (name === 'home') {
-    home.style.display = 'flex';
-    // Hero (above the fold) must render synchronously so first paint is fast.
-    populateHeroServiceDropdown();
-    renderHeroCats();
-    updateLandingStats();
-    // Defer below-the-fold work to the next idle slot. The featured carousel
-    // already shows skeleton placeholders so users see structure immediately;
-    // populating it 50–200 ms later is invisible while the user is still on
-    // the hero. Same for the testimonial banner.
-    const idle = window.requestIdleCallback || ((cb) => setTimeout(cb, 80));
-    idle(() => { try { renderFeaturedCompanies(); } catch (_) {} }, { timeout: 1000 });
-    idle(() => { try { renderTestimonialBanner();  } catch (_) {} }, { timeout: 1500 });
-    idle(() => { refreshLucide(); }, { timeout: 1500 });
-  } else if (name === 'search') {
+    name = 'search';
+    try {
+      const w = document.getElementById('welcomeOverlay');
+      if (w) { w.style.display = 'flex'; applyI18n(); }
+    } catch (_) {}
+  }
+
+  // Show selected tab
+  if (name === 'search') {
     search.style.display = 'flex';
 
     // First-time hint: tell users they can click pins to see details.
@@ -10492,11 +10488,9 @@ function closeMobileFilter() {
     if (document.hidden) stopCasa();
     else startCasa();
   });
-  // Re-start when the user navigates to the home tab; stop when they leave.
-  document.addEventListener('hive:tab-change', e => {
-    if (e.detail === 'home') startCasa();
-    else stopCasa();
-  });
+  // O banner vive na nav, visível em todas as vistas (desde a fusão o arranque
+  // dispara 'search' — o filtro por tab congelava a animação logo no boot).
+  document.addEventListener('hive:tab-change', () => startCasa());
 
   // Auto-start casa animation if on the home tab
   startCasa();
