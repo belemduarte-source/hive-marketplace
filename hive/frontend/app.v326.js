@@ -2161,9 +2161,10 @@ function showTab(name) {
             try { _maybeFocusVisitorCountry(); } catch (_) {}
           }
           if (!_locationObtained) {
-            // Only auto-centre for users who already granted location — never
-            // surface the OS prompt or the help modal without an explicit tap.
-            setTimeout(autoDetectLocationIfGranted, 200);
+            // Abrir o mapa É a ação explícita: pede a localização e voa para
+            // lá (pedido do dono; antes só auto-centrava quem já tinha dado
+            // permissão e um bloco por IP mandava o mapa p/ a cidade do ISP).
+            setTimeout(_askLocationOnMapOpen, 300);
           }
         }
       }
@@ -4748,6 +4749,21 @@ async function autoDetectLocationIfGranted() {
     if (perm.state === 'granted') detectUserLocation(true);
     // 'prompt' / 'denied' → do nothing; the user opts in via the locate button.
   } catch (_) {}
+}
+
+// Ao ABRIR O MAPA: pede a localização (o browser mostra o pedido de permissão)
+// e voa para lá — pedido do dono. Negado/ignorado → fica a vista por defeito
+// (Portugal), em silêncio. Nunca interferir com um deep link de empresa.
+async function _askLocationOnMapOpen() {
+  if (_locationObtained || !navigator.geolocation) return;
+  if (typeof selectedId !== 'undefined' && selectedId != null) return;
+  try {
+    if (navigator.permissions) {
+      const perm = await navigator.permissions.query({ name: 'geolocation' });
+      if (perm.state === 'denied') return;   // respeitar a recusa — sem nag
+    }
+  } catch (_) {}
+  try { detectUserLocation('soft'); } catch (_) {}
 }
 document.addEventListener('DOMContentLoaded', async () => {
   if (!navigator.geolocation) return;
@@ -9260,10 +9276,10 @@ function detectUserLocation(auto = false) {
       updateRadius(50);
     }
 
-    // Only zoom into the user's location when THEY ask (locate button). On the
-    // automatic detection at startup, keep the map zoomed out — just sync the
-    // radius circle to their position (drawn below).
-    if (map && !auto) map.flyTo([lat, lng], 13, { duration: 1.8 });
+    // Zoom à localização no toque manual (auto=false) E no pedido feito ao
+    // abrir o mapa (auto='soft' — "pergunta e vai lá", pedido do dono). Só a
+    // deteção silenciosa de arranque (auto=true) mantém o mapa afastado.
+    if (map && auto !== true) map.flyTo([lat, lng], 13, { duration: 1.8 });
     if (typeof updateRadius === 'function') {
       const _rs = document.getElementById('radiusSlider');
       updateRadius(_rs ? _rs.value : 50);
@@ -13743,27 +13759,19 @@ try {
   });
 } catch (_) {}
 
-// arranque relevante: centra na cidade aproximada por IP (sem pedir permissão)
-(async function () {
-  try {
-    try { const st = await navigator.permissions.query({ name: 'geolocation' }); if (st.state === 'granted') return; } catch (_) {}
-    for (let i = 0; i < 30 && (typeof map === 'undefined' || !map); i++) await new Promise(r => setTimeout(r, 300));
-    if (typeof map === 'undefined' || !map) return;
-    await new Promise(r => setTimeout(r, 900));
-    if (map.getZoom() !== 7) return; // o utilizador (ou uma vista guardada) já mexeu
-    let g = null;
-    try { g = JSON.parse(localStorage.getItem('hivex_ip_geo') || 'null'); } catch (_) {}
-    if (!g || Date.now() - (g.t || 0) > 24 * 3600e3) {
-      const r = await fetch('/api/geo', { signal: AbortSignal.timeout(5000) }).then(x => x.ok ? x.json() : null).catch(() => null);
-      if (r && isFinite(+r.lat) && isFinite(+r.lng)) { g = { ...r, t: Date.now() }; try { localStorage.setItem('hivex_ip_geo', JSON.stringify(g)); } catch (_) {} }
-    }
-    if (g && isFinite(+g.lat) && isFinite(+g.lng) && map.getZoom() === 7) {
-      map.setView([+g.lat, +g.lng], 10);
-      try { if (radiusCircle) radiusCircle.setLatLng([+g.lat, +g.lng]); currentMapCenter = [+g.lat, +g.lng]; invalidateDistanceCache(); } catch (_) {}
-      if (g.city) showToast('📍 ' + g.city);
-    }
-  } catch (_) {}
-})();
+// (Removido o auto-centro por IP: a geolocalização do IP cai muitas vezes na
+// cidade do ISP — ex.: utilizadores em PT atirados para Saragoça — e a vista
+// errada ficava gravada em hivex_ip_geo/hivex_map_view e repetia-se. Agora,
+// ao abrir o mapa pede-se a localização verdadeira: ver _askLocationOnMapOpen.)
+// Migração única: limpa a vista guardada que o bloco antigo pode ter
+// envenenado (volta a gravar-se ao primeiro gesto no mapa).
+try {
+  localStorage.removeItem('hivex_ip_geo');
+  if (!localStorage.getItem('hivex_vista_sanada')) {
+    localStorage.removeItem('hivex_map_view');
+    localStorage.setItem('hivex_vista_sanada', '1');
+  }
+} catch (_) {}
 
 
 // Mobile: placeholder genérico na caixa do hero (uma só pesquisa)
