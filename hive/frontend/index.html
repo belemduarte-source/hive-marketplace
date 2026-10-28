@@ -156,7 +156,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v324.css"/>
+  <link rel="stylesheet" href="app.v325.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -1199,7 +1199,8 @@
         <span style="left:65%">100</span>
         <span style="left:100%">Todo</span>
       </div>
-      <label class="radius-ignore"><input type="checkbox" id="ignoreRadius" onchange="toggleIgnoreRadius()"/><span data-i18n="ignoreRadius">Não Usar Raio de Pesquisa</span></label>
+      <!-- (Checkbox "Não Usar Raio" removido: duplicava o slider na posição
+           "Todo", que já é o estado por defeito.) -->
     </div>
 
     <!-- SORT + FEATURED (combined) -->
@@ -1329,11 +1330,6 @@
         <path d="M3 6h18M3 12h18M3 18h18"/><circle cx="19" cy="6" r="3" fill="#2563eb" stroke="none"/>
       </svg>
       <div id="mapEmptyHintText" style="margin:0;color:#fff;line-height:1.4"><span data-i18n="emptySectorTitle">Selecione uma área de atividade</span><br><span data-i18n="emptySectorSub">Escolha um ou mais setores acima para ver as empresas disponíveis.</span></div>
-    </div>
-
-    <div class="map-info-box">
-      <div class="live-dot"></div>
-      <span data-i18n="mapLive">Mapa em tempo real</span> · <span data-i18n="mapCity">Lisboa, Portugal</span>
     </div>
 
     <!-- Floating filter button — visible only on mobile (CSS hides it on desktop) -->
@@ -2390,7 +2386,7 @@
      vetoriais OpenFreeMap sem chave, clustering nativo e 3D. -->
 <script defer src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js" integrity="sha384-5+cfbwT0iiub6VsQAdn6yz16nr6sDiQoHx6tm4O8OVYXHYOxcffFmCJBL0dgdvGp" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v324.js"></script>
+<script defer src="app.v325.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

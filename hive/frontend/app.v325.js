@@ -638,7 +638,6 @@ const translations = {
     helpVisionTitle:'Vision', helpVisionDesc:'To be the reference platform in Portugal for connecting companies and professionals, promoting economic growth and creating opportunities for all.',
     navLogin:'Login / Sign up', navHelp:'Help',
     themeToDark:'Dark', themeToLight:'Light', themeModeDark:'Dark mode', themeModeLight:'Light mode',
-    testimonialPhrases:['Excellent professionalism and quality of work.','Very punctual and impeccable work. Recommended!','Great value for money. Will hire again.','Very competent and organised team.','Exceeded expectations. First-class work.','Serious, trustworthy professionals.','Fast, efficient service. Very satisfied.','Excellent service from start to finish.','Met the deadline and the budget. Recommended!','Careful work and very friendly.'],
     navFavourites:'Favourites', navFaq:'FAQ', navPrivacy:'Privacy', avatarLogout:'Sign out', avatarFaqHelp:'FAQ & Help',
     lpHeroRegisterCta:'Create free account', lpHeroRegisterHint:'Request quotes, save favourites and register your company.',
     lpHeroLoginHint:'Already have an account?', lpHeroLoginLink:'Sign in',
@@ -1047,7 +1046,6 @@ const translations = {
     helpVisionTitle:'Vision', helpVisionDesc:'Être la plateforme de référence au Portugal pour connecter entreprises et professionnels, en favorisant la croissance économique et en créant des opportunités pour tous.',
     navLogin:'Connexion / Inscription', navHelp:'Aide',
     themeToDark:'Sombre', themeToLight:'Clair', themeModeDark:'Mode sombre', themeModeLight:'Mode clair',
-    testimonialPhrases:['Professionnalisme et qualité de travail excellents.','Très ponctuels et travail impeccable. Je recommande !','Excellent rapport qualité-prix. Je ferai de nouveau appel à eux.','Équipe très compétente et organisée.','Ont dépassé les attentes. Travail de premier ordre.','Des professionnels sérieux et de confiance.','Service rapide et efficace. Très satisfait.','Excellent accueil du début à la fin.','Délais et budget respectés. Je recommande !','Travail soigné et beaucoup de sympathie.'],
     navFavourites:'Favoris', navFaq:'FAQ', navPrivacy:'Confidentialité', avatarLogout:'Se déconnecter', avatarFaqHelp:'FAQ & Aide',
     lpHeroRegisterCta:'Créer un compte gratuit', lpHeroRegisterHint:"Demandez des devis, enregistrez des favoris et inscrivez votre entreprise.",
     lpHeroLoginHint:'Vous avez déjà un compte ?', lpHeroLoginLink:'Connexion',
@@ -1452,7 +1450,6 @@ const translations = {
     helpVisionTitle:'Visión', helpVisionDesc:'Ser la plataforma de referencia en Portugal para conectar empresas y profesionales, fomentando el crecimiento económico y creando oportunidades para todos.',
     navLogin:'Entrar / Registrarse', navHelp:'Ayuda',
     themeToDark:'Oscuro', themeToLight:'Claro', themeModeDark:'Modo oscuro', themeModeLight:'Modo claro',
-    testimonialPhrases:['Excelente profesionalidad y calidad de trabajo.','Muy puntuales y trabajo impecable. ¡Recomendado!','Gran relación calidad-precio. Volveré a contratar.','Equipo muy competente y organizado.','Superaron las expectativas. Trabajo de primera.','Profesionales serios y de confianza.','Servicio rápido y eficiente. Muy satisfecho.','Atención excelente de principio a fin.','Cumplieron los plazos y el presupuesto. ¡Recomendado!','Trabajo cuidado y mucha simpatía.'],
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidad', avatarLogout:'Cerrar sesión', avatarFaqHelp:'FAQ y Ayuda',
     lpHeroRegisterCta:'Crear cuenta gratis', lpHeroRegisterHint:'Pida presupuestos, guarde favoritos y registre su empresa.',
     lpHeroLoginHint:'¿Ya tiene cuenta?', lpHeroLoginLink:'Entrar',
@@ -1854,7 +1851,6 @@ const translations = {
     helpVisionTitle:'Vision', helpVisionDesc:'Die führende Plattform in Portugal zur Vernetzung von Unternehmen und Fachleuten werden, Wirtschaftswachstum fördern und Chancen für alle schaffen.',
     navLogin:'Anmelden / Registrieren', navHelp:'Hilfe',
     themeToDark:'Dunkel', themeToLight:'Hell', themeModeDark:'Dunkelmodus', themeModeLight:'Heller Modus',
-    testimonialPhrases:['Hervorragende Professionalität und Arbeitsqualität.','Sehr pünktlich und tadellose Arbeit. Empfehlenswert!','Tolles Preis-Leistungs-Verhältnis. Gerne wieder.','Sehr kompetentes und organisiertes Team.','Haben die Erwartungen übertroffen. Erstklassige Arbeit.','Seriöse und vertrauenswürdige Fachleute.','Schneller und effizienter Service. Sehr zufrieden.','Ausgezeichneter Service von Anfang bis Ende.','Termin und Budget eingehalten. Empfehlenswert!','Sorgfältige Arbeit und sehr freundlich.'],
     navFavourites:'Favoriten', navFaq:'FAQ', navPrivacy:'Datenschutz', avatarLogout:'Abmelden', avatarFaqHelp:'FAQ & Hilfe',
     lpHeroRegisterCta:'Kostenloses Konto erstellen', lpHeroRegisterHint:'Angebote anfragen, Favoriten speichern und Ihren Betrieb registrieren.',
     lpHeroLoginHint:'Schon ein Konto?', lpHeroLoginLink:'Anmelden',
@@ -2750,67 +2746,21 @@ function renderFeaturedCompanies() {
           </div>
           ${c.verified ? `<div class="lp-cc-badge-verified" title="${(tr.verifiedTooltip || 'Empresa cuja certidão permanente foi confirmada pela equipa Hivex.')}" tabindex="0" aria-label="${(tr.verifiedTooltip || 'Empresa cuja certidão permanente foi confirmada pela equipa Hivex.')}">${tr.featuredVerified || '✓ Verificado'}</div>` : ''}
         </div>
-        <div class="lp-cc-rating">
+        ${c.rating > 0 ? `<div class="lp-cc-rating">
           <span class="lp-cc-stars">${stars}</span>
           <span class="lp-cc-rating-num">${c.rating.toFixed(1)}</span>
           <span class="lp-cc-reviews">(${c.reviews || 0} ${tr.featuredReviews || 'avaliações'})</span>
-        </div>
+        </div>` : `<div class="lp-cc-rating"><span class="badge-new">${tr.newOnHivex || 'Novo na Hivex'}</span></div>`}
         ${tags ? `<div class="lp-cc-tags">${tags}</div>` : ''}
         <div class="lp-cc-address">${c.address || 'Portugal'}</div>
       </div>`;
   }).join('');
 }
 
-function renderTestimonialBanner() {
-  const track = document.getElementById('lpTestimonialTrack');
-  if (!track) return;
-
-  // Simple "what customers say" cards: a 5-star rating, a short comment, and
-  // who it's from + which company it's about (picked at random from the list).
-  const _trp = (translations[currentLang] || translations.pt).testimonialPhrases;
-  const phrases = (Array.isArray(_trp) && _trp.length) ? _trp : [
-    'Excelente profissionalismo e qualidade de trabalho.',
-    'Muito pontuais e trabalho impecável. Recomendo!',
-    'Ótima relação qualidade-preço. Voltarei a contratar.',
-    'Equipa muito competente e organizada.',
-    'Superaram as expectativas. Trabalho de primeira.',
-    'Profissionais sérios e de confiança.',
-    'Serviço rápido e eficiente. Muito satisfeito.',
-    'Atendimento excelente do início ao fim.',
-    'Cumpriram os prazos e o orçamento. Recomendo!',
-    'Trabalho cuidado e muita simpatia.'
-  ];
-  const authors = ['João M.', 'Ana R.', 'Pedro S.', 'Marta C.', 'Rui F.', 'Sofia L.', 'Tiago A.', 'Inês P.', 'Bruno G.', 'Carla D.'];
-
-  // Companies to attribute the comments to (random). Falls back to a generic
-  // label until the catalogue has loaded.
-  const pool = (Array.isArray(companies) ? companies : []).filter(c => c && c.name);
-
-  const N = 8;
-  const cards = [];
-  for (let i = 0; i < N; i++) {
-    const phrase  = phrases[i % phrases.length];
-    const author  = authors[i % authors.length];
-    const company = pool.length ? pool[Math.floor(Math.random() * pool.length)] : null;
-    const companyName = company ? company.name : 'Hivex';
-    const initial = (author.trim()[0] || '?').toUpperCase();
-    const open    = company ? `onclick="lpOpenCompany(${company.id})" style="cursor:pointer"` : '';
-    cards.push(`
-      <div class="lp-testimonial-card" ${open}>
-        <div class="lp-tc-stars">★★★★★</div>
-        <div class="lp-tc-quote">"${phrase}"</div>
-        <div class="lp-tc-attrib">
-          <span class="lp-tc-avatar">${initial}</span>
-          <span class="lp-tc-meta">
-            <span class="lp-tc-author">${author}</span>
-            <span class="lp-tc-company">${companyName}</span>
-          </span>
-        </div>
-      </div>`);
-  }
-  // Duplicate the set for the seamless infinite scroll.
-  track.innerHTML = cards.join('') + cards.join('');
-}
+// (Banner de "testemunhos" removido: gerava avaliações 5★ fictícias com
+// autores inventados atribuídas a empresas reais — contra a regra de
+// confiança do catálogo. O markup já tinha saído; o código morto saiu agora.)
+function renderTestimonialBanner() {}
 
 function lpOpenCompany(companyId) {
   const company = companies.find(c => c.id === companyId);
