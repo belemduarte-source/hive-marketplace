@@ -395,6 +395,9 @@ router.get('/check-nif', requireAuth, async (req, res, next) => {
 // company's registry record); the alvará number is public IMPIC information.
 router.get('/:id', optionalAuth, async (req, res, next) => {
   try {
+    // Id não-numérico (bots a pedir /companies/qualquer-coisa) rebentava no
+    // cast do Postgres → 500; é simplesmente "não existe".
+    if (!/^\d+$/.test(String(req.params.id))) return res.status(404).json({ error: 'Empresa não encontrada' });
     const { rows } = await pool.query(
       `SELECT * FROM companies WHERE id = $1`,
       [req.params.id]
@@ -784,20 +787,24 @@ router.post('/:id/report', requireAuth, async (req, res, next) => {
 });
 
 // POST /api/companies/:id/event — track analytics event (fire-and-forget, no auth required)
-router.post('/:id/event', async (req, res, next) => {
+router.post('/:id/event', async (req, res) => {
+  const { type } = req.body;
+  const allowed = ['view', 'contact', 'website_click', 'whatsapp', 'streetview'];
+  if (!allowed.includes(type)) return res.status(400).json({ error: 'type inválido' });
+  if (!/^\d+$/.test(String(req.params.id))) return res.status(400).json({ error: 'id inválido' });
   try {
-    const { type } = req.body;
-    const allowed = ['view', 'contact', 'website_click', 'whatsapp', 'streetview'];
-    if (!allowed.includes(type)) return res.status(400).json({ error: 'type inválido' });
-
     await pool.query(
       `INSERT INTO events (company_id, event_type) VALUES ($1, $2)`,
       [req.params.id, type]
     );
-    res.json({ ok: true });
   } catch (e) {
-    next(e);
+    // Contador anónimo fire-and-forget: um soluço transitório do Neon (visto
+    // em produção logo a seguir à rajada de 48 fetches do catálogo) perdia 1
+    // evento E sujava a consola de todos os visitantes com um 500. Perder o
+    // evento é aceitável; o 500, não.
+    console.error('[events] insert falhou:', e.message);
   }
+  res.json({ ok: true });
 });
 
 // GET /api/companies/:id/analytics — owner or admin only
