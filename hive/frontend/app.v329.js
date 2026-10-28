@@ -2659,6 +2659,48 @@ function heroSearch() {
   if (window.innerWidth <= 768) setTimeout(() => { try { openResultsSheet(); } catch (_) {} }, 350);
 }
 
+// ── BOAS-VINDAS: o Início fundido sobre o mapa ───────────────────────────────
+// A app abre sempre no mapa; a 1.ª visita vê este cartão por cima (pitch,
+// pesquisa, áreas, selos). Pesquisar/escolher área/fechar recolhe-o e fica
+// memorizado; o botão "Início" volta a mostrá-lo. Deep links nunca o veem.
+function showWelcome() {
+  const w = document.getElementById('welcomeOverlay');
+  if (!w) return;
+  try { showTab('search'); } catch (_) {}
+  w.style.display = 'flex';
+  try { applyI18n(); } catch (_) {}
+}
+function closeWelcome() {
+  const w = document.getElementById('welcomeOverlay');
+  if (w) w.style.display = 'none';
+  try { localStorage.setItem('hivex_bemvindo_visto', '1'); } catch (_) {}
+  // o pedido de localização fica suspenso enquanto o cartão está aberto
+  try { _askLocationOnMapOpen(); } catch (_) {}
+}
+function welcomeSearch() {
+  const v = ((document.getElementById('welcomeQuery') || {}).value || '').trim();
+  closeWelcome();
+  if (!v) return;
+  const u = document.getElementById('searchUnified');
+  if (u) u.value = v;
+  try { handleUnifiedSearch(v); } catch (_) {}
+  try { applyFilters.now(); } catch (_) {}
+  if (window.innerWidth <= 768) setTimeout(() => { try { openResultsSheet(); } catch (_) {} }, 350);
+}
+function welcomeCat(k) {
+  closeWelcome();
+  try { lpCatSearch(k); } catch (_) {}
+}
+function welcomeRegister() {
+  closeWelcome();
+  try { openLogin(); switchLoginTab('register'); } catch (_) {}
+}
+window.showWelcome = showWelcome;
+window.closeWelcome = closeWelcome;
+window.welcomeSearch = welcomeSearch;
+window.welcomeCat = welcomeCat;
+window.welcomeRegister = welcomeRegister;
+
 // ── HERO CATEGORY STRIP ───────────────────────────────────────────────────
 function renderHeroCats() {
   const strip = document.getElementById('lpHeroCats');
@@ -4762,6 +4804,12 @@ async function autoDetectLocationIfGranted() {
 async function _askLocationOnMapOpen() {
   if (_locationObtained || !navigator.geolocation) return;
   if (typeof selectedId !== 'undefined' && selectedId != null) return;
+  // Cartão de boas-vindas aberto → o pedido fica para quando ele fechar
+  // (closeWelcome chama esta função outra vez).
+  try {
+    const w = document.getElementById('welcomeOverlay');
+    if (w && w.style.display !== 'none' && getComputedStyle(w).display !== 'none') return;
+  } catch (_) {}
   try {
     if (navigator.permissions) {
       const perm = await navigator.permissions.query({ name: 'geolocation' });
@@ -10217,8 +10265,10 @@ try {
   if (typeof lucide !== 'undefined') { try { lucide.createIcons(); } catch(e) { console.warn('Init skip: lucide', e); } }
 } catch(e) { console.error('Init error:', e); }
 
-// Show landing page by default — ALWAYS runs regardless of errors above
-try { showTab('home'); } catch(e) { console.error('showTab error:', e); document.getElementById('tab-home').style.display = 'flex'; }
+// Fusão Início+Mapa: a app abre SEMPRE no mapa; a 1.ª visita vê o cartão de
+// boas-vindas por cima (o script inline do index.html já o escondeu pré-paint
+// para visitas repetidas e deep links — aqui só garantimos o separador).
+try { showTab('search'); } catch(e) { console.error('showTab error:', e); try { document.getElementById('tab-search').style.display = 'flex'; } catch(_) {} }
 
 // Setup radius slider event listeners
 let radiusTimeout;

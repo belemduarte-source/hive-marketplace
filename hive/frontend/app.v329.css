@@ -4048,3 +4048,38 @@
 .nc-cred{margin-top:4px}
 .fc-card .badge-alvara.fc-alvara{font-size:12.5px;margin-top:5px;padding:3px 9px}
 @media (prefers-color-scheme: dark){.badge-alvara{color:#bfdbfe;background:rgba(37,99,235,.18);border-color:rgba(37,99,235,.45)}}
+
+/* ── BOAS-VINDAS: o Início fundido sobre o mapa ───────────────────────────── */
+.welcome-overlay{position:fixed;inset:0;z-index:1900;display:flex;align-items:center;justify-content:center;padding:18px;background:linear-gradient(180deg,rgba(7,14,28,.78),rgba(7,14,28,.58));backdrop-filter:blur(3px)}
+.welcome-card{position:relative;background:var(--surface);border-radius:22px;box-shadow:0 24px 80px rgba(0,0,0,.45);max-width:620px;width:100%;max-height:calc(94vh / var(--z));overflow-y:auto;padding:34px 34px 24px;text-align:center}
+.welcome-close{position:absolute;top:12px;right:12px;width:40px;height:40px;border:1.5px solid var(--border);background:var(--bg);border-radius:12px;font-size:22px;line-height:1;cursor:pointer;color:var(--text);font-family:inherit}
+.welcome-close:hover{border-color:var(--primary);color:var(--primary)}
+.welcome-title{font-size:30px;line-height:1.2;font-weight:800;color:var(--text);margin:4px 0 10px}
+.welcome-title .hero-accent{color:var(--primary)}
+.welcome-sub{font-size:16px;color:var(--text-secondary);line-height:1.5;margin:0 0 12px}
+.welcome-proof{font-size:15px;color:var(--text-secondary);margin-bottom:18px}
+.welcome-proof b{color:var(--text);font-weight:800}
+.welcome-proof .wp-dot{margin:0 8px;opacity:.5}
+.welcome-search{display:flex;gap:8px;margin-bottom:14px}
+.welcome-search input{flex:1;min-width:0;border:1.5px solid var(--border);background:var(--bg);color:var(--text);border-radius:999px;padding:13px 18px;font-size:16px;font-family:inherit}
+.welcome-search input:focus{outline:none;border-color:var(--primary)}
+.welcome-search button{background:var(--primary);color:#fff;border:none;border-radius:999px;padding:0 22px;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer}
+.welcome-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px}
+.welcome-cats button{border:1.5px solid var(--border);background:var(--bg);color:var(--text);border-radius:12px;padding:10px 6px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.welcome-cats button:hover{border-color:var(--primary);background:var(--primary-light,rgba(37,99,235,.08))}
+.welcome-actions{display:flex;gap:10px;margin-bottom:14px}
+.welcome-explore{flex:1;background:linear-gradient(135deg,#1d4ed8,#2563eb);color:#fff;border:none;border-radius:12px;padding:14px;font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;box-shadow:0 4px 14px rgba(29,78,216,.35)}
+.welcome-explore:hover{transform:translateY(-1px)}
+.welcome-register{flex:1;background:var(--bg);color:var(--text);border:1.5px solid var(--border);border-radius:12px;padding:14px;font-size:15px;font-weight:800;font-family:inherit;cursor:pointer}
+.welcome-register:hover{border-color:var(--primary);color:var(--primary)}
+.welcome-trust{font-size:12.5px;color:var(--text-secondary);margin-bottom:10px}
+.welcome-links{font-size:12px;color:var(--text-secondary)}
+.welcome-links a{color:var(--text-secondary);text-decoration:none}
+.welcome-links a:hover{color:var(--primary);text-decoration:underline}
+@media (max-width:768px){
+  .welcome-overlay{padding:10px;align-items:flex-end;padding-bottom:calc(14px + env(safe-area-inset-bottom))}
+  .welcome-card{padding:24px 18px 16px;border-radius:20px;max-height:88dvh}
+  .welcome-title{font-size:23px}
+  .welcome-cats{grid-template-columns:repeat(2,1fr)}
+  .welcome-actions{flex-direction:column}
+}

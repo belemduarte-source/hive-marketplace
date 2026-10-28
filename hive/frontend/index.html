@@ -156,7 +156,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v328.css"/>
+  <link rel="stylesheet" href="app.v329.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -257,7 +257,7 @@
   <div class="nav-banner">
     <div class="banner-content">
       <!-- LOGO HIVE PREMIUM -->
-      <div style="display:flex;align-items:center;gap:14px;margin-right:28px;flex-shrink:0;cursor:pointer;flex-direction:column" onclick="showTab('home')">
+      <div style="display:flex;align-items:center;gap:14px;margin-right:28px;flex-shrink:0;cursor:pointer;flex-direction:column" onclick="showWelcome()">
         <div style="display:flex;align-items:center;gap:14px">
 
         <!-- Icon Mark — honeycomb: 7 hex cells, breathing animation -->
@@ -365,11 +365,12 @@
     </div>
   </div>
   <div class="nav-links">
-    <button class="nav-link active" data-tab="home" onclick="showTab('home')">
+    <!-- Início = cartão de boas-vindas sobre o mapa (fusão das duas páginas) -->
+    <button class="nav-link" data-tab="home" onclick="showWelcome()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <span data-i18n="navHome">Início</span>
     </button>
-    <button class="nav-link" data-tab="search" onclick="showTab('search')">
+    <button class="nav-link active" data-tab="search" onclick="showTab('search')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <span data-i18n="navSearch">Pesquisa</span>
     </button>
@@ -506,7 +507,7 @@
   <div class="mobile-nav-backdrop"></div>
   <div class="mobile-nav-panel" onclick="event.stopPropagation()">
     <div class="mobile-nav-logo">🐝 Hivex</div>
-    <button class="mobile-nav-link active" id="mnHome" style="display:none" onclick="showTab('home');closeMobileNavPanel()">
+    <button class="mobile-nav-link active" id="mnHome" style="display:none" onclick="showWelcome();closeMobileNavPanel()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       <span data-i18n="navHome">Início</span>
     </button>
@@ -2098,6 +2099,61 @@
   </div>
 </div>
 
+<!-- ── BOAS-VINDAS — o Início fundido sobre o mapa. 1.ª visita abre isto por
+     cima do mapa vivo; pesquisar, escolher uma área ou fechar recolhe para o
+     mapa e fica memorizado. Conteúdo SEO real (h1 + texto) no HTML; o script
+     inline a seguir esconde-o pré-paint para visitas repetidas/deep links. -->
+<div id="welcomeOverlay" class="welcome-overlay" role="dialog" aria-label="Bem-vindo à Hivex" onclick="if(event.target===this)closeWelcome()">
+  <div class="welcome-card">
+    <button class="welcome-close" onclick="closeWelcome()" aria-label="Explorar o mapa">×</button>
+    <h1 class="welcome-title" data-i18n-html="lpHeroTitle">Encontre os melhores<br><span class="hero-accent">profissionais</span> de construção</h1>
+    <p class="welcome-sub" data-i18n="lpHeroSub">Pesquise por localização e tipo de serviço. Compare avaliações e peça orçamentos — tudo numa só plataforma.</p>
+    <div class="welcome-proof">
+      <span><b id="wProofCompanies">44 611</b> <span data-i18n="trustCompanies">empresas</span></span><span class="wp-dot">·</span>
+      <span><b id="wProofCountries">31</b> <span data-i18n="proofCountries">países</span></span><span class="wp-dot">·</span>
+      <span><b>16</b> <span data-i18n="proofSpecialties">especialidades</span></span>
+    </div>
+    <form class="welcome-search" onsubmit="welcomeSearch();return false">
+      <input id="welcomeQuery" type="text" placeholder="Cidade, empresa ou atividade…" autocomplete="off"/>
+      <button type="submit" data-i18n="navSearch">Pesquisar</button>
+    </form>
+    <div class="welcome-cats">
+      <button onclick="welcomeCat('estrutura_fundacao')">🏗️ <span data-i18n="legendEstrutura">Estrutura</span></button>
+      <button onclick="welcomeCat('instalacoes')">⚡ <span data-i18n="legendInstalacoes">Instalações</span></button>
+      <button onclick="welcomeCat('acabamentos')">🎨 <span data-i18n="legendAcabamentos">Acabamentos</span></button>
+      <button onclick="welcomeCat('carpintaria')">🪚 <span data-i18n="legendCarpintaria">Carpintaria</span></button>
+      <button onclick="welcomeCat('serralharia_metal')">🔩 <span data-i18n="legendSerralharia">Serralharia</span></button>
+      <button onclick="welcomeCat('exterior_jardim')">🌿 <span data-i18n="legendExterior">Exterior</span></button>
+      <button onclick="welcomeCat('projeto_gestao')">📐 <span data-i18n="legendProjeto">Projeto</span></button>
+      <button onclick="welcomeCat('chave_na_mao')">🔑 <span data-i18n="legendChaveNaMao">Chave na Mão</span></button>
+    </div>
+    <div class="welcome-actions">
+      <button class="welcome-explore" onclick="closeWelcome()"><span data-i18n="welcomeExplore">Explorar o mapa</span> →</button>
+      <button class="welcome-register" onclick="welcomeRegister()" data-i18n="lpHeroRegisterCta">Criar conta grátis</button>
+    </div>
+    <div class="welcome-trust">🛡️ <span data-i18n="welcomeTrustMod">Empresas moderadas (NIF + Certidão)</span> · 🔒 SSL · 🇪🇺 <span data-i18n="welcomeTrustEu">Dados na Europa</span></div>
+    <div class="welcome-links">
+      <a href="#legal/terms" onclick="openLegal('terms');return false" data-i18n="footerTerms">Termos de Serviço</a> ·
+      <a href="#legal/privacy" onclick="openLegal('privacy');return false" data-i18n="footerPrivacy">Privacidade</a> ·
+      <a href="#legal/cookies" onclick="openLegal('cookies');return false" data-i18n="footerCookies">Cookies</a> ·
+      <a href="#legal/rgpd" onclick="openLegal('rgpd');return false" data-i18n="footerRgpd">RGPD</a>
+    </div>
+  </div>
+</div>
+<script>
+/* Pré-paint: visitas repetidas e deep links de empresa não veem o cartão de
+   boas-vindas (sem flash). Crawlers (sem localStorage) veem-no sempre. */
+(function () {
+  try {
+    var dl = /[?&]company=/.test(location.search) || /^\/c\//.test(location.pathname);
+    if (dl || localStorage.getItem('hivex_bemvindo_visto')) {
+      var w = document.getElementById('welcomeOverlay');
+      if (w) w.style.display = 'none';
+    }
+  } catch (e) {}
+})();
+</script>
+
 <!-- ── STREET VIEW — Google panorama embedded in-site (keyless legacy embed) ── -->
 <div class="overlay" id="streetViewOverlay" onclick="if(event.target===this)closeStreetView()" role="dialog" aria-modal="true" aria-label="Vista de Rua">
   <div class="modal sv-modal">
@@ -2386,7 +2442,7 @@
      vetoriais OpenFreeMap sem chave, clustering nativo e 3D. -->
 <script defer src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js" integrity="sha384-5+cfbwT0iiub6VsQAdn6yz16nr6sDiQoHx6tm4O8OVYXHYOxcffFmCJBL0dgdvGp" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v328.js"></script>
+<script defer src="app.v329.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
