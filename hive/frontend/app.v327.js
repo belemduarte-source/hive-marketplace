@@ -4692,6 +4692,11 @@ try {
   // Arranque com o mapa ainda escondido: começa já a destravar/pré-carregar
   // tiles para o separador do mapa abrir pintado.
   map._kickUntilReady();
+  // Separador em background não recebe frames (rAF parado) — nada pinta lá,
+  // por especificação do browser. Ao voltar a ficar visível, destrava já.
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && map) map._kickUntilReady();
+  });
   // 'style.load' dispara no arranque E em cada troca de tema (setStyle limpa
   // fontes/camadas custom — é aqui que tudo o que é nosso volta a entrar).
   _ml.on('style.load', _hxEnsureSources);
