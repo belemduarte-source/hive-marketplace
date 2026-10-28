@@ -606,6 +606,10 @@
     /* Street View modal — panorama embedded in-site, near-fullscreen.
        (.modal.sv-modal: this rule sits before the base .modal in the file,
        so it needs the higher specificity to win the width battle.) */
+    /* Acima de TODA a UI do mapa (pílula de pesquisa 520, route-info 1100,
+       botão de localização 1001…): a pílula aparecia desenhada por cima do
+       panorama. Abaixo do lightbox/banner offline (12000). */
+    #streetViewOverlay{z-index:2600}
     .modal.sv-modal{width:min(1500px,calc(96vw / var(--z)));max-width:calc(96vw / var(--z));padding:16px 18px;display:flex;flex-direction:column}
     .sv-head{display:flex;align-items:center;gap:14px;margin-bottom:12px;min-width:0}
     .sv-title{font-size:22px;font-weight:800;color:var(--text);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
