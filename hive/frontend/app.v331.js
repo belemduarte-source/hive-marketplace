@@ -222,6 +222,7 @@ const translations = {
     helpMissionTitle:'Missão', helpMissionDesc:'Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.',
     helpVisionTitle:'Visão', helpVisionDesc:'Ser a plataforma de referência em Portugal para ligar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.',
     navLogin:'Entrar / Registar', navHelp:'Ajuda',
+    welcomeExplore:'Explorar o mapa', welcomeTrustMod:'Empresas moderadas (NIF + Certidão)', welcomeTrustEu:'Dados na Europa',
     themeToDark:'Escuro', themeToLight:'Claro', themeModeDark:'Modo escuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidade', avatarLogout:'Terminar Sessão', avatarFaqHelp:'FAQ & Ajuda',
     lpHeroRegisterCta:'Criar conta grátis', lpHeroRegisterHint:'Peça orçamentos, guarde favoritos e registe a sua empresa.',
@@ -637,6 +638,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:'To simplify and democratise access to quality professional services, creating a transparent ecosystem where companies and professionals can grow together, without unnecessary intermediaries.',
     helpVisionTitle:'Vision', helpVisionDesc:'To be the reference platform in Portugal for connecting companies and professionals, promoting economic growth and creating opportunities for all.',
     navLogin:'Login / Sign up', navHelp:'Help',
+    welcomeExplore:'Explore the map', welcomeTrustMod:'Moderated companies (tax ID + registry)', welcomeTrustEu:'Data hosted in Europe',
     themeToDark:'Dark', themeToLight:'Light', themeModeDark:'Dark mode', themeModeLight:'Light mode',
     navFavourites:'Favourites', navFaq:'FAQ', navPrivacy:'Privacy', avatarLogout:'Sign out', avatarFaqHelp:'FAQ & Help',
     lpHeroRegisterCta:'Create free account', lpHeroRegisterHint:'Request quotes, save favourites and register your company.',
@@ -1045,6 +1047,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:"Simplifier et démocratiser l'accès à des services professionnels de qualité, en créant un écosystème transparent où entreprises et professionnels peuvent grandir ensemble, sans intermédiaires inutiles.",
     helpVisionTitle:'Vision', helpVisionDesc:'Être la plateforme de référence au Portugal pour connecter entreprises et professionnels, en favorisant la croissance économique et en créant des opportunités pour tous.',
     navLogin:'Connexion / Inscription', navHelp:'Aide',
+    welcomeExplore:'Explorer la carte', welcomeTrustMod:'Entreprises modérées (NIF + registre)', welcomeTrustEu:'Données hébergées en Europe',
     themeToDark:'Sombre', themeToLight:'Clair', themeModeDark:'Mode sombre', themeModeLight:'Mode clair',
     navFavourites:'Favoris', navFaq:'FAQ', navPrivacy:'Confidentialité', avatarLogout:'Se déconnecter', avatarFaqHelp:'FAQ & Aide',
     lpHeroRegisterCta:'Créer un compte gratuit', lpHeroRegisterHint:"Demandez des devis, enregistrez des favoris et inscrivez votre entreprise.",
@@ -1449,6 +1452,7 @@ const translations = {
     helpMissionTitle:'Misión', helpMissionDesc:'Simplificar y democratizar el acceso a servicios profesionales de calidad, creando un ecosistema transparente donde empresas y profesionales puedan crecer juntos.',
     helpVisionTitle:'Visión', helpVisionDesc:'Ser la plataforma de referencia en Portugal para conectar empresas y profesionales, fomentando el crecimiento económico y creando oportunidades para todos.',
     navLogin:'Entrar / Registrarse', navHelp:'Ayuda',
+    welcomeExplore:'Explorar el mapa', welcomeTrustMod:'Empresas moderadas (NIF + registro)', welcomeTrustEu:'Datos alojados en Europa',
     themeToDark:'Oscuro', themeToLight:'Claro', themeModeDark:'Modo oscuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidad', avatarLogout:'Cerrar sesión', avatarFaqHelp:'FAQ y Ayuda',
     lpHeroRegisterCta:'Crear cuenta gratis', lpHeroRegisterHint:'Pida presupuestos, guarde favoritos y registre su empresa.',
@@ -1850,6 +1854,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:'Den Zugang zu hochwertigen Fachleistungen vereinfachen und demokratisieren – ein transparentes Ökosystem schaffen, in dem Unternehmen und Fachleute gemeinsam wachsen können, ohne unnötige Zwischenhändler.',
     helpVisionTitle:'Vision', helpVisionDesc:'Die führende Plattform in Portugal zur Vernetzung von Unternehmen und Fachleuten werden, Wirtschaftswachstum fördern und Chancen für alle schaffen.',
     navLogin:'Anmelden / Registrieren', navHelp:'Hilfe',
+    welcomeExplore:'Karte erkunden', welcomeTrustMod:'Geprüfte Unternehmen (NIF + Register)', welcomeTrustEu:'Daten in Europa gehostet',
     themeToDark:'Dunkel', themeToLight:'Hell', themeModeDark:'Dunkelmodus', themeModeLight:'Heller Modus',
     navFavourites:'Favoriten', navFaq:'FAQ', navPrivacy:'Datenschutz', avatarLogout:'Abmelden', avatarFaqHelp:'FAQ & Hilfe',
     lpHeroRegisterCta:'Kostenloses Konto erstellen', lpHeroRegisterHint:'Angebote anfragen, Favoriten speichern und Ihren Betrieb registrieren.',
@@ -2990,14 +2995,18 @@ function applyI18n() {
   }
 
   // Unified search placeholder (one element, no querySelectorAll cost)
-  const _uniEl = document.getElementById('searchUnified');
-  if (_uniEl) _uniEl.placeholder = {
+  const _uniPh = {
     pt: 'Cidade, empresa ou atividade...',
     en: 'City, company or activity...',
     fr: 'Ville, entreprise ou activité...',
     es: 'Ciudad, empresa o actividad...',
     de: 'Stadt, Firma oder Tätigkeit...'
   }[currentLang] || 'Cidade, empresa ou atividade...';
+  const _uniEl = document.getElementById('searchUnified');
+  if (_uniEl) _uniEl.placeholder = _uniPh;
+  // pesquisa do cartão de boas-vindas: mesmo placeholder
+  const _wq = document.getElementById('welcomeQuery');
+  if (_wq) _wq.placeholder = _uniPh;
 
   // Chat input placeholder (lone element)
   const _chatIn = document.getElementById('chatInput');
