@@ -675,6 +675,15 @@ const MIGRATIONS = [
      window_count INT NOT NULL DEFAULT 1
    )`,
   `ALTER TABLE claims ADD COLUMN IF NOT EXISTS attempts INT NOT NULL DEFAULT 0`,
+
+  // v12: funil de utilização sem cookies — só um contador por dia e por
+  // evento (pesquisa, ficha, pedido…); nenhum identificador nem IP guardado.
+  `CREATE TABLE IF NOT EXISTS site_events (
+     day   DATE NOT NULL,
+     event TEXT NOT NULL,
+     n     INT  NOT NULL DEFAULT 0,
+     PRIMARY KEY (day, event)
+   )`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -683,7 +692,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 11; // v11: login_codes + claims.attempts
+const SCHEMA_VERSION = 12; // v12: site_events (funil sem cookies)
 
 async function ensureSchema() {
   if (_migrated) return;
@@ -756,6 +765,27 @@ app.post('/api/claims/:companyId', claimLimiter);       // claim-code email guar
 app.post('/api/claims/:companyId/guest', claimLimiter); // claim sem conta — mesmo orçamento
 app.post('/api/auth/code/request', codeLimiter);       // código de acesso por email
 app.post('/api/quote-requests', rfqLimiter);            // RFQ email fan-out guard
+
+// Funil de utilização (sem cookies): o browser envia só o NOME do evento e
+// soma-se 1 ao contador do dia. Nada identifica o visitante; bots e
+// automação não contam. Lido no painel de administração (Estatísticas).
+const SITE_EVENTS = new Set(['visita', 'pesquisa', 'area', 'ficha', 'lista', 'pedido_abrir', 'pedido',
+  'orcamento_pedido', 'telefone', 'whatsapp', 'site', 'rota', 'entrar', 'conta_nova', 'reclamar',
+  'reclamada', 'registo', 'destacada', 'destaque_cta']);
+const BOT_UA = /bot|crawl|spider|slurp|headless|lighthouse|pagespeed|preview|monitor|curl|wget|python|axios|node-fetch/i;
+app.post('/api/ev', eventLimiter, async (req, res) => {
+  const e = String(req.query.e || '');
+  if (SITE_EVENTS.has(e) && !BOT_UA.test(String(req.get('user-agent') || ''))) {
+    try {
+      const pool = require('./db');
+      await pool.query(
+        `INSERT INTO site_events (day, event, n) VALUES ((now() AT TIME ZONE 'Europe/Lisbon')::date, $1, 1)
+         ON CONFLICT (day, event) DO UPDATE SET n = site_events.n + 1`, [e]);
+    } catch (err) { console.error('[ev] falhou:', err.message); }
+  }
+  res.status(204).end();
+});
+
 app.use('/api', marketplaceRouter);
 app.use('/api', require('./routes/billing').router);
 app.use('/api/companies', companiesRouter);

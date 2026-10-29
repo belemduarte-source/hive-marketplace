@@ -2068,6 +2068,37 @@ function refreshLucide() {
   (window.requestIdleCallback || ((cb) => requestAnimationFrame(cb)))(run, { timeout: 500 });
 }
 
+// ── Funil de utilização (sem cookies) ─────────────────────────────────────────
+// Só o NOME do evento vai para /api/ev, que soma 1 ao contador do dia — nada
+// identifica o visitante. Automação (navigator.webdriver, ex.: testes) e
+// localhost não contam. Lido em Administração → Estatísticas.
+function _ev(nome) {
+  try {
+    if (navigator.webdriver || /^(localhost|127\.|0\.0\.0\.0|\[::1\])/.test(location.hostname)) return;
+    if (nome === 'visita') {
+      if (sessionStorage.getItem('hx_ev_visita')) return;
+      sessionStorage.setItem('hx_ev_visita', '1');
+    }
+    const url = (window.API_BASE || '/api') + '/ev?e=' + encodeURIComponent(nome);
+    if (navigator.sendBeacon && navigator.sendBeacon(url)) return;
+    fetch(url, { method: 'POST', keepalive: true, credentials: 'omit' }).catch(() => {});
+  } catch (_) {}
+}
+window._ev = _ev;
+document.addEventListener('DOMContentLoaded', () => _ev('visita'));
+// Cliques em ligações de contacto direto (cartões e ficha) e pesquisas
+document.addEventListener('click', (e) => {
+  const a = e.target && e.target.closest && e.target.closest('a, #btnSearch');
+  if (!a) return;
+  if (a.id === 'btnSearch') _ev('pesquisa');
+  else if (/^tel:/i.test(a.getAttribute('href') || '')) _ev('telefone');
+  else if (/wa\.me\//i.test(a.getAttribute('href') || '')) _ev('whatsapp');
+  else if (a.classList.contains('dp-social-website')) _ev('site');
+}, true);
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && e.target && e.target.id === 'searchUnified' && String(e.target.value || '').trim()) _ev('pesquisa');
+}, true);
+
 // ── TAB NAVIGATION ─────────────────────────────────────────────────────────────
 function showTab(name) {
   // Notify listeners (e.g. casa animation, IO observers) so they can pause
@@ -2682,6 +2713,7 @@ function welcomeSearch() {
   const v = ((document.getElementById('welcomeQuery') || {}).value || '').trim();
   closeWelcome();
   if (!v) return;
+  _ev('pesquisa');
   const u = document.getElementById('searchUnified');
   if (u) u.value = v;
   try { handleUnifiedSearch(v); } catch (_) {}
@@ -2689,6 +2721,7 @@ function welcomeSearch() {
   if (window.innerWidth <= 768) setTimeout(() => { try { openResultsSheet(); } catch (_) {} }, 350);
 }
 function welcomeCat(k) {
+  _ev('area');
   closeWelcome();
   try { lpCatSearch(k); } catch (_) {}
 }
@@ -3145,7 +3178,8 @@ const _PT_ACENTOS = (() => {
     'associacao:associação cooperacao:cooperação uniao:união regiao:região portugues:português iberica:ibérica ' +
     'lusitania:lusitânia irmaos:irmãos joao:joão sebastiao:sebastião simao:simão estevao:estevão conceicao:conceição ' +
     'assuncao:assunção goncalves:gonçalves simoes:simões magalhaes:magalhães guimaraes:guimarães leitao:leitão ' +
-    'romao:romão galvao:galvão brandao:brandão falcao:falcão paixao:paixão antonio:antónio sao:são';
+    'romao:romão galvao:galvão brandao:brandão falcao:falcão paixao:paixão antonio:antónio sao:são ' +
+    'publicas:públicas publica:pública imobiliarios:imobiliários instalacao:instalação irmao:irmão mobiliario:mobiliário telecomunicacoes:telecomunicações comunicacoes:comunicações edificios:edifícios edificio:edifício assistencia:assistência renovaveis:renováveis sergio:sérgio conservacao:conservação refrigeracao:refrigeração eletricos:elétricos eletrico:elétrico electricos:eléctricos electrico:eléctrico ventilacao:ventilação climatizacoes:climatizações mario:mário mecanicas:mecânicas mecanico:mecânico moveis:móveis marcio:márcio energeticas:energéticas energeticos:energéticos abilio:abílio divisorias:divisórias fabrica:fábrica fabio:fábio termicas:térmicas termicos:térmicos transformacao:transformação domotica:domótica americo:américo aplicacao:aplicação recuperacao:recuperação eletronica:eletrónica electronica:electrónica julio:júlio prestacao:prestação manutencoes:manutenções mediacao:mediação informatica:informática colocacao:colocação dimensao:dimensão sinalizacao:sinalização adao:adão comercializacao:comercialização formacao:formação vitoria:vitória nivel:nível tecnologica:tecnológica tecnologicas:tecnológicas tecnologico:tecnológico tecnologicos:tecnológicos prestigio:prestígio iluminacoes:iluminações electrotecnica:electrotécnica eletrotecnica:eletrotécnica africa:áfrica metalomecanicas:metalomecânicas questao:questão importacao:importação exportacao:exportação exploracao:exploração representacao:representação representacoes:representações ilidio:ilídio patrimonio:património concepcao:concepção hilario:hilário eugenio:eugénio eugenia:eugénia silverio:silvério imperio:império dario:dário incendio:incêndio incendios:incêndios opcao:opção reconstrucao:reconstrução flavio:flávio visionario:visionário fiscalizacao:fiscalização gregorio:gregório ambrosio:ambrósio definicao:definição razao:razão favoravel:favorável jose:josé luis:luís goncalo:gonçalo lourenco:lourenço araujo:araújo agua:água aguas:águas certificacao:certificação avaliacao:avaliação coordenacao:coordenação execucao:execução protecao:proteção proteccao:protecção condominio:condomínio condominios:condomínios maquinas:máquinas veiculos:veículos grafica:gráfica graficas:gráficas quimica:química quimicos:químicos plasticos:plásticos eficiencia:eficiência restauracao:restauração familia:família acores:açores setubal:setúbal santarem:santarém evora:évora braganca:bragança portimao:portimão olhao:olhão loule:loulé famalicao:famalicão covilha:covilhã agueda:águeda alcobaca:alcobaça valenca:valença fundao:fundão';
   const m = new Map(pares.split(' ').map(p => p.split(':')));
   return { m, re: new RegExp('(?<![\\p{L}\\p{N}])(' + [...m.keys()].join('|') + ')(?![\\p{L}\\p{N}])', 'giu') };
 })();
@@ -5634,6 +5668,7 @@ function renderSectorFilters() {
     catItem.querySelectorAll('.cat-dd-item').forEach(item => {
       item.addEventListener('click', (e) => {
         e.stopPropagation();
+        _ev('area');
         const sector = item.dataset.sector;
         // Toggle immediately in the UI (active highlight) before re-render
         item.classList.toggle('active', !activeSectors.has(sector));
@@ -7198,7 +7233,7 @@ function _featCardHtml(c) {
   const aval = c.rating > 0
     ? '<span class="feat-aval"><span class="nc-stars">★</span> <strong>' + c.rating.toFixed(1) + '</strong> <span class="nc-reviews">(' + (c.reviews || 0) + ')</span></span>'
     : '';
-  return '<div class="feat-card" role="button" tabindex="0" data-company-id="' + c.id + '" onclick="openDetail(' + c.id + ')" ' +
+  return '<div class="feat-card" role="button" tabindex="0" data-company-id="' + c.id + '" onclick="_ev(\x27destacada\x27);openDetail(' + c.id + ')" ' +
       'onkeydown="if(event.key===\'Enter\')openDetail(' + c.id + ')">' +
     '<div class="feat-top">' + _logoHtml(c, 'feat-logo') +
       '<div class="feat-main">' +
@@ -7214,6 +7249,7 @@ function _featCardHtml(c) {
 // "Destaque a sua empresa": quem já tem empresa vai ao perfil (onde pede o
 // destaque, ⭐ em cada ficha); os restantes começam por encontrar/registar a sua.
 function featCta() {
+  _ev('destaque_cta');
   let me = null;
   try { me = JSON.parse(localStorage.getItem('hive_user') || 'null'); } catch (_) {}
   const temEmpresa = me && (companies || []).some(c => c.created_by != null && c.created_by === Number(me.id));
@@ -7608,6 +7644,7 @@ function submitRegister() {
         if (typeof updateNavAuth === 'function') updateNavAuth();
         document.getElementById('regSuccessName').textContent = name;
         document.getElementById('regSuccessOverlay').classList.add('open');
+        _ev('registo');
       }
 
       // Reset form
@@ -7789,6 +7826,7 @@ function _routeUserLatLng() {
 }
 
 async function routeToCompany(id) {
+  _ev('rota');
   const cid = (id != null) ? id : selectedId;
   const c = companies.find(x => x.id === cid);
   if (!c || c.lat == null || c.lng == null) return;
@@ -7876,6 +7914,7 @@ window.toggleDpMore = toggleDpMore;
 async function openDetail(id) {
   const c  = companies.find(x => x.id === id);
   if (!c) return;
+  _ev('ficha');
   selectedId = id;
   // Guarantee this company's pin is on the map right away (deep links / home
   // cards land here before any area filter is active — see _runApplyFilters).
@@ -8282,6 +8321,7 @@ function closeDetail() {
 
 // ── CALL / SHARE ────────────────────────────────────────────────────────────
 function callCompany() {
+  _ev('telefone');
   const c = companies.find(x => x.id === selectedId);
   if (!c) return;
   if (c.phone) {
@@ -8356,6 +8396,7 @@ let _claimComoConvidado = false;
 const _claimMascara = (email) => String(email || '').replace(/^(.).*(@.*)$/, '$1***$2');
 function openClaimModal() {
   if (!selectedId) return;
+  _ev('reclamar');
   _claimCompanyId = selectedId;
   const me = JSON.parse(localStorage.getItem('hive_user') || 'null');
   const c = companies.find(x => Number(x.id) === Number(selectedId));
@@ -8423,6 +8464,7 @@ async function claimVerify(btn) {
     const id = _claimCompanyId;
     closeClaimModal();
     showToast(t('claimSuccess'));
+    _ev('reclamada');
     // Segue direto para completar a ficha (descrição, logótipo, fotos…).
     try {
       openDetail(id);
@@ -8485,6 +8527,7 @@ async function submitRfq(btn) {
   try {
     const r = await api.createQuoteRequest(body);
     closeRfqModal();
+    _ev('orcamento_pedido');
     showToast(t('rfqSentA') + ' ' + (r.notified || 0) + ' ' + t('rfqSentB'));
     const d = document.getElementById('rfqDesc'); if (d) d.value = '';
   } catch (e) {
@@ -8854,6 +8897,7 @@ function _injectCompanySeo(c) {
 
 // ── WHATSAPP CONTACT ──────────────────────────────────────────────────────────
 function openWhatsAppContact() {
+  _ev('whatsapp');
   const c = companies.find(x => x.id === selectedId);
   if (!c) return;
   const phone = (c.phone || '').replace(/\D/g, '');
@@ -9929,6 +9973,7 @@ async function authVerifyCode() {
 }
 // Depois de qualquer entrada bem-sucedida (código, palavra-passe, claim).
 function _authOnSignedIn(user, opts) {
+  _ev('entrar'); if (opts && opts.isNew) _ev('conta_nova');
   localStorage.setItem('hive_user', JSON.stringify(user));
   isAdminMode = user.is_admin === true;
   updateNavAuth();
@@ -12319,6 +12364,7 @@ function openContactModal() {
     }
   } catch (_) {}
   try { _ctRenderTemplates(c); } catch (_) {}
+  _ev('pedido_abrir');
   document.getElementById('contactModal').classList.add('open');
   setTimeout(() => (user ? msg : document.getElementById('contactGuestName'))?.focus(), 200);
 }
@@ -12364,6 +12410,7 @@ async function submitContactForm() {
   if (btn) { btn.disabled = true; btn.textContent = t('sendingBtn'); }
   try {
     await api.contactCompany(selectedId, body);
+    _ev('pedido');
     closeContactModal();
     showToast(t('toastMsgSent'));
   } catch(e) {
@@ -12475,13 +12522,50 @@ function adminViewReportedCompany(id) {
   openDetail(id);
 }
 
+// Funil de utilização (contadores diários sem cookies de /api/ev): hoje, 7 e
+// 30 dias por evento, pela ordem do percurso de um cliente.
+const _FUNIL = [
+  ['visita', 'Sessões'], ['pesquisa', 'Pesquisas'], ['area', 'Áreas escolhidas'],
+  ['ficha', 'Fichas abertas'], ['lista', 'Vista de lista'], ['destacada', 'Cliques em destacadas'],
+  ['pedido_abrir', 'Formulários de pedido abertos'], ['pedido', 'Mensagens enviadas'],
+  ['orcamento_pedido', 'Pedidos de orçamento (várias empresas)'], ['telefone', 'Cliques em telefone'],
+  ['whatsapp', 'Cliques em WhatsApp'], ['site', 'Cliques no site da empresa'], ['rota', 'Como chegar'],
+  ['entrar', 'Entradas na conta'], ['conta_nova', 'Contas novas'], ['reclamar', 'Reclamações iniciadas'],
+  ['reclamada', 'Fichas reclamadas'], ['registo', 'Empresas registadas'], ['destaque_cta', 'Interesse em destaque'],
+];
+function _adminFunilHtml(rows) {
+  if (!Array.isArray(rows)) return '';
+  const hoje = new Date().toLocaleDateString('en-CA', { timeZone: 'Europe/Lisbon' });
+  const d7 = new Date(Date.now() - 6 * 864e5).toLocaleDateString('en-CA', { timeZone: 'Europe/Lisbon' });
+  const soma = {};
+  for (const r of rows) {
+    const o = soma[r.event] || (soma[r.event] = { h: 0, s: 0, m: 0 });
+    o.m += r.n; if (r.day >= d7) o.s += r.n; if (r.day === hoje) o.h += r.n;
+  }
+  const v = k => soma[k] || { h: 0, s: 0, m: 0 };
+  const pct = (a, b) => (b > 0 ? Math.round(100 * a / b) + '%' : '—');
+  const linhas = _FUNIL.map(([k, rot]) => '<tr><td style="padding:6px 8px">' + rot + '</td>' +
+    '<td style="padding:6px 8px;text-align:right">' + v(k).h + '</td>' +
+    '<td style="padding:6px 8px;text-align:right">' + v(k).s + '</td>' +
+    '<td style="padding:6px 8px;text-align:right;font-weight:600">' + v(k).m + '</td></tr>').join('');
+  const sess = v('visita').m, fichas = v('ficha').m, pedidos = v('pedido').m + v('orcamento_pedido').m;
+  return '<div style="font-size:13px;font-weight:700;color:var(--text);margin:20px 0 4px">Funil de utilização (sem cookies)</div>' +
+    '<div style="font-size:12px;color:var(--muted);margin:0 0 10px">30 dias: ' + pct(fichas, sess) + ' das sessões abrem uma ficha · ' +
+    pct(pedidos, fichas) + ' das fichas abertas acabam num pedido</div>' +
+    '<table style="width:100%;border-collapse:collapse;font-size:13px;border:1px solid var(--border);border-radius:8px">' +
+    '<thead><tr style="background:var(--bg);color:var(--text-secondary)"><th style="padding:6px 8px;text-align:left;font-weight:600">Evento</th>' +
+    '<th style="padding:6px 8px;text-align:right;font-weight:600">Hoje</th><th style="padding:6px 8px;text-align:right;font-weight:600">7 dias</th>' +
+    '<th style="padding:6px 8px;text-align:right;font-weight:600">30 dias</th></tr></thead><tbody>' + linhas + '</tbody></table>';
+}
+
 async function adminLoadStats() {
   const body = document.getElementById('adminBody');
   body.innerHTML = '<div style="text-align:center;padding:32px;color:var(--muted)">' + t('loadingGeneric') + '</div>';
   try {
-    const [s, v] = await Promise.all([
+    const [s, v, fun] = await Promise.all([
       api.adminStats(),
       apiFetch('/admin/visits').catch(() => null),
+      apiFetch('/admin/site-events?days=30').catch(() => null),
     ]);
     // Show the pending count on the "Pendentes" tab so it's visible at a glance.
     const pendTab = document.querySelector('.admin-tab[onclick*="pending"]');
@@ -12501,10 +12585,11 @@ async function adminLoadStats() {
         <button id="admvbweek" onclick="adminLoadVisitsChart('week')">Semana</button>
         <button id="admvbmonth" onclick="adminLoadVisitsChart('month')">Mês</button>
       </div>
-      <div id="adminVisitsChartBox">${adminVisitsLineChart(v.series, v.period || 'day')}</div>
-      <div style="font-size:13px;font-weight:800;color:var(--text);margin:20px 0 10px">Empresas &amp; utilizadores</div>` : '';
+      <div id="adminVisitsChartBox">${adminVisitsLineChart(v.series, v.period || 'day')}</div>` : '';
     body.innerHTML = `
       ${visitsHtml}
+      ${_adminFunilHtml(fun)}
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin:20px 0 10px">Empresas &amp; utilizadores</div>
       <div class="admin-stat-grid">
         <div class="admin-stat-card"><div class="admin-stat-value" style="color:var(--green)">${s.approved}</div><div class="admin-stat-label">${t('admStatApproved')}</div></div>
         <div class="admin-stat-card"><div class="admin-stat-value" style="color:#f59e0b">${s.pending}</div><div class="admin-stat-label">${t('admPendingPlain')}</div></div>

@@ -27,6 +27,21 @@ router.get('/stats', async (req, res, next) => {
   }
 });
 
+// GET /api/admin/site-events?days=30 — funil de utilização (contadores
+// diários sem cookies gravados por POST /api/ev)
+router.get('/site-events', async (req, res, next) => {
+  try {
+    const days = Math.min(365, Math.max(1, parseInt(req.query.days, 10) || 30));
+    const { rows } = await pool.query(
+      `SELECT to_char(day, 'YYYY-MM-DD') AS day, event, n FROM site_events
+        WHERE day > (now() AT TIME ZONE 'Europe/Lisbon')::date - $1::int
+        ORDER BY day DESC, event`, [days]);
+    res.json(rows);
+  } catch (e) {
+    next(e);
+  }
+});
+
 // GET /api/admin/companies?status=pending&q=name — list all companies
 router.get('/companies', async (req, res, next) => {
   try {
