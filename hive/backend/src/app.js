@@ -15,6 +15,7 @@ function _hasEnv(...keys) { return keys.every(k => !!process.env[k]); }
 const INTEGRATION_STATUS = {
   google_signin:  _hasEnv('GOOGLE_CLIENT_ID'),
   email_smtp:     _hasEnv('SMTP_USER', 'SMTP_PASS'),
+  email_resend:   _hasEnv('RESEND_API_KEY', 'EMAIL_FROM'),
   admin_token:    _hasEnv('ADMIN_TOKEN'),
   admin_email:    _hasEnv('ADMIN_EMAIL'),
   app_url:        _hasEnv('APP_URL'),
@@ -631,6 +632,25 @@ const MIGRATIONS = [
      email      TEXT PRIMARY KEY,
      created_at TIMESTAMPTZ DEFAULT NOW()
    )`,
+
+  // v10: campanha "reclame a sua ficha" (hive/scripts/claim-campaign.js).
+  // Um convite por empresa (os envios de teste ficam fora do índice único);
+  // token aleatório por convite = link de opt-out sem segredo partilhado.
+  // A MESMA DDL está em claim-campaign.js (ensureTable) — manter iguais.
+  `CREATE TABLE IF NOT EXISTS claim_invites (
+     id         BIGSERIAL PRIMARY KEY,
+     company_id BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+     email      TEXT NOT NULL,
+     token      TEXT NOT NULL UNIQUE,
+     status     TEXT NOT NULL DEFAULT 'reserved' CHECK (status IN ('reserved','sent','failed','test')),
+     transport  TEXT,
+     message_id TEXT,
+     error      TEXT,
+     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+     sent_at    TIMESTAMPTZ
+   )`,
+  `CREATE UNIQUE INDEX IF NOT EXISTS uq_claim_invites_company ON claim_invites(company_id) WHERE status <> 'test'`,
+  `CREATE INDEX IF NOT EXISTS idx_claim_invites_email ON claim_invites(email)`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -639,7 +659,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 9; // v9: review_requests + email_optouts
+const SCHEMA_VERSION = 10; // v10: claim_invites (campanha "reclame a sua ficha")
 
 async function ensureSchema() {
   if (_migrated) return;

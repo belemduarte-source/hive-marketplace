@@ -1,14 +1,17 @@
 const nodemailer = require('nodemailer');
 
-// Build a transporter lazily so missing env vars don't crash startup
-function createTransporter() {
-  // Strip BOM/zero-width chars and surrounding whitespace — common when env values
-  // are pasted from docs or copied through tools that prefix a U+FEFF marker.
-  const clean = (v) => (v == null ? '' : String(v)).replace(/^[﻿​\s]+|[﻿​\s]+$/g, '');
-  const host = clean(process.env.SMTP_HOST) || 'smtp.gmail.com';
-  const portStr = clean(process.env.SMTP_PORT) || '465';
-  const user = clean(process.env.SMTP_USER);
-  const pass = clean(process.env.SMTP_PASS);
+// Strip BOM/zero-width chars and surrounding whitespace — common when env values
+// are pasted from docs or copied through tools that prefix a U+FEFF marker.
+const clean = (v) => (v == null ? '' : String(v)).replace(/^[﻿​\s]+|[﻿​\s]+$/g, '');
+
+// Build a transporter lazily so missing env vars don't crash startup.
+// prefix 'SMTP_' = Gmail da plataforma; o script da campanha usa
+// 'CAMPAIGN_SMTP_' (caixa dedicada, nunca a dos emails essenciais).
+function createTransporter(prefix = 'SMTP_') {
+  const host = clean(process.env[prefix + 'HOST']) || 'smtp.gmail.com';
+  const portStr = clean(process.env[prefix + 'PORT']) || '465';
+  const user = clean(process.env[prefix + 'USER']);
+  const pass = clean(process.env[prefix + 'PASS']);
   if (!user || !pass) return null;
 
   const port = parseInt(portStr, 10);
@@ -20,14 +23,77 @@ function createTransporter() {
   });
 }
 
+// ── Fornecedor de envio ──────────────────────────────────────────────────────
+// Resend (integração nativa do Vercel Marketplace, cria RESEND_API_KEY) quando
+// RESEND_API_KEY + EMAIL_FROM existem — EMAIL_FROM tem de ser um endereço do
+// domínio verificado na Resend (ex.: "Hivex Marketplace <noreply@hivex.pt>").
+// Sem essas variáveis tudo continua a sair pelo Gmail (SMTP_*), como antes.
+// Se a Resend falhar (quota, falha de serviço, domínio por verificar) o mesmo
+// email segue pelo Gmail — recuperação de palavra-passe e mensagens nunca
+// ficam por enviar por causa do fornecedor novo.
+function resendConfig() {
+  const key = clean(process.env.RESEND_API_KEY);
+  const from = clean(process.env.EMAIL_FROM);
+  return key && from ? { key, from } : null;
+}
+
+function emailConfigured() {
+  return !!(resendConfig() || createTransporter());
+}
+
+async function sendViaResend({ key, from }, { to, replyTo, subject, html, text, headers }) {
+  // Sem replyTo explícito as respostas vão para a caixa da equipa (o From da
+  // Resend é um noreply do domínio; vários emails dizem "responda a este email").
+  const reply = replyTo || clean(process.env.EMAIL_REPLY_TO) || clean(process.env.ADMIN_EMAIL) || clean(process.env.SMTP_USER);
+  const r = await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      from, to: [to], subject, html,
+      ...(text ? { text } : {}),
+      ...(reply ? { reply_to: reply } : {}),
+      ...(headers ? { headers } : {}),
+    }),
+    signal: AbortSignal.timeout(15000),
+  });
+  const body = await r.json().catch(() => ({}));
+  if (!r.ok) throw new Error(`Resend ${r.status}: ${body.message || body.name || 'erro desconhecido'}`);
+  return { provider: 'resend', id: body.id || null };
+}
+
+// Envia UM email pelo fornecedor configurado. Devolve { provider, id } ou
+// null quando não há fornecedor nenhum (os chamadores ignoram, como antes).
+async function deliver({ to, replyTo, subject, html, text, headers }) {
+  if (!to) return null;
+  const resend = resendConfig();
+  if (resend) {
+    try { return await sendViaResend(resend, { to, replyTo, subject, html, text, headers }); }
+    catch (e) {
+      if (!createTransporter()) throw e;
+      console.error('[email] Resend falhou, a enviar pelo SMTP:', e.message);
+    }
+  }
+  const transporter = createTransporter();
+  if (!transporter) return null;
+  const info = await transporter.sendMail({
+    from: `"Hivex Marketplace" <${clean(process.env.SMTP_USER)}>`,
+    to,
+    ...(replyTo ? { replyTo } : {}),
+    subject,
+    html,
+    ...(text ? { text } : {}),
+    ...(headers ? { headers } : {}),
+  });
+  return { provider: 'smtp', id: info.messageId || null };
+}
+
 /**
  * Send an admin notification when a new company registers.
  * Includes one-click Approve / Reject links.
  * Silently skips if SMTP credentials are not configured.
  */
 async function sendRegistrationNotification(company) {
-  const transporter = createTransporter();
-  if (!transporter) {
+  if (!emailConfigured()) {
     console.warn('[email] SMTP not configured — skipping registration notification');
     return;
   }
@@ -123,8 +189,7 @@ async function sendRegistrationNotification(company) {
   </div>
 </div>`;
 
-  await transporter.sendMail({
-    from:    `"Hivex Marketplace" <${process.env.SMTP_USER}>`,
+  await deliver({
     to:      adminEmail,
     subject: `[Hivex] ⏳ Nova empresa para validar: ${company.name}`,
     html,
@@ -135,8 +200,7 @@ async function sendRegistrationNotification(company) {
  * Send a welcome / approval confirmation email to the company.
  */
 async function sendCompanyApprovalEmail(company) {
-  const transporter = createTransporter();
-  if (!transporter || !company.email) return;
+  if (!emailConfigured() || !company.email) return;
 
   const appUrl = (process.env.APP_URL || '').replace(/\/$/, '');
 
@@ -164,8 +228,7 @@ async function sendCompanyApprovalEmail(company) {
   </div>
 </div>`;
 
-  await transporter.sendMail({
-    from:    `"Hivex Marketplace" <${process.env.SMTP_USER}>`,
+  await deliver({
     to:      company.email,
     subject: `✅ ${company.name} — Registo aprovado na Hivex!`,
     html,
@@ -176,8 +239,7 @@ async function sendCompanyApprovalEmail(company) {
  * Optionally notify a company that their registration was not accepted.
  */
 async function sendCompanyRejectionEmail(company) {
-  const transporter = createTransporter();
-  if (!transporter || !company.email) return;
+  if (!emailConfigured() || !company.email) return;
 
   const html = `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
@@ -200,8 +262,7 @@ async function sendCompanyRejectionEmail(company) {
   </div>
 </div>`;
 
-  await transporter.sendMail({
-    from:    `"Hivex Marketplace" <${process.env.SMTP_USER}>`,
+  await deliver({
     to:      company.email,
     subject: `Hivex — Pedido de registo de ${company.name}`,
     html,
@@ -244,8 +305,7 @@ function companyReplyCtaHtml(company) {
  * address is never exposed to the frontend.
  */
 async function sendContactEmail(company, sender, message) {
-  const transporter = createTransporter();
-  if (!transporter || !company.email) return;
+  if (!emailConfigured() || !company.email) return;
 
   const html = `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
@@ -277,8 +337,7 @@ async function sendContactEmail(company, sender, message) {
   </div>
 </div>`;
 
-  await transporter.sendMail({
-    from:    `"Hivex Marketplace" <${process.env.SMTP_USER}>`,
+  await deliver({
     to:      company.email,
     replyTo: sender.email,
     subject: `[Hivex] Mensagem de ${sender.name} para ${company.name}`,
@@ -290,8 +349,7 @@ async function sendContactEmail(company, sender, message) {
  * Password reset email — single-use link valid for 60 minutes.
  */
 async function sendPasswordResetEmail(user, resetUrl) {
-  const transporter = createTransporter();
-  if (!transporter || !user.email) return;
+  if (!emailConfigured() || !user.email) return;
 
   const html = `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
@@ -320,8 +378,7 @@ async function sendPasswordResetEmail(user, resetUrl) {
   </div>
 </div>`;
 
-  await transporter.sendMail({
-    from:    `"Hivex Marketplace" <${process.env.SMTP_USER}>`,
+  await deliver({
     to:      user.email,
     subject: '🔑 Hivex — Recuperação de palavra-passe',
     html,
@@ -333,8 +390,7 @@ async function sendPasswordResetEmail(user, resetUrl) {
 // requests). bodyHtml is trusted template HTML built by the caller; user
 // content inside it must be escaped by the caller via esc().
 async function sendBrandedEmail({ to, replyTo, subject, title, bodyHtml }) {
-  const transporter = createTransporter();
-  if (!transporter || !to) return;
+  if (!emailConfigured() || !to) return;
   const html = `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
   <div style="background:#f97316;padding:24px 32px">
@@ -346,13 +402,7 @@ async function sendBrandedEmail({ to, replyTo, subject, title, bodyHtml }) {
     <p style="color:#6b7280;font-size:13px;margin:0">Equipa Hivex Marketplace · <a href="https://www.hivex.pt" style="color:#f97316">hivex.pt</a></p>
   </div>
 </div>`;
-  await transporter.sendMail({
-    from: `"Hivex Marketplace" <${process.env.SMTP_USER}>`,
-    to,
-    ...(replyTo ? { replyTo } : {}),
-    subject,
-    html,
-  });
+  await deliver({ to, replyTo, subject, html });
 }
 
 /**
@@ -393,4 +443,5 @@ function esc(str) {
 module.exports = {
   sendRegistrationNotification, sendCompanyApprovalEmail, sendCompanyRejectionEmail,
   sendContactEmail, sendPasswordResetEmail, sendBrandedEmail, sendWelcomeEmail, esc, companyReplyCtaHtml,
+  deliver, createTransporter,
 };

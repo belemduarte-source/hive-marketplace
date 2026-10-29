@@ -499,28 +499,50 @@ router.get('/reviews/request-digest', async (req, res) => {
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-// GET /api/reviews/optout?e=&t= — link "não quero receber" dos emails.
-router.get('/reviews/optout', async (req, res) => {
-  const email = String(req.query.e || '').toLowerCase().trim();
-  const tok = String(req.query.t || '');
-  let ok = false;
+// GET /api/reviews/optout — link "não quero receber" dos emails.
+//   ?e=&t=  pedidos de avaliação (HMAC do email com JWT_SECRET)
+//   ?i=     convites da campanha "reclame a sua ficha" (token aleatório
+//           guardado em claim_invites — o script corre fora do Vercel e não
+//           partilha o JWT_SECRET de produção)
+// Os dois alimentam a mesma email_optouts: quem recusa um tipo de email não
+// essencial deixa de receber todos. POST = cancelamento num clique (RFC 8058,
+// cabeçalho List-Unsubscribe-Post): o Gmail/Yahoo chamam o mesmo URL.
+async function optout(req, res) {
+  const invite = String(req.query.i || '');
+  let email = '', ok = false;
   try {
-    const esperado = _optoutToken(email);
-    ok = !!email && tok.length === esperado.length &&
-      crypto.timingSafeEqual(Buffer.from(tok), Buffer.from(esperado));
+    if (invite) {
+      if (/^[a-f0-9]{32}$/.test(invite)) {
+        const { rows } = await pool.query(`SELECT email FROM claim_invites WHERE token = $1`, [invite]);
+        email = rows[0] ? rows[0].email : '';
+        ok = !!email;
+      }
+    } else {
+      email = String(req.query.e || '').toLowerCase().trim();
+      const tok = String(req.query.t || '');
+      const esperado = _optoutToken(email);
+      ok = !!email && tok.length === esperado.length &&
+        crypto.timingSafeEqual(Buffer.from(tok), Buffer.from(esperado));
+    }
   } catch (_) { ok = false; }
   if (ok) {
     try { await pool.query(`INSERT INTO email_optouts (email) VALUES ($1) ON CONFLICT DO NOTHING`, [email]); }
     catch (_) { ok = false; }
   }
-  res.set('Content-Type', 'text/html; charset=utf-8').send(
+  const feito = invite
+    ? `<h2>Pedido registado</h2><p>Não voltará a receber convites nem outros emails promocionais da Hivex neste endereço.</p>` +
+      `<p>Se também quiser que a ficha da sua empresa seja corrigida ou removida, escreva para <a href="mailto:geral.hivex@gmail.com" style="color:#f97316">geral.hivex@gmail.com</a>.</p>`
+    : `<h2>Pedido registado</h2><p>Não voltará a receber pedidos de avaliação da Hivex neste endereço.</p>`;
+  res.status(ok || req.method === 'GET' ? 200 : 400).set('Content-Type', 'text/html; charset=utf-8').send(
     `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">` +
     `<div style="font-family:Arial,sans-serif;max-width:520px;margin:60px auto;padding:0 20px;color:#374151;line-height:1.6">` +
     (ok
-      ? `<h2>Pedido registado</h2><p>Não voltará a receber pedidos de avaliação da Hivex neste endereço.</p>`
+      ? feito
       : `<h2>Link inválido</h2><p>Este link não é válido ou expirou. Responda a qualquer email da Hivex e tratamos do pedido manualmente.</p>`) +
     `<p><a href="https://www.hivex.pt" style="color:#f97316">Voltar à Hivex</a></p></div>`);
-});
+}
+router.get('/reviews/optout', optout);
+router.post('/reviews/optout', optout);
 
 // GET /api/messages/unread-count?companyId= — badge for the owner UI.
 router.get('/messages/unread-count', requireAuth, async (req, res, next) => {
