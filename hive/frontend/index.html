@@ -156,7 +156,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v340.css"/>
+  <link rel="stylesheet" href="app.v341.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -256,112 +256,23 @@
 <nav>
   <div class="nav-banner">
     <div class="banner-content">
-      <!-- LOGO HIVE PREMIUM -->
-      <div style="display:flex;align-items:center;gap:14px;margin-right:28px;flex-shrink:0;cursor:pointer;flex-direction:column" onclick="showWelcome()">
-        <div style="display:flex;align-items:center;gap:14px">
-
-        <!-- Icon Mark — honeycomb: 7 hex cells, breathing animation -->
-        <svg id="logoHexSvg" width="237" height="237" viewBox="0 0 64 64" style="flex-shrink:0;filter:drop-shadow(0 2px 32px rgba(29,78,216,.6))">
-          <defs>
-            <linearGradient id="hbg" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#0e1f3a"/>
-              <stop offset="100%" stop-color="#060d1e"/>
-            </linearGradient>
-            <radialGradient id="hcg" cx="50%" cy="35%" r="65%">
-              <stop offset="0%"   stop-color="#60a5fa"/>
-              <stop offset="35%"  stop-color="#1d4ed8"/>
-              <stop offset="100%" stop-color="#7c2d12"/>
-            </radialGradient>
-            <linearGradient id="hogLit" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%"  stop-color="#2d1408"/>
-              <stop offset="100%" stop-color="#180a02"/>
-            </linearGradient>
-            <filter id="hcf" x="-120%" y="-120%" width="340%" height="340%">
-              <feGaussianBlur stdDeviation="6" result="b"/>
-              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-            <filter id="hof" x="-60%" y="-60%" width="220%" height="220%">
-              <feGaussianBlur stdDeviation="2" result="b"/>
-              <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
-            </filter>
-          </defs>
-
-          <!-- Background box removed by user request — logo sits directly on the page -->
-
-
-          <!-- Ambient glow -->
-          <circle cx="32" cy="32" r="18" fill="#1d4ed8" opacity=".12" filter="url(#hcf)"/>
-
-          <!-- 6 OUTER HEX CELLS — each breathes toward/away from center (32,32) -->
-          <!-- East (center 45,32) — moves along X toward 32 -->
-          <g>
-            <animateTransform attributeName="transform" type="translate" values="0,0;-3,0;0,0" dur="6s" begin="0s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
-            <polygon class="hexcell" style="animation-delay:0s" points="45,24.5 51.5,28.25 51.5,35.75 45,39.5 38.5,35.75 38.5,28.25" fill="url(#hogLit)" stroke="#ea580c" stroke-width="1.2">
-              <animate attributeName="stroke" values="#1d4ed8;#2563eb;#1d4ed8" dur="6s" begin="0s" repeatCount="indefinite"/>
-            </polygon>
+      <!-- Marca: favo estático + "Hivex". Sem animação, brilho nem slogan — movimento
+           permanente no topo lia-se como anúncio, não como plataforma profissional. -->
+      <a class="hx-brand" href="/" onclick="event.preventDefault();showWelcome()" aria-label="Hivex">
+        <svg class="hx-brand-mark" viewBox="10 10 44 44" aria-hidden="true">
+          <g fill="none" stroke="#f97316" stroke-width="2.4" stroke-linejoin="round">
+            <polygon transform="translate(45 32) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75"/>
+            <polygon transform="translate(38.5 20.75) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75"/>
+            <polygon transform="translate(25.5 20.75) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75"/>
+            <polygon transform="translate(19 32) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75"/>
+            <polygon transform="translate(25.5 43.25) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75"/>
+            <polygon transform="translate(38.5 43.25) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75"/>
           </g>
-          <!-- NE (center 38.5,20) — moves toward 32,32 = dx -1.5, dy 2.8 -->
-          <g>
-            <animateTransform attributeName="transform" type="translate" values="0,0;-1.8,2.5;0,0" dur="6s" begin="1s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
-            <polygon class="hexcell" style="animation-delay:1s" points="38.5,13.25 45,17 45,24.5 38.5,28.25 32,24.5 32,17" fill="url(#hogLit)" stroke="#ea580c" stroke-width="1.2">
-              <animate attributeName="stroke" values="#1d4ed8;#2563eb;#1d4ed8" dur="6s" begin="1s" repeatCount="indefinite"/>
-            </polygon>
-          </g>
-          <!-- NW (center 25.5,20) — moves toward 32,32 = dx 1.5, dy 2.8 -->
-          <g>
-            <animateTransform attributeName="transform" type="translate" values="0,0;1.8,2.5;0,0" dur="6s" begin="2s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
-            <polygon class="hexcell" style="animation-delay:2s" points="25.5,13.25 32,17 32,24.5 25.5,28.25 19,24.5 19,17" fill="url(#hogLit)" stroke="#ea580c" stroke-width="1.2">
-              <animate attributeName="stroke" values="#1d4ed8;#2563eb;#1d4ed8" dur="6s" begin="2s" repeatCount="indefinite"/>
-            </polygon>
-          </g>
-          <!-- West (center 19,32) — moves along X toward 32 -->
-          <g>
-            <animateTransform attributeName="transform" type="translate" values="0,0;3,0;0,0" dur="6s" begin="3s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
-            <polygon class="hexcell" style="animation-delay:3s" points="19,24.5 25.5,28.25 25.5,35.75 19,39.5 12.5,35.75 12.5,28.25" fill="url(#hogLit)" stroke="#ea580c" stroke-width="1.2">
-              <animate attributeName="stroke" values="#1d4ed8;#2563eb;#1d4ed8" dur="6s" begin="3s" repeatCount="indefinite"/>
-            </polygon>
-          </g>
-          <!-- SW (center 25.5,44) — moves toward 32,32 = dx 1.5, dy -2.8 -->
-          <g>
-            <animateTransform attributeName="transform" type="translate" values="0,0;1.8,-2.5;0,0" dur="6s" begin="4s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
-            <polygon class="hexcell" style="animation-delay:4s" points="25.5,35.75 32,39.5 32,47 25.5,50.75 19,47 19,39.5" fill="url(#hogLit)" stroke="#ea580c" stroke-width="1.2">
-              <animate attributeName="stroke" values="#1d4ed8;#2563eb;#1d4ed8" dur="6s" begin="4s" repeatCount="indefinite"/>
-            </polygon>
-          </g>
-          <!-- SE (center 38.5,44) — moves toward 32,32 = dx -1.5, dy -2.8 -->
-          <g>
-            <animateTransform attributeName="transform" type="translate" values="0,0;-1.8,-2.5;0,0" dur="6s" begin="5s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
-            <polygon class="hexcell" style="animation-delay:5s" points="38.5,35.75 45,39.5 45,47 38.5,50.75 32,47 32,39.5" fill="url(#hogLit)" stroke="#ea580c" stroke-width="1.2">
-              <animate attributeName="stroke" values="#1d4ed8;#2563eb;#1d4ed8" dur="6s" begin="5s" repeatCount="indefinite"/>
-            </polygon>
-          </g>
-
-          <!-- CENTRE HUB HEX — static, glowing -->
-          <polygon points="32,24.5 38.5,28.25 38.5,35.75 32,39.5 25.5,35.75 25.5,28.25"
-                   fill="#1d4ed8" opacity=".15">
-            <animate attributeName="opacity" values=".1;.35;.1" dur="2.4s" repeatCount="indefinite" calcMode="spline" keySplines=".5,0,.5,1;.5,0,.5,1"/>
-          </polygon>
-          <polygon points="32,24.5 38.5,28.25 38.5,35.75 32,39.5 25.5,35.75 25.5,28.25"
-                   fill="url(#hcg)" stroke="#60a5fa" stroke-width=".8" stroke-opacity=".6" filter="url(#hof)"/>
-          <polygon points="32,27.5 36.2,29.75 36.2,34.25 32,36.5 27.8,34.25 27.8,29.75"
-                   fill="none" stroke="#fff" stroke-width=".6" opacity=".35"/>
-          <circle cx="32" cy="32" r="2.4" fill="#fff" opacity=".96"/>
+          <polygon transform="translate(32 32) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75" fill="#2563eb"/>
+          <circle cx="32" cy="32" r="2.2" fill="#fff"/>
         </svg>
-
-        <!-- Wordmark — 4 independent living letters, all gold -->
-        <div style="display:flex;flex-direction:column;align-items:center;gap:2px;width:min-content">
-          <div style="display:flex;align-items:baseline;gap:1px">
-            <span class="logo-l logo-h">H</span>
-            <span class="logo-l logo-i">i</span>
-            <span class="logo-l logo-v">v</span>
-            <span class="logo-l logo-e">e</span>
-            <span class="logo-l logo-x">x</span>
-          </div>
-          <span class="logo-slogan">Connecting Services</span>
-        </div>
-        </div>
-        <span class="logo-tagline" data-i18n="logoTagline">Profissionais de Construção em Portugal</span>
-      </div>
+        <span class="hx-brand-name">Hivex</span>
+      </a>
     </div>
   </div>
   <div class="nav-links">
@@ -488,7 +399,7 @@
         </div>
       </div>
       <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Modo claro/escuro" aria-label="Modo claro/escuro">
-        <span id="themeToggleIco">🌙</span>
+        <span id="themeToggleIco" class="hx-i"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span>
         <span id="themeToggleTxt">Escuro</span>
       </button>
     </div>
@@ -499,7 +410,7 @@
 <div class="mobile-nav-drawer" id="mobileNavDrawer" onclick="closeMobileNav(event)">
   <div class="mobile-nav-backdrop"></div>
   <div class="mobile-nav-panel" onclick="event.stopPropagation()">
-    <div class="mobile-nav-logo">🐝 Hivex</div>
+    <div class="mobile-nav-logo"><svg class="hx-brand-mark" viewBox="10 10 44 44" aria-hidden="true"><g fill="none" stroke="#f97316" stroke-width="2.4" stroke-linejoin="round"><polygon transform="translate(45 32) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75"/><polygon transform="translate(38.5 20.75) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75"/><polygon transform="translate(25.5 20.75) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75"/><polygon transform="translate(19 32) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75"/><polygon transform="translate(25.5 43.25) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75"/><polygon transform="translate(38.5 43.25) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75"/></g><polygon transform="translate(32 32) scale(.84)" points="0,-7.5 6.5,-3.75 6.5,3.75 0,7.5 -6.5,3.75 -6.5,-3.75" fill="#2563eb"/><circle cx="32" cy="32" r="2.2" fill="#fff"/></svg><span>Hivex</span></div>
     <div class="mobile-nav-divider"></div>
     <!-- Auth area: populated dynamically by updateNavAuth() when logged in.
          Logged-out users use the single login button in the top-right of the nav. -->
@@ -531,7 +442,7 @@
     <button class="mobile-nav-link" onclick="setLanguage('es');closeMobileNavPanel()"><img class="lang-flag" src="https://flagcdn.com/es.svg" alt="" loading="lazy" decoding="async"/> <span>Español</span></button>
     <button class="mobile-nav-link" onclick="setLanguage('de');closeMobileNavPanel()"><img class="lang-flag" src="https://flagcdn.com/de.svg" alt="" loading="lazy" decoding="async"/> <span>Deutsch</span></button>
     <div class="mobile-nav-divider"></div>
-    <button class="mobile-nav-link" id="mobileThemeToggle" onclick="toggleTheme()"><span id="mobileThemeIco">🌙</span> <span id="mobileThemeTxt">Modo escuro</span></button>
+    <button class="mobile-nav-link" id="mobileThemeToggle" onclick="toggleTheme()"><span id="mobileThemeIco" class="hx-i"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg></span> <span id="mobileThemeTxt">Modo escuro</span></button>
   </div>
 </div>
 
@@ -685,7 +596,7 @@
 <!-- MOBILE FILTER CHIP BAR — compact single row, opens bottom sheet on tap -->
 <div id="mobileSearchPanel">
   <div id="mspChipBar">
-    <button class="msp-chip msp-chip-recs" id="mspChipRecs" onclick="openRecs()">✨ Top 3</button>
+    <button class="msp-chip msp-chip-recs" id="mspChipRecs" onclick="openRecs()"><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.48 12.89 17 22l-5-3-5 3 1.52-9.11"/></svg> Top 3</button>
     <button class="msp-chip" id="mspChipLocation" onclick="mspOpenSheet('location')">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a7 7 0 0 1 7 7c0 5-7 13-7 13S5 14 5 9a7 7 0 0 1 7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
       <span id="mspChipLocationLabel">Localização</span>
@@ -851,6 +762,27 @@
 
     </div><!-- /filters-layer2 -->
 
+    <!-- EMPRESAS PRÓXIMAS — na coluna esquerda, por baixo do raio (antes era uma
+         coluna à direita só a partir de 1500px e esta coluna ficava vazia).
+         Lista as empresas na zona visível do mapa. Só no computador. -->
+    <div class="nearby-panel" id="nearbyPanel">
+      <div class="nearby-panel-header">
+        <span class="nearby-panel-title"><i data-lucide="map-pin"></i><span data-i18n="nearbyTitle">Empresas Próximas</span></span>
+        <span class="nearby-count" id="nearbyCount">0</span>
+      </div>
+      <!-- Explorar por país: pílulas com bandeira + contagem (clicar voa lá) -->
+      <div class="country-pills" id="countryPills" style="display:none"></div>
+      <!-- Ordenação + filtros ativos -->
+      <div class="nearby-tools">
+        <div class="nearby-sort">
+          <button data-ns="dist" class="active" onclick="setNearbySort('dist')" data-i18n="sortDist">Distância</button>
+          <button class="hx-rating-ui" data-ns="rating" onclick="setNearbySort('rating')" data-i18n="sortRating2">Avaliação</button>
+        </div>
+        <div class="nearby-chips" id="nearbyChips" style="display:none"></div>
+      </div>
+      <div class="nearby-panel-body" id="nearbyList"></div>
+    </div>
+
   </div>
 
   <!-- MAP -->
@@ -932,26 +864,6 @@
     </button>
   </div>
 
-  <!-- NEARBY COMPANIES PANEL — right side, mirrors the filter sidebar. Scrollable
-       list of the companies currently on the map, ordered by proximity to the
-       user / searched location. Desktop only (CSS hides it below 1280px). -->
-  <div class="nearby-panel" id="nearbyPanel">
-    <div class="nearby-panel-header">
-      <span class="nearby-panel-title"><i data-lucide="map-pin"></i><span data-i18n="nearbyTitle">Empresas Próximas</span></span>
-      <span class="nearby-count" id="nearbyCount">0</span>
-    </div>
-    <!-- Explorar por país: pílulas com bandeira + contagem (clicar voa lá) -->
-    <div class="country-pills" id="countryPills" style="display:none"></div>
-    <!-- Ordenação + filtros ativos -->
-    <div class="nearby-tools">
-      <div class="nearby-sort">
-        <button data-ns="dist" class="active" onclick="setNearbySort('dist')" data-i18n="sortDist">Distância</button>
-        <button class="hx-rating-ui" data-ns="rating" onclick="setNearbySort('rating')" data-i18n="sortRating2">Avaliação</button>
-      </div>
-      <div class="nearby-chips" id="nearbyChips" style="display:none"></div>
-    </div>
-    <div class="nearby-panel-body" id="nearbyList"></div>
-  </div>
 
 </div>
 
@@ -1000,9 +912,9 @@
     <div class="dp-more-wrap">
       <button class="btn-quote-secondary qs-more" onclick="toggleDpMoreMenu(event)" aria-haspopup="true" aria-label="Mais ações" title="Mais ações">⋯</button>
       <div class="dp-more-menu" id="dpMoreMenu">
-        <button class="dp-more-item" onclick="toggleDpMoreMenu();shareCompany()">↗ <span data-i18n="dpShareTitle">Partilhar</span></button>
-        <button class="dp-more-item" onclick="toggleDpMoreMenu();toggleCompare(selectedId)">⇄ <span data-i18n="dpCompare">Comparar</span></button>
-        <button class="dp-more-item qs-report" onclick="toggleDpMoreMenu();openReportModal()">🚩 <span data-i18n="dpReportTitle">Reportar listagem</span></button>
+        <button class="dp-more-item" onclick="toggleDpMoreMenu();shareCompany()"><i data-lucide="share-2"></i><span data-i18n="dpShareTitle">Partilhar</span></button>
+        <button class="dp-more-item" onclick="toggleDpMoreMenu();toggleCompare(selectedId)"><i data-lucide="columns-2"></i><span data-i18n="dpCompare">Comparar</span></button>
+        <button class="dp-more-item qs-report" onclick="toggleDpMoreMenu();openReportModal()"><i data-lucide="flag"></i><span data-i18n="dpReportTitle">Reportar listagem</span></button>
       </div>
     </div>
   </div>
@@ -1042,11 +954,11 @@
 
     <!-- Missão & Visão — extraídas do site oficial; ocultas quando não existem -->
     <div id="dpMissionWrap" style="display:none">
-      <div class="dp-section-title">🎯 <span data-i18n="dpMission">Missão</span></div>
+      <div class="dp-section-title"><i data-lucide="target"></i><span data-i18n="dpMission">Missão</span></div>
       <p id="dpMissionTxt" style="font-size:13.5px;line-height:1.6;color:var(--text-secondary);margin:0 0 14px"></p>
     </div>
     <div id="dpVisionWrap" style="display:none">
-      <div class="dp-section-title">🔭 <span data-i18n="dpVision">Visão</span></div>
+      <div class="dp-section-title"><i data-lucide="telescope"></i><span data-i18n="dpVision">Visão</span></div>
       <p id="dpVisionTxt" style="font-size:13.5px;line-height:1.6;color:var(--text-secondary);margin:0 0 14px"></p>
     </div>
 
@@ -1158,6 +1070,7 @@
 <!-- LOGIN / REGISTER MODAL -->
 <div class="overlay" id="loginOverlay" onclick="if(event.target===this)closeLogin()" role="dialog" aria-modal="true" data-i18n-aria="authAria">
   <div class="modal" style="width:440px">
+    <button class="modal-close" onclick="closeLogin()" aria-label="Fechar">×</button>
     <div style="text-align:center;margin-bottom:18px">
       <div style="font-size:22px;font-weight:800;color:var(--text)"><span data-i18n="authWelcome">Bem-vindo à Hivex</span></div>
       <div style="font-size:13px;color:var(--muted);margin-top:4px" data-i18n="authOneDoorSub">Entre ou crie conta em segundos — sem palavras-passe.</div>
@@ -1712,21 +1625,21 @@
       <button type="submit" data-i18n="btnSearch">Pesquisar</button>
     </form>
     <div class="welcome-cats">
-      <button onclick="welcomeCat('estrutura_fundacao')">🏗️ <span data-i18n="legendEstrutura">Estrutura</span></button>
-      <button onclick="welcomeCat('instalacoes')">⚡ <span data-i18n="legendInstalacoes">Instalações</span></button>
-      <button onclick="welcomeCat('acabamentos')">🎨 <span data-i18n="legendAcabamentos">Acabamentos</span></button>
-      <button onclick="welcomeCat('carpintaria')">🪚 <span data-i18n="legendCarpintaria">Carpintaria</span></button>
-      <button onclick="welcomeCat('serralharia_metal')">🔩 <span data-i18n="legendSerralharia">Serralharia</span></button>
-      <button onclick="welcomeCat('exterior_jardim')">🌿 <span data-i18n="legendExterior">Exterior</span></button>
-      <button onclick="welcomeCat('projeto_gestao')">📐 <span data-i18n="legendProjeto">Projeto</span></button>
-      <button onclick="welcomeCat('chave_na_mao')">🔑 <span data-i18n="legendChaveNaMao">Chave na Mão</span></button>
+      <button onclick="welcomeCat('estrutura_fundacao')"><i data-lucide="building-2" class="wc-ico" aria-hidden="true"></i><span data-i18n="legendEstrutura">Estrutura</span></button>
+      <button onclick="welcomeCat('instalacoes')"><i data-lucide="zap" class="wc-ico" aria-hidden="true"></i><span data-i18n="legendInstalacoes">Instalações</span></button>
+      <button onclick="welcomeCat('acabamentos')"><i data-lucide="paintbrush" class="wc-ico" aria-hidden="true"></i><span data-i18n="legendAcabamentos">Acabamentos</span></button>
+      <button onclick="welcomeCat('carpintaria')"><i data-lucide="hammer" class="wc-ico" aria-hidden="true"></i><span data-i18n="legendCarpintaria">Carpintaria</span></button>
+      <button onclick="welcomeCat('serralharia_metal')"><i data-lucide="wrench" class="wc-ico" aria-hidden="true"></i><span data-i18n="legendSerralharia">Serralharia</span></button>
+      <button onclick="welcomeCat('exterior_jardim')"><i data-lucide="leaf" class="wc-ico" aria-hidden="true"></i><span data-i18n="legendExterior">Exterior</span></button>
+      <button onclick="welcomeCat('projeto_gestao')"><i data-lucide="ruler" class="wc-ico" aria-hidden="true"></i><span data-i18n="legendProjeto">Projeto</span></button>
+      <button onclick="welcomeCat('chave_na_mao')"><i data-lucide="key-round" class="wc-ico" aria-hidden="true"></i><span data-i18n="legendChaveNaMao">Chave na Mão</span></button>
     </div>
     <div class="welcome-actions">
       <button class="welcome-explore" onclick="closeWelcome()"><span data-i18n="welcomeExplore">Explorar o mapa</span> →</button>
       <button class="welcome-register" onclick="welcomeRegister()" data-i18n="lpHeroRegisterCta">Criar conta grátis</button>
     </div>
     <div class="welcome-owner"><span data-i18n="authOwnerHint">Tem uma empresa?</span> <button type="button" class="auth-link" onclick="closeWelcome();startCompanyFlow()" data-i18n="welcomeOwnerCta">Apareça no mapa — registe ou reclame a sua ficha →</button></div>
-    <div class="welcome-trust">🛡️ <span data-i18n="welcomeTrustMod">Empresas moderadas (NIF + Certidão)</span> · 🔒 SSL · 🇪🇺 <span data-i18n="welcomeTrustEu">Dados na Europa</span></div>
+    <div class="welcome-trust"><span><i data-lucide="shield-check" class="wc-ico" aria-hidden="true"></i><span data-i18n="welcomeTrustMod">Empresas moderadas (NIF + Certidão)</span></span><span><i data-lucide="lock" class="wc-ico" aria-hidden="true"></i>SSL</span><span><i data-lucide="server" class="wc-ico" aria-hidden="true"></i><span data-i18n="welcomeTrustEu">Dados na Europa</span></span></div>
     <div class="welcome-links">
       <a href="#legal/terms" onclick="openLegal('terms');return false" data-i18n="footerTerms">Termos de Serviço</a> ·
       <a href="#legal/privacy" onclick="openLegal('privacy');return false" data-i18n="footerPrivacy">Privacidade</a> ·
@@ -2037,7 +1950,7 @@
 <div id="cookieBanner" class="cookie-banner" hidden>
   <div class="cookie-banner-inner">
     <div class="cookie-banner-text">
-      <strong data-i18n="cookieTitle">🍪 Privacidade e cookies</strong>
+      <strong class="cookie-title"><i data-lucide="cookie" aria-hidden="true"></i><span data-i18n="cookieTitle">Privacidade e cookies</span></strong>
       <span data-i18n="cookieBody">Usamos cookies estritamente necessários para o funcionamento da plataforma (autenticação e preferência de idioma). Cookies analíticos só são ativados se aceitar.</span>
       <a href="#legal/cookies" onclick="openLegal('cookies');return false" data-i18n="cookieMore">Saber mais</a>
     </div>
@@ -2053,7 +1966,7 @@
      vetoriais OpenFreeMap sem chave, clustering nativo e 3D. -->
 <script defer src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js" integrity="sha384-5+cfbwT0iiub6VsQAdn6yz16nr6sDiQoHx6tm4O8OVYXHYOxcffFmCJBL0dgdvGp" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v340.js"></script>
+<script defer src="app.v341.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
@@ -2192,6 +2105,7 @@
   ins.setAttribute('data-ad-slot', slot);
   ins.style.display = 'block';
   var banner = document.getElementById('navAdBanner');
+  if (banner) banner.classList.add('has-adsense');   // o cabeçalho só mostra a faixa com anúncio
   if (banner) banner.querySelectorAll('.nav-ad-slide,.nav-ad-fallback').forEach(function (el) { el.style.display = 'none'; });
   try { (window.adsbygoogle = window.adsbygoogle || []).push({}); } catch (e) { console.warn('[adsense]', e); }
 })();

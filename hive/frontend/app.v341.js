@@ -47,7 +47,7 @@ const translations = {
     sortBy:'Ordenar Por', sortRating:'Melhor Avaliação', sortReviews:'Mais Avaliados', sortName:'Nome A–Z',
     sectorArea:'Área de Atividade', minRating:'Avaliação',
     ratingAny:'Qualquer avaliação', ratingOrMore:'ou mais',
-    searchRadius:'Raio de Pesquisa', featured:'Destaque', ignoreRadius:'Não Usar Raio de Pesquisa', nearbyTitle:'Empresas Próximas', contactYourName:'O seu nome', contactYourEmail:'O seu email (para a empresa responder)', contactNameReq:'Indique o seu nome', contactEmailReq:'Indique um email válido', retryBtn:'Tentar novamente', clearFiltersBtn:'Limpar filtros', resultsCount:'empresas encontradas', chatToday:'Hoje', chatYesterday:'Ontem', alertSaveBtn:'Avisar-me de novas', alertSaved:'Alerta criado! Receberá um email quando houver novas empresas.', alertsTitle:'Os meus alertas', alertDeleted:'Alerta removido', pushBtn:'Ativar notificações', pushOn:'Notificações ativas neste dispositivo', rvVerified:'contacto verificado', navHow:'Como funciona', dpCompare:'Comparar', dpMission:'Missão', dpVision:'Visão', allCountries:'Todos os países', profFilterPh:'Filtrar por nome ou cidade…', profShowMore:'Mostrar mais', profShowing:'A mostrar', dpStreetTitle:'Vista de Rua (Street View)', svOpenExternal:'Abrir no Google Maps ↗', svFallback:'Se a vista não carregar, ', svFallbackLink:'abra no Google Maps', claimLink:'🏷 É a sua empresa? Reclame esta ficha', claimTitle:'Reclamar ficha da empresa', claimIntro:'Para provar que gere esta empresa, enviamos um código de 6 dígitos para o email público da ficha. Com a ficha reclamada pode editar os dados, responder a avaliações e ver estatísticas.', claimSendBtn:'Enviar código para o email da ficha', claimSentTo:'Código enviado para', claimVerifyBtn:'Confirmar código', claimSuccess:'Ficha reclamada! Já pode editar os dados e ver as mensagens.', claimNeedLogin:'Inicie sessão para reclamar a ficha', claimCodeInvalid:'Introduza o código de 6 dígitos', rfqCta:'Pedir Orçamentos Grátis', rfqTitle:'Pedir orçamentos', rfqIntro:'Descreva o trabalho — enviamos o pedido às empresas certas da sua zona e as propostas chegam diretamente ao seu email.', rfqSector:'Área de atividade', rfqDesc:'Descrição do trabalho', rfqDescPh:'Ex.: Remodelação completa de casa de banho (~4 m²): substituição de loiças, azulejos e canalização.', rfqCity:'Localidade', rfqTimeline:'Prazo desejado', rfqBudget:'Orçamento indicativo', rfqPhone:'Telefone (opcional)', rfqEmail:'O seu email', rfqSend:'Enviar pedido às empresas', rfqSentA:'Pedido enviado a', rfqSentB:'empresas! As propostas chegarão ao seu email.', rfqDescShort:'Descreva o trabalho com mais detalhe (mínimo 20 caracteres)', rfqCityReq:'Indique a localidade', tlFlex:'Flexível', tlUrgent:'Urgente', tl1m:'No próximo mês', tl3m:'Nos próximos 3 meses', budNS:'Ainda não sei', inboxBtn:'Mensagens de clientes', inboxTitle:'Mensagens de clientes', inboxEmpty:'Ainda não há mensagens.', inboxReplyPh:'Escreva a sua resposta…', inboxReplySend:'Responder', inboxReplySent:'Resposta enviada ao cliente', inboxYou:'Você', featureBtn:'Pedir destaque', featureSent:'Pedido de destaque enviado ao administrador',
+    searchRadius:'Raio de Pesquisa', featured:'Destaque', ignoreRadius:'Não Usar Raio de Pesquisa', nearbyTitle:'Empresas Próximas', contactYourName:'O seu nome', contactYourEmail:'O seu email (para a empresa responder)', contactNameReq:'Indique o seu nome', contactEmailReq:'Indique um email válido', retryBtn:'Tentar novamente', clearFiltersBtn:'Limpar filtros', resultsCount:'empresas encontradas', chatToday:'Hoje', chatYesterday:'Ontem', alertSaveBtn:'Avisar-me de novas', alertSaved:'Alerta criado! Receberá um email quando houver novas empresas.', alertsTitle:'Os meus alertas', alertDeleted:'Alerta removido', pushBtn:'Ativar notificações', pushOn:'Notificações ativas neste dispositivo', rvVerified:'contacto verificado', navHow:'Como funciona', dpCompare:'Comparar', dpMission:'Missão', dpVision:'Visão', allCountries:'Todos os países', profFilterPh:'Filtrar por nome ou cidade…', profShowMore:'Mostrar mais', profShowing:'A mostrar', dpStreetTitle:'Vista de Rua (Street View)', svOpenExternal:'Abrir no Google Maps ↗', svFallback:'Se a vista não carregar, ', svFallbackLink:'abra no Google Maps', claimLink:'É a sua empresa? Reclame esta ficha', claimTitle:'Reclamar ficha da empresa', claimIntro:'Para provar que gere esta empresa, enviamos um código de 6 dígitos para o email público da ficha. Com a ficha reclamada pode editar os dados, responder a avaliações e ver estatísticas.', claimSendBtn:'Enviar código para o email da ficha', claimSentTo:'Código enviado para', claimVerifyBtn:'Confirmar código', claimSuccess:'Ficha reclamada! Já pode editar os dados e ver as mensagens.', claimNeedLogin:'Inicie sessão para reclamar a ficha', claimCodeInvalid:'Introduza o código de 6 dígitos', rfqCta:'Pedir Orçamentos Grátis', rfqTitle:'Pedir orçamentos', rfqIntro:'Descreva o trabalho — enviamos o pedido às empresas certas da sua zona e as propostas chegam diretamente ao seu email.', rfqSector:'Área de atividade', rfqDesc:'Descrição do trabalho', rfqDescPh:'Ex.: Remodelação completa de casa de banho (~4 m²): substituição de loiças, azulejos e canalização.', rfqCity:'Localidade', rfqTimeline:'Prazo desejado', rfqBudget:'Orçamento indicativo', rfqPhone:'Telefone (opcional)', rfqEmail:'O seu email', rfqSend:'Enviar pedido às empresas', rfqSentA:'Pedido enviado a', rfqSentB:'empresas! As propostas chegarão ao seu email.', rfqDescShort:'Descreva o trabalho com mais detalhe (mínimo 20 caracteres)', rfqCityReq:'Indique a localidade', tlFlex:'Flexível', tlUrgent:'Urgente', tl1m:'No próximo mês', tl3m:'Nos próximos 3 meses', budNS:'Ainda não sei', inboxBtn:'Mensagens de clientes', inboxTitle:'Mensagens de clientes', inboxEmpty:'Ainda não há mensagens.', inboxReplyPh:'Escreva a sua resposta…', inboxReplySend:'Responder', inboxReplySent:'Resposta enviada ao cliente', inboxYou:'Você', featureBtn:'Pedir destaque', featureSent:'Pedido de destaque enviado ao administrador',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Novo Registo',
     specialties:'Especialidades',
     mapLive:'Mapa em tempo real', mapCity:'Lisboa, Portugal',
@@ -222,7 +222,7 @@ const translations = {
     helpMissionTitle:'Missão', helpMissionDesc:'Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.',
     helpVisionTitle:'Visão', helpVisionDesc:'Ser a plataforma de referência em Portugal para ligar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.',
     navLogin:'Entrar / Registar', navHelp:'Ajuda',
-    welcomeExplore:'Explorar o mapa', authOneDoorSub:"Entre ou crie conta em segundos — sem palavras-passe.", authSendCode:"Receber código por email", authSendNote:"Enviamos um código de 6 dígitos. Se ainda não tem conta, é criada na hora.", authUsePassword:"Prefiro entrar com palavra-passe", authUseCode:"Entrar com código por email", authCodeSentTo:"Enviámos um código de 6 dígitos para", authNoCode:"Não recebeu? Veja o spam ou", authResend:"reenviar", authChangeEmail:"mudar email", authNameAsk:"Conta criada! Como gostaria de ser tratado?", authContinue:"Continuar", authOwnerHint:"Tem uma empresa?", authOwnerCta:"Registe-a ou reclame a sua ficha →", authEmailInvalid:"Indique um email válido.", authCodeResent:"Enviámos um novo código.", claimTargetLbl:"Enviaremos o código para", claimGuestNote:"Não precisa de criar conta: ao confirmar o código, entra na Hivex com este email e a ficha fica sua.", claimNoEmailMsg:"Esta ficha não tem email público. Escreva-nos para geral.hivex@gmail.com e tratamos do pedido.", claimNoAccess:"Não tem acesso a este email? Escreva-nos para <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"A sua empresa na Hivex", cfIntro:"Muitas empresas já estão no mapa. Procure a sua — se já existir, basta reclamá-la, sem preencher nada.", cfPh:"Nome ou NIF da empresa", cfNotFound:"Não encontro a minha empresa — registar nova →", cfNoResults:"Nenhuma empresa encontrada com esse nome.", cfClaimBtn:"É a minha — reclamar", cfAlreadyOwned:"Já tem gestor", cfEdit:"Editar a minha ficha", regDupClaim:"Esta empresa já está na Hivex — reclame a ficha existente.", welcomeOwnerCta:"Apareça no mapa — registe ou reclame a sua ficha →", listShowMore:'Mostrar mais empresas', listShownOf:'{a} de {b}', aboutTitle:'Sobre', aboutAutoNote:'Resumo automático, com base nos dados públicos da empresa.', claimIncomplete:'✏️ Esta ficha está incompleta. É a sua empresa? Reclame-a e acrescente descrição, logótipo e fotos.', contactReviewNote:'Cerca de uma semana depois, poderemos enviar-lhe um único email a pedir que avalie esta empresa.', reviewLoginNeeded:'Inicie sessão para escrever uma avaliação.', welcomeTrustMod:'Empresas moderadas (NIF + Certidão)', welcomeTrustEu:'Dados na Europa',
+    welcomeExplore:'Explorar o mapa', authOneDoorSub:"Entre ou crie conta em segundos — sem palavras-passe.", authSendCode:"Receber código por email", authSendNote:"Enviamos um código de 6 dígitos. Se ainda não tem conta, é criada na hora.", authUsePassword:"Prefiro entrar com palavra-passe", authUseCode:"Entrar com código por email", authCodeSentTo:"Enviámos um código de 6 dígitos para", authNoCode:"Não recebeu? Veja o spam ou", authResend:"reenviar", authChangeEmail:"mudar email", authNameAsk:"Conta criada! Como gostaria de ser tratado?", authContinue:"Continuar", authOwnerHint:"Tem uma empresa?", authOwnerCta:"Registe-a ou reclame a sua ficha →", authEmailInvalid:"Indique um email válido.", authCodeResent:"Enviámos um novo código.", claimTargetLbl:"Enviaremos o código para", claimGuestNote:"Não precisa de criar conta: ao confirmar o código, entra na Hivex com este email e a ficha fica sua.", claimNoEmailMsg:"Esta ficha não tem email público. Escreva-nos para geral.hivex@gmail.com e tratamos do pedido.", claimNoAccess:"Não tem acesso a este email? Escreva-nos para <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"A sua empresa na Hivex", cfIntro:"Muitas empresas já estão no mapa. Procure a sua — se já existir, basta reclamá-la, sem preencher nada.", cfPh:"Nome ou NIF da empresa", cfNotFound:"Não encontro a minha empresa — registar nova →", cfNoResults:"Nenhuma empresa encontrada com esse nome.", cfClaimBtn:"É a minha — reclamar", cfAlreadyOwned:"Já tem gestor", cfEdit:"Editar a minha ficha", regDupClaim:"Esta empresa já está na Hivex — reclame a ficha existente.", welcomeOwnerCta:"Apareça no mapa — registe ou reclame a sua ficha →", listShowMore:'Mostrar mais empresas', listShownOf:'{a} de {b}', aboutTitle:'Sobre', aboutAutoNote:'Resumo automático, com base nos dados públicos da empresa.', claimIncomplete:'Esta ficha está incompleta. É a sua empresa? Reclame-a e acrescente descrição, logótipo e fotos.', contactReviewNote:'Cerca de uma semana depois, poderemos enviar-lhe um único email a pedir que avalie esta empresa.', reviewLoginNeeded:'Inicie sessão para escrever uma avaliação.', welcomeTrustMod:'Empresas moderadas (NIF + Certidão)', welcomeTrustEu:'Dados na Europa',
     themeToDark:'Escuro', themeToLight:'Claro', themeModeDark:'Modo escuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidade', avatarLogout:'Terminar Sessão', avatarFaqHelp:'FAQ & Ajuda',
     lpHeroRegisterCta:'Criar conta grátis', lpHeroRegisterHint:'Peça orçamentos, guarde favoritos e registe a sua empresa.',
@@ -463,7 +463,7 @@ const translations = {
     sortBy:'Sort By', sortRating:'Best Rating', sortReviews:'Most Reviewed', sortName:'Name A–Z',
     sectorArea:'Activity Area', minRating:'Rating',
     ratingAny:'Any rating', ratingOrMore:'or more',
-    searchRadius:'Search Radius', featured:'Featured', ignoreRadius:'Don\'t Use Search Radius', nearbyTitle:'Nearby Companies', contactYourName:'Your name', contactYourEmail:'Your email (so the company can reply)', contactNameReq:'Enter your name', contactEmailReq:'Enter a valid email', retryBtn:'Try again', clearFiltersBtn:'Clear filters', resultsCount:'companies found', chatToday:'Today', chatYesterday:'Yesterday', alertSaveBtn:'Alert me to new ones', alertSaved:'Alert created! You will get an email when new companies appear.', alertsTitle:'My alerts', alertDeleted:'Alert removed', pushBtn:'Enable notifications', pushOn:'Notifications active on this device', rvVerified:'verified contact', navHow:'How it works', dpCompare:'Compare', dpMission:'Mission', dpVision:'Vision', allCountries:'All countries', profFilterPh:'Filter by name or city…', profShowMore:'Show more', profShowing:'Showing', dpStreetTitle:'Street View', svOpenExternal:'Open in Google Maps ↗', svFallback:'If the view does not load, ', svFallbackLink:'open it in Google Maps', claimLink:'🏷 Is this your business? Claim this listing', claimTitle:'Claim this listing', claimIntro:'To prove you manage this business we send a 6-digit code to the listing\u2019s public email. Once claimed, you can edit the details, reply to reviews and see analytics.', claimSendBtn:'Send code to the listing email', claimSentTo:'Code sent to', claimVerifyBtn:'Confirm code', claimSuccess:'Listing claimed! You can now edit it and see messages.', claimNeedLogin:'Sign in to claim this listing', claimCodeInvalid:'Enter the 6-digit code', rfqCta:'Get Free Quotes', rfqTitle:'Request quotes', rfqIntro:'Describe the job — we send it to the right companies in your area and proposals arrive in your email.', rfqSector:'Activity area', rfqDesc:'Job description', rfqDescPh:'E.g.: Full bathroom renovation (~4 m²): new fixtures, tiles and plumbing.', rfqCity:'Town/City', rfqTimeline:'Desired timeline', rfqBudget:'Indicative budget', rfqPhone:'Phone (optional)', rfqEmail:'Your email', rfqSend:'Send request to companies', rfqSentA:'Request sent to', rfqSentB:'companies! Proposals will arrive by email.', rfqDescShort:'Describe the job in more detail (min. 20 characters)', rfqCityReq:'Enter the town/city', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Next month', tl3m:'Within 3 months', budNS:'Not sure yet', inboxBtn:'Client messages', inboxTitle:'Client messages', inboxEmpty:'No messages yet.', inboxReplyPh:'Write your reply…', inboxReplySend:'Reply', inboxReplySent:'Reply sent to the client', inboxYou:'You', featureBtn:'Request featuring', featureSent:'Feature request sent to the admin',
+    searchRadius:'Search Radius', featured:'Featured', ignoreRadius:'Don\'t Use Search Radius', nearbyTitle:'Nearby Companies', contactYourName:'Your name', contactYourEmail:'Your email (so the company can reply)', contactNameReq:'Enter your name', contactEmailReq:'Enter a valid email', retryBtn:'Try again', clearFiltersBtn:'Clear filters', resultsCount:'companies found', chatToday:'Today', chatYesterday:'Yesterday', alertSaveBtn:'Alert me to new ones', alertSaved:'Alert created! You will get an email when new companies appear.', alertsTitle:'My alerts', alertDeleted:'Alert removed', pushBtn:'Enable notifications', pushOn:'Notifications active on this device', rvVerified:'verified contact', navHow:'How it works', dpCompare:'Compare', dpMission:'Mission', dpVision:'Vision', allCountries:'All countries', profFilterPh:'Filter by name or city…', profShowMore:'Show more', profShowing:'Showing', dpStreetTitle:'Street View', svOpenExternal:'Open in Google Maps ↗', svFallback:'If the view does not load, ', svFallbackLink:'open it in Google Maps', claimLink:'Is this your business? Claim this listing', claimTitle:'Claim this listing', claimIntro:'To prove you manage this business we send a 6-digit code to the listing\u2019s public email. Once claimed, you can edit the details, reply to reviews and see analytics.', claimSendBtn:'Send code to the listing email', claimSentTo:'Code sent to', claimVerifyBtn:'Confirm code', claimSuccess:'Listing claimed! You can now edit it and see messages.', claimNeedLogin:'Sign in to claim this listing', claimCodeInvalid:'Enter the 6-digit code', rfqCta:'Get Free Quotes', rfqTitle:'Request quotes', rfqIntro:'Describe the job — we send it to the right companies in your area and proposals arrive in your email.', rfqSector:'Activity area', rfqDesc:'Job description', rfqDescPh:'E.g.: Full bathroom renovation (~4 m²): new fixtures, tiles and plumbing.', rfqCity:'Town/City', rfqTimeline:'Desired timeline', rfqBudget:'Indicative budget', rfqPhone:'Phone (optional)', rfqEmail:'Your email', rfqSend:'Send request to companies', rfqSentA:'Request sent to', rfqSentB:'companies! Proposals will arrive by email.', rfqDescShort:'Describe the job in more detail (min. 20 characters)', rfqCityReq:'Enter the town/city', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Next month', tl3m:'Within 3 months', budNS:'Not sure yet', inboxBtn:'Client messages', inboxTitle:'Client messages', inboxEmpty:'No messages yet.', inboxReplyPh:'Write your reply…', inboxReplySend:'Reply', inboxReplySent:'Reply sent to the client', inboxYou:'You', featureBtn:'Request featuring', featureSent:'Feature request sent to the admin',
     topRated:'Top Rated', verified:'Verified', newEntry:'New Entry',
     specialties:'Specialties',
     mapLive:'Live map', mapCity:'Lisbon, Portugal',
@@ -638,7 +638,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:'To simplify and democratise access to quality professional services, creating a transparent ecosystem where companies and professionals can grow together, without unnecessary intermediaries.',
     helpVisionTitle:'Vision', helpVisionDesc:'To be the reference platform in Portugal for connecting companies and professionals, promoting economic growth and creating opportunities for all.',
     navLogin:'Login / Sign up', navHelp:'Help',
-    welcomeExplore:'Explore the map', authOneDoorSub:"Sign in or create an account in seconds — no passwords.", authSendCode:"Email me a code", authSendNote:"We'll send a 6-digit code. If you don't have an account yet, it's created on the spot.", authUsePassword:"I'd rather sign in with a password", authUseCode:"Sign in with an email code", authCodeSentTo:"We sent a 6-digit code to", authNoCode:"Didn't get it? Check spam or", authResend:"resend", authChangeEmail:"change email", authNameAsk:"Account created! What should we call you?", authContinue:"Continue", authOwnerHint:"Own a business?", authOwnerCta:"Register it or claim your listing →", authEmailInvalid:"Enter a valid email.", authCodeResent:"We sent you a new code.", claimTargetLbl:"We'll send the code to", claimGuestNote:"No account needed: once you confirm the code, you're signed in to Hivex with this email and the listing is yours.", claimNoEmailMsg:"This listing has no public email. Write to geral.hivex@gmail.com and we will handle it.", claimNoAccess:"No access to this email? Write to <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"Your business on Hivex", cfIntro:"Many businesses are already on the map. Search for yours — if it's there, just claim it, no forms.", cfPh:"Business name or tax ID (NIF)", cfNotFound:"I can't find my business — register a new one →", cfNoResults:"No business found with that name.", cfClaimBtn:"It's mine — claim it", cfAlreadyOwned:"Already managed", cfEdit:"Edit my listing", regDupClaim:"This business is already on Hivex — claim the existing listing.", welcomeOwnerCta:"Get on the map — register or claim your listing →", listShowMore:'Show more companies', listShownOf:'{a} of {b}', aboutTitle:'About', aboutAutoNote:"Automatic summary based on the company's public data.", claimIncomplete:'✏️ This listing is incomplete. Is it your business? Claim it and add a description, logo and photos.', contactReviewNote:'About a week later, we may send you a single email asking you to review this company.', reviewLoginNeeded:'Log in to write a review.', welcomeTrustMod:'Moderated companies (tax ID + registry)', welcomeTrustEu:'Data hosted in Europe',
+    welcomeExplore:'Explore the map', authOneDoorSub:"Sign in or create an account in seconds — no passwords.", authSendCode:"Email me a code", authSendNote:"We'll send a 6-digit code. If you don't have an account yet, it's created on the spot.", authUsePassword:"I'd rather sign in with a password", authUseCode:"Sign in with an email code", authCodeSentTo:"We sent a 6-digit code to", authNoCode:"Didn't get it? Check spam or", authResend:"resend", authChangeEmail:"change email", authNameAsk:"Account created! What should we call you?", authContinue:"Continue", authOwnerHint:"Own a business?", authOwnerCta:"Register it or claim your listing →", authEmailInvalid:"Enter a valid email.", authCodeResent:"We sent you a new code.", claimTargetLbl:"We'll send the code to", claimGuestNote:"No account needed: once you confirm the code, you're signed in to Hivex with this email and the listing is yours.", claimNoEmailMsg:"This listing has no public email. Write to geral.hivex@gmail.com and we will handle it.", claimNoAccess:"No access to this email? Write to <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"Your business on Hivex", cfIntro:"Many businesses are already on the map. Search for yours — if it's there, just claim it, no forms.", cfPh:"Business name or tax ID (NIF)", cfNotFound:"I can't find my business — register a new one →", cfNoResults:"No business found with that name.", cfClaimBtn:"It's mine — claim it", cfAlreadyOwned:"Already managed", cfEdit:"Edit my listing", regDupClaim:"This business is already on Hivex — claim the existing listing.", welcomeOwnerCta:"Get on the map — register or claim your listing →", listShowMore:'Show more companies', listShownOf:'{a} of {b}', aboutTitle:'About', aboutAutoNote:"Automatic summary based on the company's public data.", claimIncomplete:'This listing is incomplete. Is it your business? Claim it and add a description, logo and photos.', contactReviewNote:'About a week later, we may send you a single email asking you to review this company.', reviewLoginNeeded:'Log in to write a review.', welcomeTrustMod:'Moderated companies (tax ID + registry)', welcomeTrustEu:'Data hosted in Europe',
     themeToDark:'Dark', themeToLight:'Light', themeModeDark:'Dark mode', themeModeLight:'Light mode',
     navFavourites:'Favourites', navFaq:'FAQ', navPrivacy:'Privacy', avatarLogout:'Sign out', avatarFaqHelp:'FAQ & Help',
     lpHeroRegisterCta:'Create free account', lpHeroRegisterHint:'Request quotes, save favourites and register your company.',
@@ -869,7 +869,7 @@ const translations = {
     sortBy:'Trier Par', sortRating:'Meilleure Évaluation', sortReviews:'Plus Évalués', sortName:'Nom A–Z',
     sectorArea:"Secteur d'Activité", minRating:'Évaluation',
     ratingAny:'Toute évaluation', ratingOrMore:'ou plus',
-    searchRadius:'Rayon de Recherche', featured:'En Vedette', ignoreRadius:'Ne pas utiliser le rayon', nearbyTitle:'Entreprises à Proximité', contactYourName:'Votre nom', contactYourEmail:'Votre email (pour la réponse de l\'entreprise)', contactNameReq:'Indiquez votre nom', contactEmailReq:'Indiquez un email valide', retryBtn:'Réessayer', clearFiltersBtn:'Effacer les filtres', resultsCount:'entreprises trouvées', chatToday:"Aujourd'hui", chatYesterday:'Hier', alertSaveBtn:'M’alerter des nouveautés', alertSaved:'Alerte créée !', alertsTitle:'Mes alertes', alertDeleted:'Alerte supprimée', pushBtn:'Activer les notifications', pushOn:'Notifications actives', rvVerified:'contact vérifié', navHow:'Comment ça marche', dpCompare:'Comparer', dpMission:'Mission', dpVision:'Vision', allCountries:'Tous les pays', profFilterPh:'Filtrer par nom ou ville…', profShowMore:'Afficher plus', profShowing:'Affichage de', dpStreetTitle:'Vue de la rue (Street View)', svOpenExternal:'Ouvrir dans Google Maps ↗', svFallback:'Si la vue ne se charge pas, ', svFallbackLink:'ouvrez-la dans Google Maps', claimLink:'🏷 C\u2019est votre entreprise ? Revendiquez cette fiche', claimTitle:'Revendiquer la fiche', claimIntro:'Pour prouver que vous gérez cette entreprise, nous envoyons un code à 6 chiffres à l\u2019email public de la fiche. Une fois revendiquée, vous pouvez la modifier, répondre aux avis et voir les statistiques.', claimSendBtn:'Envoyer le code à l\u2019email de la fiche', claimSentTo:'Code envoyé à', claimVerifyBtn:'Confirmer le code', claimSuccess:'Fiche revendiquée !', claimNeedLogin:'Connectez-vous pour revendiquer la fiche', claimCodeInvalid:'Saisissez le code à 6 chiffres', rfqCta:'Devis Gratuits', rfqTitle:'Demander des devis', rfqIntro:'Décrivez les travaux — nous envoyons la demande aux bonnes entreprises de votre zone et les propositions arrivent par email.', rfqSector:'Domaine d\u2019activité', rfqDesc:'Description des travaux', rfqDescPh:'Ex. : Rénovation complète de salle de bain (~4 m²).', rfqCity:'Localité', rfqTimeline:'Délai souhaité', rfqBudget:'Budget indicatif', rfqPhone:'Téléphone (optionnel)', rfqEmail:'Votre email', rfqSend:'Envoyer la demande', rfqSentA:'Demande envoyée à', rfqSentB:'entreprises ! Les propositions arriveront par email.', rfqDescShort:'Décrivez les travaux plus en détail (min. 20 caractères)', rfqCityReq:'Indiquez la localité', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Le mois prochain', tl3m:'Sous 3 mois', budNS:'Je ne sais pas encore', inboxBtn:'Messages clients', inboxTitle:'Messages clients', inboxEmpty:'Pas encore de messages.', inboxReplyPh:'Écrivez votre réponse…', inboxReplySend:'Répondre', inboxReplySent:'Réponse envoyée', inboxYou:'Vous', featureBtn:'Demander la mise en avant', featureSent:'Demande envoyée à l\u2019administrateur',
+    searchRadius:'Rayon de Recherche', featured:'En Vedette', ignoreRadius:'Ne pas utiliser le rayon', nearbyTitle:'Entreprises à Proximité', contactYourName:'Votre nom', contactYourEmail:'Votre email (pour la réponse de l\'entreprise)', contactNameReq:'Indiquez votre nom', contactEmailReq:'Indiquez un email valide', retryBtn:'Réessayer', clearFiltersBtn:'Effacer les filtres', resultsCount:'entreprises trouvées', chatToday:"Aujourd'hui", chatYesterday:'Hier', alertSaveBtn:'M’alerter des nouveautés', alertSaved:'Alerte créée !', alertsTitle:'Mes alertes', alertDeleted:'Alerte supprimée', pushBtn:'Activer les notifications', pushOn:'Notifications actives', rvVerified:'contact vérifié', navHow:'Comment ça marche', dpCompare:'Comparer', dpMission:'Mission', dpVision:'Vision', allCountries:'Tous les pays', profFilterPh:'Filtrer par nom ou ville…', profShowMore:'Afficher plus', profShowing:'Affichage de', dpStreetTitle:'Vue de la rue (Street View)', svOpenExternal:'Ouvrir dans Google Maps ↗', svFallback:'Si la vue ne se charge pas, ', svFallbackLink:'ouvrez-la dans Google Maps', claimLink:'C\u2019est votre entreprise ? Revendiquez cette fiche', claimTitle:'Revendiquer la fiche', claimIntro:'Pour prouver que vous gérez cette entreprise, nous envoyons un code à 6 chiffres à l\u2019email public de la fiche. Une fois revendiquée, vous pouvez la modifier, répondre aux avis et voir les statistiques.', claimSendBtn:'Envoyer le code à l\u2019email de la fiche', claimSentTo:'Code envoyé à', claimVerifyBtn:'Confirmer le code', claimSuccess:'Fiche revendiquée !', claimNeedLogin:'Connectez-vous pour revendiquer la fiche', claimCodeInvalid:'Saisissez le code à 6 chiffres', rfqCta:'Devis Gratuits', rfqTitle:'Demander des devis', rfqIntro:'Décrivez les travaux — nous envoyons la demande aux bonnes entreprises de votre zone et les propositions arrivent par email.', rfqSector:'Domaine d\u2019activité', rfqDesc:'Description des travaux', rfqDescPh:'Ex. : Rénovation complète de salle de bain (~4 m²).', rfqCity:'Localité', rfqTimeline:'Délai souhaité', rfqBudget:'Budget indicatif', rfqPhone:'Téléphone (optionnel)', rfqEmail:'Votre email', rfqSend:'Envoyer la demande', rfqSentA:'Demande envoyée à', rfqSentB:'entreprises ! Les propositions arriveront par email.', rfqDescShort:'Décrivez les travaux plus en détail (min. 20 caractères)', rfqCityReq:'Indiquez la localité', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Le mois prochain', tl3m:'Sous 3 mois', budNS:'Je ne sais pas encore', inboxBtn:'Messages clients', inboxTitle:'Messages clients', inboxEmpty:'Pas encore de messages.', inboxReplyPh:'Écrivez votre réponse…', inboxReplySend:'Répondre', inboxReplySent:'Réponse envoyée', inboxYou:'Vous', featureBtn:'Demander la mise en avant', featureSent:'Demande envoyée à l\u2019administrateur',
     topRated:'Mieux Noté', verified:'Vérifié', newEntry:'Nouveau Enregistrement',
     specialties:'Spécialités',
     mapLive:'Carte en direct', mapCity:'Lisbonne, Portugal',
@@ -1047,7 +1047,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:"Simplifier et démocratiser l'accès à des services professionnels de qualité, en créant un écosystème transparent où entreprises et professionnels peuvent grandir ensemble, sans intermédiaires inutiles.",
     helpVisionTitle:'Vision', helpVisionDesc:'Être la plateforme de référence au Portugal pour connecter entreprises et professionnels, en favorisant la croissance économique et en créant des opportunités pour tous.',
     navLogin:'Connexion / Inscription', navHelp:'Aide',
-    welcomeExplore:'Explorer la carte', authOneDoorSub:"Connectez-vous ou créez un compte en quelques secondes — sans mot de passe.", authSendCode:"Recevoir un code par e-mail", authSendNote:"Nous envoyons un code à 6 chiffres. Si vous n'avez pas encore de compte, il est créé aussitôt.", authUsePassword:"Je préfère me connecter avec un mot de passe", authUseCode:"Se connecter avec un code par e-mail", authCodeSentTo:"Nous avons envoyé un code à 6 chiffres à", authNoCode:"Rien reçu ? Vérifiez les spams ou", authResend:"renvoyer", authChangeEmail:"changer d'e-mail", authNameAsk:"Compte créé ! Comment souhaitez-vous être appelé ?", authContinue:"Continuer", authOwnerHint:"Vous avez une entreprise ?", authOwnerCta:"Inscrivez-la ou revendiquez votre fiche →", authEmailInvalid:"Indiquez un e-mail valide.", authCodeResent:"Nous vous avons envoyé un nouveau code.", claimTargetLbl:"Nous enverrons le code à", claimGuestNote:"Pas besoin de créer de compte : en confirmant le code, vous êtes connecté à Hivex avec cet e-mail et la fiche est à vous.", claimNoEmailMsg:"Cette fiche n'a pas d'e-mail public. Écrivez-nous à geral.hivex@gmail.com et nous nous en occupons.", claimNoAccess:"Pas d'accès à cet e-mail ? Écrivez-nous à <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"Votre entreprise sur Hivex", cfIntro:"Beaucoup d'entreprises sont déjà sur la carte. Cherchez la vôtre — si elle existe, il suffit de la revendiquer.", cfPh:"Nom ou NIF de l'entreprise", cfNotFound:"Je ne trouve pas mon entreprise — en inscrire une nouvelle →", cfNoResults:"Aucune entreprise trouvée avec ce nom.", cfClaimBtn:"C'est la mienne — revendiquer", cfAlreadyOwned:"Déjà gérée", cfEdit:"Modifier ma fiche", regDupClaim:"Cette entreprise est déjà sur Hivex — revendiquez la fiche existante.", welcomeOwnerCta:"Apparaissez sur la carte — inscrivez ou revendiquez votre fiche →", listShowMore:"Afficher plus d'entreprises", listShownOf:'{a} sur {b}', aboutTitle:'À propos', aboutAutoNote:"Résumé automatique basé sur les données publiques de l'entreprise.", claimIncomplete:"✏️ Cette fiche est incomplète. C'est votre entreprise ? Revendiquez-la et ajoutez une description, un logo et des photos.", contactReviewNote:"Environ une semaine plus tard, nous pourrons vous envoyer un seul e-mail pour vous demander d'évaluer cette entreprise.", reviewLoginNeeded:'Connectez-vous pour écrire un avis.', welcomeTrustMod:'Entreprises modérées (NIF + registre)', welcomeTrustEu:'Données hébergées en Europe',
+    welcomeExplore:'Explorer la carte', authOneDoorSub:"Connectez-vous ou créez un compte en quelques secondes — sans mot de passe.", authSendCode:"Recevoir un code par e-mail", authSendNote:"Nous envoyons un code à 6 chiffres. Si vous n'avez pas encore de compte, il est créé aussitôt.", authUsePassword:"Je préfère me connecter avec un mot de passe", authUseCode:"Se connecter avec un code par e-mail", authCodeSentTo:"Nous avons envoyé un code à 6 chiffres à", authNoCode:"Rien reçu ? Vérifiez les spams ou", authResend:"renvoyer", authChangeEmail:"changer d'e-mail", authNameAsk:"Compte créé ! Comment souhaitez-vous être appelé ?", authContinue:"Continuer", authOwnerHint:"Vous avez une entreprise ?", authOwnerCta:"Inscrivez-la ou revendiquez votre fiche →", authEmailInvalid:"Indiquez un e-mail valide.", authCodeResent:"Nous vous avons envoyé un nouveau code.", claimTargetLbl:"Nous enverrons le code à", claimGuestNote:"Pas besoin de créer de compte : en confirmant le code, vous êtes connecté à Hivex avec cet e-mail et la fiche est à vous.", claimNoEmailMsg:"Cette fiche n'a pas d'e-mail public. Écrivez-nous à geral.hivex@gmail.com et nous nous en occupons.", claimNoAccess:"Pas d'accès à cet e-mail ? Écrivez-nous à <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"Votre entreprise sur Hivex", cfIntro:"Beaucoup d'entreprises sont déjà sur la carte. Cherchez la vôtre — si elle existe, il suffit de la revendiquer.", cfPh:"Nom ou NIF de l'entreprise", cfNotFound:"Je ne trouve pas mon entreprise — en inscrire une nouvelle →", cfNoResults:"Aucune entreprise trouvée avec ce nom.", cfClaimBtn:"C'est la mienne — revendiquer", cfAlreadyOwned:"Déjà gérée", cfEdit:"Modifier ma fiche", regDupClaim:"Cette entreprise est déjà sur Hivex — revendiquez la fiche existante.", welcomeOwnerCta:"Apparaissez sur la carte — inscrivez ou revendiquez votre fiche →", listShowMore:"Afficher plus d'entreprises", listShownOf:'{a} sur {b}', aboutTitle:'À propos', aboutAutoNote:"Résumé automatique basé sur les données publiques de l'entreprise.", claimIncomplete:"Cette fiche est incomplète. C'est votre entreprise ? Revendiquez-la et ajoutez une description, un logo et des photos.", contactReviewNote:"Environ une semaine plus tard, nous pourrons vous envoyer un seul e-mail pour vous demander d'évaluer cette entreprise.", reviewLoginNeeded:'Connectez-vous pour écrire un avis.', welcomeTrustMod:'Entreprises modérées (NIF + registre)', welcomeTrustEu:'Données hébergées en Europe',
     themeToDark:'Sombre', themeToLight:'Clair', themeModeDark:'Mode sombre', themeModeLight:'Mode clair',
     navFavourites:'Favoris', navFaq:'FAQ', navPrivacy:'Confidentialité', avatarLogout:'Se déconnecter', avatarFaqHelp:'FAQ & Aide',
     lpHeroRegisterCta:'Créer un compte gratuit', lpHeroRegisterHint:"Demandez des devis, enregistrez des favoris et inscrivez votre entreprise.",
@@ -1277,7 +1277,7 @@ const translations = {
     sortBy:'Ordenar Por', sortRating:'Mejor Valoradas', sortReviews:'Más Valoradas', sortName:'Nombre A–Z',
     sectorArea:'Área de Actividad', minRating:'Valoración',
     ratingAny:'Cualquier valoración', ratingOrMore:'o más',
-    searchRadius:'Radio de Búsqueda', featured:'Destacados', ignoreRadius:'No Usar Radio de Búsqueda', nearbyTitle:'Empresas Cercanas', contactYourName:'Su nombre', contactYourEmail:'Su email (para que la empresa responda)', contactNameReq:'Indique su nombre', contactEmailReq:'Indique un email válido', retryBtn:'Intentar de nuevo', clearFiltersBtn:'Borrar filtros', resultsCount:'empresas encontradas', chatToday:'Hoy', chatYesterday:'Ayer', alertSaveBtn:'Avisarme de nuevas', alertSaved:'¡Alerta creada!', alertsTitle:'Mis alertas', alertDeleted:'Alerta eliminada', pushBtn:'Activar notificaciones', pushOn:'Notificaciones activas', rvVerified:'contacto verificado', navHow:'Cómo funciona', dpCompare:'Comparar', dpMission:'Misión', dpVision:'Visión', allCountries:'Todos los países', profFilterPh:'Filtrar por nombre o ciudad…', profShowMore:'Mostrar más', profShowing:'Mostrando', dpStreetTitle:'Vista de calle (Street View)', svOpenExternal:'Abrir en Google Maps ↗', svFallback:'Si la vista no carga, ', svFallbackLink:'ábrala en Google Maps', claimLink:'🏷 ¿Es su empresa? Reclame esta ficha', claimTitle:'Reclamar ficha de la empresa', claimIntro:'Para demostrar que gestiona esta empresa, enviamos un código de 6 dígitos al email público de la ficha. Una vez reclamada, puede editar los datos, responder a reseñas y ver estadísticas.', claimSendBtn:'Enviar código al email de la ficha', claimSentTo:'Código enviado a', claimVerifyBtn:'Confirmar código', claimSuccess:'¡Ficha reclamada!', claimNeedLogin:'Inicie sesión para reclamar la ficha', claimCodeInvalid:'Introduzca el código de 6 dígitos', rfqCta:'Pedir Presupuestos Gratis', rfqTitle:'Pedir presupuestos', rfqIntro:'Describa el trabajo — lo enviamos a las empresas adecuadas de su zona y las propuestas llegan a su email.', rfqSector:'Área de actividad', rfqDesc:'Descripción del trabajo', rfqDescPh:'Ej.: Reforma completa de baño (~4 m²).', rfqCity:'Localidad', rfqTimeline:'Plazo deseado', rfqBudget:'Presupuesto indicativo', rfqPhone:'Teléfono (opcional)', rfqEmail:'Su email', rfqSend:'Enviar solicitud', rfqSentA:'Solicitud enviada a', rfqSentB:'empresas. Las propuestas llegarán por email.', rfqDescShort:'Describa el trabajo con más detalle (mín. 20 caracteres)', rfqCityReq:'Indique la localidad', tlFlex:'Flexible', tlUrgent:'Urgente', tl1m:'El próximo mes', tl3m:'En 3 meses', budNS:'Aún no lo sé', inboxBtn:'Mensajes de clientes', inboxTitle:'Mensajes de clientes', inboxEmpty:'Aún no hay mensajes.', inboxReplyPh:'Escriba su respuesta…', inboxReplySend:'Responder', inboxReplySent:'Respuesta enviada', inboxYou:'Usted', featureBtn:'Pedir destacado', featureSent:'Solicitud enviada al administrador',
+    searchRadius:'Radio de Búsqueda', featured:'Destacados', ignoreRadius:'No Usar Radio de Búsqueda', nearbyTitle:'Empresas Cercanas', contactYourName:'Su nombre', contactYourEmail:'Su email (para que la empresa responda)', contactNameReq:'Indique su nombre', contactEmailReq:'Indique un email válido', retryBtn:'Intentar de nuevo', clearFiltersBtn:'Borrar filtros', resultsCount:'empresas encontradas', chatToday:'Hoy', chatYesterday:'Ayer', alertSaveBtn:'Avisarme de nuevas', alertSaved:'¡Alerta creada!', alertsTitle:'Mis alertas', alertDeleted:'Alerta eliminada', pushBtn:'Activar notificaciones', pushOn:'Notificaciones activas', rvVerified:'contacto verificado', navHow:'Cómo funciona', dpCompare:'Comparar', dpMission:'Misión', dpVision:'Visión', allCountries:'Todos los países', profFilterPh:'Filtrar por nombre o ciudad…', profShowMore:'Mostrar más', profShowing:'Mostrando', dpStreetTitle:'Vista de calle (Street View)', svOpenExternal:'Abrir en Google Maps ↗', svFallback:'Si la vista no carga, ', svFallbackLink:'ábrala en Google Maps', claimLink:'¿Es su empresa? Reclame esta ficha', claimTitle:'Reclamar ficha de la empresa', claimIntro:'Para demostrar que gestiona esta empresa, enviamos un código de 6 dígitos al email público de la ficha. Una vez reclamada, puede editar los datos, responder a reseñas y ver estadísticas.', claimSendBtn:'Enviar código al email de la ficha', claimSentTo:'Código enviado a', claimVerifyBtn:'Confirmar código', claimSuccess:'¡Ficha reclamada!', claimNeedLogin:'Inicie sesión para reclamar la ficha', claimCodeInvalid:'Introduzca el código de 6 dígitos', rfqCta:'Pedir Presupuestos Gratis', rfqTitle:'Pedir presupuestos', rfqIntro:'Describa el trabajo — lo enviamos a las empresas adecuadas de su zona y las propuestas llegan a su email.', rfqSector:'Área de actividad', rfqDesc:'Descripción del trabajo', rfqDescPh:'Ej.: Reforma completa de baño (~4 m²).', rfqCity:'Localidad', rfqTimeline:'Plazo deseado', rfqBudget:'Presupuesto indicativo', rfqPhone:'Teléfono (opcional)', rfqEmail:'Su email', rfqSend:'Enviar solicitud', rfqSentA:'Solicitud enviada a', rfqSentB:'empresas. Las propuestas llegarán por email.', rfqDescShort:'Describa el trabajo con más detalle (mín. 20 caracteres)', rfqCityReq:'Indique la localidad', tlFlex:'Flexible', tlUrgent:'Urgente', tl1m:'El próximo mes', tl3m:'En 3 meses', budNS:'Aún no lo sé', inboxBtn:'Mensajes de clientes', inboxTitle:'Mensajes de clientes', inboxEmpty:'Aún no hay mensajes.', inboxReplyPh:'Escriba su respuesta…', inboxReplySend:'Responder', inboxReplySent:'Respuesta enviada', inboxYou:'Usted', featureBtn:'Pedir destacado', featureSent:'Solicitud enviada al administrador',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Nuevo Registro',
     specialties:'Especialidades',
     mapLive:'Mapa en tiempo real', mapCity:'Lisboa, Portugal',
@@ -1452,7 +1452,7 @@ const translations = {
     helpMissionTitle:'Misión', helpMissionDesc:'Simplificar y democratizar el acceso a servicios profesionales de calidad, creando un ecosistema transparente donde empresas y profesionales puedan crecer juntos.',
     helpVisionTitle:'Visión', helpVisionDesc:'Ser la plataforma de referencia en Portugal para conectar empresas y profesionales, fomentando el crecimiento económico y creando oportunidades para todos.',
     navLogin:'Entrar / Registrarse', navHelp:'Ayuda',
-    welcomeExplore:'Explorar el mapa', authOneDoorSub:"Entre o cree una cuenta en segundos — sin contraseñas.", authSendCode:"Recibir código por email", authSendNote:"Enviamos un código de 6 dígitos. Si aún no tiene cuenta, se crea al momento.", authUsePassword:"Prefiero entrar con contraseña", authUseCode:"Entrar con código por email", authCodeSentTo:"Enviamos un código de 6 dígitos a", authNoCode:"¿No lo recibió? Mire el spam o", authResend:"reenviar", authChangeEmail:"cambiar email", authNameAsk:"¡Cuenta creada! ¿Cómo quiere que le llamemos?", authContinue:"Continuar", authOwnerHint:"¿Tiene una empresa?", authOwnerCta:"Regístrela o reclame su ficha →", authEmailInvalid:"Indique un email válido.", authCodeResent:"Le enviamos un código nuevo.", claimTargetLbl:"Enviaremos el código a", claimGuestNote:"No necesita crear cuenta: al confirmar el código, entra en Hivex con este email y la ficha es suya.", claimNoEmailMsg:"Esta ficha no tiene email público. Escríbanos a geral.hivex@gmail.com y lo gestionamos.", claimNoAccess:"¿No tiene acceso a este email? Escríbanos a <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"Su empresa en Hivex", cfIntro:"Muchas empresas ya están en el mapa. Busque la suya — si existe, basta con reclamarla.", cfPh:"Nombre o NIF de la empresa", cfNotFound:"No encuentro mi empresa — registrar una nueva →", cfNoResults:"No se encontró ninguna empresa con ese nombre.", cfClaimBtn:"Es la mía — reclamar", cfAlreadyOwned:"Ya tiene gestor", cfEdit:"Editar mi ficha", regDupClaim:"Esta empresa ya está en Hivex — reclame la ficha existente.", welcomeOwnerCta:"Aparezca en el mapa — registre o reclame su ficha →", listShowMore:'Mostrar más empresas', listShownOf:'{a} de {b}', aboutTitle:'Acerca de', aboutAutoNote:'Resumen automático basado en los datos públicos de la empresa.', claimIncomplete:'✏️ Esta ficha está incompleta. ¿Es su empresa? Reclámela y añada descripción, logotipo y fotos.', contactReviewNote:'Aproximadamente una semana después, podremos enviarle un único correo para pedirle que valore esta empresa.', reviewLoginNeeded:'Inicie sesión para escribir una reseña.', welcomeTrustMod:'Empresas moderadas (NIF + registro)', welcomeTrustEu:'Datos alojados en Europa',
+    welcomeExplore:'Explorar el mapa', authOneDoorSub:"Entre o cree una cuenta en segundos — sin contraseñas.", authSendCode:"Recibir código por email", authSendNote:"Enviamos un código de 6 dígitos. Si aún no tiene cuenta, se crea al momento.", authUsePassword:"Prefiero entrar con contraseña", authUseCode:"Entrar con código por email", authCodeSentTo:"Enviamos un código de 6 dígitos a", authNoCode:"¿No lo recibió? Mire el spam o", authResend:"reenviar", authChangeEmail:"cambiar email", authNameAsk:"¡Cuenta creada! ¿Cómo quiere que le llamemos?", authContinue:"Continuar", authOwnerHint:"¿Tiene una empresa?", authOwnerCta:"Regístrela o reclame su ficha →", authEmailInvalid:"Indique un email válido.", authCodeResent:"Le enviamos un código nuevo.", claimTargetLbl:"Enviaremos el código a", claimGuestNote:"No necesita crear cuenta: al confirmar el código, entra en Hivex con este email y la ficha es suya.", claimNoEmailMsg:"Esta ficha no tiene email público. Escríbanos a geral.hivex@gmail.com y lo gestionamos.", claimNoAccess:"¿No tiene acceso a este email? Escríbanos a <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"Su empresa en Hivex", cfIntro:"Muchas empresas ya están en el mapa. Busque la suya — si existe, basta con reclamarla.", cfPh:"Nombre o NIF de la empresa", cfNotFound:"No encuentro mi empresa — registrar una nueva →", cfNoResults:"No se encontró ninguna empresa con ese nombre.", cfClaimBtn:"Es la mía — reclamar", cfAlreadyOwned:"Ya tiene gestor", cfEdit:"Editar mi ficha", regDupClaim:"Esta empresa ya está en Hivex — reclame la ficha existente.", welcomeOwnerCta:"Aparezca en el mapa — registre o reclame su ficha →", listShowMore:'Mostrar más empresas', listShownOf:'{a} de {b}', aboutTitle:'Acerca de', aboutAutoNote:'Resumen automático basado en los datos públicos de la empresa.', claimIncomplete:'Esta ficha está incompleta. ¿Es su empresa? Reclámela y añada descripción, logotipo y fotos.', contactReviewNote:'Aproximadamente una semana después, podremos enviarle un único correo para pedirle que valore esta empresa.', reviewLoginNeeded:'Inicie sesión para escribir una reseña.', welcomeTrustMod:'Empresas moderadas (NIF + registro)', welcomeTrustEu:'Datos alojados en Europa',
     themeToDark:'Oscuro', themeToLight:'Claro', themeModeDark:'Modo oscuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidad', avatarLogout:'Cerrar sesión', avatarFaqHelp:'FAQ y Ayuda',
     lpHeroRegisterCta:'Crear cuenta gratis', lpHeroRegisterHint:'Pida presupuestos, guarde favoritos y registre su empresa.',
@@ -1679,7 +1679,7 @@ const translations = {
     sortBy:'Sortieren nach', sortRating:'Beste Bewertung', sortReviews:'Meiste Bewertungen', sortName:'Name A–Z',
     sectorArea:'Tätigkeitsbereich', minRating:'Bewertung',
     ratingAny:'Beliebige Bewertung', ratingOrMore:'oder mehr',
-    searchRadius:'Suchradius', featured:'Empfohlen', ignoreRadius:'Suchradius nicht verwenden', nearbyTitle:'Unternehmen in der Nähe', contactYourName:'Ihr Name', contactYourEmail:'Ihre E-Mail (für die Antwort der Firma)', contactNameReq:'Geben Sie Ihren Namen an', contactEmailReq:'Geben Sie eine gültige E-Mail an', retryBtn:'Erneut versuchen', clearFiltersBtn:'Filter zurücksetzen', resultsCount:'Unternehmen gefunden', chatToday:'Heute', chatYesterday:'Gestern', alertSaveBtn:'Bei neuen benachrichtigen', alertSaved:'Alarm erstellt!', alertsTitle:'Meine Alarme', alertDeleted:'Alarm entfernt', pushBtn:'Benachrichtigungen aktivieren', pushOn:'Benachrichtigungen aktiv', rvVerified:'verifizierter Kontakt', navHow:'So funktioniert es', dpCompare:'Vergleichen', dpMission:'Mission', dpVision:'Vision', allCountries:'Alle Länder', profFilterPh:'Nach Name oder Stadt filtern…', profShowMore:'Mehr anzeigen', profShowing:'Zeige', dpStreetTitle:'Straßenansicht (Street View)', svOpenExternal:'In Google Maps öffnen ↗', svFallback:'Wenn die Ansicht nicht lädt, ', svFallbackLink:'in Google Maps öffnen', claimLink:'🏷 Ist das Ihr Unternehmen? Eintrag übernehmen', claimTitle:'Eintrag übernehmen', claimIntro:'Zum Nachweis senden wir einen 6-stelligen Code an die öffentliche E-Mail des Eintrags. Danach können Sie Daten bearbeiten, auf Bewertungen antworten und Statistiken sehen.', claimSendBtn:'Code an die Eintrags-E-Mail senden', claimSentTo:'Code gesendet an', claimVerifyBtn:'Code bestätigen', claimSuccess:'Eintrag übernommen!', claimNeedLogin:'Zum Übernehmen bitte anmelden', claimCodeInvalid:'6-stelligen Code eingeben', rfqCta:'Kostenlose Angebote', rfqTitle:'Angebote anfragen', rfqIntro:'Beschreiben Sie die Arbeit — wir senden die Anfrage an passende Firmen in Ihrer Region; Angebote kommen per E-Mail.', rfqSector:'Tätigkeitsbereich', rfqDesc:'Beschreibung der Arbeit', rfqDescPh:'z. B.: Komplette Badsanierung (~4 m²).', rfqCity:'Ort', rfqTimeline:'Gewünschter Zeitrahmen', rfqBudget:'Ungefähres Budget', rfqPhone:'Telefon (optional)', rfqEmail:'Ihre E-Mail', rfqSend:'Anfrage senden', rfqSentA:'Anfrage gesendet an', rfqSentB:'Firmen! Angebote kommen per E-Mail.', rfqDescShort:'Bitte ausführlicher beschreiben (mind. 20 Zeichen)', rfqCityReq:'Ort angeben', tlFlex:'Flexibel', tlUrgent:'Dringend', tl1m:'Im nächsten Monat', tl3m:'In 3 Monaten', budNS:'Weiß noch nicht', inboxBtn:'Kundennachrichten', inboxTitle:'Kundennachrichten', inboxEmpty:'Noch keine Nachrichten.', inboxReplyPh:'Antwort schreiben…', inboxReplySend:'Antworten', inboxReplySent:'Antwort gesendet', inboxYou:'Sie', featureBtn:'Hervorhebung anfragen', featureSent:'Anfrage an den Administrator gesendet',
+    searchRadius:'Suchradius', featured:'Empfohlen', ignoreRadius:'Suchradius nicht verwenden', nearbyTitle:'Unternehmen in der Nähe', contactYourName:'Ihr Name', contactYourEmail:'Ihre E-Mail (für die Antwort der Firma)', contactNameReq:'Geben Sie Ihren Namen an', contactEmailReq:'Geben Sie eine gültige E-Mail an', retryBtn:'Erneut versuchen', clearFiltersBtn:'Filter zurücksetzen', resultsCount:'Unternehmen gefunden', chatToday:'Heute', chatYesterday:'Gestern', alertSaveBtn:'Bei neuen benachrichtigen', alertSaved:'Alarm erstellt!', alertsTitle:'Meine Alarme', alertDeleted:'Alarm entfernt', pushBtn:'Benachrichtigungen aktivieren', pushOn:'Benachrichtigungen aktiv', rvVerified:'verifizierter Kontakt', navHow:'So funktioniert es', dpCompare:'Vergleichen', dpMission:'Mission', dpVision:'Vision', allCountries:'Alle Länder', profFilterPh:'Nach Name oder Stadt filtern…', profShowMore:'Mehr anzeigen', profShowing:'Zeige', dpStreetTitle:'Straßenansicht (Street View)', svOpenExternal:'In Google Maps öffnen ↗', svFallback:'Wenn die Ansicht nicht lädt, ', svFallbackLink:'in Google Maps öffnen', claimLink:'Ist das Ihr Unternehmen? Eintrag übernehmen', claimTitle:'Eintrag übernehmen', claimIntro:'Zum Nachweis senden wir einen 6-stelligen Code an die öffentliche E-Mail des Eintrags. Danach können Sie Daten bearbeiten, auf Bewertungen antworten und Statistiken sehen.', claimSendBtn:'Code an die Eintrags-E-Mail senden', claimSentTo:'Code gesendet an', claimVerifyBtn:'Code bestätigen', claimSuccess:'Eintrag übernommen!', claimNeedLogin:'Zum Übernehmen bitte anmelden', claimCodeInvalid:'6-stelligen Code eingeben', rfqCta:'Kostenlose Angebote', rfqTitle:'Angebote anfragen', rfqIntro:'Beschreiben Sie die Arbeit — wir senden die Anfrage an passende Firmen in Ihrer Region; Angebote kommen per E-Mail.', rfqSector:'Tätigkeitsbereich', rfqDesc:'Beschreibung der Arbeit', rfqDescPh:'z. B.: Komplette Badsanierung (~4 m²).', rfqCity:'Ort', rfqTimeline:'Gewünschter Zeitrahmen', rfqBudget:'Ungefähres Budget', rfqPhone:'Telefon (optional)', rfqEmail:'Ihre E-Mail', rfqSend:'Anfrage senden', rfqSentA:'Anfrage gesendet an', rfqSentB:'Firmen! Angebote kommen per E-Mail.', rfqDescShort:'Bitte ausführlicher beschreiben (mind. 20 Zeichen)', rfqCityReq:'Ort angeben', tlFlex:'Flexibel', tlUrgent:'Dringend', tl1m:'Im nächsten Monat', tl3m:'In 3 Monaten', budNS:'Weiß noch nicht', inboxBtn:'Kundennachrichten', inboxTitle:'Kundennachrichten', inboxEmpty:'Noch keine Nachrichten.', inboxReplyPh:'Antwort schreiben…', inboxReplySend:'Antworten', inboxReplySent:'Antwort gesendet', inboxYou:'Sie', featureBtn:'Hervorhebung anfragen', featureSent:'Anfrage an den Administrator gesendet',
     topRated:'Top-Bewertet', verified:'Verifiziert', newEntry:'Neu eingetragen',
     specialties:'Fachbereiche',
     mapLive:'Live-Karte', mapCity:'Lissabon, Portugal',
@@ -1854,7 +1854,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:'Den Zugang zu hochwertigen Fachleistungen vereinfachen und demokratisieren – ein transparentes Ökosystem schaffen, in dem Unternehmen und Fachleute gemeinsam wachsen können, ohne unnötige Zwischenhändler.',
     helpVisionTitle:'Vision', helpVisionDesc:'Die führende Plattform in Portugal zur Vernetzung von Unternehmen und Fachleuten werden, Wirtschaftswachstum fördern und Chancen für alle schaffen.',
     navLogin:'Anmelden / Registrieren', navHelp:'Hilfe',
-    welcomeExplore:'Karte erkunden', authOneDoorSub:"In Sekunden anmelden oder registrieren — ohne Passwort.", authSendCode:"Code per E-Mail erhalten", authSendNote:"Wir senden einen 6-stelligen Code. Ohne Konto wird es sofort angelegt.", authUsePassword:"Lieber mit Passwort anmelden", authUseCode:"Mit E-Mail-Code anmelden", authCodeSentTo:"Wir haben einen 6-stelligen Code gesendet an", authNoCode:"Nichts erhalten? Spam prüfen oder", authResend:"erneut senden", authChangeEmail:"E-Mail ändern", authNameAsk:"Konto erstellt! Wie dürfen wir Sie nennen?", authContinue:"Weiter", authOwnerHint:"Haben Sie ein Unternehmen?", authOwnerCta:"Registrieren oder Eintrag übernehmen →", authEmailInvalid:"Bitte eine gültige E-Mail angeben.", authCodeResent:"Wir haben Ihnen einen neuen Code gesendet.", claimTargetLbl:"Wir senden den Code an", claimGuestNote:"Kein Konto nötig: Nach Bestätigung des Codes sind Sie mit dieser E-Mail bei Hivex angemeldet und der Eintrag gehört Ihnen.", claimNoEmailMsg:"Dieser Eintrag hat keine öffentliche E-Mail. Schreiben Sie an geral.hivex@gmail.com, wir kümmern uns darum.", claimNoAccess:"Kein Zugriff auf diese E-Mail? Schreiben Sie an <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"Ihr Unternehmen auf Hivex", cfIntro:"Viele Unternehmen sind bereits auf der Karte. Suchen Sie Ihres — wenn es existiert, einfach übernehmen.", cfPh:"Firmenname oder Steuernummer (NIF)", cfNotFound:"Ich finde mein Unternehmen nicht — neu registrieren →", cfNoResults:"Kein Unternehmen mit diesem Namen gefunden.", cfClaimBtn:"Das ist meins — übernehmen", cfAlreadyOwned:"Bereits verwaltet", cfEdit:"Meinen Eintrag bearbeiten", regDupClaim:"Dieses Unternehmen ist bereits auf Hivex — übernehmen Sie den bestehenden Eintrag.", welcomeOwnerCta:"Auf die Karte kommen — Eintrag registrieren oder übernehmen →", listShowMore:'Mehr Unternehmen anzeigen', listShownOf:'{a} von {b}', aboutTitle:'Über uns', aboutAutoNote:'Automatische Zusammenfassung auf Basis öffentlicher Unternehmensdaten.', claimIncomplete:'✏️ Dieser Eintrag ist unvollständig. Ist das Ihr Unternehmen? Beanspruchen Sie ihn und ergänzen Sie Beschreibung, Logo und Fotos.', contactReviewNote:'Etwa eine Woche später senden wir Ihnen eventuell eine einzige E-Mail mit der Bitte, dieses Unternehmen zu bewerten.', reviewLoginNeeded:'Melden Sie sich an, um eine Bewertung zu schreiben.', welcomeTrustMod:'Geprüfte Unternehmen (NIF + Register)', welcomeTrustEu:'Daten in Europa gehostet',
+    welcomeExplore:'Karte erkunden', authOneDoorSub:"In Sekunden anmelden oder registrieren — ohne Passwort.", authSendCode:"Code per E-Mail erhalten", authSendNote:"Wir senden einen 6-stelligen Code. Ohne Konto wird es sofort angelegt.", authUsePassword:"Lieber mit Passwort anmelden", authUseCode:"Mit E-Mail-Code anmelden", authCodeSentTo:"Wir haben einen 6-stelligen Code gesendet an", authNoCode:"Nichts erhalten? Spam prüfen oder", authResend:"erneut senden", authChangeEmail:"E-Mail ändern", authNameAsk:"Konto erstellt! Wie dürfen wir Sie nennen?", authContinue:"Weiter", authOwnerHint:"Haben Sie ein Unternehmen?", authOwnerCta:"Registrieren oder Eintrag übernehmen →", authEmailInvalid:"Bitte eine gültige E-Mail angeben.", authCodeResent:"Wir haben Ihnen einen neuen Code gesendet.", claimTargetLbl:"Wir senden den Code an", claimGuestNote:"Kein Konto nötig: Nach Bestätigung des Codes sind Sie mit dieser E-Mail bei Hivex angemeldet und der Eintrag gehört Ihnen.", claimNoEmailMsg:"Dieser Eintrag hat keine öffentliche E-Mail. Schreiben Sie an geral.hivex@gmail.com, wir kümmern uns darum.", claimNoAccess:"Kein Zugriff auf diese E-Mail? Schreiben Sie an <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"Ihr Unternehmen auf Hivex", cfIntro:"Viele Unternehmen sind bereits auf der Karte. Suchen Sie Ihres — wenn es existiert, einfach übernehmen.", cfPh:"Firmenname oder Steuernummer (NIF)", cfNotFound:"Ich finde mein Unternehmen nicht — neu registrieren →", cfNoResults:"Kein Unternehmen mit diesem Namen gefunden.", cfClaimBtn:"Das ist meins — übernehmen", cfAlreadyOwned:"Bereits verwaltet", cfEdit:"Meinen Eintrag bearbeiten", regDupClaim:"Dieses Unternehmen ist bereits auf Hivex — übernehmen Sie den bestehenden Eintrag.", welcomeOwnerCta:"Auf die Karte kommen — Eintrag registrieren oder übernehmen →", listShowMore:'Mehr Unternehmen anzeigen', listShownOf:'{a} von {b}', aboutTitle:'Über uns', aboutAutoNote:'Automatische Zusammenfassung auf Basis öffentlicher Unternehmensdaten.', claimIncomplete:'Dieser Eintrag ist unvollständig. Ist das Ihr Unternehmen? Beanspruchen Sie ihn und ergänzen Sie Beschreibung, Logo und Fotos.', contactReviewNote:'Etwa eine Woche später senden wir Ihnen eventuell eine einzige E-Mail mit der Bitte, dieses Unternehmen zu bewerten.', reviewLoginNeeded:'Melden Sie sich an, um eine Bewertung zu schreiben.', welcomeTrustMod:'Geprüfte Unternehmen (NIF + Register)', welcomeTrustEu:'Daten in Europa gehostet',
     themeToDark:'Dunkel', themeToLight:'Hell', themeModeDark:'Dunkelmodus', themeModeLight:'Heller Modus',
     navFavourites:'Favoriten', navFaq:'FAQ', navPrivacy:'Datenschutz', avatarLogout:'Abmelden', avatarFaqHelp:'FAQ & Hilfe',
     lpHeroRegisterCta:'Kostenloses Konto erstellen', lpHeroRegisterHint:'Angebote anfragen, Favoriten speichern und Ihren Betrieb registrieren.',
@@ -3100,10 +3100,70 @@ function loadDemoCompanies() {
 // literals inject the number form — so any `companies.find(x => x.id === id)`
 // comparison would fail with "1" === 1. Coerce here at the boundary so every
 // downstream comparison is between numbers and works.
+// ── Texto oficial legível ─────────────────────────────────────────────────────
+// Os dados do IMPIC chegam sem acentos ("Construcoes") e as moradas em
+// MAIÚSCULAS. Só na apresentação: acentos repostos num dicionário fechado de
+// palavras que em português SÓ existem acentuadas (empresas de Portugal), e
+// moradas em maiúsculas passam a escrita normal ("Rua do Loteamento 173").
+const _PT_ACENTOS = (() => {
+  const pares = 'construcoes:construções construcao:construção servicos:serviços instalacoes:instalações ' +
+    'remodelacoes:remodelações remodelacao:remodelação reparacoes:reparações reparacao:reparação manutencao:manutenção ' +
+    'climatizacao:climatização canalizacao:canalização canalizacoes:canalizações impermeabilizacao:impermeabilização ' +
+    'impermeabilizacoes:impermeabilizações pavimentacao:pavimentação pavimentacoes:pavimentações decoracao:decoração ' +
+    'decoracoes:decorações reabilitacao:reabilitação renovacao:renovação renovacoes:renovações edificacao:edificação ' +
+    'edificacoes:edificações urbanizacao:urbanização urbanizacoes:urbanizações demolicoes:demolições solucoes:soluções ' +
+    'solucao:solução gestao:gestão comercio:comércio industria:indústria industrias:indústrias tecnica:técnica ' +
+    'tecnicas:técnicas tecnico:técnico tecnicos:técnicos eletrica:elétrica eletricas:elétricas electrica:eléctrica ' +
+    'electricas:eléctricas hidraulica:hidráulica hidraulicas:hidráulicas ceramica:cerâmica ceramicas:cerâmicas ' +
+    'metalurgica:metalúrgica metalurgicas:metalúrgicas metalurgico:metalúrgico metalurgicos:metalúrgicos metalomecanica:metalomecânica mecanica:mecânica imobiliaria:imobiliária ' +
+    'imobiliarias:imobiliárias vidracaria:vidraçaria vidracarias:vidraçarias aluminio:alumínio aluminios:alumínios ' +
+    'marmore:mármore marmores:mármores termica:térmica acustica:acústica energetica:energética automacao:automação ' +
+    'iluminacao:iluminação seguranca:segurança administracao:administração promocao:promoção promocoes:promoções ' +
+    'imoveis:imóveis predios:prédios armazens:armazéns producao:produção producoes:produções fabricacao:fabricação ' +
+    'distribuicao:distribuição inovacao:inovação logistica:logística escavacoes:escavações perfuracoes:perfurações ' +
+    'fundacoes:fundações metalica:metálica metalicas:metálicas metalico:metálico metalicos:metálicos betao:betão ' +
+    'associacao:associação cooperacao:cooperação uniao:união regiao:região portugues:português iberica:ibérica ' +
+    'lusitania:lusitânia irmaos:irmãos joao:joão sebastiao:sebastião simao:simão estevao:estevão conceicao:conceição ' +
+    'assuncao:assunção goncalves:gonçalves simoes:simões magalhaes:magalhães guimaraes:guimarães leitao:leitão ' +
+    'romao:romão galvao:galvão brandao:brandão falcao:falcão paixao:paixão antonio:antónio sao:são';
+  const m = new Map(pares.split(' ').map(p => p.split(':')));
+  return { m, re: new RegExp('(?<![\\p{L}\\p{N}])(' + [...m.keys()].join('|') + ')(?![\\p{L}\\p{N}])', 'giu') };
+})();
+function _nomeLegivel(nome, pais) {
+  const s = String(nome || '');
+  if (!s || String(pais || 'pt').toLowerCase() !== 'pt') return s;
+  return s.replace(_PT_ACENTOS.re, w => {
+    const novo = _PT_ACENTOS.m.get(w.toLowerCase());
+    if (!novo) return w;
+    if (w === w.toUpperCase()) return novo.toUpperCase();
+    if (w[0] === w[0].toUpperCase()) return novo[0].toUpperCase() + novo.slice(1);
+    return novo;
+  });
+}
+const _MORADA_MIN = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'a', 'o', 'as', 'os', 'em', 'na', 'no', 'nas', 'nos', 'à', 'ao', 'aos', 'às', 'com']);
+const _MORADA_SIGLA = new Set(['en', 'er', 'ic', 'ip', 'cp', 'ue', 'lda']);
+function _moradaLegivel(morada) {
+  const s = String(morada || '').trim();
+  const letras = s.match(/\p{L}/gu) || [];
+  if (letras.length < 4) return s;
+  const maius = letras.filter(ch => ch !== ch.toLowerCase()).length;
+  if (maius / letras.length < 0.7) return s;   // já vem em escrita normal
+  let n = 0;
+  const baixo = s.toLowerCase();
+  return baixo.replace(/\p{L}[\p{L}\p{M}'’.\/]*/gu, (w, off) => {
+    const primeira = n++ === 0;
+    if (w.includes('/') || _MORADA_SIGLA.has(w) || /^[ivx]{2,4}$/.test(w) ||
+        (w.length <= 3 && /\d/.test(baixo[off + w.length] || ''))) return w.toUpperCase();
+    if (!primeira && _MORADA_MIN.has(w)) return w;
+    return w[0].toUpperCase() + w.slice(1);
+  });
+}
+window._moradaLegivel = _moradaLegivel;
+
 function dbRowToCompany(row) {
   return {
     id:        Number(row.id),
-    name:      row.name,
+    name:      _nomeLegivel(row.name, row.country),
     nif:       row.nif       || '',
     cae:       row.cae       || '',
     alvara:    row.alvara    || '',
@@ -4702,7 +4762,7 @@ class HxMarker {
     // próprio .hx-pin, pisava o scale por zoom (--pinScale) e a transition de
     // transform do CSS fazia os pins "flutuar" atrás do mapa ao arrastar.
     const el = document.createElement('div');
-    el.className = 'hx-mk';
+    el.className = 'hx-mk' + (this._cid != null && this._cid === window._hxPinSel ? ' hx-sel' : '');
     el.innerHTML = this._opts.htmlFn ? this._opts.htmlFn() : (this._opts.html || '');
     if (this._opts.zIndex) el.style.zIndex = String(this._opts.zIndex);
     el.addEventListener('click', (e) => {
@@ -4958,7 +5018,7 @@ function createMarkerIcon(c) {
   const glow = c.pinType === 'gold' ? 'rgba(245,158,11,.4)' : _hexToGlow(sectorColor);
   const featuredBorder = featured ? '3px solid #f59e0b' : '2.5px solid #fff';
   const featuredShadow = featured ? `0 3px 12px ${glow},0 0 0 4px rgba(245,158,11,.25)` : `0 3px 12px ${glow}`;
-  const featuredBadge  = featured ? `<span style="position:absolute;top:-8px;right:-6px;background:#f59e0b;color:#fff;font-size:9px;font-weight:900;border-radius:8px;padding:1px 4px;line-height:1.4;z-index:1">⭐</span>` : '';
+  const featuredBadge  = featured ? `<span style="position:absolute;top:-8px;right:-6px;background:#f59e0b;color:#fff;font-size:10px;font-weight:700;border-radius:8px;padding:1px 4px;line-height:1.4;z-index:1">★</span>` : '';
   // Branded honeycomb/hexagon marker (pointy-top hex with a bottom vertex that
   // acts as the location "tip"). Border is simulated by a slightly larger hex
   // behind the coloured one; drop-shadow respects the clip-path.
@@ -4966,50 +5026,9 @@ function createMarkerIcon(c) {
   const borderColor = featured ? '#f59e0b' : '#ffffff';
   // HTML do pin (hexágono com logo/monograma). O adaptador MapLibre cria o
   // elemento DOM a partir disto apenas quando o pin fica visível no viewport.
-  icon = `<div class="hx-pin" style="width:40px;height:42px;position:relative;cursor:pointer;filter:drop-shadow(0 3px 5px ${glow})${featured ? ' drop-shadow(0 0 2px rgba(245,158,11,.9))' : ''}">${featuredBadge}<div style="position:absolute;inset:0;background:${borderColor};clip-path:${hex}"></div><div style="position:absolute;inset:3px;background:${bg};clip-path:${hex};display:flex;align-items:center;justify-content:center;overflow:hidden">${c.logo ? `<img src="${c.logo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"/>` : `<span style="font-size:12px;font-weight:800;color:#fff;letter-spacing:.3px;display:block;line-height:1;font-family:inherit">${mono}</span>`}</div></div>`;
+  icon = `<div class="hx-pin" style="width:40px;height:42px;position:relative;cursor:pointer;filter:drop-shadow(0 3px 5px ${glow})${featured ? ' drop-shadow(0 0 2px rgba(245,158,11,.9))' : ''}">${featuredBadge}<div style="position:absolute;inset:0;background:${borderColor};clip-path:${hex}"></div><div style="position:absolute;inset:3px;background:${bg};clip-path:${hex};display:flex;align-items:center;justify-content:center;overflow:hidden">${c.logo ? `<img src="${c.logo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"/>` : `<span style="font-size:12px;font-weight:700;color:#fff;letter-spacing:.3px;display:block;line-height:1;font-family:inherit">${mono}</span>`}</div></div>`;
   _markerIconCache.set(key, icon);
   return icon;
-}
-
-function buildPopupHtml(c) {
-  const tr = translations[currentLang];
-  let starsHtml;
-  if (c.rating > 0) {
-    const fullStars = Math.floor(c.rating);
-    const hasHalf = c.rating % 1 !== 0;
-    const stars = '★'.repeat(fullStars) + (hasHalf ? '½' : '') + '☆'.repeat(5 - Math.ceil(c.rating));
-    starsHtml = `<div style="color:#f59e0b;font-size:19px;margin-bottom:5px">${stars} <strong style="color:#1e293b">${c.rating.toFixed(1)}</strong> <span style="color:#64748b;font-size:16px">(${c.reviews} ${tr.reviews})</span></div>`;
-  } else {
-    starsHtml = `<div style="margin-bottom:5px"><span class="badge-new">${tr.newOnHivex || 'Novo na Hivex'}</span></div>`;
-  }
-  const sc = (tr && tr.sectors) || {};
-  const sectorsArr = (c.sectors && c.sectors.length) ? c.sectors : (c.sector ? [c.sector] : []);
-  const shown = sectorsArr.slice(0, 3);
-  const extra = Math.max(0, sectorsArr.length - shown.length);
-  const sectorsHtml = sectorsArr.length ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin:8px 0 9px">
-    ${shown.map(s => `<span style="background:#eff6ff;color:#1e40af;font-size:15px;font-weight:600;padding:4px 11px;border-radius:8px;border:1px solid rgba(37,99,235,.18);line-height:1.3">${escHtml(sc[s] || s)}</span>`).join('')}
-    ${extra > 0 ? `<span style="font-size:15px;color:#64748b;font-weight:700;padding:4px 5px;align-self:center">+${extra}</span>` : ''}
-  </div>` : '';
-  // Credentials are only present on the company object for logged-in users
-  // (the backend redacts them for anonymous traffic).
-  const certBadge = c.certidao_permanente
-    ? `<span style="font-size:14px;color:#166534;background:#dcfce7;border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;gap:4px;font-weight:700">✓ ${escHtml(tr.popupCertOk || 'Certidão registada')}</span>`
-    : '';
-  const _alvNum = c.alvara ? (String(c.alvara).match(/\d+/) || [''])[0] : '';
-  const alvaraBadge = c.alvara
-    ? `<span style="font-size:14px;color:#1e40af;background:#eff6ff;border:1px solid rgba(37,99,235,.25);border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;gap:4px;font-weight:700">🛡️ ${escHtml(c.country === 'pt' ? (tr.alvaraImpic || 'Alvará IMPIC') : (tr.popupAlvaraOk || 'Alvará'))}${(_alvNum && c.country === 'pt') ? ' ' + escHtml(_alvNum) : ''}</span>`
-    : '';
-  const newBadge = c.isNew
-    ? `<span style="font-size:14px;color:#166534;background:#dcfce7;border-radius:6px;padding:4px 9px;display:inline-flex;align-items:center;font-weight:700">${escHtml(tr.popupNewBadge)}</span>`
-    : '';
-  const badges = [certBadge, alvaraBadge, newBadge].filter(Boolean).join('');
-  return `<div style="min-width:290px;max-width:380px">
-    <div style="font-size:22px;font-weight:800;color:#1e293b;margin-bottom:5px">${c.emoji} ${escHtml(c.name)}</div>
-    ${sectorsHtml}
-    ${starsHtml}
-    ${c.address ? `<div style="font-size:16px;color:#64748b;line-height:1.4">${escHtml(c.address)}</div>` : ''}
-    ${badges ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:9px">${badges}</div>` : ''}
-  </div>`;
 }
 
 // ── CLUSTERING (nativo MapLibre/supercluster) ─────────────────────────────────
@@ -5254,9 +5273,9 @@ function addCompanyMarker(c) {
   const m = new HxMarker([lat, lng], { htmlFn: () => createMarkerIcon(c), anchor: 'bottom' });
   m._cid = c.id;
   m._feature = { type: 'Feature', geometry: { type: 'Point', coordinates: [lng, lat] }, properties: { id: c.id } };
-  // Lazy popup: content built only when the popup is actually opened,
-  // so language changes and filter runs don't rebuild HTML for all markers
-  m.bindPopup(() => buildPopupHtml(c));
+  // Sem popup: o clique abre a ficha lateral, que já mostra tudo — o popup
+  // repetia a mesma informação e ficava cortado por baixo do painel. O pin
+  // da empresa aberta fica destacado (ver _hxMarcarPin).
   // When the mobile results-sheet is open, a pin tap highlights that company's
   // card in the list instead of opening the full detail; otherwise open detail.
   m.on('click', () => {
@@ -6531,15 +6550,15 @@ function _runApplyFilters() {
             // Aim for ~2x the current radius and a "all country" fallback.
             const wantKm = Math.min(600, km * 2);
             const wantSlider = wantKm >= 600 ? 100 : Math.round(100 * Math.log(wantKm / 5) / Math.log(120));
-            btns += `<button onclick="_expandRadiusTo(${wantSlider})" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px">📍 Aumentar para ${wantKm} km</button>
+            btns += `<button onclick="_expandRadiusTo(${wantSlider})" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;display:inline-flex;align-items:center;gap:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Aumentar para ${wantKm} km</button>
             <button onclick="_expandRadiusTo(100)" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--primary);box-shadow:none">Todo o país</button>`;
           }
           btns += `<button onclick="clearAllFilters()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--border);box-shadow:none">✕ ${escHtml(t('clearFiltersBtn'))}</button>`;
           if (localStorage.getItem('hive_user')) {
-            btns += `<button onclick="saveSearchAlert()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--primary);box-shadow:none">🔔 ${escHtml(t('alertSaveBtn'))}</button>`;
+            btns += `<button onclick="saveSearchAlert()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--primary);box-shadow:none;display:inline-flex;align-items:center;gap:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg> ${escHtml(t('alertSaveBtn'))}</button>`;
           }
           // o CTA que resolve de verdade: pedir orçamento com o setor pré-preenchido
-          btns += `<button onclick="openRfqModal('${[...activeSectors][0] || ''}')" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:#16a34a;border:none">📝 ${escHtml(t('rfqCta'))}</button>`;
+          btns += `<button onclick="openRfqModal('${[...activeSectors][0] || ''}')" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;border:none;display:inline-flex;align-items:center;gap:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8M16 13H8M16 17H8"/></svg> ${escHtml(t('rfqCta'))}</button>`;
           html += `<div style="margin-top:14px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">${btns}</div>`;
         }
         hintText.innerHTML = html;
@@ -6669,6 +6688,17 @@ function _isMobileSheet() { return window.matchMedia('(max-width:768px)').matche
 function openResultsSheet() {
   const panel = document.querySelector('.map-panel');
   if (!panel) return;
+  // A lista aberta começa por baixo da pesquisa e dos filtros flutuantes
+  // (antes subia por baixo deles e escondia o topo da lista).
+  try {
+    const pr = panel.getBoundingClientRect();
+    let fundo = 0;
+    document.querySelectorAll('.unified-bar, #mobileSearchPanel').forEach(el => {
+      const r = el.getBoundingClientRect();
+      if (r.height > 0 && getComputedStyle(el).display !== 'none') fundo = Math.max(fundo, r.bottom - pr.top);
+    });
+    if (fundo > 0) panel.style.setProperty('--sheet-top', Math.round(fundo + 8) + 'px');
+  } catch (_) {}
   panel.classList.add('sheet-open');
   _resultsSheetOpen = true;
   _updateSheetCta();
@@ -6801,20 +6831,20 @@ function renderSearchList(filtered) {
       if (showActions) {
         const wantKm = Math.min(600, km * 2);
         const wantSlider = wantKm >= 600 ? 100 : Math.round(100 * Math.log(wantKm / 5) / Math.log(120));
-        btns += `<button onclick="_expandRadiusTo(${wantSlider})" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px">📍 Aumentar para ${wantKm} km</button>
+        btns += `<button onclick="_expandRadiusTo(${wantSlider})" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;display:inline-flex;align-items:center;gap:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Aumentar para ${wantKm} km</button>
         <button onclick="_expandRadiusTo(100)" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--primary);box-shadow:none">Todo o país</button>`;
       }
       if (activeSectors.size || _keywordFilter || activeTag) {
         btns += `<button onclick="clearAllFilters()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--border);box-shadow:none">✕ ${escHtml(t('clearFiltersBtn'))}</button>`;
       }
       if (activeSectors.size && localStorage.getItem('hive_user')) {
-        btns += `<button onclick="saveSearchAlert()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--primary);box-shadow:none">🔔 ${escHtml(t('alertSaveBtn'))}</button>`;
+        btns += `<button onclick="saveSearchAlert()" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:transparent;color:var(--text);border:1px solid var(--primary);box-shadow:none;display:inline-flex;align-items:center;gap:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg> ${escHtml(t('alertSaveBtn'))}</button>`;
       }
-      btns += `<button onclick="openRfqModal('${[...activeSectors][0] || ''}')" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;background:#16a34a;border:none">📝 ${escHtml(t('rfqCta'))}</button>`;
+      btns += `<button onclick="openRfqModal('${[...activeSectors][0] || ''}')" class="lp-see-all-cta" style="padding:13px 22px;font-size:16px;border:none;display:inline-flex;align-items:center;gap:8px"><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M10 9H8M16 13H8M16 17H8"/></svg> ${escHtml(t('rfqCta'))}</button>`;
       if (btns) actionsHtml = `<div style="margin-top:18px;display:flex;gap:8px;flex-wrap:wrap;justify-content:center">${btns}</div>`;
     }
     listEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1">' +
-      '<div class="empty-state-ico">🐝</div>' +
+      '<div class="empty-state-ico"><svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg></div>' +
       '<div class="empty-state-title">' + t('searchListEmpty') + '</div>' +
       '<div class="empty-state-text">' + t('searchListEmptySub') + '</div>' +
       actionsHtml +
@@ -6895,20 +6925,21 @@ function _appendListCards(frag, data, start, end) {
         ${photoBadge}
         <span class="slc-photo-rating">${ratingPill}</span>
       </div>
-      <button class="slc-fav ${isFav ? 'is-fav' : ''}" onclick="event.stopPropagation();toggleFavourite(${c.id})" aria-label="Guardar favorito" title="Guardar favorito">${isFav ? '★' : '☆'}</button>
-      <label class="slc-compare" onclick="event.stopPropagation()" title="Adicionar à comparação">
-        <input type="checkbox" ${isCompared ? 'checked' : ''} onchange="toggleCompare(${c.id})"/>
-        <span>Comparar</span>
-      </label>
       <div class="slc-header">
-        ${c.logo ? `<div class="slc-emoji" style="background:url('${c.logo}') center/cover no-repeat"></div>` : _miniLogoHtml(c, 'slc-emoji')}
+        ${_logoHtml(c, 'slc-emoji')}
         <div class="slc-info">
-          <div class="slc-name">${c.name}</div>
-          <div class="slc-sector-badge"><span style="width:8px;height:8px;border-radius:50%;background:${c.color};display:inline-block;flex-shrink:0"></span>${sectorLabel}</div>
+          <div class="slc-name">${escHtml(c.name)}</div>
+          <div class="slc-sector-badge"><span class="slc-dot" style="background:${c.color}"></span>${escHtml(sectorLabel)}</div>
         </div>
-        <div class="slc-rating">${stars}</div>
+        <div class="slc-actions">
+          <label class="slc-compare" onclick="event.stopPropagation()" title="Adicionar à comparação">
+            <input type="checkbox" ${isCompared ? 'checked' : ''} onchange="toggleCompare(${c.id})"/>
+            <span>Comparar</span>
+          </label>
+          <button class="slc-fav ${isFav ? 'is-fav' : ''}" onclick="event.stopPropagation();toggleFavourite(${c.id})" aria-label="Guardar favorito" title="Guardar favorito">${isFav ? '★' : '☆'}</button>
+        </div>
       </div>
-      <div class="slc-address">${c.city || c.address || 'Portugal'}</div>
+      <div class="slc-meta"><span class="slc-address">${escHtml(_moradaLegivel(c.city || c.address) || 'Portugal')}</span>${c.rating > 0 ? `<span class="slc-rating">${stars}</span>` : ''}</div>
       ${tags ? `<div class="slc-tags">${tags}</div>` : ''}
       <div class="slc-footer">
         ${phoneFrag}
@@ -7074,9 +7105,7 @@ function _appendNearbyCards(listEl, upTo, sentinel) {
     const rating = c.rating > 0
       ? `<span class="nc-stars">${'★'.repeat(Math.round(c.rating))}</span> <strong>${c.rating.toFixed(1)}</strong> <span class="nc-reviews">(${c.reviews || 0})</span>`
       : `<span class="badge-new">${t('newOnHivex')}</span>`;
-    const logo = c.logo
-      ? `<div class="nc-logo" style="background:url('${c.logo}') center/cover no-repeat"></div>`
-      : _miniLogoHtml(c, 'nc-logo');
+    const logo = _logoHtml(c, 'nc-logo');
     const div = document.createElement('div');
     div.className = 'nearby-card';
     div.dataset.companyId = c.id;
@@ -7093,8 +7122,8 @@ function _appendNearbyCards(listEl, upTo, sentinel) {
         </div>
         <div class="nc-side">${c.featured ? '<span class="nc-feat-badge">★ ' + escHtml(t('featuredBadge')) + '</span>' : ''}<span class="nc-dist">${distStr}</span></div>
       </div>
-      <div class="nc-rating">${rating}</div>
-      ${c.address || c.city ? `<div class="nc-address">${escHtml(c.address || c.city)}</div>` : ''}
+      ${c.rating > 0 ? `<div class="nc-rating">${rating}</div>` : ''}
+      ${c.address || c.city ? `<div class="nc-address">${escHtml(_moradaLegivel(c.address || c.city))}</div>` : ''}
       <label class="nc-compare" onclick="event.stopPropagation()" title="Adicionar à comparação">
         <input type="checkbox" ${_compareIds.has(Number(c.id)) ? 'checked' : ''} onchange="toggleCompare(${c.id})"/>
         <span>Comparar</span>
@@ -7793,6 +7822,7 @@ async function openDetail(id) {
   _renderDetailPanel(c);
   try { _sizeDetailPanel(); } catch (_) {}
   document.getElementById('detailPanel').classList.add('open');
+  document.body.classList.add('dp-aberto');
   const _dpLat = parseFloat(c.lat), _dpLng = parseFloat(c.lng);
   if (map && Number.isFinite(_dpLat) && Number.isFinite(_dpLng)) {
     // Num deep link o painel abre antes de o mapa ter tamanho (contentor ainda
@@ -7814,7 +7844,7 @@ async function openDetail(id) {
       }
     } catch (_) {}
   }
-  setTimeout(() => { if (window.matchMedia('(min-width:769px)').matches) markerMap[c.id]?.openPopup(); }, 1300);
+  _hxMarcarPin(c.id);
 
   try {
     const fresh = await api.getCompany(id);
@@ -7842,7 +7872,9 @@ function _sizeDetailPanel() {
   if (window.innerWidth <= 1023) { clear(); return; }
   const homeEl = document.getElementById('tab-home');
   const onHome = homeEl && getComputedStyle(homeEl).display !== 'none';
-  const ref = onHome ? document.getElementById('lpFeatPanel') : document.querySelector('.nearby-panel');
+  // No Mapa, "Empresas Próximas" vive agora na coluna ESQUERDA: a ficha fica
+  // à direita com a largura por omissão, por cima do mapa.
+  const ref = onHome ? document.getElementById('lpFeatPanel') : null;
   if (!ref || getComputedStyle(ref).display === 'none') { clear(); return; }
   const r = ref.getBoundingClientRect();
   if (r.width < 80 || r.height < 40) { clear(); return; }
@@ -7857,8 +7889,17 @@ window.addEventListener('resize', () => { try { _sizeDetailPanel(); } catch (_) 
 function _renderDetailPanel(c) {
   const tr = translations[currentLang];
   const _dpLogoEl = document.getElementById('dpLogo');
-  if (c.logo) { _dpLogoEl.textContent = ''; _dpLogoEl.classList.remove('logo-mono'); _dpLogoEl.style.background = 'url("' + c.logo + '") center/cover no-repeat'; }
-  else        { _dpLogoEl.textContent = companyMonogram(c); _dpLogoEl.classList.add('logo-mono'); _dpLogoEl.style.background = ''; try { _dpLogoEl.style.setProperty('--mc', getSectorColor(c)); } catch (_) {} }
+  try { _dpLogoEl.style.setProperty('--mc', getSectorColor(c)); } catch (_) {}
+  _dpLogoEl.style.background = '';
+  _dpLogoEl.dataset.ini = companyMonogram(c);
+  if (c.logo) {
+    _dpLogoEl.classList.remove('logo-mono'); _dpLogoEl.classList.add('hx-logo-img');
+    _dpLogoEl.innerHTML = '<img src="' + escHtml(c.logo) + '" alt="" decoding="async" referrerpolicy="no-referrer" ' +
+      'onerror="var p=this.parentNode;p.classList.remove(\'hx-logo-img\');p.classList.add(\'logo-mono\');p.textContent=p.dataset.ini"/>';
+  } else {
+    _dpLogoEl.classList.remove('hx-logo-img'); _dpLogoEl.classList.add('logo-mono');
+    _dpLogoEl.textContent = companyMonogram(c);
+  }
   document.getElementById('dpName').innerHTML =
     escHtml(c.name) + (c.verified ? ' <span class="badge-verified" title="Empresa verificada">✓ Verificada</span>' : '') + alvaraBadgeHtml(c);
 
@@ -7873,7 +7914,7 @@ function _renderDetailPanel(c) {
   if (c.city) _subParts.push(c.city);
   if (c.rating > 0) _subParts.push(`★ ${c.rating.toFixed(1)} (${c.reviews})`);
   document.getElementById('dpSub').textContent = _subParts.join('  ·  ');
-  document.getElementById('dpAddress').textContent = c.address;
+  document.getElementById('dpAddress').textContent = _moradaLegivel(c.address);
 
   // Specialties (free-form tags) — hidden entirely when the company has none.
   document.getElementById('dpTags').innerHTML = c.tags.map(tag =>
@@ -8107,9 +8148,23 @@ function _refreshDpFavBtn() {
 window.dpToggleFav = dpToggleFav;
 window._refreshDpFavBtn = _refreshDpFavBtn;
 
+// Destaca o pin da empresa aberta na ficha (substitui o popup). Os pins só
+// têm elemento DOM quando estão visíveis: _buildEl repõe a classe ao recriar.
+function _hxMarcarPin(id) {
+  window._hxPinSel = id == null ? null : id;
+  document.querySelectorAll('.hx-mk.hx-sel').forEach(el => el.classList.remove('hx-sel'));
+  try {
+    const m = id != null && markerMap[id];
+    const el = m && m._m && m._m.getElement();
+    if (el) el.classList.add('hx-sel');
+  } catch (_) {}
+}
+
 function closeDetail() {
   document.getElementById('detailPanel').classList.remove('open');
+  document.body.classList.remove('dp-aberto');
   selectedId = null;
+  _hxMarcarPin(null);
   // Drop ?company from the URL unless the close was triggered by popstate.
   if (!window._suppressCompanyHistory) {
     try {
@@ -10695,29 +10750,6 @@ function isHomeTabActive() {
   window.addEventListener('touchmove',  _onScroll, { passive: true });
 }
 
-// ── PAUSE HERO LOGO SMIL ANIMATIONS WHEN OFFSCREEN ───────────────────────────
-// SVG <animate>/<animateTransform> keep firing repaints even when the logo is
-// scrolled off-screen or its tab is hidden. Pause via the SVG DOM API.
-(function() {
-  const logo = document.getElementById('logoHexSvg');
-  if (!logo || typeof logo.pauseAnimations !== 'function') return;
-  let paused = false;
-  const setPaused = (p) => {
-    if (p === paused) return;
-    paused = p;
-    try { p ? logo.pauseAnimations() : logo.unpauseAnimations(); } catch(_) {}
-  };
-  if ('IntersectionObserver' in window) {
-    new IntersectionObserver(entries => {
-      setPaused(!entries[0].isIntersecting);
-    }, { rootMargin: '0px' }).observe(logo);
-  }
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) setPaused(true);
-    else if ('IntersectionObserver' in window === false) setPaused(false);
-  });
-})();
-
 // Sticky home-page CTA: appears when the hero scrolls off-screen on the home tab.
 // IntersectionObserver on the hero gives us a single, cheap signal.
 (function() {
@@ -11517,29 +11549,17 @@ function fitSectorBar() {
       window.__fitRetry = setTimeout(fitSectorBar, 200);
       return;
     }
-    // Each label grows to fill its OWN tab, capped 25% above the old baseline
-    // (19px -> 24px). Per-label rather than one shared size: the tabs are equal
-    // width, so a single size would be dragged down to whatever the longest
-    // label ("Chave na Mão") needs (~13px) and everything would look tiny.
-    // On wide screens every label reaches the cap and reads uniform; on tighter
-    // widths only the longest labels step down. (The label is a shrink-to-content
-    // flex item, so clientWidth==scrollWidth until the text exceeds the tab —
-    // the +0.5 check grows the font right up to that boundary.)
-    const MIN = 13, MAX = 24;
-    let maxBest = MIN;
-    labels.forEach(l => {
-      let lo = MIN, hi = MAX, best = MIN;
-      while (lo <= hi) {
-        const mid = (lo + hi) >> 1;
-        l.style.fontSize = mid + 'px';
-        if (l.scrollWidth <= l.clientWidth + 0.5) { best = mid; lo = mid + 1; }
-        else { hi = mid - 1; }
-      }
-      l.style.fontSize = best + 'px';
-      if (best > maxBest) maxBest = best;
-    });
-    // Master "Todas as áreas" label (outside the container) tracks the widest tab.
-    ub.style.setProperty('--cat-fs', maxBest + 'px');
+    // UM tamanho para todos os separadores (sistema visual: 15px). Os separadores
+    // medem o próprio texto; só se a língua não couber na barra é que o tamanho
+    // desce, igual para todos, até 13px. (Antes cada etiqueta encolhia sozinha
+    // e a barra ficava com 5 tamanhos e nomes cortados com reticências.)
+    labels.forEach(l => l.style.removeProperty('font-size'));
+    let fs = 15;
+    for (; fs > 13; fs--) {
+      ub.style.setProperty('--cat-fs', fs + 'px');
+      if (container.scrollWidth <= container.clientWidth + 1) break;
+    }
+    ub.style.setProperty('--cat-fs', fs + 'px');
   } catch (e) {}
 }
 window.addEventListener('resize', () => {
@@ -11571,7 +11591,7 @@ window.addEventListener('resize', () => {
           resetTitle:'Definir nova palavra-passe',
           resetBody:'Escolha uma nova palavra-passe (mínimo 8 caracteres).',
           resetSubmit:'Definir palavra-passe',
-          cookieTitle:'🍪 Privacidade e cookies',
+          cookieTitle:'Privacidade e cookies',
           cookieBody:'Cookies necessários para iniciar sessão e idioma. Cookies de publicidade (Google) só com a sua autorização. Sem cookies de analítica — apenas contadores anónimos.',
           cookieMore:'Saber mais',
           cookieAccept:'Aceitar tudo',
@@ -11597,7 +11617,7 @@ window.addEventListener('resize', () => {
           resetTitle:'Set a new password',
           resetBody:'Choose a new password (at least 8 characters).',
           resetSubmit:'Set password',
-          cookieTitle:'🍪 Privacy and cookies',
+          cookieTitle:'Privacy and cookies',
           cookieBody:'Necessary cookies for sign-in and language. Advertising cookies (Google) only with your consent. No analytics cookies — only anonymous usage counters.',
           cookieMore:'Learn more',
           cookieAccept:'Accept all',
@@ -11623,7 +11643,7 @@ window.addEventListener('resize', () => {
           resetTitle:'Définir un nouveau mot de passe',
           resetBody:'Choisissez un nouveau mot de passe (minimum 8 caractères).',
           resetSubmit:'Définir le mot de passe',
-          cookieTitle:'🍪 Confidentialité et cookies',
+          cookieTitle:'Confidentialité et cookies',
           cookieBody:'Cookies nécessaires à la connexion et à la langue. Cookies publicitaires (Google) uniquement avec votre accord. Aucun cookie analytique — seulement des compteurs anonymes.',
           cookieMore:'En savoir plus',
           cookieAccept:'Tout accepter',
@@ -11649,7 +11669,7 @@ window.addEventListener('resize', () => {
           resetTitle:'Establecer nueva contraseña',
           resetBody:'Elija una nueva contraseña (mínimo 8 caracteres).',
           resetSubmit:'Establecer contraseña',
-          cookieTitle:'🍪 Privacidad y cookies',
+          cookieTitle:'Privacidad y cookies',
           cookieBody:'Cookies necesarias para iniciar sesión e idioma. Cookies publicitarias (Google) solo con su consentimiento. Sin cookies analíticas: solo contadores anónimos.',
           cookieMore:'Más información',
           cookieAccept:'Aceptar todo',
@@ -11675,7 +11695,7 @@ window.addEventListener('resize', () => {
           resetTitle:'Neues Passwort festlegen',
           resetBody:'Wählen Sie ein neues Passwort (mindestens 8 Zeichen).',
           resetSubmit:'Passwort festlegen',
-          cookieTitle:'🍪 Datenschutz und Cookies',
+          cookieTitle:'Datenschutz und Cookies',
           cookieBody:'Notwendige Cookies für Anmeldung und Sprache. Werbe-Cookies (Google) nur mit Ihrer Zustimmung. Keine Analyse-Cookies — nur anonyme Nutzungszähler.',
           cookieMore:'Mehr erfahren',
           cookieAccept:'Alle akzeptieren',
@@ -11740,16 +11760,27 @@ function toggleTheme() {
   try { _setMapTheme(!dark); } catch (_) {}
   _syncThemeToggle();
 }
+// Ícones de linha (mesma família dos botões) em vez de emoji, que mudam de
+// aspeto entre Windows, iPhone e Android.
+const _HX_ICO = {
+  moon: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>',
+  sun: '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>',
+  pencil: '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 3a2.83 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>',
+  award: '<svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="6"/><path d="M15.48 12.89 17 22l-5-3-5 3 1.52-9.11"/></svg>',
+};
+window._HX_ICO = _HX_ICO;
 function _syncThemeToggle() {
   const dark = document.documentElement.getAttribute('data-theme') === 'dark';
   const ico = document.getElementById('themeToggleIco');
   const txt = document.getElementById('themeToggleTxt');
-  if (ico) ico.textContent = dark ? '☀️' : '🌙';
+  if (ico) ico.innerHTML = dark ? _HX_ICO.sun : _HX_ICO.moon;
   if (txt) txt.textContent = dark ? t('themeToLight') : t('themeToDark');
+  const btn = document.getElementById('themeToggle');
+  if (btn) { const lbl = dark ? t('themeModeLight') : t('themeModeDark'); btn.title = lbl; btn.setAttribute('aria-label', lbl); }
   // Mobile drawer toggle (full-width label)
   const mIco = document.getElementById('mobileThemeIco');
   const mTxt = document.getElementById('mobileThemeTxt');
-  if (mIco) mIco.textContent = dark ? '☀️' : '🌙';
+  if (mIco) mIco.innerHTML = dark ? _HX_ICO.sun : _HX_ICO.moon;
   if (mTxt) mTxt.textContent = dark ? t('themeModeLight') : t('themeModeDark');
 }
 window.toggleTheme = toggleTheme;
@@ -12000,7 +12031,7 @@ async function loadReviews(companyId) {
   try {
     const reviews = await api.getReviews(companyId);
     if (reviews.length === 0) {
-      list.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px">Nenhuma avaliação ainda. Seja o primeiro!</div>';
+      list.innerHTML = '<div class="dp-reviews-empty">Nenhuma avaliação ainda. Seja o primeiro!</div>';
     } else {
       // Build a star-distribution histogram. Same average can come from very
       // different shapes (4.5 ⭢ all 4-5 vs. half 5★ and half 3★) so this
@@ -13023,10 +13054,13 @@ const _COUNTRY_VIEWS = {
   us:[39.8,-98.5,4], ca:[56.1,-106.3,4], mx:[23.6,-102.5,5],
 };
 const _FLAG_CC = { uk: 'gb' };
-function _flagEmoji(cc) {
-  const c = (_FLAG_CC[cc] || cc).toUpperCase();
-  return String.fromCodePoint(...[...c].map(ch => 0x1F1A5 + ch.charCodeAt(0)));
+// Bandeira em imagem (as bandeiras emoji não existem no Windows — saíam como
+// "PT" em letras); a mesma fonte do seletor de idioma.
+function _flagImg(cc) {
+  const c = escHtml(String(_FLAG_CC[cc] || cc).toLowerCase());
+  return '<img class="lang-flag" src="https://flagcdn.com/' + c + '.svg" alt="" loading="lazy" decoding="async"/>';
 }
+const _ICO_GLOBO = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>';
 function _visitorCC() {
   if (window._userCountry && _COUNTRY_VIEWS[window._userCountry]) return window._userCountry;
   try {
@@ -13070,7 +13104,7 @@ function _maybeFocusVisitorCountry() {
   if (typeof selectedId !== 'undefined' && selectedId) { _visitorFocusDone = true; return; }
   _visitorFocusDone = true;
   flyToCountry(cc);
-  try { showToast(_flagEmoji(cc) + ' ' + n + ' ' + t('resultsCount')); } catch (_) {}
+  try { showToast(n + ' ' + t('resultsCount')); } catch (_) {}
 }
 window._maybeFocusVisitorCountry = _maybeFocusVisitorCountry;
 
@@ -13098,15 +13132,15 @@ function renderCountryPills() {
   const aberto = box.dataset.open === '1';
   const sel = window._countryFilter;
   const rotulo = sel
-    ? _flagEmoji(sel) + ' <span>' + escHtml(nome(sel)) + '</span>'
-    : '🌍 <span>' + escHtml(t('exploreByCountry')) + '</span>';
+    ? _flagImg(sel) + ' <span>' + escHtml(nome(sel)) + '</span>'
+    : _ICO_GLOBO + ' <span>' + escHtml(t('exploreByCountry')) + '</span>';
   box.innerHTML =
     '<button class="country-explore-btn' + (sel ? ' cf-ativo' : '') + '" onclick="toggleCountryMenu(event)">' + rotulo + ' <span class="arrow">' + (aberto ? '▴' : '▾') + '</span></button>' +
     '<div class="country-menu" id="countryMenu"' + (aberto ? '' : ' style="display:none"') + '>' +
-    '<button class="country-row' + (sel ? '' : ' cr-atual') + '" onclick="clearCountryFilter();toggleCountryMenu()"><span class="cr-flag">🌍</span><span class="cr-name">' + escHtml(t('allCountries')) + '</span></button>' +
+    '<button class="country-row' + (sel ? '' : ' cr-atual') + '" onclick="clearCountryFilter();toggleCountryMenu()"><span class="cr-flag">' + _ICO_GLOBO + '</span><span class="cr-name">' + escHtml(t('allCountries')) + '</span></button>' +
     (list.length ? list.map(([cc, n]) =>
       '<button class="country-row" onclick="flyToCountry(&#39;' + cc + '&#39;);toggleCountryMenu()">' +
-      '<span class="cr-flag">' + _flagEmoji(cc) + '</span>' +
+      '<span class="cr-flag">' + _flagImg(cc) + '</span>' +
       '<span class="cr-name">' + escHtml(nome(cc)) + '</span>' +
       '<span class="cr-n">' + n + '</span></button>').join('')
       : '<div class="country-row" style="opacity:.55;cursor:default">…</div>') +
@@ -13666,29 +13700,26 @@ function _fmtRespMins(rm) {
 }
 window._fmtRespMins = _fmtRespMins;
 
-// Cartões sem logo mostram um recorte do mapa da zona (tiles OSM, sem chaves)
-// com o emoji do setor por cima — identidade visual para todas as fichas.
-function _miniMapStyle(lat, lng, size) {
-  const z = 15, n = 1 << z;
-  const xt = (lng + 180) / 360 * n;
-  const lr = lat * Math.PI / 180;
-  const yt = (1 - Math.log(Math.tan(lr) + 1 / Math.cos(lr)) / Math.PI) / 2 * n;
-  const x = Math.max(0, Math.min(n - 1, Math.floor(xt)));
-  const y = Math.max(0, Math.min(n - 1, Math.floor(yt)));
-  let px = Math.round((xt - x) * 256 - size / 2);
-  let py = Math.round((yt - y) * 256 - size / 2);
-  px = Math.max(0, Math.min(256 - size, px));
-  py = Math.max(0, Math.min(256 - size, py));
-  // OSM não tem estilo escuro keyless: o mini-mapa fica claro nos dois temas.
-  return "background-image:url('https://tile.openstreetmap.org/" + z + "/" + x + "/" + y + ".png');background-position:-" + px + "px -" + py + "px;background-repeat:no-repeat";
-}
+// Sem logótipo: iniciais na cor do setor — a mesma linguagem dos pins do mapa
+// (o recorte de mapa com emoji que aqui estava variava de cartão para cartão).
 function _miniLogoHtml(c, cls) {
-  const lat = Number(c && c.lat), lng = Number(c && c.lng);
-  if (!isFinite(lat) || !isFinite(lng)) return '<div class="' + cls + ' logo-mono">' + companyMonogram(c) + '</div>';
-  const size = cls === 'slc-emoji' ? 42 : 60;
-  return '<div class="' + cls + ' nc-mini" style="' + _miniMapStyle(lat, lng, size) + '"><span class="nc-mini-dot">' + (c.emoji || '📍') + '</span></div>';
+  let cor = '#475569';
+  try { cor = getSectorColor(c) || cor; } catch (_) {}
+  return '<div class="' + cls + ' hx-logo logo-mono" style="--mc:' + cor + '">' + escHtml(companyMonogram(c)) + '</div>';
 }
 window._miniLogoHtml = _miniLogoHtml;
+
+// Logótipo uniforme em todos os cartões: moldura quadrada, fundo branco e a
+// imagem INTEIRA (contain, sem cortes); se faltar ou falhar → iniciais.
+function _logoHtml(c, cls) {
+  if (!c || !c.logo) return _miniLogoHtml(c, cls);
+  let cor = '#475569';
+  try { cor = getSectorColor(c) || cor; } catch (_) {}
+  return '<div class="' + cls + ' hx-logo hx-logo-img" style="--mc:' + cor + '" data-ini="' + escHtml(companyMonogram(c)) + '">' +
+    '<img src="' + escHtml(c.logo) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" ' +
+    'onerror="var p=this.parentNode;p.classList.remove(\'hx-logo-img\');p.classList.add(\'logo-mono\');p.textContent=p.dataset.ini"/></div>';
+}
+window._logoHtml = _logoHtml;
 
 // Atalhos: "/" foca a pesquisa; Esc fecha o painel de detalhe (modais têm o seu)
 document.addEventListener('keydown', (e) => {
@@ -13716,28 +13747,28 @@ function openHow() {
     const T = pt ? {
       titulo: 'Como funciona a Hivex',
       cli: 'Para quem procura', emp: 'Para empresas',
-      c1: ['🗺️', 'Pesquise no mapa', 'Milhares de empresas de construção e serviços em 31 países, com avaliações e contactos.'],
-      c2: ['💬', 'Fale diretamente', 'Converse por chat, troque documentos e veja quem responde mais rápido.'],
-      c3: ['📝', 'Peça orçamentos grátis', 'Descreva o trabalho uma vez — as empresas certas da sua zona respondem por email.'],
-      e1: ['🏷️', 'Reclame ou registe a ficha', 'Prove que a empresa é sua com um código enviado ao email público.'],
-      e2: ['📨', 'Responda a pedidos', 'Mensagens e pedidos de orçamento chegam ao seu email e à sua área de mensagens.'],
-      e3: ['⭐', 'Destaque-se', 'Fichas destacadas aparecem primeiro nas listas e no mapa.'],
+      c1: ['map', 'Pesquise no mapa', 'Milhares de empresas de construção e serviços em 31 países, com avaliações e contactos.'],
+      c2: ['message-circle', 'Fale diretamente', 'Converse por chat, troque documentos e veja quem responde mais rápido.'],
+      c3: ['file-text', 'Peça orçamentos grátis', 'Descreva o trabalho uma vez — as empresas certas da sua zona respondem por email.'],
+      e1: ['badge-check', 'Reclame ou registe a ficha', 'Prove que a empresa é sua com um código enviado ao email público.'],
+      e2: ['inbox', 'Responda a pedidos', 'Mensagens e pedidos de orçamento chegam ao seu email e à sua área de mensagens.'],
+      e3: ['star', 'Destaque-se', 'Fichas destacadas aparecem primeiro nas listas e no mapa.'],
       ctaCli: 'Explorar o mapa', ctaEmp: 'Registar empresa',
     } : {
       titulo: 'How Hivex works',
       cli: 'For clients', emp: 'For companies',
-      c1: ['🗺️', 'Search the map', 'Thousands of construction & trade companies across 31 countries, with reviews and contacts.'],
-      c2: ['💬', 'Talk directly', 'Chat, exchange documents and see who replies fastest.'],
-      c3: ['📝', 'Request free quotes', 'Describe the job once — the right local companies reply by email.'],
-      e1: ['🏷️', 'Claim or register your listing', 'Prove ownership with a code sent to the public email.'],
-      e2: ['📨', 'Answer requests', 'Messages and quote requests reach your email and inbox.'],
-      e3: ['⭐', 'Stand out', 'Featured listings appear first in lists and on the map.'],
+      c1: ['map', 'Search the map', 'Thousands of construction & trade companies across 31 countries, with reviews and contacts.'],
+      c2: ['message-circle', 'Talk directly', 'Chat, exchange documents and see who replies fastest.'],
+      c3: ['file-text', 'Request free quotes', 'Describe the job once — the right local companies reply by email.'],
+      e1: ['badge-check', 'Claim or register your listing', 'Prove ownership with a code sent to the public email.'],
+      e2: ['inbox', 'Answer requests', 'Messages and quote requests reach your email and inbox.'],
+      e3: ['star', 'Stand out', 'Featured listings appear first in lists and on the map.'],
       ctaCli: 'Explore the map', ctaEmp: 'Register a company',
     };
     const passo = p => '<div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:14px">' +
-      '<span style="font-size:26px;flex-shrink:0">' + p[0] + '</span>' +
-      '<div><div style="font-weight:800;font-size:15.5px">' + p[1] + '</div>' +
-      '<div style="font-size:13.5px;color:var(--text-secondary);line-height:1.5">' + p[2] + '</div></div></div>';
+      '<span class="how-ico"><i data-lucide="' + p[0] + '"></i></span>' +
+      '<div><div style="font-weight:600;font-size:15px">' + p[1] + '</div>' +
+      '<div style="font-size:13px;color:var(--text-secondary);line-height:1.5">' + p[2] + '</div></div></div>';
     ov = document.createElement('div');
     ov.id = 'howOverlay';
     ov.className = 'overlay';
@@ -13746,16 +13777,17 @@ function openHow() {
     ov.addEventListener('click', (e) => { if (e.target === ov) ov.classList.remove('open'); });
     ov.innerHTML = '<div class="modal" style="max-width:760px">' +
       '<button class="modal-close" onclick="document.getElementById(\'howOverlay\').classList.remove(\'open\')" aria-label="Fechar">×</button>' +
-      '<h2 class="legal-title" style="font-size:26px;margin-bottom:18px">' + T.titulo + '</h2>' +
+      '<h2 class="legal-title" style="font-size:22px;margin-bottom:18px">' + T.titulo + '</h2>' +
       '<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:26px">' +
-      '<div><div style="font-weight:800;color:var(--primary);margin-bottom:12px;font-size:14px;text-transform:uppercase;letter-spacing:.5px">' + T.cli + '</div>' +
+      '<div><div style="font-weight:600;color:var(--primary);margin-bottom:12px;font-size:15px">' + T.cli + '</div>' +
       passo(T.c1) + passo(T.c2) + passo(T.c3) +
       '<button class="btn-submit" style="width:100%;margin-top:4px" onclick="document.getElementById(\'howOverlay\').classList.remove(\'open\');showTab(\'search\')">' + T.ctaCli + '</button></div>' +
-      '<div><div style="font-weight:800;color:#f59e0b;margin-bottom:12px;font-size:14px;text-transform:uppercase;letter-spacing:.5px">' + T.emp + '</div>' +
+      '<div><div style="font-weight:600;color:var(--text);margin-bottom:12px;font-size:15px">' + T.emp + '</div>' +
       passo(T.e1) + passo(T.e2) + passo(T.e3) +
-      '<button class="btn-submit" style="width:100%;margin-top:4px;background:#f59e0b" onclick="document.getElementById(\'howOverlay\').classList.remove(\'open\');startCompanyFlow()">' + T.ctaEmp + '</button></div>' +
+      '<button class="btn-submit how-sec" style="width:100%;margin-top:4px" onclick="document.getElementById(\'howOverlay\').classList.remove(\'open\');startCompanyFlow()">' + T.ctaEmp + '</button></div>' +
       '</div></div>';
     document.body.appendChild(ov);
+    refreshLucide();
   }
   ov.classList.add('open');
 }
