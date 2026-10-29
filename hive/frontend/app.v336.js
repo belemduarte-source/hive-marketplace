@@ -11588,7 +11588,6 @@ function _openCompanyFromUrl() {
     history.replaceState({ company: id }, '', window.location.href);
     window._suppressCompanyHistory = true;
     try { openDetail(id); } finally { window._suppressCompanyHistory = false; }
-    if (params.get('review') === '1') setTimeout(() => { try { if (selectedId === id) toggleReviewForm(); } catch (_) {} }, 1400);
   } catch (_) {}
 }
 window.addEventListener('popstate', () => {
@@ -11824,6 +11823,24 @@ _addOpenDetailHook((id) => {
   if (toggle) toggle.style.display = 'none';
   loadReviews(id);
 });
+
+// Links dos emails de pedido de avaliação (?company=ID&review=1): seja qual
+// for o caminho que abre a ficha (arranque rápido, catálogo ou remoto), abre
+// o formulário — ou o login, para visitantes — uma única vez.
+(function () {
+  try {
+    const p = new URLSearchParams(location.search);
+    if (p.get('review') !== '1') return;
+    const alvo = Number(p.get('company'));
+    if (!Number.isFinite(alvo)) return;
+    let feito = false;
+    _addOpenDetailHook((id) => {
+      if (feito || Number(id) !== alvo) return;
+      feito = true;
+      setTimeout(() => { try { if (selectedId === alvo) toggleReviewForm(); } catch (_) {} }, 1400);
+    });
+  } catch (_) {}
+})();
 
 function escHtml(str) {
   return String(str || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
