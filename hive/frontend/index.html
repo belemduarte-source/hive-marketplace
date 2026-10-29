@@ -156,7 +156,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v334.css"/>
+  <link rel="stylesheet" href="app.v335.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -598,6 +598,7 @@
       <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="flex-shrink:0"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
       <span data-i18n="contactPrivacy">O email da empresa nunca é partilhado consigo — a Hivex entrega a mensagem de forma segura.</span>
     </div>
+    <div style="margin:-10px 0 18px;font-size:13px;color:var(--muted);line-height:1.45" data-i18n="contactReviewNote">Cerca de uma semana depois, poderemos enviar-lhe um único email a pedir que avalie esta empresa.</div>
     <button onclick="submitContactForm()" style="width:100%;background:var(--primary);color:#fff;border:none;border-radius:10px;padding:16px;font-size:20px;font-weight:700;cursor:pointer;font-family:inherit" data-i18n="contactTitle">
       Enviar Mensagem
     </button>
@@ -1022,6 +1023,13 @@
   </div>
 
   <div class="dp-body">
+
+    <!-- SOBRE — descrição real da empresa, ou resumo factual automático (_renderAbout) -->
+    <div id="dpAboutWrap" style="display:none">
+      <div class="dp-section-title"><span data-i18n="aboutTitle">Sobre</span></div>
+      <p id="dpAboutTxt" class="dp-about-txt"></p>
+      <div id="dpAboutAuto" class="dp-about-auto" data-i18n="aboutAutoNote" style="display:none">Resumo automático, com base nos dados públicos da empresa.</div>
+    </div>
 
     <!-- ADDITIONAL INFO — collapsed by default. Key contact info (location +
          contact channels) shows first; this holds specialties / credentials
@@ -2028,7 +2036,7 @@
      vetoriais OpenFreeMap sem chave, clustering nativo e 3D. -->
 <script defer src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js" integrity="sha384-5+cfbwT0iiub6VsQAdn6yz16nr6sDiQoHx6tm4O8OVYXHYOxcffFmCJBL0dgdvGp" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v334.js"></script>
+<script defer src="app.v335.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

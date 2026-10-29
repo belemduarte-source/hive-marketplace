@@ -4087,3 +4087,10 @@
 /* Sem avaliações reais no catálogo → esconder filtros/ordenação por avaliação
    (classe posta pré-paint; _syncReviewsUi retira-a mal exista uma avaliação). */
 .hx-no-reviews .hx-rating-ui{display:none !important}
+
+/* Ficha: bloco "Sobre" (descrição real ou resumo factual automático) */
+#dpAboutWrap{margin-bottom:14px}
+.dp-about-txt{font-size:15px;line-height:1.6;color:var(--text);margin:0}
+.dp-about-auto{font-size:12px;color:var(--muted);font-style:italic;margin-top:6px}
+/* Convite a reclamar em destaque quando a ficha está incompleta */
+#dpClaimRow.dp-claim-strong button{border:1.5px solid #f59e0b !important;background:rgba(245,158,11,.08) !important;color:var(--text) !important;text-align:left;line-height:1.45}

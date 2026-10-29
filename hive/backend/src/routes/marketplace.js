@@ -421,7 +421,105 @@ router.get('/messages/purge', async (req, res) => {
   const authed = secret && req.headers.authorization === `Bearer ${secret}`;
   if (!fromCron && !authed) return res.status(401).json({ error: 'unauthorized' });
   await purgeExpiredMessages();
-  res.json({ ok: true });
+  // O mesmo cron diário envia os pedidos de avaliação (sem um cron novo no
+  // vercel.json — não mexe no limite de crons do plano).
+  let pedidos = null;
+  try { pedidos = await sendReviewRequests(); } catch (e) { console.error('[review-requests]', e.message); }
+  res.json({ ok: true, pedidosAvaliacao: pedidos });
+});
+
+// ── PEDIDOS DE AVALIAÇÃO ──────────────────────────────────────────────────────
+// ~7 dias depois de um contacto pela Hivex, o cliente recebe UM email a
+// convidá-lo a avaliar a empresa. Regras: um só pedido por (empresa, email);
+// só contactos com 7–14 dias (nunca "acorda" contactos antigos de uma vez);
+// nada se já avaliou essa empresa ou se recusou estes emails (opt-out); teto
+// por corrida porque o SMTP (Gmail, ~500 destinatários/dia) é partilhado com
+// os emails essenciais (recuperação de palavra-passe, mensagens).
+const REVIEW_REQ_CAP = 60;
+function _optoutToken(email) {
+  return crypto.createHmac('sha256', String(process.env.JWT_SECRET || 'hivex-optout'))
+    .update('optout:' + String(email).toLowerCase()).digest('hex').slice(0, 32);
+}
+async function sendReviewRequests() {
+  const { rows } = await pool.query(`
+    SELECT DISTINCT ON (m.company_id, lower(m.client_email))
+           m.company_id, lower(m.client_email) AS email, m.client_name, c.name AS company_name
+      FROM messages m
+      JOIN companies c ON c.id = m.company_id AND c.status = 'approved'
+     WHERE m.sender = 'client'
+       AND m.created_at BETWEEN NOW() - INTERVAL '14 days' AND NOW() - INTERVAL '7 days'
+       AND NOT EXISTS (SELECT 1 FROM review_requests rr
+                        WHERE rr.company_id = m.company_id AND rr.email = lower(m.client_email))
+       AND NOT EXISTS (SELECT 1 FROM email_optouts o WHERE o.email = lower(m.client_email))
+       AND NOT EXISTS (SELECT 1 FROM reviews r JOIN users u ON u.id = r.user_id
+                        WHERE r.company_id = m.company_id AND lower(u.email) = lower(m.client_email))
+     ORDER BY m.company_id, lower(m.client_email), m.created_at ASC
+     LIMIT $1`, [REVIEW_REQ_CAP]);
+  let enviados = 0;
+  for (const r of rows) {
+    // Reserva antes de enviar: se o envio falhar não se repete amanhã
+    // (um pedido a menos é melhor do que dois iguais).
+    const ins = await pool.query(
+      `INSERT INTO review_requests (company_id, email) VALUES ($1, $2)
+       ON CONFLICT DO NOTHING RETURNING 1`, [r.company_id, r.email]);
+    if (!ins.rows[0]) continue;
+    const link = `https://www.hivex.pt/?company=${r.company_id}&review=1`;
+    const optout = `https://www.hivex.pt/api/reviews/optout?e=${encodeURIComponent(r.email)}&t=${_optoutToken(r.email)}`;
+    const co = esc(r.company_name || '');
+    try {
+      await sendBrandedEmail({
+        to: r.email,
+        subject: `Como correu com ${r.company_name}?`,
+        title: 'Como correu?',
+        bodyHtml: `
+    <p style="margin-top:0">Olá${r.client_name ? ' ' + esc(r.client_name) : ''},</p>
+    <p>Há cerca de uma semana contactou a <strong>${co}</strong> através da Hivex. Como correu?</p>
+    <p>A sua avaliação ajuda outras pessoas a escolher bem. Como contactou a empresa pela Hivex, a sua avaliação fica marcada como <strong>contacto verificado</strong>.</p>
+    <p style="text-align:center;margin:26px 0">
+      <a href="${link}" style="display:inline-block;background:#f97316;color:#fff;padding:14px 34px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px">Avaliar ${co} →</a>
+    </p>
+    <p style="color:#6b7280;font-size:13px">About a week ago you contacted ${co} through Hivex — <a href="${link}" style="color:#f97316">tell us how it went</a>.</p>
+    <p style="color:#9ca3af;font-size:12px;margin-bottom:0">Este é o único pedido que enviamos sobre este contacto. <a href="${optout}" style="color:#9ca3af">Não quero receber pedidos de avaliação</a>.</p>`,
+      });
+      enviados++;
+    } catch (e) {
+      console.error('[review-requests] envio falhou (empresa ' + r.company_id + '):', e.message);
+    }
+  }
+  return { candidatos: rows.length, enviados };
+}
+
+// GET /api/reviews/request-digest — corrida manual (mesma proteção do cron).
+router.get('/reviews/request-digest', async (req, res) => {
+  const secret = process.env.CRON_SECRET;
+  const fromCron = !!req.headers['x-vercel-cron'];
+  const authed = secret && req.headers.authorization === `Bearer ${secret}`;
+  if (!fromCron && !authed) return res.status(401).json({ error: 'unauthorized' });
+  try { res.json({ ok: true, ...(await sendReviewRequests()) }); }
+  catch (e) { res.status(500).json({ error: e.message }); }
+});
+
+// GET /api/reviews/optout?e=&t= — link "não quero receber" dos emails.
+router.get('/reviews/optout', async (req, res) => {
+  const email = String(req.query.e || '').toLowerCase().trim();
+  const tok = String(req.query.t || '');
+  let ok = false;
+  try {
+    const esperado = _optoutToken(email);
+    ok = !!email && tok.length === esperado.length &&
+      crypto.timingSafeEqual(Buffer.from(tok), Buffer.from(esperado));
+  } catch (_) { ok = false; }
+  if (ok) {
+    try { await pool.query(`INSERT INTO email_optouts (email) VALUES ($1) ON CONFLICT DO NOTHING`, [email]); }
+    catch (_) { ok = false; }
+  }
+  res.set('Content-Type', 'text/html; charset=utf-8').send(
+    `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">` +
+    `<div style="font-family:Arial,sans-serif;max-width:520px;margin:60px auto;padding:0 20px;color:#374151;line-height:1.6">` +
+    (ok
+      ? `<h2>Pedido registado</h2><p>Não voltará a receber pedidos de avaliação da Hivex neste endereço.</p>`
+      : `<h2>Link inválido</h2><p>Este link não é válido ou expirou. Responda a qualquer email da Hivex e tratamos do pedido manualmente.</p>`) +
+    `<p><a href="https://www.hivex.pt" style="color:#f97316">Voltar à Hivex</a></p></div>`);
 });
 
 // GET /api/messages/unread-count?companyId= — badge for the owner UI.

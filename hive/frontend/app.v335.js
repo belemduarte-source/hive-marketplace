@@ -222,7 +222,7 @@ const translations = {
     helpMissionTitle:'Missão', helpMissionDesc:'Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.',
     helpVisionTitle:'Visão', helpVisionDesc:'Ser a plataforma de referência em Portugal para ligar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.',
     navLogin:'Entrar / Registar', navHelp:'Ajuda',
-    welcomeExplore:'Explorar o mapa', reviewLoginNeeded:'Inicie sessão para escrever uma avaliação.', welcomeTrustMod:'Empresas moderadas (NIF + Certidão)', welcomeTrustEu:'Dados na Europa',
+    welcomeExplore:'Explorar o mapa', aboutTitle:'Sobre', aboutAutoNote:'Resumo automático, com base nos dados públicos da empresa.', claimIncomplete:'✏️ Esta ficha está incompleta. É a sua empresa? Reclame-a e acrescente descrição, logótipo e fotos.', contactReviewNote:'Cerca de uma semana depois, poderemos enviar-lhe um único email a pedir que avalie esta empresa.', reviewLoginNeeded:'Inicie sessão para escrever uma avaliação.', welcomeTrustMod:'Empresas moderadas (NIF + Certidão)', welcomeTrustEu:'Dados na Europa',
     themeToDark:'Escuro', themeToLight:'Claro', themeModeDark:'Modo escuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidade', avatarLogout:'Terminar Sessão', avatarFaqHelp:'FAQ & Ajuda',
     lpHeroRegisterCta:'Criar conta grátis', lpHeroRegisterHint:'Peça orçamentos, guarde favoritos e registe a sua empresa.',
@@ -638,7 +638,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:'To simplify and democratise access to quality professional services, creating a transparent ecosystem where companies and professionals can grow together, without unnecessary intermediaries.',
     helpVisionTitle:'Vision', helpVisionDesc:'To be the reference platform in Portugal for connecting companies and professionals, promoting economic growth and creating opportunities for all.',
     navLogin:'Login / Sign up', navHelp:'Help',
-    welcomeExplore:'Explore the map', reviewLoginNeeded:'Log in to write a review.', welcomeTrustMod:'Moderated companies (tax ID + registry)', welcomeTrustEu:'Data hosted in Europe',
+    welcomeExplore:'Explore the map', aboutTitle:'About', aboutAutoNote:"Automatic summary based on the company's public data.", claimIncomplete:'✏️ This listing is incomplete. Is it your business? Claim it and add a description, logo and photos.', contactReviewNote:'About a week later, we may send you a single email asking you to review this company.', reviewLoginNeeded:'Log in to write a review.', welcomeTrustMod:'Moderated companies (tax ID + registry)', welcomeTrustEu:'Data hosted in Europe',
     themeToDark:'Dark', themeToLight:'Light', themeModeDark:'Dark mode', themeModeLight:'Light mode',
     navFavourites:'Favourites', navFaq:'FAQ', navPrivacy:'Privacy', avatarLogout:'Sign out', avatarFaqHelp:'FAQ & Help',
     lpHeroRegisterCta:'Create free account', lpHeroRegisterHint:'Request quotes, save favourites and register your company.',
@@ -1047,7 +1047,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:"Simplifier et démocratiser l'accès à des services professionnels de qualité, en créant un écosystème transparent où entreprises et professionnels peuvent grandir ensemble, sans intermédiaires inutiles.",
     helpVisionTitle:'Vision', helpVisionDesc:'Être la plateforme de référence au Portugal pour connecter entreprises et professionnels, en favorisant la croissance économique et en créant des opportunités pour tous.',
     navLogin:'Connexion / Inscription', navHelp:'Aide',
-    welcomeExplore:'Explorer la carte', reviewLoginNeeded:'Connectez-vous pour écrire un avis.', welcomeTrustMod:'Entreprises modérées (NIF + registre)', welcomeTrustEu:'Données hébergées en Europe',
+    welcomeExplore:'Explorer la carte', aboutTitle:'À propos', aboutAutoNote:"Résumé automatique basé sur les données publiques de l'entreprise.", claimIncomplete:"✏️ Cette fiche est incomplète. C'est votre entreprise ? Revendiquez-la et ajoutez une description, un logo et des photos.", contactReviewNote:"Environ une semaine plus tard, nous pourrons vous envoyer un seul e-mail pour vous demander d'évaluer cette entreprise.", reviewLoginNeeded:'Connectez-vous pour écrire un avis.', welcomeTrustMod:'Entreprises modérées (NIF + registre)', welcomeTrustEu:'Données hébergées en Europe',
     themeToDark:'Sombre', themeToLight:'Clair', themeModeDark:'Mode sombre', themeModeLight:'Mode clair',
     navFavourites:'Favoris', navFaq:'FAQ', navPrivacy:'Confidentialité', avatarLogout:'Se déconnecter', avatarFaqHelp:'FAQ & Aide',
     lpHeroRegisterCta:'Créer un compte gratuit', lpHeroRegisterHint:"Demandez des devis, enregistrez des favoris et inscrivez votre entreprise.",
@@ -1452,7 +1452,7 @@ const translations = {
     helpMissionTitle:'Misión', helpMissionDesc:'Simplificar y democratizar el acceso a servicios profesionales de calidad, creando un ecosistema transparente donde empresas y profesionales puedan crecer juntos.',
     helpVisionTitle:'Visión', helpVisionDesc:'Ser la plataforma de referencia en Portugal para conectar empresas y profesionales, fomentando el crecimiento económico y creando oportunidades para todos.',
     navLogin:'Entrar / Registrarse', navHelp:'Ayuda',
-    welcomeExplore:'Explorar el mapa', reviewLoginNeeded:'Inicie sesión para escribir una reseña.', welcomeTrustMod:'Empresas moderadas (NIF + registro)', welcomeTrustEu:'Datos alojados en Europa',
+    welcomeExplore:'Explorar el mapa', aboutTitle:'Acerca de', aboutAutoNote:'Resumen automático basado en los datos públicos de la empresa.', claimIncomplete:'✏️ Esta ficha está incompleta. ¿Es su empresa? Reclámela y añada descripción, logotipo y fotos.', contactReviewNote:'Aproximadamente una semana después, podremos enviarle un único correo para pedirle que valore esta empresa.', reviewLoginNeeded:'Inicie sesión para escribir una reseña.', welcomeTrustMod:'Empresas moderadas (NIF + registro)', welcomeTrustEu:'Datos alojados en Europa',
     themeToDark:'Oscuro', themeToLight:'Claro', themeModeDark:'Modo oscuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidad', avatarLogout:'Cerrar sesión', avatarFaqHelp:'FAQ y Ayuda',
     lpHeroRegisterCta:'Crear cuenta gratis', lpHeroRegisterHint:'Pida presupuestos, guarde favoritos y registre su empresa.',
@@ -1854,7 +1854,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:'Den Zugang zu hochwertigen Fachleistungen vereinfachen und demokratisieren – ein transparentes Ökosystem schaffen, in dem Unternehmen und Fachleute gemeinsam wachsen können, ohne unnötige Zwischenhändler.',
     helpVisionTitle:'Vision', helpVisionDesc:'Die führende Plattform in Portugal zur Vernetzung von Unternehmen und Fachleuten werden, Wirtschaftswachstum fördern und Chancen für alle schaffen.',
     navLogin:'Anmelden / Registrieren', navHelp:'Hilfe',
-    welcomeExplore:'Karte erkunden', reviewLoginNeeded:'Melden Sie sich an, um eine Bewertung zu schreiben.', welcomeTrustMod:'Geprüfte Unternehmen (NIF + Register)', welcomeTrustEu:'Daten in Europa gehostet',
+    welcomeExplore:'Karte erkunden', aboutTitle:'Über uns', aboutAutoNote:'Automatische Zusammenfassung auf Basis öffentlicher Unternehmensdaten.', claimIncomplete:'✏️ Dieser Eintrag ist unvollständig. Ist das Ihr Unternehmen? Beanspruchen Sie ihn und ergänzen Sie Beschreibung, Logo und Fotos.', contactReviewNote:'Etwa eine Woche später senden wir Ihnen eventuell eine einzige E-Mail mit der Bitte, dieses Unternehmen zu bewerten.', reviewLoginNeeded:'Melden Sie sich an, um eine Bewertung zu schreiben.', welcomeTrustMod:'Geprüfte Unternehmen (NIF + Register)', welcomeTrustEu:'Daten in Europa gehostet',
     themeToDark:'Dunkel', themeToLight:'Hell', themeModeDark:'Dunkelmodus', themeModeLight:'Heller Modus',
     navFavourites:'Favoriten', navFaq:'FAQ', navPrivacy:'Datenschutz', avatarLogout:'Abmelden', avatarFaqHelp:'FAQ & Hilfe',
     lpHeroRegisterCta:'Kostenloses Konto erstellen', lpHeroRegisterHint:'Angebote anfragen, Favoriten speichern und Ihren Betrieb registrieren.',
@@ -3147,6 +3147,74 @@ function computeNextCompanyId(list, current) {
   const nums = list.map(c => Number(c.id)).filter(n => Number.isFinite(n));
   return nums.length ? Math.max(...nums) + 1 : (current || 1);
 }
+
+// ── "Sobre" da ficha ──────────────────────────────────────────────────────────
+// Descrição real quando existe; senão um resumo FACTUAL montado só com dados
+// públicos que já temos (setores, localidade, alvará IMPIC) — nunca inventa
+// nada e é sempre identificado como automático. 54% das empresas não têm
+// descrição e a ficha aparecia vazia.
+function _autoDescription(c) {
+  const lang = (typeof currentLang === 'string' && currentLang) || 'pt';
+  const tr = (translations[lang] || translations.pt);
+  const sc = tr.sectors || {};
+  const secs = [...new Set((c.sectors && c.sectors.length ? c.sectors : (c.sector ? [c.sector] : []))
+    .map(s => sc[s] || '').filter(Boolean))].slice(0, 3);
+  const lower = (lang === 'pt' || lang === 'es' || lang === 'fr' || lang === 'en');
+  let lista = '';
+  try { lista = new Intl.ListFormat(lang, { type: 'conjunction' }).format(secs.map(s => lower ? s.toLowerCase() : s)); }
+  catch (_) { lista = secs.map(s => lower ? s.toLowerCase() : s).join(', '); }
+  if (!lista) lista = { pt: 'construção', en: 'construction', fr: 'construction', es: 'construcción', de: 'Bau' }[lang] || 'construção';
+  let local = String(c.city || '').trim() || String(c.address || '').split(',')[0].trim();
+  const cc = String(c.country || 'pt').toLowerCase();
+  if (cc !== 'pt') {
+    try {
+      const pais = new Intl.DisplayNames([lang], { type: 'region' }).of((cc === 'uk' ? 'GB' : cc).toUpperCase());
+      if (pais) local = local ? local + ', ' + pais : pais;
+    } catch (_) {}
+  }
+  const alv = (cc === 'pt' && c.alvara) ? (String(c.alvara).match(/\d+/) || [''])[0] : '';
+  const temEmail = !!(c.email && String(c.email).trim());
+  const T = {
+    pt: { base: (n, s, l) => `${n} é uma empresa de ${s}${l ? ' em ' + l : ''}.`,
+          alv: a => ` Está registada no IMPIC, o regulador da construção em Portugal, com o alvará n.º ${a}.`,
+          msg: ' Pode pedir-lhe um orçamento diretamente pela Hivex.' },
+    en: { base: (n, s, l) => `${n} is a company specialising in ${s}${l ? ', based in ' + l : ''}.`,
+          alv: a => ` It is registered with IMPIC, Portugal's construction regulator, under licence no. ${a}.`,
+          msg: ' You can request a quote directly through Hivex.' },
+    fr: { base: (n, s, l) => `${n} est une entreprise spécialisée en ${s}${l ? ', basée à ' + l : ''}.`,
+          alv: a => ` Elle est enregistrée auprès de l'IMPIC, le régulateur portugais de la construction, sous la licence n° ${a}.`,
+          msg: ' Vous pouvez lui demander un devis directement via Hivex.' },
+    es: { base: (n, s, l) => `${n} es una empresa de ${s}${l ? ' en ' + l : ''}.`,
+          alv: a => ` Está registrada en el IMPIC, el regulador portugués de la construcción, con la licencia n.º ${a}.`,
+          msg: ' Puede pedirle un presupuesto directamente a través de Hivex.' },
+    de: { base: (n, s, l) => `${n} ist ein Unternehmen für ${s}${l ? ' mit Sitz in ' + l : ''}.`,
+          alv: a => ` Es ist beim IMPIC, der portugiesischen Bauaufsicht, unter der Lizenz Nr. ${a} registriert.`,
+          msg: ' Über Hivex können Sie direkt ein Angebot anfordern.' },
+  }[lang] || null;
+  const L = T || { base: (n, s, l) => `${n} é uma empresa de ${s}${l ? ' em ' + l : ''}.`, alv: a => ` Está registada no IMPIC com o alvará n.º ${a}.`, msg: ' Pode pedir-lhe um orçamento diretamente pela Hivex.' };
+  return L.base(c.name, lista, local) + (alv ? L.alv(alv) : '') + (temEmail ? L.msg : '');
+}
+function _renderAbout(c) {
+  const wrap = document.getElementById('dpAboutWrap');
+  const txt  = document.getElementById('dpAboutTxt');
+  const auto = document.getElementById('dpAboutAuto');
+  if (!wrap || !txt) return;
+  const real = String(c.description || '').trim();
+  if (real) {
+    txt.textContent = real;
+    if (auto) auto.style.display = 'none';
+    wrap.style.display = '';
+  } else if (c._full) {
+    // só depois do detalhe completo: o catálogo não traz a descrição, e
+    // mostrar o resumo antes trocava-o pela descrição real à vista do utilizador
+    txt.textContent = _autoDescription(c);
+    if (auto) auto.style.display = '';
+    wrap.style.display = '';
+  } else {
+    wrap.style.display = 'none';
+  }
+}
+window._autoDescription = _autoDescription;
 
 // Collapse duplicate company records into one entry so each real business
 // gets exactly one pin, no matter how many times it was registered/seeded or
@@ -7701,6 +7769,7 @@ async function openDetail(id) {
       // Keep any sectors/tags the dedup step merged in from duplicate records.
       merged.sectors = Array.from(new Set([...(c.sectors || []), ...(merged.sectors || [])]));
       merged.tags    = Array.from(new Set([...(c.tags || []), ...(merged.tags || [])]));
+      merged._full = true;
       Object.assign(c, merged);
       if (selectedId === id) _renderDetailPanel(c);
     }
@@ -7800,7 +7869,10 @@ function _renderDetailPanel(c) {
     (tr && tr.alvaraNotApplicable) || 'Não aplicável');
 
   document.getElementById('chatName').textContent = c.name;
-  document.getElementById('dpReviewsSection').style.display = c.isNew ? 'none' : 'block';
+  // Sempre visível: escondê-la nas empresas 'Novo' (quase todo o catálogo)
+  // impedia precisamente a 1.ª avaliação.
+  document.getElementById('dpReviewsSection').style.display = 'block';
+  try { _renderAbout(c); } catch (_) {}
 
   // Missão & Visão (colhidas do site oficial; só quando declaradas)
   const _mw = document.getElementById('dpMissionWrap');
@@ -7942,6 +8014,16 @@ function _renderDetailPanel(c) {
     const me = JSON.parse(localStorage.getItem('hive_user') || 'null');
     const isOwner = !!(me && c.created_by != null && Number(c.created_by) === Number(me.id));
     claimRow.style.display = isOwner ? 'none' : '';
+    // Ficha incompleta (sem descrição real ou sem logótipo): o convite a
+    // reclamar ganha destaque — o dono é quem melhor a completa.
+    const incompleta = !!(c._full && (!String(c.description || '').trim() || !c.logo));
+    claimRow.classList.toggle('dp-claim-strong', incompleta && !isOwner);
+    const _cb = claimRow.querySelector('button');
+    if (_cb) {
+      const k = incompleta ? 'claimIncomplete' : 'claimLink';
+      _cb.setAttribute('data-i18n', k);
+      _cb.textContent = t(k) || _cb.textContent;
+    }
   }
 
   // SEO: per-company LocalBusiness structured data + page meta.
@@ -8775,6 +8857,8 @@ const LEGAL_DOCS = {
         <p>Execução do contrato (Art. 6.º, n.º 1, alínea b)) para conta e perfil; consentimento (alínea a)) para cookies de publicidade (ver ponto 5.1); interesse legítimo (alínea f)) para contadores de utilização anónimos e prevenção de fraude.</p>
         <h3>5. Partilha com terceiros</h3>
         <p>Não vendemos dados. Partilhamos apenas com sub-processadores estritamente necessários: <strong>Vercel</strong> (hospedagem), <strong>Neon/Postgres</strong> (base de dados), <strong>Google</strong> (Sign-in opcional e publicidade — ver ponto 5.1), <strong>OpenStreetMap</strong> (tiles do mapa). Todos cumprem o RGPD.</p>
+        <h3>5.0 Pedido de avaliação</h3>
+        <p>Se contactar uma empresa através da Hivex, poderemos enviar-lhe <strong>um único email</strong>, cerca de uma semana depois, a convidá-lo a avaliar essa empresa (interesse legítimo em manter avaliações verificadas). Pode recusar estes pedidos através do link incluído no próprio email; a recusa fica registada e é respeitada em todos os contactos futuros.</p>
         <h3>5.1 Publicidade (Google AdSense)</h3>
         <p>A Hivex pode apresentar anúncios fornecidos pelo <strong>Google AdSense</strong>. Fornecedores terceiros, incluindo a Google, utilizam cookies para apresentar anúncios com base em visitas anteriores do utilizador a este e a outros sites. A Google utiliza cookies de publicidade para apresentar anúncios; pode <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">desativar a publicidade personalizada</a> nas Definições de anúncios da Google ou recusar cookies de fornecedores terceiros em <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Mais informação na <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">política da Google sobre como utiliza dados de sites parceiros</a>. No Espaço Económico Europeu, Reino Unido e Suíça, os anúncios e respetivos cookies só são ativados <strong>após o seu consentimento</strong>, recolhido através do nosso banner de cookies — sem consentimento não são utilizados cookies de publicidade personalizada.</p>
         <h3>6. Período de conservação</h3>
@@ -8890,6 +8974,8 @@ LEGAL_DOCS.en = {
     <p>Performance of the contract (Art. 6(1)(b)) for account and profile; consent ((a)) for advertising cookies (see section 5.1); legitimate interest ((f)) for anonymous usage counters and fraud prevention.</p>
     <h3>5. Sharing with third parties</h3>
     <p>We do not sell data. We share only with strictly necessary sub-processors: <strong>Vercel</strong> (hosting), <strong>Neon/Postgres</strong> (database), <strong>Google</strong> (optional Sign-in and advertising — see section 5.1), <strong>OpenStreetMap</strong> (map tiles). All are GDPR compliant.</p>
+    <h3>5.0 Review requests</h3>
+    <p>If you contact a company through Hivex, we may send you <strong>a single email</strong>, about a week later, inviting you to review that company (legitimate interest in keeping reviews verified). You can opt out using the link in that email; your choice is recorded and respected for all future contacts.</p>
     <h3>5.1 Advertising (Google AdSense)</h3>
     <p>Hivex may display ads provided by <strong>Google AdSense</strong>. Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this and other websites. Google uses advertising cookies to serve ads; you can <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">opt out of personalised advertising</a> in Google's Ads Settings, or opt out of third-party vendors' cookies at <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. More information in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Google's policy on how it uses data from partner sites</a>. In the European Economic Area, the United Kingdom and Switzerland, ads and their cookies are only enabled <strong>after your consent</strong>, collected through our cookie banner — without consent, no personalised advertising cookies are used.</p>
     <h3>6. Retention period</h3>
@@ -8986,6 +9072,8 @@ LEGAL_DOCS.fr = {
     <p>Exécution du contrat (art. 6, §1, b)) pour le compte et le profil ; consentement (a)) pour les cookies publicitaires (voir point 5.1) ; intérêt légitime (f)) pour les compteurs d'usage anonymes et la prévention de la fraude.</p>
     <h3>5. Partage avec des tiers</h3>
     <p>Nous ne vendons pas de données. Nous les partageons uniquement avec les sous-traitants strictement nécessaires : <strong>Vercel</strong> (hébergement), <strong>Neon/Postgres</strong> (base de données), <strong>Google</strong> (connexion facultative et publicité — voir point 5.1), <strong>OpenStreetMap</strong> (tuiles de la carte). Tous sont conformes au RGPD.</p>
+    <h3>5.0 Demande d’avis</h3>
+    <p>Si vous contactez une entreprise via Hivex, nous pourrons vous envoyer <strong>un seul e-mail</strong>, environ une semaine plus tard, vous invitant à évaluer cette entreprise (intérêt légitime à maintenir des avis vérifiés). Vous pouvez refuser via le lien inclus dans cet e-mail ; votre choix est enregistré et respecté pour tous les contacts futurs.</p>
     <h3>5.1 Publicité (Google AdSense)</h3>
     <p>Hivex peut afficher des annonces fournies par <strong>Google AdSense</strong>. Des fournisseurs tiers, dont Google, utilisent des cookies pour diffuser des annonces en fonction des visites antérieures de l'utilisateur sur ce site et sur d'autres sites. Google utilise des cookies publicitaires pour diffuser des annonces ; vous pouvez <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">désactiver la publicité personnalisée</a> dans les Paramètres des annonces Google, ou refuser les cookies de fournisseurs tiers sur <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Plus d'informations dans la <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">politique de Google relative à l'utilisation des données des sites partenaires</a>. Dans l'Espace économique européen, au Royaume-Uni et en Suisse, les annonces et leurs cookies ne sont activés <strong>qu'après votre consentement</strong>, recueilli via notre bannière de cookies — sans consentement, aucun cookie de publicité personnalisée n'est utilisé.</p>
     <h3>6. Durée de conservation</h3>
@@ -9082,6 +9170,8 @@ LEGAL_DOCS.es = {
     <p>Ejecución del contrato (art. 6, ap. 1, letra b)) para la cuenta y el perfil; consentimiento (letra a)) para las cookies publicitarias (ver punto 5.1); interés legítimo (letra f)) para los contadores de uso anónimos y la prevención del fraude.</p>
     <h3>5. Compartición con terceros</h3>
     <p>No vendemos datos. Solo los compartimos con los encargados estrictamente necesarios: <strong>Vercel</strong> (alojamiento), <strong>Neon/Postgres</strong> (base de datos), <strong>Google</strong> (inicio de sesión opcional y publicidad; ver punto 5.1), <strong>OpenStreetMap</strong> (teselas del mapa). Todos cumplen el RGPD.</p>
+    <h3>5.0 Solicitud de valoración</h3>
+    <p>Si contacta con una empresa a través de Hivex, podremos enviarle <strong>un único correo</strong>, aproximadamente una semana después, invitándole a valorar esa empresa (interés legítimo en mantener valoraciones verificadas). Puede rechazarlo mediante el enlace incluido en ese correo; su elección queda registrada y se respeta en todos los contactos futuros.</p>
     <h3>5.1 Publicidad (Google AdSense)</h3>
     <p>Hivex puede mostrar anuncios proporcionados por <strong>Google AdSense</strong>. Proveedores externos, incluido Google, utilizan cookies para mostrar anuncios basados en las visitas anteriores del usuario a este y otros sitios web. Google utiliza cookies publicitarias para mostrar anuncios; puedes <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">desactivar la publicidad personalizada</a> en la Configuración de anuncios de Google, o rechazar las cookies de proveedores externos en <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Más información en la <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">política de Google sobre cómo utiliza los datos de sitios asociados</a>. En el Espacio Económico Europeo, el Reino Unido y Suiza, los anuncios y sus cookies solo se activan <strong>tras tu consentimiento</strong>, recogido a través de nuestro banner de cookies; sin consentimiento no se utilizan cookies de publicidad personalizada.</p>
     <h3>6. Periodo de conservación</h3>
@@ -9178,6 +9268,8 @@ LEGAL_DOCS.de = {
     <p>Vertragserfüllung (Art. 6 Abs. 1 lit. b) für Konto und Profil; Einwilligung (lit. a) für Werbe-Cookies (siehe Abschnitt 5.1); berechtigtes Interesse (lit. f) für anonyme Nutzungszähler und die Betrugsprävention.</p>
     <h3>5. Weitergabe an Dritte</h3>
     <p>Wir verkaufen keine Daten. Wir geben sie nur an die unbedingt notwendigen Auftragsverarbeiter weiter: <strong>Vercel</strong> (Hosting), <strong>Neon/Postgres</strong> (Datenbank), <strong>Google</strong> (optionale Anmeldung und Werbung — siehe Abschnitt 5.1), <strong>OpenStreetMap</strong> (Kartenkacheln). Alle sind DSGVO-konform.</p>
+    <h3>5.0 Bewertungsanfrage</h3>
+    <p>Wenn Sie ein Unternehmen über Hivex kontaktieren, senden wir Ihnen etwa eine Woche später eventuell <strong>eine einzige E-Mail</strong> mit der Einladung, dieses Unternehmen zu bewerten (berechtigtes Interesse an verifizierten Bewertungen). Sie können dies über den Link in dieser E-Mail ablehnen; Ihre Entscheidung wird gespeichert und bei allen künftigen Kontakten respektiert.</p>
     <h3>5.1 Werbung (Google AdSense)</h3>
     <p>Hivex kann Anzeigen von <strong>Google AdSense</strong> einblenden. Drittanbieter, einschließlich Google, verwenden Cookies, um Anzeigen auf Grundlage früherer Besuche eines Nutzers auf dieser und anderen Websites zu schalten. Google verwendet Werbe-Cookies, um Anzeigen zu schalten; Sie können in den Google-Anzeigeneinstellungen <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">personalisierte Werbung deaktivieren</a> oder Cookies von Drittanbietern unter <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a> ablehnen. Weitere Informationen in der <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Richtlinie von Google zur Nutzung von Daten von Partner-Websites</a>. Im Europäischen Wirtschaftsraum, im Vereinigten Königreich und in der Schweiz werden Anzeigen und ihre Cookies erst <strong>nach Ihrer Einwilligung</strong> aktiviert, die über unser Cookie-Banner eingeholt wird — ohne Einwilligung werden keine Cookies für personalisierte Werbung verwendet.</p>
     <h3>6. Aufbewahrungsdauer</h3>
@@ -9540,6 +9632,12 @@ function openLogin() {
 function closeLogin() {
   const ov = document.getElementById('loginOverlay');
   if (ov) ov.classList.remove('open');
+  // Visitante que tentou avaliar e acabou de entrar: abre o formulário.
+  const pend = window._hxPendingReview;
+  if (pend != null) {
+    window._hxPendingReview = null;
+    setTimeout(() => { try { if (_isLoggedIn() && selectedId === pend) toggleReviewForm(); } catch (_) {} }, 300);
+  }
 }
 function switchLoginTab(tab) {
   document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
@@ -11490,6 +11588,7 @@ function _openCompanyFromUrl() {
     history.replaceState({ company: id }, '', window.location.href);
     window._suppressCompanyHistory = true;
     try { openDetail(id); } finally { window._suppressCompanyHistory = false; }
+    if (params.get('review') === '1') setTimeout(() => { try { if (selectedId === id) toggleReviewForm(); } catch (_) {} }, 1400);
   } catch (_) {}
 }
 window.addEventListener('popstate', () => {
@@ -11566,6 +11665,7 @@ function toggleReviewForm() {
   const toggle = document.getElementById('dpReviewFormToggle');
   if (!form) return;
   if (!_isLoggedIn()) {
+    window._hxPendingReview = selectedId;
     showToast(t('reviewLoginNeeded') || 'Inicie sessão para escrever uma avaliação.');
     try { openLogin(); } catch (_) {}
     return;
@@ -11712,8 +11812,9 @@ async function submitReviewReply(companyId, reviewId) {
 }
 window.submitReviewReply = submitReviewReply;
 
-// Hook 4: reset the reviews section and (for logged-in users) load real
-// reviews when the detail panel opens.
+// Hook 4: reset the reviews section and load real reviews when the detail
+// panel opens — for everyone (the reviews GET is public; writing one needs
+// an account, enforced in toggleReviewForm and by the backend).
 _addOpenDetailHook((id) => {
   const list   = document.getElementById('dpReviewsList');
   const form   = document.getElementById('dpReviewForm');
@@ -11721,8 +11822,7 @@ _addOpenDetailHook((id) => {
   if (list)   list.innerHTML = '';
   if (form)   form.style.display = 'none';
   if (toggle) toggle.style.display = 'none';
-  const user = JSON.parse(localStorage.getItem('hive_user') || 'null');
-  if (user) loadReviews(id);
+  loadReviews(id);
 });
 
 function escHtml(str) {

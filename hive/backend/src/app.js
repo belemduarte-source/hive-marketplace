@@ -618,6 +618,19 @@ const MIGRATIONS = [
   // v8: missão e visão (extraídas do site oficial quando declaradas)
   `ALTER TABLE companies ADD COLUMN IF NOT EXISTS mission TEXT`,
   `ALTER TABLE companies ADD COLUMN IF NOT EXISTS vision TEXT`,
+
+  // v9: pedidos de avaliação ~7 dias após um contacto (um por empresa+email)
+  // e opt-out desses emails (email guardado em minúsculas)
+  `CREATE TABLE IF NOT EXISTS review_requests (
+     company_id BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+     email      TEXT NOT NULL,
+     sent_at    TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+     PRIMARY KEY (company_id, email)
+   )`,
+  `CREATE TABLE IF NOT EXISTS email_optouts (
+     email      TEXT PRIMARY KEY,
+     created_at TIMESTAMPTZ DEFAULT NOW()
+   )`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -626,7 +639,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 8; // v8: companies.mission + companies.vision
+const SCHEMA_VERSION = 9; // v9: review_requests + email_optouts
 
 async function ensureSchema() {
   if (_migrated) return;
@@ -915,7 +928,7 @@ app.get('/c/:idslug', async (req, res, next) => {
     if (!Number.isFinite(id) || id <= 0) return res.status(404).set('Cache-Control', 'public, max-age=0, s-maxage=600').type('html').send('<!doctype html><html lang="pt"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Empresa não disponível | Hivex</title></head><body style="font-family:system-ui;padding:40px;text-align:center;background:#0f172a;color:#e2e8f0"><h1>Esta empresa já não está disponível na Hivex</h1><p><a style="color:#93c5fd" href="/">Encontrar outras empresas →</a></p></body></html>');
     const { rows } = await require('./db').query(
       `SELECT id, name, sector, city, zone, address, postal_code, country,
-              lat, lng, phone, email, website, rating, reviews, description,
+              lat, lng, phone, email, website, rating, reviews, description, sectors, alvara,
               (logo IS NOT NULL AND logo LIKE 'data:image%') AS has_logo,
               CASE WHEN logo IS NOT NULL THEN extract(epoch from updated_at)::bigint::text END AS logo_v
          FROM companies WHERE id = $1 AND status = 'approved'`, [id]);
@@ -929,7 +942,22 @@ app.get('/c/:idslug', async (req, res, next) => {
     const label = SECTOR_LABELS_PT[c.sector] ||
       (c.sector ? c.sector.charAt(0).toUpperCase() + c.sector.slice(1).replace(/_/g, ' ') : 'Empresa');
     const title = `${c.name} — ${label}${c.city ? ' em ' + c.city : ''} | Hivex`;
-    const desc = ((c.description ? String(c.description).replace(/\s+/g, ' ').slice(0, 120) + ' · ' : '') +
+    // Sem descrição real: resumo FACTUAL com dados públicos (setores, localidade,
+    // alvará IMPIC) — nunca inventado e sempre identificado como automático.
+    const _secsPt = [...new Set(((c.sectors && c.sectors.length) ? c.sectors : (c.sector ? [c.sector] : []))
+      .map(s => SECTOR_LABELS_PT[s]).filter(Boolean))].slice(0, 3).map(s => s.toLowerCase());
+    const _listaPt = _secsPt.length > 1
+      ? _secsPt.slice(0, -1).join(', ') + ' e ' + _secsPt[_secsPt.length - 1]
+      : (_secsPt[0] || 'construção');
+    const _alvPt = (String(c.country || 'pt').toLowerCase() === 'pt' && c.alvara)
+      ? (String(c.alvara).match(/\d+/) || [''])[0] : '';
+    const autoDesc = c.description ? '' :
+      `${c.name} é uma empresa de ${_listaPt}${c.city ? ' em ' + c.city : ''}.` +
+      (_alvPt ? ` Está registada no IMPIC, o regulador da construção em Portugal, com o alvará n.º ${_alvPt}.` : '') +
+      (c.email ? ' Pode pedir-lhe um orçamento diretamente pela Hivex.' : '');
+    const desc = ((c.description
+        ? String(c.description).replace(/\s+/g, ' ').slice(0, 120) + ' · '
+        : autoDesc.slice(0, 120) + ' · ') +
       `${label}${c.city ? ' em ' + c.city : ''}. Contactos, avaliações e orçamento grátis na Hivex.`).slice(0, 160);
     const img = c.has_logo ? `${BASE}/api/companies/${c.id}/logo?v=${c.logo_v}` : `${BASE}/og-cover.png?v=1`;
     const spaUrl = `/?company=${c.id}`;
@@ -978,7 +1006,7 @@ app.get('/c/:idslug', async (req, res, next) => {
 </head><body>
 <h1>${esc(c.name)}</h1>
 <p class="meta">${esc(label)}${c.city ? ' · ' + esc(c.city) : ''}${c.zone ? ' · ' + esc(c.zone) : ''}${Number(c.rating) > 0 ? ' · ⭐ ' + Number(c.rating).toFixed(1) + '/5 (' + (c.reviews || 0) + ')' : ''}</p>
-${c.description ? `<p>${esc(String(c.description).slice(0, 500))}</p>` : ''}
+${c.description ? `<p>${esc(String(c.description).slice(0, 500))}</p>` : `<p>${esc(autoDesc)}</p><p style="color:#94a3b8;font-size:13px;font-style:italic">Resumo automático, com base nos dados públicos da empresa.</p>`}
 ${c.address || c.postal_code ? `<p>📍 ${esc([c.address, c.postal_code, c.city].filter(Boolean).join(', '))}</p>` : ''}
 ${contactos ? `<p>${esc(contactos)} — disponíveis na ficha completa.</p>` : ''}
 <a class="cta" href="${esc(spaUrl)}">Ver no mapa, contactar e pedir orçamento →</a>
