@@ -222,7 +222,7 @@ const translations = {
     helpMissionTitle:'Missão', helpMissionDesc:'Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.',
     helpVisionTitle:'Visão', helpVisionDesc:'Ser a plataforma de referência em Portugal para ligar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.',
     navLogin:'Entrar / Registar', navHelp:'Ajuda',
-    welcomeExplore:'Explorar o mapa', welcomeTrustMod:'Empresas moderadas (NIF + Certidão)', welcomeTrustEu:'Dados na Europa',
+    welcomeExplore:'Explorar o mapa', reviewLoginNeeded:'Inicie sessão para escrever uma avaliação.', welcomeTrustMod:'Empresas moderadas (NIF + Certidão)', welcomeTrustEu:'Dados na Europa',
     themeToDark:'Escuro', themeToLight:'Claro', themeModeDark:'Modo escuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidade', avatarLogout:'Terminar Sessão', avatarFaqHelp:'FAQ & Ajuda',
     lpHeroRegisterCta:'Criar conta grátis', lpHeroRegisterHint:'Peça orçamentos, guarde favoritos e registe a sua empresa.',
@@ -638,7 +638,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:'To simplify and democratise access to quality professional services, creating a transparent ecosystem where companies and professionals can grow together, without unnecessary intermediaries.',
     helpVisionTitle:'Vision', helpVisionDesc:'To be the reference platform in Portugal for connecting companies and professionals, promoting economic growth and creating opportunities for all.',
     navLogin:'Login / Sign up', navHelp:'Help',
-    welcomeExplore:'Explore the map', welcomeTrustMod:'Moderated companies (tax ID + registry)', welcomeTrustEu:'Data hosted in Europe',
+    welcomeExplore:'Explore the map', reviewLoginNeeded:'Log in to write a review.', welcomeTrustMod:'Moderated companies (tax ID + registry)', welcomeTrustEu:'Data hosted in Europe',
     themeToDark:'Dark', themeToLight:'Light', themeModeDark:'Dark mode', themeModeLight:'Light mode',
     navFavourites:'Favourites', navFaq:'FAQ', navPrivacy:'Privacy', avatarLogout:'Sign out', avatarFaqHelp:'FAQ & Help',
     lpHeroRegisterCta:'Create free account', lpHeroRegisterHint:'Request quotes, save favourites and register your company.',
@@ -1047,7 +1047,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:"Simplifier et démocratiser l'accès à des services professionnels de qualité, en créant un écosystème transparent où entreprises et professionnels peuvent grandir ensemble, sans intermédiaires inutiles.",
     helpVisionTitle:'Vision', helpVisionDesc:'Être la plateforme de référence au Portugal pour connecter entreprises et professionnels, en favorisant la croissance économique et en créant des opportunités pour tous.',
     navLogin:'Connexion / Inscription', navHelp:'Aide',
-    welcomeExplore:'Explorer la carte', welcomeTrustMod:'Entreprises modérées (NIF + registre)', welcomeTrustEu:'Données hébergées en Europe',
+    welcomeExplore:'Explorer la carte', reviewLoginNeeded:'Connectez-vous pour écrire un avis.', welcomeTrustMod:'Entreprises modérées (NIF + registre)', welcomeTrustEu:'Données hébergées en Europe',
     themeToDark:'Sombre', themeToLight:'Clair', themeModeDark:'Mode sombre', themeModeLight:'Mode clair',
     navFavourites:'Favoris', navFaq:'FAQ', navPrivacy:'Confidentialité', avatarLogout:'Se déconnecter', avatarFaqHelp:'FAQ & Aide',
     lpHeroRegisterCta:'Créer un compte gratuit', lpHeroRegisterHint:"Demandez des devis, enregistrez des favoris et inscrivez votre entreprise.",
@@ -1452,7 +1452,7 @@ const translations = {
     helpMissionTitle:'Misión', helpMissionDesc:'Simplificar y democratizar el acceso a servicios profesionales de calidad, creando un ecosistema transparente donde empresas y profesionales puedan crecer juntos.',
     helpVisionTitle:'Visión', helpVisionDesc:'Ser la plataforma de referencia en Portugal para conectar empresas y profesionales, fomentando el crecimiento económico y creando oportunidades para todos.',
     navLogin:'Entrar / Registrarse', navHelp:'Ayuda',
-    welcomeExplore:'Explorar el mapa', welcomeTrustMod:'Empresas moderadas (NIF + registro)', welcomeTrustEu:'Datos alojados en Europa',
+    welcomeExplore:'Explorar el mapa', reviewLoginNeeded:'Inicie sesión para escribir una reseña.', welcomeTrustMod:'Empresas moderadas (NIF + registro)', welcomeTrustEu:'Datos alojados en Europa',
     themeToDark:'Oscuro', themeToLight:'Claro', themeModeDark:'Modo oscuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidad', avatarLogout:'Cerrar sesión', avatarFaqHelp:'FAQ y Ayuda',
     lpHeroRegisterCta:'Crear cuenta gratis', lpHeroRegisterHint:'Pida presupuestos, guarde favoritos y registre su empresa.',
@@ -1854,7 +1854,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:'Den Zugang zu hochwertigen Fachleistungen vereinfachen und demokratisieren – ein transparentes Ökosystem schaffen, in dem Unternehmen und Fachleute gemeinsam wachsen können, ohne unnötige Zwischenhändler.',
     helpVisionTitle:'Vision', helpVisionDesc:'Die führende Plattform in Portugal zur Vernetzung von Unternehmen und Fachleuten werden, Wirtschaftswachstum fördern und Chancen für alle schaffen.',
     navLogin:'Anmelden / Registrieren', navHelp:'Hilfe',
-    welcomeExplore:'Karte erkunden', welcomeTrustMod:'Geprüfte Unternehmen (NIF + Register)', welcomeTrustEu:'Daten in Europa gehostet',
+    welcomeExplore:'Karte erkunden', reviewLoginNeeded:'Melden Sie sich an, um eine Bewertung zu schreiben.', welcomeTrustMod:'Geprüfte Unternehmen (NIF + Register)', welcomeTrustEu:'Daten in Europa gehostet',
     themeToDark:'Dunkel', themeToLight:'Hell', themeModeDark:'Dunkelmodus', themeModeLight:'Heller Modus',
     navFavourites:'Favoriten', navFaq:'FAQ', navPrivacy:'Datenschutz', avatarLogout:'Abmelden', avatarFaqHelp:'FAQ & Hilfe',
     lpHeroRegisterCta:'Kostenloses Konto erstellen', lpHeroRegisterHint:'Angebote anfragen, Favoriten speichern und Ihren Betrieb registrieren.',
@@ -3858,6 +3858,7 @@ async function loadCompaniesFromDB(opts) {
   renderSectorFilters();
   renderTagCloud();
   applyFilters.now();
+  _syncReviewsUi();
   renderFeaturedCompanies();
   renderTestimonialBanner();
   // Cache das destacadas: o painel do Início enche instantaneamente no
@@ -5241,6 +5242,18 @@ function updateRadius(sliderVal) {
   }
 }
 
+// Filtros/ordenação por avaliação só fazem sentido quando há avaliações reais.
+// Com o catálogo inteiro a zero, mostravam faixas "4,8–5,0" que devolviam
+// sempre vazio. A classe .hx-no-reviews (posta pré-paint no index.html) esconde
+// tudo o que tem .hx-rating-ui; sai sozinha mal exista uma avaliação.
+function _hasAnyReviews() {
+  return Array.isArray(companies) && companies.some(c => (c.reviews || 0) > 0);
+}
+function _syncReviewsUi() {
+  try { document.documentElement.classList.toggle('hx-no-reviews', !_hasAnyReviews()); } catch (_) {}
+}
+window._syncReviewsUi = _syncReviewsUi;
+
 // Used by the empty-state buttons to bump the radius slider and re-run filters.
 function _expandRadiusTo(sliderVal) {
   const slider = document.getElementById('radiusSlider');
@@ -5775,13 +5788,16 @@ function mspOpenSheet(type) {
     const topRated = document.getElementById('filterTopRated')?.checked;
     const verified = document.getElementById('filterVerified')?.checked;
     const isNew = document.getElementById('filterNew')?.checked;
-    const sopts = [['all', 'Todos'], ['rating', 'Melhor avaliação'], ['reviews', '💬 Mais avaliados'], ['name', 'A–Z']];
+    const _rev = _hasAnyReviews();
+    const sopts = _rev
+      ? [['all', 'Todos'], ['rating', 'Melhor avaliação'], ['reviews', '💬 Mais avaliados'], ['name', 'A–Z']]
+      : [['all', 'Todos'], ['name', 'A–Z']];
     const ropts = [['', 'Qualquer'], ['4.8-5', '★★★★★ 4.8–5.0'], ['4.5-4.8', '★★★★★ 4.5–4.8'], ['4-4.5', '★★★★☆ 4.0–4.5'], ['3-4', '★★★★☆ 3.0–4.0'], ['0-3', '★★★☆☆ 0–3.0']];
     body.innerHTML =
       '<div class="msp-sheet-section-label">' + (t('sortBy') || 'Ordenar') + '</div><div class="msp-sheet-row">' +
       sopts.map(([v, l]) => `<button class="msp-sheet-btn${v === sortCur ? ' active' : ''}" onclick="mspSetSort('${v}');mspUpdateChips()">${l}</button>`).join('') + '</div>' +
-      '<div class="msp-sheet-section-label">' + (t('minRating') || 'Avaliação') + '</div><div class="msp-sheet-row">' +
-      ropts.map(([v, l]) => `<button class="msp-sheet-btn${v === ratingCur ? ' active' : ''}" onclick="mspSetRating('${v}');mspUpdateChips()">${l}</button>`).join('') + '</div>' +
+      (_rev ? '<div class="msp-sheet-section-label">' + (t('minRating') || 'Avaliação') + '</div><div class="msp-sheet-row">' +
+      ropts.map(([v, l]) => `<button class="msp-sheet-btn${v === ratingCur ? ' active' : ''}" onclick="mspSetRating('${v}');mspUpdateChips()">${l}</button>`).join('') + '</div>' : '') +
       '<div class="msp-sheet-section-label">Destaque</div><div class="msp-sheet-row">' +
       `<button class="msp-sheet-btn${topRated ? ' active' : ''}" onclick="mspToggleStatus('topRated');this.classList.toggle('active')">⭐ Top</button>` +
       `<button class="msp-sheet-btn${verified ? ' active' : ''}" onclick="mspToggleStatus('verified');this.classList.toggle('active')">✅ Verificado</button>` +
@@ -7870,18 +7886,24 @@ function _renderDetailPanel(c) {
   // guests keep the action bar with the buttons that work logged out:
   // Enviar Mensagem, Como chegar, Partilhar. Ligar (phone is redacted for
   // anonymous traffic) and Reportar (backend requires auth) stay gated.
+  // Contactos abertos a visitantes (decisão do dono): a API pública já enviava
+  // telefone e morada a qualquer browser, e o pin + a Vista de Rua mostravam o
+  // local exato — o bloqueio só fazia desistir quem queria ligar. Login fica
+  // para o que precisa de conta: escrever avaliação, reportar, favoritos.
+  // O email da empresa continua oculto (a mensagem segue pelo relay).
   const loggedIn = !!JSON.parse(localStorage.getItem('hive_user') || 'null');
   const quoteBar = document.getElementById('dpQuoteBar');
   const loginGate = document.getElementById('dpLoginGate');
   const gatedSections = document.getElementById('dpGatedSections');
   if (quoteBar) {
     quoteBar.style.display = '';
-    quoteBar.querySelectorAll('.qs-call,.qs-report').forEach(b => { b.style.display = loggedIn ? '' : 'none'; });
+    quoteBar.querySelectorAll('.qs-call').forEach(b => { b.style.display = (c.phone && String(c.phone).trim()) ? '' : 'none'; });
+    quoteBar.querySelectorAll('.qs-report').forEach(b => { b.style.display = loggedIn ? '' : 'none'; });
     const waB = document.getElementById('dpWaBtn');
     if (waB) {
       let wa = null;
       try { wa = typeof _waNumber === 'function' ? _waNumber(c) : null; } catch (_) {}
-      waB.style.display = (loggedIn && wa) ? '' : 'none';
+      waB.style.display = wa ? '' : 'none';
     }
     // Empresas sem email não podem receber a mensagem (o backend responde
     // 422): esconder o botão e apontar para telefone/site em vez de falhar.
@@ -7906,8 +7928,8 @@ function _renderDetailPanel(c) {
       }
     }
   }
-  if (loginGate) loginGate.style.display = loggedIn ? 'none' : '';
-  if (gatedSections) gatedSections.style.display = loggedIn ? '' : 'none';
+  if (loginGate) loginGate.style.display = 'none';
+  if (gatedSections) gatedSections.style.display = '';
 
   // Claim row: hidden when the viewer already owns this listing.
   const claimRow = document.getElementById('dpClaimRow');
@@ -11538,6 +11560,11 @@ function toggleReviewForm() {
   const form   = document.getElementById('dpReviewForm');
   const toggle = document.getElementById('dpReviewFormToggle');
   if (!form) return;
+  if (!_isLoggedIn()) {
+    showToast(t('reviewLoginNeeded') || 'Inicie sessão para escrever uma avaliação.');
+    try { openLogin(); } catch (_) {}
+    return;
+  }
   const isHidden = form.style.display === 'none';
   form.style.display    = isHidden ? 'block' : 'none';
   toggle.style.display  = isHidden ? 'none'  : 'block';
@@ -11622,9 +11649,9 @@ async function loadReviews(companyId) {
       const critAvgHtml = _critRows ? `<div class="review-crit-summary">${_critRows}</div>` : '';
       list.innerHTML = critAvgHtml + histHtml + cardsHtml;
     }
-    // Show review form for logged-in users
-    const user = JSON.parse(localStorage.getItem('hive_user') || 'null');
-    if (user && toggle) toggle.style.display = 'block';
+    // "Escrever avaliação" visível para todos; visitantes são levados ao login
+    // (ver toggleReviewForm) — a avaliação exige conta no backend.
+    if (toggle) toggle.style.display = 'block';
   } catch(e) {
     list.innerHTML = '<div style="color:var(--muted);font-size:13px;text-align:center;padding:12px">Não foi possível carregar as avaliações.</div>';
   }

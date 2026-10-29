@@ -4083,3 +4083,7 @@
   .welcome-cats{grid-template-columns:repeat(2,1fr)}
   .welcome-actions{flex-direction:column}
 }
+
+/* Sem avaliações reais no catálogo → esconder filtros/ordenação por avaliação
+   (classe posta pré-paint; _syncReviewsUi retira-a mal exista uma avaliação). */
+.hx-no-reviews .hx-rating-ui{display:none !important}
