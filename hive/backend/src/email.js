@@ -388,8 +388,9 @@ async function sendPasswordResetEmail(user, resetUrl) {
 // Generic branded email — one template for all the newer notification types
 // (claim codes, quote requests, quote replies, review alerts, feature
 // requests). bodyHtml is trusted template HTML built by the caller; user
-// content inside it must be escaped by the caller via esc().
-async function sendBrandedEmail({ to, replyTo, subject, title, bodyHtml }) {
+// content inside it must be escaped by the caller via esc(). `headers` segue
+// para o deliver() (ex.: List-Unsubscribe nos convites de concursos).
+async function sendBrandedEmail({ to, replyTo, subject, title, bodyHtml, headers }) {
   if (!emailConfigured() || !to) return;
   const html = `
 <div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;background:#fff;border:1px solid #e5e7eb;border-radius:8px;overflow:hidden">
@@ -402,7 +403,7 @@ async function sendBrandedEmail({ to, replyTo, subject, title, bodyHtml }) {
     <p style="color:#6b7280;font-size:13px;margin:0">Equipa Hivex Marketplace · <a href="https://www.hivex.pt" style="color:#f97316">hivex.pt</a></p>
   </div>
 </div>`;
-  await deliver({ to, replyTo, subject, html });
+  await deliver({ to, replyTo, subject, html, headers });
 }
 
 /**

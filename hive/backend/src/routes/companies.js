@@ -21,7 +21,9 @@ async function _portfolioToBlob(list) {
       const buf = Buffer.from(m[2], 'base64');
       const ext = m[1].includes('png') ? 'png' : m[1].includes('webp') ? 'webp' : 'jpg';
       const nome = 'portfolio/' + Date.now().toString(36) + '-' + Math.random().toString(36).slice(2, 8) + '.' + ext;
-      const blob = await put(nome, buf, { access: 'public', contentType: m[1] });
+      // Token explícito: com um store privado ligado (concursos, OIDC +
+      // BLOB_STORE_ID) o SDK preferia o privado e o portfólio deixava de ser público.
+      const blob = await put(nome, buf, { access: 'public', contentType: m[1], token: process.env.BLOB_READ_WRITE_TOKEN });
       out.push(blob.url);
     } catch (e) { console.warn('[blob] upload falhou, mantém inline:', e.message); out.push(u); }
   }

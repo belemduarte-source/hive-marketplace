@@ -2,6 +2,204 @@
 // ── TRANSLATIONS ───────────────────────────────────────────────────────────────
 const translations = {
   pt: {
+    // ── Concursos (pedido de propostas com anexos) ──
+    tnMenu:'Concursos',
+    tnRfqLink:'Tem um projeto ou caderno de encargos? Lance um concurso com anexos →',
+    tnAccept:'Aceitar',
+    tnAccepted:'Aceite',
+    tnBack:'Voltar',
+    tnBadgeAlvara:'Alvará IMPIC',
+    tnBadgeClaimed:'Gerida pela empresa',
+    tnBadgeInvited:'Já convidada',
+    tnBudNS:'Ainda não sei',
+    tnBudgetTbd:'A definir',
+    tnCancel:'Cancelar',
+    tnCandCount:'{n} empresas cumprem os critérios e podem ser convidadas',
+    tnCandCount1:'1 empresa cumpre os critérios e pode ser convidada',
+    tnCandNone:'Nenhuma empresa cumpre estes critérios. Aumente a distância ou escolha mais áreas.',
+    tnCandOut:'Outras {n} cumprem os critérios mas não podem receber convites por email: não têm email, pediram para não os receber, ou são fichas ainda não reclamadas fora de Portugal ou sem NIF de empresa.',
+    tnCandOut1:'Outra empresa cumpre os critérios mas não pode receber convites por email (sem email, pediu para não os receber, ou ficha ainda não reclamada fora de Portugal ou sem NIF de empresa).',
+    tnClose:'Fechar concurso',
+    tnCoDeclined:'Não vai concorrer',
+    tnCoDl:'descarregou {n} anexos',
+    tnCoDl1:'descarregou 1 anexo',
+    tnCoFailed:'o email do convite falhou',
+    tnCoNotViewed:'ainda não abriu',
+    tnCoPending:'convite a enviar',
+    tnCoProposal:'Enviou proposta',
+    tnCoSent:'convite enviado a {d}',
+    tnCoTest:'teste, sem email',
+    tnCoViewed:'abriu a {d}',
+    tnConfirmAccept:'Aceitar a proposta de {c}? A empresa é avisada por email e recebe os seus contactos.',
+    tnConfirmClose:'Fechar o concurso? As empresas deixam de poder enviar ou alterar propostas.',
+    tnConfirmDecline:'Recusar a proposta de {c}? A empresa é avisada por email.',
+    tnConsent:'Confirmo que posso partilhar estes documentos com as empresas que escolhi.',
+    tnContact:'Contacto',
+    tnCopyLink:'Copiar link',
+    tnCounts:'Convidadas: {c} · Abriram: {v} · Propostas: {p}',
+    tnCritAdd:'Adicionar área de atividade…',
+    tnCritAlvara:'Só com alvará IMPIC',
+    tnCritAreas:'Áreas de atividade',
+    tnCritClaimed:'Só fichas geridas pela própria empresa',
+    tnCritIntro:'Defina os critérios e escolha, da lista, as empresas que quer convidar.',
+    tnCritPickArea:'Escolha pelo menos uma área de atividade.',
+    tnCritRadius:'Distância à obra',
+    tnDays:'{n} dias',
+    tnDays1:'1 dia',
+    tnDecline:'Recusar',
+    tnDeclined:'Recusada',
+    tnDuration:'Prazo de execução',
+    tnErrCity:'Não encontrámos esta localidade. Escreva o nome da cidade, vila ou freguesia.',
+    tnErrConsent:'Confirme que pode partilhar os documentos.',
+    tnErrDeadline:'Escolha um prazo para as propostas, a partir de amanhã.',
+    tnErrDesc:'Descreva a obra com mais detalhe (pelo menos 30 caracteres).',
+    tnErrGeneric:'Algo correu mal. Tente de novo.',
+    tnErrMax:'Máximo de {n} ficheiros.',
+    tnErrMaxCos:'Atingiu o limite de empresas deste concurso ({n}).',
+    tnErrPickOne:'Escolha pelo menos uma empresa.',
+    tnErrSize:'«{name}» passa de {mb} MB.',
+    tnErrTitle:'Dê um título ao concurso (pelo menos 5 caracteres).',
+    tnErrType:'Tipo de ficheiro não aceite: {name}',
+    tnErrUploading:'Espere que os anexos acabem de ser enviados.',
+    tnExtend:'Prolongar prazo',
+    tnExtendSave:'Guardar novo prazo',
+    tnExtended:'Prazo prolongado.',
+    tnFBudget:'Orçamento indicativo',
+    tnFCity:'Localidade da obra',
+    tnFCityPh:'Ex.: Braga',
+    tnFDeadline:'Prazo para propostas',
+    tnFDesc:'Descrição e âmbito da obra',
+    tnFDescPh:'O que é preciso fazer, áreas e quantidades aproximadas, materiais, acessos e outras condições…',
+    tnFPhone:'Telefone (opcional; as empresas convidadas veem-no)',
+    tnFStart:'Início previsto (opcional)',
+    tnFTitle:'Título',
+    tnFTitlePh:'Ex.: Remodelação de moradia T3',
+    tnFiles:'Anexos',
+    tnFilesAdd:'Adicionar ficheiros',
+    tnFilesDrop:'ou arraste-os para aqui',
+    tnFilesHint:'Projeto, caderno de encargos, mapa de quantidades, plantas ou fotografias.',
+    tnFilesMax:'até {mb} MB cada',
+    tnFilesOff:'Os anexos ficam disponíveis em breve. Já pode descrever a obra e convidar empresas.',
+    tnIntro:'Partilhe o projeto ou o caderno de encargos com as empresas que escolher e receba propostas comparáveis, num só sítio. É grátis.',
+    tnInvBudget:'Orçamento indicativo',
+    tnInvClaim:'É a sua empresa? Reclame a ficha na Hivex para gerir a página e receber também estes pedidos na sua conta.',
+    tnInvClaimBtn:'Reclamar a ficha',
+    tnInvClient:'Cliente',
+    tnInvClosed:'Este concurso foi fechado pelo cliente.',
+    tnInvDeadline:'Propostas até',
+    tnInvDl:'Descarregar',
+    tnInvExpired:'O prazo para propostas terminou.',
+    tnInvFiles:'Documentos do concurso',
+    tnInvFor:'Para {c}',
+    tnInvGone:'Este convite não existe ou já expirou.',
+    tnInvOptout:'Não quero receber convites de concursos',
+    tnInvPrivacy:'A sua proposta e os seus contactos só são vistos por quem lançou o concurso. As outras empresas convidadas não os veem.',
+    tnInvScope:'Âmbito da obra',
+    tnInvStart:'Início previsto',
+    tnInvTitle:'Pedido de proposta',
+    tnInviteMore:'Convidar mais empresas',
+    tnKm:'{n} km',
+    tnKmUpTo:'Até {n} km',
+    tnLinkCopied:'Link copiado.',
+    tnLoading:'A carregar…',
+    tnLogAccept:'Proposta aceite',
+    tnLogClose:'Concurso fechado',
+    tnLogDeadline:'Prazo prolongado',
+    tnLogDecline:'indicou que não vai concorrer',
+    tnLogDeclineProp:'Proposta recusada',
+    tnLogDownload:'descarregou',
+    tnLogEmpty:'Ainda sem acessos.',
+    tnLogInvite:'Mais empresas convidadas',
+    tnLogProposal:'enviou a proposta',
+    tnLogProposalUpd:'atualizou a proposta',
+    tnLogPublish:'Concurso publicado e convites enviados',
+    tnLogView:'abriu o concurso',
+    tnLoginFirst:'Entre para lançar um concurso. Basta o seu email.',
+    tnLowest:'Mais baixa',
+    tnMine:'Os meus concursos',
+    tnMineEmpty:'Ainda não lançou nenhum concurso. Comece por descrever a obra e anexar o projeto.',
+    tnMoreIntro:'Ainda pode convidar empresas para este concurso (até mais {n}).',
+    tnNew:'Novo concurso',
+    tnNext:'Seguinte',
+    tnNoBid:'Não vamos concorrer',
+    tnNoBidConfirm:'Confirmar',
+    tnNoBidDone:'Indicou que não vai concorrer. Se mudar de ideias, ainda pode enviar uma proposta até ao fim do prazo.',
+    tnNoBidReason:'Motivo (opcional)',
+    tnNoFiles:'Sem anexos.',
+    tnNoProps:'Ainda não chegaram propostas. Avisamos por email assim que chegar a primeira.',
+    tnOpenAsCo:'Abrir como empresa',
+    tnOpenPanel:'Abrir o painel do concurso',
+    tnPrivacy:'As empresas que convidar veem a descrição, os anexos e os seus contactos (nome, email e telefone, se o indicou), para poderem responder e tirar dúvidas. Mais ninguém tem acesso. Os anexos são apagados 90 dias depois do fecho do concurso e o resto 12 meses depois.',
+    tnPropAccepted:'O cliente aceitou a sua proposta. Use os contactos acima para combinar os próximos passos.',
+    tnPropDeclinedMsg:'O cliente optou por outra proposta. Obrigado pela participação.',
+    tnPropDuration:'Prazo de execução',
+    tnPropDurationPh:'Ex.: 8 semanas',
+    tnPropEmail:'Email de contacto',
+    tnPropErrDuration:'Indique o prazo de execução.',
+    tnPropErrEmail:'Indique um email de contacto válido.',
+    tnPropErrName:'Indique o nome do responsável pela proposta.',
+    tnPropErrPrice:'Indique o preço da proposta.',
+    tnPropFiles:'Anexos da proposta (orçamento detalhado, memória descritiva…)',
+    tnPropName:'Responsável',
+    tnPropNotes:'Notas (o que inclui e não inclui, condições de pagamento…)',
+    tnPropOk:'Proposta enviada. O cliente foi avisado.',
+    tnPropPhone:'Telefone',
+    tnPropPrice:'Preço total (€)',
+    tnPropSend:'Enviar proposta',
+    tnPropSent:'Proposta enviada a {d}. Pode alterá-la até ao fim do prazo.',
+    tnPropTitle:'A sua proposta',
+    tnPropUpdOk:'Proposta atualizada.',
+    tnPropUpdate:'Atualizar proposta',
+    tnPropValidity:'Validade da proposta (dias)',
+    tnPropVat:'IVA',
+    tnRadiusAll:'Todo o país',
+    tnReceived:'Convites recebidos pelas suas empresas',
+    tnReceivedOn:'Recebida',
+    tnRemove:'Retirar',
+    tnRetention:'Os anexos ficam guardados até 90 dias depois do fecho do concurso. Descarregue o que precisar de guardar.',
+    tnReviewMore:'Rever convites',
+    tnRvCos:'Empresas convidadas',
+    tnRvDeadline:'Prazo para propostas',
+    tnRvFiles:'Anexos',
+    tnRvWhat:'Obra',
+    tnRvWhere:'Local',
+    tnRvYou:'Os seus contactos',
+    tnSelected:'{n} de {max} escolhidas',
+    tnSend:'Enviar convites a {n} empresas',
+    tnSend1:'Enviar convite a 1 empresa',
+    tnSentMore:'Os novos convites foram enviados ({n}).',
+    tnSentText:'Os convites foram enviados ({n}). Avisamos por email a cada proposta nova e pode acompanhar tudo no painel.',
+    tnSentTitle:'Concurso enviado',
+    tnSomeSkipped:'Algumas empresas escolhidas não podiam receber convites e ficaram de fora ({n}).',
+    tnStClosed:'Fechado',
+    tnStDraft:'Rascunho',
+    tnStDraftHint:'Rascunho por publicar',
+    tnStExpired:'Prazo terminado',
+    tnStOpen:'Aberto',
+    tnStTest:'Teste',
+    tnStatInvited:'Convidadas',
+    tnStatProps:'Propostas',
+    tnStatViewed:'Abriram',
+    tnStep1:'Obra',
+    tnStep2:'Empresas',
+    tnStep3:'Enviar',
+    tnSubmitted:'Recebida',
+    tnTabCos:'Empresas',
+    tnTabFiles:'Anexos',
+    tnTabLog:'Registo',
+    tnTabProps:'Propostas',
+    tnTestMode:'Concurso de teste: os convites não são enviados e os links aparecem no painel',
+    tnTitleNew:'Lançar um concurso',
+    tnUntil:'Propostas até {d}',
+    tnUntitled:'Concurso sem título',
+    tnUpCheck:'A verificar…',
+    tnUpErr:'O envio falhou',
+    tnUpWait:'A enviar…',
+    tnValidity:'Validade',
+    tnVatEx:'Isento de IVA',
+    tnVatIncl:'IVA incluído',
+    tnVatPlus:'Acresce IVA',
+    tnWithdrawn:'Retirada',
     // ── UI coverage additions (view toggle, modals, detail, register, account) ──
     viewMap:"Mapa", viewList:"Lista", resultCompany:"empresa", resultCompanies:"empresas",
     profileTitle:"O Meu Perfil",
@@ -417,6 +615,204 @@ const translations = {
     regCity:'Localidade / Cidade'
   },
   en: {
+    // ── Concursos (pedido de propostas com anexos) ──
+    tnMenu:'Tenders',
+    tnRfqLink:'Have a project or a specification? Run a tender with attachments →',
+    tnAccept:'Accept',
+    tnAccepted:'Accepted',
+    tnBack:'Back',
+    tnBadgeAlvara:'IMPIC licence',
+    tnBadgeClaimed:'Managed by the company',
+    tnBadgeInvited:'Already invited',
+    tnBudNS:'Not sure yet',
+    tnBudgetTbd:'To be defined',
+    tnCancel:'Cancel',
+    tnCandCount:'{n} companies match the criteria and can be invited',
+    tnCandCount1:'1 company matches the criteria and can be invited',
+    tnCandNone:'No company matches these criteria. Increase the distance or choose more trades.',
+    tnCandOut:'Another {n} match the criteria but can’t receive email invitations: they have no email, asked not to receive them, or are unclaimed listings outside Portugal or without a company tax number.',
+    tnCandOut1:'Another company matches the criteria but can’t receive email invitations (no email, asked not to receive them, or an unclaimed listing outside Portugal or without a company tax number).',
+    tnClose:'Close tender',
+    tnCoDeclined:'Not bidding',
+    tnCoDl:'downloaded {n} files',
+    tnCoDl1:'downloaded 1 file',
+    tnCoFailed:'invitation email failed',
+    tnCoNotViewed:'not opened yet',
+    tnCoPending:'invitation being sent',
+    tnCoProposal:'Sent a proposal',
+    tnCoSent:'invited on {d}',
+    tnCoTest:'test, no email',
+    tnCoViewed:'opened on {d}',
+    tnConfirmAccept:'Accept the proposal from {c}? The company is notified by email and receives your contact details.',
+    tnConfirmClose:'Close the tender? Companies will no longer be able to send or change proposals.',
+    tnConfirmDecline:'Decline the proposal from {c}? The company is notified by email.',
+    tnConsent:'I confirm I am allowed to share these documents with the companies I chose.',
+    tnContact:'Contact',
+    tnCopyLink:'Copy link',
+    tnCounts:'Invited: {c} · Opened: {v} · Proposals: {p}',
+    tnCritAdd:'Add a trade…',
+    tnCritAlvara:'Only with an IMPIC licence',
+    tnCritAreas:'Trades',
+    tnCritClaimed:'Only listings managed by the company itself',
+    tnCritIntro:'Set your criteria and pick from the list the companies you want to invite.',
+    tnCritPickArea:'Choose at least one trade.',
+    tnCritRadius:'Distance from the site',
+    tnDays:'{n} days',
+    tnDays1:'1 day',
+    tnDecline:'Decline',
+    tnDeclined:'Declined',
+    tnDuration:'Completion time',
+    tnErrCity:'We couldn’t find this place. Type the name of the city, town or parish.',
+    tnErrConsent:'Please confirm you can share the documents.',
+    tnErrDeadline:'Choose a deadline for proposals, from tomorrow onwards.',
+    tnErrDesc:'Describe the works in more detail (at least 30 characters).',
+    tnErrGeneric:'Something went wrong. Please try again.',
+    tnErrMax:'Maximum {n} files.',
+    tnErrMaxCos:'You’ve reached this tender’s company limit ({n}).',
+    tnErrPickOne:'Choose at least one company.',
+    tnErrSize:'“{name}” is larger than {mb} MB.',
+    tnErrTitle:'Give the tender a title (at least 5 characters).',
+    tnErrType:'File type not accepted: {name}',
+    tnErrUploading:'Wait for the attachments to finish uploading.',
+    tnExtend:'Extend deadline',
+    tnExtendSave:'Save new deadline',
+    tnExtended:'Deadline extended.',
+    tnFBudget:'Indicative budget',
+    tnFCity:'Location of the works',
+    tnFCityPh:'E.g. Braga',
+    tnFDeadline:'Deadline for proposals',
+    tnFDesc:'Description and scope of works',
+    tnFDescPh:'What needs doing, approximate areas and quantities, materials, access and other conditions…',
+    tnFPhone:'Phone (optional; invited companies can see it)',
+    tnFStart:'Planned start (optional)',
+    tnFTitle:'Title',
+    tnFTitlePh:'E.g. Renovation of a 3-bedroom house',
+    tnFiles:'Attachments',
+    tnFilesAdd:'Add files',
+    tnFilesDrop:'or drag them here',
+    tnFilesHint:'Project, specification, bill of quantities, plans or photos.',
+    tnFilesMax:'up to {mb} MB each',
+    tnFilesOff:'Attachments will be available soon. You can already describe the works and invite companies.',
+    tnIntro:'Share your project or specification with the companies you choose and get comparable proposals in one place. It’s free.',
+    tnInvBudget:'Indicative budget',
+    tnInvClaim:'Is this your company? Claim the listing on Hivex to manage the page and also get these requests in your account.',
+    tnInvClaimBtn:'Claim the listing',
+    tnInvClient:'Client',
+    tnInvClosed:'This tender has been closed by the client.',
+    tnInvDeadline:'Proposals until',
+    tnInvDl:'Download',
+    tnInvExpired:'The deadline for proposals has passed.',
+    tnInvFiles:'Tender documents',
+    tnInvFor:'For {c}',
+    tnInvGone:'This invitation doesn’t exist or has expired.',
+    tnInvOptout:'I don’t want to receive tender invitations',
+    tnInvPrivacy:'Only the person who launched the tender sees your proposal and contact details. The other invited companies don’t.',
+    tnInvScope:'Scope of works',
+    tnInvStart:'Planned start',
+    tnInvTitle:'Request for proposal',
+    tnInviteMore:'Invite more companies',
+    tnKm:'{n} km',
+    tnKmUpTo:'Up to {n} km',
+    tnLinkCopied:'Link copied.',
+    tnLoading:'Loading…',
+    tnLogAccept:'Proposal accepted',
+    tnLogClose:'Tender closed',
+    tnLogDeadline:'Deadline extended',
+    tnLogDecline:'said it won’t bid',
+    tnLogDeclineProp:'Proposal declined',
+    tnLogDownload:'downloaded',
+    tnLogEmpty:'No activity yet.',
+    tnLogInvite:'More companies invited',
+    tnLogProposal:'sent its proposal',
+    tnLogProposalUpd:'updated its proposal',
+    tnLogPublish:'Tender published and invitations sent',
+    tnLogView:'opened the tender',
+    tnLoginFirst:'Sign in to run a tender. All you need is your email.',
+    tnLowest:'Lowest',
+    tnMine:'My tenders',
+    tnMineEmpty:'You haven’t run any tender yet. Start by describing the works and attaching the project.',
+    tnMoreIntro:'You can still invite companies to this tender (up to {n} more).',
+    tnNew:'New tender',
+    tnNext:'Next',
+    tnNoBid:'We won’t bid',
+    tnNoBidConfirm:'Confirm',
+    tnNoBidDone:'You said you won’t bid. If you change your mind, you can still send a proposal before the deadline.',
+    tnNoBidReason:'Reason (optional)',
+    tnNoFiles:'No attachments.',
+    tnNoProps:'No proposals yet. We’ll email you as soon as the first one arrives.',
+    tnOpenAsCo:'Open as company',
+    tnOpenPanel:'Open the tender dashboard',
+    tnPrivacy:'The companies you invite see the description, the attachments and your contact details (name, email and phone, if given) so they can reply and ask questions. Nobody else has access. Attachments are deleted 90 days after the tender closes, and everything else after 12 months.',
+    tnPropAccepted:'The client accepted your proposal. Use the contact details above to agree the next steps.',
+    tnPropDeclinedMsg:'The client chose another proposal. Thank you for taking part.',
+    tnPropDuration:'Completion time',
+    tnPropDurationPh:'E.g. 8 weeks',
+    tnPropEmail:'Contact email',
+    tnPropErrDuration:'Enter the completion time.',
+    tnPropErrEmail:'Enter a valid contact email.',
+    tnPropErrName:'Enter the name of the person responsible for the proposal.',
+    tnPropErrPrice:'Enter the price of the proposal.',
+    tnPropFiles:'Proposal attachments (detailed quote, method statement…)',
+    tnPropName:'Person responsible',
+    tnPropNotes:'Notes (what is and isn’t included, payment terms…)',
+    tnPropOk:'Proposal sent. The client has been notified.',
+    tnPropPhone:'Phone',
+    tnPropPrice:'Total price (€)',
+    tnPropSend:'Send proposal',
+    tnPropSent:'Proposal sent on {d}. You can change it until the deadline.',
+    tnPropTitle:'Your proposal',
+    tnPropUpdOk:'Proposal updated.',
+    tnPropUpdate:'Update proposal',
+    tnPropValidity:'Proposal valid for (days)',
+    tnPropVat:'VAT',
+    tnRadiusAll:'Whole country',
+    tnReceived:'Invitations received by your companies',
+    tnReceivedOn:'Received',
+    tnRemove:'Remove',
+    tnRetention:'Attachments are kept until 90 days after the tender closes. Download anything you need to keep.',
+    tnReviewMore:'Review invitations',
+    tnRvCos:'Invited companies',
+    tnRvDeadline:'Deadline for proposals',
+    tnRvFiles:'Attachments',
+    tnRvWhat:'Works',
+    tnRvWhere:'Location',
+    tnRvYou:'Your contact details',
+    tnSelected:'{n} of {max} selected',
+    tnSend:'Send invitations to {n} companies',
+    tnSend1:'Send invitation to 1 company',
+    tnSentMore:'The new invitations have been sent ({n}).',
+    tnSentText:'The invitations have been sent ({n}). We’ll email you about every new proposal, and you can follow everything in the dashboard.',
+    tnSentTitle:'Tender sent',
+    tnSomeSkipped:'Some of the chosen companies couldn’t receive invitations and were left out ({n}).',
+    tnStClosed:'Closed',
+    tnStDraft:'Draft',
+    tnStDraftHint:'Unpublished draft',
+    tnStExpired:'Deadline passed',
+    tnStOpen:'Open',
+    tnStTest:'Test',
+    tnStatInvited:'Invited',
+    tnStatProps:'Proposals',
+    tnStatViewed:'Opened',
+    tnStep1:'Works',
+    tnStep2:'Companies',
+    tnStep3:'Send',
+    tnSubmitted:'Received',
+    tnTabCos:'Companies',
+    tnTabFiles:'Attachments',
+    tnTabLog:'Activity',
+    tnTabProps:'Proposals',
+    tnTestMode:'Test tender: invitations are not sent and the links appear in the dashboard',
+    tnTitleNew:'Run a tender',
+    tnUntil:'Proposals until {d}',
+    tnUntitled:'Untitled tender',
+    tnUpCheck:'Checking…',
+    tnUpErr:'Upload failed',
+    tnUpWait:'Uploading…',
+    tnValidity:'Valid for',
+    tnVatEx:'VAT exempt',
+    tnVatIncl:'VAT included',
+    tnVatPlus:'Plus VAT',
+    tnWithdrawn:'Withdrawn',
     // ── UI coverage additions ──
     viewMap:"Map", viewList:"List", resultCompany:"company", resultCompanies:"companies",
     profileTitle:"My Profile",
@@ -823,6 +1219,204 @@ const translations = {
     regCity:'Locality / City'
   },
   fr: {
+    // ── Concursos (pedido de propostas com anexos) ──
+    tnMenu:'Appels d’offres',
+    tnRfqLink:'Vous avez un projet ou un cahier des charges ? Lancez un appel d’offres avec pièces jointes →',
+    tnAccept:'Accepter',
+    tnAccepted:'Acceptée',
+    tnBack:'Retour',
+    tnBadgeAlvara:'Licence IMPIC',
+    tnBadgeClaimed:'Gérée par l’entreprise',
+    tnBadgeInvited:'Déjà invitée',
+    tnBudNS:'Je ne sais pas encore',
+    tnBudgetTbd:'À définir',
+    tnCancel:'Annuler',
+    tnCandCount:'{n} entreprises remplissent les critères et peuvent être invitées',
+    tnCandCount1:'1 entreprise remplit les critères et peut être invitée',
+    tnCandNone:'Aucune entreprise ne remplit ces critères. Augmentez la distance ou choisissez plus de métiers.',
+    tnCandOut:'{n} autres remplissent les critères mais ne peuvent pas recevoir d’invitation par e-mail : pas d’e-mail, refus de ces invitations, ou fiche non revendiquée hors du Portugal ou sans numéro fiscal d’entreprise.',
+    tnCandOut1:'Une autre entreprise remplit les critères mais ne peut pas recevoir d’invitation par e-mail (pas d’e-mail, refus de ces invitations, ou fiche non revendiquée hors du Portugal ou sans numéro fiscal d’entreprise).',
+    tnClose:'Clôturer l’appel d’offres',
+    tnCoDeclined:'Ne soumissionne pas',
+    tnCoDl:'a téléchargé {n} fichiers',
+    tnCoDl1:'a téléchargé 1 fichier',
+    tnCoFailed:'l’e-mail d’invitation a échoué',
+    tnCoNotViewed:'pas encore ouvert',
+    tnCoPending:'invitation en cours d’envoi',
+    tnCoProposal:'A envoyé une offre',
+    tnCoSent:'invitée le {d}',
+    tnCoTest:'test, sans e-mail',
+    tnCoViewed:'ouvert le {d}',
+    tnConfirmAccept:'Accepter l’offre de {c} ? L’entreprise est prévenue par e-mail et reçoit vos coordonnées.',
+    tnConfirmClose:'Clôturer l’appel d’offres ? Les entreprises ne pourront plus envoyer ni modifier d’offres.',
+    tnConfirmDecline:'Refuser l’offre de {c} ? L’entreprise est prévenue par e-mail.',
+    tnConsent:'Je confirme que je peux partager ces documents avec les entreprises choisies.',
+    tnContact:'Contact',
+    tnCopyLink:'Copier le lien',
+    tnCounts:'Invitées : {c} · Ont ouvert : {v} · Offres : {p}',
+    tnCritAdd:'Ajouter un métier…',
+    tnCritAlvara:'Seulement avec licence IMPIC',
+    tnCritAreas:'Métiers',
+    tnCritClaimed:'Seulement les fiches gérées par l’entreprise elle-même',
+    tnCritIntro:'Définissez vos critères et choisissez dans la liste les entreprises à inviter.',
+    tnCritPickArea:'Choisissez au moins un métier.',
+    tnCritRadius:'Distance du chantier',
+    tnDays:'{n} jours',
+    tnDays1:'1 jour',
+    tnDecline:'Refuser',
+    tnDeclined:'Refusée',
+    tnDuration:'Délai d’exécution',
+    tnErrCity:'Lieu introuvable. Saisissez le nom de la ville, du village ou de la paroisse.',
+    tnErrConsent:'Confirmez que vous pouvez partager les documents.',
+    tnErrDeadline:'Choisissez une date limite pour les offres, à partir de demain.',
+    tnErrDesc:'Décrivez les travaux plus en détail (au moins 30 caractères).',
+    tnErrGeneric:'Un problème est survenu. Réessayez.',
+    tnErrMax:'{n} fichiers au maximum.',
+    tnErrMaxCos:'Limite d’entreprises de cet appel d’offres atteinte ({n}).',
+    tnErrPickOne:'Choisissez au moins une entreprise.',
+    tnErrSize:'« {name} » dépasse {mb} Mo.',
+    tnErrTitle:'Donnez un titre à l’appel d’offres (au moins 5 caractères).',
+    tnErrType:'Type de fichier non accepté : {name}',
+    tnErrUploading:'Attendez la fin de l’envoi des pièces jointes.',
+    tnExtend:'Prolonger le délai',
+    tnExtendSave:'Enregistrer la nouvelle date',
+    tnExtended:'Délai prolongé.',
+    tnFBudget:'Budget indicatif',
+    tnFCity:'Lieu des travaux',
+    tnFCityPh:'Ex. : Braga',
+    tnFDeadline:'Date limite des offres',
+    tnFDesc:'Description et périmètre des travaux',
+    tnFDescPh:'Ce qu’il faut faire, surfaces et quantités approximatives, matériaux, accès et autres conditions…',
+    tnFPhone:'Téléphone (facultatif ; visible par les entreprises invitées)',
+    tnFStart:'Début prévu (facultatif)',
+    tnFTitle:'Titre',
+    tnFTitlePh:'Ex. : Rénovation d’une maison de 3 chambres',
+    tnFiles:'Pièces jointes',
+    tnFilesAdd:'Ajouter des fichiers',
+    tnFilesDrop:'ou glissez-les ici',
+    tnFilesHint:'Projet, cahier des charges, métré, plans ou photos.',
+    tnFilesMax:'jusqu’à {mb} Mo chacun',
+    tnFilesOff:'Les pièces jointes seront bientôt disponibles. Vous pouvez déjà décrire les travaux et inviter des entreprises.',
+    tnIntro:'Partagez votre projet ou cahier des charges avec les entreprises de votre choix et recevez des offres comparables, au même endroit. C’est gratuit.',
+    tnInvBudget:'Budget indicatif',
+    tnInvClaim:'C’est votre entreprise ? Revendiquez la fiche sur Hivex pour gérer la page et recevoir aussi ces demandes dans votre compte.',
+    tnInvClaimBtn:'Revendiquer la fiche',
+    tnInvClient:'Client',
+    tnInvClosed:'Cet appel d’offres a été clôturé par le client.',
+    tnInvDeadline:'Offres jusqu’au',
+    tnInvDl:'Télécharger',
+    tnInvExpired:'La date limite des offres est passée.',
+    tnInvFiles:'Documents de l’appel d’offres',
+    tnInvFor:'Pour {c}',
+    tnInvGone:'Cette invitation n’existe pas ou a expiré.',
+    tnInvOptout:'Je ne veux pas recevoir d’invitations à des appels d’offres',
+    tnInvPrivacy:'Seule la personne qui a lancé l’appel d’offres voit votre offre et vos coordonnées. Les autres entreprises invitées ne les voient pas.',
+    tnInvScope:'Périmètre des travaux',
+    tnInvStart:'Début prévu',
+    tnInvTitle:'Demande d’offre',
+    tnInviteMore:'Inviter d’autres entreprises',
+    tnKm:'{n} km',
+    tnKmUpTo:'Jusqu’à {n} km',
+    tnLinkCopied:'Lien copié.',
+    tnLoading:'Chargement…',
+    tnLogAccept:'Offre acceptée',
+    tnLogClose:'Appel d’offres clôturé',
+    tnLogDeadline:'Délai prolongé',
+    tnLogDecline:'a indiqué ne pas soumissionner',
+    tnLogDeclineProp:'Offre refusée',
+    tnLogDownload:'a téléchargé',
+    tnLogEmpty:'Aucune activité pour l’instant.',
+    tnLogInvite:'Autres entreprises invitées',
+    tnLogProposal:'a envoyé son offre',
+    tnLogProposalUpd:'a mis à jour son offre',
+    tnLogPublish:'Appel d’offres publié et invitations envoyées',
+    tnLogView:'a ouvert l’appel d’offres',
+    tnLoginFirst:'Connectez-vous pour lancer un appel d’offres. Votre e-mail suffit.',
+    tnLowest:'La plus basse',
+    tnMine:'Mes appels d’offres',
+    tnMineEmpty:'Vous n’avez encore lancé aucun appel d’offres. Commencez par décrire les travaux et joindre le projet.',
+    tnMoreIntro:'Vous pouvez encore inviter des entreprises à cet appel d’offres (jusqu’à {n} de plus).',
+    tnNew:'Nouvel appel d’offres',
+    tnNext:'Suivant',
+    tnNoBid:'Nous ne soumissionnerons pas',
+    tnNoBidConfirm:'Confirmer',
+    tnNoBidDone:'Vous avez indiqué ne pas soumissionner. Si vous changez d’avis, vous pouvez encore envoyer une offre avant la date limite.',
+    tnNoBidReason:'Motif (facultatif)',
+    tnNoFiles:'Aucune pièce jointe.',
+    tnNoProps:'Aucune offre pour l’instant. Nous vous prévenons par e-mail dès la première.',
+    tnOpenAsCo:'Ouvrir en tant qu’entreprise',
+    tnOpenPanel:'Ouvrir le tableau de bord',
+    tnPrivacy:'Les entreprises que vous invitez voient la description, les pièces jointes et vos coordonnées (nom, e-mail et téléphone, si indiqué) pour pouvoir répondre et poser des questions. Personne d’autre n’y a accès. Les pièces jointes sont supprimées 90 jours après la clôture et le reste après 12 mois.',
+    tnPropAccepted:'Le client a accepté votre offre. Utilisez les coordonnées ci-dessus pour convenir de la suite.',
+    tnPropDeclinedMsg:'Le client a choisi une autre offre. Merci de votre participation.',
+    tnPropDuration:'Délai d’exécution',
+    tnPropDurationPh:'Ex. : 8 semaines',
+    tnPropEmail:'E-mail de contact',
+    tnPropErrDuration:'Indiquez le délai d’exécution.',
+    tnPropErrEmail:'Indiquez un e-mail de contact valide.',
+    tnPropErrName:'Indiquez le nom du responsable de l’offre.',
+    tnPropErrPrice:'Indiquez le prix de l’offre.',
+    tnPropFiles:'Pièces jointes de l’offre (devis détaillé, mémoire technique…)',
+    tnPropName:'Responsable',
+    tnPropNotes:'Notes (ce qui est inclus ou non, conditions de paiement…)',
+    tnPropOk:'Offre envoyée. Le client a été prévenu.',
+    tnPropPhone:'Téléphone',
+    tnPropPrice:'Prix total (€)',
+    tnPropSend:'Envoyer l’offre',
+    tnPropSent:'Offre envoyée le {d}. Vous pouvez la modifier jusqu’à la date limite.',
+    tnPropTitle:'Votre offre',
+    tnPropUpdOk:'Offre mise à jour.',
+    tnPropUpdate:'Mettre à jour l’offre',
+    tnPropValidity:'Validité de l’offre (jours)',
+    tnPropVat:'TVA',
+    tnRadiusAll:'Tout le pays',
+    tnReceived:'Invitations reçues par vos entreprises',
+    tnReceivedOn:'Reçue',
+    tnRemove:'Retirer',
+    tnRetention:'Les pièces jointes sont conservées jusqu’à 90 jours après la clôture. Téléchargez ce que vous devez garder.',
+    tnReviewMore:'Vérifier les invitations',
+    tnRvCos:'Entreprises invitées',
+    tnRvDeadline:'Date limite des offres',
+    tnRvFiles:'Pièces jointes',
+    tnRvWhat:'Travaux',
+    tnRvWhere:'Lieu',
+    tnRvYou:'Vos coordonnées',
+    tnSelected:'{n} sur {max} choisies',
+    tnSend:'Envoyer les invitations à {n} entreprises',
+    tnSend1:'Envoyer l’invitation à 1 entreprise',
+    tnSentMore:'Les nouvelles invitations ont été envoyées ({n}).',
+    tnSentText:'Les invitations ont été envoyées ({n}). Nous vous prévenons par e-mail à chaque nouvelle offre et vous pouvez tout suivre dans le tableau de bord.',
+    tnSentTitle:'Appel d’offres envoyé',
+    tnSomeSkipped:'Certaines entreprises choisies ne pouvaient pas recevoir d’invitation et ont été écartées ({n}).',
+    tnStClosed:'Clôturé',
+    tnStDraft:'Brouillon',
+    tnStDraftHint:'Brouillon non publié',
+    tnStExpired:'Délai écoulé',
+    tnStOpen:'Ouvert',
+    tnStTest:'Test',
+    tnStatInvited:'Invitées',
+    tnStatProps:'Offres',
+    tnStatViewed:'Ont ouvert',
+    tnStep1:'Travaux',
+    tnStep2:'Entreprises',
+    tnStep3:'Envoyer',
+    tnSubmitted:'Reçue',
+    tnTabCos:'Entreprises',
+    tnTabFiles:'Pièces jointes',
+    tnTabLog:'Activité',
+    tnTabProps:'Offres',
+    tnTestMode:'Appel d’offres de test : les invitations ne sont pas envoyées et les liens apparaissent dans le tableau de bord',
+    tnTitleNew:'Lancer un appel d’offres',
+    tnUntil:'Offres jusqu’au {d}',
+    tnUntitled:'Appel d’offres sans titre',
+    tnUpCheck:'Vérification…',
+    tnUpErr:'L’envoi a échoué',
+    tnUpWait:'Envoi…',
+    tnValidity:'Validité',
+    tnVatEx:'Exonéré de TVA',
+    tnVatIncl:'TVA incluse',
+    tnVatPlus:'TVA en sus',
+    tnWithdrawn:'Retirée',
     // ── UI coverage additions ──
     viewMap:"Carte", viewList:"Liste", resultCompany:"entreprise", resultCompanies:"entreprises",
     profileTitle:"Mon profil",
@@ -1233,6 +1827,204 @@ const translations = {
   },
 
   es: {
+    // ── Concursos (pedido de propostas com anexos) ──
+    tnMenu:'Concursos',
+    tnRfqLink:'¿Tiene un proyecto o un pliego de condiciones? Lance un concurso con adjuntos →',
+    tnAccept:'Aceptar',
+    tnAccepted:'Aceptada',
+    tnBack:'Volver',
+    tnBadgeAlvara:'Licencia IMPIC',
+    tnBadgeClaimed:'Gestionada por la empresa',
+    tnBadgeInvited:'Ya invitada',
+    tnBudNS:'Aún no lo sé',
+    tnBudgetTbd:'Por definir',
+    tnCancel:'Cancelar',
+    tnCandCount:'{n} empresas cumplen los criterios y se pueden invitar',
+    tnCandCount1:'1 empresa cumple los criterios y se puede invitar',
+    tnCandNone:'Ninguna empresa cumple estos criterios. Aumente la distancia o elija más actividades.',
+    tnCandOut:'Otras {n} cumplen los criterios pero no pueden recibir invitaciones por email: no tienen email, pidieron no recibirlas, o son fichas sin reclamar fuera de Portugal o sin NIF de empresa.',
+    tnCandOut1:'Otra empresa cumple los criterios pero no puede recibir invitaciones por email (sin email, pidió no recibirlas, o ficha sin reclamar fuera de Portugal o sin NIF de empresa).',
+    tnClose:'Cerrar concurso',
+    tnCoDeclined:'No se presentará',
+    tnCoDl:'descargó {n} archivos',
+    tnCoDl1:'descargó 1 archivo',
+    tnCoFailed:'falló el email de invitación',
+    tnCoNotViewed:'aún no lo ha abierto',
+    tnCoPending:'invitación en envío',
+    tnCoProposal:'Envió propuesta',
+    tnCoSent:'invitada el {d}',
+    tnCoTest:'prueba, sin email',
+    tnCoViewed:'lo abrió el {d}',
+    tnConfirmAccept:'¿Aceptar la propuesta de {c}? La empresa recibe un aviso por email con sus datos de contacto.',
+    tnConfirmClose:'¿Cerrar el concurso? Las empresas ya no podrán enviar ni cambiar propuestas.',
+    tnConfirmDecline:'¿Rechazar la propuesta de {c}? La empresa recibe un aviso por email.',
+    tnConsent:'Confirmo que puedo compartir estos documentos con las empresas elegidas.',
+    tnContact:'Contacto',
+    tnCopyLink:'Copiar enlace',
+    tnCounts:'Invitadas: {c} · Lo abrieron: {v} · Propuestas: {p}',
+    tnCritAdd:'Añadir actividad…',
+    tnCritAlvara:'Solo con licencia IMPIC',
+    tnCritAreas:'Actividades',
+    tnCritClaimed:'Solo fichas gestionadas por la propia empresa',
+    tnCritIntro:'Defina los criterios y elija de la lista las empresas que quiere invitar.',
+    tnCritPickArea:'Elija al menos una actividad.',
+    tnCritRadius:'Distancia a la obra',
+    tnDays:'{n} días',
+    tnDays1:'1 día',
+    tnDecline:'Rechazar',
+    tnDeclined:'Rechazada',
+    tnDuration:'Plazo de ejecución',
+    tnErrCity:'No encontramos esta localidad. Escriba el nombre de la ciudad, pueblo o parroquia.',
+    tnErrConsent:'Confirme que puede compartir los documentos.',
+    tnErrDeadline:'Elija un plazo para las propuestas, a partir de mañana.',
+    tnErrDesc:'Describa la obra con más detalle (al menos 30 caracteres).',
+    tnErrGeneric:'Algo salió mal. Inténtelo de nuevo.',
+    tnErrMax:'Máximo {n} archivos.',
+    tnErrMaxCos:'Ha alcanzado el límite de empresas de este concurso ({n}).',
+    tnErrPickOne:'Elija al menos una empresa.',
+    tnErrSize:'«{name}» supera los {mb} MB.',
+    tnErrTitle:'Dé un título al concurso (al menos 5 caracteres).',
+    tnErrType:'Tipo de archivo no admitido: {name}',
+    tnErrUploading:'Espere a que terminen de subirse los adjuntos.',
+    tnExtend:'Ampliar plazo',
+    tnExtendSave:'Guardar nuevo plazo',
+    tnExtended:'Plazo ampliado.',
+    tnFBudget:'Presupuesto orientativo',
+    tnFCity:'Localidad de la obra',
+    tnFCityPh:'Ej.: Braga',
+    tnFDeadline:'Plazo para propuestas',
+    tnFDesc:'Descripción y alcance de la obra',
+    tnFDescPh:'Qué hay que hacer, superficies y cantidades aproximadas, materiales, accesos y otras condiciones…',
+    tnFPhone:'Teléfono (opcional; lo ven las empresas invitadas)',
+    tnFStart:'Inicio previsto (opcional)',
+    tnFTitle:'Título',
+    tnFTitlePh:'Ej.: Reforma de una vivienda de 3 dormitorios',
+    tnFiles:'Adjuntos',
+    tnFilesAdd:'Añadir archivos',
+    tnFilesDrop:'o arrástrelos aquí',
+    tnFilesHint:'Proyecto, pliego de condiciones, mediciones, planos o fotos.',
+    tnFilesMax:'hasta {mb} MB cada uno',
+    tnFilesOff:'Los adjuntos estarán disponibles pronto. Ya puede describir la obra e invitar empresas.',
+    tnIntro:'Comparta el proyecto o el pliego de condiciones con las empresas que elija y reciba propuestas comparables en un solo lugar. Es gratis.',
+    tnInvBudget:'Presupuesto orientativo',
+    tnInvClaim:'¿Es su empresa? Reclame la ficha en Hivex para gestionar la página y recibir también estas solicitudes en su cuenta.',
+    tnInvClaimBtn:'Reclamar la ficha',
+    tnInvClient:'Cliente',
+    tnInvClosed:'El cliente ha cerrado este concurso.',
+    tnInvDeadline:'Propuestas hasta',
+    tnInvDl:'Descargar',
+    tnInvExpired:'El plazo para propuestas ha terminado.',
+    tnInvFiles:'Documentos del concurso',
+    tnInvFor:'Para {c}',
+    tnInvGone:'Esta invitación no existe o ha caducado.',
+    tnInvOptout:'No quiero recibir invitaciones a concursos',
+    tnInvPrivacy:'Solo quien lanzó el concurso ve su propuesta y sus datos de contacto. Las demás empresas invitadas no los ven.',
+    tnInvScope:'Alcance de la obra',
+    tnInvStart:'Inicio previsto',
+    tnInvTitle:'Solicitud de propuesta',
+    tnInviteMore:'Invitar a más empresas',
+    tnKm:'{n} km',
+    tnKmUpTo:'Hasta {n} km',
+    tnLinkCopied:'Enlace copiado.',
+    tnLoading:'Cargando…',
+    tnLogAccept:'Propuesta aceptada',
+    tnLogClose:'Concurso cerrado',
+    tnLogDeadline:'Plazo ampliado',
+    tnLogDecline:'indicó que no se presentará',
+    tnLogDeclineProp:'Propuesta rechazada',
+    tnLogDownload:'descargó',
+    tnLogEmpty:'Aún sin actividad.',
+    tnLogInvite:'Más empresas invitadas',
+    tnLogProposal:'envió su propuesta',
+    tnLogProposalUpd:'actualizó su propuesta',
+    tnLogPublish:'Concurso publicado e invitaciones enviadas',
+    tnLogView:'abrió el concurso',
+    tnLoginFirst:'Inicie sesión para lanzar un concurso. Basta con su email.',
+    tnLowest:'La más baja',
+    tnMine:'Mis concursos',
+    tnMineEmpty:'Aún no ha lanzado ningún concurso. Empiece por describir la obra y adjuntar el proyecto.',
+    tnMoreIntro:'Aún puede invitar a empresas a este concurso (hasta {n} más).',
+    tnNew:'Nuevo concurso',
+    tnNext:'Siguiente',
+    tnNoBid:'No nos presentaremos',
+    tnNoBidConfirm:'Confirmar',
+    tnNoBidDone:'Indicó que no se presentará. Si cambia de opinión, aún puede enviar una propuesta antes del fin del plazo.',
+    tnNoBidReason:'Motivo (opcional)',
+    tnNoFiles:'Sin adjuntos.',
+    tnNoProps:'Aún no han llegado propuestas. Le avisaremos por email en cuanto llegue la primera.',
+    tnOpenAsCo:'Abrir como empresa',
+    tnOpenPanel:'Abrir el panel del concurso',
+    tnPrivacy:'Las empresas que invite ven la descripción, los adjuntos y sus datos de contacto (nombre, email y teléfono, si lo indicó) para poder responder y resolver dudas. Nadie más tiene acceso. Los adjuntos se borran 90 días después del cierre del concurso y el resto a los 12 meses.',
+    tnPropAccepted:'El cliente aceptó su propuesta. Use los datos de contacto de arriba para acordar los siguientes pasos.',
+    tnPropDeclinedMsg:'El cliente eligió otra propuesta. Gracias por participar.',
+    tnPropDuration:'Plazo de ejecución',
+    tnPropDurationPh:'Ej.: 8 semanas',
+    tnPropEmail:'Email de contacto',
+    tnPropErrDuration:'Indique el plazo de ejecución.',
+    tnPropErrEmail:'Indique un email de contacto válido.',
+    tnPropErrName:'Indique el nombre del responsable de la propuesta.',
+    tnPropErrPrice:'Indique el precio de la propuesta.',
+    tnPropFiles:'Adjuntos de la propuesta (presupuesto detallado, memoria descriptiva…)',
+    tnPropName:'Responsable',
+    tnPropNotes:'Notas (qué incluye y qué no, condiciones de pago…)',
+    tnPropOk:'Propuesta enviada. El cliente ha sido avisado.',
+    tnPropPhone:'Teléfono',
+    tnPropPrice:'Precio total (€)',
+    tnPropSend:'Enviar propuesta',
+    tnPropSent:'Propuesta enviada el {d}. Puede modificarla hasta el fin del plazo.',
+    tnPropTitle:'Su propuesta',
+    tnPropUpdOk:'Propuesta actualizada.',
+    tnPropUpdate:'Actualizar propuesta',
+    tnPropValidity:'Validez de la propuesta (días)',
+    tnPropVat:'IVA',
+    tnRadiusAll:'Todo el país',
+    tnReceived:'Invitaciones recibidas por sus empresas',
+    tnReceivedOn:'Recibida',
+    tnRemove:'Quitar',
+    tnRetention:'Los adjuntos se guardan hasta 90 días después del cierre del concurso. Descargue lo que necesite conservar.',
+    tnReviewMore:'Revisar invitaciones',
+    tnRvCos:'Empresas invitadas',
+    tnRvDeadline:'Plazo para propuestas',
+    tnRvFiles:'Adjuntos',
+    tnRvWhat:'Obra',
+    tnRvWhere:'Localidad',
+    tnRvYou:'Sus datos de contacto',
+    tnSelected:'{n} de {max} elegidas',
+    tnSend:'Enviar invitaciones a {n} empresas',
+    tnSend1:'Enviar invitación a 1 empresa',
+    tnSentMore:'Se enviaron las nuevas invitaciones ({n}).',
+    tnSentText:'Se enviaron las invitaciones ({n}). Le avisaremos por email de cada propuesta nueva y puede seguirlo todo en el panel.',
+    tnSentTitle:'Concurso enviado',
+    tnSomeSkipped:'Algunas de las empresas elegidas no podían recibir invitaciones y quedaron fuera ({n}).',
+    tnStClosed:'Cerrado',
+    tnStDraft:'Borrador',
+    tnStDraftHint:'Borrador sin publicar',
+    tnStExpired:'Plazo terminado',
+    tnStOpen:'Abierto',
+    tnStTest:'Prueba',
+    tnStatInvited:'Invitadas',
+    tnStatProps:'Propuestas',
+    tnStatViewed:'Lo abrieron',
+    tnStep1:'Obra',
+    tnStep2:'Empresas',
+    tnStep3:'Enviar',
+    tnSubmitted:'Recibida',
+    tnTabCos:'Empresas',
+    tnTabFiles:'Adjuntos',
+    tnTabLog:'Actividad',
+    tnTabProps:'Propuestas',
+    tnTestMode:'Concurso de prueba: las invitaciones no se envían y los enlaces aparecen en el panel',
+    tnTitleNew:'Lanzar un concurso',
+    tnUntil:'Propuestas hasta el {d}',
+    tnUntitled:'Concurso sin título',
+    tnUpCheck:'Comprobando…',
+    tnUpErr:'Error al subir',
+    tnUpWait:'Subiendo…',
+    tnValidity:'Validez',
+    tnVatEx:'Exento de IVA',
+    tnVatIncl:'IVA incluido',
+    tnVatPlus:'Más IVA',
+    tnWithdrawn:'Retirada',
     // ── UI coverage additions ──
     viewMap:"Mapa", viewList:"Lista", resultCompany:"empresa", resultCompanies:"empresas",
     profileTitle:"Mi perfil",
@@ -1635,6 +2427,204 @@ const translations = {
   },
 
   de: {
+    // ── Concursos (pedido de propostas com anexos) ──
+    tnMenu:'Ausschreibungen',
+    tnRfqLink:'Sie haben ein Projekt oder ein Leistungsverzeichnis? Starten Sie eine Ausschreibung mit Anhängen →',
+    tnAccept:'Annehmen',
+    tnAccepted:'Angenommen',
+    tnBack:'Zurück',
+    tnBadgeAlvara:'IMPIC-Lizenz',
+    tnBadgeClaimed:'Vom Unternehmen verwaltet',
+    tnBadgeInvited:'Bereits eingeladen',
+    tnBudNS:'Weiß ich noch nicht',
+    tnBudgetTbd:'Noch offen',
+    tnCancel:'Abbrechen',
+    tnCandCount:'{n} Unternehmen erfüllen die Kriterien und können eingeladen werden',
+    tnCandCount1:'1 Unternehmen erfüllt die Kriterien und kann eingeladen werden',
+    tnCandNone:'Kein Unternehmen erfüllt diese Kriterien. Vergrößern Sie die Entfernung oder wählen Sie mehr Gewerke.',
+    tnCandOut:'Weitere {n} erfüllen die Kriterien, können aber keine Einladungen per E-Mail erhalten: keine E-Mail-Adresse, Einladungen abgelehnt, oder nicht beanspruchte Einträge außerhalb Portugals bzw. ohne Steuernummer eines Unternehmens.',
+    tnCandOut1:'Ein weiteres Unternehmen erfüllt die Kriterien, kann aber keine Einladung per E-Mail erhalten (keine E-Mail-Adresse, Einladungen abgelehnt, oder nicht beanspruchter Eintrag außerhalb Portugals bzw. ohne Steuernummer eines Unternehmens).',
+    tnClose:'Ausschreibung schließen',
+    tnCoDeclined:'Bietet nicht',
+    tnCoDl:'hat {n} Dateien heruntergeladen',
+    tnCoDl1:'hat 1 Datei heruntergeladen',
+    tnCoFailed:'Einladungs-E-Mail fehlgeschlagen',
+    tnCoNotViewed:'noch nicht geöffnet',
+    tnCoPending:'Einladung wird gesendet',
+    tnCoProposal:'Angebot gesendet',
+    tnCoSent:'eingeladen am {d}',
+    tnCoTest:'Test, ohne E-Mail',
+    tnCoViewed:'geöffnet am {d}',
+    tnConfirmAccept:'Das Angebot von {c} annehmen? Das Unternehmen wird per E-Mail benachrichtigt und erhält Ihre Kontaktdaten.',
+    tnConfirmClose:'Ausschreibung schließen? Die Unternehmen können dann keine Angebote mehr senden oder ändern.',
+    tnConfirmDecline:'Das Angebot von {c} ablehnen? Das Unternehmen wird per E-Mail benachrichtigt.',
+    tnConsent:'Ich bestätige, dass ich diese Unterlagen mit den gewählten Unternehmen teilen darf.',
+    tnContact:'Kontakt',
+    tnCopyLink:'Link kopieren',
+    tnCounts:'Eingeladen: {c} · Geöffnet: {v} · Angebote: {p}',
+    tnCritAdd:'Gewerk hinzufügen…',
+    tnCritAlvara:'Nur mit IMPIC-Lizenz',
+    tnCritAreas:'Gewerke',
+    tnCritClaimed:'Nur Einträge, die das Unternehmen selbst verwaltet',
+    tnCritIntro:'Legen Sie die Kriterien fest und wählen Sie aus der Liste die Unternehmen, die Sie einladen möchten.',
+    tnCritPickArea:'Wählen Sie mindestens ein Gewerk.',
+    tnCritRadius:'Entfernung zur Baustelle',
+    tnDays:'{n} Tage',
+    tnDays1:'1 Tag',
+    tnDecline:'Ablehnen',
+    tnDeclined:'Abgelehnt',
+    tnDuration:'Ausführungsdauer',
+    tnErrCity:'Ort nicht gefunden. Geben Sie den Namen der Stadt, des Dorfes oder der Gemeinde ein.',
+    tnErrConsent:'Bitte bestätigen Sie, dass Sie die Unterlagen teilen dürfen.',
+    tnErrDeadline:'Wählen Sie eine Angebotsfrist ab morgen.',
+    tnErrDesc:'Beschreiben Sie die Arbeiten genauer (mindestens 30 Zeichen).',
+    tnErrGeneric:'Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut.',
+    tnErrMax:'Höchstens {n} Dateien.',
+    tnErrMaxCos:'Höchstzahl an Unternehmen für diese Ausschreibung erreicht ({n}).',
+    tnErrPickOne:'Wählen Sie mindestens ein Unternehmen.',
+    tnErrSize:'„{name}“ ist größer als {mb} MB.',
+    tnErrTitle:'Geben Sie der Ausschreibung einen Titel (mindestens 5 Zeichen).',
+    tnErrType:'Dateityp nicht erlaubt: {name}',
+    tnErrUploading:'Warten Sie, bis die Anhänge hochgeladen sind.',
+    tnExtend:'Frist verlängern',
+    tnExtendSave:'Neue Frist speichern',
+    tnExtended:'Frist verlängert.',
+    tnFBudget:'Richtbudget',
+    tnFCity:'Ort der Arbeiten',
+    tnFCityPh:'z. B. Braga',
+    tnFDeadline:'Angebotsfrist',
+    tnFDesc:'Beschreibung und Leistungsumfang',
+    tnFDescPh:'Was zu tun ist, ungefähre Flächen und Mengen, Materialien, Zufahrt und weitere Bedingungen…',
+    tnFPhone:'Telefon (optional; für eingeladene Unternehmen sichtbar)',
+    tnFStart:'Geplanter Beginn (optional)',
+    tnFTitle:'Titel',
+    tnFTitlePh:'z. B. Sanierung eines Einfamilienhauses',
+    tnFiles:'Anhänge',
+    tnFilesAdd:'Dateien hinzufügen',
+    tnFilesDrop:'oder hierher ziehen',
+    tnFilesHint:'Projekt, Leistungsverzeichnis, Mengenermittlung, Pläne oder Fotos.',
+    tnFilesMax:'bis {mb} MB pro Datei',
+    tnFilesOff:'Anhänge sind bald verfügbar. Sie können die Arbeiten schon beschreiben und Unternehmen einladen.',
+    tnIntro:'Teilen Sie Ihr Projekt oder Leistungsverzeichnis mit Unternehmen Ihrer Wahl und erhalten Sie vergleichbare Angebote an einem Ort. Kostenlos.',
+    tnInvBudget:'Richtbudget',
+    tnInvClaim:'Ist das Ihr Unternehmen? Beanspruchen Sie den Eintrag auf Hivex, um die Seite zu verwalten und solche Anfragen auch in Ihrem Konto zu erhalten.',
+    tnInvClaimBtn:'Eintrag beanspruchen',
+    tnInvClient:'Auftraggeber',
+    tnInvClosed:'Diese Ausschreibung wurde vom Auftraggeber geschlossen.',
+    tnInvDeadline:'Angebote bis',
+    tnInvDl:'Herunterladen',
+    tnInvExpired:'Die Angebotsfrist ist abgelaufen.',
+    tnInvFiles:'Ausschreibungsunterlagen',
+    tnInvFor:'Für {c}',
+    tnInvGone:'Diese Einladung existiert nicht oder ist abgelaufen.',
+    tnInvOptout:'Ich möchte keine Einladungen zu Ausschreibungen erhalten',
+    tnInvPrivacy:'Nur die Person, die die Ausschreibung gestartet hat, sieht Ihr Angebot und Ihre Kontaktdaten. Die anderen eingeladenen Unternehmen sehen sie nicht.',
+    tnInvScope:'Leistungsumfang',
+    tnInvStart:'Geplanter Beginn',
+    tnInvTitle:'Angebotsanfrage',
+    tnInviteMore:'Weitere Unternehmen einladen',
+    tnKm:'{n} km',
+    tnKmUpTo:'Bis {n} km',
+    tnLinkCopied:'Link kopiert.',
+    tnLoading:'Wird geladen…',
+    tnLogAccept:'Angebot angenommen',
+    tnLogClose:'Ausschreibung geschlossen',
+    tnLogDeadline:'Frist verlängert',
+    tnLogDecline:'hat angegeben, nicht zu bieten',
+    tnLogDeclineProp:'Angebot abgelehnt',
+    tnLogDownload:'hat heruntergeladen',
+    tnLogEmpty:'Noch keine Aktivität.',
+    tnLogInvite:'Weitere Unternehmen eingeladen',
+    tnLogProposal:'hat ein Angebot gesendet',
+    tnLogProposalUpd:'hat das Angebot aktualisiert',
+    tnLogPublish:'Ausschreibung veröffentlicht und Einladungen gesendet',
+    tnLogView:'hat die Ausschreibung geöffnet',
+    tnLoginFirst:'Melden Sie sich an, um eine Ausschreibung zu starten. Ihre E-Mail-Adresse genügt.',
+    tnLowest:'Günstigstes',
+    tnMine:'Meine Ausschreibungen',
+    tnMineEmpty:'Sie haben noch keine Ausschreibung gestartet. Beschreiben Sie zuerst die Arbeiten und hängen Sie das Projekt an.',
+    tnMoreIntro:'Sie können noch Unternehmen zu dieser Ausschreibung einladen (bis zu {n} weitere).',
+    tnNew:'Neue Ausschreibung',
+    tnNext:'Weiter',
+    tnNoBid:'Wir bieten nicht',
+    tnNoBidConfirm:'Bestätigen',
+    tnNoBidDone:'Sie haben angegeben, nicht zu bieten. Wenn Sie es sich anders überlegen, können Sie bis zum Fristende noch ein Angebot senden.',
+    tnNoBidReason:'Grund (optional)',
+    tnNoFiles:'Keine Anhänge.',
+    tnNoProps:'Noch keine Angebote. Wir benachrichtigen Sie per E-Mail, sobald das erste eintrifft.',
+    tnOpenAsCo:'Als Unternehmen öffnen',
+    tnOpenPanel:'Übersicht der Ausschreibung öffnen',
+    tnPrivacy:'Die eingeladenen Unternehmen sehen die Beschreibung, die Anhänge und Ihre Kontaktdaten (Name, E-Mail und, falls angegeben, Telefon), damit sie antworten und Fragen stellen können. Niemand sonst hat Zugriff. Anhänge werden 90 Tage nach Abschluss der Ausschreibung gelöscht, alles Übrige nach 12 Monaten.',
+    tnPropAccepted:'Der Auftraggeber hat Ihr Angebot angenommen. Vereinbaren Sie die nächsten Schritte über die Kontaktdaten oben.',
+    tnPropDeclinedMsg:'Der Auftraggeber hat sich für ein anderes Angebot entschieden. Danke für Ihre Teilnahme.',
+    tnPropDuration:'Ausführungsdauer',
+    tnPropDurationPh:'z. B. 8 Wochen',
+    tnPropEmail:'Kontakt-E-Mail',
+    tnPropErrDuration:'Geben Sie die Ausführungsdauer an.',
+    tnPropErrEmail:'Geben Sie eine gültige Kontakt-E-Mail an.',
+    tnPropErrName:'Geben Sie den Namen der verantwortlichen Person an.',
+    tnPropErrPrice:'Geben Sie den Angebotspreis an.',
+    tnPropFiles:'Anhänge zum Angebot (detaillierter Kostenvoranschlag, Leistungsbeschreibung…)',
+    tnPropName:'Verantwortliche Person',
+    tnPropNotes:'Hinweise (was enthalten ist und was nicht, Zahlungsbedingungen…)',
+    tnPropOk:'Angebot gesendet. Der Auftraggeber wurde benachrichtigt.',
+    tnPropPhone:'Telefon',
+    tnPropPrice:'Gesamtpreis (€)',
+    tnPropSend:'Angebot senden',
+    tnPropSent:'Angebot gesendet am {d}. Sie können es bis zum Fristende ändern.',
+    tnPropTitle:'Ihr Angebot',
+    tnPropUpdOk:'Angebot aktualisiert.',
+    tnPropUpdate:'Angebot aktualisieren',
+    tnPropValidity:'Gültigkeit des Angebots (Tage)',
+    tnPropVat:'MwSt.',
+    tnRadiusAll:'Ganzes Land',
+    tnReceived:'Einladungen an Ihre Unternehmen',
+    tnReceivedOn:'Eingegangen',
+    tnRemove:'Entfernen',
+    tnRetention:'Anhänge werden bis 90 Tage nach Abschluss der Ausschreibung aufbewahrt. Laden Sie herunter, was Sie behalten möchten.',
+    tnReviewMore:'Einladungen prüfen',
+    tnRvCos:'Eingeladene Unternehmen',
+    tnRvDeadline:'Angebotsfrist',
+    tnRvFiles:'Anhänge',
+    tnRvWhat:'Arbeiten',
+    tnRvWhere:'Ort',
+    tnRvYou:'Ihre Kontaktdaten',
+    tnSelected:'{n} von {max} gewählt',
+    tnSend:'Einladungen an {n} Unternehmen senden',
+    tnSend1:'Einladung an 1 Unternehmen senden',
+    tnSentMore:'Die neuen Einladungen wurden gesendet ({n}).',
+    tnSentText:'Die Einladungen wurden gesendet ({n}). Wir benachrichtigen Sie bei jedem neuen Angebot per E-Mail, und in der Übersicht sehen Sie alles auf einen Blick.',
+    tnSentTitle:'Ausschreibung gesendet',
+    tnSomeSkipped:'Einige der gewählten Unternehmen konnten keine Einladung erhalten und wurden ausgelassen ({n}).',
+    tnStClosed:'Geschlossen',
+    tnStDraft:'Entwurf',
+    tnStDraftHint:'Unveröffentlichter Entwurf',
+    tnStExpired:'Frist abgelaufen',
+    tnStOpen:'Offen',
+    tnStTest:'Test',
+    tnStatInvited:'Eingeladen',
+    tnStatProps:'Angebote',
+    tnStatViewed:'Geöffnet',
+    tnStep1:'Arbeiten',
+    tnStep2:'Unternehmen',
+    tnStep3:'Senden',
+    tnSubmitted:'Eingegangen',
+    tnTabCos:'Unternehmen',
+    tnTabFiles:'Anhänge',
+    tnTabLog:'Aktivität',
+    tnTabProps:'Angebote',
+    tnTestMode:'Test-Ausschreibung: Einladungen werden nicht gesendet, die Links erscheinen in der Übersicht',
+    tnTitleNew:'Ausschreibung starten',
+    tnUntil:'Angebote bis {d}',
+    tnUntitled:'Ausschreibung ohne Titel',
+    tnUpCheck:'Wird geprüft…',
+    tnUpErr:'Hochladen fehlgeschlagen',
+    tnUpWait:'Wird hochgeladen…',
+    tnValidity:'Gültigkeit',
+    tnVatEx:'MwSt.-befreit',
+    tnVatIncl:'inkl. MwSt.',
+    tnVatPlus:'zzgl. MwSt.',
+    tnWithdrawn:'Zurückgezogen',
     // ── UI coverage additions ──
     viewMap:"Karte", viewList:"Liste", resultCompany:"Unternehmen", resultCompanies:"Unternehmen",
     profileTitle:"Mein Profil",
@@ -2141,14 +3131,15 @@ function showTab(name) {
     // First-time hint: tell users they can click pins to see details.
     // localStorage flag means it shows only once per browser.
     try {
-      if (!localStorage.getItem('hive_pin_hint_shown')) {
+      // (não em links de concursos: a pessoa vem responder, não explorar o mapa)
+      if (!localStorage.getItem('hive_pin_hint_shown') && !_tnLinkAtivo()) {
         setTimeout(() => {
           showToast(t('mapPinHint') || 'Toque num pin para ver os detalhes da empresa.');
           try { localStorage.setItem('hive_pin_hint_shown', '1'); } catch(_) {}
         }, 1200);
       }
       // dica única da folha de resultados (só mobile)
-      if (window.innerWidth <= 768 && !localStorage.getItem('hive_sheet_hint_shown')) {
+      if (window.innerWidth <= 768 && !localStorage.getItem('hive_sheet_hint_shown') && !_tnLinkAtivo()) {
         setTimeout(() => {
           showToast((t('sheetHint') || 'Toque em "Ver lista" para ver as empresas'));
           try { localStorage.setItem('hive_sheet_hint_shown', '1'); } catch(_) {}
@@ -2987,6 +3978,7 @@ function setLanguage(lang) {
 
   // Apply all translations
   applyI18n();
+  if (typeof _tnRelang === 'function') _tnRelang();
 }
 
 // Cycle through PT → EN → FR → ES → ZH → PT for the mobile flag button
@@ -5003,6 +5995,8 @@ async function autoDetectLocationIfGranted() {
 async function _askLocationOnMapOpen() {
   if (_locationObtained || !navigator.geolocation) return;
   if (typeof selectedId !== 'undefined' && selectedId != null) return;
+  // Link de um concurso (empresa convidada ou painel): sem pedido de localização
+  if (_tnLinkAtivo() || document.querySelector('#tenderOverlay.open,#tenderPanelOverlay.open,#tenderInviteOverlay.open')) return;
   // Cartão de boas-vindas aberto → o pedido fica para quando ele fechar
   // (closeWelcome chama esta função outra vez).
   try {
@@ -9156,6 +10150,8 @@ const LEGAL_DOCS = {
         <p>Se contactar uma empresa através da Hivex, poderemos enviar-lhe <strong>um único email</strong>, cerca de uma semana depois, a convidá-lo a avaliar essa empresa (interesse legítimo em manter avaliações verificadas). Pode recusar estes pedidos através do link incluído no próprio email; a recusa fica registada e é respeitada em todos os contactos futuros.</p>
         <h3>5.1 Publicidade (Google AdSense)</h3>
         <p>A Hivex pode apresentar anúncios fornecidos pelo <strong>Google AdSense</strong>. Fornecedores terceiros, incluindo a Google, utilizam cookies para apresentar anúncios com base em visitas anteriores do utilizador a este e a outros sites. A Google utiliza cookies de publicidade para apresentar anúncios; pode <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">desativar a publicidade personalizada</a> nas Definições de anúncios da Google ou recusar cookies de fornecedores terceiros em <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Mais informação na <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">política da Google sobre como utiliza dados de sites parceiros</a>. No Espaço Económico Europeu, Reino Unido e Suíça, os anúncios e respetivos cookies só são ativados <strong>após o seu consentimento</strong>, recolhido através do nosso banner de cookies — sem consentimento não são utilizados cookies de publicidade personalizada.</p>
+        <h3>5.2 Concursos (pedidos de proposta)</h3>
+        <p>Quem lança um concurso partilha a descrição da obra, os anexos e os seus contactos (nome, email e, se o indicar, telefone) <strong>apenas com as empresas que escolhe</strong> (no máximo 10), para que possam responder; a proposta e os contactos de cada empresa só são vistos por quem lançou o concurso. Os anexos ficam num armazenamento privado (Vercel Blob) e só se descarregam através de links temporários. Registamos quando cada empresa convidada abre o concurso, descarrega anexos e responde, para que quem lançou possa acompanhar. Base legal: execução do pedido feito por si (art. 6.º, n.º 1, alínea b)) e, quanto às empresas convidadas, interesse legítimo em fazer-lhes chegar um pedido concreto de um cliente (alínea f)). Só enviamos convites por email a fichas geridas pela própria empresa ou a empresas portuguesas com NIF de pessoa coletiva, e cada convite tem um link para deixar de os receber. Os anexos são apagados 90 dias depois do fecho do concurso e o resto 12 meses depois.</p>
         <h3>6. Período de conservação</h3>
         <p>Mantemos os dados enquanto a conta estiver ativa. Após eliminação, dados de conta são apagados em 30 dias. Logs de segurança: 12 meses. Empresas aprovadas continuam visíveis no diretório até pedido de remoção.</p>
         <h3>7. Os seus direitos</h3>
@@ -9273,6 +10269,8 @@ LEGAL_DOCS.en = {
     <p>If you contact a company through Hivex, we may send you <strong>a single email</strong>, about a week later, inviting you to review that company (legitimate interest in keeping reviews verified). You can opt out using the link in that email; your choice is recorded and respected for all future contacts.</p>
     <h3>5.1 Advertising (Google AdSense)</h3>
     <p>Hivex may display ads provided by <strong>Google AdSense</strong>. Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this and other websites. Google uses advertising cookies to serve ads; you can <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">opt out of personalised advertising</a> in Google's Ads Settings, or opt out of third-party vendors' cookies at <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. More information in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Google's policy on how it uses data from partner sites</a>. In the European Economic Area, the United Kingdom and Switzerland, ads and their cookies are only enabled <strong>after your consent</strong>, collected through our cookie banner — without consent, no personalised advertising cookies are used.</p>
+    <h3>5.2 Tenders (requests for proposals)</h3>
+    <p>When you run a tender, the description of the works, the attachments and your contact details (name, email and, if given, phone) are shared <strong>only with the companies you choose</strong> (up to 10) so they can reply; each company’s proposal and contact details are seen only by the person who ran the tender. Attachments are kept in private storage (Vercel Blob) and can only be downloaded through temporary links. We record when each invited company opens the tender, downloads attachments and replies, so the person who ran it can follow progress. Legal basis: performance of the request you made (Art. 6(1)(b)) and, for invited companies, legitimate interest in passing on a specific client request (Art. 6(1)(f)). We only send email invitations to listings managed by the company itself or to Portuguese companies with a corporate tax number, and every invitation includes a link to stop receiving them. Attachments are deleted 90 days after the tender closes and everything else after 12 months.</p>
     <h3>6. Retention period</h3>
     <p>We keep the data while the account is active. After deletion, account data is erased within 30 days. Security logs: 12 months. Approved companies remain visible in the directory until a removal request.</p>
     <h3>7. Your rights</h3>
@@ -9371,6 +10369,8 @@ LEGAL_DOCS.fr = {
     <p>Si vous contactez une entreprise via Hivex, nous pourrons vous envoyer <strong>un seul e-mail</strong>, environ une semaine plus tard, vous invitant à évaluer cette entreprise (intérêt légitime à maintenir des avis vérifiés). Vous pouvez refuser via le lien inclus dans cet e-mail ; votre choix est enregistré et respecté pour tous les contacts futurs.</p>
     <h3>5.1 Publicité (Google AdSense)</h3>
     <p>Hivex peut afficher des annonces fournies par <strong>Google AdSense</strong>. Des fournisseurs tiers, dont Google, utilisent des cookies pour diffuser des annonces en fonction des visites antérieures de l'utilisateur sur ce site et sur d'autres sites. Google utilise des cookies publicitaires pour diffuser des annonces ; vous pouvez <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">désactiver la publicité personnalisée</a> dans les Paramètres des annonces Google, ou refuser les cookies de fournisseurs tiers sur <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Plus d'informations dans la <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">politique de Google relative à l'utilisation des données des sites partenaires</a>. Dans l'Espace économique européen, au Royaume-Uni et en Suisse, les annonces et leurs cookies ne sont activés <strong>qu'après votre consentement</strong>, recueilli via notre bannière de cookies — sans consentement, aucun cookie de publicité personnalisée n'est utilisé.</p>
+    <h3>5.2 Appels d’offres (demandes d’offre)</h3>
+    <p>Lorsque vous lancez un appel d’offres, la description des travaux, les pièces jointes et vos coordonnées (nom, e-mail et, si indiqué, téléphone) sont partagées <strong>uniquement avec les entreprises que vous choisissez</strong> (10 au maximum) pour qu’elles puissent répondre ; l’offre et les coordonnées de chaque entreprise ne sont vues que par la personne qui a lancé l’appel d’offres. Les pièces jointes sont conservées dans un stockage privé (Vercel Blob) et ne se téléchargent que par des liens temporaires. Nous enregistrons quand chaque entreprise invitée ouvre l’appel d’offres, télécharge les pièces jointes et répond, afin que la personne qui l’a lancé puisse suivre. Base légale : exécution de votre demande (art. 6, par. 1, b)) et, pour les entreprises invitées, intérêt légitime à leur transmettre une demande concrète d’un client (art. 6, par. 1, f)). Nous n’envoyons d’invitations par e-mail qu’aux fiches gérées par l’entreprise elle-même ou aux entreprises portugaises ayant un numéro fiscal de personne morale, et chaque invitation contient un lien pour ne plus en recevoir. Les pièces jointes sont supprimées 90 jours après la clôture et le reste après 12 mois.</p>
     <h3>6. Durée de conservation</h3>
     <p>Nous conservons les données tant que le compte est actif. Après suppression, les données du compte sont effacées sous 30 jours. Journaux de sécurité : 12 mois. Les entreprises approuvées restent visibles dans l'annuaire jusqu'à une demande de retrait.</p>
     <h3>7. Vos droits</h3>
@@ -9469,6 +10469,8 @@ LEGAL_DOCS.es = {
     <p>Si contacta con una empresa a través de Hivex, podremos enviarle <strong>un único correo</strong>, aproximadamente una semana después, invitándole a valorar esa empresa (interés legítimo en mantener valoraciones verificadas). Puede rechazarlo mediante el enlace incluido en ese correo; su elección queda registrada y se respeta en todos los contactos futuros.</p>
     <h3>5.1 Publicidad (Google AdSense)</h3>
     <p>Hivex puede mostrar anuncios proporcionados por <strong>Google AdSense</strong>. Proveedores externos, incluido Google, utilizan cookies para mostrar anuncios basados en las visitas anteriores del usuario a este y otros sitios web. Google utiliza cookies publicitarias para mostrar anuncios; puedes <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">desactivar la publicidad personalizada</a> en la Configuración de anuncios de Google, o rechazar las cookies de proveedores externos en <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Más información en la <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">política de Google sobre cómo utiliza los datos de sitios asociados</a>. En el Espacio Económico Europeo, el Reino Unido y Suiza, los anuncios y sus cookies solo se activan <strong>tras tu consentimiento</strong>, recogido a través de nuestro banner de cookies; sin consentimiento no se utilizan cookies de publicidad personalizada.</p>
+    <h3>5.2 Concursos (solicitudes de propuesta)</h3>
+    <p>Quien lanza un concurso comparte la descripción de la obra, los adjuntos y sus datos de contacto (nombre, email y, si lo indica, teléfono) <strong>solo con las empresas que elige</strong> (como máximo 10) para que puedan responder; la propuesta y los datos de contacto de cada empresa solo los ve quien lanzó el concurso. Los adjuntos se guardan en un almacenamiento privado (Vercel Blob) y solo se descargan mediante enlaces temporales. Registramos cuándo cada empresa invitada abre el concurso, descarga adjuntos y responde, para que quien lo lanzó pueda seguirlo. Base legal: ejecución de la solicitud que usted hizo (art. 6.1.b) y, para las empresas invitadas, interés legítimo en hacerles llegar una solicitud concreta de un cliente (art. 6.1.f). Solo enviamos invitaciones por email a fichas gestionadas por la propia empresa o a empresas portuguesas con NIF de persona jurídica, y cada invitación incluye un enlace para dejar de recibirlas. Los adjuntos se borran 90 días después del cierre del concurso y el resto a los 12 meses.</p>
     <h3>6. Periodo de conservación</h3>
     <p>Conservamos los datos mientras la cuenta esté activa. Tras la eliminación, los datos de la cuenta se borran en 30 días. Registros de seguridad: 12 meses. Las empresas aprobadas siguen visibles en el directorio hasta que se solicite su retirada.</p>
     <h3>7. Tus derechos</h3>
@@ -9567,6 +10569,8 @@ LEGAL_DOCS.de = {
     <p>Wenn Sie ein Unternehmen über Hivex kontaktieren, senden wir Ihnen etwa eine Woche später eventuell <strong>eine einzige E-Mail</strong> mit der Einladung, dieses Unternehmen zu bewerten (berechtigtes Interesse an verifizierten Bewertungen). Sie können dies über den Link in dieser E-Mail ablehnen; Ihre Entscheidung wird gespeichert und bei allen künftigen Kontakten respektiert.</p>
     <h3>5.1 Werbung (Google AdSense)</h3>
     <p>Hivex kann Anzeigen von <strong>Google AdSense</strong> einblenden. Drittanbieter, einschließlich Google, verwenden Cookies, um Anzeigen auf Grundlage früherer Besuche eines Nutzers auf dieser und anderen Websites zu schalten. Google verwendet Werbe-Cookies, um Anzeigen zu schalten; Sie können in den Google-Anzeigeneinstellungen <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">personalisierte Werbung deaktivieren</a> oder Cookies von Drittanbietern unter <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a> ablehnen. Weitere Informationen in der <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Richtlinie von Google zur Nutzung von Daten von Partner-Websites</a>. Im Europäischen Wirtschaftsraum, im Vereinigten Königreich und in der Schweiz werden Anzeigen und ihre Cookies erst <strong>nach Ihrer Einwilligung</strong> aktiviert, die über unser Cookie-Banner eingeholt wird — ohne Einwilligung werden keine Cookies für personalisierte Werbung verwendet.</p>
+    <h3>5.2 Ausschreibungen (Angebotsanfragen)</h3>
+    <p>Wenn Sie eine Ausschreibung starten, werden die Beschreibung der Arbeiten, die Anhänge und Ihre Kontaktdaten (Name, E-Mail und, falls angegeben, Telefon) <strong>nur mit den von Ihnen gewählten Unternehmen</strong> (höchstens 10) geteilt, damit diese antworten können; Angebot und Kontaktdaten jedes Unternehmens sieht nur die Person, die die Ausschreibung gestartet hat. Anhänge liegen in einem privaten Speicher (Vercel Blob) und lassen sich nur über zeitlich begrenzte Links herunterladen. Wir erfassen, wann jedes eingeladene Unternehmen die Ausschreibung öffnet, Anhänge herunterlädt und antwortet, damit der Auftraggeber den Stand verfolgen kann. Rechtsgrundlage: Durchführung Ihrer Anfrage (Art. 6 Abs. 1 lit. b DSGVO) und, für eingeladene Unternehmen, berechtigtes Interesse, ihnen eine konkrete Kundenanfrage zu übermitteln (Art. 6 Abs. 1 lit. f DSGVO). Einladungen per E-Mail senden wir nur an Einträge, die das Unternehmen selbst verwaltet, oder an portugiesische Unternehmen mit Steuernummer einer juristischen Person; jede Einladung enthält einen Link zum Abbestellen. Anhänge werden 90 Tage nach Abschluss der Ausschreibung gelöscht, alles Übrige nach 12 Monaten.</p>
     <h3>6. Aufbewahrungsdauer</h3>
     <p>Wir bewahren die Daten auf, solange das Konto aktiv ist. Nach der Löschung werden Kontodaten innerhalb von 30 Tagen gelöscht. Sicherheitsprotokolle: 12 Monate. Genehmigte Unternehmen bleiben im Verzeichnis sichtbar, bis eine Entfernung beantragt wird.</p>
     <h3>7. Ihre Rechte</h3>
@@ -10029,6 +11033,12 @@ window.authCodeTyped = authCodeTyped;
 function closeLogin() {
   const ov = document.getElementById('loginOverlay');
   if (ov) ov.classList.remove('open');
+  // Visitante que quis lançar um concurso (ou abrir o painel) e acabou de entrar
+  const pendT = window._hxPendingTender;
+  if (pendT) {
+    window._hxPendingTender = null;
+    setTimeout(() => { try { if (_isLoggedIn()) _tnRetomar(pendT); } catch (_) {} }, 300);
+  }
   // Visitante que tentou avaliar e acabou de entrar: abre o formulário.
   const pend = window._hxPendingReview;
   if (pend != null) {
@@ -10734,6 +11744,10 @@ function updateNavAuth() {
       <button class="mobile-nav-link" onclick="closeMobileNavPanel();openLogin();try{switchLoginTab('register')}catch(_){}">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
         <span>${t('lpHeroRegisterCta') || 'Criar conta'}</span>
+      </button>
+      <button class="mobile-nav-link" onclick="closeMobileNavPanel();openTenderWizard()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>
+        <span>${t('tnMenu')}</span>
       </button>`;
     if (mobileTopAuth) mobileTopAuth.innerHTML = `<button class="mobile-top-login" onclick="openLogin()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg><span data-i18n="navLogin">${t('navLogin')}</span></button>`;
     if (heroCta) heroCta.hidden = true;
@@ -10764,6 +11778,7 @@ function updateNavAuth() {
           <div class="avatar-menu-item" onclick="startCompanyFlow();closeAvatarMenu()"><i data-lucide="building-2"></i>${t('avatarRegisterCompany')}</div>
           <div class="avatar-menu-item" onclick="openProfilePanel();closeAvatarMenu()"><i data-lucide="user"></i>${t('profileTitle')}</div>
           <div class="avatar-menu-item" onclick="openMyChats();closeAvatarMenu()"><i data-lucide="message-circle"></i>As minhas mensagens</div>
+          <div class="avatar-menu-item" onclick="openMyTenders();closeAvatarMenu()"><i data-lucide="clipboard-list"></i>${t('tnMenu')}</div>
           <div class="avatar-menu-item" onclick="openMyFavourites();closeAvatarMenu()"><i data-lucide="star"></i>${t('navFavourites')} <span class="avatar-menu-badge" id="avMenuFavCount" hidden></span></div>
           <div class="avatar-menu-divider"></div>
           <div class="avatar-menu-item" onclick="closeAvatarMenu();openFaq()"><i data-lucide="help-circle"></i>${t('avatarFaqHelp')}</div>
@@ -10772,7 +11787,7 @@ function updateNavAuth() {
           <div class="avatar-menu-item danger" onclick="doLogout()"><i data-lucide="log-out"></i>${t('avatarLogout')}</div>
         </div>
       </div>`;
-    if (mobileArea) mobileArea.innerHTML = `<button class="mobile-nav-link" onclick="openProfilePanel();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>${user.name}</span></button><button class="mobile-nav-link" onclick="openMyChats();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>As minhas mensagens</span></button><button class="mobile-nav-link" onclick="closeMobileNavPanel();startCompanyFlow()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>${t('avatarRegisterCompany') || 'Anunciar Empresa'}</span></button><button class="mobile-nav-link" onclick="openMyFavourites();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span data-i18n="navFavourites">Favoritos</span></button><button class="mobile-nav-link" style="color:#ef4444" onclick="doLogout();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>${t('avatarLogout')}</span></button>`;
+    if (mobileArea) mobileArea.innerHTML = `<button class="mobile-nav-link" onclick="openProfilePanel();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>${user.name}</span></button><button class="mobile-nav-link" onclick="openMyChats();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>As minhas mensagens</span></button><button class="mobile-nav-link" onclick="openMyTenders();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg><span>${t('tnMenu')}</span></button><button class="mobile-nav-link" onclick="closeMobileNavPanel();startCompanyFlow()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>${t('avatarRegisterCompany') || 'Anunciar Empresa'}</span></button><button class="mobile-nav-link" onclick="openMyFavourites();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span data-i18n="navFavourites">Favoritos</span></button><button class="mobile-nav-link" style="color:#ef4444" onclick="doLogout();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>${t('avatarLogout')}</span></button>`;
     if (mobileTopAuth) mobileTopAuth.innerHTML = `<button class="mobile-top-avatar" onclick="toggleMobileNav()" title="${user.name}">${initials}</button>`;
     if (heroCta) {
       heroCta.hidden = false;
@@ -14575,3 +15590,830 @@ try {
     if (hl) hl.setAttribute('placeholder', 'Cidade, empresa ou atividade…');
   }
 } catch (_) {}
+
+
+// ══ CONCURSOS (pedido de propostas com anexos) ═══════════════════════════════
+// Quem lança: assistente em 3 passos (Obra · Empresas · Enviar) e painel "Os
+// meus concursos" com propostas lado a lado, estado de cada convite e registo
+// de acessos. Empresa convidada: página do convite (link pessoal
+// ?concurso=TOKEN, sem conta) com os documentos, a proposta e "não vamos
+// concorrer". Os anexos vão do browser DIRETAMENTE para o Blob privado com um
+// URL pré-assinado (fora do limite de 4,5 MB das funções) — regras no backend
+// (routes/tenders.js): convites só a fichas reclamadas ou a empresas PT com
+// NIF de pessoa coletiva, até 10 por concurso, 3 concursos por dia.
+const _TN_EXT = ['pdf', 'jpg', 'jpeg', 'png', 'webp', 'dwg', 'dxf', 'ifc', 'docx', 'xlsx', 'odt', 'ods', 'txt', 'csv'];
+const _TN_ACCEPT = _TN_EXT.map(e => '.' + e).join(',');
+const _TN_BUDGETS = ['Até 5.000 €', '5.000–25.000 €', '25.000–100.000 €', '100.000–500.000 €', 'Mais de 500.000 €'];
+const _TN_RAIOS = [10, 25, 50, 100, 200, 0];
+let _tnCfg = null;
+let _tn = null;           // detalhe do concurso aberto no assistente
+let _tnPasso = 1;
+let _tnUps = [];          // envios em curso (assistente)
+let _tnCands = null;      // resposta de /candidates
+let _tnSel = new Map();   // empresas escolhidas: id → { id, name, city, km }
+let _tnCrit = { sectors: [], radius: 25, alvara: false, claimed: false };
+let _tnMais = false;      // "convidar mais empresas" num concurso já publicado
+let _tnPainel = null;     // detalhe aberto no painel
+let _tnAba = 'props';
+let _tnConv = null;       // vista do convite (lado da empresa)
+let _tnRef = null;        // token do link (ou 'i<id>' com sessão)
+let _tnUpsConv = [];      // envios em curso (proposta)
+let _tnCandTimer = null;
+
+async function _tnConfig() {
+  if (_tnCfg) return _tnCfg;
+  try { _tnCfg = await apiFetch('/tenders/config'); }
+  catch (_) { _tnCfg = { anexos: false, limites: { ficheiros: 10, ficheirosProposta: 5, mb: 25, empresas: 10, porDia: 3, diasMax: 180 } }; }
+  return _tnCfg;
+}
+const _tnFmt = (s, o) => String(s).replace(/\{(\w+)\}/g, (_, k) => (o && o[k] != null ? o[k] : ''));
+const _tnLocale = () => ({ pt: 'pt-PT', en: 'en-GB', fr: 'fr-FR', es: 'es-ES', de: 'de-DE' }[currentLang] || 'pt-PT');
+function _tnData(d, hora) {
+  if (!d) return '';
+  try {
+    return new Date(d).toLocaleString(_tnLocale(), hora
+      ? { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' }
+      : { day: 'numeric', month: 'long', year: 'numeric' });
+  } catch (_) { return String(d).slice(0, 10); }
+}
+function _tnEuros(c) {
+  if (c == null) return '—';
+  try { return (Number(c) / 100).toLocaleString(_tnLocale(), { style: 'currency', currency: 'EUR' }); }
+  catch (_) { return (Number(c) / 100).toFixed(2) + ' €'; }
+}
+const _tnTam = (b) => { b = Number(b) || 0; return b >= 1048576 ? (b / 1048576).toFixed(1).replace(/\.0$/, '') + ' MB' : Math.max(1, Math.round(b / 1024)) + ' KB'; };
+function _tnIcone(nome) {
+  const e = (String(nome).split('.').pop() || '').toLowerCase();
+  return /^(jpe?g|png|webp)$/.test(e) ? 'image' : /^(dwg|dxf|ifc)$/.test(e) ? 'drafting-compass' : /^(xlsx|ods|csv)$/.test(e) ? 'sheet' : 'file-text';
+}
+const _tnDia = (n) => { const d = new Date(Date.now() + n * 86400e3); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+const _tnDiaDe = (iso) => { if (!iso) return ''; const d = new Date(iso); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
+function _tnSetores() {
+  const tr = (translations[currentLang] || translations.pt).sectors || translations.pt.sectors || {};
+  return Object.entries(tr).sort((a, b) => (a[0] === 'construcao_geral' ? -1 : b[0] === 'construcao_geral' ? 1 : a[1].localeCompare(b[1], _tnLocale())));
+}
+const _tnSetorNome = (k) => (((translations[currentLang] || translations.pt).sectors || {})[k]) || (translations.pt.sectors || {})[k] || k;
+function _tnEstadoChip(estado, teste) {
+  const m = { draft: ['tnStDraft', 'tn-chip-draft'], open: ['tnStOpen', 'tn-chip-open'], expired: ['tnStExpired', 'tn-chip-exp'], closed: ['tnStClosed', 'tn-chip-closed'] }[estado] || ['tnStOpen', 'tn-chip-open'];
+  return '<span class="tn-chip ' + m[1] + '">' + escHtml(t(m[0])) + '</span>' + (teste ? ' <span class="tn-chip tn-chip-test">' + escHtml(t('tnStTest')) + '</span>' : '');
+}
+function _tnLimparUrl(param) {
+  try {
+    const u = new URL(location.href);
+    if (u.searchParams.has(param)) { u.searchParams.delete(param); history.replaceState(history.state, '', u.pathname + (u.search || '') + u.hash); }
+  } catch (_) {}
+}
+
+// ── Envio de anexos (comum ao concurso e às propostas) ─────────────────────────
+function _tnPut(up, file, mime, aoProgresso) {
+  return new Promise((resolve, reject) => {
+    const x = new XMLHttpRequest();
+    x.open('PUT', up.url);
+    Object.entries(up.headers || {}).forEach(([k, v]) => x.setRequestHeader(k, v));
+    x.setRequestHeader('content-type', mime);
+    x.upload.onprogress = (e) => { if (e.lengthComputable) aoProgresso(Math.round(e.loaded / e.total * 100)); };
+    x.onload = () => (x.status >= 200 && x.status < 300 ? resolve() : reject(new Error(t('tnUpErr') + ' (' + x.status + ')')));
+    x.onerror = () => reject(new Error(t('tnUpErr')));
+    x.send(file);
+  });
+}
+async function _tnEnviar(alvo, lista) {
+  const cfg = await _tnConfig();
+  const mb = cfg.limites.mb;
+  for (const f of Array.from(lista || [])) {
+    const ext = (String(f.name).split('.').pop() || '').toLowerCase();
+    if (!_TN_EXT.includes(ext)) { showToast(_tnFmt(t('tnErrType'), { name: f.name }), 'error'); continue; }
+    if (f.size > mb * 1048576) { showToast(_tnFmt(t('tnErrSize'), { name: f.name, mb }), 'error'); continue; }
+    if (alvo.contagem() >= alvo.max) { showToast(_tnFmt(t('tnErrMax'), { n: alvo.max }), 'error'); break; }
+    const up = { key: Math.random().toString(36).slice(2), name: f.name, size: f.size, pct: 0, estado: 'envio' };
+    alvo.ups.push(up);
+    alvo.render();
+    try {
+      const r = await apiFetch(alvo.base() + '/files', { method: 'POST', body: { name: f.name, size: f.size } });
+      up.id = r.file.id;
+      await _tnPut(r.upload, f, r.file.mime, (p) => {
+        up.pct = p;
+        const bar = document.querySelector('[data-tnup="' + up.key + '"] .tn-bar i');
+        if (bar) bar.style.width = p + '%';
+      });
+      up.estado = 'verifica';
+      alvo.render();
+      const d = await apiFetch(alvo.base() + '/files/' + r.file.id + '/done', { method: 'POST' });
+      alvo.ups.splice(alvo.ups.indexOf(up), 1);
+      alvo.ok(d.file);
+    } catch (e) {
+      up.estado = 'erro';
+      up.erro = e.message || t('tnUpErr');
+      if (up.id) apiFetch(alvo.base() + '/files/' + up.id, { method: 'DELETE' }).catch(() => {});
+    }
+    alvo.render();
+  }
+}
+function _tnListaFicheiros(prontos, ups, aoRetirar, retiravel) {
+  const linhas = prontos.map(f =>
+    '<li class="tn-file"><i data-lucide="' + _tnIcone(f.name) + '"></i><span class="tn-file-name">' + escHtml(f.name) + '</span>' +
+    '<span class="tn-file-size">' + _tnTam(f.size) + '</span>' +
+    (retiravel ? '<button type="button" class="tn-icon-btn" onclick="' + aoRetirar + '(' + f.id + ')" aria-label="' + escHtml(t('tnRemove')) + '" title="' + escHtml(t('tnRemove')) + '"><i data-lucide="x"></i></button>' : '') +
+    '</li>').join('') +
+    ups.map(u =>
+      '<li class="tn-file tn-file-up' + (u.estado === 'erro' ? ' tn-file-err' : '') + '" data-tnup="' + u.key + '"><i data-lucide="' + (u.estado === 'erro' ? 'alert-circle' : 'loader') + '"></i>' +
+      '<span class="tn-file-name">' + escHtml(u.name) + '</span>' +
+      (u.estado === 'erro'
+        ? '<span class="tn-file-msg">' + escHtml(u.erro || t('tnUpErr')) + '</span><button type="button" class="tn-icon-btn" onclick="_tnEsquecerUp(\'' + u.key + '\')" aria-label="' + escHtml(t('tnRemove')) + '"><i data-lucide="x"></i></button>'
+        : '<span class="tn-file-msg">' + escHtml(t(u.estado === 'verifica' ? 'tnUpCheck' : 'tnUpWait')) + '</span><span class="tn-bar"><i style="width:' + (u.pct || 0) + '%"></i></span>') +
+      '</li>').join('');
+  return linhas ? '<ul class="tn-file-list">' + linhas + '</ul>' : '';
+}
+function _tnEsquecerUp(key) {
+  _tnUps = _tnUps.filter(u => u.key !== key);
+  _tnUpsConv = _tnUpsConv.filter(u => u.key !== key);
+  if (document.getElementById('tenderOverlay').classList.contains('open')) _tnRender();
+  if (document.getElementById('tenderInviteOverlay').classList.contains('open')) _tnRenderConvite();
+}
+function _tnZonaFicheiros(id, aoEscolher, n, max, mb) {
+  return '<label class="tn-drop" id="' + id + '" ondragover="event.preventDefault();this.classList.add(\'tn-drop-on\')" ' +
+    'ondragleave="this.classList.remove(\'tn-drop-on\')" ondrop="event.preventDefault();this.classList.remove(\'tn-drop-on\');' + aoEscolher + '(event.dataTransfer.files)">' +
+    '<input type="file" multiple accept="' + _TN_ACCEPT + '" onchange="' + aoEscolher + '(this.files);this.value=\'\'"/>' +
+    '<i data-lucide="upload"></i><span class="tn-drop-main">' + escHtml(t('tnFilesAdd')) + '</span>' +
+    '<span class="tn-drop-sub">' + escHtml(t('tnFilesDrop')) + ' · ' + n + '/' + max + ' · ' + escHtml(_tnFmt(t('tnFilesMax'), { mb })) + '</span></label>';
+}
+
+// ── Assistente: lançar um concurso ─────────────────────────────────────────────
+async function openTenderWizard(id, opcoes) {
+  if (!_isLoggedIn()) {
+    window._hxPendingTender = { wizard: id || 'novo', mais: !!(opcoes && opcoes.mais) };
+    showToast(t('tnLoginFirst'));
+    openLogin();
+    return;
+  }
+  _ev('concurso_abrir');
+  await _tnConfig();
+  _tn = null; _tnPasso = 1; _tnUps = []; _tnCands = null; _tnSel = new Map(); _tnMais = false;
+  _tnCrit = { sectors: [], radius: 25, alvara: false, claimed: false };
+  if (id) {
+    try { _tn = await apiFetch('/tenders/' + id); }
+    catch (e) { showToast(e.message || t('tnErrGeneric'), 'error'); return; }
+    const c = _tn.tender.criteria || {};
+    if (Array.isArray(c.sectors) && c.sectors.length) _tnCrit = { sectors: c.sectors, radius: c.radius != null ? c.radius : 25, alvara: !!c.alvara, claimed: !!c.claimed };
+    if (opcoes && opcoes.mais) { _tnMais = true; _tnPasso = 2; }
+  }
+  document.getElementById('tenderOverlay').classList.add('open');
+  _tnRender();
+  if (_tnPasso === 2) _tnProcurar();
+}
+function closeTenderWizard() {
+  const ov = document.getElementById('tenderOverlay');
+  if (!ov || !ov.classList.contains('open')) return;
+  // Rascunho: guarda o que ficou escrito (passo 1) ou os critérios (passo 2)
+  if (_tn && _tn.tender.status === 'draft') {
+    if (_tnPasso === 1) _tnGuardar(true).catch(() => {});
+    else if (_tnPasso === 2) apiFetch('/tenders/' + _tn.tender.id, { method: 'PATCH', body: { criteria: _tnCrit } }).catch(() => {});
+  }
+  ov.classList.remove('open');
+}
+function _tnPassos() {
+  const nomes = [t('tnStep1'), t('tnStep2'), t('tnStep3')];
+  return '<ol class="tn-steps">' + nomes.map((n, i) =>
+    '<li class="' + (i + 1 === _tnPasso ? 'on' : i + 1 < _tnPasso ? 'done' : '') + '"><span>' + (i + 1 < _tnPasso ? '<i data-lucide="check"></i>' : (i + 1)) + '</span>' + escHtml(n) + '</li>').join('') + '</ol>';
+}
+function _tnRender() {
+  const el = document.getElementById('tnWizard');
+  if (!el) return;
+  const cfg = _tnCfg || { limites: {} };
+  const L = cfg.limites || {};
+  const T = (_tn && _tn.tender) || {};
+  let h = '<h2 class="legal-title" id="tnTitle">' + escHtml(_tnMais ? t('tnInviteMore') : t('tnTitleNew')) + '</h2>';
+  if (!_tnMais) h += _tnPassos();
+  if (_tnPasso === 1) {
+    h += '<p class="tn-intro">' + escHtml(t('tnIntro')) + '</p>' +
+      '<div class="form-row"><label for="tnFTitle">' + escHtml(t('tnFTitle')) + ' <span class="req">*</span></label>' +
+      '<input id="tnFTitle" class="contact-input" maxlength="140" placeholder="' + escHtml(t('tnFTitlePh')) + '" value="' + escHtml(T.title || '') + '"/></div>' +
+      '<div class="form-row"><label for="tnFDesc">' + escHtml(t('tnFDesc')) + ' <span class="req">*</span></label>' +
+      '<textarea id="tnFDesc" class="contact-input" rows="6" maxlength="8000" placeholder="' + escHtml(t('tnFDescPh')) + '">' + escHtml(T.description || '') + '</textarea></div>' +
+      '<div class="tn-grid2">' +
+        '<div class="form-row"><label for="tnFCity">' + escHtml(t('tnFCity')) + ' <span class="req">*</span></label>' +
+        '<input id="tnFCity" class="contact-input" maxlength="120" placeholder="' + escHtml(t('tnFCityPh')) + '" value="' + escHtml(T.city || '') + '" autocomplete="address-level2"/></div>' +
+        '<div class="form-row"><label for="tnFDeadline">' + escHtml(t('tnFDeadline')) + ' <span class="req">*</span></label>' +
+        '<input id="tnFDeadline" type="date" class="contact-input" min="' + _tnDia(1) + '" max="' + _tnDia(L.diasMax || 180) + '" value="' + (_tnDiaDe(T.deadline) || _tnDia(14)) + '"/></div>' +
+      '</div>' +
+      '<div class="tn-grid2">' +
+        '<div class="form-row"><label for="tnFBudget">' + escHtml(t('tnFBudget')) + '</label><select id="tnFBudget" class="contact-input">' +
+          '<option value="">' + escHtml(t('tnBudNS')) + '</option>' +
+          _TN_BUDGETS.map(b => '<option' + (T.budget === b ? ' selected' : '') + '>' + escHtml(b) + '</option>').join('') + '</select></div>' +
+        '<div class="form-row"><label for="tnFStart">' + escHtml(t('tnFStart')) + '</label>' +
+        '<input id="tnFStart" type="date" class="contact-input" min="' + _tnDia(0) + '" value="' + escHtml(T.start_date ? String(T.start_date).slice(0, 10) : '') + '"/></div>' +
+      '</div>' +
+      '<div class="form-row"><label for="tnFPhone">' + escHtml(t('tnFPhone')) + '</label>' +
+      '<input id="tnFPhone" type="tel" class="contact-input" maxlength="40" value="' + escHtml(T.phone || '') + '" autocomplete="tel"/></div>' +
+      '<div class="tn-files"><div class="tn-files-head"><strong>' + escHtml(t('tnFiles')) + '</strong><span>' + escHtml(t('tnFilesHint')) + '</span></div>';
+    if (cfg.anexos) {
+      const prontos = (_tn && _tn.files || []).filter(f => f.status === 'ready');
+      h += _tnZonaFicheiros('tnDrop', '_tnFicheirosConcurso', prontos.length + _tnUps.filter(u => u.estado !== 'erro').length, L.ficheiros || 10, L.mb || 25) +
+        _tnListaFicheiros(prontos, _tnUps, '_tnRetirarFicheiro', !_tn || _tn.tender.status === 'draft');
+    } else {
+      h += '<p class="tn-note"><i data-lucide="info"></i>' + escHtml(t('tnFilesOff')) + '</p>';
+    }
+    h += '</div>' +
+      '<div class="tn-actions"><span></span><button type="button" class="btn-submit" onclick="_tnSeguinte(this)">' + escHtml(t('tnNext')) + ' <i data-lucide="arrow-right"></i></button></div>';
+  } else if (_tnPasso === 2) {
+    const max = (L.empresas || 10) - (_tnMais && _tn ? _tn.invites.length : 0);
+    h += '<p class="tn-intro">' + escHtml(_tnMais ? _tnFmt(t('tnMoreIntro'), { n: max }) : t('tnCritIntro')) + '</p>' +
+      '<div class="tn-crit"><div class="form-row"><label for="tnSectorAdd">' + escHtml(t('tnCritAreas')) + ' <span class="req">*</span></label>' +
+      '<div class="tn-tags">' + _tnCrit.sectors.map(s =>
+        '<span class="tn-tag">' + escHtml(_tnSetorNome(s)) + '<button type="button" onclick="_tnTirarSetor(\'' + s + '\')" aria-label="' + escHtml(t('tnRemove')) + '"><i data-lucide="x"></i></button></span>').join('') +
+      '<select id="tnSectorAdd" class="contact-input tn-add" onchange="_tnPorSetor(this.value)"><option value="">' + escHtml(t('tnCritAdd')) + '</option>' +
+      _tnSetores().filter(([k]) => !_tnCrit.sectors.includes(k)).map(([k, v]) => '<option value="' + k + '">' + escHtml(v) + '</option>').join('') +
+      '</select></div></div>' +
+      '<div class="tn-crit-row"><div class="form-row"><label for="tnRadius">' + escHtml(t('tnCritRadius')) + '</label>' +
+      '<select id="tnRadius" class="contact-input" onchange="_tnCrit.radius=Number(this.value);_tnProcurar()">' +
+      _TN_RAIOS.map(r => '<option value="' + r + '"' + (_tnCrit.radius === r ? ' selected' : '') + '>' + escHtml(r ? _tnFmt(t('tnKmUpTo'), { n: r }) : t('tnRadiusAll')) + '</option>').join('') + '</select></div>' +
+      '<label class="tn-check"><input type="checkbox"' + (_tnCrit.alvara ? ' checked' : '') + ' onchange="_tnCrit.alvara=this.checked;_tnProcurar()"/> ' + escHtml(t('tnCritAlvara')) + '</label>' +
+      '<label class="tn-check"><input type="checkbox"' + (_tnCrit.claimed ? ' checked' : '') + ' onchange="_tnCrit.claimed=this.checked;_tnProcurar()"/> ' + escHtml(t('tnCritClaimed')) + '</label></div></div>' +
+      '<div class="tn-cands" id="tnCands">' + _tnCandsHtml(max) + '</div>' +
+      '<div class="tn-actions">' +
+        (_tnMais ? '<button type="button" class="btn-submit tn-sec" onclick="closeTenderWizard()">' + escHtml(t('tnCancel')) + '</button>' :
+          '<button type="button" class="btn-submit tn-sec" onclick="_tnPasso=1;_tnRender()"><i data-lucide="arrow-left"></i> ' + escHtml(t('tnBack')) + '</button>') +
+        '<button type="button" class="btn-submit" onclick="_tnParaRever()">' + escHtml(_tnMais ? t('tnReviewMore') : t('tnNext')) + ' <i data-lucide="arrow-right"></i></button></div>';
+  } else if (_tnPasso === 3) {
+    const n = _tnSel.size;
+    const prontos = (_tn && _tn.files || []).filter(f => f.status === 'ready');
+    const me = JSON.parse(localStorage.getItem('hive_user') || 'null') || {};
+    h += '<dl class="tn-review">' +
+      (_tnMais ? '' :
+        '<dt>' + escHtml(t('tnRvWhat')) + '</dt><dd><strong>' + escHtml(T.title) + '</strong><span class="tn-review-desc">' + escHtml(String(T.description || '').slice(0, 280)) + (String(T.description || '').length > 280 ? '…' : '') + '</span></dd>' +
+        '<dt>' + escHtml(t('tnRvWhere')) + '</dt><dd>' + escHtml(T.city || '—') + '</dd>' +
+        '<dt>' + escHtml(t('tnRvDeadline')) + '</dt><dd>' + escHtml(_tnData(T.deadline, true)) + '</dd>' +
+        '<dt>' + escHtml(t('tnRvFiles')) + '</dt><dd>' + (prontos.length ? prontos.map(f => escHtml(f.name)).join(', ') : escHtml(t('tnNoFiles'))) + '</dd>' +
+        '<dt>' + escHtml(t('tnRvYou')) + '</dt><dd>' + escHtml([me.name, me.email, T.phone].filter(Boolean).join(' · ')) + '</dd>') +
+      '<dt>' + escHtml(t('tnRvCos')) + '</dt><dd><ul class="tn-review-cos">' + [..._tnSel.values()].map(c =>
+        '<li>' + escHtml(c.name) + '<span>' + escHtml([c.city, c.km != null ? _tnFmt(t('tnKm'), { n: String(c.km).replace('.', currentLang === 'en' ? '.' : ',') }) : ''].filter(Boolean).join(' · ')) + '</span></li>').join('') + '</ul></dd></dl>' +
+      '<p class="tn-note"><i data-lucide="shield-check"></i>' + escHtml(t('tnPrivacy')) + '</p>' +
+      (_tnMais ? '' : '<label class="tn-check tn-consent"><input type="checkbox" id="tnConsent"/> ' + escHtml(t('tnConsent')) + '</label>') +
+      (me.is_admin && !_tnMais ? '<label class="tn-check"><input type="checkbox" id="tnTest"' + (T.is_test ? ' checked' : '') + '/> ' + escHtml(t('tnTestMode')) + '</label>' : '') +
+      '<div class="tn-actions"><button type="button" class="btn-submit tn-sec" onclick="_tnPasso=2;_tnRender();_tnProcurar()"><i data-lucide="arrow-left"></i> ' + escHtml(t('tnBack')) + '</button>' +
+      '<button type="button" class="btn-submit" onclick="_tnPublicar(this)"><i data-lucide="send"></i> ' + escHtml(n === 1 ? t('tnSend1') : _tnFmt(t('tnSend'), { n })) + '</button></div>';
+  } else if (_tnPasso === 4) {
+    h += '<div class="tn-done"><i data-lucide="check-circle-2"></i><h3>' + escHtml(t('tnSentTitle')) + '</h3><p>' + escHtml(_tnFmt(t(_tnMais ? 'tnSentMore' : 'tnSentText'), { n: _tnSel.size })) + '</p>' +
+      '<button type="button" class="btn-submit" onclick="closeTenderWizard();openMyTenders(' + (T.id || '') + ')">' + escHtml(t('tnOpenPanel')) + '</button></div>';
+  }
+  el.innerHTML = h;
+  refreshLucide();
+}
+function _tnLerPasso1() {
+  const v = (id) => (document.getElementById(id) || {}).value || '';
+  return { title: v('tnFTitle').trim(), description: v('tnFDesc').trim(), city: v('tnFCity').trim(), deadline: v('tnFDeadline'),
+    budget: v('tnFBudget'), start_date: v('tnFStart') || null, phone: v('tnFPhone').trim() };
+}
+// Localidade pelo próprio catálogo: mediana das empresas dessa cidade (a
+// mediana ignora homónimos distantes). Não depende de serviços externos.
+function _tnGeoCatalogo(q, minimo) {
+  const norm = (x) => String(x || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
+  const alvo = norm(String(q).split(',')[0]);
+  if (!alvo || typeof companies === 'undefined') return null;
+  const hits = companies.filter(c => norm(c.city) === alvo && Number.isFinite(+c.lat) && Number.isFinite(+c.lng));
+  if (hits.length < (minimo || 1)) return null;
+  const med = (arr) => arr.slice().sort((x, y) => x - y)[Math.floor(arr.length / 2)];
+  return { lat: med(hits.map(c => +c.lat)), lng: med(hits.map(c => +c.lng)), cc: String(hits[0].country || 'pt').toLowerCase() };
+}
+// Catálogo (cidade com várias empresas) → Photon/Nominatim (máx. 7 s) → catálogo (qualquer correspondência)
+async function _tnGeocodificar(q) {
+  let g = _tnGeoCatalogo(q, 3);
+  if (!g) g = await Promise.race([_geocodePlaceWorldwide(q).catch(() => null), new Promise(r => setTimeout(() => r(null), 7000))]);
+  return g || _tnGeoCatalogo(q, 1);
+}
+// Guarda o rascunho (cria-o na 1.ª vez). Geocodifica a localidade quando muda.
+async function _tnGuardar(silencioso) {
+  if (!document.getElementById('tnFTitle')) return _tn;
+  const b = _tnLerPasso1();
+  const T = _tn && _tn.tender;
+  if (b.city && (!T || T.city !== b.city || T.lat == null)) {
+    const g = await _tnGeocodificar(b.city);
+    if (g) { b.lat = g.lat; b.lng = g.lng; b.country = g.cc || 'pt'; }
+    else if (!silencioso) throw new Error(t('tnErrCity'));
+  }
+  if (!T) _tn = await apiFetch('/tenders', { method: 'POST', body: b });
+  else if (T.status === 'draft') _tn = await apiFetch('/tenders/' + T.id, { method: 'PATCH', body: b });
+  return _tn;
+}
+async function _tnSeguinte(btn) {
+  const b = _tnLerPasso1();
+  if (b.title.length < 5) { showToast(t('tnErrTitle'), 'error'); return; }
+  if (b.description.length < 30) { showToast(t('tnErrDesc'), 'error'); return; }
+  if (!b.city) { showToast(t('tnErrCity'), 'error'); return; }
+  if (!b.deadline || b.deadline < _tnDia(1)) { showToast(t('tnErrDeadline'), 'error'); return; }
+  if (_tnUps.some(u => u.estado !== 'erro')) { showToast(t('tnErrUploading'), 'error'); return; }
+  if (btn) btn.disabled = true;
+  try {
+    await _tnGuardar(false);
+    _tnPasso = 2;
+    _tnRender();
+    _tnProcurar();
+  } catch (e) { showToast(e.message || t('tnErrGeneric'), 'error'); }
+  finally { if (btn) btn.disabled = false; }
+}
+async function _tnFicheirosConcurso(files) {
+  // Copiar já: o onchange limpa o campo (this.value='') logo a seguir e o
+  // FileList esvazia-se; no arrastar, o dataTransfer deixa de ser legível.
+  files = Array.from(files || []);
+  try { await _tnGuardar(true); } catch (e) { showToast(e.message || t('tnErrGeneric'), 'error'); return; }
+  if (!_tn) return;
+  const L = (_tnCfg && _tnCfg.limites) || {};
+  await _tnEnviar({
+    base: () => '/tenders/' + _tn.tender.id,
+    max: L.ficheiros || 10,
+    ups: _tnUps,
+    contagem: () => _tn.files.filter(f => f.status === 'ready').length + _tnUps.filter(u => u.estado !== 'erro').length,
+    render: () => { if (_tnPasso === 1) { const keep = _tnLerPasso1(); _tnRender(); _tnRepor(keep); } },
+    ok: (f) => { _tn.files.push(f); },
+  }, files);
+}
+// O render reconstrói o formulário: repõe o que a pessoa escreveu entretanto
+function _tnRepor(b) {
+  if (!b) return;
+  const s = (id, v) => { const el = document.getElementById(id); if (el && v != null && el.value !== v) el.value = v; };
+  s('tnFTitle', b.title); s('tnFDesc', b.description); s('tnFCity', b.city); s('tnFDeadline', b.deadline);
+  s('tnFBudget', b.budget); s('tnFStart', b.start_date || ''); s('tnFPhone', b.phone);
+}
+async function _tnRetirarFicheiro(id) {
+  const keep = _tnLerPasso1();
+  try {
+    await apiFetch('/tenders/' + _tn.tender.id + '/files/' + id, { method: 'DELETE' });
+    _tn.files = _tn.files.filter(f => f.id !== id);
+    _tnRender(); _tnRepor(keep);
+  } catch (e) { showToast(e.message || t('tnErrGeneric'), 'error'); }
+}
+function _tnPorSetor(k) {
+  if (k && !_tnCrit.sectors.includes(k)) _tnCrit.sectors.push(k);
+  _tnRender();
+  _tnProcurar();
+}
+function _tnTirarSetor(k) {
+  _tnCrit.sectors = _tnCrit.sectors.filter(s => s !== k);
+  _tnRender();
+  _tnProcurar();
+}
+function _tnProcurar() {
+  clearTimeout(_tnCandTimer);
+  const alvo = document.getElementById('tnCands');
+  if (!_tnCrit.sectors.length) { _tnCands = null; if (alvo) alvo.innerHTML = _tnCandsHtml(); return; }
+  if (alvo) alvo.classList.add('tn-loading');
+  _tnCandTimer = setTimeout(async () => {
+    try {
+      const q = new URLSearchParams({ sectors: _tnCrit.sectors.join(','), radius: String(_tnCrit.radius), alvara: _tnCrit.alvara ? '1' : '0', claimed: _tnCrit.claimed ? '1' : '0' });
+      _tnCands = await apiFetch('/tenders/' + _tn.tender.id + '/candidates?' + q);
+    } catch (e) { _tnCands = { erro: e.message || t('tnErrGeneric') }; }
+    const el = document.getElementById('tnCands');
+    if (el) { el.classList.remove('tn-loading'); el.innerHTML = _tnCandsHtml(); refreshLucide(); }
+  }, 250);
+}
+function _tnMaxEscolha() {
+  const L = (_tnCfg && _tnCfg.limites) || {};
+  return (L.empresas || 10) - (_tnMais && _tn ? _tn.invites.length : 0);
+}
+function _tnCandsHtml() {
+  const max = _tnMaxEscolha();
+  if (!_tnCrit.sectors.length) return '<p class="tn-empty">' + escHtml(t('tnCritPickArea')) + '</p>';
+  if (!_tnCands) return '<p class="tn-empty">' + escHtml(t('tnLoading')) + '</p>';
+  if (_tnCands.erro) return '<p class="tn-empty">' + escHtml(_tnCands.erro) + '</p>';
+  const lista = _tnCands.candidates || [];
+  const fora = _tnCands.fora || {};
+  const nFora = (fora.semEmail || 0) + (fora.recusou || 0) + (fora.naoConvidavel || 0);
+  let h = '<div class="tn-cands-head"><span>' + escHtml(_tnFmt(t(_tnCands.convidaveis === 1 ? 'tnCandCount1' : 'tnCandCount'), { n: (_tnCands.convidaveis || 0).toLocaleString(_tnLocale()) })) + '</span>' +
+    '<strong class="tn-sel-count">' + escHtml(_tnFmt(t('tnSelected'), { n: _tnSel.size, max })) + '</strong></div>';
+  if (!lista.length) h += '<p class="tn-empty">' + escHtml(t('tnCandNone')) + '</p>';
+  else h += '<ul class="tn-cand-list">' + lista.map(c => {
+    const on = _tnSel.has(c.id);
+    const bloqueada = c.invited || (!on && _tnSel.size >= max);
+    return '<li><label class="tn-cand' + (on ? ' on' : '') + (c.invited ? ' tn-cand-inv' : '') + '">' +
+      '<input type="checkbox"' + (on || c.invited ? ' checked' : '') + (bloqueada ? ' disabled' : '') + ' onchange="_tnEscolher(' + c.id + ',this.checked)"/>' +
+      _logoHtml(c, 'tn-logo') +
+      '<span class="tn-cand-main"><span class="tn-cand-name">' + escHtml(c.name) + '</span>' +
+      '<span class="tn-cand-sub">' + escHtml([c.city, _tnFmt(t('tnKm'), { n: String(c.km).replace('.', currentLang === 'en' ? '.' : ',') }), _tnSetorNome(c.sector || (c.sectors || [])[0] || '')].filter(Boolean).join(' · ')) + '</span>' +
+      '<span class="tn-badges">' + (c.alvara ? '<span class="tn-badge"><i data-lucide="badge-check"></i>' + escHtml(t('tnBadgeAlvara')) + '</span>' : '') +
+      (c.claimed ? '<span class="tn-badge tn-badge-claimed"><i data-lucide="user-check"></i>' + escHtml(t('tnBadgeClaimed')) + '</span>' : '') +
+      (c.invited ? '<span class="tn-badge">' + escHtml(t('tnBadgeInvited')) + '</span>' : '') + '</span></span></label></li>';
+  }).join('') + '</ul>';
+  if (nFora) h += '<p class="tn-out"><i data-lucide="info"></i>' + escHtml(_tnFmt(t(nFora === 1 ? 'tnCandOut1' : 'tnCandOut'), { n: nFora.toLocaleString(_tnLocale()) })) + '</p>';
+  return h;
+}
+function _tnEscolher(id, on) {
+  const c = ((_tnCands && _tnCands.candidates) || []).find(x => x.id === id);
+  if (on && c) {
+    if (_tnSel.size >= _tnMaxEscolha()) { showToast(_tnFmt(t('tnErrMaxCos'), { n: _tnMaxEscolha() }), 'error'); }
+    else _tnSel.set(id, { id, name: c.name, city: c.city, km: c.km });
+  } else _tnSel.delete(id);
+  const el = document.getElementById('tnCands');
+  if (el) { const y = el.querySelector('.tn-cand-list') ? el.querySelector('.tn-cand-list').scrollTop : 0; el.innerHTML = _tnCandsHtml(); const l = el.querySelector('.tn-cand-list'); if (l) l.scrollTop = y; refreshLucide(); }
+}
+function _tnParaRever() {
+  if (!_tnCrit.sectors.length) { showToast(t('tnCritPickArea'), 'error'); return; }
+  if (!_tnSel.size) { showToast(t('tnErrPickOne'), 'error'); return; }
+  _tnPasso = 3;
+  _tnRender();
+}
+async function _tnPublicar(btn) {
+  if (!_tnMais) {
+    const ok = document.getElementById('tnConsent');
+    if (ok && !ok.checked) { showToast(t('tnErrConsent'), 'error'); return; }
+  }
+  if (btn) btn.disabled = true;
+  try {
+    const teste = document.getElementById('tnTest');
+    if (teste && !!teste.checked !== !!_tn.tender.is_test && _tn.tender.status === 'draft') {
+      _tn = await apiFetch('/tenders/' + _tn.tender.id, { method: 'PATCH', body: { test: !!teste.checked } });
+    }
+    const r = await apiFetch('/tenders/' + _tn.tender.id + '/publish', { method: 'POST', body: { companyIds: [..._tnSel.keys()], criteria: _tnCrit } });
+    _tn = r.detail;
+    _ev('concurso_publicado');
+    if (r.ignoradas && r.ignoradas.length) showToast(_tnFmt(t('tnSomeSkipped'), { n: r.ignoradas.length }));
+    _tnPasso = 4;
+    _tnRender();
+  } catch (e) {
+    showToast(e.message || t('tnErrGeneric'), 'error');
+    if (btn) btn.disabled = false;
+  }
+}
+
+// ── Painel: os meus concursos ──────────────────────────────────────────────────
+async function openMyTenders(id) {
+  if (!_isLoggedIn()) { window._hxPendingTender = { painel: id || 'lista' }; openLogin(); return; }
+  await _tnConfig();
+  document.getElementById('tenderPanelOverlay').classList.add('open');
+  if (id) return _tnAbrirPainel(id);
+  _tnPainel = null;
+  const el = document.getElementById('tnPanel');
+  el.innerHTML = '<h2 class="legal-title" id="tnPanelTitle">' + escHtml(t('tnMine')) + '</h2><p class="tn-empty">' + escHtml(t('tnLoading')) + '</p>';
+  let meus = [], recebidos = [];
+  try {
+    [meus, recebidos] = await Promise.all([apiFetch('/tenders/mine'), apiFetch('/tenders/received').catch(() => [])]);
+  } catch (e) { el.innerHTML = '<h2 class="legal-title" id="tnPanelTitle">' + escHtml(t('tnMine')) + '</h2><p class="tn-empty">' + escHtml(e.message || t('tnErrGeneric')) + '</p>'; return; }
+  let h = '<div class="tn-panel-head"><h2 class="legal-title" id="tnPanelTitle">' + escHtml(t('tnMine')) + '</h2>' +
+    '<button type="button" class="btn-submit" onclick="closeMyTenders();openTenderWizard()"><i data-lucide="plus"></i> ' + escHtml(t('tnNew')) + '</button></div>';
+  if (!meus.length) h += '<div class="tn-empty-box"><i data-lucide="clipboard-list"></i><p>' + escHtml(t('tnMineEmpty')) + '</p></div>';
+  else h += '<ul class="tn-list">' + meus.map(m =>
+    '<li><button type="button" class="tn-item" onclick="_tnAbrirPainel(' + m.id + ')">' +
+    '<span class="tn-item-main"><span class="tn-item-title">' + escHtml(m.title || t('tnUntitled')) + '</span>' +
+    '<span class="tn-item-sub">' + escHtml([m.city, m.estado === 'draft' ? t('tnStDraftHint') : _tnFmt(t('tnUntil'), { d: _tnData(m.deadline) })].filter(Boolean).join(' · ')) + '</span>' +
+    (m.estado !== 'draft' ? '<span class="tn-item-sub">' + escHtml(_tnFmt(t('tnCounts'), { c: m.convites, v: m.vistas, p: m.propostas })) + '</span>' : '') + '</span>' +
+    _tnEstadoChip(m.estado, m.is_test) + '<i data-lucide="chevron-right"></i></button></li>').join('') + '</ul>';
+  if (recebidos && recebidos.length) {
+    h += '<h3 class="tn-h3">' + escHtml(t('tnReceived')) + '</h3><ul class="tn-list">' + recebidos.map(r =>
+      '<li><button type="button" class="tn-item" onclick="closeMyTenders();openTenderInvite(\'' + r.ref + '\')">' +
+      '<span class="tn-item-main"><span class="tn-item-title">' + escHtml(r.title) + '</span>' +
+      '<span class="tn-item-sub">' + escHtml([r.company_name, r.city, _tnFmt(t('tnUntil'), { d: _tnData(r.deadline) })].filter(Boolean).join(' · ')) + '</span></span>' +
+      _tnEstadoChip(r.estado) + '<i data-lucide="chevron-right"></i></button></li>').join('') + '</ul>';
+  }
+  el.innerHTML = h;
+  refreshLucide();
+}
+function closeMyTenders() {
+  const ov = document.getElementById('tenderPanelOverlay');
+  if (ov) ov.classList.remove('open');
+  _tnLimparUrl('concursos');
+}
+async function _tnAbrirPainel(id) {
+  const el = document.getElementById('tnPanel');
+  el.innerHTML = '<p class="tn-empty">' + escHtml(t('tnLoading')) + '</p>';
+  try { _tnPainel = await apiFetch('/tenders/' + id); }
+  catch (e) { el.innerHTML = '<p class="tn-empty">' + escHtml(e.message || t('tnErrGeneric')) + '</p>'; return; }
+  if (_tnPainel.tender.estado === 'draft') {
+    closeMyTenders();
+    return openTenderWizard(id);
+  }
+  _tnAba = _tnPainel.proposals.length ? 'props' : 'cos';
+  _tnRenderPainel();
+}
+function _tnRenderPainel() {
+  const el = document.getElementById('tnPanel');
+  const d = _tnPainel;
+  if (!el || !d) return;
+  const T = d.tender;
+  const L = d.limites || {};
+  const vivos = d.proposals.filter(p => p.status !== 'withdrawn');
+  const vistos = d.invites.filter(i => i.first_viewed_at).length;
+  let h = '<button type="button" class="tn-back" onclick="openMyTenders()"><i data-lucide="arrow-left"></i> ' + escHtml(t('tnMine')) + '</button>' +
+    '<div class="tn-panel-title"><h2 class="legal-title" id="tnPanelTitle">' + escHtml(T.title) + '</h2>' + _tnEstadoChip(T.estado, T.is_test) + '</div>' +
+    '<p class="tn-meta"><span><i data-lucide="map-pin"></i>' + escHtml(T.city || '—') + '</span><span><i data-lucide="calendar"></i>' + escHtml(_tnFmt(t('tnUntil'), { d: _tnData(T.deadline, true) })) + '</span></p>' +
+    '<div class="tn-stats"><div><strong>' + d.invites.length + '</strong><span>' + escHtml(t('tnStatInvited')) + '</span></div>' +
+    '<div><strong>' + vistos + '</strong><span>' + escHtml(t('tnStatViewed')) + '</span></div>' +
+    '<div><strong>' + vivos.length + '</strong><span>' + escHtml(t('tnStatProps')) + '</span></div></div>';
+  if (T.estado !== 'closed') {
+    h += '<div class="tn-panel-actions">' +
+      (T.estado === 'open' && d.invites.length < (L.empresas || 10) ? '<button type="button" class="btn-submit tn-sec" onclick="closeMyTenders();openTenderWizard(' + T.id + ',{mais:true})"><i data-lucide="user-plus"></i> ' + escHtml(t('tnInviteMore')) + '</button>' : '') +
+      '<button type="button" class="btn-submit tn-sec" onclick="_tnMostrarProlongar()"><i data-lucide="calendar-plus"></i> ' + escHtml(t('tnExtend')) + '</button>' +
+      '<button type="button" class="btn-submit tn-sec tn-danger" onclick="_tnFechar()"><i data-lucide="lock"></i> ' + escHtml(t('tnClose')) + '</button></div>' +
+      '<div class="tn-extend" id="tnExtend" hidden><input type="date" id="tnNewDeadline" class="contact-input" min="' + _tnDiaDe(new Date(Math.max(Date.now(), new Date(T.deadline).getTime()) + 86400e3)) + '" max="' + _tnDia(L.diasMax || 180) + '"/>' +
+      '<button type="button" class="btn-submit" onclick="_tnProlongar(this)">' + escHtml(t('tnExtendSave')) + '</button></div>';
+  }
+  const abas = [['props', t('tnTabProps') + ' (' + vivos.length + ')'], ['cos', t('tnTabCos') + ' (' + d.invites.length + ')'], ['files', t('tnTabFiles') + ' (' + d.files.filter(f => f.status === 'ready').length + ')'], ['log', t('tnTabLog')]];
+  h += '<div class="tn-tabs" role="tablist">' + abas.map(([k, n]) => '<button type="button" role="tab" aria-selected="' + (_tnAba === k) + '" class="' + (_tnAba === k ? 'on' : '') + '" onclick="_tnAba=\'' + k + '\';_tnRenderPainel()">' + escHtml(n) + '</button>').join('') + '</div>';
+  h += '<div class="tn-tab-body">';
+  if (_tnAba === 'props') {
+    if (!d.proposals.length) h += '<p class="tn-empty">' + escHtml(t('tnNoProps')) + '</p>';
+    else {
+      const precos = vivos.map(p => p.price_cents).filter(v => v != null);
+      const minimo = precos.length ? Math.min(...precos) : null;
+      const ord = [...d.proposals].sort((a, b) => (a.status === 'withdrawn') - (b.status === 'withdrawn') || (a.price_cents || 0) - (b.price_cents || 0));
+      h += '<div class="tn-props">' + ord.map(p => {
+        const ivas = { incluido: t('tnVatIncl'), acresce: t('tnVatPlus'), isento: t('tnVatEx') };
+        const est = { submitted: ['tnSubmitted', ''], accepted: ['tnAccepted', 'tn-chip-open'], declined: ['tnDeclined', 'tn-chip-closed'], withdrawn: ['tnWithdrawn', 'tn-chip-closed'] }[p.status] || ['tnSubmitted', ''];
+        return '<article class="tn-prop' + (p.status === 'accepted' ? ' tn-prop-win' : '') + (p.status === 'withdrawn' ? ' tn-prop-off' : '') + '">' +
+          '<header><strong>' + escHtml(p.company_name) + '</strong><span class="tn-chip ' + est[1] + '">' + escHtml(t(est[0])) + '</span></header>' +
+          '<div class="tn-prop-price">' + escHtml(_tnEuros(p.price_cents)) + '<small>' + escHtml(ivas[p.vat] || '') + '</small>' +
+          (minimo != null && p.price_cents === minimo && vivos.length > 1 && p.status !== 'withdrawn' ? '<span class="tn-badge">' + escHtml(t('tnLowest')) + '</span>' : '') + '</div>' +
+          '<dl class="tn-prop-dl"><dt>' + escHtml(t('tnDuration')) + '</dt><dd>' + escHtml(p.duration || '—') + '</dd>' +
+          (p.validity_days ? '<dt>' + escHtml(t('tnValidity')) + '</dt><dd>' + escHtml(Number(p.validity_days) === 1 ? t('tnDays1') : _tnFmt(t('tnDays'), { n: p.validity_days })) + '</dd>' : '') +
+          '<dt>' + escHtml(t('tnContact')) + '</dt><dd>' + escHtml(p.contact_name || '') + '<br><a href="mailto:' + escHtml(p.contact_email || '') + '">' + escHtml(p.contact_email || '') + '</a>' + (p.contact_phone ? '<br><a href="tel:' + escHtml(String(p.contact_phone).replace(/[^\d+]/g, '')) + '">' + escHtml(p.contact_phone) + '</a>' : '') + '</dd>' +
+          '<dt>' + escHtml(t('tnReceivedOn')) + '</dt><dd>' + escHtml(_tnData(p.updated_at || p.submitted_at, true)) + '</dd></dl>' +
+          (p.notes ? '<p class="tn-prop-notes">' + escHtml(p.notes) + '</p>' : '') +
+          (p.files.length ? '<ul class="tn-file-list">' + p.files.map(f => '<li class="tn-file"><i data-lucide="' + _tnIcone(f.name) + '"></i><a class="tn-file-name" href="/api/tenders/files/' + f.id + '" target="_blank" rel="noopener">' + escHtml(f.name) + '</a><span class="tn-file-size">' + _tnTam(f.size) + '</span></li>').join('') + '</ul>' : '') +
+          (p.status === 'submitted' && T.estado !== 'closed' ? '<footer><button type="button" class="btn-submit" onclick="_tnDecidir(' + p.id + ',\'accepted\')"><i data-lucide="check"></i> ' + escHtml(t('tnAccept')) + '</button>' +
+            '<button type="button" class="btn-submit tn-sec" onclick="_tnDecidir(' + p.id + ',\'declined\')">' + escHtml(t('tnDecline')) + '</button></footer>' : '') +
+          '</article>';
+      }).join('') + '</div>';
+    }
+  } else if (_tnAba === 'cos') {
+    h += '<ul class="tn-cos">' + d.invites.map(i => {
+      const linhas = [];
+      linhas.push(i.status === 'test' ? t('tnCoTest') : i.status === 'failed' ? t('tnCoFailed') : i.status === 'pending' ? t('tnCoPending') : _tnFmt(t('tnCoSent'), { d: _tnData(i.sent_at) }));
+      linhas.push(i.first_viewed_at ? _tnFmt(t('tnCoViewed'), { d: _tnData(i.last_viewed_at || i.first_viewed_at, true) }) : t('tnCoNotViewed'));
+      if (i.downloads) linhas.push(_tnFmt(t(i.downloads === 1 ? 'tnCoDl1' : 'tnCoDl'), { n: i.downloads }));
+      const resp = i.proposal && i.proposal.status !== 'withdrawn' ? '<span class="tn-chip tn-chip-open">' + escHtml(t('tnCoProposal')) + '</span>'
+        : i.declined_at ? '<span class="tn-chip tn-chip-closed" title="' + escHtml(i.decline_reason || '') + '">' + escHtml(t('tnCoDeclined')) + '</span>' : '';
+      return '<li><span class="tn-co-main"><strong>' + escHtml(i.company_name) + '</strong><span>' + escHtml([i.city].concat(linhas).filter(Boolean).join(' · ')) + '</span>' +
+        (i.declined_at && i.decline_reason ? '<span class="tn-co-reason">“' + escHtml(i.decline_reason) + '”</span>' : '') +
+        (i.link ? '<button type="button" class="tn-link-btn" onclick="_tnCopiar(\'' + escHtml(i.link) + '\')"><i data-lucide="copy"></i> ' + escHtml(t('tnCopyLink')) + '</button> <a class="tn-link-btn" href="' + escHtml(i.link) + '" target="_blank" rel="noopener"><i data-lucide="external-link"></i> ' + escHtml(t('tnOpenAsCo')) + '</a>' : '') +
+        '</span>' + resp + '</li>';
+    }).join('') + '</ul>';
+  } else if (_tnAba === 'files') {
+    const prontos = d.files.filter(f => f.status === 'ready');
+    h += prontos.length ? '<ul class="tn-file-list">' + prontos.map(f => '<li class="tn-file"><i data-lucide="' + _tnIcone(f.name) + '"></i><a class="tn-file-name" href="/api/tenders/files/' + f.id + '" target="_blank" rel="noopener">' + escHtml(f.name) + '</a><span class="tn-file-size">' + _tnTam(f.size) + '</span></li>').join('') + '</ul>'
+      : '<p class="tn-empty">' + escHtml(t('tnNoFiles')) + '</p>';
+    h += '<p class="tn-note"><i data-lucide="clock"></i>' + escHtml(t('tnRetention')) + '</p>';
+  } else {
+    const nomes = { view: 'tnLogView', download: 'tnLogDownload', proposal: 'tnLogProposal', proposal_update: 'tnLogProposalUpd', decline: 'tnLogDecline', publish: 'tnLogPublish', invite: 'tnLogInvite', close: 'tnLogClose', deadline: 'tnLogDeadline', accept: 'tnLogAccept', decline_proposal: 'tnLogDeclineProp' };
+    h += d.log.length ? '<ol class="tn-log">' + d.log.map(l =>
+      '<li><time>' + escHtml(_tnData(l.at, true)) + '</time><span>' + (l.company_name ? '<strong>' + escHtml(l.company_name) + '</strong> ' : '') +
+      escHtml(t(nomes[l.action] || 'tnLogView')) + (l.file_name ? ' <em>' + escHtml(l.file_name) + '</em>' : '') + '</span></li>').join('') + '</ol>'
+      : '<p class="tn-empty">' + escHtml(t('tnLogEmpty')) + '</p>';
+  }
+  h += '</div>';
+  el.innerHTML = h;
+  refreshLucide();
+}
+function _tnCopiar(link) {
+  try { navigator.clipboard.writeText(link).then(() => showToast(t('tnLinkCopied'))); } catch (_) { prompt('', link); }
+}
+function _tnMostrarProlongar() {
+  const e = document.getElementById('tnExtend');
+  if (e) { e.hidden = !e.hidden; if (!e.hidden) { const i = document.getElementById('tnNewDeadline'); if (i) i.focus(); } }
+}
+async function _tnProlongar(btn) {
+  const v = (document.getElementById('tnNewDeadline') || {}).value;
+  if (!v) { showToast(t('tnErrDeadline'), 'error'); return; }
+  if (btn) btn.disabled = true;
+  try { _tnPainel = await apiFetch('/tenders/' + _tnPainel.tender.id, { method: 'PATCH', body: { deadline: v } }); _tnRenderPainel(); showToast(t('tnExtended')); }
+  catch (e) { showToast(e.message || t('tnErrGeneric'), 'error'); if (btn) btn.disabled = false; }
+}
+async function _tnFechar() {
+  if (!confirm(t('tnConfirmClose'))) return;
+  try { _tnPainel = await apiFetch('/tenders/' + _tnPainel.tender.id + '/close', { method: 'POST' }); _tnRenderPainel(); }
+  catch (e) { showToast(e.message || t('tnErrGeneric'), 'error'); }
+}
+async function _tnDecidir(pid, decisao) {
+  const p = _tnPainel.proposals.find(x => x.id === pid);
+  if (!confirm(_tnFmt(t(decisao === 'accepted' ? 'tnConfirmAccept' : 'tnConfirmDecline'), { c: p ? p.company_name : '' }))) return;
+  try {
+    _tnPainel = await apiFetch('/tenders/' + _tnPainel.tender.id + '/proposals/' + pid + '/decision', { method: 'POST', body: { decision: decisao } });
+    _tnRenderPainel();
+  } catch (e) { showToast(e.message || t('tnErrGeneric'), 'error'); }
+}
+
+// ── Empresa convidada: ver o concurso e responder ──────────────────────────────
+async function openTenderInvite(ref) {
+  _tnRef = String(ref || '');
+  _tnUpsConv = [];
+  await _tnConfig();
+  const ov = document.getElementById('tenderInviteOverlay');
+  ov.classList.add('open');
+  document.getElementById('tnInvite').innerHTML = '<p class="tn-empty">' + escHtml(t('tnLoading')) + '</p>';
+  try {
+    _tnConv = await apiFetch('/tender-invites/' + encodeURIComponent(_tnRef));
+    _tnConvErro = null;
+    _ev('concurso_convite');
+  } catch (e) {
+    _tnConv = null;
+    _tnConvErro = e.status === 404 ? { chave: 'tnInvGone' } : { msg: e.message };
+    _tnRenderErroConvite();
+    return;
+  }
+  _tnRenderConvite();
+}
+let _tnConvErro = null;
+function _tnRenderErroConvite() {
+  const e = _tnConvErro || {};
+  document.getElementById('tnInvite').innerHTML = '<div class="tn-empty-box"><i data-lucide="mail-x"></i><p>' +
+    escHtml(e.chave ? t(e.chave) : (e.msg || t('tnErrGeneric'))) + '</p></div>';
+  refreshLucide();
+}
+function closeTenderInvite() {
+  const ov = document.getElementById('tenderInviteOverlay');
+  if (ov) ov.classList.remove('open');
+  _tnLimparUrl('concurso');
+  try { sessionStorage.removeItem('hx_concurso'); } catch (_) {}
+  window.__hxConcurso = null;
+}
+function _tnRenderConvite() {
+  const el = document.getElementById('tnInvite');
+  const v = _tnConv;
+  if (!el || !v) return;
+  const T = v.tender;
+  const P = v.proposal;
+  const L = v.limites || {};
+  const aberto = T.estado === 'open';
+  const decidida = P && (P.status === 'accepted' || P.status === 'declined');
+  const ref = encodeURIComponent(_tnRef);
+  let h = '<p class="tn-kicker"><i data-lucide="clipboard-list"></i>' + escHtml(t('tnInvTitle')) + (T.is_test ? ' · ' + escHtml(t('tnStTest')) : '') + '</p>' +
+    '<h2 class="legal-title" id="tnInvTitle">' + escHtml(T.title) + '</h2>' +
+    '<p class="tn-meta"><span><i data-lucide="building-2"></i>' + escHtml(_tnFmt(t('tnInvFor'), { c: v.invite.company_name })) + '</span>' +
+    '<span><i data-lucide="map-pin"></i>' + escHtml(T.city || '—') + '</span></p>';
+  if (T.estado === 'closed') h += '<p class="tn-banner tn-banner-off">' + escHtml(t('tnInvClosed')) + '</p>';
+  else if (T.estado === 'expired') h += '<p class="tn-banner tn-banner-off">' + escHtml(t('tnInvExpired')) + '</p>';
+  h += '<dl class="tn-facts"><div><dt>' + escHtml(t('tnInvDeadline')) + '</dt><dd>' + escHtml(_tnData(T.deadline, true)) + '</dd></div>' +
+    '<div><dt>' + escHtml(t('tnInvBudget')) + '</dt><dd>' + escHtml(T.budget || t('tnBudgetTbd')) + '</dd></div>' +
+    (T.start_date ? '<div><dt>' + escHtml(t('tnInvStart')) + '</dt><dd>' + escHtml(_tnData(T.start_date)) + '</dd></div>' : '') +
+    '<div><dt>' + escHtml(t('tnInvClient')) + '</dt><dd>' + escHtml(T.owner_name) + '<br><a href="mailto:' + escHtml(T.owner_email) + '">' + escHtml(T.owner_email) + '</a>' +
+    (T.owner_phone ? '<br><a href="tel:' + escHtml(String(T.owner_phone).replace(/[^\d+]/g, '')) + '">' + escHtml(T.owner_phone) + '</a>' : '') + '</dd></div></dl>' +
+    '<h3 class="tn-h3">' + escHtml(t('tnInvScope')) + '</h3><p class="tn-desc">' + escHtml(T.description) + '</p>' +
+    '<h3 class="tn-h3">' + escHtml(t('tnInvFiles')) + '</h3>' +
+    (v.files.length ? '<ul class="tn-file-list">' + v.files.map(f =>
+      '<li class="tn-file"><i data-lucide="' + _tnIcone(f.name) + '"></i><span class="tn-file-name">' + escHtml(f.name) + '</span><span class="tn-file-size">' + _tnTam(f.size) + '</span>' +
+      '<a class="btn-submit tn-sec tn-dl" href="/api/tenders/files/' + f.id + '?ref=' + ref + '" target="_blank" rel="noopener"><i data-lucide="download"></i> ' + escHtml(t('tnInvDl')) + '</a></li>').join('') + '</ul>'
+      : '<p class="tn-empty">' + escHtml(t('tnNoFiles')) + '</p>');
+  // Proposta
+  h += '<section class="tn-propbox"><h3 class="tn-h3">' + escHtml(t('tnPropTitle')) + '</h3>';
+  if (P && P.status === 'accepted') h += '<p class="tn-banner tn-banner-win"><i data-lucide="party-popper"></i>' + escHtml(t('tnPropAccepted')) + '</p>';
+  else if (P && P.status === 'declined') h += '<p class="tn-banner tn-banner-off">' + escHtml(t('tnPropDeclinedMsg')) + '</p>';
+  else if (P && P.status === 'submitted') h += '<p class="tn-banner"><i data-lucide="check-circle-2"></i>' + escHtml(_tnFmt(t('tnPropSent'), { d: _tnData(P.updated_at || P.submitted_at, true) })) + '</p>';
+  else if (v.invite.declined_at) h += '<p class="tn-banner tn-banner-off">' + escHtml(t('tnNoBidDone')) + '</p>';
+  if (aberto && !decidida) {
+    const p = P && P.status !== 'withdrawn' ? P : {};
+    h += '<div class="tn-grid2"><div class="form-row"><label for="tnPPrice">' + escHtml(t('tnPropPrice')) + ' <span class="req">*</span></label>' +
+      '<input id="tnPPrice" type="number" inputmode="decimal" min="1" step="0.01" class="contact-input" value="' + (p.price_cents != null ? (p.price_cents / 100) : '') + '"/></div>' +
+      '<div class="form-row"><label for="tnPVat">' + escHtml(t('tnPropVat')) + '</label><select id="tnPVat" class="contact-input">' +
+      [['acresce', 'tnVatPlus'], ['incluido', 'tnVatIncl'], ['isento', 'tnVatEx']].map(([k, n]) => '<option value="' + k + '"' + ((p.vat || 'acresce') === k ? ' selected' : '') + '>' + escHtml(t(n)) + '</option>').join('') + '</select></div></div>' +
+      '<div class="tn-grid2"><div class="form-row"><label for="tnPDur">' + escHtml(t('tnPropDuration')) + ' <span class="req">*</span></label>' +
+      '<input id="tnPDur" class="contact-input" maxlength="80" placeholder="' + escHtml(t('tnPropDurationPh')) + '" value="' + escHtml(p.duration || '') + '"/></div>' +
+      '<div class="form-row"><label for="tnPVal">' + escHtml(t('tnPropValidity')) + '</label>' +
+      '<input id="tnPVal" type="number" min="1" max="365" class="contact-input" value="' + (p.validity_days || 30) + '"/></div></div>' +
+      '<div class="form-row"><label for="tnPNotes">' + escHtml(t('tnPropNotes')) + '</label><textarea id="tnPNotes" class="contact-input" rows="4" maxlength="6000">' + escHtml(p.notes || '') + '</textarea></div>' +
+      '<div class="tn-grid3"><div class="form-row"><label for="tnPName">' + escHtml(t('tnPropName')) + ' <span class="req">*</span></label><input id="tnPName" class="contact-input" maxlength="120" autocomplete="name" value="' + escHtml(p.contact_name || '') + '"/></div>' +
+      '<div class="form-row"><label for="tnPEmail">' + escHtml(t('tnPropEmail')) + ' <span class="req">*</span></label><input id="tnPEmail" type="email" class="contact-input" maxlength="254" autocomplete="email" value="' + escHtml(p.contact_email || v.invite.email || '') + '"/></div>' +
+      '<div class="form-row"><label for="tnPPhone">' + escHtml(t('tnPropPhone')) + '</label><input id="tnPPhone" type="tel" class="contact-input" maxlength="40" autocomplete="tel" value="' + escHtml(p.contact_phone || '') + '"/></div></div>' +
+      '<div class="tn-files"><div class="tn-files-head"><strong>' + escHtml(t('tnPropFiles')) + '</strong></div>' +
+      (v.anexos ? _tnZonaFicheiros('tnDropP', '_tnFicheirosProposta', v.proposalFiles.length + _tnUpsConv.filter(u => u.estado !== 'erro').length, L.ficheirosProposta || 5, L.mb || 25) +
+        _tnListaFicheiros(v.proposalFiles, _tnUpsConv, '_tnRetirarFicheiroProposta', true)
+        : '<p class="tn-note"><i data-lucide="info"></i>' + escHtml(t('tnFilesOff')) + '</p>') + '</div>' +
+      '<div class="tn-actions"><button type="button" class="btn-submit tn-sec" onclick="_tnMostrarRecusa()">' + escHtml(t('tnNoBid')) + '</button>' +
+      '<button type="button" class="btn-submit" onclick="_tnEnviarProposta(this)"><i data-lucide="send"></i> ' + escHtml(P && P.status === 'submitted' ? t('tnPropUpdate') : t('tnPropSend')) + '</button></div>' +
+      '<div class="tn-nobid" id="tnNoBid" hidden><label for="tnNoBidReason">' + escHtml(t('tnNoBidReason')) + '</label><input id="tnNoBidReason" class="contact-input" maxlength="300"/>' +
+      '<button type="button" class="btn-submit tn-sec" onclick="_tnRecusar(this)">' + escHtml(t('tnNoBidConfirm')) + '</button></div>';
+  } else if (P && v.proposalFiles.length) {
+    h += '<ul class="tn-file-list">' + v.proposalFiles.map(f => '<li class="tn-file"><i data-lucide="' + _tnIcone(f.name) + '"></i><span class="tn-file-name">' + escHtml(f.name) + '</span><span class="tn-file-size">' + _tnTam(f.size) + '</span></li>').join('') + '</ul>';
+  }
+  h += '</section><p class="tn-note"><i data-lucide="shield-check"></i>' + escHtml(t('tnInvPrivacy')) + '</p>';
+  if (!v.invite.claimed && v.invite.company_id) {
+    h += '<p class="tn-claim"><span>' + escHtml(t('tnInvClaim')) + '</span><button type="button" class="btn-submit tn-sec" onclick="_tnReclamar(' + v.invite.company_id + ')">' + escHtml(t('tnInvClaimBtn')) + '</button></p>';
+  }
+  if (/^[A-Za-z0-9_-]{32}$/.test(_tnRef)) {
+    h += '<p class="tn-optout"><a href="/api/tender-invites/' + ref + '/optout" target="_blank" rel="noopener">' + escHtml(t('tnInvOptout')) + '</a></p>';
+  }
+  el.innerHTML = h;
+  refreshLucide();
+}
+function _tnLerProposta() {
+  const v = (id) => (document.getElementById(id) || {}).value || '';
+  return { price: v('tnPPrice'), vat: v('tnPVat'), duration: v('tnPDur').trim(), validity_days: v('tnPVal') ? Number(v('tnPVal')) : null,
+    notes: v('tnPNotes').trim(), contact_name: v('tnPName').trim(), contact_email: v('tnPEmail').trim(), contact_phone: v('tnPPhone').trim() };
+}
+function _tnReporProposta(b) {
+  if (!b) return;
+  const s = (id, val) => { const el = document.getElementById(id); if (el && val != null) el.value = val; };
+  s('tnPPrice', b.price); s('tnPVat', b.vat); s('tnPDur', b.duration); s('tnPVal', b.validity_days); s('tnPNotes', b.notes);
+  s('tnPName', b.contact_name); s('tnPEmail', b.contact_email); s('tnPPhone', b.contact_phone);
+}
+async function _tnFicheirosProposta(files) {
+  files = Array.from(files || []);
+  const L = (_tnConv && _tnConv.limites) || {};
+  await _tnEnviar({
+    base: () => '/tender-invites/' + encodeURIComponent(_tnRef),
+    max: L.ficheirosProposta || 5,
+    ups: _tnUpsConv,
+    contagem: () => _tnConv.proposalFiles.length + _tnUpsConv.filter(u => u.estado !== 'erro').length,
+    render: () => { const keep = _tnLerProposta(); _tnRenderConvite(); _tnReporProposta(keep); },
+    ok: (f) => { _tnConv.proposalFiles.push(f); },
+  }, files);
+}
+async function _tnRetirarFicheiroProposta(id) {
+  const keep = _tnLerProposta();
+  try {
+    await apiFetch('/tender-invites/' + encodeURIComponent(_tnRef) + '/files/' + id, { method: 'DELETE' });
+    _tnConv.proposalFiles = _tnConv.proposalFiles.filter(f => f.id !== id);
+    _tnRenderConvite(); _tnReporProposta(keep);
+  } catch (e) { showToast(e.message || t('tnErrGeneric'), 'error'); }
+}
+async function _tnEnviarProposta(btn) {
+  const b = _tnLerProposta();
+  if (!(Number(String(b.price).replace(',', '.')) > 0)) { showToast(t('tnPropErrPrice'), 'error'); return; }
+  if (b.duration.length < 2) { showToast(t('tnPropErrDuration'), 'error'); return; }
+  if (b.contact_name.length < 2) { showToast(t('tnPropErrName'), 'error'); return; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(b.contact_email)) { showToast(t('tnPropErrEmail'), 'error'); return; }
+  if (_tnUpsConv.some(u => u.estado !== 'erro')) { showToast(t('tnErrUploading'), 'error'); return; }
+  const novo = !(_tnConv.proposal && _tnConv.proposal.status === 'submitted');
+  if (btn) btn.disabled = true;
+  try {
+    _tnConv = await apiFetch('/tender-invites/' + encodeURIComponent(_tnRef) + '/proposal', { method: 'PUT', body: b });
+    if (novo) _ev('concurso_proposta');
+    _tnRenderConvite();
+    showToast(t(novo ? 'tnPropOk' : 'tnPropUpdOk'));
+    const box = document.querySelector('#tnInvite .tn-propbox');
+    if (box) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  } catch (e) { showToast(e.message || t('tnErrGeneric'), 'error'); if (btn) btn.disabled = false; }
+}
+function _tnMostrarRecusa() {
+  const e = document.getElementById('tnNoBid');
+  if (e) { e.hidden = !e.hidden; if (!e.hidden) { const i = document.getElementById('tnNoBidReason'); if (i) i.focus(); } }
+}
+async function _tnRecusar(btn) {
+  if (btn) btn.disabled = true;
+  try {
+    _tnConv = await apiFetch('/tender-invites/' + encodeURIComponent(_tnRef) + '/decline', { method: 'POST', body: { reason: (document.getElementById('tnNoBidReason') || {}).value || '' } });
+    _tnRenderConvite();
+  } catch (e) { showToast(e.message || t('tnErrGeneric'), 'error'); if (btn) btn.disabled = false; }
+}
+function _tnReclamar(companyId) {
+  closeTenderInvite();
+  try {
+    openDetail(companyId);
+    setTimeout(() => { try { if (Number(selectedId) === Number(companyId)) openClaimModal(); } catch (_) {} }, 900);
+  } catch (_) {}
+}
+
+// Entrada pendente (visitante que fez login a meio)
+function _tnRetomar(p) {
+  if (!p) return;
+  if (p.wizard) openTenderWizard(p.wizard === 'novo' ? null : p.wizard, { mais: p.mais });
+  else if (p.painel) openMyTenders(p.painel === 'lista' ? null : p.painel);
+}
+// Mudança de língua com um ecrã de concursos aberto: volta a desenhá-lo
+function _tnRelang() {
+  try {
+    if (document.getElementById('tenderOverlay').classList.contains('open')) {
+      const keep = _tnPasso === 1 ? _tnLerPasso1() : null;
+      _tnRender(); _tnRepor(keep);
+      if (_tnPasso === 2) { const el = document.getElementById('tnCands'); if (el) { el.innerHTML = _tnCandsHtml(); refreshLucide(); } }
+    }
+    if (document.getElementById('tenderPanelOverlay').classList.contains('open')) { if (_tnPainel) _tnRenderPainel(); else openMyTenders(); }
+    if (document.getElementById('tenderInviteOverlay').classList.contains('open') && !_tnConv && _tnConvErro) _tnRenderErroConvite();
+    if (document.getElementById('tenderInviteOverlay').classList.contains('open') && _tnConv) {
+      const keep = _tnLerProposta(); _tnRenderConvite(); _tnReporProposta(keep);
+    }
+  } catch (_) {}
+}
+// Esc fecha o ecrã de concursos que estiver por cima
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  for (const [id, fn] of [['tenderInviteOverlay', closeTenderInvite], ['tenderOverlay', closeTenderWizard], ['tenderPanelOverlay', closeMyTenders]]) {
+    const ov = document.getElementById(id);
+    if (ov && ov.classList.contains('open')) { fn(); break; }
+  }
+});
+// Links: ?concurso=TOKEN (empresa convidada; o index.html tira o token do
+// endereço e guarda-o em sessionStorage 'hx_concurso') e ?concursos=ID (painel)
+function _tnTokenGuardado() {
+  if (window.__hxConcurso) return window.__hxConcurso;
+  try {
+    const nav = (performance.getEntriesByType('navigation')[0] || {}).type;
+    if (nav && nav !== 'navigate') return sessionStorage.getItem('hx_concurso');   // recarregar / voltar atrás
+  } catch (_) {}
+  return null;
+}
+function _tnLinkAtivo() {
+  return /[?&]concursos?=/.test(location.search) || !!_tnTokenGuardado();
+}
+document.addEventListener('DOMContentLoaded', () => {
+  try {
+    const p = new URLSearchParams(location.search);
+    const painel = p.get('concursos');
+    const k = p.get('concurso') || _tnTokenGuardado();
+    if (painel && /^\d+$/.test(painel)) setTimeout(() => openMyTenders(Number(painel)), 400);
+    else if (k && /^[A-Za-z0-9_-]{32}$/.test(k)) setTimeout(() => openTenderInvite(k), 400);
+  } catch (_) {}
+});
+Object.assign(window, {
+  openTenderWizard, closeTenderWizard, openMyTenders, closeMyTenders, openTenderInvite, closeTenderInvite,
+  _tnSeguinte, _tnFicheirosConcurso, _tnRetirarFicheiro, _tnPorSetor, _tnTirarSetor, _tnProcurar, _tnEscolher,
+  _tnParaRever, _tnPublicar, _tnAbrirPainel, _tnRenderPainel, _tnMostrarProlongar, _tnProlongar, _tnFechar,
+  _tnDecidir, _tnCopiar, _tnFicheirosProposta, _tnRetirarFicheiroProposta, _tnEnviarProposta, _tnMostrarRecusa,
+  _tnRecusar, _tnReclamar, _tnEsquecerUp, _tnRetomar, _tnRelang,
+});

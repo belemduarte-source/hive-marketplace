@@ -194,6 +194,25 @@ const rfqLimiter = rateLimit({
   message: { error: 'Demasiados pedidos de orçamento. Tente novamente mais tarde.' },
   skip: _skipRateLimit,
 });
+// Concursos: escritas (rascunhos, anexos, propostas). Os convites por email
+// têm ainda o teto por conta na BD (3 concursos publicados por dia) e um teto
+// por IP na publicação (cada publicação envia até 10 emails).
+const tenderLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 150,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados pedidos. Tente novamente mais tarde.' },
+  skip: _skipRateLimit,
+});
+const tenderPublishLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 6,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados convites enviados. Tente novamente mais tarde.' },
+  skip: _skipRateLimit,
+});
 
 // Cidade aproximada por IP (headers da Vercel) — arranque relevante sem pedir permissão
 app.get('/api/geo', (req, res) => {
@@ -685,6 +704,104 @@ const MIGRATIONS = [
      n     INT  NOT NULL DEFAULT 0,
      PRIMARY KEY (day, event)
    )`,
+
+  // v13: concursos (pedido de propostas com anexos a empresas escolhidas —
+  // routes/tenders.js). Anexos no Vercel Blob PRIVADO (aqui só os metadados);
+  // convites com link pessoal (na BD só o hash do token; test_token só nos
+  // concursos de teste dos administradores, que não enviam emails).
+  `CREATE TABLE IF NOT EXISTS tenders (
+     id BIGSERIAL PRIMARY KEY,
+     owner_user_id BIGINT REFERENCES users(id) ON DELETE CASCADE,
+     owner_name  TEXT NOT NULL,
+     owner_email TEXT NOT NULL,
+     owner_phone TEXT,
+     title       TEXT NOT NULL DEFAULT '',
+     description TEXT NOT NULL DEFAULT '',
+     city    TEXT,
+     country TEXT NOT NULL DEFAULT 'pt',
+     lat DOUBLE PRECISION, lng DOUBLE PRECISION,
+     budget     TEXT,
+     start_date DATE,
+     deadline   TIMESTAMPTZ,
+     criteria   JSONB NOT NULL DEFAULT '{}',
+     status     TEXT NOT NULL DEFAULT 'draft' CHECK (status IN ('draft','open','closed')),
+     is_test    BOOLEAN NOT NULL DEFAULT FALSE,
+     published_at TIMESTAMPTZ,
+     closed_at    TIMESTAMPTZ,
+     deadline_notified_at TIMESTAMPTZ,
+     purged_at    TIMESTAMPTZ,
+     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_tenders_owner  ON tenders(owner_user_id, created_at DESC)`,
+  `CREATE INDEX IF NOT EXISTS idx_tenders_status ON tenders(status, deadline)`,
+  `CREATE TABLE IF NOT EXISTS tender_invites (
+     id BIGSERIAL PRIMARY KEY,
+     tender_id  BIGINT NOT NULL REFERENCES tenders(id) ON DELETE CASCADE,
+     company_id BIGINT REFERENCES companies(id) ON DELETE SET NULL,
+     company_name TEXT NOT NULL,
+     email      TEXT NOT NULL,
+     token_hash TEXT NOT NULL UNIQUE,
+     test_token TEXT,
+     status     TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','sent','failed','test')),
+     sent_at         TIMESTAMPTZ,
+     first_viewed_at TIMESTAMPTZ,
+     last_viewed_at  TIMESTAMPTZ,
+     views      INT NOT NULL DEFAULT 0,
+     declined_at    TIMESTAMPTZ,
+     decline_reason TEXT,
+     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+     UNIQUE (tender_id, company_id)
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_tender_invites_company ON tender_invites(company_id)`,
+  `CREATE TABLE IF NOT EXISTS tender_proposals (
+     id BIGSERIAL PRIMARY KEY,
+     tender_id BIGINT NOT NULL REFERENCES tenders(id) ON DELETE CASCADE,
+     invite_id BIGINT NOT NULL UNIQUE REFERENCES tender_invites(id) ON DELETE CASCADE,
+     price_cents   BIGINT,
+     vat           TEXT,
+     duration      TEXT,
+     validity_days INT,
+     notes         TEXT,
+     contact_name  TEXT,
+     contact_email TEXT,
+     contact_phone TEXT,
+     status TEXT NOT NULL DEFAULT 'submitted' CHECK (status IN ('submitted','accepted','declined','withdrawn')),
+     submitted_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+     updated_at   TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+     decided_at   TIMESTAMPTZ
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_tender_proposals_tender ON tender_proposals(tender_id)`,
+  `CREATE TABLE IF NOT EXISTS tender_files (
+     id BIGSERIAL PRIMARY KEY,
+     tender_id BIGINT NOT NULL REFERENCES tenders(id) ON DELETE CASCADE,
+     invite_id BIGINT REFERENCES tender_invites(id) ON DELETE CASCADE,
+     pathname   TEXT NOT NULL UNIQUE,
+     filename   TEXT NOT NULL,
+     mime       TEXT NOT NULL,
+     size_bytes BIGINT NOT NULL,
+     status     TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','ready','deleted')),
+     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_tender_files_tender ON tender_files(tender_id)`,
+  `CREATE TABLE IF NOT EXISTS tender_access_log (
+     id BIGSERIAL PRIMARY KEY,
+     tender_id BIGINT NOT NULL REFERENCES tenders(id) ON DELETE CASCADE,
+     invite_id BIGINT REFERENCES tender_invites(id) ON DELETE CASCADE,
+     actor   TEXT NOT NULL CHECK (actor IN ('owner','company')),
+     action  TEXT NOT NULL,
+     file_id BIGINT,
+     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_tender_log_tender ON tender_access_log(tender_id, created_at DESC)`,
+  // Caminhos do Blob a apagar: entram aqui ANTES de saírem da BD e a manutenção
+  // volta a apagá-los depois de os URLs de envio expirarem (um envio em curso
+  // ainda pode aterrar); só saem daqui quando o del() tem sucesso.
+  `CREATE TABLE IF NOT EXISTS tender_blob_trash (
+     pathname   TEXT PRIMARY KEY,
+     tries      INT NOT NULL DEFAULT 0,
+     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+   )`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -693,7 +810,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 12; // v12: site_events (funil sem cookies)
+const SCHEMA_VERSION = 13; // v13: concursos (tenders, convites, propostas, anexos, registo)
 
 async function ensureSchema() {
   if (_migrated) return;
@@ -766,13 +883,17 @@ app.post('/api/claims/:companyId', claimLimiter);       // claim-code email guar
 app.post('/api/claims/:companyId/guest', claimLimiter); // claim sem conta — mesmo orçamento
 app.post('/api/auth/code/request', codeLimiter);       // código de acesso por email
 app.post('/api/quote-requests', rfqLimiter);            // RFQ email fan-out guard
+app.use(['/api/tenders', '/api/tender-invites'], (req, res, next) =>
+  (req.method === 'GET' ? next() : tenderLimiter(req, res, next)));   // concursos: escritas
+app.post('/api/tenders/:id/publish', tenderPublishLimiter);          // concursos: convites por email
 
 // Funil de utilização (sem cookies): o browser envia só o NOME do evento e
 // soma-se 1 ao contador do dia. Nada identifica o visitante; bots e
 // automação não contam. Lido no painel de administração (Estatísticas).
 const SITE_EVENTS = new Set(['visita', 'pesquisa', 'area', 'ficha', 'lista', 'pedido_abrir', 'pedido',
   'orcamento_pedido', 'telefone', 'whatsapp', 'site', 'rota', 'entrar', 'conta_nova', 'reclamar',
-  'reclamada', 'registo', 'destacada', 'destaque_cta']);
+  'reclamada', 'registo', 'destacada', 'destaque_cta',
+  'concurso_abrir', 'concurso_publicado', 'concurso_convite', 'concurso_proposta']);
 const BOT_UA = /bot|crawl|spider|slurp|headless|lighthouse|pagespeed|preview|monitor|curl|wget|python|axios|node-fetch/i;
 app.post('/api/ev', eventLimiter, async (req, res) => {
   const e = String(req.query.e || '');
@@ -788,6 +909,7 @@ app.post('/api/ev', eventLimiter, async (req, res) => {
 });
 
 app.use('/api', marketplaceRouter);
+app.use('/api', require('./routes/tenders'));
 app.use('/api', require('./routes/billing').router);
 app.use('/api/companies', companiesRouter);
 app.use('/api/auth', authRouter);

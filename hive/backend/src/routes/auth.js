@@ -642,6 +642,15 @@ router.delete('/me', requireAuth, async (req, res, next) => {
       }
     }
 
+    // Os concursos da conta saem com ela (ON DELETE CASCADE); os anexos vivem
+    // no Blob privado e vão para o "lixo" dos concursos, que os apaga mesmo
+    // que o Blob falhe agora (routes/tenders.js, _paraLixo).
+    try {
+      const { rows: fs } = await pool.query(
+        `SELECT f.pathname FROM tender_files f JOIN tenders t ON t.id = f.tender_id
+          WHERE t.owner_user_id = $1 AND f.status <> 'deleted'`, [user.id]);
+      if (fs.length) await require('./tenders')._paraLixo(fs.map(f => f.pathname));
+    } catch (e) { console.error('[auth] anexos dos concursos por apagar:', e.message); }
     await pool.query('DELETE FROM users WHERE id = $1', [user.id]);
     res.clearCookie('hive_token', CLEAR_COOKIE_OPTS);
     res.json({ ok: true });

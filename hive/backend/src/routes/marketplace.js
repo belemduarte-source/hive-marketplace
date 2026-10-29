@@ -526,7 +526,10 @@ router.get('/messages/purge', async (req, res) => {
   // vercel.json — não mexe no limite de crons do plano).
   let pedidos = null;
   try { pedidos = await sendReviewRequests(); } catch (e) { console.error('[review-requests]', e.message); }
-  res.json({ ok: true, pedidosAvaliacao: pedidos });
+  // Concursos: resumos de prazo, convites por enviar e retenção dos anexos.
+  let concursos = null;
+  try { concursos = await require('./tenders').manutencaoConcursos(); } catch (e) { console.error('[concursos] manutenção:', e.message); }
+  res.json({ ok: true, pedidosAvaliacao: pedidos, concursos });
 });
 
 // ── PEDIDOS DE AVALIAÇÃO ──────────────────────────────────────────────────────

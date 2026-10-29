@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <script>/* Apply saved theme before paint to avoid a flash of the wrong theme */try{document.documentElement.classList.add('hx-no-reviews');var _t=localStorage.getItem('hivex_theme');if(_t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
+  <script>/* Link pessoal de concurso (?concurso=TOKEN): guarda o token na sessão do separador e tira-o do endereço já, antes de qualquer script de terceiros (publicidade) poder ler o URL */try{var _k=/[?&]concurso=([A-Za-z0-9_-]{32})(?=&|$)/.exec(location.search);if(_k){window.__hxConcurso=_k[1];sessionStorage.setItem('hx_concurso',_k[1]);history.replaceState(history.state,'',location.pathname+location.search.replace(/([?&])concurso=[^&]*&?/,'$1').replace(/[?&]$/,'')+location.hash);}}catch(e){}</script>
   <!-- ── Google AdSense (dormant until you add your IDs) ──────────────────────────
        1. Paste your publisher ID into ADSENSE_CLIENT  (looks like ca-pub-XXXXXXXXXXXXXXXX).
           That alone loads AdSense + enables Auto Ads (toggle them in your AdSense dashboard).
@@ -178,7 +179,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v346.css"/>
+  <link rel="stylesheet" href="app.v347.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -1690,7 +1691,7 @@
    boas-vindas (sem flash). Crawlers (sem localStorage) veem-no sempre. */
 (function () {
   try {
-    var dl = /[?&]company=/.test(location.search) || /^\/c\//.test(location.pathname);
+    var dl = /[?&](company|concurso|concursos)=/.test(location.search) || /^\/c\//.test(location.pathname) || !!window.__hxConcurso;
     if (dl || localStorage.getItem('hivex_bemvindo_visto')) {
       var w = document.getElementById('welcomeOverlay');
       if (w) w.style.display = 'none';
@@ -1804,6 +1805,27 @@
     </div>
     <input type="text" id="rfqWebsite" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0;border:0;padding:0"/>
     <button class="btn-submit" style="width:100%;font-size:19px;padding:15px;margin-top:6px" onclick="submitRfq(this)" data-i18n="rfqSend">Enviar pedido às empresas</button>
+    <button type="button" class="tn-rfq-link" onclick="closeRfqModal();openTenderWizard()" data-i18n="tnRfqLink">Tem um projeto ou caderno de encargos? Lance um concurso com anexos →</button>
+  </div>
+</div>
+
+<!-- ── CONCURSOS — lançar (assistente), painel de quem lançou e convite da empresa ── -->
+<div class="overlay" id="tenderOverlay" onclick="if(event.target===this)closeTenderWizard()" role="dialog" aria-modal="true" aria-labelledby="tnTitle">
+  <div class="modal tn-modal">
+    <button class="modal-close" onclick="closeTenderWizard()" aria-label="Fechar">×</button>
+    <div id="tnWizard"></div>
+  </div>
+</div>
+<div class="overlay" id="tenderPanelOverlay" onclick="if(event.target===this)closeMyTenders()" role="dialog" aria-modal="true" aria-labelledby="tnPanelTitle">
+  <div class="modal tn-modal tn-modal-wide">
+    <button class="modal-close" onclick="closeMyTenders()" aria-label="Fechar">×</button>
+    <div id="tnPanel"></div>
+  </div>
+</div>
+<div class="overlay" id="tenderInviteOverlay" onclick="if(event.target===this)closeTenderInvite()" role="dialog" aria-modal="true" aria-labelledby="tnInvTitle">
+  <div class="modal tn-modal">
+    <button class="modal-close" onclick="closeTenderInvite()" aria-label="Fechar">×</button>
+    <div id="tnInvite"></div>
   </div>
 </div>
 
@@ -2003,7 +2025,7 @@
      vetoriais OpenFreeMap sem chave, clustering nativo e 3D. -->
 <script defer src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js" integrity="sha384-5+cfbwT0iiub6VsQAdn6yz16nr6sDiQoHx6tm4O8OVYXHYOxcffFmCJBL0dgdvGp" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v346.js"></script>
+<script defer src="app.v347.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
