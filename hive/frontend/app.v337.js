@@ -6934,11 +6934,47 @@ function _nearbyRefPoint() {
   return currentMapCenter;
 }
 
-function renderNearbyPanel(filtered) {
+// "Empresas Próximas" segue a zona que o utilizador está a VER no mapa (pedido
+// do dono): ordena pelo centro da vista, com as empresas dentro do ecrã
+// primeiro, e refresca sozinha quando o mapa pára de se mexer. O raio de
+// pesquisa continua ancorado onde o utilizador pesquisou.
+let _nearbyLastFiltered = null;
+let _nearbyMoveT = null;
+function _nearbyViewPoint() {
+  try {
+    if (map && window._mapEverShown) { const c = map.getCenter(); return [c.lat, c.lng]; }
+  } catch (_) {}
+  return _nearbyRefPoint();
+}
+function _nearbyViewBounds() {
+  try {
+    if (!map || !window._mapEverShown) return null;
+    const b = map._ml.getBounds();
+    return { w: b.getWest(), e: b.getEast(), s: b.getSouth(), n: b.getNorth() };
+  } catch (_) { return null; }
+}
+// Rótulo de distância: até à localização real do utilizador quando a temos;
+// senão até ao centro da vista (o referencial desta secção).
+function _nearbyLabelDist(c) {
+  let ref = null;
+  try { if (typeof userLocationMarker !== 'undefined' && userLocationMarker) { const ll = userLocationMarker.getLatLng(); ref = [ll.lat, ll.lng]; } } catch (_) {}
+  if (!ref) ref = _nearbyViewPoint();
+  return calculateDistance(ref[0], ref[1], c.lat, c.lng);
+}
+function _scheduleNearbyRefresh() {
+  clearTimeout(_nearbyMoveT);
+  _nearbyMoveT = setTimeout(() => {
+    try { if (_nearbyLastFiltered) renderNearbyPanel(_nearbyLastFiltered, true); } catch (_) {}
+  }, 250);
+}
+try { if (map) map.on('moveend', _scheduleNearbyRefresh); } catch (_) {}
+
+function renderNearbyPanel(filtered, fromMapMove) {
   const listEl = document.getElementById('nearbyList');
   const countEl = document.getElementById('nearbyCount');
   const panel = document.getElementById('nearbyPanel');
   if (!listEl || !panel) return;
+  _nearbyLastFiltered = filtered;
   // Skip work when the panel is hidden by layout (mobile/tablet bottom sheet,
   // or the map tab is inactive). Our own empty-state display:none must NOT be
   // treated as "layout-hidden", otherwise a later re-show would be blocked.
@@ -6957,15 +6993,23 @@ function renderNearbyPanel(filtered) {
   }
   panel.style.display = '';   // restore the CSS default (flex) when populated
 
-  if (countEl) countEl.textContent = filtered.length;
-
-  const [refLat, refLng] = _nearbyRefPoint();
+  const [refLat, refLng] = _nearbyViewPoint();
+  const bb = _nearbyViewBounds();
+  const naVista = c => !bb || (c.lat >= bb.s && c.lat <= bb.n &&
+    (bb.w <= bb.e ? (c.lng >= bb.w && c.lng <= bb.e) : (c.lng >= bb.w || c.lng <= bb.e)));
   // Sort a copy — never mutate the caller's array (markers use it).
-  // Destacadas (colocação paga) primeiro, mesmo que fiquem mais longe —
-  // mas só as que já passaram o raio/filtros; depois, por proximidade.
-  try { renderNearbyChips(); renderCountryPills(); } catch (_) {}
-  _nearbyData = filtered.map(c => ({ c, d: calculateDistance(refLat, refLng, c.lat, c.lng) }))
-                        .sort((a, b) => ((b.c.featured ? 1 : 0) - (a.c.featured ? 1 : 0)) || (_nearbySort === 'rating' ? ((b.c.rating || 0) - (a.c.rating || 0)) : (a.d - b.d)));
+  // 1.º as empresas dentro do ecrã; entre elas, destacadas (colocação paga)
+  // primeiro; depois por proximidade ao centro da vista. As de fora do ecrã
+  // seguem por proximidade (a lista nunca fica vazia ao afastar o mapa).
+  if (!fromMapMove) { try { renderNearbyChips(); renderCountryPills(); } catch (_) {} }
+  let nVista = 0;
+  _nearbyData = filtered.map(c => {
+    const v = naVista(c); if (v) nVista++;
+    return { c, v, dv: calculateDistance(refLat, refLng, c.lat, c.lng) };
+  }).sort((a, b) => ((b.v ? 1 : 0) - (a.v ? 1 : 0))
+    || (a.v && b.v ? ((b.c.featured ? 1 : 0) - (a.c.featured ? 1 : 0)) : 0)
+    || (_nearbySort === 'rating' ? ((b.c.rating || 0) - (a.c.rating || 0)) : (a.dv - b.dv)));
+  if (countEl) countEl.textContent = bb ? nVista : filtered.length;
   listEl.innerHTML = '';
   _nearbyRendered = 0;
   _appendNearbyCards(listEl, Math.min(_NEARBY_PAGE, _nearbyData.length));
@@ -7020,7 +7064,8 @@ function _appendNearbyCards(listEl, upTo, sentinel) {
   const sc = tr.sectors || {};
   const frag = document.createDocumentFragment();
   for (let i = _nearbyRendered; i < upTo; i++) {
-    const { c, d } = _nearbyData[i];
+    const { c } = _nearbyData[i];
+    const d = _nearbyLabelDist(c);
     const distStr = d < 10 ? d.toFixed(1).replace('.', ',') + ' km' : Math.round(d) + ' km';
     const sectorLabel = sc[c.sector] || c.sector || '';
     const rating = c.rating > 0
