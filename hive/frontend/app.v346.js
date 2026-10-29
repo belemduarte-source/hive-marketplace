@@ -9913,6 +9913,9 @@ function closeGeoHelp() {
 
 // ── AUTH / LOGIN ─────────────────────────────────────────────────────────────
 function openLogin() {
+  // Scripts de entrada (Google, anti-robô) só carregam quando fazem falta
+  try { if (window._carregaGsi) window._carregaGsi(); } catch (_) {}
+  try { _initTurnstile(true); } catch (_) {}
   const ov = document.getElementById('loginOverlay');
   if (ov) { ov.classList.add('open'); switchLoginTab('login'); }
   // Re-render the Google button now the slot is visible
@@ -10608,9 +10611,18 @@ function _initGoogleSignIn() {
 // Cloudflare Turnstile — dormant unless turnstileSiteKey is exposed by the
 // backend. The widget renders into the register tab the first time the user
 // opens it; the token is read off the widget at submit time.
-function _initTurnstile() {
+function _initTurnstile(jaNecessario) {
   if (!_googleConfig || !_googleConfig.turnstileSiteKey) return;
   if (document.querySelector('script[data-turnstile]')) return;
+  // Só faz falta no modal de entrada: espera pela página pronta, salvo se o
+  // modal já abriu (openLogin passa true)
+  if (!jaNecessario && document.readyState !== 'complete') {
+    window.addEventListener('load', () => {
+      if (window.requestIdleCallback) requestIdleCallback(() => _initTurnstile(true), { timeout: 5000 });
+      else setTimeout(() => _initTurnstile(true), 3000);
+    }, { once: true });
+    return;
+  }
   const s = document.createElement('script');
   s.src = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
   s.async = true; s.defer = true;

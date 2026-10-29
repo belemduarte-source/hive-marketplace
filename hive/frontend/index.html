@@ -138,15 +138,27 @@
   <script src="api.js"></script>
   <!-- Google Identity Services (Sign-in with Google).
        Loaded dynamically so the GSI button text matches the user's saved
-       language preference instead of always defaulting to English. -->
+       language preference instead of always defaulting to English.
+       Só faz falta no modal de entrada: carrega depois da página pronta (ou
+       logo que o modal abre — openLogin chama _carregaGsi), em vez de
+       competir com o mapa e o catálogo no arranque (~100KB). -->
   <script>
     (function() {
-      var lang = 'pt';
-      try { lang = localStorage.getItem('hive_lang') || 'pt'; } catch (_) {}
-      var s = document.createElement('script');
-      s.src = 'https://accounts.google.com/gsi/client?hl=' + encodeURIComponent(lang);
-      s.async = true; s.defer = true;
-      document.head.appendChild(s);
+      var feito = false;
+      window._carregaGsi = function () {
+        if (feito) return;
+        feito = true;
+        var lang = 'pt';
+        try { lang = localStorage.getItem('hive_lang') || 'pt'; } catch (_) {}
+        var s = document.createElement('script');
+        s.src = 'https://accounts.google.com/gsi/client?hl=' + encodeURIComponent(lang);
+        s.async = true; s.defer = true;
+        document.head.appendChild(s);
+      };
+      window.addEventListener('load', function () {
+        if (window.requestIdleCallback) requestIdleCallback(window._carregaGsi, { timeout: 5000 });
+        else setTimeout(window._carregaGsi, 3000);
+      });
     })();
   </script>
 
@@ -166,7 +178,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v345.css"/>
+  <link rel="stylesheet" href="app.v346.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -1991,7 +2003,7 @@
      vetoriais OpenFreeMap sem chave, clustering nativo e 3D. -->
 <script defer src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js" integrity="sha384-5+cfbwT0iiub6VsQAdn6yz16nr6sDiQoHx6tm4O8OVYXHYOxcffFmCJBL0dgdvGp" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v345.js"></script>
+<script defer src="app.v346.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
