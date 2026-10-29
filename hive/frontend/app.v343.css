@@ -4409,3 +4409,5 @@ button,input,select,textarea{font-family:inherit}
 /* Selo do alvará: escudo em ícone de linha (era emoji) à escala do texto */
 .badge-alvara svg{width:1em;height:1em;flex-shrink:0}
 @media (min-width:1600px){.feat-panel{width:412px}}
+/* Pré-visualização do logótipo no registo: inteiro, como aparece nos cartões */
+.reg-logo-preview.has-img{background-color:#fff !important;background-size:contain !important;background-origin:content-box;padding:4px}

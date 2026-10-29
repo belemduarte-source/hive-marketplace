@@ -2815,6 +2815,16 @@ function lpOpenCompany(companyId) {
   }, 400);
 }
 
+// Totais reais (empresas aprovadas e países) para o cartão de boas-vindas —
+// pedidos uma vez; em cache na CDN.
+(function _carregarTotais() {
+  try {
+    apiFetch('/companies/totals').then(t => {
+      if (t && t.total > 0) { window._hxTotals = t; try { updateLandingStats(); } catch (_) {} }
+    }).catch(() => {});
+  } catch (_) {}
+})();
+
 function updateLandingStats() {
   // Empresas registadas — real count
   const elCompanies = document.getElementById('lpStatCompanies');
@@ -2827,15 +2837,25 @@ function updateLandingStats() {
     // espelha também no cartão de boas-vindas (fusão Início+Mapa)
     const wc = document.getElementById('wProofCompanies');
     const wn = document.getElementById('wProofCountries');
-    if (companies.length >= 200) {
-      const nTxt = companies.length.toLocaleString('pt-PT');
+    // Fonte única: os totais do servidor (/companies/totals). O que o browser
+    // carregou é muitas vezes só Portugal — usá-lo fazia o número DESCER ao
+    // abrir (44 611 → 6 842) ao lado de "31 países". Sem totais, só o
+    // catálogo completo serve; senão ficam os números do HTML.
+    const T = window._hxTotals;
+    let total = 0, paises = 0;
+    if (T && T.total > 0) { total = T.total; paises = T.countries || 0; }
+    else if (typeof _fullCatalogueLoaded !== 'undefined' && _fullCatalogueLoaded && companies.length >= 200) {
+      total = companies.length;
+      paises = new Set(companies.map(c => (c.country || 'pt').toLowerCase())).size;
+    }
+    if (total) {
+      const nTxt = total.toLocaleString('pt-PT');
       if (pc) pc.textContent = nTxt;
       if (wc) wc.textContent = nTxt;
     }
-    const uniq = new Set(companies.map(c => (c.country || 'pt').toLowerCase()));
-    if (uniq.size > 5) {
-      if (pn) pn.textContent = uniq.size;
-      if (wn) wn.textContent = uniq.size;
+    if (paises > 5) {
+      if (pn) pn.textContent = paises;
+      if (wn) wn.textContent = paises;
     }
   } catch (_) {}
 
@@ -3817,7 +3837,7 @@ async function loadCompaniesFromDB(opts) {
       if (snap && Array.isArray(snap.rows) && snap.rows.length > 200 && Date.now() - snap.t < 24 * 3600e3) {
         data = snap.rows; veioDaRede = false;
       } else {
-      data = await api.getCompanies({ country: 'pt' });
+      data = await api.getCompanies({ country: 'pt', compact: 1 });
       if (!Array.isArray(data)) data = (data && Array.isArray(data.companies)) ? data.companies : [];
       // MERGE: um fetch só-PT não pode apagar os outros países — nem do ecrã
       // nem do snapshot. (Foi um bug real: o refresh de 3s reescrevia tudo com
@@ -3856,7 +3876,7 @@ async function loadCompaniesFromDB(opts) {
       // meio deixava 20k empresas "completas" na cache local durante 24h).
       const pedirPagina = async (offset) => {
         for (let tent = 0; ; tent++) {
-          try { return await api.getCompanies({ limit: 1000, offset }); }
+          try { return await api.getCompanies({ limit: 1000, offset, compact: 1 }); }
           catch (_) {
             if (tent >= 2) return { _falhou: true };
             await new Promise(r => setTimeout(r, 700 * (tent + 1)));
@@ -4075,7 +4095,7 @@ async function garantirPais(cc) {
   if (!cc || _fullCatalogueLoaded || _paisesCarregados.has(cc)) return;
   _paisesCarregados.add(cc);
   try {
-    const rows = await api.getCompanies({ country: cc });
+    const rows = await api.getCompanies({ country: cc, compact: 1 });
     const lista = Array.isArray(rows) ? rows : (rows && Array.isArray(rows.companies)) ? rows.companies : [];
     if (!lista.length) return;
     const vistos = new Set(companies.map(c => c.id));
@@ -5026,7 +5046,7 @@ function createMarkerIcon(c) {
   const borderColor = featured ? '#f59e0b' : '#ffffff';
   // HTML do pin (hexágono com logo/monograma). O adaptador MapLibre cria o
   // elemento DOM a partir disto apenas quando o pin fica visível no viewport.
-  icon = `<div class="hx-pin" style="width:40px;height:42px;position:relative;cursor:pointer;filter:drop-shadow(0 3px 5px ${glow})${featured ? ' drop-shadow(0 0 2px rgba(245,158,11,.9))' : ''}">${featuredBadge}<div style="position:absolute;inset:0;background:${borderColor};clip-path:${hex}"></div><div style="position:absolute;inset:3px;background:${bg};clip-path:${hex};display:flex;align-items:center;justify-content:center;overflow:hidden">${c.logo ? `<img src="${c.logo}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"/>` : `<span style="font-size:12px;font-weight:700;color:#fff;letter-spacing:.3px;display:block;line-height:1;font-family:inherit">${mono}</span>`}</div></div>`;
+  icon = `<div class="hx-pin" style="width:40px;height:42px;position:relative;cursor:pointer;filter:drop-shadow(0 3px 5px ${glow})${featured ? ' drop-shadow(0 0 2px rgba(245,158,11,.9))' : ''}">${featuredBadge}<div style="position:absolute;inset:0;background:${borderColor};clip-path:${hex}"></div><div style="position:absolute;inset:3px;background:${bg};clip-path:${hex};display:flex;align-items:center;justify-content:center;overflow:hidden">${c.logo ? `<img src="${_logoUrl(c.logo, 96)}" alt="" style="width:100%;height:100%;object-fit:cover;display:block"/>` : `<span style="font-size:12px;font-weight:700;color:#fff;letter-spacing:.3px;display:block;line-height:1;font-family:inherit">${mono}</span>`}</div></div>`;
   _markerIconCache.set(key, icon);
   return icon;
 }
@@ -6907,7 +6927,7 @@ function _appendListCards(frag, data, start, end) {
     const div = document.createElement('div');
     div.className = 'search-list-card';
     div.dataset.companyId = c.id;
-    div.onclick = () => { setSearchView('map'); setTimeout(() => openDetail(c.id), 300); };
+    div.onclick = () => _abrirDaLista(c.id);
     const isCompared = _compareIds && _compareIds.has(c.id);
     const isFav = _favIds && _favIds.has(c.id);
     // Photo banner (shown on mobile only, hidden on desktop via CSS) — makes the
@@ -6944,7 +6964,7 @@ function _appendListCards(frag, data, start, end) {
       <div class="slc-footer">
         ${phoneFrag}
         ${waFrag}
-        <button class="btn-slc-contact" onclick="event.stopPropagation();setSearchView('map');setTimeout(()=>{openDetail(${c.id});},300)" data-i18n="btnRequestQuote">Pedir Orçamento</button>
+        <button class="btn-slc-contact" onclick="event.stopPropagation();pedirOrcamento(${c.id})" data-i18n="btnRequestQuote">Pedir Orçamento</button>
       </div>`;
     frag.appendChild(div);
   }
@@ -7968,7 +7988,7 @@ function _renderDetailPanel(c) {
   _dpLogoEl.dataset.ini = companyMonogram(c);
   if (c.logo) {
     _dpLogoEl.classList.remove('logo-mono'); _dpLogoEl.classList.add('hx-logo-img');
-    _dpLogoEl.innerHTML = '<img src="' + escHtml(c.logo) + '" alt="" decoding="async" referrerpolicy="no-referrer" ' +
+    _dpLogoEl.innerHTML = '<img src="' + escHtml(_logoUrl(c.logo, 256)) + '" alt="" decoding="async" referrerpolicy="no-referrer" ' +
       'onerror="var p=this.parentNode;p.classList.remove(\'hx-logo-img\');p.classList.add(\'logo-mono\');p.textContent=p.dataset.ini"/>';
   } else {
     _dpLogoEl.classList.remove('hx-logo-img'); _dpLogoEl.classList.add('logo-mono');
@@ -10266,14 +10286,19 @@ function handleRegLogo(input) {
   reader.onload = (ev) => {
     const img = new Image();
     img.onload = () => {
-      const S = 200;                                     // output square (px)
+      // Logótipo INTEIRO (sem cortar as pontas de um logo largo) e com a
+      // transparência preservada: lado maior até 256px, WebP (o browser cai
+      // para PNG se não codificar WebP). Antes: quadrado 200px recortado ao
+      // centro em JPEG — os fundos transparentes ficavam pretos.
+      const M = 256;
+      const k = Math.min(1, M / Math.max(img.width, img.height));
       const canvas = document.createElement('canvas');
-      canvas.width = S; canvas.height = S;
+      canvas.width = Math.max(1, Math.round(img.width * k));
+      canvas.height = Math.max(1, Math.round(img.height * k));
       const ctx = canvas.getContext('2d');
-      const scale = Math.max(S / img.width, S / img.height);   // cover-crop, centred
-      const w = img.width * scale, h = img.height * scale;
-      ctx.drawImage(img, (S - w) / 2, (S - h) / 2, w, h);
-      _regLogoData = canvas.toDataURL('image/jpeg', 0.8);
+      ctx.imageSmoothingQuality = 'high';
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      _regLogoData = canvas.toDataURL('image/webp', 0.9);
       const prev = document.getElementById('regLogoPreview');
       if (prev) { prev.classList.add('has-img'); prev.style.backgroundImage = 'url("' + _regLogoData + '")'; prev.innerHTML = ''; }
       const clr = document.getElementById('regLogoClear'); if (clr) clr.style.display = '';
@@ -12300,6 +12325,24 @@ function openContactModal() {
 
 function closeContactModal() {
   document.getElementById('contactModal').classList.remove('open');
+  // Pedido feito a partir da lista (sem ficha aberta): larga a empresa
+  if (!document.getElementById('detailPanel').classList.contains('open')) selectedId = null;
+}
+
+// "Pedir Orçamento" nos cartões da lista: abre logo o formulário de pedido,
+// sem sair da lista nem passar pela ficha (antes saltava para o mapa e abria
+// a ficha, e ainda faltava carregar em "Enviar mensagem").
+function pedirOrcamento(id) {
+  if (!companies.some(x => x.id === id)) return;
+  selectedId = id;
+  openContactModal();
+}
+window.pedirOrcamento = pedirOrcamento;
+// Clique num cartão da lista: no computador a ficha abre por cima, sem sair
+// da lista; no telemóvel mantém-se o percurso lista → mapa + ficha.
+function _abrirDaLista(id) {
+  if (window.matchMedia('(max-width:768px)').matches) { setSearchView('map'); setTimeout(() => openDetail(id), 300); }
+  else openDetail(id);
 }
 
 async function submitContactForm() {
@@ -13784,6 +13827,15 @@ function _miniLogoHtml(c, cls) {
 }
 window._miniLogoHtml = _miniLogoHtml;
 
+// URL do logótipo à medida: os nossos (/api/companies/:id/logo?v=…) aceitam
+// ?w= e chegam reduzidos em WebP (o original chega a 2048px/190KB e aparece
+// a 44px); data-URIs e URLs externos ficam iguais.
+function _logoUrl(u, w) {
+  const s = String(u || '');
+  return /^\/api\/companies\/\d+\/logo\b/.test(s) ? s + (s.includes('?') ? '&' : '?') + 'w=' + w : s;
+}
+window._logoUrl = _logoUrl;
+
 // Logótipo uniforme em todos os cartões: moldura quadrada, fundo branco e a
 // imagem INTEIRA (contain, sem cortes); se faltar ou falhar → iniciais.
 function _logoHtml(c, cls) {
@@ -13791,7 +13843,7 @@ function _logoHtml(c, cls) {
   let cor = '#475569';
   try { cor = getSectorColor(c) || cor; } catch (_) {}
   return '<div class="' + cls + ' hx-logo hx-logo-img" style="--mc:' + cor + '" data-ini="' + escHtml(companyMonogram(c)) + '">' +
-    '<img src="' + escHtml(c.logo) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" ' +
+    '<img src="' + escHtml(_logoUrl(c.logo, 128)) + '" alt="" loading="lazy" decoding="async" referrerpolicy="no-referrer" ' +
     'onerror="var p=this.parentNode;p.classList.remove(\'hx-logo-img\');p.classList.add(\'logo-mono\');p.textContent=p.dataset.ini"/></div>';
 }
 window._logoHtml = _logoHtml;
@@ -14196,7 +14248,7 @@ function _recsCard(x, i) {
   const c = x.c;
   const medalha = ['🥇', '🥈', '🥉'][i] || '';
   const logo = c.logo
-    ? '<img class="recs-logo" src="' + _recsEsc(c.logo) + '" alt="" loading="lazy"/>'
+    ? '<img class="recs-logo" src="' + _recsEsc(_logoUrl(c.logo, 128)) + '" alt="" loading="lazy"/>'
     : '<span class="recs-logo recs-logo-emoji">' + (c.emoji || '🏗️') + '</span>';
   const nAval = +c.reviews || 0;
   const estrelas = nAval

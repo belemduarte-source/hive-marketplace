@@ -32,14 +32,24 @@
       ad_storage: _g, ad_user_data: _g, ad_personalization: _g, analytics_storage: _g,
       wait_for_update: 500
     });
+    // O script do AdSense (~165KB + CPU) carrega só DEPOIS da página estar
+    // pronta: no telemóvel competia com o mapa e o catálogo no arranque. A
+    // verificação do site faz-se pela meta google-adsense-account (abaixo).
     if (window.ADSENSE_CLIENT) {
-      var _as = document.createElement('script');
-      _as.async = true;
-      _as.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(window.ADSENSE_CLIENT);
-      _as.crossOrigin = 'anonymous';
-      document.head.appendChild(_as);
+      var _carregaAds = function () {
+        var _as = document.createElement('script');
+        _as.async = true;
+        _as.src = 'https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=' + encodeURIComponent(window.ADSENSE_CLIENT);
+        _as.crossOrigin = 'anonymous';
+        document.head.appendChild(_as);
+      };
+      window.addEventListener('load', function () {
+        if (window.requestIdleCallback) requestIdleCallback(_carregaAds, { timeout: 4000 });
+        else setTimeout(_carregaAds, 2500);
+      });
     }
   </script>
+  <meta name="google-adsense-account" content="ca-pub-8615909245762152"/>
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <meta name="format-detection" content="telephone=no"/>
@@ -156,7 +166,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v342.css"/>
+  <link rel="stylesheet" href="app.v343.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -1981,7 +1991,7 @@
      vetoriais OpenFreeMap sem chave, clustering nativo e 3D. -->
 <script defer src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js" integrity="sha384-5+cfbwT0iiub6VsQAdn6yz16nr6sDiQoHx6tm4O8OVYXHYOxcffFmCJBL0dgdvGp" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v342.js"></script>
+<script defer src="app.v343.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

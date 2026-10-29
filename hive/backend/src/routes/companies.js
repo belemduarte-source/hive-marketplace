@@ -95,6 +95,39 @@ const LIST_COLS = `
   status, created_by, created_at
 `.trim();
 
+// Lista compacta (?compact=1, pedida pelo catálogo do frontend): sem os campos
+// que só a ficha usa e sem valores vazios/por omissão — dbRowToCompany repõe
+// exatamente os mesmos defaults. O JSON por descomprimir passa de ~5MB para
+// ~2,9MB (PT): download e parse bem mais leves em telemóveis.
+const SO_FICHA = new Set(['facebook', 'instagram', 'linkedin', 'postal_code', 'zone', 'status', 'created_at']);
+function compactRow(r) {
+  const o = {};
+  for (const k of Object.keys(r)) {
+    const v = r[k];
+    if (SO_FICHA.has(k) || v === null || v === undefined || v === '' || (Array.isArray(v) && !v.length)) continue;
+    if (v === false && k !== 'is_new') continue;
+    if ((k === 'is_new' && v === true) || (k === 'pin_type' && v === 'std') ||
+        (k === 'reviews' && Number(v) === 0) || (k === 'rating' && Number(v) === 0)) continue;
+    if (k === 'sector' && Array.isArray(r.sectors) && r.sectors[0] === v) continue;
+    o[k] = v;
+  }
+  return o;
+}
+
+// GET /api/companies/totals — números públicos do cartão de boas-vindas: total
+// real de empresas aprovadas e de países (em cache na CDN 1h). O cartão
+// mostrava quantas o browser tinha CARREGADO (só Portugal): descia de 44 611
+// para 6 842 ao abrir, a dizer na mesma "31 países".
+router.get('/totals', async (req, res, next) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT COUNT(*)::int AS total, COUNT(DISTINCT lower(country))::int AS countries
+         FROM companies WHERE status = 'approved'`);
+    res.set('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
+    res.json(rows[0] || { total: 0, countries: 0 });
+  } catch (e) { next(e); }
+});
+
 // Serve o logo de uma empresa como imagem cacheável (a lista envia apenas o
 // URL). O ?v= no URL versiona o cache imutável — logo novo = URL novo.
 // GET /api/companies/search?q= — autocomplete server-side (pg_trgm).
@@ -114,15 +147,37 @@ router.get('/search', async (req, res, next) => {
   } catch (e) { next(e); }
 });
 
+// ?w= (64–512): versão reduzida em WebP (mantém transparência) para cartões e
+// pins. Há logótipos guardados no tamanho original (até 2048px, ~190KB) que
+// aparecem a 44px — no telemóvel eram dos maiores pedidos do arranque. A
+// versão reduzida fica em cache imutável na CDN (o ?v= versiona). Sem sharp
+// disponível (ou imagem estranha) serve o original, como antes.
+let _sharp;
+function _getSharp() {
+  if (_sharp === undefined) { try { _sharp = require('sharp'); } catch (_) { _sharp = null; } }
+  return _sharp;
+}
 router.get('/:id(\\d+)/logo', async (req, res, next) => {
   try {
     const { rows } = await pool.query('SELECT logo FROM companies WHERE id = $1', [req.params.id]);
     const logo = rows[0] && rows[0].logo;
     const m = logo && /^data:(image\/[a-z0-9.+-]+);base64,([\s\S]+)$/i.exec(logo);
     if (!m) return res.status(404).end();
-    res.set('Content-Type', m[1]);
+    let tipo = m[1];
+    let buf = Buffer.from(m[2], 'base64');
+    const w = Math.min(512, Math.max(64, parseInt(req.query.w, 10) || 0));
+    const sharp = req.query.w && !/svg|icon|gif/i.test(tipo) ? _getSharp() : null;
+    if (sharp) {
+      try {
+        const out = await sharp(buf, { failOn: 'none' }).rotate()
+          .resize({ width: w, height: w, fit: 'inside', withoutEnlargement: true })
+          .webp({ quality: 86, alphaQuality: 100 }).toBuffer();
+        if (out.length < buf.length) { buf = out; tipo = 'image/webp'; }
+      } catch (_) { /* segue o original */ }
+    }
+    res.set('Content-Type', tipo);
     res.set('Cache-Control', 'public, max-age=31536000, immutable');
-    res.send(Buffer.from(m[2], 'base64'));
+    res.send(buf);
   } catch (e) { next(e); }
 });
 
@@ -230,7 +285,7 @@ router.get('/', optionalAuth, async (req, res, next) => {
       }
       res.set('Cache-Control', 'public, max-age=0, s-maxage=300, stale-while-revalidate=3600');
     }
-    res.json(rows);
+    res.json(req.query.compact === '1' ? rows.map(compactRow) : rows);
   } catch (e) {
     next(e);
   }
