@@ -3737,7 +3737,7 @@
 .recs-modal .recs-none{color:var(--muted);border:1px dashed var(--border)}
 .recs-modal .modal-close{color:var(--muted)}
 
-#recsOverlay{z-index:600}
+#recsOverlay{z-index:2500}
 
 /* ═══ Recs: entrada discreta agarrada ao topo do painel de filtros ═══ */
 .filter-recs-cta{display:flex;align-items:center;gap:12px;width:100%;border:0;border-bottom:1px solid var(--border);cursor:pointer;text-align:left;padding:13px 16px;background:var(--surface);color:var(--text)}
@@ -4108,3 +4108,41 @@
   .slc-address{font-size:13.5px;line-height:1.45}
   .slc-tag{font-size:12px}
 }
+
+/* ── Uma só porta: entrar/criar conta com código por email ─────────────────── */
+.auth-note{font-size:12.5px;color:var(--muted);text-align:center;margin-top:9px;line-height:1.45}
+.auth-alt{text-align:center;margin-top:14px;font-size:13px;color:var(--muted)}
+.auth-link{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--primary);cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.auth-step-intro{font-size:15px;color:var(--text-secondary);text-align:center;line-height:1.5;margin:0 0 14px}
+.auth-step-intro strong{color:var(--text);word-break:break-all}
+.auth-code-input{width:100%;box-sizing:border-box;text-align:center;font-size:30px !important;letter-spacing:12px;font-weight:800;padding:12px 8px !important;font-variant-numeric:tabular-nums}
+.auth-owner{margin-top:18px;padding-top:14px;border-top:1px solid var(--border);text-align:center;font-size:13.5px;color:var(--text-secondary)}
+/* Claim: destino do código à vista desde o início */
+.claim-target{font-size:15.5px;color:var(--text);margin:4px 0 6px}
+.claim-note{font-size:13.5px;color:var(--muted);line-height:1.5;margin:8px 0}
+.claim-note a{color:var(--primary)}
+/* "A sua empresa na Hivex" — procurar antes de registar */
+.cf-intro{font-size:15px;color:var(--text-secondary);line-height:1.55;margin:0 0 14px}
+#cfQuery{width:100%;box-sizing:border-box;font-size:16px}
+.cf-results{margin:12px 0 6px;display:flex;flex-direction:column;gap:8px;max-height:46vh;overflow-y:auto}
+.cf-item{display:flex;align-items:center;gap:12px;padding:12px 14px;border:1px solid var(--border);border-radius:12px;background:var(--surface)}
+.cf-info{flex:1;min-width:0}
+.cf-name{font-size:15.5px;font-weight:800;color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cf-sub{font-size:13px;color:var(--muted);margin-top:2px}
+.cf-btn{flex-shrink:0;background:var(--primary);color:#fff;border:0;border-radius:10px;padding:9px 13px;font-size:13.5px;font-weight:800;font-family:inherit;cursor:pointer;white-space:nowrap}
+.cf-owned{flex-shrink:0;font-size:12.5px;color:var(--muted);font-weight:700}
+.cf-empty{font-size:14px;color:var(--muted);text-align:center;padding:10px}
+.cf-new{display:block;width:100%;margin-top:6px;background:none;border:1.5px dashed var(--border);border-radius:12px;padding:13px;font-size:15px;font-weight:800;color:var(--text);font-family:inherit;cursor:pointer}
+.cf-new:hover{border-color:var(--primary);color:var(--primary)}
+.welcome-owner{font-size:13.5px;color:var(--text-secondary);margin:-2px 0 12px}
+@media (max-width:768px){
+  .cf-item{flex-wrap:wrap}
+  .cf-btn{width:100%}
+}
+
+/* Modais acima de TODO o chrome do mapa (pílula de pesquisa 520, "Perto de
+   mim" 425, localização 1001, rota 1100…): desde a fusão Início+Mapa o mapa
+   está sempre visível e a pílula desenhava-se POR CIMA do login, contacto e
+   claim no telemóvel. Toasts continuam por cima dos modais. */
+.overlay{z-index:2500}
+.toast{z-index:12500}

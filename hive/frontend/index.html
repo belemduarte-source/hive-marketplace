@@ -156,7 +156,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v339.css"/>
+  <link rel="stylesheet" href="app.v340.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -1160,18 +1160,52 @@
   <div class="modal" style="width:440px">
     <div style="text-align:center;margin-bottom:18px">
       <div style="font-size:22px;font-weight:800;color:var(--text)"><span data-i18n="authWelcome">Bem-vindo à Hivex</span></div>
-      <div style="font-size:12px;color:var(--muted);margin-top:4px" data-i18n="authTagline">A maior rede B2B de Portugal</div>
+      <div style="font-size:13px;color:var(--muted);margin-top:4px" data-i18n="authOneDoorSub">Entre ou crie conta em segundos — sem palavras-passe.</div>
     </div>
-    <!-- Tabs -->
-    <div class="auth-tabs">
-      <div class="auth-tab active" data-tab="login" onclick="switchLoginTab('login')" data-i18n="authTabLogin">Entrar</div>
-      <div class="auth-tab" data-tab="register" onclick="switchLoginTab('register')" data-i18n="authTabRegister">Criar Conta</div>
-    </div>
-
-    <!-- LOGIN TAB -->
+    <!-- UMA SÓ PORTA: entrar e criar conta são o mesmo passo. Google ou um
+         código por email (cria a conta se não existir) — sem palavra-passe. -->
     <div class="auth-panel" id="authLogin">
       <div id="googleLoginSlot" class="google-btn-slot"></div>
       <div id="googleLoginDivider" class="auth-divider" style="display:none"><span data-i18n="authDividerEmail">ou continue com email</span></div>
+      <form id="codeEmailForm" onsubmit="event.preventDefault();authSendCode()" novalidate>
+        <div class="form-row">
+          <label for="authEmail" data-i18n="authEmailLabel">Email</label>
+          <input type="email" id="authEmail" name="email" placeholder="email@exemplo.com" autocomplete="email" inputmode="email" spellcheck="false" required aria-required="true"/>
+          <div class="field-error" id="authEmailErr" hidden></div>
+        </div>
+        <div id="turnstileWidget" style="display:flex;justify-content:center;margin:0 0 6px;min-height:0"></div>
+        <button type="submit" class="btn-submit" id="authSendBtn" style="width:100%;padding:12px;font-size:15px" data-i18n="authSendCode">Receber código por email</button>
+        <div class="auth-note" data-i18n="authSendNote">Enviamos um código de 6 dígitos. Se ainda não tem conta, é criada na hora.</div>
+      </form>
+      <div class="auth-alt"><button type="button" class="auth-link" onclick="switchLoginTab('password')" data-i18n="authUsePassword">Prefiro entrar com palavra-passe</button></div>
+    </div>
+
+    <!-- Código recebido por email -->
+    <div class="auth-panel" id="authCode" style="display:none">
+      <p class="auth-step-intro"><span data-i18n="authCodeSentTo">Enviámos um código de 6 dígitos para</span> <strong id="authCodeEmail"></strong></p>
+      <form onsubmit="event.preventDefault();authVerifyCode()" novalidate>
+        <div class="form-row">
+          <input type="text" id="authCodeInput" class="auth-code-input" inputmode="numeric" autocomplete="one-time-code" maxlength="6" placeholder="······" aria-label="Código de 6 dígitos" oninput="authCodeTyped(this)"/>
+          <div class="field-error" id="authCodeInputErr" hidden></div>
+        </div>
+        <button type="submit" class="btn-submit" id="authVerifyBtn" style="width:100%;padding:12px;font-size:15px" data-i18n="authLoginSubmit">Entrar</button>
+      </form>
+      <div class="auth-alt"><span data-i18n="authNoCode">Não recebeu? Veja o spam ou</span> <button type="button" class="auth-link" onclick="authSendCode(true)" data-i18n="authResend">reenviar</button> · <button type="button" class="auth-link" onclick="switchLoginTab('login')" data-i18n="authChangeEmail">mudar email</button></div>
+    </div>
+
+    <!-- Só contas novas: um passo para o nome (pré-preenchido) -->
+    <div class="auth-panel" id="authName" style="display:none">
+      <p class="auth-step-intro" data-i18n="authNameAsk">Conta criada! Como gostaria de ser tratado?</p>
+      <form onsubmit="event.preventDefault();authSaveName()" novalidate>
+        <div class="form-row">
+          <input type="text" id="authNameInput" autocomplete="name" maxlength="80" aria-label="O seu nome"/>
+        </div>
+        <button type="submit" class="btn-submit" id="authNameBtn" style="width:100%;padding:12px;font-size:15px" data-i18n="authContinue">Continuar</button>
+      </form>
+    </div>
+
+    <!-- Alternativa: palavra-passe (contas antigas) -->
+    <div class="auth-panel" id="authPassword" style="display:none">
       <form id="loginForm" onsubmit="event.preventDefault();doLogin()" novalidate>
         <div class="form-row">
           <label for="loginEmail" data-i18n="authEmailLabel">Email</label>
@@ -1194,45 +1228,11 @@
         <div style="text-align:right;margin-bottom:14px"><a href="#" onclick="openForgotPassword();return false" style="display:inline-block;font-size:13px;font-weight:700;color:var(--text);text-decoration:underline;text-underline-offset:3px;padding:6px 2px" data-i18n="forgotPwd">Esqueceu a palavra-passe?</a></div>
         <button type="submit" class="btn-submit" id="loginSubmitBtn" style="width:100%;padding:11px;font-size:14px" data-i18n="authLoginSubmit">Entrar</button>
       </form>
-      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)"><span data-i18n="authNoAccount">Ainda não tem conta?</span> <button type="button" onclick="switchLoginTab('register')" style="background:none;border:0;color:var(--text);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0" data-i18n="authTabRegister">Criar Conta</button></div>
+      <div class="auth-alt"><button type="button" class="auth-link" onclick="switchLoginTab('login')" data-i18n="authUseCode">Entrar com código por email</button></div>
     </div>
 
-    <!-- REGISTER TAB -->
-    <div class="auth-panel" id="authRegister" style="display:none">
-      <div id="googleRegisterSlot" class="google-btn-slot"></div>
-      <div id="googleRegisterDivider" class="auth-divider" style="display:none"><span data-i18n="authDividerData">ou preencha os dados</span></div>
-      <form id="registerForm" onsubmit="event.preventDefault();doRegister()" novalidate>
-        <div class="form-row">
-          <label for="regAuthName"><span data-i18n="regAuthNameLabel">Nome completo</span> <span class="req">*</span></label>
-          <input type="text" id="regAuthName" name="name" placeholder="O seu nome" data-i18n-ph="regAuthNamePh" autocomplete="name" required aria-required="true"/>
-          <div class="field-error" id="regAuthNameErr" hidden></div>
-        </div>
-        <div class="form-row">
-          <label for="regAuthEmail"><span data-i18n="authEmailLabel">Email</span> <span class="req">*</span></label>
-          <input type="text" id="regAuthEmail" name="user-mail" placeholder="email@exemplo.com" autocomplete="off" inputmode="email" spellcheck="false" required aria-required="true"/>
-          <div class="field-error" id="regAuthEmailErr" hidden></div>
-        </div>
-        <div class="form-row">
-          <label for="regAuthPass"><span data-i18n="authPasswordLabel">Palavra-passe</span> <span class="req">*</span></label>
-          <div class="pwd-wrap">
-            <input type="password" id="regAuthPass" name="new-password" data-i18n-ph="authPasswordPh" placeholder="Mín. 8 caracteres, letras e números" autocomplete="new-password" required minlength="8" aria-required="true" aria-describedby="regAuthPassHint"/>
-            <button type="button" class="pwd-toggle" data-i18n-aria="pwdToggleAria" aria-label="Mostrar/ocultar palavra-passe" onclick="togglePassword('regAuthPass', this)" tabindex="-1">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-            </button>
-          </div>
-          <div class="caps-hint" id="regCapsHint" hidden data-i18n="capsLockOn">⚠️ Caps Lock está ativado</div>
-          <div class="form-hint" id="regAuthPassHint" data-i18n="authPasswordHint">Mínimo 8 caracteres.</div>
-          <div class="field-error" id="regAuthPassErr" hidden></div>
-          <div class="pwd-strength" id="regPwdStrength" hidden>
-            <div class="pwd-strength-bar"><div class="pwd-strength-fill" id="regPwdStrengthFill"></div></div>
-            <div class="pwd-strength-label" id="regPwdStrengthLabel"></div>
-          </div>
-        </div>
-        <div id="turnstileWidget" style="display:flex;justify-content:center;margin:8px 0 4px;min-height:0"></div>
-        <button type="submit" class="btn-submit" id="registerSubmitBtn" style="width:100%;padding:11px;font-size:14px;margin-top:6px" data-i18n="authRegisterSubmit">Criar Conta</button>
-      </form>
-      <div style="text-align:center;margin-top:14px;font-size:12px;color:var(--muted)"><span data-i18n="authHasAccount">Já tem conta?</span> <button type="button" onclick="switchLoginTab('login')" style="background:none;border:0;color:var(--text);font-weight:700;text-decoration:none;cursor:pointer;font-family:inherit;font-size:12px;padding:0" data-i18n="authTabLogin">Entrar</button></div>
-    </div>
+    <!-- Donos de empresas: registar ou reclamar a ficha -->
+    <div class="auth-owner"><span data-i18n="authOwnerHint">Tem uma empresa?</span> <button type="button" class="auth-link" onclick="closeLogin();startCompanyFlow()" data-i18n="authOwnerCta">Registe-a ou reclame a sua ficha →</button></div>
   </div>
 </div>
 
@@ -1725,6 +1725,7 @@
       <button class="welcome-explore" onclick="closeWelcome()"><span data-i18n="welcomeExplore">Explorar o mapa</span> →</button>
       <button class="welcome-register" onclick="welcomeRegister()" data-i18n="lpHeroRegisterCta">Criar conta grátis</button>
     </div>
+    <div class="welcome-owner"><span data-i18n="authOwnerHint">Tem uma empresa?</span> <button type="button" class="auth-link" onclick="closeWelcome();startCompanyFlow()" data-i18n="welcomeOwnerCta">Apareça no mapa — registe ou reclame a sua ficha →</button></div>
     <div class="welcome-trust">🛡️ <span data-i18n="welcomeTrustMod">Empresas moderadas (NIF + Certidão)</span> · 🔒 SSL · 🇪🇺 <span data-i18n="welcomeTrustEu">Dados na Europa</span></div>
     <div class="welcome-links">
       <a href="#legal/terms" onclick="openLegal('terms');return false" data-i18n="footerTerms">Termos de Serviço</a> ·
@@ -1762,13 +1763,29 @@
 </div>
 
 <!-- ── CLAIM LISTING — código enviado ao email público da ficha ────────────── -->
+<!-- ── A SUA EMPRESA — procurar antes de registar (muitas já estão no mapa) ── -->
+<div class="overlay" id="companyFindOverlay" onclick="if(event.target===this)closeCompanyFind()" role="dialog" aria-modal="true" aria-labelledby="cfTitle">
+  <div class="modal" style="width:560px">
+    <button class="modal-close" onclick="closeCompanyFind()" aria-label="Fechar">×</button>
+    <h2 id="cfTitle" class="legal-title" data-i18n="cfTitle">A sua empresa na Hivex</h2>
+    <p class="cf-intro" data-i18n="cfIntro">Muitas empresas já estão no mapa. Procure a sua — se já existir, basta reclamá-la, sem preencher nada.</p>
+    <input type="text" id="cfQuery" class="contact-input" data-i18n-ph="cfPh" placeholder="Nome ou NIF da empresa" autocomplete="off" oninput="companyFindSearch()"/>
+    <div id="cfResults" class="cf-results"></div>
+    <button type="button" class="cf-new" onclick="companyFindRegisterNew()" data-i18n="cfNotFound">Não encontro a minha empresa — registar nova →</button>
+  </div>
+</div>
+
 <div class="overlay" id="claimOverlay" onclick="if(event.target===this)closeClaimModal()" role="dialog" aria-modal="true" aria-labelledby="claimTitle">
   <div class="modal" style="width:520px">
     <button class="modal-close" onclick="closeClaimModal()" aria-label="Fechar">×</button>
     <h2 id="claimTitle" class="legal-title" data-i18n="claimTitle">Reclamar ficha da empresa</h2>
     <div id="claimStep1">
       <p style="font-size:16px;color:var(--text-secondary);line-height:1.6" data-i18n="claimIntro">Para provar que gere esta empresa, enviamos um código de 6 dígitos para o email público da ficha. Com a ficha reclamada pode editar os dados, responder a avaliações e ver estatísticas.</p>
+      <p class="claim-target" id="claimTargetRow"><span data-i18n="claimTargetLbl">Enviaremos o código para</span> <strong id="claimTarget"></strong></p>
+      <p class="claim-note" id="claimGuestNote" data-i18n="claimGuestNote">Não precisa de criar conta: ao confirmar o código, entra na Hivex com este email e a ficha fica sua.</p>
+      <p class="claim-note" id="claimNoEmail" style="display:none" data-i18n="claimNoEmailMsg">Esta ficha não tem email público. Escreva-nos para geral.hivex@gmail.com e tratamos do pedido.</p>
       <button class="btn-submit" style="width:100%;font-size:18px;padding:14px" onclick="claimSendCode(this)" data-i18n="claimSendBtn">Enviar código para o email da ficha</button>
+      <p class="claim-note" data-i18n-html="claimNoAccess">Não tem acesso a este email? Escreva-nos para <a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a>.</p>
     </div>
     <div id="claimStep2" style="display:none">
       <p style="font-size:16px;color:var(--text-secondary)"><span data-i18n="claimSentTo">Código enviado para</span> <strong id="claimSentEmail"></strong></p>
@@ -2036,7 +2053,7 @@
      vetoriais OpenFreeMap sem chave, clustering nativo e 3D. -->
 <script defer src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js" integrity="sha384-5+cfbwT0iiub6VsQAdn6yz16nr6sDiQoHx6tm4O8OVYXHYOxcffFmCJBL0dgdvGp" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v339.js"></script>
+<script defer src="app.v340.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

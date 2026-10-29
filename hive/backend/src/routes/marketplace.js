@@ -103,6 +103,10 @@ function distKm(lat1, lng1, lat2, lng2) {
 // POST /api/claims/:companyId — logged-in user asks for a 6-digit code, sent
 // to the company's PUBLIC email (proof of control). 30-minute validity.
 router.post('/claims/:companyId', requireAuth, async (req, res, next) => {
+  // '/claims/verify' (declarada mais abaixo) também casa com este padrão — sem
+  // isto o "verify" chegava aqui como id e a consulta rebentava (500): o claim
+  // com sessão nunca chegava a confirmar.
+  if (!/^\d+$/.test(String(req.params.companyId))) return next('route');
   try {
     const { rows } = await pool.query(
       `SELECT id, name, email, created_by FROM companies WHERE id = $1 AND status = 'approved'`,
@@ -156,6 +160,103 @@ router.post('/claims/verify', requireAuth, async (req, res, next) => {
     await pool.query(`UPDATE claims SET verified_at = NOW() WHERE id = $1`, [rows[0].id]);
     await pool.query(`UPDATE companies SET created_by = $1, updated_at = NOW() WHERE id = $2`, [req.user.id, companyId]);
     res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+
+// ── RECLAMAR SEM CONTA ────────────────────────────────────────────────────────
+// O código enviado ao email PÚBLICO da empresa é a prova de controlo — a mesma
+// do fluxo com sessão. Para quem ainda não tem conta, essa prova serve também
+// de entrada: ao confirmar, entra na conta desse email (criada se não existir)
+// e a ficha fica sua — sem registo nem palavra-passe. Só para fichas ainda
+// sem dono (importadas pela plataforma).
+const _ownerPlataforma = (co) => co.created_by == null || String(co.created_by) === '7';
+
+router.post('/claims/:companyId/guest', async (req, res, next) => {
+  try {
+    if (!/^\d+$/.test(String(req.params.companyId))) return res.status(404).json({ error: 'Empresa não encontrada' });
+    const { rows } = await pool.query(
+      `SELECT id, name, email, created_by FROM companies WHERE id = $1 AND status = 'approved'`,
+      [req.params.companyId]);
+    const co = rows[0];
+    if (!co) return res.status(404).json({ error: 'Empresa não encontrada' });
+    if (!co.email) return res.status(422).json({ error: 'Esta ficha não tem email público — contacte o suporte.' });
+    if (!_ownerPlataforma(co)) {
+      return res.status(409).json({ error: 'Esta ficha já tem gestor. Se é o proprietário, entre na sua conta.', code: 'ALREADY_CLAIMED' });
+    }
+    // 1 código por minuto por empresa (protege a caixa da empresa de rajadas)
+    const { rows: rec } = await pool.query(
+      `SELECT 1 FROM claims WHERE company_id = $1 AND user_id IS NULL
+          AND created_at > NOW() - INTERVAL '60 seconds' LIMIT 1`, [co.id]);
+    if (rec[0]) return res.status(429).json({ error: 'Acabámos de enviar um código — aguarde um minuto.' });
+
+    const code = String(crypto.randomInt(100000, 1000000));
+    await pool.query(`DELETE FROM claims WHERE company_id = $1 AND user_id IS NULL AND verified_at IS NULL`, [co.id]);
+    await pool.query(
+      `INSERT INTO claims (company_id, user_id, code, expires_at) VALUES ($1, NULL, $2, NOW() + INTERVAL '30 minutes')`,
+      [co.id, code]);
+    deferEmail(() => sendBrandedEmail({
+      to: co.email,
+      subject: `[Hivex] Código para gerir a ficha de ${co.name}`,
+      title: 'Hivex — Gerir a ficha da sua empresa',
+      bodyHtml: `
+        <p>Pediram para gerir a ficha de <strong>${esc(co.name)}</strong> na Hivex.</p>
+        <p>Se foi você, introduza este código na página da empresa (válido 30 minutos). Ao confirmar, entra automaticamente na Hivex com este email — não precisa de criar conta nem palavra-passe.</p>
+        <div style="text-align:center;margin:26px 0"><span style="display:inline-block;background:#fff7ed;border:2px dashed #f97316;border-radius:10px;padding:14px 34px;font-size:30px;font-weight:800;letter-spacing:6px;color:#9a3412">${code}</span></div>
+        <p style="color:#6b7280;font-size:13px">Se não reconhece este pedido, ignore este email — nada será alterado. Gerir a ficha permite editar os dados, responder a avaliações e ver estatísticas.</p>`,
+    }), `guest claim code (company ${co.id})`);
+    const masked = co.email.replace(/^(.).*(@.*)$/, '$1***$2');
+    res.json({ ok: true, sentTo: masked });
+  } catch (e) { next(e); }
+});
+
+router.post('/claims/:companyId/guest/verify', async (req, res, next) => {
+  try {
+    const companyId = Number(req.params.companyId);
+    const code = String((req.body && req.body.code) || '').replace(/\D/g, '');
+    if (!Number.isFinite(companyId) || code.length !== 6) {
+      return res.status(400).json({ error: 'Introduza o código de 6 dígitos.' });
+    }
+    const { rows } = await pool.query(
+      `SELECT id, code, attempts FROM claims
+        WHERE company_id = $1 AND user_id IS NULL AND verified_at IS NULL AND expires_at > NOW()
+        ORDER BY created_at DESC LIMIT 1`, [companyId]);
+    const cl = rows[0];
+    if (!cl) return res.status(400).json({ error: 'O código expirou. Peça um novo.' });
+    if (cl.attempts >= 5) {
+      await pool.query(`DELETE FROM claims WHERE id = $1`, [cl.id]);
+      return res.status(429).json({ error: 'Demasiadas tentativas. Peça um novo código.' });
+    }
+    const certo = String(cl.code).length === code.length &&
+      crypto.timingSafeEqual(Buffer.from(String(cl.code)), Buffer.from(code));
+    if (!certo) {
+      await pool.query(`UPDATE claims SET attempts = attempts + 1 WHERE id = $1`, [cl.id]);
+      return res.status(400).json({ error: 'Código errado. Confirme o código no email da empresa.' });
+    }
+    const { rows: cos } = await pool.query(
+      `SELECT id, name, email, created_by FROM companies WHERE id = $1 AND status = 'approved'`, [companyId]);
+    const co = cos[0];
+    if (!co || !co.email) return res.status(404).json({ error: 'Empresa não encontrada' });
+    if (!_ownerPlataforma(co)) {
+      return res.status(409).json({ error: 'Esta ficha já tem gestor.', code: 'ALREADY_CLAIMED' });
+    }
+    const email = String(co.email).trim().toLowerCase();
+    const { rows: us } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    let user = us[0];
+    if (!user) {
+      const { rows: created } = await pool.query(
+        `INSERT INTO users (name, email, email_verified) VALUES ($1, $2, TRUE)
+         ON CONFLICT (email) DO UPDATE SET email_verified = TRUE RETURNING *`,
+        [String(co.name || 'Empresa').slice(0, 80), email]);
+      user = created[0];
+    } else if (!user.email_verified) {
+      const { rows: v } = await pool.query(
+        `UPDATE users SET email_verified = TRUE WHERE id = $1 RETURNING *`, [user.id]);
+      user = v[0] || user;
+    }
+    await pool.query(`UPDATE claims SET verified_at = NOW(), user_id = $2 WHERE id = $1`, [cl.id, user.id]);
+    await pool.query(`UPDATE companies SET created_by = $1, updated_at = NOW() WHERE id = $2`, [user.id, companyId]);
+    const { issueSession } = require('./auth');
+    res.json({ ok: true, ...(await issueSession(req, res, user)) });
   } catch (e) { next(e); }
 });
 

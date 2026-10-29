@@ -222,7 +222,7 @@ const translations = {
     helpMissionTitle:'Missão', helpMissionDesc:'Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.',
     helpVisionTitle:'Visão', helpVisionDesc:'Ser a plataforma de referência em Portugal para ligar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.',
     navLogin:'Entrar / Registar', navHelp:'Ajuda',
-    welcomeExplore:'Explorar o mapa', listShowMore:'Mostrar mais empresas', listShownOf:'{a} de {b}', aboutTitle:'Sobre', aboutAutoNote:'Resumo automático, com base nos dados públicos da empresa.', claimIncomplete:'✏️ Esta ficha está incompleta. É a sua empresa? Reclame-a e acrescente descrição, logótipo e fotos.', contactReviewNote:'Cerca de uma semana depois, poderemos enviar-lhe um único email a pedir que avalie esta empresa.', reviewLoginNeeded:'Inicie sessão para escrever uma avaliação.', welcomeTrustMod:'Empresas moderadas (NIF + Certidão)', welcomeTrustEu:'Dados na Europa',
+    welcomeExplore:'Explorar o mapa', authOneDoorSub:"Entre ou crie conta em segundos — sem palavras-passe.", authSendCode:"Receber código por email", authSendNote:"Enviamos um código de 6 dígitos. Se ainda não tem conta, é criada na hora.", authUsePassword:"Prefiro entrar com palavra-passe", authUseCode:"Entrar com código por email", authCodeSentTo:"Enviámos um código de 6 dígitos para", authNoCode:"Não recebeu? Veja o spam ou", authResend:"reenviar", authChangeEmail:"mudar email", authNameAsk:"Conta criada! Como gostaria de ser tratado?", authContinue:"Continuar", authOwnerHint:"Tem uma empresa?", authOwnerCta:"Registe-a ou reclame a sua ficha →", authEmailInvalid:"Indique um email válido.", authCodeResent:"Enviámos um novo código.", claimTargetLbl:"Enviaremos o código para", claimGuestNote:"Não precisa de criar conta: ao confirmar o código, entra na Hivex com este email e a ficha fica sua.", claimNoEmailMsg:"Esta ficha não tem email público. Escreva-nos para geral.hivex@gmail.com e tratamos do pedido.", claimNoAccess:"Não tem acesso a este email? Escreva-nos para <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"A sua empresa na Hivex", cfIntro:"Muitas empresas já estão no mapa. Procure a sua — se já existir, basta reclamá-la, sem preencher nada.", cfPh:"Nome ou NIF da empresa", cfNotFound:"Não encontro a minha empresa — registar nova →", cfNoResults:"Nenhuma empresa encontrada com esse nome.", cfClaimBtn:"É a minha — reclamar", cfAlreadyOwned:"Já tem gestor", cfEdit:"Editar a minha ficha", regDupClaim:"Esta empresa já está na Hivex — reclame a ficha existente.", welcomeOwnerCta:"Apareça no mapa — registe ou reclame a sua ficha →", listShowMore:'Mostrar mais empresas', listShownOf:'{a} de {b}', aboutTitle:'Sobre', aboutAutoNote:'Resumo automático, com base nos dados públicos da empresa.', claimIncomplete:'✏️ Esta ficha está incompleta. É a sua empresa? Reclame-a e acrescente descrição, logótipo e fotos.', contactReviewNote:'Cerca de uma semana depois, poderemos enviar-lhe um único email a pedir que avalie esta empresa.', reviewLoginNeeded:'Inicie sessão para escrever uma avaliação.', welcomeTrustMod:'Empresas moderadas (NIF + Certidão)', welcomeTrustEu:'Dados na Europa',
     themeToDark:'Escuro', themeToLight:'Claro', themeModeDark:'Modo escuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidade', avatarLogout:'Terminar Sessão', avatarFaqHelp:'FAQ & Ajuda',
     lpHeroRegisterCta:'Criar conta grátis', lpHeroRegisterHint:'Peça orçamentos, guarde favoritos e registe a sua empresa.',
@@ -638,7 +638,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:'To simplify and democratise access to quality professional services, creating a transparent ecosystem where companies and professionals can grow together, without unnecessary intermediaries.',
     helpVisionTitle:'Vision', helpVisionDesc:'To be the reference platform in Portugal for connecting companies and professionals, promoting economic growth and creating opportunities for all.',
     navLogin:'Login / Sign up', navHelp:'Help',
-    welcomeExplore:'Explore the map', listShowMore:'Show more companies', listShownOf:'{a} of {b}', aboutTitle:'About', aboutAutoNote:"Automatic summary based on the company's public data.", claimIncomplete:'✏️ This listing is incomplete. Is it your business? Claim it and add a description, logo and photos.', contactReviewNote:'About a week later, we may send you a single email asking you to review this company.', reviewLoginNeeded:'Log in to write a review.', welcomeTrustMod:'Moderated companies (tax ID + registry)', welcomeTrustEu:'Data hosted in Europe',
+    welcomeExplore:'Explore the map', authOneDoorSub:"Sign in or create an account in seconds — no passwords.", authSendCode:"Email me a code", authSendNote:"We'll send a 6-digit code. If you don't have an account yet, it's created on the spot.", authUsePassword:"I'd rather sign in with a password", authUseCode:"Sign in with an email code", authCodeSentTo:"We sent a 6-digit code to", authNoCode:"Didn't get it? Check spam or", authResend:"resend", authChangeEmail:"change email", authNameAsk:"Account created! What should we call you?", authContinue:"Continue", authOwnerHint:"Own a business?", authOwnerCta:"Register it or claim your listing →", authEmailInvalid:"Enter a valid email.", authCodeResent:"We sent you a new code.", claimTargetLbl:"We'll send the code to", claimGuestNote:"No account needed: once you confirm the code, you're signed in to Hivex with this email and the listing is yours.", claimNoEmailMsg:"This listing has no public email. Write to geral.hivex@gmail.com and we will handle it.", claimNoAccess:"No access to this email? Write to <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"Your business on Hivex", cfIntro:"Many businesses are already on the map. Search for yours — if it's there, just claim it, no forms.", cfPh:"Business name or tax ID (NIF)", cfNotFound:"I can't find my business — register a new one →", cfNoResults:"No business found with that name.", cfClaimBtn:"It's mine — claim it", cfAlreadyOwned:"Already managed", cfEdit:"Edit my listing", regDupClaim:"This business is already on Hivex — claim the existing listing.", welcomeOwnerCta:"Get on the map — register or claim your listing →", listShowMore:'Show more companies', listShownOf:'{a} of {b}', aboutTitle:'About', aboutAutoNote:"Automatic summary based on the company's public data.", claimIncomplete:'✏️ This listing is incomplete. Is it your business? Claim it and add a description, logo and photos.', contactReviewNote:'About a week later, we may send you a single email asking you to review this company.', reviewLoginNeeded:'Log in to write a review.', welcomeTrustMod:'Moderated companies (tax ID + registry)', welcomeTrustEu:'Data hosted in Europe',
     themeToDark:'Dark', themeToLight:'Light', themeModeDark:'Dark mode', themeModeLight:'Light mode',
     navFavourites:'Favourites', navFaq:'FAQ', navPrivacy:'Privacy', avatarLogout:'Sign out', avatarFaqHelp:'FAQ & Help',
     lpHeroRegisterCta:'Create free account', lpHeroRegisterHint:'Request quotes, save favourites and register your company.',
@@ -1047,7 +1047,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:"Simplifier et démocratiser l'accès à des services professionnels de qualité, en créant un écosystème transparent où entreprises et professionnels peuvent grandir ensemble, sans intermédiaires inutiles.",
     helpVisionTitle:'Vision', helpVisionDesc:'Être la plateforme de référence au Portugal pour connecter entreprises et professionnels, en favorisant la croissance économique et en créant des opportunités pour tous.',
     navLogin:'Connexion / Inscription', navHelp:'Aide',
-    welcomeExplore:'Explorer la carte', listShowMore:"Afficher plus d'entreprises", listShownOf:'{a} sur {b}', aboutTitle:'À propos', aboutAutoNote:"Résumé automatique basé sur les données publiques de l'entreprise.", claimIncomplete:"✏️ Cette fiche est incomplète. C'est votre entreprise ? Revendiquez-la et ajoutez une description, un logo et des photos.", contactReviewNote:"Environ une semaine plus tard, nous pourrons vous envoyer un seul e-mail pour vous demander d'évaluer cette entreprise.", reviewLoginNeeded:'Connectez-vous pour écrire un avis.', welcomeTrustMod:'Entreprises modérées (NIF + registre)', welcomeTrustEu:'Données hébergées en Europe',
+    welcomeExplore:'Explorer la carte', authOneDoorSub:"Connectez-vous ou créez un compte en quelques secondes — sans mot de passe.", authSendCode:"Recevoir un code par e-mail", authSendNote:"Nous envoyons un code à 6 chiffres. Si vous n'avez pas encore de compte, il est créé aussitôt.", authUsePassword:"Je préfère me connecter avec un mot de passe", authUseCode:"Se connecter avec un code par e-mail", authCodeSentTo:"Nous avons envoyé un code à 6 chiffres à", authNoCode:"Rien reçu ? Vérifiez les spams ou", authResend:"renvoyer", authChangeEmail:"changer d'e-mail", authNameAsk:"Compte créé ! Comment souhaitez-vous être appelé ?", authContinue:"Continuer", authOwnerHint:"Vous avez une entreprise ?", authOwnerCta:"Inscrivez-la ou revendiquez votre fiche →", authEmailInvalid:"Indiquez un e-mail valide.", authCodeResent:"Nous vous avons envoyé un nouveau code.", claimTargetLbl:"Nous enverrons le code à", claimGuestNote:"Pas besoin de créer de compte : en confirmant le code, vous êtes connecté à Hivex avec cet e-mail et la fiche est à vous.", claimNoEmailMsg:"Cette fiche n'a pas d'e-mail public. Écrivez-nous à geral.hivex@gmail.com et nous nous en occupons.", claimNoAccess:"Pas d'accès à cet e-mail ? Écrivez-nous à <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"Votre entreprise sur Hivex", cfIntro:"Beaucoup d'entreprises sont déjà sur la carte. Cherchez la vôtre — si elle existe, il suffit de la revendiquer.", cfPh:"Nom ou NIF de l'entreprise", cfNotFound:"Je ne trouve pas mon entreprise — en inscrire une nouvelle →", cfNoResults:"Aucune entreprise trouvée avec ce nom.", cfClaimBtn:"C'est la mienne — revendiquer", cfAlreadyOwned:"Déjà gérée", cfEdit:"Modifier ma fiche", regDupClaim:"Cette entreprise est déjà sur Hivex — revendiquez la fiche existante.", welcomeOwnerCta:"Apparaissez sur la carte — inscrivez ou revendiquez votre fiche →", listShowMore:"Afficher plus d'entreprises", listShownOf:'{a} sur {b}', aboutTitle:'À propos', aboutAutoNote:"Résumé automatique basé sur les données publiques de l'entreprise.", claimIncomplete:"✏️ Cette fiche est incomplète. C'est votre entreprise ? Revendiquez-la et ajoutez une description, un logo et des photos.", contactReviewNote:"Environ une semaine plus tard, nous pourrons vous envoyer un seul e-mail pour vous demander d'évaluer cette entreprise.", reviewLoginNeeded:'Connectez-vous pour écrire un avis.', welcomeTrustMod:'Entreprises modérées (NIF + registre)', welcomeTrustEu:'Données hébergées en Europe',
     themeToDark:'Sombre', themeToLight:'Clair', themeModeDark:'Mode sombre', themeModeLight:'Mode clair',
     navFavourites:'Favoris', navFaq:'FAQ', navPrivacy:'Confidentialité', avatarLogout:'Se déconnecter', avatarFaqHelp:'FAQ & Aide',
     lpHeroRegisterCta:'Créer un compte gratuit', lpHeroRegisterHint:"Demandez des devis, enregistrez des favoris et inscrivez votre entreprise.",
@@ -1452,7 +1452,7 @@ const translations = {
     helpMissionTitle:'Misión', helpMissionDesc:'Simplificar y democratizar el acceso a servicios profesionales de calidad, creando un ecosistema transparente donde empresas y profesionales puedan crecer juntos.',
     helpVisionTitle:'Visión', helpVisionDesc:'Ser la plataforma de referencia en Portugal para conectar empresas y profesionales, fomentando el crecimiento económico y creando oportunidades para todos.',
     navLogin:'Entrar / Registrarse', navHelp:'Ayuda',
-    welcomeExplore:'Explorar el mapa', listShowMore:'Mostrar más empresas', listShownOf:'{a} de {b}', aboutTitle:'Acerca de', aboutAutoNote:'Resumen automático basado en los datos públicos de la empresa.', claimIncomplete:'✏️ Esta ficha está incompleta. ¿Es su empresa? Reclámela y añada descripción, logotipo y fotos.', contactReviewNote:'Aproximadamente una semana después, podremos enviarle un único correo para pedirle que valore esta empresa.', reviewLoginNeeded:'Inicie sesión para escribir una reseña.', welcomeTrustMod:'Empresas moderadas (NIF + registro)', welcomeTrustEu:'Datos alojados en Europa',
+    welcomeExplore:'Explorar el mapa', authOneDoorSub:"Entre o cree una cuenta en segundos — sin contraseñas.", authSendCode:"Recibir código por email", authSendNote:"Enviamos un código de 6 dígitos. Si aún no tiene cuenta, se crea al momento.", authUsePassword:"Prefiero entrar con contraseña", authUseCode:"Entrar con código por email", authCodeSentTo:"Enviamos un código de 6 dígitos a", authNoCode:"¿No lo recibió? Mire el spam o", authResend:"reenviar", authChangeEmail:"cambiar email", authNameAsk:"¡Cuenta creada! ¿Cómo quiere que le llamemos?", authContinue:"Continuar", authOwnerHint:"¿Tiene una empresa?", authOwnerCta:"Regístrela o reclame su ficha →", authEmailInvalid:"Indique un email válido.", authCodeResent:"Le enviamos un código nuevo.", claimTargetLbl:"Enviaremos el código a", claimGuestNote:"No necesita crear cuenta: al confirmar el código, entra en Hivex con este email y la ficha es suya.", claimNoEmailMsg:"Esta ficha no tiene email público. Escríbanos a geral.hivex@gmail.com y lo gestionamos.", claimNoAccess:"¿No tiene acceso a este email? Escríbanos a <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"Su empresa en Hivex", cfIntro:"Muchas empresas ya están en el mapa. Busque la suya — si existe, basta con reclamarla.", cfPh:"Nombre o NIF de la empresa", cfNotFound:"No encuentro mi empresa — registrar una nueva →", cfNoResults:"No se encontró ninguna empresa con ese nombre.", cfClaimBtn:"Es la mía — reclamar", cfAlreadyOwned:"Ya tiene gestor", cfEdit:"Editar mi ficha", regDupClaim:"Esta empresa ya está en Hivex — reclame la ficha existente.", welcomeOwnerCta:"Aparezca en el mapa — registre o reclame su ficha →", listShowMore:'Mostrar más empresas', listShownOf:'{a} de {b}', aboutTitle:'Acerca de', aboutAutoNote:'Resumen automático basado en los datos públicos de la empresa.', claimIncomplete:'✏️ Esta ficha está incompleta. ¿Es su empresa? Reclámela y añada descripción, logotipo y fotos.', contactReviewNote:'Aproximadamente una semana después, podremos enviarle un único correo para pedirle que valore esta empresa.', reviewLoginNeeded:'Inicie sesión para escribir una reseña.', welcomeTrustMod:'Empresas moderadas (NIF + registro)', welcomeTrustEu:'Datos alojados en Europa',
     themeToDark:'Oscuro', themeToLight:'Claro', themeModeDark:'Modo oscuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidad', avatarLogout:'Cerrar sesión', avatarFaqHelp:'FAQ y Ayuda',
     lpHeroRegisterCta:'Crear cuenta gratis', lpHeroRegisterHint:'Pida presupuestos, guarde favoritos y registre su empresa.',
@@ -1854,7 +1854,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:'Den Zugang zu hochwertigen Fachleistungen vereinfachen und demokratisieren – ein transparentes Ökosystem schaffen, in dem Unternehmen und Fachleute gemeinsam wachsen können, ohne unnötige Zwischenhändler.',
     helpVisionTitle:'Vision', helpVisionDesc:'Die führende Plattform in Portugal zur Vernetzung von Unternehmen und Fachleuten werden, Wirtschaftswachstum fördern und Chancen für alle schaffen.',
     navLogin:'Anmelden / Registrieren', navHelp:'Hilfe',
-    welcomeExplore:'Karte erkunden', listShowMore:'Mehr Unternehmen anzeigen', listShownOf:'{a} von {b}', aboutTitle:'Über uns', aboutAutoNote:'Automatische Zusammenfassung auf Basis öffentlicher Unternehmensdaten.', claimIncomplete:'✏️ Dieser Eintrag ist unvollständig. Ist das Ihr Unternehmen? Beanspruchen Sie ihn und ergänzen Sie Beschreibung, Logo und Fotos.', contactReviewNote:'Etwa eine Woche später senden wir Ihnen eventuell eine einzige E-Mail mit der Bitte, dieses Unternehmen zu bewerten.', reviewLoginNeeded:'Melden Sie sich an, um eine Bewertung zu schreiben.', welcomeTrustMod:'Geprüfte Unternehmen (NIF + Register)', welcomeTrustEu:'Daten in Europa gehostet',
+    welcomeExplore:'Karte erkunden', authOneDoorSub:"In Sekunden anmelden oder registrieren — ohne Passwort.", authSendCode:"Code per E-Mail erhalten", authSendNote:"Wir senden einen 6-stelligen Code. Ohne Konto wird es sofort angelegt.", authUsePassword:"Lieber mit Passwort anmelden", authUseCode:"Mit E-Mail-Code anmelden", authCodeSentTo:"Wir haben einen 6-stelligen Code gesendet an", authNoCode:"Nichts erhalten? Spam prüfen oder", authResend:"erneut senden", authChangeEmail:"E-Mail ändern", authNameAsk:"Konto erstellt! Wie dürfen wir Sie nennen?", authContinue:"Weiter", authOwnerHint:"Haben Sie ein Unternehmen?", authOwnerCta:"Registrieren oder Eintrag übernehmen →", authEmailInvalid:"Bitte eine gültige E-Mail angeben.", authCodeResent:"Wir haben Ihnen einen neuen Code gesendet.", claimTargetLbl:"Wir senden den Code an", claimGuestNote:"Kein Konto nötig: Nach Bestätigung des Codes sind Sie mit dieser E-Mail bei Hivex angemeldet und der Eintrag gehört Ihnen.", claimNoEmailMsg:"Dieser Eintrag hat keine öffentliche E-Mail. Schreiben Sie an geral.hivex@gmail.com, wir kümmern uns darum.", claimNoAccess:"Kein Zugriff auf diese E-Mail? Schreiben Sie an <a href=\"mailto:geral.hivex@gmail.com\">geral.hivex@gmail.com</a>.", cfTitle:"Ihr Unternehmen auf Hivex", cfIntro:"Viele Unternehmen sind bereits auf der Karte. Suchen Sie Ihres — wenn es existiert, einfach übernehmen.", cfPh:"Firmenname oder Steuernummer (NIF)", cfNotFound:"Ich finde mein Unternehmen nicht — neu registrieren →", cfNoResults:"Kein Unternehmen mit diesem Namen gefunden.", cfClaimBtn:"Das ist meins — übernehmen", cfAlreadyOwned:"Bereits verwaltet", cfEdit:"Meinen Eintrag bearbeiten", regDupClaim:"Dieses Unternehmen ist bereits auf Hivex — übernehmen Sie den bestehenden Eintrag.", welcomeOwnerCta:"Auf die Karte kommen — Eintrag registrieren oder übernehmen →", listShowMore:'Mehr Unternehmen anzeigen', listShownOf:'{a} von {b}', aboutTitle:'Über uns', aboutAutoNote:'Automatische Zusammenfassung auf Basis öffentlicher Unternehmensdaten.', claimIncomplete:'✏️ Dieser Eintrag ist unvollständig. Ist das Ihr Unternehmen? Beanspruchen Sie ihn und ergänzen Sie Beschreibung, Logo und Fotos.', contactReviewNote:'Etwa eine Woche später senden wir Ihnen eventuell eine einzige E-Mail mit der Bitte, dieses Unternehmen zu bewerten.', reviewLoginNeeded:'Melden Sie sich an, um eine Bewertung zu schreiben.', welcomeTrustMod:'Geprüfte Unternehmen (NIF + Register)', welcomeTrustEu:'Daten in Europa gehostet',
     themeToDark:'Dunkel', themeToLight:'Hell', themeModeDark:'Dunkelmodus', themeModeLight:'Heller Modus',
     navFavourites:'Favoriten', navFaq:'FAQ', navPrivacy:'Datenschutz', avatarLogout:'Abmelden', avatarFaqHelp:'FAQ & Hilfe',
     lpHeroRegisterCta:'Kostenloses Konto erstellen', lpHeroRegisterHint:'Angebote anfragen, Favoriten speichern und Ihren Betrieb registrieren.',
@@ -7503,9 +7503,15 @@ function submitRegister() {
       console.error('Erro ao guardar empresa:', e);
       // Server-side email-verification gates → reopen the right verify modal
       // (covers stale local sessions that bypassed the client-side gates).
-      let srvCode = null;
-      try { srvCode = JSON.parse(e.body || '{}').code || null; } catch (_) {}
-      if (srvCode === 'EMAIL_NOT_VERIFIED') {
+      let srvCode = null, srvCompany = null;
+      try { const b = JSON.parse(e.body || '{}'); srvCode = b.code || null; srvCompany = b.companyId || null; } catch (_) {}
+      if (srvCode === 'NIF_EXISTS' && srvCompany) {
+        // A empresa já está no mapa: em vez do beco "NIF duplicado", leva o
+        // dono à ficha existente para a reclamar.
+        try { closeRegister(); } catch (_) {}
+        showToast(t('regDupClaim') || 'Esta empresa já está na Hivex — reclame a ficha existente.');
+        companyFindOpen(Number(srvCompany), 'claim');
+      } else if (srvCode === 'EMAIL_NOT_VERIFIED') {
         apiFetch('/auth/send-verify', { method: 'POST', body: {} }).catch(() => {});
         openVerifyModal('user', '', 'Confirme o email da sua conta para concluir o registo. Enviámos-lhe um código.', () => submitRegister());
       } else if (srvCode === 'COMPANY_EMAIL_NOT_VERIFIED') {
@@ -8194,11 +8200,28 @@ window.closeStreetView = closeStreetView;
 
 // ── CLAIM ──────────────────────────────────────────────────────────────────────
 let _claimCompanyId = null;
+// Reclamar funciona COM ou SEM conta: o código vai para o email público da
+// empresa; sem conta, confirmar o código também abre a sessão (conta desse
+// email, criada se não existir). No fim segue direto para completar a ficha.
+let _claimComoConvidado = false;
+const _claimMascara = (email) => String(email || '').replace(/^(.).*(@.*)$/, '$1***$2');
 function openClaimModal() {
-  const me = JSON.parse(localStorage.getItem('hive_user') || 'null');
-  if (!me) { showToast(t('claimNeedLogin')); openLogin(); return; }
   if (!selectedId) return;
   _claimCompanyId = selectedId;
+  const me = JSON.parse(localStorage.getItem('hive_user') || 'null');
+  const c = companies.find(x => Number(x.id) === Number(selectedId));
+  _claimComoConvidado = !me;
+  const temEmail = !!(c && c.email && String(c.email).trim());
+  const alvo = document.getElementById('claimTarget');
+  if (alvo) alvo.textContent = temEmail ? _claimMascara(c.email) : '';
+  const linhaAlvo = document.getElementById('claimTargetRow');
+  if (linhaAlvo) linhaAlvo.style.display = temEmail ? '' : 'none';
+  const nota = document.getElementById('claimGuestNote');
+  if (nota) nota.style.display = (_claimComoConvidado && temEmail) ? '' : 'none';
+  const semEmail = document.getElementById('claimNoEmail');
+  if (semEmail) semEmail.style.display = temEmail ? 'none' : '';
+  const enviar = document.querySelector('#claimStep1 .btn-submit');
+  if (enviar) enviar.style.display = temEmail ? '' : 'none';
   document.getElementById('claimStep1').style.display = '';
   document.getElementById('claimStep2').style.display = 'none';
   const code = document.getElementById('claimCode'); if (code) code.value = '';
@@ -8209,28 +8232,53 @@ async function claimSendCode(btn) {
   if (!_claimCompanyId) return;
   if (btn) { btn.disabled = true; btn.textContent = t('sendingBtn'); }
   try {
-    const r = await api.requestClaimCode(_claimCompanyId);
+    const r = _claimComoConvidado
+      ? await apiFetch('/claims/' + _claimCompanyId + '/guest', { method: 'POST' })
+      : await api.requestClaimCode(_claimCompanyId);
     document.getElementById('claimSentEmail').textContent = r.sentTo || '';
     document.getElementById('claimStep1').style.display = 'none';
     document.getElementById('claimStep2').style.display = '';
     setTimeout(() => document.getElementById('claimCode')?.focus(), 150);
   } catch (e) {
-    showToast(e.message || 'Erro ao enviar código');
+    if (e.status === 409 && _claimComoConvidado) {
+      // Ficha com gestor: se for o próprio, basta entrar na conta.
+      closeClaimModal();
+      showToast(e.message || t('claimNeedLogin'));
+      openLogin();
+    } else {
+      showToast(e.message || 'Erro ao enviar código');
+    }
   } finally { if (btn) { btn.disabled = false; btn.textContent = t('claimSendBtn'); } }
 }
 async function claimVerify(btn) {
-  const code = (document.getElementById('claimCode')?.value || '').trim();
+  const code = (document.getElementById('claimCode')?.value || '').replace(/\D/g, '');
   if (code.length !== 6) { showToast(t('claimCodeInvalid')); return; }
   if (btn) btn.disabled = true;
   try {
-    await api.verifyClaim(_claimCompanyId, code);
+    let me;
+    if (_claimComoConvidado) {
+      const r = await apiFetch('/claims/' + _claimCompanyId + '/guest/verify', { method: 'POST', body: { code } });
+      me = r.user;
+      localStorage.setItem('hive_user', JSON.stringify(me));
+      isAdminMode = me.is_admin === true;
+      updateNavAuth();
+      try { syncFavouritesFromServer(); } catch (_) {}
+    } else {
+      await api.verifyClaim(_claimCompanyId, code);
+      me = JSON.parse(localStorage.getItem('hive_user') || 'null');
+    }
     // Reflect the new ownership locally so ✎ / inbox appear immediately.
-    const me = JSON.parse(localStorage.getItem('hive_user') || 'null');
+    // Number(): o id da conta chega como texto (BIGINT) e o editor compara com número.
     const c = companies.find(x => Number(x.id) === Number(_claimCompanyId));
-    if (c && me) c.created_by = me.id;
+    if (c && me) c.created_by = Number(me.id);
+    const id = _claimCompanyId;
     closeClaimModal();
     showToast(t('claimSuccess'));
-    if (selectedId === _claimCompanyId) { try { openDetail(_claimCompanyId); } catch (_) {} }
+    // Segue direto para completar a ficha (descrição, logótipo, fotos…).
+    try {
+      openDetail(id);
+      setTimeout(() => { try { if (selectedId === id) openEditCompany(); } catch (_) {} }, 900);
+    } catch (_) {}
   } catch (e) {
     showToast(e.message || 'Código inválido');
   } finally { if (btn) btn.disabled = false; }
@@ -9673,10 +9721,108 @@ function openLogin() {
   // Focus the email input on a small delay so the modal-open transition
   // doesn't fight the focus on mobile.
   setTimeout(() => {
-    const el = document.getElementById('loginEmail');
+    const el = document.getElementById('authEmail');
     if (el) try { el.focus(); } catch (_) {}
   }, 60);
 }
+
+// ── Uma só porta: código por email (entrar e criar conta) ────────────────────
+let _authEmailPending = '';
+function authCodeTyped(el) {
+  el.value = String(el.value || '').replace(/\D/g, '').slice(0, 6);
+  _setFieldError('authCodeInput', '');
+  if (el.value.length === 6) authVerifyCode();
+}
+async function authSendCode(reenviar) {
+  const inp = document.getElementById('authEmail');
+  const email = reenviar ? _authEmailPending : String((inp && inp.value) || '').trim().toLowerCase();
+  _setFieldError('authEmail', '');
+  if (!_AUTH_EMAIL_RE.test(email)) {
+    switchLoginTab('login');
+    _setFieldError('authEmail', t('authEmailInvalid') || 'Indique um email válido.');
+    return;
+  }
+  const btn = document.getElementById('authSendBtn');
+  const token = (window.turnstile && _turnstileWidgetId != null)
+    ? (window.turnstile.getResponse(_turnstileWidgetId) || '') : '';
+  setBusy(btn, true);
+  try {
+    await apiFetch('/auth/code/request', { method: 'POST', body: { email, turnstileToken: token } });
+    _authEmailPending = email;
+    const em = document.getElementById('authCodeEmail'); if (em) em.textContent = email;
+    switchLoginTab('code');
+    const ci = document.getElementById('authCodeInput');
+    if (ci) { ci.value = ''; setTimeout(() => { try { ci.focus(); } catch (_) {} }, 80); }
+    if (reenviar) showToast(t('authCodeResent') || 'Enviámos um novo código.');
+  } catch (e) {
+    if (reenviar) showToast(e.message || t('toastGenericError') || 'Erro');
+    else _setFieldError('authEmail', e.message || 'Não foi possível enviar o código.');
+  } finally {
+    setBusy(btn, false);
+    try { if (window.turnstile && _turnstileWidgetId != null) window.turnstile.reset(_turnstileWidgetId); } catch (_) {}
+  }
+}
+let _authVerifying = false;
+async function authVerifyCode() {
+  if (_authVerifying) return;
+  const ci = document.getElementById('authCodeInput');
+  const code = String((ci && ci.value) || '').replace(/\D/g, '');
+  if (code.length !== 6) { _setFieldError('authCodeInput', t('claimCodeInvalid') || 'Introduza o código de 6 dígitos'); return; }
+  const btn = document.getElementById('authVerifyBtn');
+  _authVerifying = true; setBusy(btn, true);
+  try {
+    const r = await apiFetch('/auth/code/verify', { method: 'POST', body: { email: _authEmailPending, code } });
+    _authOnSignedIn(r.user, { isNew: !!r.isNew });
+  } catch (e) {
+    _setFieldError('authCodeInput', e.message || 'Código errado.');
+    if (ci) { try { ci.select(); } catch (_) {} }
+  } finally { _authVerifying = false; setBusy(btn, false); }
+}
+// Depois de qualquer entrada bem-sucedida (código, palavra-passe, claim).
+function _authOnSignedIn(user, opts) {
+  localStorage.setItem('hive_user', JSON.stringify(user));
+  isAdminMode = user.is_admin === true;
+  updateNavAuth();
+  try { syncFavouritesFromServer(); } catch (_) {}
+  if (opts && opts.isNew) {
+    // Conta acabada de criar: o nome provisório vem do email — um passo
+    // (pré-preenchido) para o corrigir; "Continuar" sem mudar também serve.
+    const ni = document.getElementById('authNameInput');
+    if (ni) ni.value = user.name || '';
+    switchLoginTab('name');
+    setTimeout(() => { try { ni && ni.select(); } catch (_) {} }, 80);
+    return;
+  }
+  _authFinish(user);
+}
+function _authFinish(user) {
+  closeLogin();
+  showToast(t('toastWelcomeUser').replace('{name}', (user && user.name) || ''));
+  if (selectedId) openDetail(selectedId);
+  if (window._pendingCompanyRegister) {
+    window._pendingCompanyRegister = false;
+    setTimeout(() => openRegister(), 150);
+  }
+}
+async function authSaveName() {
+  const me = JSON.parse(localStorage.getItem('hive_user') || 'null');
+  const v = String((document.getElementById('authNameInput') || {}).value || '').replace(/\s+/g, ' ').trim();
+  const btn = document.getElementById('authNameBtn');
+  if (me && v.length >= 2 && v !== me.name) {
+    setBusy(btn, true);
+    try {
+      const r = await apiFetch('/auth/me', { method: 'PATCH', body: { name: v } });
+      if (r && r.user) localStorage.setItem('hive_user', JSON.stringify(r.user));
+    } catch (_) { /* o nome provisório fica; pode mudar depois no perfil */ }
+    setBusy(btn, false);
+    updateNavAuth();
+  }
+  _authFinish(JSON.parse(localStorage.getItem('hive_user') || 'null') || me);
+}
+window.authSendCode = authSendCode;
+window.authVerifyCode = authVerifyCode;
+window.authSaveName = authSaveName;
+window.authCodeTyped = authCodeTyped;
 function closeLogin() {
   const ov = document.getElementById('loginOverlay');
   if (ov) ov.classList.remove('open');
@@ -9687,13 +9833,24 @@ function closeLogin() {
     setTimeout(() => { try { if (_isLoggedIn() && selectedId === pend) toggleReviewForm(); } catch (_) {} }, 300);
   }
 }
+// Uma só porta: 'login' e 'register' são o mesmo passo (o código por email cria
+// a conta se não existir). 'code'/'name' são os passos seguintes; 'password' é
+// a alternativa para quem já usa palavra-passe.
 function switchLoginTab(tab) {
-  document.querySelectorAll('.auth-tab').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
-  document.getElementById('authLogin').style.display = tab === 'login' ? 'block' : 'none';
-  document.getElementById('authRegister').style.display = tab === 'register' ? 'block' : 'none';
+  const passo = (tab === 'code' || tab === 'name' || tab === 'password') ? tab : 'login';
+  const paineis = { login: 'authLogin', code: 'authCode', name: 'authName', password: 'authPassword' };
+  Object.keys(paineis).forEach(k => {
+    const el = document.getElementById(paineis[k]);
+    if (el) el.style.display = k === passo ? 'block' : 'none';
+  });
+  const dono = document.querySelector('#loginOverlay .auth-owner');
+  if (dono) dono.style.display = (passo === 'login' || passo === 'password') ? '' : 'none';
   if (typeof _clearAuthErrors === 'function') _clearAuthErrors();
-  if (typeof _renderGoogleButtons === 'function') _renderGoogleButtons();
-  if (tab === 'register' && typeof _renderTurnstile === 'function') _renderTurnstile();
+  if (passo === 'login') {
+    if (typeof _renderGoogleButtons === 'function') _renderGoogleButtons();
+    if (typeof _renderTurnstile === 'function') _renderTurnstile();
+  }
+  if (passo === 'password') setTimeout(() => { try { document.getElementById('loginEmail').focus(); } catch (_) {} }, 60);
 }
 
 // Lightweight password-strength meter. Not a security gate (the backend
@@ -9910,7 +10067,7 @@ function setBusy(btn, busy) {
 
 // Inline field-error helpers — flag the offending input red and show the
 // message under it instead of relying on a transient toast.
-const _AUTH_FIELDS = ['loginEmail','loginPass','regAuthName','regAuthEmail','regAuthPass'];
+const _AUTH_FIELDS = ['authEmail','authCodeInput','loginEmail','loginPass','regAuthName','regAuthEmail','regAuthPass'];
 function _setFieldError(inputId, msg) {
   const inp = document.getElementById(inputId);
   const err = document.getElementById(inputId + 'Err');
@@ -10264,6 +10421,9 @@ function _renderTurnstile() {
   _turnstileWidgetId = window.turnstile.render(slot, {
     sitekey: _googleConfig.turnstileSiteKey,
     theme: 'light',
+    // Invisível para a maioria das pessoas: o desafio só aparece quando a
+    // Cloudflare tem dúvidas (simplicidade máxima no pedido de código).
+    appearance: 'interaction-only',
   });
 }
 
@@ -10384,7 +10544,7 @@ function updateNavAuth() {
             <div class="avatar-menu-email">${user.email}</div>
             ${badgeHtml}
           </div>
-          <div class="avatar-menu-item" onclick="openRegister();closeAvatarMenu()"><i data-lucide="building-2"></i>${t('avatarRegisterCompany')}</div>
+          <div class="avatar-menu-item" onclick="startCompanyFlow();closeAvatarMenu()"><i data-lucide="building-2"></i>${t('avatarRegisterCompany')}</div>
           <div class="avatar-menu-item" onclick="openProfilePanel();closeAvatarMenu()"><i data-lucide="user"></i>${t('profileTitle')}</div>
           <div class="avatar-menu-item" onclick="openMyChats();closeAvatarMenu()"><i data-lucide="message-circle"></i>As minhas mensagens</div>
           <div class="avatar-menu-item" onclick="openMyFavourites();closeAvatarMenu()"><i data-lucide="star"></i>${t('navFavourites')} <span class="avatar-menu-badge" id="avMenuFavCount" hidden></span></div>
@@ -10395,7 +10555,7 @@ function updateNavAuth() {
           <div class="avatar-menu-item danger" onclick="doLogout()"><i data-lucide="log-out"></i>${t('avatarLogout')}</div>
         </div>
       </div>`;
-    if (mobileArea) mobileArea.innerHTML = `<button class="mobile-nav-link" onclick="openProfilePanel();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>${user.name}</span></button><button class="mobile-nav-link" onclick="openMyChats();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>As minhas mensagens</span></button><button class="mobile-nav-link" onclick="closeMobileNavPanel();openRegister()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>${t('avatarRegisterCompany') || 'Anunciar Empresa'}</span></button><button class="mobile-nav-link" onclick="openMyFavourites();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span data-i18n="navFavourites">Favoritos</span></button><button class="mobile-nav-link" style="color:#ef4444" onclick="doLogout();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>${t('avatarLogout')}</span></button>`;
+    if (mobileArea) mobileArea.innerHTML = `<button class="mobile-nav-link" onclick="openProfilePanel();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>${user.name}</span></button><button class="mobile-nav-link" onclick="openMyChats();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>As minhas mensagens</span></button><button class="mobile-nav-link" onclick="closeMobileNavPanel();startCompanyFlow()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>${t('avatarRegisterCompany') || 'Anunciar Empresa'}</span></button><button class="mobile-nav-link" onclick="openMyFavourites();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span data-i18n="navFavourites">Favoritos</span></button><button class="mobile-nav-link" style="color:#ef4444" onclick="doLogout();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>${t('avatarLogout')}</span></button>`;
     if (mobileTopAuth) mobileTopAuth.innerHTML = `<button class="mobile-top-avatar" onclick="toggleMobileNav()" title="${user.name}">${initials}</button>`;
     if (heroCta) {
       heroCta.hidden = false;
@@ -10954,7 +11114,116 @@ openRegister = function() {
   }, 50);
   _origOpenRegister();
   regGoStep(1);
+  // Menos escrita: nome/NIF vindos da pesquisa "a sua empresa" e, por omissão,
+  // o email da conta como email da empresa (já confirmado — evita 2.º código).
+  try {
+    const pre = window._cfPrefill; window._cfPrefill = null;
+    const set = (id, v) => { const el = document.getElementById(id); if (el && v && !el.value) el.value = v; };
+    if (pre) { set('regName', pre.name); set('regNif', pre.nif); }
+    set('regEmail', _user && _user.email);
+  } catch (_) {}
 };
+
+// ── A SUA EMPRESA: procurar antes de registar ─────────────────────────────────
+// Muitas empresas já estão no mapa (registos públicos). Antes do formulário, o
+// dono procura a sua: se já existir, reclama-a (até sem conta — código para o
+// email da empresa); só se não existir segue para "registar nova".
+let _cfTimer = null, _cfSeq = 0;
+const _cfNorm = s => String(s || '').normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase().replace(/\s+/g, ' ').trim();
+const _cfNif = (raw) => { const d = String(raw || '').replace(/\D/g, ''); return (/^\d{9}$/.test(d) && d.length === String(raw).replace(/[\s.-]/g, '').length) ? d : ''; };
+function startCompanyFlow() {
+  const ov = document.getElementById('companyFindOverlay');
+  if (!ov) { openRegister(); return; }
+  const q = document.getElementById('cfQuery'); if (q) q.value = '';
+  const box = document.getElementById('cfResults'); if (box) box.innerHTML = '';
+  ov.classList.add('open');
+  setTimeout(() => { try { q && q.focus(); } catch (_) {} }, 120);
+}
+function closeCompanyFind() { const ov = document.getElementById('companyFindOverlay'); if (ov) ov.classList.remove('open'); }
+function companyFindSearch() { clearTimeout(_cfTimer); _cfTimer = setTimeout(_cfSearchNow, 220); }
+async function _cfSearchNow() {
+  const raw = String((document.getElementById('cfQuery') || {}).value || '').trim();
+  const box = document.getElementById('cfResults');
+  if (!box) return;
+  const seq = ++_cfSeq;
+  const nif = _cfNif(raw);
+  if (!nif && raw.length < 3) { box.innerHTML = ''; return; }
+  const q = _cfNorm(raw);
+  let found = [];
+  if (nif) {
+    found = companies.filter(c => String(c.nif || '').replace(/\D/g, '') === nif);
+  } else {
+    for (const c of companies) { if (_cfNorm(c.name).includes(q)) found.push(c); }
+    found.sort((a, b) => (_cfNorm(a.name).startsWith(q) ? 0 : 1) - (_cfNorm(b.name).startsWith(q) ? 0 : 1));
+  }
+  found = found.slice(0, 6);
+  _cfRender(found);
+  // Complemento no servidor: empresas fora do catálogo carregado (ex.: no
+  // telemóvel só vêm as de Portugal).
+  if (found.length < 3) {
+    try {
+      const rows = await api.getCompanies({ q: raw, limit: 6 });
+      if (seq !== _cfSeq) return;
+      const lista = Array.isArray(rows) ? rows : ((rows && rows.companies) || []);
+      const ids = new Set(found.map(c => Number(c.id)));
+      for (const row of lista) {
+        const c = dbRowToCompany(row);
+        if (ids.has(Number(c.id)) || found.length >= 6) continue;
+        if (nif && String(c.nif || '').replace(/\D/g, '') !== nif) continue;
+        ids.add(Number(c.id)); found.push(c);
+        if (!companies.find(x => Number(x.id) === Number(c.id))) companies.push(c);
+      }
+      _cfRender(found);
+    } catch (_) {}
+  }
+}
+function _cfRender(lista) {
+  const box = document.getElementById('cfResults');
+  if (!box) return;
+  if (!lista.length) { box.innerHTML = '<div class="cf-empty">' + escHtml(t('cfNoResults') || 'Nenhuma empresa encontrada.') + '</div>'; return; }
+  const me = JSON.parse(localStorage.getItem('hive_user') || 'null');
+  const sc = (translations[currentLang] || translations.pt).sectors || {};
+  box.innerHTML = lista.map(c => {
+    const livre = c.created_by == null || String(c.created_by) === '7';
+    const minha = !!(me && c.created_by != null && Number(c.created_by) === Number(me.id));
+    const sub = [sc[c.sector] || '', c.city || ''].filter(Boolean).join(' · ');
+    const acao = minha
+      ? '<button type="button" class="cf-btn" onclick="companyFindOpen(' + Number(c.id) + ',\'edit\')">' + escHtml(t('cfEdit') || 'Editar a minha ficha') + '</button>'
+      : livre
+        ? '<button type="button" class="cf-btn" onclick="companyFindOpen(' + Number(c.id) + ',\'claim\')">' + escHtml(t('cfClaimBtn') || 'É a minha — reclamar') + '</button>'
+        : '<span class="cf-owned">' + escHtml(t('cfAlreadyOwned') || 'Já tem gestor') + '</span>';
+    return '<div class="cf-item"><div class="cf-info"><div class="cf-name">' + escHtml(c.name) + '</div>'
+      + (sub ? '<div class="cf-sub">' + escHtml(sub) + '</div>' : '') + '</div>' + acao + '</div>';
+  }).join('');
+}
+function companyFindOpen(id, modo) {
+  id = Number(id);
+  closeCompanyFind();
+  try { showTab('search'); } catch (_) {}
+  // Fora do catálogo carregado (ex.: telemóvel só traz PT) → vem do servidor.
+  if (companies.find(c => Number(c.id) === id)) openDetail(id);
+  else { try { suggestPickRemote(id); } catch (_) {} }
+  // Abre o claim/edição assim que a ficha estiver aberta (até ~5 s).
+  let n = 0;
+  const iv = setInterval(() => {
+    if (++n > 25) { clearInterval(iv); return; }
+    if (Number(selectedId) !== id) return;
+    clearInterval(iv);
+    setTimeout(() => { try { modo === 'edit' ? openEditCompany() : openClaimModal(); } catch (_) {} }, 350);
+  }, 200);
+}
+function companyFindRegisterNew() {
+  const raw = String((document.getElementById('cfQuery') || {}).value || '').trim();
+  const nif = _cfNif(raw);
+  window._cfPrefill = nif ? { nif } : (raw ? { name: raw } : null);
+  closeCompanyFind();
+  openRegister();   // pede a entrada (uma só porta) se for preciso e retoma
+}
+window.startCompanyFlow = startCompanyFlow;
+window.closeCompanyFind = closeCompanyFind;
+window.companyFindSearch = companyFindSearch;
+window.companyFindOpen = companyFindOpen;
+window.companyFindRegisterNew = companyFindRegisterNew;
 
 const _origCloseRegister = typeof closeRegister === 'function' ? closeRegister : null;
 if (_origCloseRegister) {
@@ -11009,7 +11278,7 @@ function openProfilePanel() {
     <div style="margin-top:6px">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
         <div class="profile-section-title" style="margin:0">${t('profileMyCompanies')}${myCompanies.length > 0 ? ` (${myCompanies.length})` : ''}</div>
-        <button onclick="closeProfilePanel();openRegister()" style="background:var(--primary);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px">
+        <button onclick="closeProfilePanel();startCompanyFlow()" style="background:var(--primary);color:#fff;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;gap:5px">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg> ${t('profileAdd')}
         </button>
       </div>
@@ -11017,7 +11286,7 @@ function openProfilePanel() {
         <div style="font-size:32px;margin-bottom:10px">🏢</div>
         <div style="font-weight:700;margin-bottom:6px;color:var(--text)">${t('emptyTitle')}</div>
         <div style="font-size:13px;margin-bottom:18px">${t('profileNoCompanyMsg')}</div>
-        <button onclick="closeProfilePanel();openRegister()" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;width:100%">${t('emptyBtn')}</button>
+        <button onclick="closeProfilePanel();startCompanyFlow()" style="background:var(--primary);color:#fff;border:none;border-radius:10px;padding:12px 24px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;width:100%">${t('emptyBtn')}</button>
       </div>`}
     </div>
 
@@ -13484,7 +13753,7 @@ function openHow() {
       '<button class="btn-submit" style="width:100%;margin-top:4px" onclick="document.getElementById(\'howOverlay\').classList.remove(\'open\');showTab(\'search\')">' + T.ctaCli + '</button></div>' +
       '<div><div style="font-weight:800;color:#f59e0b;margin-bottom:12px;font-size:14px;text-transform:uppercase;letter-spacing:.5px">' + T.emp + '</div>' +
       passo(T.e1) + passo(T.e2) + passo(T.e3) +
-      '<button class="btn-submit" style="width:100%;margin-top:4px;background:#f59e0b" onclick="document.getElementById(\'howOverlay\').classList.remove(\'open\');openRegister()">' + T.ctaEmp + '</button></div>' +
+      '<button class="btn-submit" style="width:100%;margin-top:4px;background:#f59e0b" onclick="document.getElementById(\'howOverlay\').classList.remove(\'open\');startCompanyFlow()">' + T.ctaEmp + '</button></div>' +
       '</div></div>';
     document.body.appendChild(ov);
   }

@@ -271,6 +271,144 @@ router.post('/login', async (req, res, next) => {
   }
 });
 
+// ── Entrar com código por email (uma só porta, sem palavra-passe) ─────────────
+// Serve para entrar E para criar conta: pede-se o email, chega um código de 6
+// dígitos (10 min, 5 tentativas, guardado só como hash); ao confirmar entra-se
+// na conta desse email — criada na hora se não existir. A prova é o controlo
+// da caixa de correio, a mesma do "esqueci-me da palavra-passe". A resposta
+// ao pedido é sempre igual (não revela se o email já tem conta).
+const CODE_MAX_TRIES = 5, CODE_MIN_GAP_S = 45, CODE_MAX_PER_HOUR = 5;
+function _codeHash(email, code) {
+  return crypto.createHmac('sha256', String(process.env.JWT_SECRET || 'hivex-login-code'))
+    .update(email + ':' + code).digest('hex');
+}
+function _nameFromEmail(email) {
+  const local = String(email).split('@')[0].replace(/\d+/g, ' ').replace(/[._+-]+/g, ' ').trim();
+  const n = local.split(/\s+/).filter(Boolean)
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
+  return (n || 'Utilizador').slice(0, 80);
+}
+// Sessão (cookie + corpo p/ a app nativa) — partilhada com o claim sem conta.
+async function issueSession(req, res, user) {
+  user = await maybeBootstrapAdmin(user);
+  const token = signToken(user);
+  res.cookie('hive_token', token, COOKIE_OPTS);
+  return authBody(req, user, token);
+}
+
+// POST /api/auth/code/request — { email, turnstileToken }
+router.post('/code/request', async (req, res, next) => {
+  try {
+    const email = normalizeEmail(req.body && req.body.email);
+    if (!isValidEmail(email)) return res.status(400).json({ error: 'Indique um email válido.' });
+    const { rows } = await pool.query('SELECT * FROM login_codes WHERE email = $1', [email]);
+    const prev = rows[0];
+    const agora = Date.now();
+    const naJanela = !!prev && (agora - new Date(prev.window_start).getTime() < 3600e3);
+    if (prev && agora - new Date(prev.last_sent_at).getTime() < CODE_MIN_GAP_S * 1000) {
+      return res.status(429).json({ error: 'Acabámos de enviar um código — aguarde um minuto antes de pedir outro.' });
+    }
+    if (naJanela && prev.window_count >= CODE_MAX_PER_HOUR) {
+      return res.status(429).json({ error: 'Pediu demasiados códigos para este email. Tente de novo dentro de uma hora.' });
+    }
+    // Anti-robô só no 1.º pedido da hora; os reenvios já estão limitados acima.
+    if (!naJanela && !(await verifyTurnstile(req.body && req.body.turnstileToken, req.ip))) {
+      return res.status(400).json({ error: 'Verificação de segurança falhou. Tente novamente.' });
+    }
+    const code = genCode();
+    await pool.query(
+      `INSERT INTO login_codes (email, code_hash, expires_at, attempts, last_sent_at, window_start, window_count)
+       VALUES ($1, $2, NOW() + INTERVAL '10 minutes', 0, NOW(), NOW(), 1)
+       ON CONFLICT (email) DO UPDATE SET
+         code_hash = EXCLUDED.code_hash, expires_at = EXCLUDED.expires_at, attempts = 0, last_sent_at = NOW(),
+         window_start = CASE WHEN login_codes.window_start > NOW() - INTERVAL '1 hour' THEN login_codes.window_start ELSE NOW() END,
+         window_count = CASE WHEN login_codes.window_start > NOW() - INTERVAL '1 hour' THEN login_codes.window_count + 1 ELSE 1 END`,
+      [email, _codeHash(email, code)]);
+    try {
+      await sendBrandedEmail({
+        to: email,
+        subject: `${code} é o seu código Hivex`,
+        title: 'O seu código de acesso',
+        bodyHtml: `
+      <p style="margin-top:0">Use este código para entrar na Hivex:</p>
+      <p style="font-size:34px;font-weight:800;letter-spacing:8px;text-align:center;margin:18px 0">${code}</p>
+      <p style="color:#6b7280;font-size:13px">O código expira em 10 minutos. Se não foi você que o pediu, ignore este email — ninguém entra sem este código.</p>
+      <p style="color:#9ca3af;font-size:12px;margin-bottom:0">Your Hivex sign-in code is ${code} (valid for 10 minutes).</p>`,
+      });
+    } catch (e) {
+      console.error('[auth] envio do código de acesso falhou:', e.message);
+      return res.status(502).json({ error: 'Não foi possível enviar o email agora. Tente de novo dentro de momentos.' });
+    }
+    res.json({ ok: true });
+  } catch (e) { next(e); }
+});
+
+// POST /api/auth/code/verify — { email, code } → sessão (+ isNew)
+router.post('/code/verify', async (req, res, next) => {
+  try {
+    const email = normalizeEmail(req.body && req.body.email);
+    const code = String((req.body && req.body.code) || '').replace(/\D/g, '');
+    if (!isValidEmail(email) || code.length !== 6) {
+      return res.status(400).json({ error: 'Introduza o código de 6 dígitos.' });
+    }
+    const { rows } = await pool.query('SELECT * FROM login_codes WHERE email = $1', [email]);
+    const row = rows[0];
+    if (!row || new Date(row.expires_at).getTime() < Date.now()) {
+      return res.status(400).json({ error: 'O código expirou. Peça um novo.' });
+    }
+    if (row.attempts >= CODE_MAX_TRIES) {
+      return res.status(429).json({ error: 'Demasiadas tentativas. Peça um novo código.' });
+    }
+    const a = Buffer.from(String(row.code_hash), 'hex');
+    const b = Buffer.from(_codeHash(email, code), 'hex');
+    if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) {
+      await pool.query('UPDATE login_codes SET attempts = attempts + 1 WHERE email = $1', [email]);
+      const restam = CODE_MAX_TRIES - row.attempts - 1;
+      return res.status(400).json({ error: restam > 0
+        ? `Código errado. ${restam === 1 ? 'Resta 1 tentativa' : 'Restam ' + restam + ' tentativas'}.`
+        : 'Código errado. Peça um novo código.' });
+    }
+    // Código gasto (mantém os contadores de envio da janela).
+    await pool.query(`UPDATE login_codes SET expires_at = NOW() - INTERVAL '1 second', attempts = $2 WHERE email = $1`,
+      [email, CODE_MAX_TRIES]);
+
+    let isNew = false;
+    let { rows: us } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    let user = us[0];
+    if (!user) {
+      const { rows: created } = await pool.query(
+        `INSERT INTO users (name, email, email_verified) VALUES ($1, $2, TRUE)
+         ON CONFLICT (email) DO UPDATE SET email_verified = TRUE
+         RETURNING *, (xmax = 0) AS inserted`, [_nameFromEmail(email), email]);
+      user = created[0];
+      isNew = !!(user && user.inserted);
+      if (isNew) sendWelcomeEmail(user).catch(err =>
+        console.error('[auth] welcome email send failed for', user.email, err.message));
+    } else if (!user.email_verified) {
+      const { rows: v } = await pool.query(
+        `UPDATE users SET email_verified = TRUE, verify_code = NULL, verify_expires = NULL
+          WHERE id = $1 RETURNING *`, [user.id]);
+      user = v[0] || user;
+    }
+    res.json({ ...(await issueSession(req, res, user)), isNew });
+  } catch (e) { next(e); }
+});
+
+// PATCH /api/auth/me — { name } (o login por código cria a conta com um nome
+// provisório tirado do email; o utilizador corrige-o num passo).
+router.patch('/me', requireAuth, async (req, res, next) => {
+  try {
+    const name = String((req.body && req.body.name) || '').replace(/\s+/g, ' ').trim();
+    if (name.length < 2 || name.length > 80) {
+      return res.status(400).json({ error: 'Indique um nome com 2 a 80 caracteres.' });
+    }
+    const { rows } = await pool.query('UPDATE users SET name = $1 WHERE id = $2 RETURNING *', [name, req.user.id]);
+    if (!rows[0]) return res.status(401).json({ error: 'Utilizador não encontrado' });
+    // O nome vai no token (usado como remetente das mensagens) — reemitir.
+    res.json(await issueSession(req, res, rows[0]));
+  } catch (e) { next(e); }
+});
+
 // POST /api/auth/logout
 router.post('/logout', (req, res) => {
   res.clearCookie('hive_token', CLEAR_COOKIE_OPTS);
@@ -513,3 +651,5 @@ router.delete('/me', requireAuth, async (req, res, next) => {
 });
 
 module.exports = router;
+// Partilhada com o claim sem conta (routes/marketplace.js): mesma sessão/cookie.
+module.exports.issueSession = issueSession;

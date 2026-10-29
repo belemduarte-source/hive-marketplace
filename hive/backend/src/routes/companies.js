@@ -543,9 +543,16 @@ router.post('/', requireAuth, async (req, res, next) => {
     // One company per NIF — give a clean 409 instead of letting the unique
     // index throw a raw constraint error (also catches double-submits).
     if (nifClean) {
-      const dupe = await pool.query('SELECT id FROM companies WHERE nif = $1', [nifClean]);
+      const dupe = await pool.query('SELECT id, status FROM companies WHERE nif = $1', [nifClean]);
       if (dupe.rows.length > 0) {
-        return res.status(409).json({ error: 'Esta empresa já está registada (NIF duplicado).' });
+        // A empresa já existe (muitas vieram de registos públicos): devolve a
+        // ficha para o browser oferecer "reclamar" em vez de um beco sem saída.
+        const d = dupe.rows[0];
+        return res.status(409).json({
+          error: 'Esta empresa já está na Hivex — pode reclamar a ficha existente.',
+          code: 'NIF_EXISTS',
+          ...(d.status === 'approved' ? { companyId: Number(d.id) } : {}),
+        });
       }
     }
     // Certidão Permanente is mandatory at registration to prove the company is

@@ -175,6 +175,16 @@ const claimLimiter = rateLimit({
   message: { error: 'Demasiados pedidos de código. Tente novamente mais tarde.' },
   skip: _skipRateLimit,
 });
+// Código de acesso por email (entrar/criar conta sem palavra-passe): cada pedido
+// envia um email; além deste teto por IP há limites por email na base de dados.
+const codeLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 10,
+  standardHeaders: true,
+  legacyHeaders: false,
+  message: { error: 'Demasiados códigos pedidos. Tente novamente mais tarde.' },
+  skip: _skipRateLimit,
+});
 const rfqLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 5,
@@ -651,6 +661,20 @@ const MIGRATIONS = [
    )`,
   `CREATE UNIQUE INDEX IF NOT EXISTS uq_claim_invites_company ON claim_invites(company_id) WHERE status <> 'test'`,
   `CREATE INDEX IF NOT EXISTS idx_claim_invites_email ON claim_invites(email)`,
+
+  // v11: entrar com código por email (uma só porta, sem palavra-passe) — um
+  // registo por email com o último código (só o hash), tentativas e janela
+  // de envios; e tentativas por código de claim (claim sem conta).
+  `CREATE TABLE IF NOT EXISTS login_codes (
+     email        TEXT PRIMARY KEY,
+     code_hash    TEXT NOT NULL,
+     expires_at   TIMESTAMPTZ NOT NULL,
+     attempts     INT NOT NULL DEFAULT 0,
+     last_sent_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+     window_start TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+     window_count INT NOT NULL DEFAULT 1
+   )`,
+  `ALTER TABLE claims ADD COLUMN IF NOT EXISTS attempts INT NOT NULL DEFAULT 0`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -659,7 +683,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 10; // v10: claim_invites (campanha "reclame a sua ficha")
+const SCHEMA_VERSION = 11; // v11: login_codes + claims.attempts
 
 async function ensureSchema() {
   if (_migrated) return;
@@ -729,6 +753,8 @@ app.post('/api/companies', registerLimiter);            // registration spam gua
 app.post('/api/companies/:id/event', eventLimiter);     // analytics ping flood guard
 app.post('/api/companies/:id/contact', contactLimiter); // guest-contact spam guard
 app.post('/api/claims/:companyId', claimLimiter);       // claim-code email guard
+app.post('/api/claims/:companyId/guest', claimLimiter); // claim sem conta — mesmo orçamento
+app.post('/api/auth/code/request', codeLimiter);       // código de acesso por email
 app.post('/api/quote-requests', rfqLimiter);            // RFQ email fan-out guard
 app.use('/api', marketplaceRouter);
 app.use('/api', require('./routes/billing').router);
