@@ -43,6 +43,7 @@ const adminRouter = require('./routes/admin');
 const favouritesRouter = require('./routes/favourites');
 const marketplaceRouter = require('./routes/marketplace');
 const errorHandler = require('./middleware/errorHandler');
+const { nomeLegivel, moradaLegivel } = require('./texto-legivel');
 
 const app = express();
 
@@ -883,13 +884,14 @@ app.get('/e/:id(\\d+)', async (req, res, next) => {
       .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
     const BASE = 'https://www.hivex.pt';
     const { rows } = await require('./db').query(
-      `SELECT id, name, city, sector, rating, reviews, description,
+      `SELECT id, name, city, country, sector, rating, reviews, description,
               (logo IS NOT NULL AND logo LIKE 'data:image%') AS has_logo,
               CASE WHEN logo IS NOT NULL THEN extract(epoch from updated_at)::bigint::text END AS logo_v
          FROM companies WHERE id = $1 AND status = 'approved'`, [req.params.id]);
     const c = rows[0];
     const dest = `/?company=${encodeURIComponent(req.params.id)}`;
     if (!c) return res.redirect(302, '/');
+    c.name = nomeLegivel(c.name, c.country);
     const title = `${c.name}${c.city ? ' — ' + c.city : ''} | Hivex`;
     const bits = [];
     if (Number(c.rating) > 0) bits.push(`⭐ ${Number(c.rating).toFixed(1)}/5 (${c.reviews || 0})`);
@@ -943,12 +945,13 @@ app.get('/s/:sector/:city', async (req, res, next) => {
     const cidade = String(req.params.city || '').replace(/-/g, ' ').replace(/[<>"]/g, '').slice(0, 60);
     if (!sector || !cidade) return res.redirect(302, '/');
     const { rows } = await require('./db').query(
-      `SELECT id, name, city, rating, reviews, phone, website
+      `SELECT id, name, city, country, rating, reviews, phone, website
          FROM companies
         WHERE status = 'approved' AND sector = $1 AND lower(city) = lower($2)
         ORDER BY featured DESC NULLS LAST, rating DESC NULLS LAST, reviews DESC NULLS LAST
         LIMIT 50`, [sector, cidade]);
     if (!rows.length) return res.redirect(302, '/');
+    rows.forEach(r => { r.name = nomeLegivel(r.name, r.country); });
     const BASE = 'https://www.hivex.pt';
     const label = SECTOR_LABELS_PT[sector] || (sector.charAt(0).toUpperCase() + sector.slice(1).replace(/_/g, ' '));
     const cityTitle = rows[0].city || cidade;
@@ -1010,6 +1013,10 @@ app.get('/c/:idslug', async (req, res, next) => {
          FROM companies WHERE id = $1 AND status = 'approved'`, [id]);
     const c = rows[0];
     if (!c) return res.status(404).set('Cache-Control', 'public, max-age=0, s-maxage=600').type('html').send('<!doctype html><html lang="pt"><head><meta charset="utf-8"><meta name="robots" content="noindex"><title>Empresa não disponível | Hivex</title></head><body style="font-family:system-ui;padding:40px;text-align:center;background:#0f172a;color:#e2e8f0"><h1>Esta empresa já não está disponível na Hivex</h1><p><a style="color:#93c5fd" href="/">Encontrar outras empresas →</a></p></body></html>');
+    // Nome com acentos e morada em escrita normal (o slug não muda: o
+    // hivexSlugify tira os acentos)
+    c.name = nomeLegivel(c.name, c.country);
+    c.address = moradaLegivel(c.address);
     const BASE = 'https://www.hivex.pt';
     const slugCanon = `${c.id}-${hivexSlugify(c.name)}`;
     // Slug errado/antigo → 301 para a forma canónica (evita conteúdo duplicado)

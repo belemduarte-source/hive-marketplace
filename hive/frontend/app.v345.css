@@ -4166,8 +4166,9 @@ button,input,select,textarea{font-family:inherit}
 .mobile-nav-logo .hx-brand-mark{width:28px;height:28px}
 
 /* ── Cabeçalho do computador: UMA linha de 64px (logo · pesquisa · conta) ──
-   Antes eram 245px (um terço de um ecrã de 768px) até o mapa começar. */
-@media (min-width:1025px){
+   Antes eram 245px (um terço de um ecrã de 768px) até o mapa começar.
+   Desde 769px (tablets incluídos). */
+@media (min-width:769px){
   nav.nav-map-grid{
     grid-template-columns:auto minmax(280px,560px) minmax(0,1fr) auto !important;
     grid-template-rows:64px !important;
@@ -4198,14 +4199,14 @@ button,input,select,textarea{font-family:inherit}
   nav.nav-map-grid > .nav-ad.has-adsense{display:block !important;height:60px !important;align-self:center !important;border:0;background:transparent;box-shadow:none;border-radius:var(--rad-sm)}
 }
 /* Ficha: começa logo abaixo do cabeçalho de 64px (o painel tem zoom:.7) */
-@media (min-width:1025px){
+@media (min-width:1024px){
   .detail-panel{top:calc(64px / .7) !important;height:calc((100dvh / var(--z) - 64px) / .7) !important}
 }
 
 /* ── Barra de categorias: todas visíveis, mesmo tamanho, sem cortes ──
    O tamanho é ÚNICO para todas (fitSectorBar só desce de 15 para 14/13 se a
    língua não couber); antes cada separador encolhia sozinho até 13px. */
-@media (min-width:1025px){
+@media (min-width:769px){
   .ub-sectors-label{display:none !important}
   .ub-sectors-wrap{padding:8px 16px !important}
   #sectorFilters .sector-filter-container{gap:4px !important}
@@ -4219,7 +4220,7 @@ button,input,select,textarea{font-family:inherit}
 /* ── Coluna esquerda: pesquisa assistida, raio e Empresas Próximas ──
    A contagem repetia a pílula do mapa e a coluna ficava vazia por baixo;
    a lista de Empresas Próximas passou para aqui (antes só aparecia ≥1500px). */
-@media (min-width:1025px){
+@media (min-width:769px){
   .filter-result{display:none !important}
   .filter-sidebar{width:380px !important;min-width:360px !important;border-top:0 !important;box-shadow:none !important;overflow:hidden !important}
   #filtersLayer2{flex-shrink:0}
@@ -4335,13 +4336,13 @@ button,input,select,textarea{font-family:inherit}
 
 /* ── Telemóvel: com a ficha aberta, a pesquisa flutuante e os filtros
    escondem-se (desenhavam-se por cima do nome da empresa) ── */
-@media (max-width:1024px){
+@media (max-width:768px){
   body.dp-aberto .unified-bar,body.dp-aberto #mobileSearchPanel,body.dp-aberto .map-fab-near{visibility:hidden !important}
 }
 .slc-dot{width:8px;height:8px;border-radius:50%;display:inline-block;flex-shrink:0}
 @media (max-width:768px){.slc-name{padding-right:0 !important}}
 /* Os botões só do telemóvel (.nav-links) não têm lugar na grelha de uma linha */
-@media (min-width:1025px){ nav.nav-map-grid > .nav-links{display:none !important} }
+@media (min-width:769px){ nav.nav-map-grid > .nav-links{display:none !important} }
 /* Idioma e tema: botões discretos no cabeçalho escuro */
 .nav-right .theme-toggle,.nav-right .lang-btn{background:rgba(255,255,255,.06) !important;border:1px solid rgba(255,255,255,.16) !important;color:#e2e8f0 !important}
 .nav-right .theme-toggle:hover,.nav-right .lang-btn:hover{border-color:rgba(255,255,255,.35) !important;color:#fff !important}
@@ -4411,3 +4412,36 @@ button,input,select,textarea{font-family:inherit}
 @media (min-width:1600px){.feat-panel{width:412px}}
 /* Pré-visualização do logótipo no registo: inteiro, como aparece nos cartões */
 .reg-logo-preview.has-img{background-color:#fff !important;background-size:contain !important;background-origin:content-box;padding:4px}
+/* Folha "Área" no telemóvel: ícones de linha por grupo */
+.msp-ico,.msp-sheet-btn svg.lucide{width:16px;height:16px;vertical-align:-3px;color:var(--primary);flex-shrink:0}
+.msp-sheet-btn.active svg.lucide{color:inherit}
+
+/* Tablet (769–1024px): o mesmo cabeçalho de uma linha (sem coluna de anúncio),
+   botões em linha e coluna esquerda mais estreita; a ficha (sem zoom abaixo de
+   1024px) começa logo abaixo dos 64px do cabeçalho. */
+@media (min-width:769px) and (max-width:1024px){
+  nav.nav-map-grid{grid-template-columns:auto minmax(180px,1fr) auto !important;grid-template-areas:"logo search auth" !important;column-gap:16px !important;padding:0 16px !important}
+  .nav-right,.nav-right-bottom{flex-direction:row !important;width:auto !important;min-width:0 !important;max-width:none !important;align-items:center !important}
+  .nav-right .btn-login,.nav-right .lang-btn,.nav-right .theme-toggle{flex:0 0 auto !important;width:auto !important}
+  .nav-right .theme-toggle{width:38px !important}
+  .nav-right #authArea{width:auto !important}
+  .filter-sidebar{width:320px !important;min-width:300px !important}
+}
+@media (min-width:769px) and (max-width:1023px){
+  .detail-panel{top:64px !important;height:calc(100dvh - 64px) !important}
+}
+/* Tablet: as regras-base da grelha do cabeçalho só existiam a partir de
+   1025px (abaixo disso o nav era flex: a pesquisa caía para a 2.ª linha ou
+   ficava à direita dos botões). */
+@media (min-width:769px) and (max-width:1024px){
+  nav.nav-map-grid{display:grid !important;align-items:center}
+  nav.nav-map-grid > .nav-banner{grid-area:logo;margin:0 !important;align-self:center}
+  nav.nav-map-grid > .nav-right{grid-area:auth;margin:0 !important;align-self:center;justify-self:end}
+  nav.nav-map-grid > .ub-search-in-nav{grid-area:search;display:flex;align-items:center;gap:8px;width:100%;padding:0;min-width:0}
+  nav.nav-map-grid > .ub-search-in-nav .ub-flex1{flex:1 1 auto;min-width:0}
+  nav.nav-map-grid > .ub-search-in-nav .ub-filtros-btn{display:none !important}
+  nav.nav-map-grid > .hamburger,nav.nav-map-grid > .mobile-top-actions{display:none !important}
+  .ub-sectors .cat-item{min-height:40px !important}
+}
+#detailPanel .dp-more-toggle{font-size:var(--dpf-sm) !important;font-weight:600 !important}
+@media (min-width:769px) and (max-width:1024px){.unified-bar{min-height:0 !important}}
