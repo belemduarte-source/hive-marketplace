@@ -7011,6 +7011,7 @@ function renderNearbyPanel(filtered, fromMapMove) {
   const panel = document.getElementById('nearbyPanel');
   if (!listEl || !panel) return;
   _nearbyLastFiltered = filtered;
+  try { renderFeaturedPanel(filtered); } catch (_) {}
   // Skip work when the panel is hidden by layout (mobile/tablet bottom sheet,
   // or the map tab is inactive). Our own empty-state display:none must NOT be
   // treated as "layout-hidden", otherwise a later re-show would be blocked.
@@ -7038,12 +7039,16 @@ function renderNearbyPanel(filtered, fromMapMove) {
   // primeiro; depois por proximidade ao centro da vista. As de fora do ecrã
   // seguem por proximidade (a lista nunca fica vazia ao afastar o mapa).
   if (!fromMapMove) { try { renderNearbyChips(); renderCountryPills(); } catch (_) {} }
+  // Com a coluna "Empresas Destacadas" à vista, as destacadas já têm o seu
+  // lugar à direita: aqui a ordem é só proximidade (sem as repetir no topo).
+  const fp = document.getElementById('featPanel');
+  const comColunaDestaque = !!fp && getComputedStyle(fp).display !== 'none';
   let nVista = 0;
   _nearbyData = filtered.map(c => {
     const v = naVista(c); if (v) nVista++;
     return { c, v, dv: calculateDistance(refLat, refLng, c.lat, c.lng) };
   }).sort((a, b) => ((b.v ? 1 : 0) - (a.v ? 1 : 0))
-    || (a.v && b.v ? ((b.c.featured ? 1 : 0) - (a.c.featured ? 1 : 0)) : 0)
+    || (!comColunaDestaque && a.v && b.v ? ((b.c.featured ? 1 : 0) - (a.c.featured ? 1 : 0)) : 0)
     || (_nearbySort === 'rating' ? ((b.c.rating || 0) - (a.c.rating || 0)) : (a.dv - b.dv)));
   // Com empresas no ecrã, a secção lista só essas (o botão "10 de N" bate
   // certo com o contador); sem nenhuma à vista, mostra as mais próximas.
@@ -7134,6 +7139,72 @@ function _appendNearbyCards(listEl, upTo, sentinel) {
   _nearbyRendered = upTo;
 }
 window.renderNearbyPanel = renderNearbyPanel;
+
+// ── EMPRESAS DESTACADAS (coluna direita do mapa, computador ≥1280px) ─────────
+// Só as empresas com destaque (featured). As que cumprem os filtros ativos
+// vêm primeiro; dentro disso, por proximidade ao centro da zona visível.
+// Corre nos mesmos momentos que as Empresas Próximas (filtros e fim de cada
+// movimento do mapa).
+let _featSetDe = null, _featSet = null;
+function renderFeaturedPanel(filtered) {
+  const panel = document.getElementById('featPanel');
+  const list = document.getElementById('featList');
+  if (!panel || !list || getComputedStyle(panel).display === 'none') return;
+  let feat = (companies || []).filter(c => c.featured && isFinite(+c.lat) && isFinite(+c.lng));
+  // Arranque: enquanto o catálogo não chega, as destacadas da última visita
+  // (cache gravada por loadCompaniesFromDB) — nunca "ainda não há" a carregar.
+  const aCarregar = !(companies || []).length;
+  if (aCarregar) {
+    try { feat = (JSON.parse(localStorage.getItem('hivex_featured_cache') || '[]') || []).filter(c => c && isFinite(+c.lat) && isFinite(+c.lng)); } catch (_) { feat = []; }
+  }
+  const cnt = document.getElementById('featCount');
+  if (cnt) cnt.textContent = feat.length || (aCarregar ? '…' : 0);
+  if (!feat.length) { list.innerHTML = aCarregar ? '' : '<div class="feat-empty">' + escHtml(t('featEmpty')) + '</div>'; return; }
+  if (_featSetDe !== filtered) { _featSetDe = filtered; _featSet = new Set((filtered || []).map(c => c.id)); }
+  const [lat, lng] = _nearbyViewPoint();
+  const ordem = feat.map(c => ({ c, f: _featSet.has(c.id) ? 1 : 0, d: calculateDistance(lat, lng, +c.lat, +c.lng) }))
+    .sort((a, b) => (b.f - a.f) || (a.d - b.d));
+  list.innerHTML = ordem.map(o => _featCardHtml(o.c)).join('');
+}
+window.renderFeaturedPanel = renderFeaturedPanel;
+
+function _featCardHtml(c) {
+  const tr = translations[currentLang] || translations.pt;
+  const setor = (tr.sectors && tr.sectors[c.sector]) || c.sector || '';
+  const d = _nearbyLabelDist(c);
+  const dist = d < 10 ? d.toFixed(1).replace('.', ',') + ' km' : Math.round(d) + ' km';
+  const local = _moradaLegivel(String(c.city || '').trim() || String(c.address || '').split(',')[0].trim());
+  const desc = String(c.description || '').replace(/\s+/g, ' ').trim();
+  const aval = c.rating > 0
+    ? '<span class="feat-aval"><span class="nc-stars">★</span> <strong>' + c.rating.toFixed(1) + '</strong> <span class="nc-reviews">(' + (c.reviews || 0) + ')</span></span>'
+    : '';
+  return '<div class="feat-card" role="button" tabindex="0" data-company-id="' + c.id + '" onclick="openDetail(' + c.id + ')" ' +
+      'onkeydown="if(event.key===\'Enter\')openDetail(' + c.id + ')">' +
+    '<div class="feat-top">' + _logoHtml(c, 'feat-logo') +
+      '<div class="feat-main">' +
+        '<div class="feat-name">' + escHtml(c.name) + '</div>' +
+        '<div class="feat-sector"><span class="slc-dot" style="background:' + escHtml(c.color || '') + '"></span>' + escHtml(setor) + '</div>' +
+        '<div class="feat-local">' + (local ? escHtml(local) + ' · ' : '') + dist + '</div>' +
+      '</div></div>' +
+    (desc ? '<div class="feat-desc">' + escHtml(desc) + '</div>' : '') +
+    '<div class="feat-foot">' + alvaraBadgeHtml(c) + aval + '<span class="feat-ver">' + escHtml(t('recsSeeProfile')) + ' →</span></div>' +
+  '</div>';
+}
+
+// "Destaque a sua empresa": quem já tem empresa vai ao perfil (onde pede o
+// destaque, ⭐ em cada ficha); os restantes começam por encontrar/registar a sua.
+function featCta() {
+  let me = null;
+  try { me = JSON.parse(localStorage.getItem('hive_user') || 'null'); } catch (_) {}
+  const temEmpresa = me && (companies || []).some(c => c.created_by != null && c.created_by === Number(me.id));
+  if (temEmpresa) openProfilePanel(); else startCompanyFlow();
+}
+window.featCta = featCta;
+// A coluna só existe a partir de 1280px: ao alargar a janela, preenche-a.
+window.addEventListener('resize', () => {
+  clearTimeout(window.__featRz);
+  window.__featRz = setTimeout(() => { try { if (_nearbyLastFiltered) renderFeaturedPanel(_nearbyLastFiltered); } catch (_) {} }, 200);
+}, { passive: true });
 
 // ── REGISTER COMPANY ──────────────────────────────────────────────────────────
 function openRegister() {
@@ -7872,15 +7943,18 @@ function _sizeDetailPanel() {
   if (window.innerWidth <= 1023) { clear(); return; }
   const homeEl = document.getElementById('tab-home');
   const onHome = homeEl && getComputedStyle(homeEl).display !== 'none';
-  // No Mapa, "Empresas Próximas" vive agora na coluna ESQUERDA: a ficha fica
-  // à direita com a largura por omissão, por cima do mapa.
-  const ref = onHome ? document.getElementById('lpFeatPanel') : null;
+  // No Mapa a ficha abre exatamente por cima da coluna "Empresas Destacadas"
+  // (≥1280px); sem ela, à direita com a largura por omissão.
+  const ref = document.getElementById(onHome ? 'lpFeatPanel' : 'featPanel');
   if (!ref || getComputedStyle(ref).display === 'none') { clear(); return; }
   const r = ref.getBoundingClientRect();
   if (r.width < 80 || r.height < 40) { clear(); return; }
   const z = parseFloat(getComputedStyle(document.body).zoom) || 1;
   const f = z * 0.7;
-  panel.style.setProperty('--dp-w', Math.round(r.width / f) + 'px');
+  // nunca mais estreita do que a largura por omissão (588px de painel): numa
+  // coluna estreita os botões partiam em duas linhas — aí a ficha cobre a
+  // coluna e um pouco do mapa, alinhada à direita.
+  panel.style.setProperty('--dp-w', Math.max(588, Math.round(r.width / f)) + 'px');
   panel.style.setProperty('--dp-right', Math.round((window.innerWidth - r.right) / f) + 'px');
 }
 window._sizeDetailPanel = _sizeDetailPanel;
@@ -12876,7 +12950,8 @@ function alvaraBadgeHtml(c, cls) {
   const num = (String(c.alvara).match(/\d+/) || [''])[0];
   const lbl = (typeof t === 'function' && t('alvaraImpic')) || 'Alvará IMPIC';
   const tip = (typeof t === 'function' && t('alvaraImpicTip')) || '';
-  return '<span class="badge-alvara' + (cls ? ' ' + cls : '') + '" title="' + escHtml(tip) + '">🛡️ ' + escHtml(lbl) + (num ? ' ' + escHtml(num) : '') + '</span>';
+  const escudo = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg>';
+  return '<span class="badge-alvara' + (cls ? ' ' + cls : '') + '" title="' + escHtml(tip) + '">' + escudo + escHtml(lbl) + (num ? ' ' + escHtml(num) : '') + '</span>';
 }
 
 function renderLpFeatured() {

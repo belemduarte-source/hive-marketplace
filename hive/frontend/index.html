@@ -156,7 +156,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v341.css"/>
+  <link rel="stylesheet" href="app.v342.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -864,6 +864,21 @@
     </button>
   </div>
 
+  <!-- EMPRESAS DESTACADAS — coluna direita do mapa (computador ≥1280px).
+       Só as empresas com destaque: as que cumprem os filtros ativos primeiro,
+       depois por proximidade à zona visível do mapa (renderFeaturedPanel).
+       A ficha de uma empresa abre exatamente por cima desta coluna. -->
+  <aside class="feat-panel" id="featPanel" aria-labelledby="featPanelTitle">
+    <div class="feat-panel-header">
+      <span class="feat-panel-title" id="featPanelTitle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        <span data-i18n="ubFeaturedBtn">Empresas Destacadas</span>
+      </span>
+      <span class="feat-count" id="featCount">0</span>
+    </div>
+    <div class="feat-panel-body" id="featList"></div>
+    <button type="button" class="feat-cta" onclick="featCta()"><span data-i18n="featCta">Quer aparecer aqui primeiro? Destaque a sua empresa</span> →</button>
+  </aside>
 
 </div>
 
@@ -1966,7 +1981,7 @@
      vetoriais OpenFreeMap sem chave, clustering nativo e 3D. -->
 <script defer src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js" integrity="sha384-5+cfbwT0iiub6VsQAdn6yz16nr6sDiQoHx6tm4O8OVYXHYOxcffFmCJBL0dgdvGp" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v341.js"></script>
+<script defer src="app.v342.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
