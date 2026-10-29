@@ -222,7 +222,7 @@ const translations = {
     helpMissionTitle:'Missão', helpMissionDesc:'Simplificar e democratizar o acesso a serviços profissionais de qualidade, criando um ecossistema transparente onde empresas e profissionais podem crescer juntos, sem intermediários desnecessários.',
     helpVisionTitle:'Visão', helpVisionDesc:'Ser a plataforma de referência em Portugal para ligar empresas e profissionais, promovendo crescimento económico e criando oportunidades para todos.',
     navLogin:'Entrar / Registar', navHelp:'Ajuda',
-    welcomeExplore:'Explorar o mapa', aboutTitle:'Sobre', aboutAutoNote:'Resumo automático, com base nos dados públicos da empresa.', claimIncomplete:'✏️ Esta ficha está incompleta. É a sua empresa? Reclame-a e acrescente descrição, logótipo e fotos.', contactReviewNote:'Cerca de uma semana depois, poderemos enviar-lhe um único email a pedir que avalie esta empresa.', reviewLoginNeeded:'Inicie sessão para escrever uma avaliação.', welcomeTrustMod:'Empresas moderadas (NIF + Certidão)', welcomeTrustEu:'Dados na Europa',
+    welcomeExplore:'Explorar o mapa', listShowMore:'Mostrar mais empresas', listShownOf:'{a} de {b}', aboutTitle:'Sobre', aboutAutoNote:'Resumo automático, com base nos dados públicos da empresa.', claimIncomplete:'✏️ Esta ficha está incompleta. É a sua empresa? Reclame-a e acrescente descrição, logótipo e fotos.', contactReviewNote:'Cerca de uma semana depois, poderemos enviar-lhe um único email a pedir que avalie esta empresa.', reviewLoginNeeded:'Inicie sessão para escrever uma avaliação.', welcomeTrustMod:'Empresas moderadas (NIF + Certidão)', welcomeTrustEu:'Dados na Europa',
     themeToDark:'Escuro', themeToLight:'Claro', themeModeDark:'Modo escuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidade', avatarLogout:'Terminar Sessão', avatarFaqHelp:'FAQ & Ajuda',
     lpHeroRegisterCta:'Criar conta grátis', lpHeroRegisterHint:'Peça orçamentos, guarde favoritos e registe a sua empresa.',
@@ -638,7 +638,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:'To simplify and democratise access to quality professional services, creating a transparent ecosystem where companies and professionals can grow together, without unnecessary intermediaries.',
     helpVisionTitle:'Vision', helpVisionDesc:'To be the reference platform in Portugal for connecting companies and professionals, promoting economic growth and creating opportunities for all.',
     navLogin:'Login / Sign up', navHelp:'Help',
-    welcomeExplore:'Explore the map', aboutTitle:'About', aboutAutoNote:"Automatic summary based on the company's public data.", claimIncomplete:'✏️ This listing is incomplete. Is it your business? Claim it and add a description, logo and photos.', contactReviewNote:'About a week later, we may send you a single email asking you to review this company.', reviewLoginNeeded:'Log in to write a review.', welcomeTrustMod:'Moderated companies (tax ID + registry)', welcomeTrustEu:'Data hosted in Europe',
+    welcomeExplore:'Explore the map', listShowMore:'Show more companies', listShownOf:'{a} of {b}', aboutTitle:'About', aboutAutoNote:"Automatic summary based on the company's public data.", claimIncomplete:'✏️ This listing is incomplete. Is it your business? Claim it and add a description, logo and photos.', contactReviewNote:'About a week later, we may send you a single email asking you to review this company.', reviewLoginNeeded:'Log in to write a review.', welcomeTrustMod:'Moderated companies (tax ID + registry)', welcomeTrustEu:'Data hosted in Europe',
     themeToDark:'Dark', themeToLight:'Light', themeModeDark:'Dark mode', themeModeLight:'Light mode',
     navFavourites:'Favourites', navFaq:'FAQ', navPrivacy:'Privacy', avatarLogout:'Sign out', avatarFaqHelp:'FAQ & Help',
     lpHeroRegisterCta:'Create free account', lpHeroRegisterHint:'Request quotes, save favourites and register your company.',
@@ -1047,7 +1047,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:"Simplifier et démocratiser l'accès à des services professionnels de qualité, en créant un écosystème transparent où entreprises et professionnels peuvent grandir ensemble, sans intermédiaires inutiles.",
     helpVisionTitle:'Vision', helpVisionDesc:'Être la plateforme de référence au Portugal pour connecter entreprises et professionnels, en favorisant la croissance économique et en créant des opportunités pour tous.',
     navLogin:'Connexion / Inscription', navHelp:'Aide',
-    welcomeExplore:'Explorer la carte', aboutTitle:'À propos', aboutAutoNote:"Résumé automatique basé sur les données publiques de l'entreprise.", claimIncomplete:"✏️ Cette fiche est incomplète. C'est votre entreprise ? Revendiquez-la et ajoutez une description, un logo et des photos.", contactReviewNote:"Environ une semaine plus tard, nous pourrons vous envoyer un seul e-mail pour vous demander d'évaluer cette entreprise.", reviewLoginNeeded:'Connectez-vous pour écrire un avis.', welcomeTrustMod:'Entreprises modérées (NIF + registre)', welcomeTrustEu:'Données hébergées en Europe',
+    welcomeExplore:'Explorer la carte', listShowMore:"Afficher plus d'entreprises", listShownOf:'{a} sur {b}', aboutTitle:'À propos', aboutAutoNote:"Résumé automatique basé sur les données publiques de l'entreprise.", claimIncomplete:"✏️ Cette fiche est incomplète. C'est votre entreprise ? Revendiquez-la et ajoutez une description, un logo et des photos.", contactReviewNote:"Environ une semaine plus tard, nous pourrons vous envoyer un seul e-mail pour vous demander d'évaluer cette entreprise.", reviewLoginNeeded:'Connectez-vous pour écrire un avis.', welcomeTrustMod:'Entreprises modérées (NIF + registre)', welcomeTrustEu:'Données hébergées en Europe',
     themeToDark:'Sombre', themeToLight:'Clair', themeModeDark:'Mode sombre', themeModeLight:'Mode clair',
     navFavourites:'Favoris', navFaq:'FAQ', navPrivacy:'Confidentialité', avatarLogout:'Se déconnecter', avatarFaqHelp:'FAQ & Aide',
     lpHeroRegisterCta:'Créer un compte gratuit', lpHeroRegisterHint:"Demandez des devis, enregistrez des favoris et inscrivez votre entreprise.",
@@ -1452,7 +1452,7 @@ const translations = {
     helpMissionTitle:'Misión', helpMissionDesc:'Simplificar y democratizar el acceso a servicios profesionales de calidad, creando un ecosistema transparente donde empresas y profesionales puedan crecer juntos.',
     helpVisionTitle:'Visión', helpVisionDesc:'Ser la plataforma de referencia en Portugal para conectar empresas y profesionales, fomentando el crecimiento económico y creando oportunidades para todos.',
     navLogin:'Entrar / Registrarse', navHelp:'Ayuda',
-    welcomeExplore:'Explorar el mapa', aboutTitle:'Acerca de', aboutAutoNote:'Resumen automático basado en los datos públicos de la empresa.', claimIncomplete:'✏️ Esta ficha está incompleta. ¿Es su empresa? Reclámela y añada descripción, logotipo y fotos.', contactReviewNote:'Aproximadamente una semana después, podremos enviarle un único correo para pedirle que valore esta empresa.', reviewLoginNeeded:'Inicie sesión para escribir una reseña.', welcomeTrustMod:'Empresas moderadas (NIF + registro)', welcomeTrustEu:'Datos alojados en Europa',
+    welcomeExplore:'Explorar el mapa', listShowMore:'Mostrar más empresas', listShownOf:'{a} de {b}', aboutTitle:'Acerca de', aboutAutoNote:'Resumen automático basado en los datos públicos de la empresa.', claimIncomplete:'✏️ Esta ficha está incompleta. ¿Es su empresa? Reclámela y añada descripción, logotipo y fotos.', contactReviewNote:'Aproximadamente una semana después, podremos enviarle un único correo para pedirle que valore esta empresa.', reviewLoginNeeded:'Inicie sesión para escribir una reseña.', welcomeTrustMod:'Empresas moderadas (NIF + registro)', welcomeTrustEu:'Datos alojados en Europa',
     themeToDark:'Oscuro', themeToLight:'Claro', themeModeDark:'Modo oscuro', themeModeLight:'Modo claro',
     navFavourites:'Favoritos', navFaq:'FAQ', navPrivacy:'Privacidad', avatarLogout:'Cerrar sesión', avatarFaqHelp:'FAQ y Ayuda',
     lpHeroRegisterCta:'Crear cuenta gratis', lpHeroRegisterHint:'Pida presupuestos, guarde favoritos y registre su empresa.',
@@ -1854,7 +1854,7 @@ const translations = {
     helpMissionTitle:'Mission', helpMissionDesc:'Den Zugang zu hochwertigen Fachleistungen vereinfachen und demokratisieren – ein transparentes Ökosystem schaffen, in dem Unternehmen und Fachleute gemeinsam wachsen können, ohne unnötige Zwischenhändler.',
     helpVisionTitle:'Vision', helpVisionDesc:'Die führende Plattform in Portugal zur Vernetzung von Unternehmen und Fachleuten werden, Wirtschaftswachstum fördern und Chancen für alle schaffen.',
     navLogin:'Anmelden / Registrieren', navHelp:'Hilfe',
-    welcomeExplore:'Karte erkunden', aboutTitle:'Über uns', aboutAutoNote:'Automatische Zusammenfassung auf Basis öffentlicher Unternehmensdaten.', claimIncomplete:'✏️ Dieser Eintrag ist unvollständig. Ist das Ihr Unternehmen? Beanspruchen Sie ihn und ergänzen Sie Beschreibung, Logo und Fotos.', contactReviewNote:'Etwa eine Woche später senden wir Ihnen eventuell eine einzige E-Mail mit der Bitte, dieses Unternehmen zu bewerten.', reviewLoginNeeded:'Melden Sie sich an, um eine Bewertung zu schreiben.', welcomeTrustMod:'Geprüfte Unternehmen (NIF + Register)', welcomeTrustEu:'Daten in Europa gehostet',
+    welcomeExplore:'Karte erkunden', listShowMore:'Mehr Unternehmen anzeigen', listShownOf:'{a} von {b}', aboutTitle:'Über uns', aboutAutoNote:'Automatische Zusammenfassung auf Basis öffentlicher Unternehmensdaten.', claimIncomplete:'✏️ Dieser Eintrag ist unvollständig. Ist das Ihr Unternehmen? Beanspruchen Sie ihn und ergänzen Sie Beschreibung, Logo und Fotos.', contactReviewNote:'Etwa eine Woche später senden wir Ihnen eventuell eine einzige E-Mail mit der Bitte, dieses Unternehmen zu bewerten.', reviewLoginNeeded:'Melden Sie sich an, um eine Bewertung zu schreiben.', welcomeTrustMod:'Geprüfte Unternehmen (NIF + Register)', welcomeTrustEu:'Daten in Europa gehostet',
     themeToDark:'Dunkel', themeToLight:'Hell', themeModeDark:'Dunkelmodus', themeModeLight:'Heller Modus',
     navFavourites:'Favoriten', navFaq:'FAQ', navPrivacy:'Datenschutz', avatarLogout:'Abmelden', avatarFaqHelp:'FAQ & Hilfe',
     lpHeroRegisterCta:'Kostenloses Konto erstellen', lpHeroRegisterHint:'Angebote anfragen, Favoriten speichern und Ihren Betrieb registrieren.',
@@ -6738,7 +6738,7 @@ function _initResultsSheetDrag() {
 if (document.readyState !== 'loading') _initResultsSheetDrag();
 else document.addEventListener('DOMContentLoaded', _initResultsSheetDrag);
 
-const _LIST_PAGE = 40; // cards rendered per batch
+const _LIST_PAGE = 10; // cards per batch ("Mostrar mais" acrescenta o seguinte)
 let _listRenderedCount = 0;
 let _listCurrentData = [];
 
@@ -6829,33 +6829,38 @@ function renderSearchList(filtered) {
   listEl.innerHTML = '';
   listEl.appendChild(frag);
 
-  // Sentinel element for IntersectionObserver-based infinite scroll
+  // Lotes pequenos com botão explícito (pedido do dono: menos empresas de cada
+  // vez, mais fácil de ler) — substitui o scroll infinito de 40 em 40.
   if (_listRenderedCount < data.length) {
-    const sentinel = document.createElement('div');
-    sentinel.id = 'slcSentinel';
-    sentinel.style.cssText = 'height:1px;grid-column:1/-1';
-    listEl.appendChild(sentinel);
-    const obs = new IntersectionObserver(entries => {
-      if (!entries[0].isIntersecting) return;
-      obs.disconnect();
+    listEl.appendChild(_moreButton(_listRenderedCount, data.length, (btn) => {
       const start = _listRenderedCount;
       const end   = Math.min(start + _LIST_PAGE, _listCurrentData.length);
       const f = document.createDocumentFragment();
       _appendListCards(f, _listCurrentData, start, end);
       _listRenderedCount = end;
-      // Remove old sentinel, append new cards, add new sentinel if more remain
-      sentinel.remove();
-      listEl.appendChild(f);
-      if (_listRenderedCount < _listCurrentData.length) {
-        const next = sentinel.cloneNode();
-        next.id = 'slcSentinel';
-        listEl.appendChild(next);
-        // Observe the new sentinel next tick so layout is settled
-        requestAnimationFrame(() => obs.observe(next));
-      }
-    }, { rootMargin: '200px' });
-    obs.observe(sentinel);
+      listEl.insertBefore(f, btn);
+      return [_listRenderedCount, _listCurrentData.length];
+    }));
   }
+}
+
+// Botão "Mostrar mais empresas · 10 de 1 343" partilhado pela lista e pelo
+// painel "Empresas Próximas". `carregar(btn)` acrescenta o lote seguinte antes
+// do botão e devolve [mostradas, total]; o botão some quando não há mais.
+function _moreButton(mostradas, total, carregar) {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'list-more-btn';
+  const rotulo = (a, b) => (t('listShowMore') || 'Mostrar mais empresas') + ' · ' +
+    String(t('listShownOf') || '{a} de {b}').replace('{a}', a.toLocaleString('pt-PT')).replace('{b}', b.toLocaleString('pt-PT'));
+  btn.textContent = rotulo(mostradas, total);
+  btn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    const [m, tot] = carregar(btn);
+    if (m >= tot) btn.remove(); else btn.textContent = rotulo(m, tot);
+    try { refreshLucide(); } catch (_) {}
+  });
+  return btn;
 }
 
 function _appendListCards(frag, data, start, end) {
@@ -6918,7 +6923,7 @@ function _appendListCards(frag, data, start, end) {
 // Scrollable list of the filtered companies ordered by distance to the user's
 // location (blue "you are here" marker) or, failing that, the searched location
 // (radius circle centre) / map centre. Re-rendered on every filter run.
-const _NEARBY_PAGE = 25;
+const _NEARBY_PAGE = 10;
 let _nearbyData = [];
 let _nearbyRendered = 0;
 let _nearbyObs = null;
@@ -7014,17 +7019,12 @@ function renderNearbyPanel(filtered, fromMapMove) {
   _nearbyRendered = 0;
   _appendNearbyCards(listEl, Math.min(_NEARBY_PAGE, _nearbyData.length));
 
-  // Infinite scroll within the panel
+  // Lotes de 10 com botão "Mostrar mais" (mesmo padrão da lista)
   if (_nearbyRendered < _nearbyData.length) {
-    const sentinel = document.createElement('div');
-    sentinel.style.cssText = 'height:1px;flex-shrink:0';
-    listEl.appendChild(sentinel);
-    _nearbyObs = new IntersectionObserver(entries => {
-      if (!entries[0].isIntersecting) return;
-      _appendNearbyCards(listEl, Math.min(_nearbyRendered + _NEARBY_PAGE, _nearbyData.length), sentinel);
-      if (_nearbyRendered >= _nearbyData.length) { _nearbyObs.disconnect(); _nearbyObs = null; sentinel.remove(); }
-    }, { root: listEl, rootMargin: '300px' });
-    _nearbyObs.observe(sentinel);
+    listEl.appendChild(_moreButton(_nearbyRendered, _nearbyData.length, (btn) => {
+      _appendNearbyCards(listEl, Math.min(_nearbyRendered + _NEARBY_PAGE, _nearbyData.length), btn);
+      return [_nearbyRendered, _nearbyData.length];
+    }));
   }
 }
 

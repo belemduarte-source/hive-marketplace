@@ -4094,3 +4094,17 @@
 .dp-about-auto{font-size:12px;color:var(--muted);font-style:italic;margin-top:6px}
 /* Convite a reclamar em destaque quando a ficha está incompleta */
 #dpClaimRow.dp-claim-strong button{border:1.5px solid #f59e0b !important;background:rgba(245,158,11,.08) !important;color:var(--text) !important;text-align:left;line-height:1.45}
+
+/* Lista de empresas: menos de cada vez e mais legível (pedido do dono) */
+.list-more-btn{grid-column:1/-1;display:block;width:100%;max-width:520px;margin:6px auto 4px;padding:13px 18px;border:1.5px solid var(--primary);border-radius:12px;background:var(--surface);color:var(--primary);font-size:15px;font-weight:800;font-family:inherit;cursor:pointer;flex-shrink:0}
+.list-more-btn:hover{background:var(--primary);color:#fff}
+@media (min-width:769px){
+  /* no máximo 2 colunas: cartões largos em vez de 3-4 estreitos */
+  .search-list-view{grid-template-columns:repeat(auto-fill,minmax(400px,1fr));max-width:980px;gap:16px}
+  .search-list-card{padding:20px 22px;gap:10px}
+  .slc-name{font-size:17px}
+  .slc-sector{font-size:13px}
+  .slc-rating{font-size:13px}
+  .slc-address{font-size:13.5px;line-height:1.45}
+  .slc-tag{font-size:12px}
+}
