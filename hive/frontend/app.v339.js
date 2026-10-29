@@ -7014,6 +7014,9 @@ function renderNearbyPanel(filtered, fromMapMove) {
   }).sort((a, b) => ((b.v ? 1 : 0) - (a.v ? 1 : 0))
     || (a.v && b.v ? ((b.c.featured ? 1 : 0) - (a.c.featured ? 1 : 0)) : 0)
     || (_nearbySort === 'rating' ? ((b.c.rating || 0) - (a.c.rating || 0)) : (a.dv - b.dv)));
+  // Com empresas no ecrã, a secção lista só essas (o botão "10 de N" bate
+  // certo com o contador); sem nenhuma à vista, mostra as mais próximas.
+  if (bb && nVista > 0) _nearbyData = _nearbyData.slice(0, nVista);
   if (countEl) countEl.textContent = bb ? nVista : filtered.length;
   listEl.innerHTML = '';
   _nearbyRendered = 0;
