@@ -6704,8 +6704,13 @@ function renderSearchList(filtered) {
   if (_isMobileSheet()) {
     const featFirst = (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0);
     if (_mobileSort === 'dist') {
+      // Distância calculada UMA vez por empresa e depois ordenada: o
+      // comparador antigo chamava a haversine 2× por comparação (n·log n) —
+      // ~1,4 M cálculos com 44k empresas, ~250 ms de bloqueio a cada filtro.
       const [rl, rg] = _nearbyRefPoint();
-      data = data.slice().sort((a, b) => featFirst(a, b) || (calculateDistance(rl, rg, a.lat, a.lng) - calculateDistance(rl, rg, b.lat, b.lng)));
+      data = data.map(c => [c, calculateDistance(rl, rg, c.lat, c.lng)])
+        .sort((a, b) => featFirst(a[0], b[0]) || (a[1] - b[1]))
+        .map(p => p[0]);
     } else if (_mobileSort === 'rating') {
       data = data.slice().sort((a, b) => featFirst(a, b) || (b.rating || 0) - (a.rating || 0));
     } else if (_mobileSort === 'name') {
