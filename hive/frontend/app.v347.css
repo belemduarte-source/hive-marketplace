@@ -4445,3 +4445,29 @@ button,input,select,textarea{font-family:inherit}
 }
 #detailPanel .dp-more-toggle{font-size:var(--dpf-sm) !important;font-weight:600 !important}
 @media (min-width:769px) and (max-width:1024px){.unified-bar{min-height:0 !important}}
+
+/* ══ Legibilidade: cartões de "Empresas Próximas" e "Empresas Destacadas" com
+   texto, logótipos e selos 30% maiores. Em "Próximas" o selo ★ Destacado e a
+   distância passam para uma linha própria e o nome pode ocupar 2 linhas — na
+   coluna estreita o nome ficava com ~70px e aparecia cortado. ══ */
+#nearbyList .nc-top{flex-wrap:wrap !important;row-gap:6px !important;align-items:flex-start !important}
+#nearbyList .nc-logo{width:57px !important;height:57px !important;font-size:calc(var(--fs-sm) * 1.3) !important}
+#nearbyList .nc-main{flex:1 1 0 !important;min-width:0 !important}
+#nearbyList .nc-name{font-size:calc(var(--fs-sm) * 1.3) !important;line-height:1.25 !important;white-space:normal !important;display:-webkit-box !important;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden !important}
+#nearbyList .nc-sector{font-size:calc(var(--fs-xs) * 1.3) !important;margin-top:4px !important}
+#nearbyList .nc-dot{width:12px !important;height:12px !important}
+#nearbyList .nc-side{flex:1 0 100% !important;flex-direction:row !important;align-items:center !important;justify-content:flex-start !important;gap:8px !important;padding-left:69px}
+#nearbyList .nc-dist,#nearbyList .nc-open{font-size:calc(var(--fs-xs) * 1.3) !important;padding:3px 10px !important}
+#nearbyList .nc-feat-badge{font-size:calc(var(--fs-xs) * 1.3) !important;padding:4px 11px !important}
+#nearbyList .nc-cred{margin-top:6px !important}
+#nearbyList .badge-alvara,#nearbyList .badge-verified{font-size:calc(var(--fs-xs) * 1.3) !important}
+#nearbyList .nc-rating,#nearbyList .nc-reviews{font-size:calc(var(--fs-xs) * 1.3) !important}
+#nearbyList .nc-address{font-size:calc(var(--fs-xs) * 1.3) !important;margin-top:8px !important}
+#nearbyList .nc-compare{font-size:calc(var(--fs-xs) * 1.3) !important;margin-top:10px !important}
+#nearbyList .nc-compare input{width:18px !important;height:18px !important}
+.feat-top{gap:14px}
+.feat-logo{width:68px !important;height:68px !important;font-size:calc(var(--fs-sm) * 1.3) !important}
+.feat-name{font-size:calc(var(--fs-sm) * 1.3)}
+.feat-sector,.feat-local,.feat-desc,.feat-foot{font-size:calc(var(--fs-xs) * 1.3)}
+.feat-sector .slc-dot{width:12px;height:12px}
+.feat-foot .badge-alvara{font-size:calc(var(--fs-xs) * 1.3) !important}
