@@ -107,13 +107,25 @@ router.post('/', requireAuth, async (req, res, next) => {
         return res.status(404).json({ error: 'Empresa não encontrada' });
       }
 
-      // "Contacto verificado": o autor falou com a empresa pela plataforma
-      // (mensagens ou pedido de orçamento) — combate reviews de fachada
+      // "Contacto verificado": o autor tratou com a empresa pela plataforma —
+      // mensagens (contacto ou resposta a um pedido de orçamento), uma proposta
+      // dessa empresa que aceitou num concurso (os de teste não contam) ou um
+      // pedido de avaliação que lhe enviámos sobre ela (o link dos emails; só
+      // existe depois de uma dessas interações e sobrevive à retenção de 90
+      // dias das mensagens) — combate reviews de fachada
       const { rows: vc } = await client.query(
-        `SELECT 1 FROM messages
-          WHERE company_id = $1
-            AND (client_user_id = $2
-                 OR lower(client_email) = (SELECT lower(email) FROM users WHERE id = $2))
+        `WITH eu AS (SELECT id, lower(trim(email)) AS email FROM users WHERE id = $2)
+         SELECT 1 FROM eu
+          WHERE EXISTS (SELECT 1 FROM messages m
+                         WHERE m.company_id = $1
+                           AND (m.client_user_id = eu.id OR lower(m.client_email) = eu.email))
+             OR EXISTS (SELECT 1 FROM review_requests rr
+                         WHERE rr.company_id = $1 AND rr.email = eu.email)
+             OR EXISTS (SELECT 1 FROM tender_proposals p
+                          JOIN tender_invites i ON i.id = p.invite_id
+                          JOIN tenders t ON t.id = p.tender_id
+                         WHERE i.company_id = $1 AND p.status = 'accepted' AND NOT t.is_test
+                           AND (t.owner_user_id = eu.id OR lower(t.owner_email) = eu.email))
           LIMIT 1`,
         [req.params.id, req.user.id]);
       const verified = !!vc[0];

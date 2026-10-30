@@ -596,10 +596,22 @@ router.get('/messages/purge', async (req, res) => {
 });
 
 // ── PEDIDOS DE AVALIAÇÃO ──────────────────────────────────────────────────────
-// ~7 dias depois de um contacto pela Hivex, o cliente recebe UM email a
-// convidá-lo a avaliar a empresa. Regras: um só pedido por (empresa, email);
-// só contactos com 7–14 dias (nunca "acorda" contactos antigos de uma vez);
-// nada se já avaliou essa empresa ou se recusou estes emails (opt-out); teto
+// Depois de uma interação real pela Hivex, o cliente recebe UM email a
+// convidá-lo a avaliar a empresa. Três origens, por esta ordem de prioridade
+// (com o teto, as interações mais fortes passam à frente):
+//  - concurso: quem lançou o concurso aceitou a proposta da empresa
+//    (tender_proposals.status = 'accepted') — ~3 semanas depois da decisão,
+//    para tenders.owner_email; concursos de teste nunca;
+//  - orçamento: a empresa respondeu pela Hivex (mensagem da empresa para o
+//    email do cliente) a um pedido de orçamento que lhe chegou
+//    (quote_request_recipients) — ~10 dias depois da resposta;
+//  - contacto: o cliente escreveu à empresa pela Hivex — ~7 dias depois.
+// Regras: um só pedido por (empresa, email), seja qual for a origem; cada
+// origem tem uma janela de 7 dias (nunca "acorda" interações antigas de uma
+// vez; o que o teto deixar para trás segue no dia seguinte); enquanto uma
+// proposta aceite não fizer 3 semanas, as mensagens com essa empresa não
+// antecipam o pedido (a obra mal começou); nada se já avaliou essa empresa,
+// se recusou estes emails (opt-out) ou se o email é da própria empresa; teto
 // por corrida porque o SMTP (Gmail, ~500 destinatários/dia) é partilhado com
 // os emails essenciais (recuperação de palavra-passe, mensagens).
 const REVIEW_REQ_CAP = 60;
@@ -607,22 +619,85 @@ function _optoutToken(email) {
   return crypto.createHmac('sha256', String(process.env.JWT_SECRET || 'hivex-optout'))
     .update('optout:' + String(email).toLowerCase()).digest('hex').slice(0, 32);
 }
+// Texto de cada origem (co já escapado): português + uma linha em inglês.
+function _textoPedidoAvaliacao(r, co, link) {
+  if (r.origem === 'concurso') {
+    return {
+      assunto: `Como está a correr com ${r.company_name}?`,
+      titulo: 'Como está a correr?',
+      abertura: `Há cerca de três semanas aceitou, num concurso na Hivex, a proposta da <strong>${co}</strong>${r.referencia ? ` para «${esc(r.referencia)}»` : ''}. Como está a correr?`,
+      porque: 'Como aceitou a proposta da empresa num concurso na Hivex',
+      nota: '<p>Se o trabalho ainda não terminou, pode avaliar mais tarde com este mesmo botão.</p>',
+      ingles: `About three weeks ago you accepted ${co}’s proposal in a Hivex tender — <a href="${link}" style="color:#f97316">tell us how it’s going</a>.`,
+    };
+  }
+  if (r.origem === 'orcamento') {
+    return {
+      assunto: `Como correu com ${r.company_name}?`,
+      titulo: 'Como correu?',
+      abertura: `Há cerca de 10 dias, a <strong>${co}</strong> respondeu pela Hivex ao seu pedido de orçamento. Como correu?`,
+      porque: 'Como a empresa lhe respondeu pela Hivex',
+      nota: '',
+      ingles: `About 10 days ago ${co} answered your quote request on Hivex — <a href="${link}" style="color:#f97316">tell us how it went</a>.`,
+    };
+  }
+  return {
+    assunto: `Como correu com ${r.company_name}?`,
+    titulo: 'Como correu?',
+    abertura: `Há cerca de uma semana contactou a <strong>${co}</strong> através da Hivex. Como correu?`,
+    porque: 'Como contactou a empresa pela Hivex',
+    nota: '',
+    ingles: `About a week ago you contacted ${co} through Hivex — <a href="${link}" style="color:#f97316">tell us how it went</a>.`,
+  };
+}
 async function sendReviewRequests() {
   const { rows } = await pool.query(`
-    SELECT DISTINCT ON (m.company_id, lower(m.client_email))
-           m.company_id, lower(m.client_email) AS email, m.client_name, c.name AS company_name
-      FROM messages m
-      JOIN companies c ON c.id = m.company_id AND c.status = 'approved'
-     WHERE m.sender = 'client'
-       AND m.created_at BETWEEN NOW() - INTERVAL '14 days' AND NOW() - INTERVAL '7 days'
-       AND NOT EXISTS (SELECT 1 FROM review_requests rr
-                        WHERE rr.company_id = m.company_id AND rr.email = lower(m.client_email))
-       AND NOT EXISTS (SELECT 1 FROM email_optouts o WHERE o.email = lower(m.client_email))
-       AND NOT EXISTS (SELECT 1 FROM reviews r JOIN users u ON u.id = r.user_id
-                        WHERE r.company_id = m.company_id AND lower(u.email) = lower(m.client_email))
-     ORDER BY m.company_id, lower(m.client_email), m.created_at ASC
-     LIMIT $1`, [REVIEW_REQ_CAP]);
+    WITH cand AS (
+      SELECT 1 AS prio, 'concurso' AS origem, i.company_id, lower(trim(t.owner_email)) AS email,
+             t.owner_name AS client_name, t.title AS referencia, p.decided_at AS quando
+        FROM tender_proposals p
+        JOIN tenders t ON t.id = p.tender_id AND NOT t.is_test
+        JOIN tender_invites i ON i.id = p.invite_id
+       WHERE p.status = 'accepted'
+         AND p.decided_at BETWEEN NOW() - INTERVAL '28 days' AND NOW() - INTERVAL '21 days'
+      UNION ALL
+      -- respondido = a empresa escreveu a este cliente pela Hivex depois do
+      -- pedido (o mesmo critério da lista "Pedidos de clientes")
+      SELECT 2, 'orcamento', r.company_id, lower(trim(q.client_email)), q.client_name, NULL, m.created_at
+        FROM quote_request_recipients r
+        JOIN quote_requests q ON q.id = r.request_id
+        JOIN messages m ON m.company_id = r.company_id AND m.sender = 'company'
+                       AND lower(m.client_email) = lower(q.client_email)
+                       AND m.created_at >= r.created_at
+       WHERE m.created_at BETWEEN NOW() - INTERVAL '17 days' AND NOW() - INTERVAL '10 days'
+      UNION ALL
+      SELECT 3, 'contacto', m.company_id, lower(trim(m.client_email)), m.client_name, NULL, m.created_at
+        FROM messages m
+       WHERE m.sender = 'client'
+         AND m.created_at BETWEEN NOW() - INTERVAL '14 days' AND NOW() - INTERVAL '7 days'
+    )
+    SELECT * FROM (
+      SELECT DISTINCT ON (k.company_id, k.email) k.*, c.name AS company_name
+        FROM cand k
+        JOIN companies c ON c.id = k.company_id AND c.status = 'approved'
+       WHERE k.email <> '' AND k.email IS DISTINCT FROM lower(trim(c.email))
+         AND NOT EXISTS (SELECT 1 FROM users u WHERE u.id = c.created_by AND lower(u.email) = k.email)
+         AND NOT EXISTS (SELECT 1 FROM review_requests rr WHERE rr.company_id = k.company_id AND rr.email = k.email)
+         AND NOT EXISTS (SELECT 1 FROM email_optouts o WHERE o.email = k.email)
+         AND NOT EXISTS (SELECT 1 FROM reviews rv JOIN users u ON u.id = rv.user_id
+                          WHERE rv.company_id = k.company_id AND lower(u.email) = k.email)
+         AND (k.origem = 'concurso' OR NOT EXISTS (
+               SELECT 1 FROM tender_proposals p
+                 JOIN tenders t ON t.id = p.tender_id AND NOT t.is_test
+                 JOIN tender_invites i ON i.id = p.invite_id
+                WHERE i.company_id = k.company_id AND lower(trim(t.owner_email)) = k.email
+                  AND p.status = 'accepted' AND p.decided_at > NOW() - INTERVAL '21 days'))
+       ORDER BY k.company_id, k.email, k.prio, k.quando
+    ) x
+    ORDER BY prio, quando
+    LIMIT $1`, [REVIEW_REQ_CAP]);
   let enviados = 0;
+  const porOrigem = { concurso: 0, orcamento: 0, contacto: 0 };
   for (const r of rows) {
     // Reserva antes de enviar: se o envio falhar não se repete amanhã
     // (um pedido a menos é melhor do que dois iguais).
@@ -633,27 +708,35 @@ async function sendReviewRequests() {
     const link = `https://www.hivex.pt/?company=${r.company_id}&review=1`;
     const optout = `https://www.hivex.pt/api/reviews/optout?e=${encodeURIComponent(r.email)}&t=${_optoutToken(r.email)}`;
     const co = esc(r.company_name || '');
+    const txt = _textoPedidoAvaliacao(r, co, link);
     try {
       await sendBrandedEmail({
         to: r.email,
-        subject: `Como correu com ${r.company_name}?`,
-        title: 'Como correu?',
+        subject: txt.assunto,
+        title: txt.titulo,
+        headers: {
+          'List-Unsubscribe': `<${optout}>`,
+          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+        },
         bodyHtml: `
     <p style="margin-top:0">Olá${r.client_name ? ' ' + esc(r.client_name) : ''},</p>
-    <p>Há cerca de uma semana contactou a <strong>${co}</strong> através da Hivex. Como correu?</p>
-    <p>A sua avaliação ajuda outras pessoas a escolher bem. Como contactou a empresa pela Hivex, a sua avaliação fica marcada como <strong>contacto verificado</strong>.</p>
+    <p>${txt.abertura}</p>
+    <p>A sua avaliação ajuda outras pessoas a escolher bem. ${txt.porque}, a avaliação que fizer com este email fica marcada como <strong>contacto verificado</strong>.</p>
+    ${txt.nota}
     <p style="text-align:center;margin:26px 0">
       <a href="${link}" style="display:inline-block;background:#f97316;color:#fff;padding:14px 34px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px">Avaliar ${co} →</a>
     </p>
-    <p style="color:#6b7280;font-size:13px">About a week ago you contacted ${co} through Hivex — <a href="${link}" style="color:#f97316">tell us how it went</a>.</p>
-    <p style="color:#9ca3af;font-size:12px;margin-bottom:0">Este é o único pedido que enviamos sobre este contacto. <a href="${optout}" style="color:#9ca3af">Não quero receber pedidos de avaliação</a>.</p>`,
+    <p style="color:#6b7280;font-size:13px">${txt.ingles}</p>
+    <p style="color:#9ca3af;font-size:12px;margin-bottom:0">Este é o único pedido de avaliação que enviamos sobre esta empresa. <a href="${optout}" style="color:#9ca3af">Não quero receber pedidos de avaliação</a>.</p>`,
       });
       enviados++;
+      porOrigem[r.origem]++;
     } catch (e) {
       console.error('[review-requests] envio falhou (empresa ' + r.company_id + '):', e.message);
     }
   }
-  return { candidatos: rows.length, enviados };
+  if (rows.length) console.log('[review-requests]', JSON.stringify({ candidatos: rows.length, enviados, porOrigem }));
+  return { candidatos: rows.length, enviados, porOrigem };
 }
 
 // GET /api/reviews/request-digest — corrida manual (mesma proteção do cron).
