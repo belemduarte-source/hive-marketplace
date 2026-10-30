@@ -82,7 +82,7 @@ const COLS = ['name', 'sector', 'sectors', 'nif', 'alvara', 'address', 'postal_c
     if (fs.existsSync(fd)) {
       const det = JSON.parse(fs.readFileSync(fd, 'utf8'));
       const cl = classificar(det, det.nome);
-      if (!cl.primario) { conta('fora-das-areas'); continue; }
+      if (!cl.primario) { conta(cl.motivo || 'fora-das-areas'); continue; }
       f.sector = cl.primario; f.sectors = cl.setores; f.emoji = EMOJI[cl.primario] || '🏗️'; f.color = COR(cl.primario);
     }
     if (f.email && freqE.get(f.email) >= 3) f.email = '';

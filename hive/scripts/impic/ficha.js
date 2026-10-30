@@ -109,6 +109,8 @@ function capitalizar(nomeIMPIC) {
 }
 
 // ── Classificação por habilitações (PUB) + palavras do nome (PUB e PAR) ─────
+// O IMPIC usa duas numerações de subcategorias: "Ascensores, escadas mecânicas…" (antiga) e
+// "11.ª - Instalações de elevação" (nova) são o mesmo. scan-subs.js lista as que esta tabela não conhece.
 const SUB2SETOR = [
   [/estruturas e elementos de betao|alvenarias|instalacoes sem qualificacao/, 'construcao_geral'],
   [/estruturas metalicas/, 'estruturas_metalicas'],
@@ -122,13 +124,14 @@ const SUB2SETOR = [
   [/saneamento basico|emissarios|redes de agua|abastecimento/, 'canalizacao_saneamento'],
   [/vias de circulacao rodoviaria|vias de circulacao ferroviaria|pontes e viadutos|obras de arte correntes|infraestruturas de desporto|sinalizacao nao electrica|sinalizacao nao eletrica|oleodutos/, 'escavacao'],
   [/captacao/, 'pocos_agua'],
-  [/obras fluviais|obras maritimas|barragens|dragagens|hidraulic|regadio|drenagem/, 'canalizacao_saneamento'],
-  [/instalacoes electricas de utilizacao|instalacoes eletricas de utilizacao|redes electricas|redes eletricas|instalacoes electricas|instalacoes eletricas|tracao electrica|traccao electrica|telecomunicacoes/, 'eletricistas'],
+  [/obras fluviais|obras maritimas|obras portuarias|protecao costeira|barragens|dragagens|hidraulic|regadio|drenagem/, 'canalizacao_saneamento'],
+  [/instalacoes electricas de utilizacao|instalacoes eletricas de utilizacao|redes electricas|redes eletricas|instalacoes electricas|instalacoes eletricas|tracao electrica|traccao electrica|tracao eletrica|postos de transformacao|telecomunicacoes/, 'eletricistas'],
   [/producao de energia/, 'energias_renovaveis'],
+  [/gestao tecnica centralizada/, 'domotica_automacao'],
   [/extincao de incendios|seguranca e deteccao|seguranca e detecao/, 'seguranca_alarmes'],
   [/aquecimento|ventilacao|ar condicionado|refrigeracao/, 'climatizacao_avac'],
   [/distribuicao e instalacoes de gas|gas/, 'gas'],
-  [/ascensores|escadas mecanicas|ar comprimido|outras instalacoes mecanicas|tratamento ambiental|apoio e sinalizacao/, 'instalacoes_mecanicas'],
+  [/ascensores|escadas mecanicas|instalacoes de elevacao|ar comprimido|outras instalacoes mecanicas|tratamento ambiental|apoio e sinalizacao/, 'instalacoes_mecanicas'],
   [/demolicoes/, 'demolicao'],
   [/movimentacao de terras|caminhos agricolas|tuneis|geotecnia|fundacoes especiais|paredes de contencao|taludes/, 'escavacao'],
   [/impermeabilizacoes e isolamentos/, 'impermeabilizacao'],
@@ -194,7 +197,8 @@ function classificar(det, nome) {
     const ord = [...porSetor.entries()].filter(([s]) => s !== 'instalacoes_mecanicas')
       .sort((a, b) => (b[1].classe - a[1].classe) || (b[1].n - a[1].n));
     primario = ord.length ? ord[0][0] : null;            // só mecânicas (elevadores, ar comprimido, ETAR)
-  } else primario = 'construcao_geral';                   // PAR sem habilitações discriminadas
+  } else if (!nSubs) primario = 'construcao_geral';      // PAR sem habilitações discriminadas
+  else return { primario: null, setores: [], motivo: 'habilitacoes-desconhecidas' };   // subcategoria que SUB2SETOR não conhece
   if (!primario) return { primario: null, setores: [], motivo: 'fora-das-areas' };
   // secundários: só em empresas focadas (generalistas com tudo ficam só no primário)
   const setores = [primario];
@@ -218,4 +222,4 @@ function categoriaPrincipal(det) {
 const EMOJI = { construcao_geral: '🏗️', engenharia_civil: '🏗️', eletricistas: '⚡', climatizacao_avac: '❄️', jardineiros: '🌿', picheleiros: '🔧', canalizacao_saneamento: '🔧', serralharia: '🔩', estruturas_metalicas: '🔩', aluminios_pvc: '🔩', pintores: '🎨', estucadores: '✨', carpinteiros: '🪚', escavacao: '🚜', calcetamento: '🧱', demolicao: '🧱', pavimentos: '🧱', impermeabilizacao: '🏠', telhados_coberturas: '🏠', cofragem: '🏗️', fachadas: '🏗️', energias_renovaveis: '⚡', domotica_automacao: '⚡', seguranca_alarmes: '🔒', gas: '🔥', pocos_agua: '💧', isolamento: '🌡️', gesso_cartonado: '🛠️', vidraceiros: '🪟', marmoraria: '🏛️', piscinas: '🏊' };
 const COR = s => (s === 'construcao_geral' || s === 'engenharia_civil') ? '#2563eb' : '#f97316';
 
-module.exports = { EMOJI, COR, parseDetalhe, nifValido, filtroEntidade, limparEmail, emailProprio, dominio, limparTelefone, fmtTel, capitalizar, classificar, categoriaPrincipal, setorDoNome, N, strip, FREEMAIL };
+module.exports = { EMOJI, COR, parseDetalhe, nifValido, filtroEntidade, limparEmail, emailProprio, dominio, limparTelefone, fmtTel, capitalizar, classificar, categoriaPrincipal, setorDoNome, setorDaSub, N, strip, FREEMAIL };

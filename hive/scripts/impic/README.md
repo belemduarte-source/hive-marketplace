@@ -30,7 +30,9 @@ Dados (caches, registos, contactos) ficam FORA do repositório, em `IMPIC_DADOS`
   o INE tem vários pontos quase iguais no mesmo prédio) → porta INE livre mais próxima da mesma rua; sem nenhuma
   livre a ficha não entra nessa vaga (fica em `processadas.jsonl` para uma passagem futura).
 - Setor pelas habilitações (PUB) e por palavras inequívocas do nome; só elevadores /
-  ar comprimido / ETAR (sem setor no site) ficam de fora.
+  ar comprimido / ETAR (sem setor no site) ficam de fora. O IMPIC usa duas numerações de
+  subcategorias ("Ascensores…" e "11.ª - Instalações de elevação" são o mesmo); uma subcategoria
+  que a tabela não conheça deixa a ficha de fora em vez de a pôr em construção geral.
 
 ## Ordem
 
@@ -50,7 +52,9 @@ node verificar.js        # contagens depois, barra, empilhamento, API
 node pares-perto.js 5    # pares de fichas novas a < 5 m de outra empresa (deve dar 0)
 node corrigir-empilhadas.js [--gravar]   # se der > 0: a mais nova vai para a porta livre ou é retirada (corrigidas.jsonl)
 node teste-imob.js [--todos]             # antes de mudar um filtro de nome: o que muda contra a listagem inteira
-node reaplicar-filtros.js [--gravar]     # depois de apertar um filtro de ficha.js: retira as já inseridas que agora falham
+node scan-subs.js                        # subcategorias do IMPIC que a tabela de setores não conhece (deve dar 0)
+node reaplicar-filtros.js [--gravar]     # depois de apertar um filtro ou a tabela de setores de ficha.js:
+                                         # retira as já inseridas que agora falham (as que só mudam de setor são listadas)
 node relatorio-final.js  # relatório em Markdown (contagens antes/depois, funil, inseridas, amostras)
 ```
 

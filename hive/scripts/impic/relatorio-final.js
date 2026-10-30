@@ -66,10 +66,12 @@ if (ins.length) {
   if (unip.length) p(`- Retiradas depois de gravar por serem unipessoais com o nome abreviado ou mal escrito no IMPIC (o filtro antigo só apanhava "Unipessoal"/"Unip"): ${unip.length} (ids ${unip.map(x => x.id).join(', ')})`);
   const imob = corr.filter(x => x.regra === 'imobiliaria-sem-obra');
   if (imob.length) p(`- Retiradas depois de gravar por serem imobiliárias ou sociedades de investimento sem palavra de obra no nome (Imóveis, Propriedades, Empreendimentos, Real Estate, Investimentos; o filtro antigo só apanhava "Imobiliária"): ${imob.length} (ids ${imob.map(x => x.id).join(', ')})`);
+  const elev = corr.filter(x => x.regra === 'fora-das-areas' || x.regra === 'habilitacoes-desconhecidas');
+  if (elev.length) p(`- Retiradas depois de gravar por só terem a habilitação de elevadores na numeração nova do IMPIC ("11.ª - Instalações de elevação"; a tabela de setores só conhecia "Ascensores…" e punha-as em construção geral): ${elev.length} (ids ${elev.map(x => x.id).join(', ')})`);
   p('');
 }
 // amostras: Lisboa (20 ao acaso) e entre distritos (estratificada); amostra.json se for a única
-const AMOSTRAS = [['amostra-lisboa.json', 'Lisboa, ao acaso'], ['amostra-setubal.json', 'Setúbal, ao acaso, antes de gravar'], ['amostra-setubal2.json', 'Setúbal (5.ª vaga), ao acaso, antes de gravar'], ['amostra-faro.json', 'Faro, ao acaso, antes de gravar'], ['amostra-distritos.json', 'todos os distritos, estratificada'], ['amostra.json', 'ao acaso']];
+const AMOSTRAS = [['amostra-lisboa.json', 'Lisboa, ao acaso'], ['amostra-setubal.json', 'Setúbal, ao acaso, antes de gravar'], ['amostra-setubal2.json', 'Setúbal (5.ª vaga), ao acaso, antes de gravar'], ['amostra-faro.json', 'Faro, ao acaso, antes de gravar'], ['amostra-faro2.json', 'Faro (6.ª vaga), ao acaso, antes de gravar'], ['amostra-leiria.json', 'Leiria, ao acaso, antes de gravar'],['amostra-distritos.json', 'todos os distritos, estratificada'], ['amostra.json', 'ao acaso']];
 const vistas = new Set();
 for (const [fic, rot] of AMOSTRAS) {
   if (!fs.existsSync(dados(fic))) continue;

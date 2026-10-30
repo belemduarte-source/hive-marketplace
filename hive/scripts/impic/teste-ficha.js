@@ -78,4 +78,13 @@ const so4 = { habs: [{ cat: '4ª Categoria - Instalações elétricas e mecânic
 eq('só 4ª → eletricistas + AVAC', f.classificar(so4, 'XPTO LDA'), { primario: 'eletricistas', setores: ['eletricistas', 'climatizacao_avac'] });
 const elev = { habs: [{ cat: '4ª', sub: '9.ª - Ascensores, escadas mecânicas e tapetes rolantes', classe: 3 }] };
 eq('só elevadores → fora', f.classificar(elev, 'ELEVADORES XPTO LDA').primario, null);
+// numeração nova do IMPIC (subcategorias reais da listagem)
+const hab = (cat, sub, classe = 1) => ({ habs: [{ cat, sub, classe }] });
+eq('só elevadores (numeração nova) → fora', f.classificar(hab('4ª Categoria - Instalações elétricas e mecânicas', '11.ª - Instalações de elevação'), 'OTIS ELEVADORES, LDA').primario, null);
+eq('gestão técnica centralizada → domótica', f.classificar(hab('4ª Categoria - Instalações elétricas e mecânicas', '18.ª - Gestão técnica centralizada', 2), 'SAUTER PORTUGAL S.A.'), { primario: 'domotica_automacao', setores: ['domotica_automacao'] });
+eq('postos de transformação → eletricistas', f.classificar(hab('4ª', '2.ª - Postos de transformação até 250 kVA'), 'XPTO LDA').primario, 'eletricistas');
+eq('tração elétrica → eletricistas', f.classificar(hab('4ª', '8.ª - Instalações de tração elétrica'), 'XPTO LDA').primario, 'eletricistas');
+eq('obras portuárias → hidráulicas', f.classificar(hab('3ª Categoria - Obras hidráulicas', '2.ª - Obras portuárias'), 'XPTO LDA').primario, 'canalizacao_saneamento');
+eq('subcategoria desconhecida → fora (não construção geral)', f.classificar(hab('9ª', '99.ª - Coisa nova'), 'XPTO LDA'), { primario: null, setores: [], motivo: 'habilitacoes-desconhecidas' });
+eq('PAR sem habilitações → construção geral', f.classificar({ habs: [] }, 'XPTO LDA').primario, 'construcao_geral');
 console.log(falhas ? `\n${falhas} FALHA(S)` : '\nTUDO OK');
