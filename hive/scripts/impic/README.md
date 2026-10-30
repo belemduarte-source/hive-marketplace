@@ -10,7 +10,8 @@ Dados (caches, registos, contactos) ficam FORA do repositório, em `IMPIC_DADOS`
 
 ## Regras aplicadas (decisões do dono)
 
-- Só pessoas coletivas (NIF começado por 5). Fora: unipessoais, empresários em nome
+- Só pessoas coletivas (NIF começado por 5). Fora: unipessoais (também as gralhas e abreviaturas do
+  IMPIC: Unpessoal, Uniopessoal, Unipe, Unipl, Uniplda, Unp Lda, Unilda…), empresários em nome
   individual (o IMPIC esconde-lhes o NIF), municípios, associações, ACE, EM, insolventes,
   telecom/energia/resíduos/limpeza/hotelaria e promotoras/gestoras imobiliárias sem
   nenhuma palavra de obra no nome ("Imobiliária Construtora" entra; "Promoção Imobiliária" não).
@@ -45,6 +46,7 @@ node esperar-novas.js correr.log 1000 20      # com o processamento a correr: es
 node verificar.js        # contagens depois, barra, empilhamento, API
 node pares-perto.js 5    # pares de fichas novas a < 5 m de outra empresa (deve dar 0)
 node corrigir-empilhadas.js [--gravar]   # se der > 0: a mais nova vai para a porta livre ou é retirada (corrigidas.jsonl)
+node reaplicar-filtros.js [--gravar]     # depois de apertar um filtro de ficha.js: retira as já inseridas que agora falham
 node relatorio-final.js  # relatório em Markdown (contagens antes/depois, funil, inseridas, amostras)
 ```
 

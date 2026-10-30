@@ -33,7 +33,7 @@ const { filtroEntidade } = require('./ficha');
   const canais = r => (r.alvara ? 1 : 0) + (r.email ? 1 : 0) + (String(r.phone).replace(/\D/g, '').length >= 9 ? 1 : 0) + (r.website ? 1 : 0);
   console.log(`\nnovas na BD: ${novas.length}/${ids.length} | aprovadas ${novas.filter(r => r.status === 'approved').length}`);
   console.log('com < 2 canais:', novas.filter(r => canais(r) < 2).length, '| sem alvará:', novas.filter(r => !r.alvara).length, '| confidence≠3:', novas.filter(r => r.confidence !== 3).length, '| created_by≠7:', novas.filter(r => +r.created_by !== 7).length);
-  console.log('nome de uma pessoa/unipessoal/entidade:', novas.filter(r => filtroEntidade(r.name.toUpperCase(), r.nif)).map(r => r.id + ' ' + r.name));
+  console.log('nome de uma pessoa/unipessoal/entidade:', novas.filter(r => r.status === 'approved' && filtroEntidade(r.name.toUpperCase(), r.nif)).map(r => r.id + ' ' + r.name));
   const nifDup = await q(`SELECT nif, count(*)::int n FROM companies WHERE nif = ANY($1) GROUP BY nif HAVING count(*) > 1`, [novas.map(r => r.nif)]);
   console.log('NIF duplicado:', nifDup.length);
 

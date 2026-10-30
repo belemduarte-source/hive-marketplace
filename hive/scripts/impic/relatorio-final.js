@@ -14,12 +14,16 @@ const porChave = new Map(); for (const x of linhasJ('processadas.jsonl')) porCha
 const proc = [...porChave.values()];
 const { funil } = construir();
 const insD = {}; for (const x of ins) insD[x.distrito] = (insD[x.distrito] || 0) + 1;
+// retiradas depois de gravar (corrigidas.jsonl), por distrito da ficha inserida
+const distDe = new Map(ins.map(x => [+x.id, x.distrito])), retD = {};
+for (const x of linhasJ('corrigidas.jsonl')) if (x.acao === 'retirada') { const d = distDe.get(+x.id); retD[d] = (retD[d] || 0) + 1; }
+const menos = n => n ? ` (−${n})` : '';
 const out = [];
 const p = s => out.push(s);
 const pct = (a, b) => b ? Math.round(100 * a / b) + '%' : '—';
 
 p('## Contagens por distrito (empresas aprovadas em Portugal)\n');
-p('| Distrito | Antes | Inseridas | Depois | Registos IMPIC listados | Candidatas (após filtros e duplicados) | Processadas | Aprovadas na barra | Por processar |');
+p('| Distrito | Antes | Inseridas (− retiradas depois) | Depois | Registos IMPIC listados | Candidatas (após filtros e duplicados) | Processadas | Aprovadas na barra | Por processar |');
 p('|---|---:|---:|---:|---:|---:|---:|---:|---:|');
 const T = { a: 0, i: 0, d: 0, l: 0, c: 0, pr: 0, ok: 0 };
 for (const d of [...DISTRITOS, '?']) {
@@ -27,10 +31,10 @@ for (const d of [...DISTRITOS, '?']) {
   const pd = proc.filter(x => x.distrito === d && !x.retry), okd = pd.filter(x => x.ok).length;
   const a = antes.cont[d] || 0, dd = depois ? (depois.cont[d] || 0) : null;
   if (!a && !f.listadas && !dd) continue;
-  p(`| ${d} | ${a} | ${insD[d] || 0} | ${dd ?? '—'} | ${f.listadas || 0} | ${f.candidatas || 0} | ${pd.length} | ${okd} | ${Math.max(0, (f.candidatas || 0) - pd.length)} |`);
+  p(`| ${d} | ${a} | ${insD[d] || 0}${menos(retD[d])} | ${dd ?? '—'} | ${f.listadas || 0} | ${f.candidatas || 0} | ${pd.length} | ${okd} | ${Math.max(0, (f.candidatas || 0) - pd.length)} |`);
   T.a += a; T.i += insD[d] || 0; T.d += dd || 0; T.l += f.listadas || 0; T.c += f.candidatas || 0; T.pr += pd.length; T.ok += okd;
 }
-p(`| **Total** | **${T.a}** | **${T.i}** | **${depois ? depois.total : '—'}** | ${T.l} | ${T.c} | ${T.pr} | ${T.ok} | ${Math.max(0, T.c - T.pr)} |\n`);
+p(`| **Total** | **${T.a}** | **${T.i}**${menos(Object.values(retD).reduce((s, n) => s + n, 0))} | **${depois ? depois.total : '—'}** | ${T.l} | ${T.c} | ${T.pr} | ${T.ok} | ${Math.max(0, T.c - T.pr)} |\n`);
 
 // funil global
 const F = {}; for (const f of Object.values(funil)) for (const [k, v] of Object.entries(f)) F[k] = (F[k] || 0) + v;
@@ -52,8 +56,9 @@ if (ins.length) {
   p(`- Precisão da posição: ${c(ins, x => x.geo.replace(/-sem-cp7|\+porta-vizinha/g, '').replace(/^geoapi-porta$/, 'porta (INE)').replace(/^geoapi-rua$/, 'rua (INE)').replace(/^photon-house$/, 'porta (OSM)').replace(/^photon-street$/, 'rua (OSM)').replace(/^geoapi-cp7(-centro)?$/, 'código postal').replace(/^localidade-.*/, 'localidade'))}`);
   p(`- Setor principal: ${c(ins, x => x.sector)}`);
   p(`- Desempilhadas para a porta vizinha: ${ins.filter(x => /porta-vizinha/.test(x.geo)).length}`);
-  const corr = linhasJ('corrigidas.jsonl'), ret = corr.filter(x => x.acao === 'retirada');
-  if (corr.length) p(`- Corrigidas depois de gravar (a < 5 m de outra empresa nova; o teste antigo comparava a chave arredondada a 5 casas): ${corr.length - ret.length} movidas para uma porta INE livre, ${ret.length} retiradas por não haver porta livre (ids ${ret.map(x => x.id).join(', ')})`);
+  const corr = linhasJ('corrigidas.jsonl'), emp = corr.filter(x => !x.regra), ret = emp.filter(x => x.acao === 'retirada'), unip = corr.filter(x => x.regra === 'unipessoal');
+  if (emp.length) p(`- Corrigidas depois de gravar (a < 5 m de outra empresa nova; o teste antigo comparava a chave arredondada a 5 casas): ${emp.length - ret.length} movidas para uma porta INE livre, ${ret.length} retiradas por não haver porta livre (ids ${ret.map(x => x.id).join(', ')})`);
+  if (unip.length) p(`- Retiradas depois de gravar por serem unipessoais com o nome abreviado ou mal escrito no IMPIC (o filtro antigo só apanhava "Unipessoal"/"Unip"): ${unip.length} (ids ${unip.map(x => x.id).join(', ')})`);
   p('');
 }
 // amostras: Lisboa (20 ao acaso) e entre distritos (estratificada); amostra.json se for a única

@@ -9,6 +9,14 @@ eq('Metro - ACE excluído', f.filtroEntidade('METRO DO PORTO - ACE', '510315917'
 eq('Gaiurb, EM excluída', f.filtroEntidade('GAIURB - URBANISMO E HABITACAO, EM', '510315917'), 'entidade-nao-empresa');
 eq('Unipessoal excluída', f.filtroEntidade('TRACO & RASCUNHO UNIPESSOAL LDA', '510315917'), 'unipessoal');
 eq('Unip excluída', f.filtroEntidade('WORK DA FORMIGA UNIP LDA', '510315917'), 'unipessoal');
+// gralhas e abreviaturas reais do IMPIC
+for (const n of ['ARRANJOEU - CONSTRUCAO CIVIL UNPESSOAL LDA', 'PONTIESFERA - COGRAGEM, UNIOPESSOAL LDA', 'UILES - UNIIPESSOAL LDA',
+  'MAURICIO VAZ LAVRADOR SOC UNIPESSOL LDA', 'PINABRA IMPORTACAO EXPORTACAO E CONSTRUCAO UNIPESS LDA', 'FACHADA ECLETICA UNIPE LDA',
+  'RENOCLIMA UNIPL LDA', 'J J PINTURAS UNIPLDA', 'INFRACORREIA CONSTRUCAO E IMOBILIARIO SOCIEDADE UNIPLDA', 'RECANTO MIMOSO UNP LDA',
+  'SOFTHARDSERV INFORMATICA SERVICOS E FORMACAO UNILDA'])
+  eq(`${n} excluída`, f.filtroEntidade(n, '510315917'), 'unipessoal');
+for (const n of ['IRMAOS PESSOA CONSTRUCOES LDA', 'UNIHL VERTICAL LDA', 'UNIKONSTROI LDA', 'UNIPROLAR CONSTRUCOES LDA', 'UNIAO CONSTRUTORA LDA'])
+  eq(`${n} passa`, f.filtroEntidade(n, '510315917'), null);
 eq('ENI (NIF 1) excluído', f.filtroEntidade('FRANCISCO MANUEL LADEIRAS MAGRINHO', '123456789'), 'nao-pessoa-coletiva');
 eq('NIF inválido', f.filtroEntidade('X LDA', '510315918'), 'nif-invalido');
 eq('Lda normal passa', f.filtroEntidade('STRANGO & RAMOS - CONSTRUCOES LDA', '510315917'), null);

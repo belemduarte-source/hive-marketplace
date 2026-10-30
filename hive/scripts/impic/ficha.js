@@ -46,7 +46,9 @@ function nifValido(n) {
 
 // ── Filtros de entidade (antes do detalhe — só com nome+NIF) ─────────────────
 // Regra do dono: empresas de uma pessoa (unipessoal / ENI) NUNCA por importação automática.
-const RE_UNIP = /\bUNIP(ESSOAL)?\b|\bUNIPES\b|\bSOC(IEDADE)? UNIPESSOAL\b/;
+// O IMPIC tem gralhas e abreviaturas: UNPESSOAL, UNIOPESSOAL, UNIIPESSOAL, UNIPESSOL, UNIPESS, UNIPE, UNIPL,
+// UNIPLDA, UNP LDA, UNILDA (testado contra toda a listagem: nenhuma marca apanhada; PESSOA sozinho é apelido).
+const RE_UNIP = /\bUN[A-Z]{0,3}PES{1,2}[OA]{0,2}L?(L?DA)?\b|\bUNIP(E|L|LDA)?\b|\bUNP\b|\bUNI ?LDA\b|\bSOC(IEDADE)? UNIP/;
 // Entidades que não são prestadores de serviços para o público (municípios, associações, ACE…).
 const RE_ENTIDADE = /\b(MUNICIPIO|CAMARA MUNICIPAL|JUNTA DE FREGUESIA|SERVICOS MUNICIPALIZADOS|ASSOCIACAO|FUNDACAO|MISERICORDIA|CENTRO SOCIAL|PAROQUIA|FABRICA DA IGREJA|INSTITUTO|UNIVERSIDADE|ESCOLA|REGIAO AUTONOMA|GOVERNO|COMUNIDADE INTERMUNICIPAL|AREA METROPOLITANA|EMPRESA MUNICIPAL|AGRUPAMENTO COMPLEMENTAR|COOPERATIVA DE HABITACAO|CONDOMINIO|HERANCA|INSOLVENCIA|INSOLVENTE|EM LIQUIDACAO)\b|(\bACE|\bE ?E ?M|\bEM)$/;
 // Licenciadas mas não são prestadores de obra para o público: fabricantes/operadoras de telecomunicações,
