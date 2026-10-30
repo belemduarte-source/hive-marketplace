@@ -54,6 +54,14 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <script>/* Telemóveis e tablets (até 1024px no arranque): sem mapa — pesquisa por filtros e lista por distância (pedido do dono, 2026-10-30). Decidido antes de pintar para o mapa nunca aparecer. */try{if(window.innerWidth<=1024)document.documentElement.classList.add('hx-sem-mapa')}catch(e){}</script>
+  <!-- O mapa só se descarrega nos computadores (>1024px no arranque): MapLibre
+       (~280 KB transferidos, JS + CSS) e as ligações aos servidores do mapa
+       (tiles OpenFreeMap, rotas OSRM). Nos telemóveis e tablets o mapa nunca arranca.
+       document.write e não um script criado com createElement: assim a tag é
+       "parser-inserted" e o defer põe-na na fila à frente do lucide e da app
+       (ordem maplibre → lucide → app); um script dinâmico corre quando chega,
+       sem ordem garantida. A CSS continua não-bloqueante (preload → stylesheet). -->
+  <script>if(!document.documentElement.classList.contains('hx-sem-mapa'))document.write('<link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin/><link rel="dns-prefetch" href="https://router.project-osrm.org"/><link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.css" integrity="sha384-uTttxo/aOKbdE5RlD/SPzSDoDmNvGlUYPjONi2MN/b7c9HPSvW07OIuyP7uL6jxK" crossorigin="anonymous" onload="this.onload=null;this.rel=\'stylesheet\'"/><script defer src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js" integrity="sha384-5+cfbwT0iiub6VsQAdn6yz16nr6sDiQoHx6tm4O8OVYXHYOxcffFmCJBL0dgdvGp" crossorigin="anonymous"><\/script>')</script>
   <meta name="format-detection" content="telephone=no"/>
   <title>Hivex – Marketplace B2B & B2C de Construção em Portugal</title>
 
@@ -98,15 +106,13 @@
   <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png?v=2"/>
 
   <!-- Preconnect to third-party origins so DNS/TLS is warm by the time we
-       actually request MapLibre, Google Sign-In, the vector tile server and
-       Nominatim. Saves ~100-300 ms on first paint. tile.openstreetmap.org
-       continua em uso pelos mini-mapas estáticos dos cartões. -->
+       actually request the fonts, lucide (e o MapLibre nos computadores),
+       Google Sign-In and Nominatim. Saves ~100-300 ms on first paint. Os
+       servidores do mapa vão com o MapLibre, acima (só computadores); o
+       tile.openstreetmap.org saiu: os cartões já não têm mini-mapas. -->
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin/>
   <link rel="preconnect" href="https://accounts.google.com" crossorigin/>
-  <link rel="preconnect" href="https://tiles.openfreemap.org" crossorigin/>
-  <link rel="preconnect" href="https://tile.openstreetmap.org" crossorigin/>
   <link rel="dns-prefetch" href="https://nominatim.openstreetmap.org"/>
-  <link rel="dns-prefetch" href="https://router.project-osrm.org"/>
 
   <!-- Inter: distinctive professional face, consistent across Windows/Mac.
        Served via jsDelivr (already whitelisted in the CSP) with system fallback. -->
@@ -114,12 +120,6 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/600.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/700.css"/>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/inter@5.1.0/800.css"/>
-  <!-- CSS do mapa em modo não-bloqueante: só é preciso quando o mapa abre,
-       e assim o primeiro paint da landing não espera pelo CDN. -->
-  <link rel="preload" as="style" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.css" integrity="sha384-uTttxo/aOKbdE5RlD/SPzSDoDmNvGlUYPjONi2MN/b7c9HPSvW07OIuyP7uL6jxK" crossorigin="anonymous" onload="this.onload=null;this.rel='stylesheet'"/>
-  <noscript>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.css" integrity="sha384-uTttxo/aOKbdE5RlD/SPzSDoDmNvGlUYPjONi2MN/b7c9HPSvW07OIuyP7uL6jxK" crossorigin="anonymous"/>
-  </noscript>
   <!-- Native app (Capacitor) bridge: when Hivex runs inside the iOS/Android
        wrapper its origin is capacitor://localhost, so point the API client at the
        production backend. The web PWA (served from hivex.pt) keeps same-origin /api.
@@ -2023,9 +2023,9 @@
 </div>
 
 <!-- defer preserva a ordem (maplibre → lucide → app) mas deixa o
-     HTML pintar sem esperar pela execução dos scripts. MapLibre GL: tiles
-     vetoriais OpenFreeMap sem chave, clustering nativo e 3D. -->
-<script defer src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js" integrity="sha384-5+cfbwT0iiub6VsQAdn6yz16nr6sDiQoHx6tm4O8OVYXHYOxcffFmCJBL0dgdvGp" crossorigin="anonymous"></script>
+     HTML pintar sem esperar pela execução dos scripts. O MapLibre GL (tiles
+     vetoriais OpenFreeMap sem chave, clustering nativo e 3D) entra nesta fila
+     pelo <head>, e só nos computadores (ver hx-sem-mapa). -->
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
 <script defer src="app.v354.js"></script>
 
