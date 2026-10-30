@@ -98,6 +98,11 @@ const _reclamada = (c) => c.created_by != null && Number(c.created_by) !== PLATA
 const _nifColetiva = (nif) => /^[56]\d{8}$/.test(String(nif || '').replace(/\D/g, ''));
 // Pode receber convite por email (decisão do dono, ver o topo do ficheiro)
 const _convidavel = (c) => _reclamada(c) || (String(c.country || '').toLowerCase() === 'pt' && _nifColetiva(c.nif));
+// A mesma regra em SQL (empresa com o alias c). Desde 2026-10-30 vale também
+// para os pedidos de orçamento a várias empresas (routes/marketplace.js).
+const SQL_CONVIDAVEL = `((c.created_by IS NOT NULL AND c.created_by <> ${PLATAFORMA})
+             OR (lower(coalesce(c.country, '')) = 'pt'
+                 AND regexp_replace(coalesce(c.nif, ''), '[^0-9]', '', 'g') ~ '^[56][0-9]{8}$'))`;
 
 function _erro(status, msg, extra) {
   const e = new Error(msg);
@@ -170,7 +175,7 @@ async function _meuConcurso(req, id) {
 }
 
 // Convite a partir do link (token de 32 caracteres) ou, para quem gere a ficha
-// convidada e tem sessão, de 'i<id>' (lista "Concursos recebidos").
+// convidada e tem sessão, de 'i<id>' (lista "Pedidos de clientes", pedidos.js).
 async function _resolverConvite(ref, req) {
   ref = String(ref || '');
   let rows;
@@ -382,26 +387,16 @@ router.get('/tenders/mine', requireAuth, async (req, res, next) => {
       `SELECT t.id, t.title, t.city, t.status, t.deadline, t.published_at, t.closed_at, t.created_at, t.is_test,
               (SELECT COUNT(*) FROM tender_invites i WHERE i.tender_id = t.id)::int AS convites,
               (SELECT COUNT(*) FROM tender_invites i WHERE i.tender_id = t.id AND i.first_viewed_at IS NOT NULL)::int AS vistas,
-              (SELECT COUNT(*) FROM tender_proposals p WHERE p.tender_id = t.id AND p.status <> 'withdrawn')::int AS propostas
+              (SELECT COUNT(*) FROM tender_proposals p WHERE p.tender_id = t.id AND p.status <> 'withdrawn')::int AS propostas,
+              (SELECT COUNT(*) FROM tender_invites i WHERE i.tender_id = t.id AND i.declined_at IS NOT NULL)::int AS recusas,
+              -- quem já respondeu com proposta, da mais barata para a mais cara
+              (SELECT json_agg(json_build_object('company_name', i.company_name, 'price_cents', p.price_cents, 'status', p.status)
+                               ORDER BY p.price_cents NULLS LAST, p.id)
+                 FROM tender_proposals p JOIN tender_invites i ON i.id = p.invite_id
+                WHERE p.tender_id = t.id AND p.status <> 'withdrawn') AS respostas
          FROM tenders t WHERE t.owner_user_id = $1
         ORDER BY t.created_at DESC LIMIT 100`, [req.user.id]);
     res.json(rows.map(r => ({ ...r, estado: _estado(r) })));
-  } catch (e) { next(e); }
-});
-
-// Convites recebidos pelas empresas que o utilizador gere
-router.get('/tenders/received', requireAuth, async (req, res, next) => {
-  try {
-    const { rows } = await pool.query(
-      `SELECT i.id, i.company_id, i.company_name, i.first_viewed_at, i.declined_at,
-              t.id AS tender_id, t.title, t.city, t.deadline, t.status, p.status AS proposal_status
-         FROM tender_invites i
-         JOIN tenders t ON t.id = i.tender_id
-         JOIN companies c ON c.id = i.company_id
-         LEFT JOIN tender_proposals p ON p.invite_id = i.id
-        WHERE c.created_by = $1 AND t.status <> 'draft' AND NOT t.is_test
-        ORDER BY t.deadline DESC LIMIT 50`, [req.user.id]);
-    res.json(rows.map(r => ({ ...r, ref: 'i' + r.id, estado: _estado(r) })));
   } catch (e) { next(e); }
 });
 
@@ -632,9 +627,7 @@ const _SQL_CANDIDATAS = `
               cos(radians($1)) * cos(radians(c.lat)) * power(sin(radians(c.lng - $2) / 2), 2)))) AS km,
            (coalesce(trim(c.email), '') <> '') AS tem_email,
            EXISTS (SELECT 1 FROM email_optouts o WHERE o.email = lower(trim(c.email))) AS recusou,
-           ((c.created_by IS NOT NULL AND c.created_by <> ${PLATAFORMA})
-             OR (lower(coalesce(c.country, '')) = 'pt'
-                 AND regexp_replace(coalesce(c.nif, ''), '[^0-9]', '', 'g') ~ '^[56][0-9]{8}$')) AS convidavel
+           ${SQL_CONVIDAVEL} AS convidavel
       FROM companies c
      WHERE c.status = 'approved'
        AND (c.sector = ANY($3::text[]) OR c.sectors && $3::text[])
@@ -743,6 +736,7 @@ async function _emailConvite(t, conv, token, nFicheiros) {
         <a href="${link}" style="display:inline-block;background:#2563eb;color:#fff;padding:14px 32px;border-radius:8px;text-decoration:none;font-weight:700;font-size:15px">Ver o concurso e responder</a>
       </p>
       <p style="color:#4b5563;font-size:14px">Não precisa de conta e não paga nada. Pelo link vê os documentos, envia a sua proposta (preço, prazo e anexos) ou indica que não vai concorrer. As outras empresas convidadas não veem a sua proposta.</p>
+      ${conv.claimed ? `<p style="color:#4b5563;font-size:14px">Como gere esta ficha na Hivex, também encontra este pedido na sua conta, em <a href="${BASE}/?pedidos=recebidos" style="color:#2563eb">Pedidos de clientes</a>.</p>` : ''}
       <p style="color:#9ca3af;font-size:12px;margin-bottom:0">Recebeu este convite porque ${esc(t.owner_name)} escolheu a ${esc(conv.company_name)} na Hivex para este pedido${criterios ? ' (' + esc(criterios) + ')' : ''}. É um convite deste cliente, não publicidade, e o link é pessoal. <a href="${optout}" style="color:#9ca3af">Não quero receber convites de concursos</a>.</p>`,
   });
 }
@@ -844,7 +838,7 @@ router.post('/tenders/:id(\\d+)/publish', requireAuth, async (req, res, next) =>
            VALUES ($1, $2, $3, $4, $5, $6, $7)
            ON CONFLICT (tender_id, company_id) DO NOTHING RETURNING id`,
           [t.id, c.id, c.name, c.email, _hash(token), t.is_test ? 'test' : 'pending', t.is_test ? token : null]);
-        if (rows[0]) criados.push({ id: rows[0].id, token, company_name: c.name, email: c.email });
+        if (rows[0]) criados.push({ id: rows[0].id, token, company_name: c.name, email: c.email, claimed: _reclamada(c) });
       }
       await client.query('COMMIT');
     } catch (e) {
@@ -1125,14 +1119,42 @@ router.post('/tender-invites/:ref/decline', optionalAuth, async (req, res, next)
     const inv = await _resolverConvite(req.params.ref, req);
     if (!inv) throw _erro(404, 'Este convite não existe ou já expirou.');
     if (!_aceitaPropostas(inv.tender)) throw _erro(409, 'O concurso já não aceita respostas.');
+    const t = inv.tender;
     const { rows: p } = await pool.query(`SELECT id, status FROM tender_proposals WHERE invite_id = $1`, [inv.id]);
     if (p[0] && ['accepted', 'declined'].includes(p[0].status)) throw _erro(409, 'A proposta já foi analisada pelo cliente.');
-    if (p[0]) await pool.query(`UPDATE tender_proposals SET status = 'withdrawn', updated_at = NOW() WHERE id = $1`, [p[0].id]);
-    await pool.query(
-      `UPDATE tender_invites SET declined_at = NOW(), decline_reason = $2 WHERE id = $1`,
-      [inv.id, _txt(req.body && req.body.reason, 300) || null]);
+    let retirou = false;
+    if (p[0]) {
+      // A condição impede que uma decisão do cliente tomada entretanto seja apagada
+      const { rowCount } = await pool.query(
+        `UPDATE tender_proposals SET status = 'withdrawn', updated_at = NOW()
+          WHERE id = $1 AND status NOT IN ('accepted', 'declined')`, [p[0].id]);
+      if (!rowCount) throw _erro(409, 'A proposta já foi analisada pelo cliente.');
+      retirou = p[0].status === 'submitted';
+    }
+    const motivo = _txt(req.body && req.body.reason, 300) || null;
+    // Só a primeira recusa avisa o cliente: o FOR UPDATE serializa duas recusas
+    // em paralelo e a segunda já vê a data da primeira.
+    const { rows: up } = await pool.query(
+      `WITH antes AS (SELECT declined_at FROM tender_invites WHERE id = $1 FOR UPDATE)
+       UPDATE tender_invites SET declined_at = NOW(), decline_reason = $2 FROM antes
+        WHERE tender_invites.id = $1 RETURNING antes.declined_at AS antes`, [inv.id, motivo]);
     await _registar(inv.tender_id, inv.id, 'company', 'decline');
-    res.json(await _vistaConvite({ ...inv, declined_at: new Date(), decline_reason: _txt(req.body && req.body.reason, 300) || null }));
+    if (up[0] && up[0].antes == null && !t.is_test) {
+      const { rows: n } = await pool.query(`SELECT COUNT(*)::int AS n FROM tender_invites WHERE tender_id = $1`, [t.id]);
+      const podeConvidar = n[0].n < LIMITES.empresas && _aceitaPropostas(t);
+      deferEmail(() => sendBrandedEmail({
+        to: t.owner_email,
+        subject: `[Hivex] ${inv.company_name} não vai apresentar proposta: ${t.title}`,
+        title: 'Hivex — Uma empresa não vai concorrer',
+        bodyHtml: `
+          <p style="margin-top:0">Olá ${esc(t.owner_name)},</p>
+          <p><strong>${esc(inv.company_name)}</strong> ${retirou ? 'retirou a proposta e indicou' : 'indicou'} que não vai concorrer a <strong>${esc(t.title)}</strong>.</p>
+          ${motivo ? `<div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:12px 16px;margin:14px 0"><p style="margin:0;white-space:pre-wrap">${esc(motivo)}</p></div>` : ''}
+          ${podeConvidar ? '<p>Ainda pode convidar outras empresas no painel do concurso, até ao fim do prazo.</p>' : ''}
+          <p style="text-align:center;margin:24px 0"><a href="${BASE}/?concursos=${t.id}" style="display:inline-block;background:#2563eb;color:#fff;padding:13px 30px;border-radius:8px;text-decoration:none;font-weight:700">Ver as respostas</a></p>`,
+      }), `concurso ${t.id}: recusa (convite ${inv.id})`);
+    }
+    res.json(await _vistaConvite({ ...inv, declined_at: new Date(), decline_reason: motivo }));
   } catch (e) { _resp(res, next, e); }
 });
 
@@ -1177,7 +1199,8 @@ async function manutencaoConcursos() {
       WHERE i.status = 'pending' AND i.created_at < NOW() - INTERVAL '10 minutes'
         AND EXISTS (SELECT 1 FROM email_optouts o WHERE o.email = lower(trim(i.email)))`);
   const { rows: pend } = await pool.query(
-    `SELECT i.*, (SELECT COUNT(*) FROM tender_files f WHERE f.tender_id = i.tender_id AND f.invite_id IS NULL AND f.status = 'ready')::int AS nf
+    `SELECT i.*, (SELECT COUNT(*) FROM tender_files f WHERE f.tender_id = i.tender_id AND f.invite_id IS NULL AND f.status = 'ready')::int AS nf,
+            (SELECT c.created_by FROM companies c WHERE c.id = i.company_id) AS created_by
        FROM tender_invites i JOIN tenders t ON t.id = i.tender_id
       WHERE i.status = 'pending' AND i.created_at < NOW() - INTERVAL '10 minutes'
         AND t.status = 'open' AND t.deadline > NOW() LIMIT 30`);
@@ -1187,7 +1210,7 @@ async function manutencaoConcursos() {
     await pool.query(`UPDATE tender_invites SET token_hash = $2 WHERE id = $1`, [i.id, _hash(token)]);
     const { rows: ts } = await pool.query(`SELECT * FROM tenders WHERE id = $1`, [i.tender_id]);
     try {
-      await _emailConvite(ts[0], i, token, i.nf);
+      await _emailConvite(ts[0], { ...i, claimed: _reclamada(i) }, token, i.nf);
       await pool.query(`UPDATE tender_invites SET status = 'sent', sent_at = NOW() WHERE id = $1`, [i.id]);
       out.convites++;
     } catch (e) {
@@ -1274,3 +1297,5 @@ module.exports = router;
 module.exports.manutencaoConcursos = manutencaoConcursos;
 module.exports._paraLixo = _paraLixo;
 module.exports._interno = { _confereConteudo, _convidavel, _nomeSeguro, TIPOS, LIMITES };
+module.exports.SQL_CONVIDAVEL = SQL_CONVIDAVEL;
+module.exports._estado = _estado;

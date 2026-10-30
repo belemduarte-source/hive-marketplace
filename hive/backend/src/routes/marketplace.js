@@ -92,13 +92,6 @@ async function attachFileMeta(rows) {
   return rows;
 }
 
-// Haversine (km) — for picking the nearest matching companies for an RFQ.
-function distKm(lat1, lng1, lat2, lng2) {
-  const R = 6371, dLat = (lat2 - lat1) * Math.PI / 180, dLng = (lng2 - lng1) * Math.PI / 180;
-  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLng / 2) ** 2;
-  return 2 * R * Math.asin(Math.sqrt(a));
-}
-
 // ── CLAIM A LISTING ───────────────────────────────────────────────────────────
 // POST /api/claims/:companyId — logged-in user asks for a 6-digit code, sent
 // to the company's PUBLIC email (proof of control). 30-minute validity.
@@ -290,55 +283,98 @@ router.post('/quote-requests', optionalAuth, async (req, res, next) => {
     );
     const requestId = reqRows[0].id;
 
-    // Matching companies: sector (primary or in sectors[]), approved, with email.
+    // Destinatários: a mesma regra dos convites dos concursos (decisão do dono,
+    // 2026-10-30) — fichas geridas pela própria empresa ou empresas PT com NIF
+    // de pessoa coletiva, nunca quem recusou emails (email_optouts). As 10 mais
+    // próximas quando há coordenadas; um só email por endereço.
+    const { SQL_CONVIDAVEL } = require('./tenders');
+    const temPonto = Number.isFinite(lat) && Number.isFinite(lng);
     const { rows: matches } = await pool.query(
-      `SELECT id, name, email, lat, lng FROM companies
-        WHERE status = 'approved' AND email IS NOT NULL AND email <> ''
-          AND ($1 = sector OR $1 = ANY(sectors))`,
-      [sector]
+      `SELECT c.id, c.name, lower(trim(c.email)) AS email, c.created_by
+         FROM companies c
+        WHERE c.status = 'approved' AND coalesce(trim(c.email), '') <> ''
+          AND ($1 = c.sector OR $1 = ANY(c.sectors))
+          AND NOT EXISTS (SELECT 1 FROM email_optouts o WHERE o.email = lower(trim(c.email)))
+          AND ${SQL_CONVIDAVEL}
+        ORDER BY (c.lat IS NULL OR c.lng IS NULL),
+                 power(c.lat - $2::float8, 2) + power((c.lng - $3::float8) * cos(radians($2::float8)), 2),
+                 c.id
+        LIMIT 40`,
+      [sector, temPonto ? lat : null, temPonto ? lng : null]
     );
-    // Nearest first when we have coordinates; cap the blast radius at 10.
-    let picked = matches;
-    if (Number.isFinite(lat) && Number.isFinite(lng)) {
-      picked = matches
-        .map(c => ({ ...c, d: distKm(lat, lng, Number(c.lat), Number(c.lng)) }))
-        .sort((a, b) => a.d - b.d);
+    const vistos = new Set();
+    const picked = [];
+    for (const c of matches) {
+      if (!EMAIL_RE.test(c.email) || vistos.has(c.email)) continue;
+      vistos.add(c.email);
+      picked.push(c);
+      if (picked.length >= 10) break;
     }
-    picked = picked.slice(0, 10);
+    if (picked.length) {
+      await pool.query(
+        `INSERT INTO quote_request_recipients (request_id, company_id, email)
+         SELECT $1, unnest($2::bigint[]), unnest($3::text[]) ON CONFLICT DO NOTHING`,
+        [requestId, picked.map(c => c.id), picked.map(c => c.email)]);
+    }
 
     const budgetLabel = budget || 'a definir';
     const timelineLabel = timeline || 'a definir';
     for (const co of picked) {
-      deferEmail(() => sendBrandedEmail({
-        to: co.email,
-        replyTo: email,
-        subject: `[Hivex] Novo pedido de orçamento${city ? ' em ' + city : ''} — ${name}`,
-        title: 'Hivex — Novo pedido de orçamento',
-        bodyHtml: `
-          <p>A empresa <strong>${esc(co.name)}</strong> recebeu um novo pedido de orçamento através do Hivex Marketplace:</p>
-          <table style="width:100%;border-collapse:collapse;margin:14px 0">
-            <tr style="background:#f9fafb"><td style="padding:9px 13px;font-weight:700;border:1px solid #e5e7eb;width:32%">Cliente</td><td style="padding:9px 13px;border:1px solid #e5e7eb">${esc(name)}${phone ? ' · ' + esc(phone) : ''}</td></tr>
-            <tr><td style="padding:9px 13px;font-weight:700;border:1px solid #e5e7eb">Local</td><td style="padding:9px 13px;border:1px solid #e5e7eb">${esc(city || '—')}</td></tr>
-            <tr style="background:#f9fafb"><td style="padding:9px 13px;font-weight:700;border:1px solid #e5e7eb">Prazo desejado</td><td style="padding:9px 13px;border:1px solid #e5e7eb">${esc(timelineLabel)}</td></tr>
-            <tr><td style="padding:9px 13px;font-weight:700;border:1px solid #e5e7eb">Orçamento indicativo</td><td style="padding:9px 13px;border:1px solid #e5e7eb">${esc(budgetLabel)}</td></tr>
-          </table>
-          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px;margin-bottom:18px"><p style="margin:0;white-space:pre-wrap">${esc(description)}</p></div>
-          <p><strong>Responda diretamente a este email</strong> para enviar a sua proposta ao cliente (${esc(email)}).</p>`,
-      }), `RFQ ${requestId} → company ${co.id}`);
+      const reclamada = co.created_by != null && Number(co.created_by) !== 7;
+      const optout = `https://www.hivex.pt/api/quote-requests/optout?e=${encodeURIComponent(co.email)}&t=${_optoutToken(co.email)}`;
+      deferEmail(async () => {
+        try {
+          await sendBrandedEmail({
+            to: co.email,
+            replyTo: email,
+            subject: `[Hivex] Novo pedido de orçamento${city ? ' em ' + city : ''} — ${name}`,
+            title: 'Hivex — Novo pedido de orçamento',
+            headers: {
+              'List-Unsubscribe': `<${optout}>`,
+              'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+            },
+            bodyHtml: `
+              <p>A empresa <strong>${esc(co.name)}</strong> recebeu um novo pedido de orçamento através do Hivex Marketplace:</p>
+              <table style="width:100%;border-collapse:collapse;margin:14px 0">
+                <tr style="background:#f9fafb"><td style="padding:9px 13px;font-weight:700;border:1px solid #e5e7eb;width:32%">Cliente</td><td style="padding:9px 13px;border:1px solid #e5e7eb">${esc(name)}${phone ? ' · ' + esc(phone) : ''}</td></tr>
+                <tr><td style="padding:9px 13px;font-weight:700;border:1px solid #e5e7eb">Local</td><td style="padding:9px 13px;border:1px solid #e5e7eb">${esc(city || '—')}</td></tr>
+                <tr style="background:#f9fafb"><td style="padding:9px 13px;font-weight:700;border:1px solid #e5e7eb">Prazo desejado</td><td style="padding:9px 13px;border:1px solid #e5e7eb">${esc(timelineLabel)}</td></tr>
+                <tr><td style="padding:9px 13px;font-weight:700;border:1px solid #e5e7eb">Orçamento indicativo</td><td style="padding:9px 13px;border:1px solid #e5e7eb">${esc(budgetLabel)}</td></tr>
+              </table>
+              <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px;margin-bottom:18px"><p style="margin:0;white-space:pre-wrap">${esc(description)}</p></div>
+              ${reclamada ? `
+              <p style="text-align:center;margin:24px 0"><a href="https://www.hivex.pt/?pedidos=recebidos" style="display:inline-block;background:#2563eb;color:#fff;padding:13px 30px;border-radius:8px;text-decoration:none;font-weight:700">Ver e responder na Hivex</a></p>
+              <p>Também pode <strong>responder diretamente a este email</strong>: a resposta vai para o cliente (${esc(email)}).</p>` : `
+              <p><strong>Responda diretamente a este email</strong> para enviar a sua proposta ao cliente (${esc(email)}).</p>
+              ${companyReplyCtaHtml(co)}`}
+              <p style="color:#9ca3af;font-size:12px;margin-bottom:0">Recebeu este pedido porque a ${esc(co.name)} está na Hivex na área pedida por este cliente. É um pedido do cliente, não publicidade. <a href="${optout}" style="color:#9ca3af">Não quero receber pedidos de orçamento por email</a>.</p>`,
+          });
+          await pool.query(
+            `UPDATE quote_request_recipients SET status = 'sent', sent_at = NOW() WHERE request_id = $1 AND company_id = $2`,
+            [requestId, co.id]);
+        } catch (e) {
+          await pool.query(
+            `UPDATE quote_request_recipients SET status = 'failed' WHERE request_id = $1 AND company_id = $2`,
+            [requestId, co.id]).catch(() => {});
+          throw e;
+        }
+      }, `RFQ ${requestId} → company ${co.id}`);
     }
 
     await pool.query(`UPDATE quote_requests SET notified_count = $1 WHERE id = $2`, [picked.length, requestId]);
 
-    // Confirmation to the client.
-    deferEmail(() => sendBrandedEmail({
-      to: email,
-      subject: '[Hivex] O seu pedido de orçamento foi enviado',
-      title: 'Hivex — Pedido de orçamento enviado',
-      bodyHtml: `
-        <p>Olá ${esc(name)},</p>
-        <p>O seu pedido de orçamento foi enviado a <strong>${picked.length} empresa${picked.length === 1 ? '' : 's'}</strong> da área ${city ? 'de ' + esc(city) : 'indicada'}. As propostas chegarão diretamente ao seu email.</p>
-        <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px"><p style="margin:0;white-space:pre-wrap">${esc(description)}</p></div>`,
-    }), `RFQ ${requestId} confirmation`);
+    // Confirmation to the client (sem empresas para avisar, o ecrã já o diz).
+    if (picked.length) {
+      deferEmail(() => sendBrandedEmail({
+        to: email,
+        subject: '[Hivex] O seu pedido de orçamento foi enviado',
+        title: 'Hivex — Pedido de orçamento enviado',
+        bodyHtml: `
+          <p>Olá ${esc(name)},</p>
+          <p>O seu pedido de orçamento foi enviado a <strong>${picked.length} empresa${picked.length === 1 ? '' : 's'}</strong> da área ${city ? 'de ' + esc(city) : 'indicada'}. As empresas respondem para o seu email ou por mensagem na Hivex (em «As minhas mensagens», se tiver conta com este email).</p>
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px"><p style="margin:0;white-space:pre-wrap">${esc(description)}</p></div>`,
+      }), `RFQ ${requestId} confirmation`);
+    }
 
     res.status(201).json({ ok: true, notified: picked.length });
   } catch (e) { next(e); }
@@ -361,9 +397,33 @@ router.get('/messages/company/:companyId', requireAuth, async (req, res, next) =
       [req.params.companyId]
     );
     await attachFileMeta(rows);
-    // Mark client messages as read once the owner opens the inbox.
-    pool.query(`UPDATE messages SET read_at = NOW() WHERE company_id = $1 AND sender = 'client' AND read_at IS NULL`, [req.params.companyId]).catch(() => {});
+    // Mark client messages as read once the owner opens the inbox. Com
+    // ?marcar=0 o frontend marca só a conversa que abre (POST .../read): os
+    // "Pedidos de clientes" contam as novas por cliente.
+    if (req.query.marcar !== '0') {
+      pool.query(`UPDATE messages SET read_at = NOW() WHERE company_id = $1 AND sender = 'client' AND read_at IS NULL`, [req.params.companyId]).catch(() => {});
+    }
     res.json(rows);
+  } catch (e) { next(e); }
+});
+
+// POST /api/messages/company/:companyId/read — o dono abriu a conversa com UM
+// cliente: só as mensagens desse cliente ficam lidas.
+router.post('/messages/company/:companyId(\\d+)/read', requireAuth, async (req, res, next) => {
+  try {
+    const email = String((req.body && req.body.clientEmail) || '').trim().toLowerCase();
+    if (!EMAIL_RE.test(email)) return res.status(400).json({ error: 'Cliente inválido' });
+    const { rows: co } = await pool.query(`SELECT id, created_by FROM companies WHERE id = $1`, [req.params.companyId]);
+    if (!co[0]) return res.status(404).json({ error: 'Empresa não encontrada' });
+    if (co[0].created_by !== req.user.id) await ensureAdminFlag(req);
+    if (!req.user.is_admin && co[0].created_by !== req.user.id) {
+      return res.status(403).json({ error: 'Sem permissão' });
+    }
+    const { rowCount } = await pool.query(
+      `UPDATE messages SET read_at = NOW()
+        WHERE company_id = $1 AND sender = 'client' AND read_at IS NULL AND lower(client_email) = $2`,
+      [co[0].id, email]);
+    res.json({ ok: true, lidas: rowCount });
   } catch (e) { next(e); }
 });
 
@@ -371,9 +431,12 @@ router.get('/messages/company/:companyId', requireAuth, async (req, res, next) =
 // (stored in the thread + optional documents + relayed by email).
 router.post('/messages/company/:companyId/reply', requireAuth, async (req, res, next) => {
   try {
-    const { clientEmail, body } = req.body || {};
+    const { clientEmail, body, clientName } = req.body || {};
     const files = validateChatFiles(req.body && req.body.files);
     const text = (body || '').trim();
+    // Nome do cliente na conversa (resposta a um pedido de orçamento: ainda
+    // não há mensagens dele de onde o tirar)
+    const nome = String(clientName || '').replace(/[\u0000-\u001f]/g, '').trim().slice(0, 120) || null;
     if (!EMAIL_RE.test(clientEmail || '')) return res.status(400).json({ error: 'Cliente inválido' });
     if (text.length < 2 && !files.length) return res.status(400).json({ error: 'Mensagem vazia' });
     const { rows: co } = await pool.query(`SELECT id, name, email, created_by FROM companies WHERE id = $1`, [req.params.companyId]);
@@ -383,8 +446,8 @@ router.post('/messages/company/:companyId/reply', requireAuth, async (req, res, 
       return res.status(403).json({ error: 'Sem permissão' });
     }
     const { rows: ins } = await pool.query(
-      `INSERT INTO messages (company_id, sender, client_email, client_name, body) VALUES ($1, 'company', $2, NULL, $3) RETURNING id`,
-      [co[0].id, clientEmail, text.slice(0, 4000)]
+      `INSERT INTO messages (company_id, sender, client_email, client_name, body) VALUES ($1, 'company', $2, $3, $4) RETURNING id`,
+      [co[0].id, clientEmail, nome, text.slice(0, 4000)]
     );
     await saveChatFiles(ins[0].id, files);
     // push web/nativo para o cliente (se tiver conta e subscrições)
@@ -647,6 +710,39 @@ async function optout(req, res) {
 }
 router.get('/reviews/optout', optout);
 router.post('/reviews/optout', optout);
+
+// "Não quero receber pedidos de orçamento por email" (?e=&t=, HMAC como acima).
+// GET só mostra a confirmação — os filtros de email abrem os links sozinhos e
+// não podem recusar por engano; POST regista (botão da página e cancelamento
+// num clique, RFC 8058). Alimenta a mesma email_optouts.
+async function optoutPedidos(req, res) {
+  const email = String(req.query.e || '').toLowerCase().trim();
+  const tok = String(req.query.t || '');
+  let ok = false;
+  try {
+    const esperado = _optoutToken(email);
+    ok = !!email && tok.length === esperado.length && crypto.timingSafeEqual(Buffer.from(tok), Buffer.from(esperado));
+  } catch (_) { ok = false; }
+  const pagina = (status, corpo) => res.status(status).set('Content-Type', 'text/html; charset=utf-8').send(
+    `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">` +
+    `<div style="font-family:Arial,sans-serif;max-width:520px;margin:60px auto;padding:0 20px;color:#374151;line-height:1.6">${corpo}` +
+    `<p><a href="https://www.hivex.pt" style="color:#f97316">Voltar à Hivex</a></p></div>`);
+  if (!ok) return pagina(400, `<h2>Link inválido</h2><p>Este link não é válido. Responda a qualquer email da Hivex e tratamos do pedido.</p>`);
+  if (req.method === 'GET') {
+    return pagina(200,
+      `<h2>Deixar de receber pedidos de orçamento</h2><p>Confirme que o endereço <strong>${esc(email)}</strong> não quer receber pedidos de orçamento de clientes nem outros emails não essenciais da Hivex. As mensagens que um cliente escrever diretamente à sua empresa continuam a chegar.</p>` +
+      `<form method="post"><button type="submit" style="background:#2563eb;color:#fff;border:0;border-radius:8px;padding:12px 22px;font-size:15px;font-weight:700;cursor:pointer">Confirmar</button></form>`);
+  }
+  try {
+    await pool.query(`INSERT INTO email_optouts (email) VALUES ($1) ON CONFLICT DO NOTHING`, [email]);
+  } catch (e) {
+    console.error('[rfq] opt-out falhou:', e.message);
+    return pagina(500, '<h2>Erro</h2><p>Não foi possível registar o pedido. Tente de novo.</p>');
+  }
+  return pagina(200, `<h2>Pedido registado</h2><p>Não voltará a receber pedidos de orçamento nem outros emails não essenciais da Hivex em ${esc(email)}.</p>`);
+}
+router.get('/quote-requests/optout', optoutPedidos);
+router.post('/quote-requests/optout', optoutPedidos);
 
 // GET /api/messages/unread-count?companyId= — badge for the owner UI.
 router.get('/messages/unread-count', requireAuth, async (req, res, next) => {

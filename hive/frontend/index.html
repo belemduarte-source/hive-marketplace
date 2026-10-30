@@ -179,7 +179,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v351.css"/>
+  <link rel="stylesheet" href="app.v352.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -1592,10 +1592,11 @@
 </div>
 
 <!-- chat widget removed -->
-<!-- hidden stubs keep JS references alive -->
+<!-- hidden stubs keep JS references alive (sem #chatMsgs: esse id é o da
+     conversa no #inboxOverlay e o getElementById apanhava este primeiro, por
+     isso as mensagens nunca apareciam no chat) -->
 <div style="display:none">
   <div id="chatBox"></div>
-  <div id="chatMsgs"></div>
   <div id="chatName"></div>
   <div id="chatNotif"></div>
   <input id="chatInput"/>
@@ -1691,7 +1692,7 @@
    boas-vindas (sem flash). Crawlers (sem localStorage) veem-no sempre. */
 (function () {
   try {
-    var dl = /[?&](company|concurso|concursos)=/.test(location.search) || /^\/c\//.test(location.pathname) || !!window.__hxConcurso;
+    var dl = /[?&](company|concurso|concursos|pedidos)=/.test(location.search) || /^\/c\//.test(location.pathname) || !!window.__hxConcurso;
     if (dl || localStorage.getItem('hivex_bemvindo_visto')) {
       var w = document.getElementById('welcomeOverlay');
       if (w) w.style.display = 'none';
@@ -2025,7 +2026,7 @@
      vetoriais OpenFreeMap sem chave, clustering nativo e 3D. -->
 <script defer src="https://cdn.jsdelivr.net/npm/maplibre-gl@5.24.0/dist/maplibre-gl.js" integrity="sha384-5+cfbwT0iiub6VsQAdn6yz16nr6sDiQoHx6tm4O8OVYXHYOxcffFmCJBL0dgdvGp" crossorigin="anonymous"></script>
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v351.js"></script>
+<script defer src="app.v352.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

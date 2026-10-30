@@ -3,6 +3,50 @@
 const translations = {
   pt: {
     // ── Concursos (pedido de propostas com anexos) ──
+    // ── Pedidos de clientes e respostas dos concursos ──
+    tnTabResp:'Respostas ({n} de {c})',
+    tnGrpProps:'Com proposta ({n})',
+    tnGrpNoBid:'Não vão concorrer ({n})',
+    tnGrpWaiting:'Ainda sem resposta ({n})',
+    tnWithdrew:'retirou a proposta',
+    tnAnsweredOn:'respondeu a {d}',
+    tnRespList:'Responderam: {l}',
+    tnNoBidN1:'1 não concorre',
+    tnNoBidN:'{n} não concorrem',
+    tnNoRespYet:'Ainda sem respostas',
+    rqMenu:'Pedidos de clientes',
+    rqAll:'Todos',
+    rqTenders:'Concursos',
+    rqQuotes:'Orçamentos',
+    rqMsgs:'Mensagens',
+    rqAllCos:'Todas as empresas',
+    rqKindTender:'Concurso',
+    rqKindQuote:'Pedido de orçamento',
+    rqKindMsg:'Mensagem',
+    rqStNew:'Novo',
+    rqStTodo:'Por responder',
+    rqStDone:'Respondido',
+    rqStProposal:'Proposta enviada · {p}',
+    rqStNoBid:'Não concorreu',
+    rqStAccepted:'Proposta aceite',
+    rqStLost:'Não escolhida',
+    rqStMissed:'Prazo terminado',
+    rqFor:'para {c}',
+    rqMsgs1:'1 mensagem',
+    rqMsgsN:'{n} mensagens',
+    rqOpenReply:'Ver e responder',
+    rqOpen:'Abrir',
+    rqReply:'Responder',
+    rqOpenChat:'Abrir conversa',
+    rqEmail:'Email',
+    rqCall:'Ligar',
+    rqMailSubject:'O seu pedido de orçamento na Hivex',
+    rqEmpty:'Ainda não recebeu pedidos. Quando um cliente contactar as suas empresas pela Hivex (convite para um concurso, pedido de orçamento ou mensagem), o pedido aparece aqui e avisamos por email.',
+    rqNone:'Nada para mostrar com este filtro.',
+    rqEmailNote:'Cada pedido novo chega também por email, ao endereço da ficha da empresa.',
+    rqReplyHint:'Escreva a sua resposta a {c}. A mensagem fica guardada aqui e chega-lhe por email.',
+    rqMore:'Ver mais',
+    rfqNone:'Não encontrámos empresas desta área, perto de si, que possam receber pedidos por email. Escolha outra área ou veja a lista de empresas e contacte-as diretamente.',
     tnMenu:'Concursos',
     tnRfqLink:'Tem um projeto ou caderno de encargos? Lance um concurso com anexos →',
     tnAccept:'Aceitar',
@@ -153,7 +197,6 @@ const translations = {
     tnPropValidity:'Validade da proposta (dias)',
     tnPropVat:'IVA',
     tnRadiusAll:'Todo o país',
-    tnReceived:'Convites recebidos pelas suas empresas',
     tnReceivedOn:'Recebida',
     tnRemove:'Retirar',
     tnRetention:'Os anexos ficam guardados até 90 dias depois do fecho do concurso. Descarregue o que precisar de guardar.',
@@ -184,10 +227,8 @@ const translations = {
     tnStep2:'Empresas',
     tnStep3:'Enviar',
     tnSubmitted:'Recebida',
-    tnTabCos:'Empresas',
     tnTabFiles:'Anexos',
     tnTabLog:'Registo',
-    tnTabProps:'Propostas',
     tnTestMode:'Concurso de teste: os convites não são enviados e os links aparecem no painel',
     tnTitleNew:'Lançar um concurso',
     tnUntil:'Propostas até {d}',
@@ -199,7 +240,6 @@ const translations = {
     tnVatEx:'Isento de IVA',
     tnVatIncl:'IVA incluído',
     tnVatPlus:'Acresce IVA',
-    tnWithdrawn:'Retirada',
     // ── UI coverage additions (view toggle, modals, detail, register, account) ──
     viewMap:"Mapa", viewList:"Lista", resultCompany:"empresa", resultCompanies:"empresas",
     profileTitle:"O Meu Perfil",
@@ -616,6 +656,50 @@ const translations = {
   },
   en: {
     // ── Concursos (pedido de propostas com anexos) ──
+    // ── Pedidos de clientes e respostas dos concursos ──
+    tnTabResp:'Responses ({n} of {c})',
+    tnGrpProps:'With a proposal ({n})',
+    tnGrpNoBid:'Not bidding ({n})',
+    tnGrpWaiting:'No answer yet ({n})',
+    tnWithdrew:'withdrew its proposal',
+    tnAnsweredOn:'answered on {d}',
+    tnRespList:'Replied: {l}',
+    tnNoBidN1:'1 not bidding',
+    tnNoBidN:'{n} not bidding',
+    tnNoRespYet:'No responses yet',
+    rqMenu:'Customer requests',
+    rqAll:'All',
+    rqTenders:'Tenders',
+    rqQuotes:'Quote requests',
+    rqMsgs:'Messages',
+    rqAllCos:'All companies',
+    rqKindTender:'Tender',
+    rqKindQuote:'Quote request',
+    rqKindMsg:'Message',
+    rqStNew:'New',
+    rqStTodo:'To answer',
+    rqStDone:'Answered',
+    rqStProposal:'Proposal sent · {p}',
+    rqStNoBid:'Not bidding',
+    rqStAccepted:'Proposal accepted',
+    rqStLost:'Not chosen',
+    rqStMissed:'Deadline passed',
+    rqFor:'to {c}',
+    rqMsgs1:'1 message',
+    rqMsgsN:'{n} messages',
+    rqOpenReply:'View and reply',
+    rqOpen:'Open',
+    rqReply:'Reply',
+    rqOpenChat:'Open conversation',
+    rqEmail:'Email',
+    rqCall:'Call',
+    rqMailSubject:'Your quote request on Hivex',
+    rqEmpty:'No requests yet. When a customer contacts your companies through Hivex (a tender invite, a quote request or a message), it shows up here and we let you know by email.',
+    rqNone:'Nothing to show with this filter.',
+    rqEmailNote:'Every new request also arrives by email, at the address on the company listing.',
+    rqReplyHint:'Write your reply to {c}. The message is kept here and reaches them by email.',
+    rqMore:'Show more',
+    rfqNone:'We couldn’t find companies in this trade near you that can receive requests by email. Choose another trade, or browse the list and contact companies directly.',
     tnMenu:'Tenders',
     tnRfqLink:'Have a project or a specification? Run a tender with attachments →',
     tnAccept:'Accept',
@@ -766,7 +850,6 @@ const translations = {
     tnPropValidity:'Proposal valid for (days)',
     tnPropVat:'VAT',
     tnRadiusAll:'Whole country',
-    tnReceived:'Invitations received by your companies',
     tnReceivedOn:'Received',
     tnRemove:'Remove',
     tnRetention:'Attachments are kept until 90 days after the tender closes. Download anything you need to keep.',
@@ -797,10 +880,8 @@ const translations = {
     tnStep2:'Companies',
     tnStep3:'Send',
     tnSubmitted:'Received',
-    tnTabCos:'Companies',
     tnTabFiles:'Attachments',
     tnTabLog:'Activity',
-    tnTabProps:'Proposals',
     tnTestMode:'Test tender: invitations are not sent and the links appear in the dashboard',
     tnTitleNew:'Run a tender',
     tnUntil:'Proposals until {d}',
@@ -812,7 +893,6 @@ const translations = {
     tnVatEx:'VAT exempt',
     tnVatIncl:'VAT included',
     tnVatPlus:'Plus VAT',
-    tnWithdrawn:'Withdrawn',
     // ── UI coverage additions ──
     viewMap:"Map", viewList:"List", resultCompany:"company", resultCompanies:"companies",
     profileTitle:"My Profile",
@@ -1220,6 +1300,50 @@ const translations = {
   },
   fr: {
     // ── Concursos (pedido de propostas com anexos) ──
+    // ── Pedidos de clientes e respostas dos concursos ──
+    tnTabResp:'Réponses ({n} sur {c})',
+    tnGrpProps:'Avec une offre ({n})',
+    tnGrpNoBid:'Ne soumissionnent pas ({n})',
+    tnGrpWaiting:'Pas encore de réponse ({n})',
+    tnWithdrew:'a retiré son offre',
+    tnAnsweredOn:'a répondu le {d}',
+    tnRespList:'Ont répondu : {l}',
+    tnNoBidN1:'1 ne soumissionne pas',
+    tnNoBidN:'{n} ne soumissionnent pas',
+    tnNoRespYet:'Pas encore de réponses',
+    rqMenu:'Demandes de clients',
+    rqAll:'Toutes',
+    rqTenders:'Appels d’offres',
+    rqQuotes:'Devis',
+    rqMsgs:'Messages',
+    rqAllCos:'Toutes les entreprises',
+    rqKindTender:'Appel d’offres',
+    rqKindQuote:'Demande de devis',
+    rqKindMsg:'Message',
+    rqStNew:'Nouveau',
+    rqStTodo:'À traiter',
+    rqStDone:'Répondu',
+    rqStProposal:'Offre envoyée · {p}',
+    rqStNoBid:'Pas de soumission',
+    rqStAccepted:'Offre acceptée',
+    rqStLost:'Non retenue',
+    rqStMissed:'Délai expiré',
+    rqFor:'pour {c}',
+    rqMsgs1:'1 message',
+    rqMsgsN:'{n} messages',
+    rqOpenReply:'Voir et répondre',
+    rqOpen:'Ouvrir',
+    rqReply:'Répondre',
+    rqOpenChat:'Ouvrir la conversation',
+    rqEmail:'E-mail',
+    rqCall:'Appeler',
+    rqMailSubject:'Votre demande de devis sur Hivex',
+    rqEmpty:'Aucune demande pour l’instant. Quand un client contacte vos entreprises via Hivex (invitation à un appel d’offres, demande de devis ou message), la demande apparaît ici et nous vous prévenons par e-mail.',
+    rqNone:'Rien à afficher avec ce filtre.',
+    rqEmailNote:'Chaque nouvelle demande arrive aussi par e-mail, à l’adresse de la fiche de l’entreprise.',
+    rqReplyHint:'Écrivez votre réponse à {c}. Le message est conservé ici et lui parvient par e-mail.',
+    rqMore:'Voir plus',
+    rfqNone:'Nous n’avons trouvé aucune entreprise de ce métier près de chez vous pouvant recevoir des demandes par e-mail. Choisissez un autre métier ou parcourez la liste et contactez les entreprises directement.',
     tnMenu:'Appels d’offres',
     tnRfqLink:'Vous avez un projet ou un cahier des charges ? Lancez un appel d’offres avec pièces jointes →',
     tnAccept:'Accepter',
@@ -1370,7 +1494,6 @@ const translations = {
     tnPropValidity:'Validité de l’offre (jours)',
     tnPropVat:'TVA',
     tnRadiusAll:'Tout le pays',
-    tnReceived:'Invitations reçues par vos entreprises',
     tnReceivedOn:'Reçue',
     tnRemove:'Retirer',
     tnRetention:'Les pièces jointes sont conservées jusqu’à 90 jours après la clôture. Téléchargez ce que vous devez garder.',
@@ -1401,10 +1524,8 @@ const translations = {
     tnStep2:'Entreprises',
     tnStep3:'Envoyer',
     tnSubmitted:'Reçue',
-    tnTabCos:'Entreprises',
     tnTabFiles:'Pièces jointes',
     tnTabLog:'Activité',
-    tnTabProps:'Offres',
     tnTestMode:'Appel d’offres de test : les invitations ne sont pas envoyées et les liens apparaissent dans le tableau de bord',
     tnTitleNew:'Lancer un appel d’offres',
     tnUntil:'Offres jusqu’au {d}',
@@ -1416,7 +1537,6 @@ const translations = {
     tnVatEx:'Exonéré de TVA',
     tnVatIncl:'TVA incluse',
     tnVatPlus:'TVA en sus',
-    tnWithdrawn:'Retirée',
     // ── UI coverage additions ──
     viewMap:"Carte", viewList:"Liste", resultCompany:"entreprise", resultCompanies:"entreprises",
     profileTitle:"Mon profil",
@@ -1828,6 +1948,50 @@ const translations = {
 
   es: {
     // ── Concursos (pedido de propostas com anexos) ──
+    // ── Pedidos de clientes e respostas dos concursos ──
+    tnTabResp:'Respuestas ({n} de {c})',
+    tnGrpProps:'Con propuesta ({n})',
+    tnGrpNoBid:'No se presentarán ({n})',
+    tnGrpWaiting:'Aún sin respuesta ({n})',
+    tnWithdrew:'retiró su propuesta',
+    tnAnsweredOn:'respondió el {d}',
+    tnRespList:'Respondieron: {l}',
+    tnNoBidN1:'1 no se presenta',
+    tnNoBidN:'{n} no se presentan',
+    tnNoRespYet:'Aún sin respuestas',
+    rqMenu:'Solicitudes de clientes',
+    rqAll:'Todas',
+    rqTenders:'Concursos',
+    rqQuotes:'Presupuestos',
+    rqMsgs:'Mensajes',
+    rqAllCos:'Todas las empresas',
+    rqKindTender:'Concurso',
+    rqKindQuote:'Solicitud de presupuesto',
+    rqKindMsg:'Mensaje',
+    rqStNew:'Nuevo',
+    rqStTodo:'Por responder',
+    rqStDone:'Respondido',
+    rqStProposal:'Propuesta enviada · {p}',
+    rqStNoBid:'No se presentó',
+    rqStAccepted:'Propuesta aceptada',
+    rqStLost:'No elegida',
+    rqStMissed:'Plazo vencido',
+    rqFor:'para {c}',
+    rqMsgs1:'1 mensaje',
+    rqMsgsN:'{n} mensajes',
+    rqOpenReply:'Ver y responder',
+    rqOpen:'Abrir',
+    rqReply:'Responder',
+    rqOpenChat:'Abrir conversación',
+    rqEmail:'Email',
+    rqCall:'Llamar',
+    rqMailSubject:'Su solicitud de presupuesto en Hivex',
+    rqEmpty:'Aún no ha recibido solicitudes. Cuando un cliente contacte con sus empresas a través de Hivex (invitación a un concurso, solicitud de presupuesto o mensaje), aparecerá aquí y le avisaremos por email.',
+    rqNone:'Nada que mostrar con este filtro.',
+    rqEmailNote:'Cada nueva solicitud llega también por email, a la dirección de la ficha de la empresa.',
+    rqReplyHint:'Escriba su respuesta a {c}. El mensaje queda guardado aquí y le llega por email.',
+    rqMore:'Ver más',
+    rfqNone:'No encontramos empresas de esta actividad cerca de usted que puedan recibir solicitudes por email. Elija otra actividad o consulte la lista y contacte directamente con las empresas.',
     tnMenu:'Concursos',
     tnRfqLink:'¿Tiene un proyecto o un pliego de condiciones? Lance un concurso con adjuntos →',
     tnAccept:'Aceptar',
@@ -1978,7 +2142,6 @@ const translations = {
     tnPropValidity:'Validez de la propuesta (días)',
     tnPropVat:'IVA',
     tnRadiusAll:'Todo el país',
-    tnReceived:'Invitaciones recibidas por sus empresas',
     tnReceivedOn:'Recibida',
     tnRemove:'Quitar',
     tnRetention:'Los adjuntos se guardan hasta 90 días después del cierre del concurso. Descargue lo que necesite conservar.',
@@ -2009,10 +2172,8 @@ const translations = {
     tnStep2:'Empresas',
     tnStep3:'Enviar',
     tnSubmitted:'Recibida',
-    tnTabCos:'Empresas',
     tnTabFiles:'Adjuntos',
     tnTabLog:'Actividad',
-    tnTabProps:'Propuestas',
     tnTestMode:'Concurso de prueba: las invitaciones no se envían y los enlaces aparecen en el panel',
     tnTitleNew:'Lanzar un concurso',
     tnUntil:'Propuestas hasta el {d}',
@@ -2024,7 +2185,6 @@ const translations = {
     tnVatEx:'Exento de IVA',
     tnVatIncl:'IVA incluido',
     tnVatPlus:'Más IVA',
-    tnWithdrawn:'Retirada',
     // ── UI coverage additions ──
     viewMap:"Mapa", viewList:"Lista", resultCompany:"empresa", resultCompanies:"empresas",
     profileTitle:"Mi perfil",
@@ -2428,6 +2588,50 @@ const translations = {
 
   de: {
     // ── Concursos (pedido de propostas com anexos) ──
+    // ── Pedidos de clientes e respostas dos concursos ──
+    tnTabResp:'Antworten ({n} von {c})',
+    tnGrpProps:'Mit Angebot ({n})',
+    tnGrpNoBid:'Bieten nicht ({n})',
+    tnGrpWaiting:'Noch keine Antwort ({n})',
+    tnWithdrew:'hat das Angebot zurückgezogen',
+    tnAnsweredOn:'geantwortet am {d}',
+    tnRespList:'Geantwortet: {l}',
+    tnNoBidN1:'1 bietet nicht',
+    tnNoBidN:'{n} bieten nicht',
+    tnNoRespYet:'Noch keine Antworten',
+    rqMenu:'Kundenanfragen',
+    rqAll:'Alle',
+    rqTenders:'Ausschreibungen',
+    rqQuotes:'Angebotsanfragen',
+    rqMsgs:'Nachrichten',
+    rqAllCos:'Alle Unternehmen',
+    rqKindTender:'Ausschreibung',
+    rqKindQuote:'Angebotsanfrage',
+    rqKindMsg:'Nachricht',
+    rqStNew:'Neu',
+    rqStTodo:'Offen',
+    rqStDone:'Beantwortet',
+    rqStProposal:'Angebot gesendet · {p}',
+    rqStNoBid:'Kein Angebot',
+    rqStAccepted:'Angebot angenommen',
+    rqStLost:'Nicht gewählt',
+    rqStMissed:'Frist abgelaufen',
+    rqFor:'an {c}',
+    rqMsgs1:'1 Nachricht',
+    rqMsgsN:'{n} Nachrichten',
+    rqOpenReply:'Ansehen und antworten',
+    rqOpen:'Öffnen',
+    rqReply:'Antworten',
+    rqOpenChat:'Unterhaltung öffnen',
+    rqEmail:'E-Mail',
+    rqCall:'Anrufen',
+    rqMailSubject:'Ihre Angebotsanfrage auf Hivex',
+    rqEmpty:'Noch keine Anfragen. Wenn ein Kunde Ihre Unternehmen über Hivex kontaktiert (Einladung zu einer Ausschreibung, Angebotsanfrage oder Nachricht), erscheint die Anfrage hier und wir benachrichtigen Sie per E-Mail.',
+    rqNone:'Mit diesem Filter gibt es nichts anzuzeigen.',
+    rqEmailNote:'Jede neue Anfrage kommt auch per E-Mail an die Adresse im Unternehmenseintrag.',
+    rqReplyHint:'Schreiben Sie Ihre Antwort an {c}. Die Nachricht bleibt hier gespeichert und erreicht die Person per E-Mail.',
+    rqMore:'Mehr anzeigen',
+    rfqNone:'Wir haben in Ihrer Nähe keine Unternehmen dieses Gewerks gefunden, die Anfragen per E-Mail erhalten können. Wählen Sie ein anderes Gewerk oder kontaktieren Sie Unternehmen direkt über die Liste.',
     tnMenu:'Ausschreibungen',
     tnRfqLink:'Sie haben ein Projekt oder ein Leistungsverzeichnis? Starten Sie eine Ausschreibung mit Anhängen →',
     tnAccept:'Annehmen',
@@ -2578,7 +2782,6 @@ const translations = {
     tnPropValidity:'Gültigkeit des Angebots (Tage)',
     tnPropVat:'MwSt.',
     tnRadiusAll:'Ganzes Land',
-    tnReceived:'Einladungen an Ihre Unternehmen',
     tnReceivedOn:'Eingegangen',
     tnRemove:'Entfernen',
     tnRetention:'Anhänge werden bis 90 Tage nach Abschluss der Ausschreibung aufbewahrt. Laden Sie herunter, was Sie behalten möchten.',
@@ -2609,10 +2812,8 @@ const translations = {
     tnStep2:'Unternehmen',
     tnStep3:'Senden',
     tnSubmitted:'Eingegangen',
-    tnTabCos:'Unternehmen',
     tnTabFiles:'Anhänge',
     tnTabLog:'Aktivität',
-    tnTabProps:'Angebote',
     tnTestMode:'Test-Ausschreibung: Einladungen werden nicht gesendet, die Links erscheinen in der Übersicht',
     tnTitleNew:'Ausschreibung starten',
     tnUntil:'Angebote bis {d}',
@@ -2624,7 +2825,6 @@ const translations = {
     tnVatEx:'MwSt.-befreit',
     tnVatIncl:'inkl. MwSt.',
     tnVatPlus:'zzgl. MwSt.',
-    tnWithdrawn:'Zurückgezogen',
     // ── UI coverage additions ──
     viewMap:"Karte", viewList:"Liste", resultCompany:"Unternehmen", resultCompanies:"Unternehmen",
     profileTitle:"Mein Profil",
@@ -9522,18 +9722,28 @@ async function submitRfq(btn) {
   }
   if (desc.length < 20) { showToast(t('rfqDescShort')); return; }
   if (!city) { showToast(t('rfqCityReq')); return; }
-  // Geocode the locality (best-effort) so the backend can pick the nearest companies.
-  try {
-    const res = await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&countrycodes=pt&q=' + encodeURIComponent(city + ', Portugal'));
-    const js = await res.json();
-    if (js[0]) { body.lat = Number(js[0].lat); body.lng = Number(js[0].lon); }
-  } catch (_) {}
   if (btn) { btn.disabled = true; btn.textContent = t('sendingBtn'); }
+  const aviso = document.getElementById('rfqNoneMsg');
+  if (aviso) aviso.remove();
+  // Localidade → coordenadas (best-effort), para o backend escolher as empresas
+  // mais próximas: primeiro o catálogo (empresas dessa localidade), depois o
+  // geocodificador — o mesmo dos concursos.
+  try {
+    const g = await _tnGeocodificar(city);
+    if (g) { body.lat = g.lat; body.lng = g.lng; }
+  } catch (_) {}
   try {
     const r = await api.createQuoteRequest(body);
-    closeRfqModal();
     _ev('orcamento_pedido');
-    showToast(t('rfqSentA') + ' ' + (r.notified || 0) + ' ' + t('rfqSentB'));
+    if (!r.notified) {
+      // Nenhuma empresa da área pode receber pedidos por email: o aviso fica
+      // no formulário (o cliente pode mudar a área) em vez de um toast curto.
+      if (btn) btn.insertAdjacentHTML('beforebegin', '<p class="tn-note" id="rfqNoneMsg" role="alert"><i data-lucide="info"></i>' + escHtml(t('rfqNone')) + '</p>');
+      refreshLucide();
+      return;
+    }
+    closeRfqModal();
+    showToast(t('rfqSentA') + ' ' + r.notified + ' ' + t('rfqSentB'));
     const d = document.getElementById('rfqDesc'); if (d) d.value = '';
   } catch (e) {
     showToast(e.message || 'Erro ao enviar pedido');
@@ -9588,9 +9798,12 @@ function _openChatOverlay() {
 }
 function closeInbox() { _chatEl('inboxOverlay').classList.remove('open'); _chatStopPoll(); }
 
-async function _loadOwnerThreads() {
+// foco: email do cliente cuja conversa abre logo (vinda dos "Pedidos de
+// clientes"); se ainda não há mensagens — resposta a um pedido de orçamento —
+// a conversa aparece vazia no topo da lista, pronta a escrever.
+async function _loadOwnerThreads(foco, nomeFoco) {
   try {
-    const msgs = await apiFetch('/messages/company/' + _chatCompanyId);
+    const msgs = await apiFetch('/messages/company/' + _chatCompanyId + '?marcar=0');
     const map = new Map();
     msgs.forEach(m => {
       const k = (m.client_email || '').toLowerCase();
@@ -9599,7 +9812,9 @@ async function _loadOwnerThreads() {
       th.items.push(m);
       if (m.client_name) th.name = m.client_name;
     });
+    if (foco && !map.has(foco)) map.set(foco, { key: foco, email: foco, name: nomeFoco || null, items: [] });
     _chatThreads = [...map.values()];
+    if (foco) _chatThreads.sort((a, b) => (b.key === foco) - (a.key === foco));
     _chatThreads.forEach(th => th.items.sort((a, b) => new Date(a.created_at) - new Date(b.created_at)));
     // o GET marca as lidas DEPOIS do snapshot devolvido — dá para mostrar
     // "novas" por conversa nesta abertura
@@ -9613,7 +9828,16 @@ async function _loadOwnerThreads() {
         at: last ? last.created_at : null,
       };
     }));
-    if (_chatThreads.length && !_chatIsMobile()) _selectOwnerThread(_chatThreads[0].key);
+    if (foco) {
+      _selectOwnerThread(foco);
+      const th = _chatThreads.find(x => x.key === foco);
+      if (th && !th.items.length) {
+        _chatEl('chatMsgs').innerHTML = '<div class="chat-loading">' + escHtml(_tnFmt(t('rqReplyHint'), { c: th.name || th.email })) + '</div>';
+        _chatLastSig = '0:0:0';   // o poll não volta a pôr "Sem mensagens ainda"
+        setTimeout(() => { try { _chatEl('chatComposeInput').focus(); } catch (_) {} }, 150);
+      }
+    }
+    else if (_chatThreads.length && !_chatIsMobile()) _selectOwnerThread(_chatThreads[0].key);
     else if (!_chatThreads.length) _chatEmpty();
   } catch (e) { _chatError(e); }
 }
@@ -9627,6 +9851,20 @@ function _selectOwnerThread(key) {
   _renderMsgs(th.items, 'company', true);
   _markThreadActive(key);
   _chatOpenPane();
+  _chatMarcarLida(th);
+}
+// Só a conversa aberta fica lida (as outras continuam "novas" nos pedidos de
+// clientes e no número de não lidas)
+function _chatMarcarLida(th) {
+  if (!th || !th.items.some(m => m.sender === 'client' && !m.read_at)) return;
+  const agora = new Date().toISOString();
+  th.items.forEach(m => { if (m.sender === 'client' && !m.read_at) m.read_at = agora; });
+  document.querySelectorAll('.chat-thread').forEach(b => {
+    if (b.dataset.tid === th.key) { const u = b.querySelector('.chat-unread'); if (u) u.remove(); }
+  });
+  apiFetch('/messages/company/' + _chatCompanyId + '/read', { method: 'POST', body: { clientEmail: th.email || th.key } })
+    .then(() => { try { _refreshMsgBadge(); } catch (_) {} })
+    .catch(() => {});
 }
 
 async function _loadClientThreads() {
@@ -9779,8 +10017,9 @@ async function chatSend(btn) {
   try { _optNode = _chatAppendLocal(text); } catch (_) {}
   try {
     if (_chatMode === 'owner') {
+      const th = _chatThreads.find(x => x.key === _chatPeer);
       await apiFetch('/messages/company/' + _chatCompanyId + '/reply',
-        { method: 'POST', body: { clientEmail: _chatPeer, body: text, files: _chatFiles } });
+        { method: 'POST', body: { clientEmail: _chatPeer, body: text, files: _chatFiles, clientName: (th && th.name) || undefined } });
     } else {
       await apiFetch('/messages/company/' + _chatCompanyId + '/client',
         { method: 'POST', body: { body: text, files: _chatFiles } });
@@ -10157,6 +10396,8 @@ const LEGAL_DOCS = {
         <p>A Hivex pode apresentar anúncios fornecidos pelo <strong>Google AdSense</strong>. Fornecedores terceiros, incluindo a Google, utilizam cookies para apresentar anúncios com base em visitas anteriores do utilizador a este e a outros sites. A Google utiliza cookies de publicidade para apresentar anúncios; pode <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">desativar a publicidade personalizada</a> nas Definições de anúncios da Google ou recusar cookies de fornecedores terceiros em <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Mais informação na <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">política da Google sobre como utiliza dados de sites parceiros</a>. No Espaço Económico Europeu, Reino Unido e Suíça, os anúncios e respetivos cookies só são ativados <strong>após o seu consentimento</strong>, recolhido através do nosso banner de cookies — sem consentimento não são utilizados cookies de publicidade personalizada.</p>
         <h3>5.2 Concursos (pedidos de proposta)</h3>
         <p>Quem lança um concurso partilha a descrição da obra, os anexos e os seus contactos (nome, email e, se o indicar, telefone) <strong>apenas com as empresas que escolhe</strong> (no máximo 10), para que possam responder; a proposta e os contactos de cada empresa só são vistos por quem lançou o concurso. Os anexos ficam num armazenamento privado (Vercel Blob) e só se descarregam através de links temporários. Registamos quando cada empresa convidada abre o concurso, descarrega anexos e responde, para que quem lançou possa acompanhar. Base legal: execução do pedido feito por si (art. 6.º, n.º 1, alínea b)) e, quanto às empresas convidadas, interesse legítimo em fazer-lhes chegar um pedido concreto de um cliente (alínea f)). Só enviamos convites por email a fichas geridas pela própria empresa ou a empresas portuguesas com NIF de pessoa coletiva, e cada convite tem um link para deixar de os receber. Os anexos são apagados 90 dias depois do fecho do concurso e o resto 12 meses depois.</p>
+        <h3>5.3 Pedidos de orçamento e Pedidos de clientes</h3>
+        <p>Quando pede orçamentos a várias empresas, enviamos o seu pedido (descrição, localidade, prazo, orçamento indicativo, o seu nome, email e, se o indicar, telefone) a <strong>no máximo 10 empresas</strong> da área escolhida, as mais próximas: só fichas geridas pela própria empresa ou empresas portuguesas com NIF de pessoa coletiva, e nunca a quem pediu para não receber estes emails. Registamos a que empresas foi enviado, para que quem gere essas fichas o veja na sua conta, em «Pedidos de clientes», junto das mensagens e dos convites para concursos que recebeu; os pedidos ficam nessa lista durante 90 dias. Base legal: execução do pedido feito por si (art. 6.º, n.º 1, alínea b)) e, quanto às empresas, interesse legítimo em fazer-lhes chegar um pedido concreto de um cliente (alínea f)). Cada email tem um link para deixar de os receber.</p>
         <h3>6. Período de conservação</h3>
         <p>Mantemos os dados enquanto a conta estiver ativa. Após eliminação, dados de conta são apagados em 30 dias. Logs de segurança: 12 meses. Empresas aprovadas continuam visíveis no diretório até pedido de remoção.</p>
         <h3>7. Os seus direitos</h3>
@@ -10276,6 +10517,8 @@ LEGAL_DOCS.en = {
     <p>Hivex may display ads provided by <strong>Google AdSense</strong>. Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this and other websites. Google uses advertising cookies to serve ads; you can <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">opt out of personalised advertising</a> in Google's Ads Settings, or opt out of third-party vendors' cookies at <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. More information in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Google's policy on how it uses data from partner sites</a>. In the European Economic Area, the United Kingdom and Switzerland, ads and their cookies are only enabled <strong>after your consent</strong>, collected through our cookie banner — without consent, no personalised advertising cookies are used.</p>
     <h3>5.2 Tenders (requests for proposals)</h3>
     <p>When you run a tender, the description of the works, the attachments and your contact details (name, email and, if given, phone) are shared <strong>only with the companies you choose</strong> (up to 10) so they can reply; each company’s proposal and contact details are seen only by the person who ran the tender. Attachments are kept in private storage (Vercel Blob) and can only be downloaded through temporary links. We record when each invited company opens the tender, downloads attachments and replies, so the person who ran it can follow progress. Legal basis: performance of the request you made (Art. 6(1)(b)) and, for invited companies, legitimate interest in passing on a specific client request (Art. 6(1)(f)). We only send email invitations to listings managed by the company itself or to Portuguese companies with a corporate tax number, and every invitation includes a link to stop receiving them. Attachments are deleted 90 days after the tender closes and everything else after 12 months.</p>
+    <h3>5.3 Quote requests and Customer requests</h3>
+    <p>When you request quotes from several companies, we send your request (description, place, timing, indicative budget, your name, email and, if given, phone) to <strong>at most 10 companies</strong> in the chosen trade, the nearest ones: only listings managed by the company itself or Portuguese companies with a corporate tax number, and never to anyone who asked not to receive these emails. We record which companies it was sent to, so that whoever manages those listings can see it in their account under “Customer requests”, alongside the messages and tender invitations they received; requests stay on that list for 90 days. Legal basis: performance of the request you made (Art. 6(1)(b)) and, for the companies, legitimate interest in passing on a specific client request (Art. 6(1)(f)). Every email includes a link to stop receiving them.</p>
     <h3>6. Retention period</h3>
     <p>We keep the data while the account is active. After deletion, account data is erased within 30 days. Security logs: 12 months. Approved companies remain visible in the directory until a removal request.</p>
     <h3>7. Your rights</h3>
@@ -10376,6 +10619,8 @@ LEGAL_DOCS.fr = {
     <p>Hivex peut afficher des annonces fournies par <strong>Google AdSense</strong>. Des fournisseurs tiers, dont Google, utilisent des cookies pour diffuser des annonces en fonction des visites antérieures de l'utilisateur sur ce site et sur d'autres sites. Google utilise des cookies publicitaires pour diffuser des annonces ; vous pouvez <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">désactiver la publicité personnalisée</a> dans les Paramètres des annonces Google, ou refuser les cookies de fournisseurs tiers sur <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Plus d'informations dans la <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">politique de Google relative à l'utilisation des données des sites partenaires</a>. Dans l'Espace économique européen, au Royaume-Uni et en Suisse, les annonces et leurs cookies ne sont activés <strong>qu'après votre consentement</strong>, recueilli via notre bannière de cookies — sans consentement, aucun cookie de publicité personnalisée n'est utilisé.</p>
     <h3>5.2 Appels d’offres (demandes d’offre)</h3>
     <p>Lorsque vous lancez un appel d’offres, la description des travaux, les pièces jointes et vos coordonnées (nom, e-mail et, si indiqué, téléphone) sont partagées <strong>uniquement avec les entreprises que vous choisissez</strong> (10 au maximum) pour qu’elles puissent répondre ; l’offre et les coordonnées de chaque entreprise ne sont vues que par la personne qui a lancé l’appel d’offres. Les pièces jointes sont conservées dans un stockage privé (Vercel Blob) et ne se téléchargent que par des liens temporaires. Nous enregistrons quand chaque entreprise invitée ouvre l’appel d’offres, télécharge les pièces jointes et répond, afin que la personne qui l’a lancé puisse suivre. Base légale : exécution de votre demande (art. 6, par. 1, b)) et, pour les entreprises invitées, intérêt légitime à leur transmettre une demande concrète d’un client (art. 6, par. 1, f)). Nous n’envoyons d’invitations par e-mail qu’aux fiches gérées par l’entreprise elle-même ou aux entreprises portugaises ayant un numéro fiscal de personne morale, et chaque invitation contient un lien pour ne plus en recevoir. Les pièces jointes sont supprimées 90 jours après la clôture et le reste après 12 mois.</p>
+    <h3>5.3 Demandes de devis et Demandes de clients</h3>
+    <p>Lorsque vous demandez des devis à plusieurs entreprises, nous envoyons votre demande (description, lieu, délai, budget indicatif, votre nom, votre e-mail et, si indiqué, votre téléphone) à <strong>10 entreprises au maximum</strong> du métier choisi, les plus proches : uniquement des fiches gérées par l’entreprise elle-même ou des entreprises portugaises ayant un numéro fiscal de personne morale, et jamais à ceux qui ont demandé à ne plus recevoir ces e-mails. Nous enregistrons à quelles entreprises elle a été envoyée, afin que les personnes qui gèrent ces fiches la voient dans leur compte, sous « Demandes de clients », avec les messages et les invitations à des appels d’offres reçus ; les demandes restent dans cette liste pendant 90 jours. Base légale : exécution de votre demande (art. 6, par. 1, b)) et, pour les entreprises, intérêt légitime à leur transmettre une demande concrète d’un client (art. 6, par. 1, f)). Chaque e-mail contient un lien pour ne plus en recevoir.</p>
     <h3>6. Durée de conservation</h3>
     <p>Nous conservons les données tant que le compte est actif. Après suppression, les données du compte sont effacées sous 30 jours. Journaux de sécurité : 12 mois. Les entreprises approuvées restent visibles dans l'annuaire jusqu'à une demande de retrait.</p>
     <h3>7. Vos droits</h3>
@@ -10476,6 +10721,8 @@ LEGAL_DOCS.es = {
     <p>Hivex puede mostrar anuncios proporcionados por <strong>Google AdSense</strong>. Proveedores externos, incluido Google, utilizan cookies para mostrar anuncios basados en las visitas anteriores del usuario a este y otros sitios web. Google utiliza cookies publicitarias para mostrar anuncios; puedes <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">desactivar la publicidad personalizada</a> en la Configuración de anuncios de Google, o rechazar las cookies de proveedores externos en <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Más información en la <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">política de Google sobre cómo utiliza los datos de sitios asociados</a>. En el Espacio Económico Europeo, el Reino Unido y Suiza, los anuncios y sus cookies solo se activan <strong>tras tu consentimiento</strong>, recogido a través de nuestro banner de cookies; sin consentimiento no se utilizan cookies de publicidad personalizada.</p>
     <h3>5.2 Concursos (solicitudes de propuesta)</h3>
     <p>Quien lanza un concurso comparte la descripción de la obra, los adjuntos y sus datos de contacto (nombre, email y, si lo indica, teléfono) <strong>solo con las empresas que elige</strong> (como máximo 10) para que puedan responder; la propuesta y los datos de contacto de cada empresa solo los ve quien lanzó el concurso. Los adjuntos se guardan en un almacenamiento privado (Vercel Blob) y solo se descargan mediante enlaces temporales. Registramos cuándo cada empresa invitada abre el concurso, descarga adjuntos y responde, para que quien lo lanzó pueda seguirlo. Base legal: ejecución de la solicitud que usted hizo (art. 6.1.b) y, para las empresas invitadas, interés legítimo en hacerles llegar una solicitud concreta de un cliente (art. 6.1.f). Solo enviamos invitaciones por email a fichas gestionadas por la propia empresa o a empresas portuguesas con NIF de persona jurídica, y cada invitación incluye un enlace para dejar de recibirlas. Los adjuntos se borran 90 días después del cierre del concurso y el resto a los 12 meses.</p>
+    <h3>5.3 Solicitudes de presupuesto y Solicitudes de clientes</h3>
+    <p>Cuando pide presupuestos a varias empresas, enviamos su solicitud (descripción, localidad, plazo, presupuesto orientativo, su nombre, email y, si lo indica, teléfono) a <strong>un máximo de 10 empresas</strong> de la actividad elegida, las más cercanas: solo fichas gestionadas por la propia empresa o empresas portuguesas con NIF de persona jurídica, y nunca a quien pidió no recibir estos emails. Registramos a qué empresas se envió, para que quien gestiona esas fichas la vea en su cuenta, en «Solicitudes de clientes», junto con los mensajes y las invitaciones a concursos que recibió; las solicitudes permanecen en esa lista durante 90 días. Base legal: ejecución de la solicitud que usted hizo (art. 6.1.b) y, para las empresas, interés legítimo en hacerles llegar una solicitud concreta de un cliente (art. 6.1.f). Cada email incluye un enlace para dejar de recibirlos.</p>
     <h3>6. Periodo de conservación</h3>
     <p>Conservamos los datos mientras la cuenta esté activa. Tras la eliminación, los datos de la cuenta se borran en 30 días. Registros de seguridad: 12 meses. Las empresas aprobadas siguen visibles en el directorio hasta que se solicite su retirada.</p>
     <h3>7. Tus derechos</h3>
@@ -10576,6 +10823,8 @@ LEGAL_DOCS.de = {
     <p>Hivex kann Anzeigen von <strong>Google AdSense</strong> einblenden. Drittanbieter, einschließlich Google, verwenden Cookies, um Anzeigen auf Grundlage früherer Besuche eines Nutzers auf dieser und anderen Websites zu schalten. Google verwendet Werbe-Cookies, um Anzeigen zu schalten; Sie können in den Google-Anzeigeneinstellungen <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">personalisierte Werbung deaktivieren</a> oder Cookies von Drittanbietern unter <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a> ablehnen. Weitere Informationen in der <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Richtlinie von Google zur Nutzung von Daten von Partner-Websites</a>. Im Europäischen Wirtschaftsraum, im Vereinigten Königreich und in der Schweiz werden Anzeigen und ihre Cookies erst <strong>nach Ihrer Einwilligung</strong> aktiviert, die über unser Cookie-Banner eingeholt wird — ohne Einwilligung werden keine Cookies für personalisierte Werbung verwendet.</p>
     <h3>5.2 Ausschreibungen (Angebotsanfragen)</h3>
     <p>Wenn Sie eine Ausschreibung starten, werden die Beschreibung der Arbeiten, die Anhänge und Ihre Kontaktdaten (Name, E-Mail und, falls angegeben, Telefon) <strong>nur mit den von Ihnen gewählten Unternehmen</strong> (höchstens 10) geteilt, damit diese antworten können; Angebot und Kontaktdaten jedes Unternehmens sieht nur die Person, die die Ausschreibung gestartet hat. Anhänge liegen in einem privaten Speicher (Vercel Blob) und lassen sich nur über zeitlich begrenzte Links herunterladen. Wir erfassen, wann jedes eingeladene Unternehmen die Ausschreibung öffnet, Anhänge herunterlädt und antwortet, damit der Auftraggeber den Stand verfolgen kann. Rechtsgrundlage: Durchführung Ihrer Anfrage (Art. 6 Abs. 1 lit. b DSGVO) und, für eingeladene Unternehmen, berechtigtes Interesse, ihnen eine konkrete Kundenanfrage zu übermitteln (Art. 6 Abs. 1 lit. f DSGVO). Einladungen per E-Mail senden wir nur an Einträge, die das Unternehmen selbst verwaltet, oder an portugiesische Unternehmen mit Steuernummer einer juristischen Person; jede Einladung enthält einen Link zum Abbestellen. Anhänge werden 90 Tage nach Abschluss der Ausschreibung gelöscht, alles Übrige nach 12 Monaten.</p>
+    <h3>5.3 Angebotsanfragen und Kundenanfragen</h3>
+    <p>Wenn Sie Angebote bei mehreren Unternehmen anfragen, senden wir Ihre Anfrage (Beschreibung, Ort, Zeitrahmen, Budgetrahmen, Ihr Name, Ihre E-Mail und, falls angegeben, Telefon) an <strong>höchstens 10 Unternehmen</strong> des gewählten Gewerks, die nächstgelegenen: nur an Einträge, die das Unternehmen selbst verwaltet, oder an portugiesische Unternehmen mit Steuernummer einer juristischen Person, und nie an Adressen, die diese E-Mails abbestellt haben. Wir speichern, an welche Unternehmen sie ging, damit die Verwalter dieser Einträge sie in ihrem Konto unter „Kundenanfragen“ sehen, zusammen mit den erhaltenen Nachrichten und Einladungen zu Ausschreibungen; Anfragen bleiben 90 Tage in dieser Liste. Rechtsgrundlage: Durchführung Ihrer Anfrage (Art. 6 Abs. 1 lit. b DSGVO) und, für die Unternehmen, berechtigtes Interesse, ihnen eine konkrete Kundenanfrage zu übermitteln (Art. 6 Abs. 1 lit. f DSGVO). Jede E-Mail enthält einen Link zum Abbestellen.</p>
     <h3>6. Aufbewahrungsdauer</h3>
     <p>Wir bewahren die Daten auf, solange das Konto aktiv ist. Nach der Löschung werden Kontodaten innerhalb von 30 Tagen gelöscht. Sicherheitsprotokolle: 12 Monate. Genehmigte Unternehmen bleiben im Verzeichnis sichtbar, bis eine Entfernung beantragt wird.</p>
     <h3>7. Ihre Rechte</h3>
@@ -11783,7 +12032,8 @@ function updateNavAuth() {
           <div class="avatar-menu-item" onclick="startCompanyFlow();closeAvatarMenu()"><i data-lucide="building-2"></i>${t('avatarRegisterCompany')}</div>
           <div class="avatar-menu-item" onclick="openProfilePanel();closeAvatarMenu()"><i data-lucide="user"></i>${t('profileTitle')}</div>
           <div class="avatar-menu-item" onclick="openMyChats();closeAvatarMenu()"><i data-lucide="message-circle"></i>As minhas mensagens</div>
-          <div class="avatar-menu-item" onclick="openMyTenders();closeAvatarMenu()"><i data-lucide="clipboard-list"></i>${t('tnMenu')}</div>
+          <div class="avatar-menu-item" onclick="openMyTenders(null,'meus');closeAvatarMenu()"><i data-lucide="clipboard-list"></i>${t('tnMenu')}</div>
+          <div class="avatar-menu-item" id="avMenuPedidos" onclick="openClientRequests();closeAvatarMenu()"${_rqDono() ? '' : ' hidden'}><i data-lucide="inbox"></i>${t('rqMenu')} <span class="avatar-menu-badge" id="avMenuPedidosN" hidden></span></div>
           <div class="avatar-menu-item" onclick="openMyFavourites();closeAvatarMenu()"><i data-lucide="star"></i>${t('navFavourites')} <span class="avatar-menu-badge" id="avMenuFavCount" hidden></span></div>
           <div class="avatar-menu-divider"></div>
           <div class="avatar-menu-item" onclick="closeAvatarMenu();openFaq()"><i data-lucide="help-circle"></i>${t('avatarFaqHelp')}</div>
@@ -11792,7 +12042,7 @@ function updateNavAuth() {
           <div class="avatar-menu-item danger" onclick="doLogout()"><i data-lucide="log-out"></i>${t('avatarLogout')}</div>
         </div>
       </div>`;
-    if (mobileArea) mobileArea.innerHTML = `<button class="mobile-nav-link" onclick="openProfilePanel();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>${user.name}</span></button><button class="mobile-nav-link" onclick="openMyChats();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>As minhas mensagens</span></button><button class="mobile-nav-link" onclick="openMyTenders();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg><span>${t('tnMenu')}</span></button><button class="mobile-nav-link" onclick="closeMobileNavPanel();startCompanyFlow()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>${t('avatarRegisterCompany') || 'Anunciar Empresa'}</span></button><button class="mobile-nav-link" onclick="openMyFavourites();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span data-i18n="navFavourites">Favoritos</span></button><button class="mobile-nav-link" style="color:#ef4444" onclick="doLogout();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>${t('avatarLogout')}</span></button>`;
+    if (mobileArea) mobileArea.innerHTML = `<button class="mobile-nav-link" onclick="openProfilePanel();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>${user.name}</span></button><button class="mobile-nav-link" onclick="openMyChats();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg><span>As minhas mensagens</span></button><button class="mobile-nav-link" onclick="openMyTenders(null,'meus');closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="8" height="4" x="8" y="2" rx="1" ry="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg><span>${t('tnMenu')}</span></button><button class="mobile-nav-link" id="mobPedidos" onclick="openClientRequests();closeMobileNavPanel()"${_rqDono() ? '' : ' hidden'}><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></svg><span>${t('rqMenu')}</span><span class="avatar-menu-badge" id="mobPedidosN" hidden></span></button><button class="mobile-nav-link" onclick="closeMobileNavPanel();startCompanyFlow()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg><span>${t('avatarRegisterCompany') || 'Anunciar Empresa'}</span></button><button class="mobile-nav-link" onclick="openMyFavourites();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><span data-i18n="navFavourites">Favoritos</span></button><button class="mobile-nav-link" style="color:#ef4444" onclick="doLogout();closeMobileNavPanel()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>${t('avatarLogout')}</span></button>`;
     if (mobileTopAuth) mobileTopAuth.innerHTML = `<button class="mobile-top-avatar" onclick="toggleMobileNav()" title="${user.name}">${initials}</button>`;
     if (heroCta) {
       heroCta.hidden = false;
@@ -14620,7 +14870,7 @@ async function _chatPollTick() {
       }
     } else if (_chatMode === 'owner' && _chatCompanyId && _chatPeer) {
       // nota: este GET marca o inbox como lido — semântica "inbox aberto = visto"
-      const all = await apiFetch('/messages/company/' + _chatCompanyId);
+      const all = await apiFetch('/messages/company/' + _chatCompanyId + '?marcar=0');
       const mine = all.filter(m => (m.client_email || '').toLowerCase() === _chatPeer)
         .sort((a, b) => new Date(a.created_at) - new Date(b.created_at));
       const sig = _chatMsgSig(mine);
@@ -14629,6 +14879,8 @@ async function _chatPollTick() {
         const th = _chatThreads.find(x => x.key === _chatPeer);
         if (th) th.items = mine;
         _renderMsgs(mine, 'company');
+        // a conversa está aberta: o que chegou agora fica lido
+        if (th) _chatMarcarLida(th);
         try { _refreshMsgBadge(); } catch (_) {}
       }
     }
@@ -15619,7 +15871,11 @@ let _tnSel = new Map();   // empresas escolhidas: id → { id, name, city, km }
 let _tnCrit = { sectors: [], radius: 25, alvara: false, claimed: false };
 let _tnMais = false;      // "convidar mais empresas" num concurso já publicado
 let _tnPainel = null;     // detalhe aberto no painel
-let _tnAba = 'props';
+let _tnAba = 'resp';
+let _tnSeparador = 'meus'; // ecrã dos concursos: 'meus' ou 'clientes' (pedidos de clientes, donos de empresas)
+let _tnMeus = [];         // os meus concursos (lista)
+let _tnDonoEmpresas = false;
+let _tnNovos = 0;         // pedidos de clientes novos (número no separador)
 let _tnConv = null;       // vista do convite (lado da empresa)
 let _tnRef = null;        // token do link (ou 'i<id>' com sessão)
 let _tnUpsConv = [];      // envios em curso (proposta)
@@ -16039,35 +16295,60 @@ async function _tnPublicar(btn) {
   }
 }
 
-// ── Painel: os meus concursos ──────────────────────────────────────────────────
-async function openMyTenders(id) {
-  if (!_isLoggedIn()) { window._hxPendingTender = { painel: id || 'lista' }; openLogin(); return; }
+// ── Painel: os meus concursos (e, para quem gere empresas, os pedidos de clientes)
+async function openMyTenders(id, separador) {
+  if (!_isLoggedIn()) { window._hxPendingTender = { painel: id || (separador === 'clientes' ? 'clientes' : 'lista') }; openLogin(); return; }
   await _tnConfig();
   document.getElementById('tenderPanelOverlay').classList.add('open');
   if (id) return _tnAbrirPainel(id);
   _tnPainel = null;
+  if (separador) _tnSeparador = separador;
   const el = document.getElementById('tnPanel');
-  el.innerHTML = '<h2 class="legal-title" id="tnPanelTitle">' + escHtml(t('tnMine')) + '</h2><p class="tn-empty">' + escHtml(t('tnLoading')) + '</p>';
-  let meus = [], recebidos = [];
+  el.innerHTML = '<h2 class="legal-title" id="tnPanelTitle">' + escHtml(t(_tnSeparador === 'clientes' ? 'rqMenu' : 'tnMine')) + '</h2><p class="tn-empty">' + escHtml(t('tnLoading')) + '</p>';
+  let conta = null;
   try {
-    [meus, recebidos] = await Promise.all([apiFetch('/tenders/mine'), apiFetch('/tenders/received').catch(() => [])]);
+    [_tnMeus, conta] = await Promise.all([apiFetch('/tenders/mine'), apiFetch('/requests/received/count').catch(() => null)]);
   } catch (e) { el.innerHTML = '<h2 class="legal-title" id="tnPanelTitle">' + escHtml(t('tnMine')) + '</h2><p class="tn-empty">' + escHtml(e.message || t('tnErrGeneric')) + '</p>'; return; }
-  let h = '<div class="tn-panel-head"><h2 class="legal-title" id="tnPanelTitle">' + escHtml(t('tnMine')) + '</h2>' +
-    '<button type="button" class="btn-submit" onclick="closeMyTenders();openTenderWizard()"><i data-lucide="plus"></i> ' + escHtml(t('tnNew')) + '</button></div>';
-  if (!meus.length) h += '<div class="tn-empty-box"><i data-lucide="clipboard-list"></i><p>' + escHtml(t('tnMineEmpty')) + '</p></div>';
-  else h += '<ul class="tn-list">' + meus.map(m =>
-    '<li><button type="button" class="tn-item" onclick="_tnAbrirPainel(' + m.id + ')">' +
-    '<span class="tn-item-main"><span class="tn-item-title">' + escHtml(m.title || t('tnUntitled')) + '</span>' +
-    '<span class="tn-item-sub">' + escHtml([m.city, m.estado === 'draft' ? t('tnStDraftHint') : _tnFmt(t('tnUntil'), { d: _tnData(m.deadline) })].filter(Boolean).join(' · ')) + '</span>' +
-    (m.estado !== 'draft' ? '<span class="tn-item-sub">' + escHtml(_tnFmt(t('tnCounts'), { c: m.convites, v: m.vistas, p: m.propostas })) + '</span>' : '') + '</span>' +
-    _tnEstadoChip(m.estado, m.is_test) + '<i data-lucide="chevron-right"></i></button></li>').join('') + '</ul>';
-  if (recebidos && recebidos.length) {
-    h += '<h3 class="tn-h3">' + escHtml(t('tnReceived')) + '</h3><ul class="tn-list">' + recebidos.map(r =>
-      '<li><button type="button" class="tn-item" onclick="closeMyTenders();openTenderInvite(\'' + r.ref + '\')">' +
-      '<span class="tn-item-main"><span class="tn-item-title">' + escHtml(r.title) + '</span>' +
-      '<span class="tn-item-sub">' + escHtml([r.company_name, r.city, _tnFmt(t('tnUntil'), { d: _tnData(r.deadline) })].filter(Boolean).join(' · ')) + '</span></span>' +
-      _tnEstadoChip(r.estado) + '<i data-lucide="chevron-right"></i></button></li>').join('') + '</ul>';
+  _tnDonoEmpresas = !!(conta && conta.empresas);
+  _tnNovos = conta ? conta.novos || 0 : 0;
+  if (conta) _rqMenu(_tnDonoEmpresas, _tnNovos);
+  if (!_tnDonoEmpresas) _tnSeparador = 'meus';
+  _rq = null;
+  _tnRenderLista();
+  if (_tnSeparador === 'clientes') _rqCarregar();
+}
+function _tnRenderLista() {
+  const el = document.getElementById('tnPanel');
+  if (!el) return;
+  const cli = _tnSeparador === 'clientes';
+  const meus = _tnMeus || [];
+  let h = '<div class="tn-panel-head"><h2 class="legal-title" id="tnPanelTitle">' + escHtml(t(_tnDonoEmpresas ? 'tnMenu' : 'tnMine')) + '</h2>' +
+    (cli ? '' : '<button type="button" class="btn-submit" onclick="closeMyTenders();openTenderWizard()"><i data-lucide="plus"></i> ' + escHtml(t('tnNew')) + '</button>') + '</div>';
+  if (_tnDonoEmpresas) {
+    h += '<div class="tn-tabs tn-tabs-top" role="tablist">' +
+      '<button type="button" role="tab" aria-selected="' + !cli + '" class="' + (cli ? '' : 'on') + '" onclick="_tnVerSeparador(\'meus\')">' + escHtml(t('tnMine')) + ' (' + meus.length + ')</button>' +
+      '<button type="button" role="tab" aria-selected="' + cli + '" class="' + (cli ? 'on' : '') + '" onclick="_tnVerSeparador(\'clientes\')">' + escHtml(t('rqMenu')) +
+      (_tnNovos ? ' <span class="rq-pill">' + _tnNovos + '</span>' : '') + '</button></div>';
   }
+  if (cli) h += '<div id="rqBody">' + _rqHtml() + '</div>';
+  else if (!meus.length) h += '<div class="tn-empty-box"><i data-lucide="clipboard-list"></i><p>' + escHtml(t('tnMineEmpty')) + '</p></div>';
+  else h += '<ul class="tn-list">' + meus.map(m => {
+    // Quem já respondeu com proposta (da mais barata) e quantas não concorrem
+    let resp = '';
+    if (m.estado !== 'draft') {
+      const rs = Array.isArray(m.respostas) ? m.respostas : [];
+      const nomes = rs.slice(0, 3).map(r => '<strong>' + escHtml(r.company_name) + '</strong> ' + escHtml(_tnEuros(r.price_cents)));
+      if (rs.length > 3) nomes.push('+' + (rs.length - 3));
+      const txt = nomes.length ? _tnFmt(escHtml(t('tnRespList')), { l: nomes.join(', ') }) : escHtml(t('tnNoRespYet'));
+      const rec = m.recusas ? ' · ' + escHtml(m.recusas === 1 ? t('tnNoBidN1') : _tnFmt(t('tnNoBidN'), { n: m.recusas })) : '';
+      resp = '<span class="tn-item-resp"><i data-lucide="message-square-text"></i><span>' + txt + rec + '</span></span>';
+    }
+    return '<li><button type="button" class="tn-item" onclick="_tnAbrirPainel(' + m.id + ')">' +
+      '<span class="tn-item-main"><span class="tn-item-title">' + escHtml(m.title || t('tnUntitled')) + '</span>' +
+      '<span class="tn-item-sub">' + escHtml([m.city, m.estado === 'draft' ? t('tnStDraftHint') : _tnFmt(t('tnUntil'), { d: _tnData(m.deadline) })].filter(Boolean).join(' · ')) + '</span>' +
+      (m.estado !== 'draft' ? '<span class="tn-item-sub">' + escHtml(_tnFmt(t('tnCounts'), { c: m.convites, v: m.vistas, p: m.propostas })) + '</span>' : '') + resp + '</span>' +
+      _tnEstadoChip(m.estado, m.is_test) + '<i data-lucide="chevron-right"></i></button></li>';
+  }).join('') + '</ul>';
   el.innerHTML = h;
   refreshLucide();
 }
@@ -16075,6 +16356,7 @@ function closeMyTenders() {
   const ov = document.getElementById('tenderPanelOverlay');
   if (ov) ov.classList.remove('open');
   _tnLimparUrl('concursos');
+  _tnLimparUrl('pedidos');
 }
 async function _tnAbrirPainel(id) {
   const el = document.getElementById('tnPanel');
@@ -16085,7 +16367,7 @@ async function _tnAbrirPainel(id) {
     closeMyTenders();
     return openTenderWizard(id);
   }
-  _tnAba = _tnPainel.proposals.length ? 'props' : 'cos';
+  _tnAba = 'resp';
   _tnRenderPainel();
 }
 function _tnRenderPainel() {
@@ -16110,46 +16392,58 @@ function _tnRenderPainel() {
       '<div class="tn-extend" id="tnExtend" hidden><input type="date" id="tnNewDeadline" class="contact-input" min="' + _tnDiaDe(new Date(Math.max(Date.now(), new Date(T.deadline).getTime()) + 86400e3)) + '" max="' + _tnDia(L.diasMax || 180) + '"/>' +
       '<button type="button" class="btn-submit" onclick="_tnProlongar(this)">' + escHtml(t('tnExtendSave')) + '</button></div>';
   }
-  const abas = [['props', t('tnTabProps') + ' (' + vivos.length + ')'], ['cos', t('tnTabCos') + ' (' + d.invites.length + ')'], ['files', t('tnTabFiles') + ' (' + d.files.filter(f => f.status === 'ready').length + ')'], ['log', t('tnTabLog')]];
+  // Um só separador "Respostas": quem enviou proposta, quem não vai concorrer
+  // e quem ainda não respondeu (e se já abriu o concurso)
+  const respondeu = (i) => (i.proposal && i.proposal.status !== 'withdrawn') || !!i.declined_at;
+  const abas = [['resp', _tnFmt(t('tnTabResp'), { n: d.invites.filter(respondeu).length, c: d.invites.length })], ['files', t('tnTabFiles') + ' (' + d.files.filter(f => f.status === 'ready').length + ')'], ['log', t('tnTabLog')]];
   h += '<div class="tn-tabs" role="tablist">' + abas.map(([k, n]) => '<button type="button" role="tab" aria-selected="' + (_tnAba === k) + '" class="' + (_tnAba === k ? 'on' : '') + '" onclick="_tnAba=\'' + k + '\';_tnRenderPainel()">' + escHtml(n) + '</button>').join('') + '</div>';
   h += '<div class="tn-tab-body">';
-  if (_tnAba === 'props') {
-    if (!d.proposals.length) h += '<p class="tn-empty">' + escHtml(t('tnNoProps')) + '</p>';
+  const linkTeste = (i) => i && i.link ? '<span class="tn-co-links"><button type="button" class="tn-link-btn" onclick="_tnCopiar(\'' + escHtml(i.link) + '\')"><i data-lucide="copy"></i> ' + escHtml(t('tnCopyLink')) + '</button> <a class="tn-link-btn" href="' + escHtml(i.link) + '" target="_blank" rel="noopener"><i data-lucide="external-link"></i> ' + escHtml(t('tnOpenAsCo')) + '</a></span>' : '';
+  if (_tnAba === 'resp') {
+    h += '<h3 class="tn-h3">' + escHtml(_tnFmt(t('tnGrpProps'), { n: vivos.length })) + '</h3>';
+    if (!vivos.length) h += '<p class="tn-empty">' + escHtml(t('tnNoProps')) + '</p>';
     else {
       const precos = vivos.map(p => p.price_cents).filter(v => v != null);
       const minimo = precos.length ? Math.min(...precos) : null;
-      const ord = [...d.proposals].sort((a, b) => (a.status === 'withdrawn') - (b.status === 'withdrawn') || (a.price_cents || 0) - (b.price_cents || 0));
+      const ord = [...vivos].sort((a, b) => (a.price_cents || 0) - (b.price_cents || 0));
       h += '<div class="tn-props">' + ord.map(p => {
         const ivas = { incluido: t('tnVatIncl'), acresce: t('tnVatPlus'), isento: t('tnVatEx') };
-        const est = { submitted: ['tnSubmitted', ''], accepted: ['tnAccepted', 'tn-chip-open'], declined: ['tnDeclined', 'tn-chip-closed'], withdrawn: ['tnWithdrawn', 'tn-chip-closed'] }[p.status] || ['tnSubmitted', ''];
-        return '<article class="tn-prop' + (p.status === 'accepted' ? ' tn-prop-win' : '') + (p.status === 'withdrawn' ? ' tn-prop-off' : '') + '">' +
+        const est = { submitted: ['tnSubmitted', ''], accepted: ['tnAccepted', 'tn-chip-open'], declined: ['tnDeclined', 'tn-chip-closed'] }[p.status] || ['tnSubmitted', ''];
+        return '<article class="tn-prop' + (p.status === 'accepted' ? ' tn-prop-win' : '') + '">' +
           '<header><strong>' + escHtml(p.company_name) + '</strong><span class="tn-chip ' + est[1] + '">' + escHtml(t(est[0])) + '</span></header>' +
           '<div class="tn-prop-price">' + escHtml(_tnEuros(p.price_cents)) + '<small>' + escHtml(ivas[p.vat] || '') + '</small>' +
-          (minimo != null && p.price_cents === minimo && vivos.length > 1 && p.status !== 'withdrawn' ? '<span class="tn-badge">' + escHtml(t('tnLowest')) + '</span>' : '') + '</div>' +
+          (minimo != null && p.price_cents === minimo && vivos.length > 1 ? '<span class="tn-badge">' + escHtml(t('tnLowest')) + '</span>' : '') + '</div>' +
           '<dl class="tn-prop-dl"><dt>' + escHtml(t('tnDuration')) + '</dt><dd>' + escHtml(p.duration || '—') + '</dd>' +
           (p.validity_days ? '<dt>' + escHtml(t('tnValidity')) + '</dt><dd>' + escHtml(Number(p.validity_days) === 1 ? t('tnDays1') : _tnFmt(t('tnDays'), { n: p.validity_days })) + '</dd>' : '') +
           '<dt>' + escHtml(t('tnContact')) + '</dt><dd>' + escHtml(p.contact_name || '') + '<br><a href="mailto:' + escHtml(p.contact_email || '') + '">' + escHtml(p.contact_email || '') + '</a>' + (p.contact_phone ? '<br><a href="tel:' + escHtml(String(p.contact_phone).replace(/[^\d+]/g, '')) + '">' + escHtml(p.contact_phone) + '</a>' : '') + '</dd>' +
           '<dt>' + escHtml(t('tnReceivedOn')) + '</dt><dd>' + escHtml(_tnData(p.updated_at || p.submitted_at, true)) + '</dd></dl>' +
           (p.notes ? '<p class="tn-prop-notes">' + escHtml(p.notes) + '</p>' : '') +
           (p.files.length ? '<ul class="tn-file-list">' + p.files.map(f => '<li class="tn-file"><i data-lucide="' + _tnIcone(f.name) + '"></i><a class="tn-file-name" href="/api/tenders/files/' + f.id + '" target="_blank" rel="noopener">' + escHtml(f.name) + '</a><span class="tn-file-size">' + _tnTam(f.size) + '</span></li>').join('') + '</ul>' : '') +
+          linkTeste(d.invites.find(i => i.id === p.invite_id)) +
           (p.status === 'submitted' && T.estado !== 'closed' ? '<footer><button type="button" class="btn-submit" onclick="_tnDecidir(' + p.id + ',\'accepted\')"><i data-lucide="check"></i> ' + escHtml(t('tnAccept')) + '</button>' +
             '<button type="button" class="btn-submit tn-sec" onclick="_tnDecidir(' + p.id + ',\'declined\')">' + escHtml(t('tnDecline')) + '</button></footer>' : '') +
           '</article>';
       }).join('') + '</div>';
     }
-  } else if (_tnAba === 'cos') {
-    h += '<ul class="tn-cos">' + d.invites.map(i => {
-      const linhas = [];
-      linhas.push(i.status === 'test' ? t('tnCoTest') : i.status === 'failed' ? t('tnCoFailed') : i.status === 'pending' ? t('tnCoPending') : _tnFmt(t('tnCoSent'), { d: _tnData(i.sent_at) }));
-      linhas.push(i.first_viewed_at ? _tnFmt(t('tnCoViewed'), { d: _tnData(i.last_viewed_at || i.first_viewed_at, true) }) : t('tnCoNotViewed'));
-      if (i.downloads) linhas.push(_tnFmt(t(i.downloads === 1 ? 'tnCoDl1' : 'tnCoDl'), { n: i.downloads }));
-      const resp = i.proposal && i.proposal.status !== 'withdrawn' ? '<span class="tn-chip tn-chip-open">' + escHtml(t('tnCoProposal')) + '</span>'
-        : i.declined_at ? '<span class="tn-chip tn-chip-closed" title="' + escHtml(i.decline_reason || '') + '">' + escHtml(t('tnCoDeclined')) + '</span>' : '';
-      return '<li><span class="tn-co-main"><strong>' + escHtml(i.company_name) + '</strong><span>' + escHtml([i.city].concat(linhas).filter(Boolean).join(' · ')) + '</span>' +
-        (i.declined_at && i.decline_reason ? '<span class="tn-co-reason">“' + escHtml(i.decline_reason) + '”</span>' : '') +
-        (i.link ? '<button type="button" class="tn-link-btn" onclick="_tnCopiar(\'' + escHtml(i.link) + '\')"><i data-lucide="copy"></i> ' + escHtml(t('tnCopyLink')) + '</button> <a class="tn-link-btn" href="' + escHtml(i.link) + '" target="_blank" rel="noopener"><i data-lucide="external-link"></i> ' + escHtml(t('tnOpenAsCo')) + '</a>' : '') +
-        '</span>' + resp + '</li>';
-    }).join('') + '</ul>';
+    const naoVao = d.invites.filter(i => i.declined_at && !(i.proposal && i.proposal.status !== 'withdrawn'));
+    if (naoVao.length) {
+      h += '<h3 class="tn-h3">' + escHtml(_tnFmt(t('tnGrpNoBid'), { n: naoVao.length })) + '</h3><ul class="tn-cos">' + naoVao.map(i =>
+        '<li><span class="tn-co-main"><strong>' + escHtml(i.company_name) + '</strong><span>' +
+        escHtml([i.city, _tnFmt(t('tnAnsweredOn'), { d: _tnData(i.declined_at) }), i.proposal && i.proposal.status === 'withdrawn' ? t('tnWithdrew') : ''].filter(Boolean).join(' · ')) + '</span>' +
+        (i.decline_reason ? '<span class="tn-co-reason">“' + escHtml(i.decline_reason) + '”</span>' : '') + linkTeste(i) + '</span>' +
+        '<span class="tn-chip tn-chip-closed">' + escHtml(t('tnCoDeclined')) + '</span></li>').join('') + '</ul>';
+    }
+    const espera = d.invites.filter(i => !respondeu(i));
+    if (espera.length) {
+      h += '<h3 class="tn-h3">' + escHtml(_tnFmt(t('tnGrpWaiting'), { n: espera.length })) + '</h3><ul class="tn-cos">' + espera.map(i => {
+        const linhas = [];
+        linhas.push(i.status === 'test' ? t('tnCoTest') : i.status === 'failed' ? t('tnCoFailed') : i.status === 'pending' ? t('tnCoPending') : _tnFmt(t('tnCoSent'), { d: _tnData(i.sent_at) }));
+        linhas.push(i.first_viewed_at ? _tnFmt(t('tnCoViewed'), { d: _tnData(i.last_viewed_at || i.first_viewed_at, true) }) : t('tnCoNotViewed'));
+        if (i.downloads) linhas.push(_tnFmt(t(i.downloads === 1 ? 'tnCoDl1' : 'tnCoDl'), { n: i.downloads }));
+        return '<li><span class="tn-co-main"><strong>' + escHtml(i.company_name) + '</strong><span>' + escHtml([i.city].concat(linhas).filter(Boolean).join(' · ')) + '</span>' +
+          linkTeste(i) + '</span></li>';
+      }).join('') + '</ul>';
+    }
   } else if (_tnAba === 'files') {
     const prontos = d.files.filter(f => f.status === 'ready');
     h += prontos.length ? '<ul class="tn-file-list">' + prontos.map(f => '<li class="tn-file"><i data-lucide="' + _tnIcone(f.name) + '"></i><a class="tn-file-name" href="/api/tenders/files/' + f.id + '" target="_blank" rel="noopener">' + escHtml(f.name) + '</a><span class="tn-file-size">' + _tnTam(f.size) + '</span></li>').join('') + '</ul>'
@@ -16368,6 +16662,7 @@ function _tnReclamar(companyId) {
 function _tnRetomar(p) {
   if (!p) return;
   if (p.wizard) openTenderWizard(p.wizard === 'novo' ? null : p.wizard, { mais: p.mais });
+  else if (p.painel === 'clientes') openMyTenders(null, 'clientes');
   else if (p.painel) openMyTenders(p.painel === 'lista' ? null : p.painel);
 }
 // Mudança de língua com um ecrã de concursos aberto: volta a desenhá-lo
@@ -16378,16 +16673,20 @@ function _tnRelang() {
       _tnRender(); _tnRepor(keep);
       if (_tnPasso === 2) { const el = document.getElementById('tnCands'); if (el) { el.innerHTML = _tnCandsHtml(); refreshLucide(); } }
     }
-    if (document.getElementById('tenderPanelOverlay').classList.contains('open')) { if (_tnPainel) _tnRenderPainel(); else openMyTenders(); }
+    if (document.getElementById('tenderPanelOverlay').classList.contains('open')) { if (_tnPainel) _tnRenderPainel(); else _tnRenderLista(); }
     if (document.getElementById('tenderInviteOverlay').classList.contains('open') && !_tnConv && _tnConvErro) _tnRenderErroConvite();
     if (document.getElementById('tenderInviteOverlay').classList.contains('open') && _tnConv) {
       const keep = _tnLerProposta(); _tnRenderConvite(); _tnReporProposta(keep);
     }
   } catch (_) {}
 }
-// Esc fecha o ecrã de concursos que estiver por cima
+// Esc fecha o ecrã de concursos que estiver por cima — e, com o chat aberto
+// por cima dos pedidos de clientes, fecha o chat (não a lista por baixo)
 document.addEventListener('keydown', (e) => {
   if (e.key !== 'Escape') return;
+  const topo = _topmostOpenModal();
+  if (topo && topo.id === 'inboxOverlay') { if (document.getElementById('tenderPanelOverlay').classList.contains('open')) closeInbox(); return; }
+  if (topo && !['tenderInviteOverlay', 'tenderOverlay', 'tenderPanelOverlay'].includes(topo.id)) return;
   for (const [id, fn] of [['tenderInviteOverlay', closeTenderInvite], ['tenderOverlay', closeTenderWizard], ['tenderPanelOverlay', closeMyTenders]]) {
     const ov = document.getElementById(id);
     if (ov && ov.classList.contains('open')) { fn(); break; }
@@ -16404,8 +16703,9 @@ function _tnTokenGuardado() {
   return null;
 }
 function _tnLinkAtivo() {
-  return /[?&]concursos?=/.test(location.search) || !!_tnTokenGuardado();
+  return /[?&](concursos?|pedidos)=/.test(location.search) || !!_tnTokenGuardado();
 }
+// ... e ?pedidos=recebidos (emails às empresas: "Pedidos de clientes")
 document.addEventListener('DOMContentLoaded', () => {
   try {
     const p = new URLSearchParams(location.search);
@@ -16413,6 +16713,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const k = p.get('concurso') || _tnTokenGuardado();
     if (painel && /^\d+$/.test(painel)) setTimeout(() => openMyTenders(Number(painel)), 400);
     else if (k && /^[A-Za-z0-9_-]{32}$/.test(k)) setTimeout(() => openTenderInvite(k), 400);
+    else if (p.get('pedidos')) setTimeout(() => openMyTenders(null, 'clientes'), 400);
   } catch (_) {}
 });
 Object.assign(window, {
@@ -16420,5 +16721,171 @@ Object.assign(window, {
   _tnSeguinte, _tnFicheirosConcurso, _tnRetirarFicheiro, _tnPorSetor, _tnTirarSetor, _tnProcurar, _tnEscolher,
   _tnParaRever, _tnPublicar, _tnAbrirPainel, _tnRenderPainel, _tnMostrarProlongar, _tnProlongar, _tnFechar,
   _tnDecidir, _tnCopiar, _tnFicheirosProposta, _tnRetirarFicheiroProposta, _tnEnviarProposta, _tnMostrarRecusa,
-  _tnRecusar, _tnReclamar, _tnEsquecerUp, _tnRetomar, _tnRelang,
+  _tnRecusar, _tnReclamar, _tnEsquecerUp, _tnRetomar, _tnRelang, _tnRenderLista,
+});
+
+// ══ PEDIDOS DE CLIENTES (dono de empresa) ═════════════════════════════════════
+// Separador "Pedidos de clientes" no ecrã dos Concursos, com entrada própria
+// no menu da conta (e o número de novos): todos os clientes que contactaram as
+// fichas que o utilizador gere — convites para concursos, pedidos de orçamento
+// e mensagens —, o estado de cada um e o botão para responder. Responder a um
+// pedido de orçamento abre o chat da empresa com esse cliente: a mensagem fica
+// na Hivex e chega-lhe por email. Dados: GET /api/requests/received
+// (routes/pedidos.js); abrir a lista marca os pedidos de orçamento como vistos.
+let _rq = null;              // resposta de /requests/received
+let _rqFiltro = 'all';       // all | tender | rfq | msg
+let _rqEmpresa = 0;          // 0 = todas as empresas
+let _rqContaT = 0;           // hora da última contagem (no máx. uma a cada 20 s)
+let _rqUltimo = null;        // { dono, novos } da última contagem
+
+function _rqUid() {
+  try { const u = JSON.parse(localStorage.getItem('hive_user') || 'null'); return u ? String(u.id) : ''; } catch (_) { return ''; }
+}
+// Gere alguma ficha? (guardado da última contagem, por conta, para o menu não
+// piscar enquanto a contagem não chega)
+function _rqDono() {
+  const uid = _rqUid();
+  try { return !!uid && localStorage.getItem('hivex_rq_dono') === uid; } catch (_) { return false; }
+}
+function _rqMenu(dono, novos) {
+  _rqUltimo = { dono, novos, uid: _rqUid() };
+  ['avMenuPedidos', 'mobPedidos'].forEach(id => { const el = document.getElementById(id); if (el) el.hidden = !dono; });
+  ['avMenuPedidosN', 'mobPedidosN'].forEach(id => {
+    const b = document.getElementById(id);
+    if (b) { b.hidden = !dono || !novos; b.textContent = novos > 99 ? '99+' : String(novos); }
+  });
+}
+async function _rqContar(forcar) {
+  if (!_isLoggedIn()) { _rqUltimo = null; return; }
+  // A contagem guardada só serve à mesma conta (outra sessão no mesmo browser conta de novo)
+  if (!forcar && _rqUltimo && _rqUltimo.uid === _rqUid() && Date.now() - _rqContaT < 20000) { _rqMenu(_rqUltimo.dono, _rqUltimo.novos); return; }
+  _rqContaT = Date.now();
+  let r;
+  try { r = await apiFetch('/requests/received/count'); } catch (_) { return; }
+  try { const uid = _rqUid(); if (uid) localStorage.setItem('hivex_rq_dono', r.empresas ? uid : ''); } catch (_) {}
+  _rqMenu(r.empresas > 0, r.novos || 0);
+}
+// O badge das mensagens corre ao entrar, ao redesenhar o menu e a cada 2 min:
+// a contagem dos pedidos vai atrás.
+const _rqBadge0 = _refreshMsgBadge;
+_refreshMsgBadge = async function () {
+  const r = await _rqBadge0.apply(this, arguments);
+  try { await _rqContar(); } catch (_) {}
+  return r;
+};
+window._refreshMsgBadge = _refreshMsgBadge;
+
+function openClientRequests() { return openMyTenders(null, 'clientes'); }
+function _tnVerSeparador(s) {
+  _tnSeparador = s;
+  _tnRenderLista();
+  if (s === 'clientes' && !_rq) _rqCarregar();
+}
+async function _rqCarregar() {
+  try { _rq = await apiFetch('/requests/received'); }
+  catch (e) {
+    const b = document.getElementById('rqBody');
+    if (b) b.innerHTML = '<p class="tn-empty">' + escHtml(e.message || t('tnErrGeneric')) + '</p>';
+    return;
+  }
+  _tnNovos = _rq.novos;
+  if (_rqEmpresa && !_rq.companies.some(c => c.id === _rqEmpresa)) _rqEmpresa = 0;
+  const ov = document.getElementById('tenderPanelOverlay');
+  if (ov && ov.classList.contains('open') && !_tnPainel && _tnSeparador === 'clientes') _tnRenderLista();
+  // Os pedidos de orçamento ficaram vistos: o menu passa a contar só o resto
+  _rqMenu(_rq.companies.length > 0, _rq.items.filter(i => i.state === 'new' && i.kind !== 'rfq').length);
+}
+function _rqFiltrar(k) { _rqFiltro = k; _rqRedesenhar(); }
+function _rqPorEmpresa(v) { _rqEmpresa = Number(v) || 0; _rqRedesenhar(); }
+function _rqRedesenhar() {
+  const b = document.getElementById('rqBody');
+  if (b) { b.innerHTML = _rqHtml(); refreshLucide(); }
+}
+function _rqHtml() {
+  if (!_rq) return '<p class="tn-empty">' + escHtml(t('tnLoading')) + '</p>';
+  const todos = _rq.items;
+  if (!todos.length) return '<div class="tn-empty-box"><i data-lucide="inbox"></i><p>' + escHtml(t('rqEmpty')) + '</p></div>';
+  const daEmpresa = todos.filter(i => !_rqEmpresa || i.company_id === _rqEmpresa);
+  const conta = (k) => daEmpresa.filter(i => k === 'all' || i.kind === k).length;
+  let h = '<div class="rq-bar"><div class="rq-filtros" role="group">' +
+    [['all', 'rqAll'], ['tender', 'rqTenders'], ['rfq', 'rqQuotes'], ['msg', 'rqMsgs']].map(([k, n]) =>
+      '<button type="button" class="rq-filtro' + (_rqFiltro === k ? ' on' : '') + '" aria-pressed="' + (_rqFiltro === k) + '" onclick="_rqFiltrar(\'' + k + '\')">' +
+      escHtml(t(n)) + ' <span>' + conta(k) + '</span></button>').join('') + '</div>';
+  if (_rq.companies.length > 1) {
+    h += '<select class="contact-input rq-empresa" aria-label="' + escHtml(t('rqAllCos')) + '" onchange="_rqPorEmpresa(this.value)">' +
+      '<option value="0">' + escHtml(t('rqAllCos')) + '</option>' +
+      _rq.companies.map(c => '<option value="' + c.id + '"' + (c.id === _rqEmpresa ? ' selected' : '') + '>' + escHtml(c.name) + '</option>').join('') + '</select>';
+  }
+  h += '</div>';
+  const vis = daEmpresa.filter(i => _rqFiltro === 'all' || i.kind === _rqFiltro);
+  h += vis.length ? '<ul class="rq-list">' + vis.map(_rqItemHtml).join('') + '</ul>' : '<p class="tn-empty">' + escHtml(t('rqNone')) + '</p>';
+  return h + '<p class="tn-note"><i data-lucide="bell"></i>' + escHtml(t('rqEmailNote')) + '</p>';
+}
+function _rqEstadoChip(i) {
+  const m = {
+    new: ['rqStNew', 'rq-st-new'], todo: ['rqStTodo', 'rq-st-todo'], done: ['rqStDone', 'tn-chip-open'],
+    proposal: ['rqStProposal', 'tn-chip-open'], accepted: ['rqStAccepted', 'tn-chip-open'],
+    nobid: ['rqStNoBid', 'tn-chip-closed'], lost: ['rqStLost', 'tn-chip-closed'], missed: ['rqStMissed', 'tn-chip-closed'],
+  }[i.state] || ['rqStTodo', 'rq-st-todo'];
+  const txt = i.state === 'proposal' ? _tnFmt(t(m[0]), { p: _tnEuros(i.price_cents) }) : t(m[0]);
+  return '<span class="tn-chip ' + m[1] + '">' + escHtml(txt) + '</span>';
+}
+function _rqItemHtml(i) {
+  const tipo = { tender: ['rqKindTender', 'clipboard-list'], rfq: ['rqKindQuote', 'file-text'], msg: ['rqKindMsg', 'message-circle'] }[i.kind];
+  const varias = _rq.companies.length > 1;
+  const pendente = i.state === 'new' || i.state === 'todo';
+  let titulo = '', sub = [], corpo = '', acoes = '';
+  if (i.kind === 'tender') {
+    titulo = i.title;
+    sub = [i.city, i.budget, _tnFmt(t('tnUntil'), { d: _tnData(i.deadline) })];
+    acoes = '<button type="button" class="btn-submit' + (pendente ? '' : ' tn-sec') + '" onclick="_rqAbrirConvite(\'' + i.ref + '\')">' +
+      '<i data-lucide="' + (pendente ? 'send' : 'eye') + '"></i> ' + escHtml(t(pendente ? 'rqOpenReply' : 'rqOpen')) + '</button>';
+  } else if (i.kind === 'rfq') {
+    titulo = _tnSetorNome(i.sector);
+    sub = [i.city, i.timeline, i.budget];
+    const longo = String(i.description || '').length > 260;
+    corpo = '<p class="rq-text">' + escHtml(i.description) + '</p>' +
+      (longo ? '<button type="button" class="tn-link-btn" onclick="this.previousElementSibling.classList.add(\'rq-text-full\');this.remove()">' + escHtml(t('rqMore')) + '</button>' : '');
+    acoes = '<button type="button" class="btn-submit' + (i.state === 'done' ? ' tn-sec' : '') + '" data-c="' + i.company_id + '" data-e="' + escHtml(i.email) + '" data-n="' + escHtml(i.client) + '" onclick="_rqResponder(this.dataset.c,this.dataset.e,this.dataset.n)">' +
+      '<i data-lucide="reply"></i> ' + escHtml(t(i.state === 'done' ? 'rqOpenChat' : 'rqReply')) + '</button>' +
+      '<a class="btn-submit tn-sec" href="mailto:' + escHtml(i.email) + '?subject=' + encodeURIComponent(t('rqMailSubject')) + '"><i data-lucide="mail"></i> ' + escHtml(t('rqEmail')) + '</a>' +
+      (i.phone ? '<a class="btn-submit tn-sec" href="tel:' + escHtml(String(i.phone).replace(/[^\d+]/g, '')) + '"><i data-lucide="phone"></i> ' + escHtml(t('rqCall')) + '</a>' : '');
+  } else {
+    titulo = i.n === 1 ? t('rqMsgs1') : _tnFmt(t('rqMsgsN'), { n: i.n });
+    corpo = i.last_body ? '<p class="rq-text rq-quote">' + escHtml(i.last_body) + '</p>' : '';
+    acoes = '<button type="button" class="btn-submit' + (pendente ? '' : ' tn-sec') + '" data-c="' + i.company_id + '" data-e="' + escHtml(i.email) + '" data-n="' + escHtml(i.client) + '" onclick="_rqResponder(this.dataset.c,this.dataset.e,this.dataset.n)">' +
+      '<i data-lucide="message-circle"></i> ' + escHtml(t('rqOpenChat')) + '</button>';
+  }
+  if (varias && i.company_name) sub.push(_tnFmt(t('rqFor'), { c: i.company_name }));
+  return '<li class="rq-item' + (i.state === 'new' ? ' rq-novo' : '') + '">' +
+    '<div class="rq-top"><span class="rq-kind"><i data-lucide="' + tipo[1] + '"></i>' + escHtml(t(tipo[0])) + '</span>' + _rqEstadoChip(i) +
+    '<time datetime="' + escHtml(i.at) + '">' + escHtml(_chatWhen(i.at)) + '</time></div>' +
+    '<div class="rq-who"><strong>' + escHtml(i.client || '') + '</strong>' + (titulo ? ' · ' + escHtml(titulo) : '') + '</div>' +
+    (sub.filter(Boolean).length ? '<div class="rq-sub">' + escHtml(sub.filter(Boolean).join(' · ')) + '</div>' : '') +
+    corpo + '<div class="rq-actions">' + acoes + '</div></li>';
+}
+// Abre o convite ou a conversa por cima da lista; ao fechar, a lista atualiza
+function _rqAbrirConvite(ref) { openTenderInvite(ref); }
+function _rqResponder(companyId, email, nome) { openInboxThread(companyId, email, nome); }
+function _rqAoVoltar() {
+  const ov = document.getElementById('tenderPanelOverlay');
+  if (ov && ov.classList.contains('open') && !_tnPainel && _tnSeparador === 'clientes') _rqCarregar();
+}
+const _rqFecharChat0 = closeInbox;
+closeInbox = function () { _rqFecharChat0.apply(this, arguments); _rqAoVoltar(); };
+const _rqFecharConvite0 = closeTenderInvite;
+closeTenderInvite = function () { _rqFecharConvite0.apply(this, arguments); _rqAoVoltar(); };
+
+// Caixa da empresa já aberta na conversa com um cliente — também quando ainda
+// não há mensagens (resposta a um pedido de orçamento).
+function openInboxThread(companyId, email, nome) {
+  _chatMode = 'owner';
+  _chatCompanyId = Number(companyId);
+  _openChatOverlay();
+  _loadOwnerThreads(String(email || '').toLowerCase(), nome || '');
+}
+
+Object.assign(window, {
+  openClientRequests, openInboxThread, closeInbox, closeTenderInvite, _tnVerSeparador, _rqFiltrar, _rqPorEmpresa,
+  _rqAbrirConvite, _rqResponder, _rqContar,
 });

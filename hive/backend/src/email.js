@@ -279,9 +279,9 @@ function companyReplyCtaHtml(company) {
     return `
       <div style="background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:14px 18px;margin:18px 0">
         <p style="margin:0;color:#1e40af;font-size:14px;line-height:1.6">
-          <strong>Responda pela plataforma:</strong> inicie sessão em
-          <a href="https://hivex.pt" style="color:#1d4ed8;font-weight:700">hivex.pt</a>
-          e abra as mensagens da sua empresa — a conversa e os documentos ficam guardados durante 90 dias.
+          <strong>Responda pela plataforma:</strong> inicie sessão na Hivex e abra os
+          <a href="https://www.hivex.pt/?pedidos=recebidos" style="color:#1d4ed8;font-weight:700">Pedidos de clientes</a>,
+          onde estão todos os clientes que contactaram a sua empresa — a conversa e os documentos ficam guardados durante 90 dias.
         </p>
       </div>`;
   }

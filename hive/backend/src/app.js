@@ -802,6 +802,22 @@ const MIGRATIONS = [
      tries      INT NOT NULL DEFAULT 0,
      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
    )`,
+
+  // v14: pedidos de clientes (routes/pedidos.js) — a que empresas foi cada
+  // pedido de orçamento, para aparecer na lista do dono da ficha. status =
+  // envio do email; seen_at = quando o dono abriu a lista.
+  `CREATE TABLE IF NOT EXISTS quote_request_recipients (
+     id BIGSERIAL PRIMARY KEY,
+     request_id BIGINT NOT NULL REFERENCES quote_requests(id) ON DELETE CASCADE,
+     company_id BIGINT NOT NULL REFERENCES companies(id) ON DELETE CASCADE,
+     email   TEXT NOT NULL,
+     status  TEXT NOT NULL DEFAULT 'pending' CHECK (status IN ('pending','sent','failed')),
+     sent_at TIMESTAMPTZ,
+     seen_at TIMESTAMPTZ,
+     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+     UNIQUE (request_id, company_id)
+   )`,
+  `CREATE INDEX IF NOT EXISTS idx_qrr_company ON quote_request_recipients(company_id, created_at DESC)`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -810,7 +826,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 13; // v13: concursos (tenders, convites, propostas, anexos, registo)
+const SCHEMA_VERSION = 14; // v14: destinatários dos pedidos de orçamento (pedidos de clientes)
 
 async function ensureSchema() {
   if (_migrated) return;
@@ -910,6 +926,7 @@ app.post('/api/ev', eventLimiter, async (req, res) => {
 
 app.use('/api', marketplaceRouter);
 app.use('/api', require('./routes/tenders'));
+app.use('/api', require('./routes/pedidos'));
 app.use('/api', require('./routes/billing').router);
 app.use('/api/companies', companiesRouter);
 app.use('/api/auth', authRouter);

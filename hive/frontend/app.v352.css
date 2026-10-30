@@ -4833,3 +4833,53 @@ a.tn-file-name:hover{text-decoration:underline}
 @media (min-width:1280px) and (max-width:1559px){
   nav.nav-map-grid > #navAdBanner.nav-ad.has-adsense{display:none !important}
 }
+
+/* ══ Pedidos de clientes (donos de empresas) e respostas dos concursos ══ */
+.avatar-menu-item[hidden],.mobile-nav-link[hidden]{display:none !important}
+.tn-tabs-top{margin:0 0 14px}
+.tn-tabs-top button{font-size:var(--fs-sm);padding:10px 14px;display:inline-flex;align-items:center;gap:6px}
+.rq-pill{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:var(--rad-full);background:var(--primary);color:#fff;font-size:12px;font-weight:700;line-height:1}
+.tn-item-resp{display:flex;align-items:flex-start;gap:6px;font-size:var(--fs-xs);color:var(--text-secondary);line-height:1.45;margin-top:2px}
+.tn-item-resp svg{width:14px;height:14px;flex-shrink:0;margin-top:2px;color:var(--primary)}
+.tn-item-resp strong{color:var(--text);font-weight:600}
+.tn-co-links{display:block;margin-top:2px}
+.tn-prop .tn-co-links{margin-top:0}
+.rq-bar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin:0 0 12px}
+.rq-filtros{display:flex;gap:6px;flex-wrap:wrap}
+.rq-filtro{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border);background:var(--surface);color:var(--text-secondary);border-radius:var(--rad-full);padding:6px 13px;font-size:var(--fs-xs);font-weight:600;cursor:pointer;font-family:inherit}
+.rq-filtro span{color:var(--muted);font-weight:500}
+.rq-filtro:hover{border-color:var(--text-secondary)}
+.rq-filtro.on{background:var(--primary-light);border-color:#bfdbfe;color:var(--primary-dark)}
+.rq-filtro.on span{color:inherit}
+.tn-modal .rq-empresa{width:auto;max-width:280px;padding:8px 12px;font-size:var(--fs-xs)}
+.rq-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px}
+.rq-item{display:flex;flex-direction:column;gap:6px;border:1px solid var(--border);border-radius:var(--rad-md);padding:14px 16px;background:var(--surface)}
+.rq-novo{border-color:#93c5fd;box-shadow:inset 3px 0 0 var(--primary)}
+.rq-top{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-size:var(--fs-xs);color:var(--muted)}
+.rq-kind{display:inline-flex;align-items:center;gap:5px;font-weight:700;color:var(--text-secondary)}
+.rq-kind svg{width:15px;height:15px}
+.rq-top time{margin-left:auto;white-space:nowrap}
+.rq-who{font-size:var(--fs-sm);color:var(--text);line-height:1.4;overflow-wrap:anywhere}
+.rq-sub{font-size:var(--fs-xs);color:var(--muted);overflow-wrap:anywhere}
+.rq-text{font-size:var(--fs-xs);color:var(--text-secondary);line-height:1.55;margin:2px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden}
+.rq-text.rq-text-full{display:block;-webkit-line-clamp:unset}
+.rq-quote{border-left:3px solid var(--border);padding-left:10px;-webkit-line-clamp:2}
+.rq-item .tn-link-btn{align-self:flex-start;padding:0}
+.rq-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:4px}
+.rq-actions .btn-submit{display:inline-flex;align-items:center;gap:6px;font-size:var(--fs-xs);padding:8px 14px;border-radius:var(--rad-sm);min-height:0;text-decoration:none;width:auto}
+.rq-actions .btn-submit svg{width:15px;height:15px}
+.tn-chip.rq-st-new{background:var(--primary-light);color:var(--primary-dark);border-color:#bfdbfe}
+.tn-chip.rq-st-todo{background:#fffbeb;color:#b45309;border-color:#fde68a}
+#rfqNoneMsg{margin:0 0 10px}
+[data-theme="dark"] .rq-filtro.on,[data-theme="dark"] .tn-chip.rq-st-new{background:rgba(37,99,235,.18);color:#93c5fd;border-color:rgba(37,99,235,.35)}
+[data-theme="dark"] .tn-chip.rq-st-todo{background:rgba(245,158,11,.12);color:#fcd34d;border-color:rgba(245,158,11,.3)}
+[data-theme="dark"] .rq-novo{border-color:rgba(96,165,250,.55)}
+@media (max-width:768px){
+  .tn-tabs-top button{flex:1 1 0;justify-content:center;font-size:14px;padding:10px 6px;white-space:normal;text-align:center;line-height:1.25}
+  .rq-bar{flex-direction:column;align-items:stretch}
+  .rq-filtros{flex-wrap:nowrap;overflow-x:auto;padding-bottom:2px}
+  .rq-filtro{flex-shrink:0;font-size:14px;padding:8px 13px}
+  .tn-modal .rq-empresa{max-width:none;width:100%;font-size:15px}
+  .rq-item{padding:14px}
+  .rq-actions .btn-submit{flex:1 1 auto;justify-content:center;font-size:15px !important;min-height:44px !important}
+}
