@@ -4714,3 +4714,64 @@ a.tn-file-name:hover{text-decoration:underline}
   .slc-compare span{display:none}
   .slc-compare{padding:4px 7px !important}
 }
+
+/* ══ Cabeçalho (pedido do dono, 2026-10-30): logótipo ao DOBRO e o banner
+   publicitário de volta. Computador (≥1180px): favo 34→68px e nome 22→44px,
+   numa linha de 88px (--nav-h); 1025–1179px: 1,5× numa linha de 76px; tablets
+   (≤1024px) ficam como estavam. A ficha acompanha a altura. O banner aparece
+   a partir de 1280px. O banner volta à coluna do meio da grelha na variante compacta
+   que já tinha no cabeçalho (selo, título, frase e botão; os passos e a
+   história animada não cabem nesta altura) e adapta-se à largura que sobra
+   (container queries). Com anúncio AdSense configurado (.has-adsense) a faixa
+   continua reservada ao anúncio e só aparece ≥1560px. No telemóvel nada muda
+   (o favo já tem 44px numa barra de 56px). ══ */
+:root{--nav-h:88px}
+@media (min-width:769px) and (max-width:1024px){:root{--nav-h:64px}}
+@media (min-width:1025px) and (max-width:1179px){:root{--nav-h:76px}}
+@media (min-width:769px){
+  nav.nav-map-grid{grid-template-rows:var(--nav-h) !important;height:var(--nav-h)}
+}
+/* portáteis pequenos: 1,5× (ao dobro a pesquisa ficava sem espaço); nos
+   tablets (≤1024px) o favo já tem 60px por uma regra antiga e fica como está */
+@media (min-width:1025px){
+  .hx-brand{gap:12px}
+  .hx-brand-mark{width:51px;height:51px}
+  .hx-brand-name{font-size:33px;letter-spacing:-.025em}
+}
+@media (min-width:1180px){
+  .hx-brand{gap:14px}
+  .hx-brand-mark{width:68px;height:68px}
+  .hx-brand-name{font-size:44px}
+}
+@media (min-width:1024px){
+  .detail-panel{top:calc(var(--nav-h) / .7) !important;height:calc((100dvh / var(--z) - var(--nav-h)) / .7) !important}
+}
+@media (min-width:769px) and (max-width:1023px){
+  .detail-panel{top:var(--nav-h) !important;height:calc(100dvh - var(--nav-h)) !important}
+}
+@media (min-width:1280px){
+  nav.nav-map-grid{grid-template-columns:auto minmax(300px,520px) minmax(0,1fr) auto !important}
+  nav.nav-map-grid > #navAdBanner.nav-ad{display:flex !important;grid-area:banner;align-self:center;width:100%;height:72px !important;min-height:0 !important;max-height:none !important;margin:0 !important;contain:size;container-type:inline-size;border-radius:var(--rad-md);border:1px solid rgba(255,255,255,.14);box-shadow:none;background:#fff;overflow:hidden}
+  #navAdBanner .nav-ad-steps,#navAdBanner .nav-ad-story{display:none !important}
+  #navAdBanner .nav-ad-content{justify-content:space-between;align-items:center;padding:8px 10px 8px 18px;gap:14px}
+  #navAdBanner .nav-ad-left{min-width:0;flex:1 1 auto;overflow:hidden}
+  #navAdBanner .nav-ad-badge{font-size:12px;line-height:1.3;padding:2px 9px;margin-bottom:3px;border-radius:var(--rad-full)}
+  #navAdBanner .nav-ad-title{font-size:var(--fs-md);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #navAdBanner .nav-ad-sub{font-size:var(--fs-xs);line-height:1.3;margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  #navAdBanner .nav-ad-cta{display:flex;align-items:center;gap:10px;flex-shrink:0;padding:4px 6px;border-radius:var(--rad-sm)}
+  #navAdBanner .nav-ad-cta:hover{transform:none;background:rgba(37,99,235,.06)}
+  #navAdBanner .nav-ad-cta-text{font-size:var(--fs-xs);line-height:1.25;color:var(--primary);margin:0;text-align:right;font-weight:600}
+  #navAdBanner .nav-ad-cta-ring{width:40px;height:40px;font-size:18px;border-width:2px}
+}
+@media (min-width:1280px) and (max-width:1559px){
+  nav.nav-map-grid > #navAdBanner.nav-ad.has-adsense{display:none !important}
+}
+/* faixa estreita: primeiro sai o texto do botão, depois o selo e a frase */
+@container (max-width:430px){
+  #navAdBanner .nav-ad-cta-text{display:none}
+}
+@container (max-width:300px){
+  #navAdBanner .nav-ad-badge,#navAdBanner .nav-ad-sub{display:none}
+  #navAdBanner .nav-ad-title{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+}
+[data-theme="dark"] nav.nav-map-grid > #navAdBanner.nav-ad{background:#fff;border-color:transparent}
