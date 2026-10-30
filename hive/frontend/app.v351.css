@@ -4775,3 +4775,61 @@ a.tn-file-name:hover{text-decoration:underline}
   #navAdBanner .nav-ad-title{white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
 }
 [data-theme="dark"] nav.nav-map-grid > #navAdBanner.nav-ad{background:#fff;border-color:transparent}
+
+/* ══ Banner ao DOBRO (pedido do dono, 2026-10-30): a partir de 1280px o
+   cabeçalho volta a ter duas linhas à esquerda (logótipo por cima da
+   pesquisa) e o banner ocupa as duas — 144px de altura (eram 72px) e mais
+   largura, porque a coluna da esquerda deixa de levar logótipo e pesquisa
+   lado a lado. Com esta altura voltam os passos ("Estrutura, Instalações…",
+   acesos um a um) e, em ecrãs muito largos, a história "Do terreno à casa".
+   A linha do cabeçalho passa a 160px (--nav-h; a ficha acompanha). ══ */
+@media (min-width:1280px){
+  :root{--nav-h:160px}
+  nav.nav-map-grid{
+    grid-template-columns:minmax(400px,520px) minmax(0,1fr) auto !important;
+    grid-template-rows:minmax(0,1fr) minmax(0,1fr) !important;
+    grid-template-areas:"logo banner auth" "search banner auth" !important;
+    column-gap:24px !important;row-gap:8px !important;
+    padding:8px 24px !important;
+  }
+  nav.nav-map-grid > .nav-banner{align-self:end}
+  nav.nav-map-grid > .ub-search-in-nav{align-self:start;width:100%}
+  nav.nav-map-grid > .nav-right{align-self:center}
+  nav.nav-map-grid > #navAdBanner.nav-ad{height:144px !important;align-self:center}
+  #navAdBanner .nav-ad-content{padding:14px 18px 14px 24px;gap:22px;align-items:center}
+  #navAdBanner .nav-ad-left{flex:0 0 auto;max-width:300px}
+  #navAdBanner .nav-ad-badge{font-size:13px;padding:3px 11px;margin-bottom:8px}
+  #navAdBanner .nav-ad-title{font-size:var(--fs-lg);line-height:1.2;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+  #navAdBanner .nav-ad-sub{font-size:var(--fs-sm);line-height:1.35;white-space:normal;margin-top:5px}
+  #navAdBanner .nav-ad-cta{flex-direction:column;gap:8px;padding:6px 8px}
+  #navAdBanner .nav-ad-cta-text{font-size:var(--fs-sm);text-align:center}
+  #navAdBanner .nav-ad-cta-ring{width:56px;height:56px;font-size:24px;border-width:2.5px}
+  /* passo aceso legível (o texto ficava branco sobre azul-claro) */
+  #navAdBanner .nav-ad-step.lit{background:#dbeafe;border-color:#2563eb;color:#1e3a8a}
+  #navAdBanner .nav-ad-step.done{background:#dcfce7;border-color:#16a34a;color:#166534}
+}
+/* faixa larga: os passos da casa; muito larga: a história animada */
+@container (min-width:760px){
+  #navAdBanner .nav-ad-slide .nav-ad-steps{display:flex !important;flex:1 1 auto;flex-wrap:wrap;justify-content:center;align-content:center;gap:6px 8px;max-height:112px;overflow:hidden}
+  #navAdBanner .nav-ad-step{font-size:14px;padding:5px 11px;gap:6px}
+  #navAdBanner .nav-ad-step span{font-size:14px}
+  #navAdBanner .nav-ad-step .lucide{width:15px;height:15px}
+}
+@container (min-width:900px){
+  #navAdBanner .nav-ad-slide .nav-ad-story{display:flex !important;flex:1 1 auto;flex-wrap:nowrap;align-items:flex-start;justify-content:center;gap:4px;min-width:0}
+  #navAdBanner .story-step{flex:0 1 84px;min-width:0;gap:5px}
+  #navAdBanner .story-ico{width:46px;height:46px}
+  #navAdBanner .story-ico svg{width:38px;height:38px}
+  #navAdBanner .story-ico .lucide{width:22px;height:22px}
+  #navAdBanner .story-cap{font-size:12px;line-height:1.2;white-space:normal;max-width:84px}
+  #navAdBanner .story-arrow{flex:1 1 18px;min-width:10px;margin-top:21px}
+}
+@container (min-width:1200px){
+  #navAdBanner .story-step{flex-basis:110px}
+  #navAdBanner .story-ico{width:54px;height:54px}
+  #navAdBanner .story-cap{font-size:13px;max-width:110px}
+  #navAdBanner .story-arrow{margin-top:25px}
+}
+@media (min-width:1280px) and (max-width:1559px){
+  nav.nav-map-grid > #navAdBanner.nav-ad.has-adsense{display:none !important}
+}
