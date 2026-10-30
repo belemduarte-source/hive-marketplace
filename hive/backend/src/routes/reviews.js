@@ -108,17 +108,26 @@ router.post('/', requireAuth, async (req, res, next) => {
       }
 
       // "Contacto verificado": o autor tratou com a empresa pela plataforma —
-      // mensagens (contacto ou resposta a um pedido de orçamento), uma proposta
-      // dessa empresa que aceitou num concurso (os de teste não contam) ou um
-      // pedido de avaliação que lhe enviámos sobre ela (o link dos emails; só
-      // existe depois de uma dessas interações e sobrevive à retenção de 90
-      // dias das mensagens) — combate reviews de fachada
+      // escreveu-lhe (mensagem do cliente), a empresa respondeu a um pedido de
+      // orçamento dele que lhe chegou (o "respondido" de pedidos.js), aceitou
+      // uma proposta dessa empresa num concurso (os de teste não contam) ou
+      // recebeu um pedido de avaliação sobre ela (o link dos emails; só existe
+      // depois de uma dessas interações e sobrevive à retenção de 90 dias das
+      // mensagens) — combate reviews de fachada. Uma mensagem da empresa, só
+      // por si, não conta: a resposta do inbox aceita qualquer email, e a
+      // empresa tornaria "verificada" a avaliação de quem quisesse.
       const { rows: vc } = await client.query(
         `WITH eu AS (SELECT id, lower(trim(email)) AS email FROM users WHERE id = $2)
          SELECT 1 FROM eu
           WHERE EXISTS (SELECT 1 FROM messages m
-                         WHERE m.company_id = $1
+                         WHERE m.company_id = $1 AND m.sender = 'client'
                            AND (m.client_user_id = eu.id OR lower(m.client_email) = eu.email))
+             OR EXISTS (SELECT 1 FROM quote_request_recipients r
+                          JOIN quote_requests q ON q.id = r.request_id
+                          JOIN messages m ON m.company_id = r.company_id AND m.sender = 'company'
+                                         AND lower(m.client_email) = lower(q.client_email)
+                                         AND m.created_at >= r.created_at
+                         WHERE r.company_id = $1 AND lower(q.client_email) = eu.email)
              OR EXISTS (SELECT 1 FROM review_requests rr
                          WHERE rr.company_id = $1 AND rr.email = eu.email)
              OR EXISTS (SELECT 1 FROM tender_proposals p
