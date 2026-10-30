@@ -56,13 +56,18 @@ if (ins.length) {
   p(`- Precisão da posição: ${c(ins, x => x.geo.replace(/-sem-cp7|\+porta-vizinha/g, '').replace(/^geoapi-porta$/, 'porta (INE)').replace(/^geoapi-rua$/, 'rua (INE)').replace(/^photon-house$/, 'porta (OSM)').replace(/^photon-street$/, 'rua (OSM)').replace(/^geoapi-cp7(-centro)?$/, 'código postal').replace(/^localidade-.*/, 'localidade'))}`);
   p(`- Setor principal: ${c(ins, x => x.sector)}`);
   p(`- Desempilhadas para a porta vizinha: ${ins.filter(x => /porta-vizinha/.test(x.geo)).length}`);
+  // retidas na inserção da última vaga (ficam em processadas.jsonl e são tentadas outra vez na vaga seguinte)
+  const vagas = fs.readdirSync(dados('.')).filter(f => /^inserir-vaga\d+\.log$/.test(f)).sort((a, b) => a.match(/\d+/)[0] - b.match(/\d+/)[0]);
+  const ultima = vagas[vagas.length - 1];
+  const fim = ultima && (fs.readFileSync(dados(ultima), 'utf8').match(/\[inserir\] FIM \(gravado\) (\{.*\})/) || [])[1];
+  if (fim) { const r = JSON.parse(fim); p(`- Retidas na inserção da última vaga (tentadas outra vez na seguinte): sem porta livre a ≥ 5 m de outra empresa ${r['empilhada-sem-porta-livre'] || 0}, email já na BD ${r['email-ja-na-bd'] || 0}, telefone já na BD ${r['telefone-ja-na-bd'] || 0}`); }
   const corr = linhasJ('corrigidas.jsonl'), emp = corr.filter(x => !x.regra), ret = emp.filter(x => x.acao === 'retirada'), unip = corr.filter(x => x.regra === 'unipessoal');
   if (emp.length) p(`- Corrigidas depois de gravar (a < 5 m de outra empresa nova; o teste antigo comparava a chave arredondada a 5 casas): ${emp.length - ret.length} movidas para uma porta INE livre, ${ret.length} retiradas por não haver porta livre (ids ${ret.map(x => x.id).join(', ')})`);
   if (unip.length) p(`- Retiradas depois de gravar por serem unipessoais com o nome abreviado ou mal escrito no IMPIC (o filtro antigo só apanhava "Unipessoal"/"Unip"): ${unip.length} (ids ${unip.map(x => x.id).join(', ')})`);
   p('');
 }
 // amostras: Lisboa (20 ao acaso) e entre distritos (estratificada); amostra.json se for a única
-const AMOSTRAS = [['amostra-lisboa.json', 'Lisboa, ao acaso'], ['amostra-distritos.json', 'todos os distritos, estratificada'], ['amostra.json', 'ao acaso']];
+const AMOSTRAS = [['amostra-lisboa.json', 'Lisboa, ao acaso'], ['amostra-setubal.json', 'Setúbal, ao acaso, antes de gravar'], ['amostra-distritos.json', 'todos os distritos, estratificada'], ['amostra.json', 'ao acaso']];
 const vistas = new Set();
 for (const [fic, rot] of AMOSTRAS) {
   if (!fs.existsSync(dados(fic))) continue;

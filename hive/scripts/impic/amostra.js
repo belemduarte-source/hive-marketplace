@@ -1,15 +1,17 @@
 // Amostra de verificação (só leitura): N fichas aprovadas ao acaso (semente fixa), com verificação
 // independente da posição: Photon reverse no ponto escolhido → a rua do OSM bate com a rua da morada?
-// Uso: node amostra.js [N=20] [semente] [--estratificada] [--saida amostra.json]
+// Uso: node amostra.js [N=20] [semente] [--estratificada] [--distrito <nome>] [--novas] [--saida amostra.json]
 //  --estratificada: round-robin pelos distritos (cada distrito entra antes de qualquer um repetir)
+//  --distrito: só esse distrito · --novas: só as ainda não inseridas (a vaga que vai entrar)
 const dados = require('./dados');   // ficheiros de dados fora do repositório (IMPIC_DADOS)
 const fs = require('fs');
 const path = require('path');
 const { toks } = require('./geocode');
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const ARGV = process.argv.slice(2), POS = ARGV.filter((a, i) => !a.startsWith('--') && !(ARGV[i - 1] || '').startsWith('--saida'));
+const ARGV = process.argv.slice(2), POS = ARGV.filter((a, i) => !a.startsWith('--') && !['--saida', '--distrito'].includes(ARGV[i - 1]));
 const N = +(POS[0] || 20), SEED = +(POS[1] || 7);
 const ESTRAT = ARGV.includes('--estratificada'), SAIDA = ARGV.includes('--saida') ? ARGV[ARGV.indexOf('--saida') + 1] : 'amostra.json';
+const DIST = ARGV.includes('--distrito') ? ARGV[ARGV.indexOf('--distrito') + 1] : null, NOVAS = ARGV.includes('--novas');
 
 function shuffle(a, seed) {
   let s = seed >>> 0; const rnd = () => (s = (s * 1664525 + 1013904223) >>> 0) / 2 ** 32;
@@ -27,8 +29,11 @@ async function reverso(lat, lng) {
 }
 (async () => {
   const porChave = new Map();
-  for (const l of fs.readFileSync(dados('processadas.jsonl'), 'utf8').split('\n').filter(Boolean)) { const x = JSON.parse(l); porChave.set(x.key, x); }
-  const ok = [...porChave.values()].filter(x => x.ok);
+  // o processamento pode estar a escrever: uma linha a meio é ignorada
+  for (const l of fs.readFileSync(dados('processadas.jsonl'), 'utf8').split('\n').filter(Boolean)) { try { const x = JSON.parse(l); porChave.set(x.key, x); } catch (_) {} }
+  const LOG = dados('inseridas.jsonl');
+  const ja = new Set(NOVAS && fs.existsSync(LOG) ? fs.readFileSync(LOG, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l).key) : []);
+  const ok = [...porChave.values()].filter(x => x.ok && (!DIST || x.distrito === DIST) && !ja.has(x.key));
   let sel = shuffle(ok.slice(), SEED).slice(0, N);
   if (ESTRAT) {
     const grupos = new Map();

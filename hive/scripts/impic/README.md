@@ -38,6 +38,7 @@ node dump-bd.js          # índice de deduplicação (só leitura)
 IMPIC_GAP_MS=1500 PROC_PARALELO=3 node correr.js   # listagem → amostra 25/distrito ("ENSAIO PRONTO") → todos os detalhes
 node relatorio.js        # ensaio: funil por distrito e estimativa
 node amostra.js 34 11 --estratificada --saida amostra-distritos.json   # verificação (rua/concelho no pino vs morada, GeoAPI /gps)
+node amostra.js 20 23 --distrito Setúbal --novas --saida amostra-setubal.json   # antes de gravar um distrito novo
 node sites.js            # site a partir do email de domínio próprio
 node inserir.js --distritos "Lisboa"            # ensaio (nada gravado)
 node inserir.js --distritos "Lisboa" --gravar   # grava + inseridas.jsonl
