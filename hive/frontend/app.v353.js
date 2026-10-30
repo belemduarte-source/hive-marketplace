@@ -10560,7 +10560,7 @@ const LEGAL_DOCS = {
     },
     privacy: {
       title: 'Política de Privacidade',
-      meta:  'Última atualização: 28 de Abril de 2026 · Conformidade RGPD',
+      meta:  'Última atualização: 30 de Outubro de 2026 · Conformidade RGPD',
       html: `
         <p>A Hivex respeita a sua privacidade e cumpre o <strong>Regulamento (UE) 2016/679 (RGPD)</strong> e a Lei n.º 58/2019 de Portugal.</p>
         <h3>1. Responsável pelo tratamento</h3>
@@ -10584,7 +10584,7 @@ const LEGAL_DOCS = {
         <h3>5. Partilha com terceiros</h3>
         <p>Não vendemos dados. Partilhamos apenas com sub-processadores estritamente necessários: <strong>Vercel</strong> (hospedagem), <strong>Neon/Postgres</strong> (base de dados), <strong>Google</strong> (Sign-in opcional e publicidade — ver ponto 5.1), <strong>OpenStreetMap</strong> (tiles do mapa). Todos cumprem o RGPD.</p>
         <h3>5.0 Pedido de avaliação</h3>
-        <p>Se contactar uma empresa através da Hivex, poderemos enviar-lhe <strong>um único email</strong>, cerca de uma semana depois, a convidá-lo a avaliar essa empresa (interesse legítimo em manter avaliações verificadas). Pode recusar estes pedidos através do link incluído no próprio email; a recusa fica registada e é respeitada em todos os contactos futuros.</p>
+        <p>Depois de uma interação real com uma empresa através da Hivex, poderemos enviar-lhe <strong>um único email</strong> a convidá-lo a avaliar essa empresa: cerca de uma semana depois de a contactar, cerca de 10 dias depois de a empresa responder pela Hivex ao seu pedido de orçamento, ou cerca de três semanas depois de aceitar a proposta dessa empresa num concurso. Nunca mais do que um pedido por empresa, e nenhum se já a avaliou (interesse legítimo em manter avaliações verificadas). As avaliações de quem tratou com a empresa através da Hivex mostram a indicação «contacto verificado». Pode recusar estes pedidos através do link incluído no próprio email; a recusa fica registada e é respeitada em todos os contactos futuros.</p>
         <h3>5.1 Publicidade (Google AdSense)</h3>
         <p>A Hivex pode apresentar anúncios fornecidos pelo <strong>Google AdSense</strong>. Fornecedores terceiros, incluindo a Google, utilizam cookies para apresentar anúncios com base em visitas anteriores do utilizador a este e a outros sites. A Google utiliza cookies de publicidade para apresentar anúncios; pode <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">desativar a publicidade personalizada</a> nas Definições de anúncios da Google ou recusar cookies de fornecedores terceiros em <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Mais informação na <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">política da Google sobre como utiliza dados de sites parceiros</a>. No Espaço Económico Europeu, Reino Unido e Suíça, os anúncios e respetivos cookies só são ativados <strong>após o seu consentimento</strong>, recolhido através do nosso banner de cookies — sem consentimento não são utilizados cookies de publicidade personalizada.</p>
         <h3>5.2 Concursos (pedidos de proposta)</h3>
@@ -10682,7 +10682,7 @@ LEGAL_DOCS.en = {
     <h3>6. Contact</h3>
     <p>Questions: <a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a>.</p>
   ` },
-  privacy: { title:'Privacy Policy', meta:'Last updated: 28 April 2026 · GDPR compliant', html:`${_legalNote.en}
+  privacy: { title:'Privacy Policy', meta:'Last updated: 30 October 2026 · GDPR compliant', html:`${_legalNote.en}
     <p>Hivex respects your privacy and complies with <strong>Regulation (EU) 2016/679 (GDPR)</strong> and Portugal's Law No. 58/2019.</p>
     <h3>1. Data controller</h3>
     <p>Hivex — <a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a></p>
@@ -10705,7 +10705,7 @@ LEGAL_DOCS.en = {
     <h3>5. Sharing with third parties</h3>
     <p>We do not sell data. We share only with strictly necessary sub-processors: <strong>Vercel</strong> (hosting), <strong>Neon/Postgres</strong> (database), <strong>Google</strong> (optional Sign-in and advertising — see section 5.1), <strong>OpenStreetMap</strong> (map tiles). All are GDPR compliant.</p>
     <h3>5.0 Review requests</h3>
-    <p>If you contact a company through Hivex, we may send you <strong>a single email</strong>, about a week later, inviting you to review that company (legitimate interest in keeping reviews verified). You can opt out using the link in that email; your choice is recorded and respected for all future contacts.</p>
+    <p>After a real interaction with a company through Hivex, we may send you <strong>a single email</strong> inviting you to review that company: about a week after you contact it, about 10 days after the company answers your quote request on Hivex, or about three weeks after you accept that company’s proposal in a tender. Never more than one request per company, and none if you have already reviewed it (legitimate interest in keeping reviews verified). Reviews by people who dealt with the company through Hivex show a “verified contact” label. You can opt out using the link in that email; your choice is recorded and respected for all future contacts.</p>
     <h3>5.1 Advertising (Google AdSense)</h3>
     <p>Hivex may display ads provided by <strong>Google AdSense</strong>. Third-party vendors, including Google, use cookies to serve ads based on a user's prior visits to this and other websites. Google uses advertising cookies to serve ads; you can <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">opt out of personalised advertising</a> in Google's Ads Settings, or opt out of third-party vendors' cookies at <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. More information in <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Google's policy on how it uses data from partner sites</a>. In the European Economic Area, the United Kingdom and Switzerland, ads and their cookies are only enabled <strong>after your consent</strong>, collected through our cookie banner — without consent, no personalised advertising cookies are used.</p>
     <h3>5.2 Tenders (requests for proposals)</h3>
@@ -10784,7 +10784,7 @@ LEGAL_DOCS.fr = {
     <h3>6. Contact</h3>
     <p>Questions : <a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a>.</p>
   ` },
-  privacy: { title:'Politique de confidentialité', meta:'Dernière mise à jour : 28 avril 2026 · Conforme au RGPD', html:`${_legalNote.fr}
+  privacy: { title:'Politique de confidentialité', meta:'Dernière mise à jour : 30 octobre 2026 · Conforme au RGPD', html:`${_legalNote.fr}
     <p>Hivex respecte votre vie privée et se conforme au <strong>Règlement (UE) 2016/679 (RGPD)</strong> et à la loi portugaise n° 58/2019.</p>
     <h3>1. Responsable du traitement</h3>
     <p>Hivex — <a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a></p>
@@ -10807,7 +10807,7 @@ LEGAL_DOCS.fr = {
     <h3>5. Partage avec des tiers</h3>
     <p>Nous ne vendons pas de données. Nous les partageons uniquement avec les sous-traitants strictement nécessaires : <strong>Vercel</strong> (hébergement), <strong>Neon/Postgres</strong> (base de données), <strong>Google</strong> (connexion facultative et publicité — voir point 5.1), <strong>OpenStreetMap</strong> (tuiles de la carte). Tous sont conformes au RGPD.</p>
     <h3>5.0 Demande d’avis</h3>
-    <p>Si vous contactez une entreprise via Hivex, nous pourrons vous envoyer <strong>un seul e-mail</strong>, environ une semaine plus tard, vous invitant à évaluer cette entreprise (intérêt légitime à maintenir des avis vérifiés). Vous pouvez refuser via le lien inclus dans cet e-mail ; votre choix est enregistré et respecté pour tous les contacts futurs.</p>
+    <p>Après une interaction réelle avec une entreprise via Hivex, nous pourrons vous envoyer <strong>un seul e-mail</strong> vous invitant à évaluer cette entreprise : environ une semaine après l’avoir contactée, environ 10 jours après que l’entreprise a répondu sur Hivex à votre demande de devis, ou environ trois semaines après que vous avez accepté l’offre de cette entreprise dans un appel d’offres. Jamais plus d’une demande par entreprise, et aucune si vous l’avez déjà évaluée (intérêt légitime à maintenir des avis vérifiés). Les avis des personnes qui ont traité avec l’entreprise via Hivex portent la mention « contact vérifié ». Vous pouvez refuser via le lien inclus dans cet e-mail ; votre choix est enregistré et respecté pour tous les contacts futurs.</p>
     <h3>5.1 Publicité (Google AdSense)</h3>
     <p>Hivex peut afficher des annonces fournies par <strong>Google AdSense</strong>. Des fournisseurs tiers, dont Google, utilisent des cookies pour diffuser des annonces en fonction des visites antérieures de l'utilisateur sur ce site et sur d'autres sites. Google utilise des cookies publicitaires pour diffuser des annonces ; vous pouvez <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">désactiver la publicité personnalisée</a> dans les Paramètres des annonces Google, ou refuser les cookies de fournisseurs tiers sur <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Plus d'informations dans la <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">politique de Google relative à l'utilisation des données des sites partenaires</a>. Dans l'Espace économique européen, au Royaume-Uni et en Suisse, les annonces et leurs cookies ne sont activés <strong>qu'après votre consentement</strong>, recueilli via notre bannière de cookies — sans consentement, aucun cookie de publicité personnalisée n'est utilisé.</p>
     <h3>5.2 Appels d’offres (demandes d’offre)</h3>
@@ -10886,7 +10886,7 @@ LEGAL_DOCS.es = {
     <h3>6. Contacto</h3>
     <p>Dudas: <a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a>.</p>
   ` },
-  privacy: { title:'Política de Privacidad', meta:'Última actualización: 28 de abril de 2026 · Conforme al RGPD', html:`${_legalNote.es}
+  privacy: { title:'Política de Privacidad', meta:'Última actualización: 30 de octubre de 2026 · Conforme al RGPD', html:`${_legalNote.es}
     <p>Hivex respeta tu privacidad y cumple el <strong>Reglamento (UE) 2016/679 (RGPD)</strong> y la Ley n.º 58/2019 de Portugal.</p>
     <h3>1. Responsable del tratamiento</h3>
     <p>Hivex — <a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a></p>
@@ -10909,7 +10909,7 @@ LEGAL_DOCS.es = {
     <h3>5. Compartición con terceros</h3>
     <p>No vendemos datos. Solo los compartimos con los encargados estrictamente necesarios: <strong>Vercel</strong> (alojamiento), <strong>Neon/Postgres</strong> (base de datos), <strong>Google</strong> (inicio de sesión opcional y publicidad; ver punto 5.1), <strong>OpenStreetMap</strong> (teselas del mapa). Todos cumplen el RGPD.</p>
     <h3>5.0 Solicitud de valoración</h3>
-    <p>Si contacta con una empresa a través de Hivex, podremos enviarle <strong>un único correo</strong>, aproximadamente una semana después, invitándole a valorar esa empresa (interés legítimo en mantener valoraciones verificadas). Puede rechazarlo mediante el enlace incluido en ese correo; su elección queda registrada y se respeta en todos los contactos futuros.</p>
+    <p>Tras una interacción real con una empresa a través de Hivex, podremos enviarle <strong>un único correo</strong> invitándole a valorar esa empresa: aproximadamente una semana después de contactarla, unos 10 días después de que la empresa responda en Hivex a su solicitud de presupuesto, o unas tres semanas después de aceptar la propuesta de esa empresa en un concurso. Nunca más de una solicitud por empresa, y ninguna si ya la ha valorado (interés legítimo en mantener valoraciones verificadas). Las valoraciones de quienes trataron con la empresa a través de Hivex muestran la indicación «contacto verificado». Puede rechazarlo mediante el enlace incluido en ese correo; su elección queda registrada y se respeta en todos los contactos futuros.</p>
     <h3>5.1 Publicidad (Google AdSense)</h3>
     <p>Hivex puede mostrar anuncios proporcionados por <strong>Google AdSense</strong>. Proveedores externos, incluido Google, utilizan cookies para mostrar anuncios basados en las visitas anteriores del usuario a este y otros sitios web. Google utiliza cookies publicitarias para mostrar anuncios; puedes <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">desactivar la publicidad personalizada</a> en la Configuración de anuncios de Google, o rechazar las cookies de proveedores externos en <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a>. Más información en la <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">política de Google sobre cómo utiliza los datos de sitios asociados</a>. En el Espacio Económico Europeo, el Reino Unido y Suiza, los anuncios y sus cookies solo se activan <strong>tras tu consentimiento</strong>, recogido a través de nuestro banner de cookies; sin consentimiento no se utilizan cookies de publicidad personalizada.</p>
     <h3>5.2 Concursos (solicitudes de propuesta)</h3>
@@ -10988,7 +10988,7 @@ LEGAL_DOCS.de = {
     <h3>6. Kontakt</h3>
     <p>Fragen: <a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a>.</p>
   ` },
-  privacy: { title:'Datenschutzrichtlinie', meta:'Zuletzt aktualisiert: 28. April 2026 · DSGVO-konform', html:`${_legalNote.de}
+  privacy: { title:'Datenschutzrichtlinie', meta:'Zuletzt aktualisiert: 30. Oktober 2026 · DSGVO-konform', html:`${_legalNote.de}
     <p>Hivex respektiert Ihre Privatsphäre und erfüllt die <strong>Verordnung (EU) 2016/679 (DSGVO)</strong> sowie das portugiesische Gesetz Nr. 58/2019.</p>
     <h3>1. Verantwortlicher</h3>
     <p>Hivex — <a href="mailto:geral.hivex@gmail.com">geral.hivex@gmail.com</a></p>
@@ -11011,7 +11011,7 @@ LEGAL_DOCS.de = {
     <h3>5. Weitergabe an Dritte</h3>
     <p>Wir verkaufen keine Daten. Wir geben sie nur an die unbedingt notwendigen Auftragsverarbeiter weiter: <strong>Vercel</strong> (Hosting), <strong>Neon/Postgres</strong> (Datenbank), <strong>Google</strong> (optionale Anmeldung und Werbung — siehe Abschnitt 5.1), <strong>OpenStreetMap</strong> (Kartenkacheln). Alle sind DSGVO-konform.</p>
     <h3>5.0 Bewertungsanfrage</h3>
-    <p>Wenn Sie ein Unternehmen über Hivex kontaktieren, senden wir Ihnen etwa eine Woche später eventuell <strong>eine einzige E-Mail</strong> mit der Einladung, dieses Unternehmen zu bewerten (berechtigtes Interesse an verifizierten Bewertungen). Sie können dies über den Link in dieser E-Mail ablehnen; Ihre Entscheidung wird gespeichert und bei allen künftigen Kontakten respektiert.</p>
+    <p>Nach einer echten Interaktion mit einem Unternehmen über Hivex senden wir Ihnen eventuell <strong>eine einzige E-Mail</strong> mit der Einladung, dieses Unternehmen zu bewerten: etwa eine Woche, nachdem Sie es kontaktiert haben, etwa 10 Tage, nachdem das Unternehmen Ihre Angebotsanfrage über Hivex beantwortet hat, oder etwa drei Wochen, nachdem Sie das Angebot dieses Unternehmens in einer Ausschreibung angenommen haben. Nie mehr als eine Anfrage pro Unternehmen und keine, wenn Sie es bereits bewertet haben (berechtigtes Interesse an verifizierten Bewertungen). Bewertungen von Personen, die über Hivex mit dem Unternehmen zu tun hatten, tragen den Hinweis „verifizierter Kontakt“. Sie können dies über den Link in dieser E-Mail ablehnen; Ihre Entscheidung wird gespeichert und bei allen künftigen Kontakten respektiert.</p>
     <h3>5.1 Werbung (Google AdSense)</h3>
     <p>Hivex kann Anzeigen von <strong>Google AdSense</strong> einblenden. Drittanbieter, einschließlich Google, verwenden Cookies, um Anzeigen auf Grundlage früherer Besuche eines Nutzers auf dieser und anderen Websites zu schalten. Google verwendet Werbe-Cookies, um Anzeigen zu schalten; Sie können in den Google-Anzeigeneinstellungen <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener">personalisierte Werbung deaktivieren</a> oder Cookies von Drittanbietern unter <a href="https://www.aboutads.info/choices/" target="_blank" rel="noopener">aboutads.info/choices</a> ablehnen. Weitere Informationen in der <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener">Richtlinie von Google zur Nutzung von Daten von Partner-Websites</a>. Im Europäischen Wirtschaftsraum, im Vereinigten Königreich und in der Schweiz werden Anzeigen und ihre Cookies erst <strong>nach Ihrer Einwilligung</strong> aktiviert, die über unser Cookie-Banner eingeholt wird — ohne Einwilligung werden keine Cookies für personalisierte Werbung verwendet.</p>
     <h3>5.2 Ausschreibungen (Angebotsanfragen)</h3>
