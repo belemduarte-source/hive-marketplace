@@ -54,10 +54,13 @@ const RE_ENTIDADE = /\b(MUNICIPIO|CAMARA MUNICIPAL|JUNTA DE FREGUESIA|SERVICOS M
 // Licenciadas mas não são prestadores de obra para o público: fabricantes/operadoras de telecomunicações,
 // tecnológicas, energia/utilities, gestores de infraestruturas, resíduos, limpeza, vigilância.
 const RE_FORA_AMBITO = /\b(HUAWEI|ERICSSON|NOKIA|ALCATEL|CISCO|IBM|HEALTHCARE|EDP|E REDES|GALP|REDES ENERGETICAS NACIONAIS|MEO|ALTICE|VODAFONE|NOS COMUNICACOES|NOS TECHNOLOGY|RESIDUOS|INFRAESTRUTURAS DE PORTUGAL|METROPOLITANO|CAMINHOS DE FERRO|CARRIS|AGUAS DE PORTUGAL|EPAL|AEROPORTOS|NAV PORTUGAL|PROSEGUR|SECURITAS|LIMPEZAS?|HIGIENE|TURISTICOS?|TURISMO|HOTEIS|HOTELARIA|HOTELEIRAS?|HOTEL)\b/;
-// Promotores/gestores/mediadores imobiliários têm alvará para as obras próprias, mas não são empreiteiros
-// para o público: ficam de fora quando o nome não tem nenhuma palavra de obra ("Imobiliária Construtora" passa).
-const RE_IMOBILIARIA = /\bIMOBILI/;
-const RE_OBRA = /CONSTRU|OBRAS|EMPREIT|ENGENHAR|REMODEL|REABILIT|EDIFIC/;
+// Promotores/gestores/mediadores imobiliários e sociedades de investimento têm alvará para as obras próprias,
+// mas não são empreiteiros para o público: ficam de fora quando o nome não tem nenhuma palavra de obra
+// ("Imobiliária Construtora" passa). O IMPIC escreve o mesmo de várias maneiras: Imóveis, Propriedades,
+// Empreendimentos, Real Estate, Imob, Investimentos/Investments/Invest (não Investigação). As palavras de obra
+// incluem abreviaturas (Constr, Const) e ofícios (Pintura, Manutenção, Renovações…). Testado contra a listagem inteira.
+const RE_IMOBILIARIA = /\bIMOBILI|\bIMOB\b|\bIMOVE(IS|L)\b|\bPROPRIEDADES?\b|\bEMPREEND|\bREAL ESTATE\b|INVEST(?!IGA)/;
+const RE_OBRA = /CONSTR|\bCONST\b|OBRAS?\b|EMPREIT|ENGENH|ENGINEER|REMODEL|REABILIT|RENOVAC|RECUPERAC|REPARAC|EDIFIC|BUILD|PINTUR|MANUTENC|INSTALAC|ELE(C)?TRIC|CANALIZ|CARPINT|SERRALH|CLIMATIZ|TELHAD|COBERTUR|IMPERMEAB|ISOLAM|PAVIMENT|DEMOLI|TERRAPLEN|COFRAG|ESTRUTUR|RESTAURO|RESTAURACAO DE IMOVEIS|CONSERVAC/;
 function filtroEntidade(nome, nif) {
   const n = N(nome);
   if (!nif) return 'eni-nif-oculto';                      // o IMPIC esconde o NIF dos empresários em nome individual

@@ -41,7 +41,7 @@ const F = {}; for (const f of Object.values(funil)) for (const [k, v] of Object.
 p('## Funil (todos os distritos listados)\n');
 p(`- Registos IMPIC listados: ${F.listadas}`);
 p(`- Fora por serem de uma pessoa: unipessoais ${F.unipessoal}, empresários em nome individual (NIF oculto/singular) ${(F['eni-nif-oculto'] || 0) + (F['nao-pessoa-coletiva'] || 0)}`);
-p(`- Fora por não serem prestadores: entidades públicas/associações/ACE ${F['entidade-nao-empresa']}, fora de âmbito (telecom, energia, resíduos, turismo…) ${F['fora-de-ambito'] || 0}, promotoras/gestoras imobiliárias sem palavra de obra no nome ${F['imobiliaria-sem-obra'] || 0}, NIF inválido ${F['nif-invalido']}`);
+p(`- Fora por não serem prestadores: entidades públicas/associações/ACE ${F['entidade-nao-empresa']}, fora de âmbito (telecom, energia, resíduos, turismo…) ${F['fora-de-ambito'] || 0}, imobiliárias e sociedades de investimento sem palavra de obra no nome ${F['imobiliaria-sem-obra'] || 0}, NIF inválido ${F['nif-invalido']}`);
 p(`- Já existiam na Hivex: por NIF ${F['ja-na-bd-nif']}, por alvará ${F['ja-na-bd-alvara']}, por nome no concelho ${F['nome-igual-a-ficha-sem-nif']}; NIF repetido entre registos ${F['nif-repetido-na-lista']}`);
 p(`- Candidatas: ${F.candidatas}\n`);
 const mot = {}; for (const x of proc) if (!x.ok) mot[x.retry ? 'à espera (retry): ' + x.motivo : x.motivo] = (mot[x.retry ? 'à espera (retry): ' + x.motivo : x.motivo] || 0) + 1;
@@ -64,10 +64,12 @@ if (ins.length) {
   const corr = linhasJ('corrigidas.jsonl'), emp = corr.filter(x => !x.regra), ret = emp.filter(x => x.acao === 'retirada'), unip = corr.filter(x => x.regra === 'unipessoal');
   if (emp.length) p(`- Corrigidas depois de gravar (a < 5 m de outra empresa nova; o teste antigo comparava a chave arredondada a 5 casas): ${emp.length - ret.length} movidas para uma porta INE livre, ${ret.length} retiradas por não haver porta livre (ids ${ret.map(x => x.id).join(', ')})`);
   if (unip.length) p(`- Retiradas depois de gravar por serem unipessoais com o nome abreviado ou mal escrito no IMPIC (o filtro antigo só apanhava "Unipessoal"/"Unip"): ${unip.length} (ids ${unip.map(x => x.id).join(', ')})`);
+  const imob = corr.filter(x => x.regra === 'imobiliaria-sem-obra');
+  if (imob.length) p(`- Retiradas depois de gravar por serem imobiliárias ou sociedades de investimento sem palavra de obra no nome (Imóveis, Propriedades, Empreendimentos, Real Estate, Investimentos; o filtro antigo só apanhava "Imobiliária"): ${imob.length} (ids ${imob.map(x => x.id).join(', ')})`);
   p('');
 }
 // amostras: Lisboa (20 ao acaso) e entre distritos (estratificada); amostra.json se for a única
-const AMOSTRAS = [['amostra-lisboa.json', 'Lisboa, ao acaso'], ['amostra-setubal.json', 'Setúbal, ao acaso, antes de gravar'], ['amostra-distritos.json', 'todos os distritos, estratificada'], ['amostra.json', 'ao acaso']];
+const AMOSTRAS = [['amostra-lisboa.json', 'Lisboa, ao acaso'], ['amostra-setubal.json', 'Setúbal, ao acaso, antes de gravar'], ['amostra-setubal2.json', 'Setúbal (5.ª vaga), ao acaso, antes de gravar'], ['amostra-faro.json', 'Faro, ao acaso, antes de gravar'], ['amostra-distritos.json', 'todos os distritos, estratificada'], ['amostra.json', 'ao acaso']];
 const vistas = new Set();
 for (const [fic, rot] of AMOSTRAS) {
   if (!fs.existsSync(dados(fic))) continue;

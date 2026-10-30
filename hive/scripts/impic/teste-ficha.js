@@ -31,6 +31,15 @@ eq('Imobiliária construtora passa', f.filtroEntidade('IMOVIL - IMOBILIARIA CONS
 eq('Promoção imobiliária fora', f.filtroEntidade('CULTIVARTS - PROMOCAO IMOBILIARIA LDA', '510315917'), 'imobiliaria-sem-obra');
 eq('Construções e investimentos imobiliários passa', f.filtroEntidade('SILVA & SILVA - CONSTRUCOES E INVESTIMENTOS IMOBILIARIOS LDA', '510315917'), null);
 eq('Gestão hoteleira fora', f.filtroEntidade('LUCRIVAGEST - GESTAO E EXPLORACAO HOTELEIRA E IMOBILIARIA, S. A.', '510315917'), 'fora-de-ambito');
+// imobiliárias e investimento escritos de outras maneiras (nomes reais da listagem)
+for (const n of ['KZERO-IMOVEIS, LDA', 'JBBC INVESTIMENTOS LDA', 'BMSWINVEST SA', 'LANDELTA - EMPREENDIMENTOS URBANISTICOS, S.A.',
+  'MEDIRECORD PORTUGAL REAL ESTATE - MED E PROMOCAO IMOB LDA', 'JOSE ALEGRE - COMPRA E VENDA DE PROPRIEDADES, LDA', 'GROWLIGHT INVESTMENTS LDA'])
+  eq(`${n} fora`, f.filtroEntidade(n, '510315917'), 'imobiliaria-sem-obra');
+for (const n of ['ARCHEO ESTUDOS INVESTIGACAO ARQUEOLOGICA LDA', 'F P&R FERREIRA PROPRIEDADES E RENOVACOES LDA', 'QUALIPINTURA - PINTURA DE IMOVEIS, LDA',
+  'TERMOGOD-GESTAO E MANUTENCAO DE EMPREENDIMENTOS, LDA', 'CARIA & FERNANDES - SOC. CONSTR. EMPREEND. IMOB., LDA', 'S & C CARVALHO BUILD AND INVEST LDA',
+  'INOVACM - CONSTRUCAO E INVESTIMENTOS, LDA', 'PENTA PATRIMONIO CULTURAL LDA', 'GRUOBRAS - CONSTRUCOES IMOBILIARIAS, LDA', 'SOBRAL & FILHOS LDA'])
+  eq(`${n} passa`, f.filtroEntidade(n, '510315917'), null);
+eq('Sobral não é obra', f.filtroEntidade('SOBRAL INVESTIMENTOS LDA', '510315917'), 'imobiliaria-sem-obra');
 const g = require('./geo-pt');
 eq('Concelhos do IMPIC com região', ['Lagoa (Algarve)', 'Lagoa (São Miguel)', 'Calheta (Madeira)', 'Calheta (São Jorge)', 'Lagoa'].map(g.distritoDe), ['Faro', 'Açores', 'Madeira', 'Açores', 'Faro']);
 

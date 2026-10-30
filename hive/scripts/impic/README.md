@@ -13,8 +13,10 @@ Dados (caches, registos, contactos) ficam FORA do repositório, em `IMPIC_DADOS`
 - Só pessoas coletivas (NIF começado por 5). Fora: unipessoais (também as gralhas e abreviaturas do
   IMPIC: Unpessoal, Uniopessoal, Unipe, Unipl, Uniplda, Unp Lda, Unilda…), empresários em nome
   individual (o IMPIC esconde-lhes o NIF), municípios, associações, ACE, EM, insolventes,
-  telecom/energia/resíduos/limpeza/hotelaria e promotoras/gestoras imobiliárias sem
-  nenhuma palavra de obra no nome ("Imobiliária Construtora" entra; "Promoção Imobiliária" não).
+  telecom/energia/resíduos/limpeza/hotelaria e promotoras/gestoras/mediadoras imobiliárias e
+  sociedades de investimento sem nenhuma palavra de obra no nome (Imobiliária, Imóveis, Propriedades,
+  Empreendimentos, Real Estate, Imob, Invest…; "Imobiliária Construtora", "Soc. Constr. … Imob." e
+  "Pintura de Imóveis" entram; "Promoção Imobiliária", "Compra e Venda de Imóveis" e "X Investimentos" não).
 - Barra de confiança: alvará + pelo menos um contacto oficial (email ou telefone) =
   ≥ 2 canais. Email de domínio próprio só conta se o domínio existir (DNS).
 - Contacto partilhado por ≥ 3 candidatas (contabilista, grupo) não conta como canal.
@@ -47,6 +49,7 @@ node esperar-novas.js correr.log 1000 20      # com o processamento a correr: es
 node verificar.js        # contagens depois, barra, empilhamento, API
 node pares-perto.js 5    # pares de fichas novas a < 5 m de outra empresa (deve dar 0)
 node corrigir-empilhadas.js [--gravar]   # se der > 0: a mais nova vai para a porta livre ou é retirada (corrigidas.jsonl)
+node teste-imob.js [--todos]             # antes de mudar um filtro de nome: o que muda contra a listagem inteira
 node reaplicar-filtros.js [--gravar]     # depois de apertar um filtro de ficha.js: retira as já inseridas que agora falham
 node relatorio-final.js  # relatório em Markdown (contagens antes/depois, funil, inseridas, amostras)
 ```
