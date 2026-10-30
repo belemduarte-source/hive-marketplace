@@ -56,6 +56,7 @@ node teste-imob.js [--todos]             # antes de mudar um filtro de nome: o q
 node scan-subs.js                        # subcategorias do IMPIC que a tabela de setores não conhece (deve dar 0)
 node reaplicar-filtros.js [--gravar]     # depois de apertar um filtro ou a tabela de setores de ficha.js:
                                          # retira as já inseridas que agora falham (as que só mudam de setor são listadas)
+node corrigir-grafia.js [--gravar]      # concelho com a grafia do IMPIC (Meda, Foz Coa…) → nome oficial nas já inseridas
 node relatorio-final.js  # relatório em Markdown (contagens antes/depois, funil, inseridas, amostras)
 ```
 

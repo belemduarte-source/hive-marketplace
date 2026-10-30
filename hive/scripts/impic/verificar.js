@@ -29,13 +29,14 @@ const { filtroEntidade } = require('./ficha');
   if (!ids.length) return;
 
   // 2) as fichas novas na BD
-  const novas = await q(`SELECT id, name, nif, alvara, email, phone, website, status, lat, lng, sector, confidence, created_by, tags FROM companies WHERE id = ANY($1)`, [ids]);
+  const novas = await q(`SELECT id, name, nif, alvara, email, phone, website, status, lat, lng, sector, confidence, created_by, tags, city FROM companies WHERE id = ANY($1)`, [ids]);
   const canais = r => (r.alvara ? 1 : 0) + (r.email ? 1 : 0) + (String(r.phone).replace(/\D/g, '').length >= 9 ? 1 : 0) + (r.website ? 1 : 0);
   console.log(`\nnovas na BD: ${novas.length}/${ids.length} | aprovadas ${novas.filter(r => r.status === 'approved').length}`);
   console.log('com < 2 canais:', novas.filter(r => canais(r) < 2).length, '| sem alvará:', novas.filter(r => !r.alvara).length, '| confidence≠3:', novas.filter(r => r.confidence !== 3).length, '| created_by≠7:', novas.filter(r => +r.created_by !== 7).length);
   console.log('nome de uma pessoa/unipessoal/entidade:', novas.filter(r => r.status === 'approved' && filtroEntidade(r.name.toUpperCase(), r.nif)).map(r => r.id + ' ' + r.name));
   const nifDup = await q(`SELECT nif, count(*)::int n FROM companies WHERE nif = ANY($1) GROUP BY nif HAVING count(*) > 1`, [novas.map(r => r.nif)]);
   console.log('NIF duplicado:', nifDup.length);
+  console.log('cidade que não é um concelho oficial (grafia do IMPIC por corrigir):', novas.filter(r => r.status === 'approved' && !distritoDe(r.city)).map(r => r.id + ' ' + r.city));
 
   // 3) empilhamento: pontos exatos partilhados e células densas (≥4 por ~110 m) que incluam fichas novas
   const pilhas = await q(`SELECT round(lat::numeric,5) la, round(lng::numeric,5) lo, count(*)::int n FROM companies

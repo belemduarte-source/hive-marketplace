@@ -10,7 +10,10 @@ for (const [d, ms] of Object.entries(j)) for (const m of ms) { C2D.set(norm(m), 
 // variantes que aparecem em moradas/OSM e nos concelhos do IMPIC ("Lagoa (Algarve)", "Calheta (Madeira)"…)
 const alias = { 'calheta sao jorge': 'calheta de sao jorge', 'calheta acores': 'calheta de sao jorge', 'calheta madeira': 'calheta',
   'lagoa algarve': 'lagoa', 'lagoa sao miguel': 'lagoa acores', 'praia da vitoria': 'praia da vitoria',
-  'sobral monte agraco': 'sobral de monte agraco' };
+  'sobral monte agraco': 'sobral de monte agraco', 'freixo espada a cinta': 'freixo de espada a cinta' };
+// grafias do IMPIC que diferem do nome oficial do município (inserir.js grava o oficial; corrigir-grafia.js corrige as já gravadas)
+const GRAFIA = { 'Sobral Monte Agraço': 'Sobral de Monte Agraço', 'Meda': 'Mêda', 'Alfandega da Fé': 'Alfândega da Fé', 'Freixo Espada à Cinta': 'Freixo de Espada à Cinta',
+  'Vila Velha de Rodão': 'Vila Velha de Ródão', 'Vila Nova de Foz Coa': 'Vila Nova de Foz Côa' };
 function distritoDe(city) {
   const k = norm(city);
   if (C2D.has(k)) return C2D.get(k);
@@ -18,4 +21,4 @@ function distritoDe(city) {
   return null;
 }
 const DISTRITOS = ['Aveiro','Beja','Braga','Bragança','Castelo Branco','Coimbra','Évora','Faro','Guarda','Leiria','Lisboa','Portalegre','Porto','Santarém','Setúbal','Viana do Castelo','Vila Real','Viseu','Madeira','Açores'];
-module.exports = { norm, distritoDe, C2D, NOME, DISTRITOS, regiao };
+module.exports = { norm, distritoDe, C2D, NOME, DISTRITOS, regiao, GRAFIA };

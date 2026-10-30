@@ -12,6 +12,7 @@ const { q } = require('./db');
 const { km } = require('./geocode');
 const { nucleo, jacc } = require('./candidatas');
 const { filtroEntidade, classificar, EMOJI, COR } = require('./ficha');
+const { GRAFIA } = require('./geo-pt');
 const DET = dados('cache', 'det');
 
 // fichas PT sem NIF (OSM, qualquer estado): a mesma empresa pode lá estar com a localidade em vez do concelho
@@ -44,8 +45,6 @@ const LOG = dados('inseridas.jsonl');
 const SITES = dados('sites.json');
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 const telDig = s => String(s || '').replace(/\D/g, '').replace(/^351(?=\d{9}$)/, '');
-// grafias do IMPIC que diferem do nome oficial do município
-const GRAFIA = { 'Sobral Monte Agraço': 'Sobral de Monte Agraço', 'Meda': 'Mêda', 'Alfandega da Fé': 'Alfândega da Fé' };
 
 const COLS = ['name', 'sector', 'sectors', 'nif', 'alvara', 'address', 'postal_code', 'city', 'country', 'email', 'phone', 'website',
   'tags', 'description', 'lat', 'lng', 'emoji', 'color', 'confidence', 'created_by', 'status', 'is_new', 'verified'];
