@@ -31,6 +31,9 @@ eq('Imobiliária construtora passa', f.filtroEntidade('IMOVIL - IMOBILIARIA CONS
 eq('Promoção imobiliária fora', f.filtroEntidade('CULTIVARTS - PROMOCAO IMOBILIARIA LDA', '510315917'), 'imobiliaria-sem-obra');
 eq('Construções e investimentos imobiliários passa', f.filtroEntidade('SILVA & SILVA - CONSTRUCOES E INVESTIMENTOS IMOBILIARIOS LDA', '510315917'), null);
 eq('Gestão hoteleira fora', f.filtroEntidade('LUCRIVAGEST - GESTAO E EXPLORACAO HOTELEIRA E IMOBILIARIA, S. A.', '510315917'), 'fora-de-ambito');
+eq('trabalho temporário fora', f.filtroEntidade('INTERIM MSMK JOB CENTER EMPRESA DE TRABALHO TEMPORARIO LDA', '510315917'), 'trabalho-temporario');
+eq('recursos humanos fora', f.filtroEntidade('Reforme - Recursos Humanos LDA', '510315917'), 'trabalho-temporario');
+eq('"Job" sozinho entra', f.filtroEntidade('24 H JOB HOME SERVICES LDA', '510315917'), null);
 // imobiliárias e investimento escritos de outras maneiras (nomes reais da listagem)
 for (const n of ['KZERO-IMOVEIS, LDA', 'JBBC INVESTIMENTOS LDA', 'BMSWINVEST SA', 'LANDELTA - EMPREENDIMENTOS URBANISTICOS, S.A.',
   'MEDIRECORD PORTUGAL REAL ESTATE - MED E PROMOCAO IMOB LDA', 'JOSE ALEGRE - COMPRA E VENDA DE PROPRIEDADES, LDA', 'GROWLIGHT INVESTMENTS LDA'])

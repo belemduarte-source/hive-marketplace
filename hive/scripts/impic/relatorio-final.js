@@ -41,7 +41,7 @@ const F = {}; for (const f of Object.values(funil)) for (const [k, v] of Object.
 p('## Funil (todos os distritos listados)\n');
 p(`- Registos IMPIC listados: ${F.listadas}`);
 p(`- Fora por serem de uma pessoa: unipessoais ${F.unipessoal}, empresários em nome individual (NIF oculto/singular) ${(F['eni-nif-oculto'] || 0) + (F['nao-pessoa-coletiva'] || 0)}`);
-p(`- Fora por não serem prestadores: entidades públicas/associações/ACE ${F['entidade-nao-empresa']}, fora de âmbito (telecom, energia, resíduos, turismo…) ${F['fora-de-ambito'] || 0}, imobiliárias e sociedades de investimento sem palavra de obra no nome ${F['imobiliaria-sem-obra'] || 0}, NIF inválido ${F['nif-invalido']}`);
+p(`- Fora por não serem prestadores: entidades públicas/associações/ACE ${F['entidade-nao-empresa']}, fora de âmbito (telecom, energia, resíduos, turismo…) ${F['fora-de-ambito'] || 0}, imobiliárias e sociedades de investimento sem palavra de obra no nome ${F['imobiliaria-sem-obra'] || 0}, trabalho temporário ${F['trabalho-temporario'] || 0}, NIF inválido ${F['nif-invalido']}`);
 p(`- Já existiam na Hivex: por NIF ${F['ja-na-bd-nif']}, por alvará ${F['ja-na-bd-alvara']}, por nome no concelho ${F['nome-igual-a-ficha-sem-nif']}; NIF repetido entre registos ${F['nif-repetido-na-lista']}`);
 p(`- Candidatas: ${F.candidatas}\n`);
 const mot = {}; for (const x of proc) if (!x.ok) mot[x.retry ? 'à espera (retry): ' + x.motivo : x.motivo] = (mot[x.retry ? 'à espera (retry): ' + x.motivo : x.motivo] || 0) + 1;
@@ -68,10 +68,12 @@ if (ins.length) {
   if (imob.length) p(`- Retiradas depois de gravar por serem imobiliárias ou sociedades de investimento sem palavra de obra no nome (Imóveis, Propriedades, Empreendimentos, Real Estate, Investimentos; o filtro antigo só apanhava "Imobiliária"): ${imob.length} (ids ${imob.map(x => x.id).join(', ')})`);
   const elev = corr.filter(x => x.regra === 'fora-das-areas' || x.regra === 'habilitacoes-desconhecidas');
   if (elev.length) p(`- Retiradas depois de gravar por só terem a habilitação de elevadores na numeração nova do IMPIC ("11.ª - Instalações de elevação"; a tabela de setores só conhecia "Ascensores…" e punha-as em construção geral): ${elev.length} (ids ${elev.map(x => x.id).join(', ')})`);
+  const tt = corr.filter(x => x.regra === 'trabalho-temporario');
+  if (tt.length) p(`- Retiradas depois de gravar por serem empresas de trabalho temporário (têm o certificado para colocar trabalhadores em obra, não fazem obras para o público): ${tt.length} (ids ${tt.map(x => x.id).join(', ')})`);
   p('');
 }
 // amostras: Lisboa (20 ao acaso) e entre distritos (estratificada); amostra.json se for a única
-const AMOSTRAS = [['amostra-lisboa.json', 'Lisboa, ao acaso'], ['amostra-setubal.json', 'Setúbal, ao acaso, antes de gravar'], ['amostra-setubal2.json', 'Setúbal (5.ª vaga), ao acaso, antes de gravar'], ['amostra-faro.json', 'Faro, ao acaso, antes de gravar'], ['amostra-faro2.json', 'Faro (6.ª vaga), ao acaso, antes de gravar'], ['amostra-leiria.json', 'Leiria, ao acaso, antes de gravar'], ['amostra-leiria2.json', 'Leiria (7.ª vaga), ao acaso, antes de gravar'], ['amostra-santarem.json', 'Santarém, ao acaso, antes de gravar'], ['amostra-distritos.json', 'todos os distritos, estratificada'], ['amostra.json', 'ao acaso']];
+const AMOSTRAS = [['amostra-lisboa.json', 'Lisboa, ao acaso'], ['amostra-setubal.json', 'Setúbal, ao acaso, antes de gravar'], ['amostra-setubal2.json', 'Setúbal (5.ª vaga), ao acaso, antes de gravar'], ['amostra-faro.json', 'Faro, ao acaso, antes de gravar'], ['amostra-faro2.json', 'Faro (6.ª vaga), ao acaso, antes de gravar'], ['amostra-leiria.json', 'Leiria, ao acaso, antes de gravar'], ['amostra-leiria2.json', 'Leiria (7.ª vaga), ao acaso, antes de gravar'], ['amostra-santarem.json', 'Santarém, ao acaso, antes de gravar'], ['amostra-santarem2.json', 'Santarém (8.ª vaga), ao acaso, antes de gravar'], ['amostra-coimbra.json', 'Coimbra, ao acaso, antes de gravar'],['amostra-distritos.json', 'todos os distritos, estratificada'], ['amostra.json', 'ao acaso']];
 const vistas = new Set();
 for (const [fic, rot] of AMOSTRAS) {
   if (!fs.existsSync(dados(fic))) continue;

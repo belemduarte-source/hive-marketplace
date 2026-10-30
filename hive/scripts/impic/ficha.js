@@ -61,6 +61,10 @@ const RE_FORA_AMBITO = /\b(HUAWEI|ERICSSON|NOKIA|ALCATEL|CISCO|IBM|HEALTHCARE|ED
 // incluem abreviaturas (Constr, Const) e ofícios (Pintura, Manutenção, Renovações…). Testado contra a listagem inteira.
 const RE_IMOBILIARIA = /\bIMOBILI|\bIMOB\b|\bIMOVE(IS|L)\b|\bPROPRIEDADES?\b|\bEMPREEND|\bREAL ESTATE\b|INVEST(?!IGA)/;
 const RE_OBRA = /CONSTR|\bCONST\b|OBRAS?\b|EMPREIT|ENGENH|ENGINEER|REMODEL|REABILIT|RENOVAC|RECUPERAC|REPARAC|EDIFIC|BUILD|PINTUR|MANUTENC|INSTALAC|ELE(C)?TRIC|CANALIZ|CARPINT|SERRALH|CLIMATIZ|TELHAD|COBERTUR|IMPERMEAB|ISOLAM|PAVIMENT|DEMOLI|TERRAPLEN|COFRAG|ESTRUTUR|RESTAURO|RESTAURACAO DE IMOVEIS|CONSERVAC/;
+// Empresas de trabalho temporário / recursos humanos: têm o certificado para colocar trabalhadores em obra,
+// não fazem obras para o público. Na listagem inteira só apanha estas (Euro Select, Friendly Rhythms, I-Visa,
+// Interim MSMK, Reforme); "Job", "Staff" e "RH" sozinhos ficam de fora da regra por serem ambíguos.
+const RE_TRAB_TEMP = /\bTRABALHO TEMPORARIO\b|\bRECURSOS HUMANOS\b/;
 function filtroEntidade(nome, nif) {
   const n = N(nome);
   if (!nif) return 'eni-nif-oculto';                      // o IMPIC esconde o NIF dos empresários em nome individual
@@ -69,6 +73,7 @@ function filtroEntidade(nome, nif) {
   if (RE_UNIP.test(n)) return 'unipessoal';
   if (RE_ENTIDADE.test(n)) return 'entidade-nao-empresa';
   if (RE_FORA_AMBITO.test(n)) return 'fora-de-ambito';
+  if (RE_TRAB_TEMP.test(n)) return 'trabalho-temporario';
   if (RE_IMOBILIARIA.test(n) && !RE_OBRA.test(n)) return 'imobiliaria-sem-obra';
   return null;
 }

@@ -62,7 +62,7 @@ function construir() {
     const f = F(d);
     f.listadas++;
     const motivo = filtroEntidade(r.nome, r.nif);
-    if (motivo) { f[motivo]++; continue; }
+    if (motivo) { f[motivo] = (f[motivo] || 0) + 1; continue; }
     if (bd.nifs.has(r.nif)) { f['ja-na-bd-nif']++; continue; }
     const num = (r.alvara.match(/\d+/) || [])[0], tipo = (r.alvara.match(/\b(PUB|PAR)\b/) || [])[1];
     if (bd.alvs.has(num + '-' + tipo) || bd.alvNum.has(num)) { f['ja-na-bd-alvara']++; continue; }

@@ -13,7 +13,8 @@ Dados (caches, registos, contactos) ficam FORA do repositório, em `IMPIC_DADOS`
 - Só pessoas coletivas (NIF começado por 5). Fora: unipessoais (também as gralhas e abreviaturas do
   IMPIC: Unpessoal, Uniopessoal, Unipe, Unipl, Uniplda, Unp Lda, Unilda…), empresários em nome
   individual (o IMPIC esconde-lhes o NIF), municípios, associações, ACE, EM, insolventes,
-  telecom/energia/resíduos/limpeza/hotelaria e promotoras/gestoras/mediadoras imobiliárias e
+  telecom/energia/resíduos/limpeza/hotelaria, empresas de trabalho temporário / recursos humanos (têm o
+  certificado para colocar trabalhadores em obra, não fazem obras para o público) e promotoras/gestoras/mediadoras imobiliárias e
   sociedades de investimento sem nenhuma palavra de obra no nome (Imobiliária, Imóveis, Propriedades,
   Empreendimentos, Real Estate, Imob, Invest…; "Imobiliária Construtora", "Soc. Constr. … Imob." e
   "Pintura de Imóveis" entram; "Promoção Imobiliária", "Compra e Venda de Imóveis" e "X Investimentos" não).
