@@ -2,7 +2,7 @@
 //  - só INSERT de fichas novas; nunca UPDATE de fichas existentes
 //  - re-verifica contra a BD viva, mesmo ao lote: NIF, alvará (nº+tipo), email, telefone (qualquer estado)
 //  - um contacto partilhado por ≥3 candidatas (contabilista, grupo) não conta como canal da empresa
-//  - sem pinos empilhados: ponto ocupado → porta INE livre mais próxima da mesma rua/CP7
+//  - sem pinos empilhados: ponto a < 5 m de outra empresa → porta INE livre mais próxima da mesma rua/CP7
 //  - cada linha gravada fica em inseridas.jsonl (id, chave, nif, alvará, ponto) para auditoria/reversão
 // Uso: node inserir.js [--distritos "Lisboa|Setúbal"] [--max 500] [--lote 50] [--gravar]
 const dados = require('./dados');   // ficheiros de dados fora do repositório (IMPIC_DADOS)
@@ -43,8 +43,9 @@ const PROC = dados('processadas.jsonl');
 const LOG = dados('inseridas.jsonl');
 const SITES = dados('sites.json');
 const sleep = ms => new Promise(r => setTimeout(r, ms));
-const chave = (lat, lng) => (+lat).toFixed(5) + ',' + (+lng).toFixed(5);
 const telDig = s => String(s || '').replace(/\D/g, '').replace(/^351(?=\d{9}$)/, '');
+// grafias do IMPIC que diferem do nome oficial do município
+const GRAFIA = { 'Sobral Monte Agraço': 'Sobral de Monte Agraço', 'Meda': 'Mêda', 'Alfandega da Fé': 'Alfândega da Fé' };
 
 const COLS = ['name', 'sector', 'sectors', 'nif', 'alvara', 'address', 'postal_code', 'city', 'country', 'email', 'phone', 'website',
   'tags', 'description', 'lat', 'lng', 'emoji', 'color', 'confidence', 'created_by', 'status', 'is_new', 'verified'];
@@ -75,6 +76,7 @@ const COLS = ['name', 'sector', 'sectors', 'nif', 'alvara', 'address', 'postal_c
     if (fe) { conta(fe); continue; }
     if (mesmaPerto(x.ficha.lat, x.ficha.lng, x.nome)) { conta('nome-igual-a-ficha-perto'); continue; }
     const f = { ...x.ficha };
+    f.city = GRAFIA[f.city] || f.city;
     // setor com as regras ATUAIS, a partir do detalhe oficial em cache
     const fd = path.join(DET, x.key + '.json');
     if (fs.existsSync(fd)) {
@@ -93,8 +95,18 @@ const COLS = ['name', 'sector', 'sectors', 'nif', 'alvara', 'address', 'postal_c
   fila = fila.slice(0, MAX);
   console.log(`[inserir] ${GRAVAR ? 'GRAVAR' : 'ENSAIO'} | aprovadas no processamento ${ok.length} | na fila ${fila.length} | ${JSON.stringify(motivos)}`);
 
-  // pontos já ocupados (empresas aprovadas em PT)
-  const ocup = new Set((await q(`SELECT lat, lng FROM companies WHERE status='approved' AND lower(country)='pt'`)).map(r => chave(r.lat, r.lng)));
+  // pontos já ocupados (empresas aprovadas em PT). Ocupado = outra empresa a < PERTO_M metros, não a mesma chave
+  // arredondada: pontos quase iguais com chaves diferentes não abrem em leque no mapa e tapam-se
+  const PERTO_M = 5;
+  const grelha = new Map(), celula = (a, b) => Math.floor(a * 2000) + ':' + Math.floor(b * 2000);   // células de ~50 m
+  const ocupar = (a, b) => { const k = celula(a, b); if (!grelha.has(k)) grelha.set(k, []); grelha.get(k).push([+a, +b]); };
+  const ocupado = (a, b) => {
+    const A = Math.floor(a * 2000), B = Math.floor(b * 2000);
+    for (let i = -1; i <= 1; i++) for (let j = -1; j <= 1; j++)
+      for (const [u, v] of grelha.get((A + i) + ':' + (B + j)) || []) if (km(a, b, u, v) * 1000 < PERTO_M) return true;
+    return false;
+  };
+  for (const r of await q(`SELECT lat, lng FROM companies WHERE status='approved' AND lower(country)='pt' AND lat IS NOT NULL`)) ocupar(r.lat, r.lng);
   const res = { inseridas: 0, 'nif-ja-na-bd': 0, 'alvara-ja-na-bd': 0, 'email-ja-na-bd': 0, 'telefone-ja-na-bd': 0, 'repetida-no-lote': 0, 'empilhada-sem-porta-livre': 0, desempilhadas: 0 };
   const porDistrito = {};
   for (let i = 0; i < fila.length; i += LOTE) {
@@ -123,13 +135,14 @@ const COLS = ['name', 'sector', 'sectors', 'nif', 'alvara', 'address', 'postal_c
       // desempilhar: ponto ocupado → porta INE livre mais próxima; sem nenhuma livre a ficha NÃO entra
       // (nunca jitter) — fica em processadas.jsonl para uma passagem futura (ex.: Photon com outra posição)
       let lat = f.lat, lng = f.lng, fonte = x.geo.fonte;
-      if (ocup.has(chave(lat, lng))) {
-        const livre = (x.geo.alt || []).find(([a, b]) => !ocup.has(chave(a, b)) && km(lat, lng, a, b) <= 0.6);
+      if (ocupado(lat, lng)) {
+        const livre = (x.geo.alt || []).filter(([a, b]) => km(lat, lng, a, b) <= 0.6 && !ocupado(a, b))
+          .sort((m, n) => km(lat, lng, m[0], m[1]) - km(lat, lng, n[0], n[1]))[0];
         if (!livre) { res['empilhada-sem-porta-livre']++; continue; }
         [lat, lng] = livre; fonte += '+porta-vizinha'; res.desempilhadas++;
       }
       vistosN.add(f.nif); if (f.email) vistosE.add(f.email); if (t) vistosT.add(t);
-      ocup.add(chave(lat, lng));
+      ocupar(lat, lng);
       linhas.push({ x, f: { ...f, lat, lng }, fonte });
     }
     if (!linhas.length) continue;

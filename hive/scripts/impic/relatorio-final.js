@@ -51,7 +51,10 @@ if (ins.length) {
   p(`- Contactos oficiais: email ${pct(ins.filter(x => x.email).length, ins.length)}, telefone ${pct(ins.filter(x => x.phone).length, ins.length)}, website validado ${pct(ins.filter(x => x.website).length, ins.length)}`);
   p(`- Precisão da posição: ${c(ins, x => x.geo.replace(/-sem-cp7|\+porta-vizinha/g, '').replace(/^geoapi-porta$/, 'porta (INE)').replace(/^geoapi-rua$/, 'rua (INE)').replace(/^photon-house$/, 'porta (OSM)').replace(/^photon-street$/, 'rua (OSM)').replace(/^geoapi-cp7(-centro)?$/, 'código postal').replace(/^localidade-.*/, 'localidade'))}`);
   p(`- Setor principal: ${c(ins, x => x.sector)}`);
-  p(`- Desempilhadas para a porta vizinha: ${ins.filter(x => /porta-vizinha/.test(x.geo)).length}\n`);
+  p(`- Desempilhadas para a porta vizinha: ${ins.filter(x => /porta-vizinha/.test(x.geo)).length}`);
+  const corr = linhasJ('corrigidas.jsonl'), ret = corr.filter(x => x.acao === 'retirada');
+  if (corr.length) p(`- Corrigidas depois de gravar (a < 5 m de outra empresa nova; o teste antigo comparava a chave arredondada a 5 casas): ${corr.length - ret.length} movidas para uma porta INE livre, ${ret.length} retiradas por não haver porta livre (ids ${ret.map(x => x.id).join(', ')})`);
+  p('');
 }
 // amostras: Lisboa (20 ao acaso) e entre distritos (estratificada); amostra.json se for a única
 const AMOSTRAS = [['amostra-lisboa.json', 'Lisboa, ao acaso'], ['amostra-distritos.json', 'todos os distritos, estratificada'], ['amostra.json', 'ao acaso']];

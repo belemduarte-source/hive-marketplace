@@ -23,7 +23,8 @@ Dados (caches, registos, contactos) ficam FORA do repositório, em `IMPIC_DADOS`
 - Só `INSERT` de fichas novas. Nunca se altera uma ficha existente.
 - Posição pela MORADA no momento da importação (GeoAPI.pt CP7 → porta/rua INE;
   Photon com âncora; centróide do CP7 só se compacto). Nunca centróide do concelho,
-  nunca jitter. Ponto ocupado → porta INE livre mais próxima da mesma rua; sem nenhuma
+  nunca jitter. Ponto ocupado (outra empresa a < 5 m — não basta comparar coordenadas arredondadas:
+  o INE tem vários pontos quase iguais no mesmo prédio) → porta INE livre mais próxima da mesma rua; sem nenhuma
   livre a ficha não entra nessa vaga (fica em `processadas.jsonl` para uma passagem futura).
 - Setor pelas habilitações (PUB) e por palavras inequívocas do nome; só elevadores /
   ar comprimido / ETAR (sem setor no site) ficam de fora.
@@ -39,7 +40,11 @@ node amostra.js 34 11 --estratificada --saida amostra-distritos.json   # verific
 node sites.js            # site a partir do email de domínio próprio
 node inserir.js --distritos "Lisboa"            # ensaio (nada gravado)
 node inserir.js --distritos "Lisboa" --gravar   # grava + inseridas.jsonl
+node esperar-novas.js correr.log 1000 20      # com o processamento a correr: espera por ~1000 aprovadas novas
+                                              # (ou fim/paragem) → nova vaga: sites.js + inserir.js --gravar + verificar.js
 node verificar.js        # contagens depois, barra, empilhamento, API
+node pares-perto.js 5    # pares de fichas novas a < 5 m de outra empresa (deve dar 0)
+node corrigir-empilhadas.js [--gravar]   # se der > 0: a mais nova vai para a porta livre ou é retirada (corrigidas.jsonl)
 node relatorio-final.js  # relatório em Markdown (contagens antes/depois, funil, inseridas, amostras)
 ```
 

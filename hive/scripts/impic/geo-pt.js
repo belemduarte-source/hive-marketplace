@@ -9,7 +9,8 @@ const C2D = new Map(), NOME = new Map();
 for (const [d, ms] of Object.entries(j)) for (const m of ms) { C2D.set(norm(m), regiao(d)); NOME.set(norm(m), m); }
 // variantes que aparecem em moradas/OSM e nos concelhos do IMPIC ("Lagoa (Algarve)", "Calheta (Madeira)"…)
 const alias = { 'calheta sao jorge': 'calheta de sao jorge', 'calheta acores': 'calheta de sao jorge', 'calheta madeira': 'calheta',
-  'lagoa algarve': 'lagoa', 'lagoa sao miguel': 'lagoa acores', 'praia da vitoria': 'praia da vitoria' };
+  'lagoa algarve': 'lagoa', 'lagoa sao miguel': 'lagoa acores', 'praia da vitoria': 'praia da vitoria',
+  'sobral monte agraco': 'sobral de monte agraco' };
 function distritoDe(city) {
   const k = norm(city);
   if (C2D.has(k)) return C2D.get(k);
