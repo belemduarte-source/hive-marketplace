@@ -2,6 +2,81 @@
 // ── TRANSLATIONS ───────────────────────────────────────────────────────────────
 const translations = {
   pt: {
+    // ── Saúde do marketplace (painel de administração) ──
+    adminTabHealth:'Saúde do marketplace',
+    sdTitulo:'Saúde do marketplace',
+    sdSub:'Os pedidos dos clientes estão a ser respondidos? Onde faltam empresas?',
+    sdJanela:'Período',
+    sdNDias:'{n} dias',
+    sdCanalMsg:'Mensagens diretas',
+    sdCanalOrc:'Pedidos de orçamento',
+    sdCanalConv:'Convites de concursos',
+    sdPedido1:'1 pedido',
+    sdPedidoN:'{n} pedidos',
+    sdRespondidos:'{r} de {n} com resposta',
+    sdMediana:'Mediana até à 1.ª resposta',
+    sdSemPedidos:'Sem pedidos neste período',
+    sdOrcNenhumEnviado:'Nenhum chegou a uma empresa',
+    sdOrcSemEmpresas:'{n} não chegaram a nenhuma empresa',
+    sdConvFalhados:'{n} não chegaram a ser enviados (erro no email)',
+    sdNotaEmail:'Só contam as respostas dadas na Hivex. As respostas por email direto ao cliente não se veem, por isso as taxas reais podem ser mais altas.',
+    sdGrafSemana:'Pedidos por semana, por canal',
+    sdGrafDia:'Pedidos por dia, por canal',
+    sdSemanaDe:'Semana de {d}',
+    sdParcial:'semana incompleta: {n} de 7 dias',
+    sdHoje:'hoje, até agora',
+    sdParciaisNota:'As barras esbatidas são semanas incompletas, nas pontas do período.',
+    sdTotal:'Total',
+    sdVerTabela:'Ver em tabela',
+    sdPeriodoCol:'Período',
+    sdAbrevMsg:'Msg',
+    sdAbrevOrc:'Orç.',
+    sdAbrevConc:'Conc.',
+    sdConcTitulo:'Propostas por concurso',
+    sdConcPublicados:'Concursos publicados',
+    sdConcAbertos:'{n} ainda a receber propostas',
+    sdConcMedia:'Propostas por concurso (média)',
+    sdConcMediana:'mediana: {n}',
+    sdConcComProposta:'Com pelo menos uma proposta',
+    sdConcComPropostaN:'{a} de {b} concursos',
+    sdConcRecusas:'{n} convites responderam «não vamos concorrer»',
+    sdConcDist:'Concursos por número de propostas',
+    sdProp0:'Sem propostas',
+    sdProp1:'1 proposta',
+    sdProp2:'2 propostas',
+    sdProp3:'3 ou mais',
+    sdConcNenhum:'Nenhum concurso publicado neste período.',
+    sdZeroTitulo:'Pedidos de orçamento que não chegaram a nenhuma empresa',
+    sdZeroNota:'Nenhuma empresa da área podia receber estes pedidos: é aqui que vale a pena recrutar.',
+    sdZeroVazio:'Nenhum neste período: todos os pedidos de orçamento chegaram a pelo menos uma empresa.',
+    sdArea:'Área',
+    sdConcelho:'Concelho',
+    sdDistrito:'Distrito',
+    sdPedidos:'Pedidos',
+    sdProcTitulo:'Procura e fichas reclamadas, por área e distrito',
+    sdProcNota:'Pedidos do período (mensagens, orçamentos e concursos) e as fichas geridas pelas próprias empresas. Assinaladas: áreas com procura e nenhuma ficha reclamada no distrito.',
+    sdProcVazio:'Sem pedidos neste período.',
+    sdReclamadas:'Reclamadas',
+    sdFichas:'Fichas',
+    sdSemReclamadas:'Nenhuma ficha reclamada',
+    sdSemLocal:'Localidade não reconhecida',
+    sdOutraArea:'Outra área',
+    sdMostrarTodas:'Mostrar todas ({n})',
+    sdMostrarMenos:'Mostrar menos',
+    sdMostrando:'A mostrar {a} de {b}',
+    sdComoTitulo:'Como se conta',
+    sdComo1:'Mensagens diretas: conversas começadas pelo cliente com uma empresa; com resposta quando a empresa escreve na conversa. As mensagens são guardadas 90 dias.',
+    sdComo2:'Pedidos de orçamento: com resposta quando uma das empresas que o receberam escreve a esse cliente depois do pedido (as destinatárias ficam registadas desde 30/10/2026; nos pedidos anteriores conta qualquer empresa). Os que não chegaram a nenhuma empresa ficam fora da taxa.',
+    sdComo3:'Convites de concursos: só os enviados por email, sem os concursos de teste; com resposta quando a empresa envia uma proposta ou responde «não vamos concorrer». Uma proposta retirada não conta nas propostas por concurso.',
+    sdComo4:'Ficha reclamada: gerida pela própria empresa. O distrito vem da localidade; quando esta não é um concelho, da zona onde fica.',
+    sdComo5:'Dias e semanas na hora de Lisboa; as semanas vão de segunda a domingo.',
+    sdErro:'Não foi possível carregar a saúde do marketplace.',
+    sdDiaUnid:'d',
+    sdOrcSemEmpresas1:'1 não chegou a nenhuma empresa',
+    sdConvFalhados1:'1 não chegou a ser enviado (erro no email)',
+    sdConcAbertos1:'1 ainda a receber propostas',
+    sdConcRecusas1:'1 convite respondeu «não vamos concorrer»',
+    sdConcComPropostaN1:'{a} de 1 concurso',
     // ── Sem mapa: pesquisa por filtros (telemóveis e tablets) ──
     smTitulo:'Encontre profissionais perto de si',
     smSub:'Diga onde, o serviço e até que distância. As empresas aparecem por ordem de proximidade.',
@@ -692,6 +767,81 @@ const translations = {
     regCity:'Localidade / Cidade'
   },
   en: {
+    // ── Saúde do marketplace (painel de administração) ──
+    adminTabHealth:'Marketplace health',
+    sdTitulo:'Marketplace health',
+    sdSub:'Are customer requests being answered? Where are companies missing?',
+    sdJanela:'Period',
+    sdNDias:'{n} days',
+    sdCanalMsg:'Direct messages',
+    sdCanalOrc:'Quote requests',
+    sdCanalConv:'Tender invitations',
+    sdPedido1:'1 request',
+    sdPedidoN:'{n} requests',
+    sdRespondidos:'{r} of {n} answered',
+    sdMediana:'Median time to first reply',
+    sdSemPedidos:'No requests in this period',
+    sdOrcNenhumEnviado:'None reached a company',
+    sdOrcSemEmpresas:'{n} reached no company',
+    sdConvFalhados:'{n} were never sent (email error)',
+    sdNotaEmail:'Only replies given on Hivex count. Replies sent straight to the customer by email are not visible, so the real rates may be higher.',
+    sdGrafSemana:'Requests per week, by channel',
+    sdGrafDia:'Requests per day, by channel',
+    sdSemanaDe:'Week of {d}',
+    sdParcial:'partial week: {n} of 7 days',
+    sdHoje:'today, so far',
+    sdParciaisNota:'Faded bars are partial weeks at either end of the period.',
+    sdTotal:'Total',
+    sdVerTabela:'Show as table',
+    sdPeriodoCol:'Period',
+    sdAbrevMsg:'Msg',
+    sdAbrevOrc:'Quotes',
+    sdAbrevConc:'Tenders',
+    sdConcTitulo:'Proposals per tender',
+    sdConcPublicados:'Tenders published',
+    sdConcAbertos:'{n} still taking proposals',
+    sdConcMedia:'Proposals per tender (average)',
+    sdConcMediana:'median: {n}',
+    sdConcComProposta:'With at least one proposal',
+    sdConcComPropostaN:'{a} of {b} tenders',
+    sdConcRecusas:'{n} invitations answered “We won’t bid”',
+    sdConcDist:'Tenders by number of proposals',
+    sdProp0:'No proposals',
+    sdProp1:'1 proposal',
+    sdProp2:'2 proposals',
+    sdProp3:'3 or more',
+    sdConcNenhum:'No tenders published in this period.',
+    sdZeroTitulo:'Quote requests that reached no company',
+    sdZeroNota:'No company in the area could receive these requests: this is where recruiting pays off.',
+    sdZeroVazio:'None in this period: every quote request reached at least one company.',
+    sdArea:'Area',
+    sdConcelho:'Municipality',
+    sdDistrito:'District',
+    sdPedidos:'Requests',
+    sdProcTitulo:'Demand and claimed listings, by area and district',
+    sdProcNota:'Requests in the period (messages, quotes and tenders) and the listings managed by the companies themselves. Flagged: areas with demand and no claimed listing in the district.',
+    sdProcVazio:'No requests in this period.',
+    sdReclamadas:'Claimed',
+    sdFichas:'Listings',
+    sdSemReclamadas:'No claimed listing',
+    sdSemLocal:'Unrecognised location',
+    sdOutraArea:'Other area',
+    sdMostrarTodas:'Show all ({n})',
+    sdMostrarMenos:'Show less',
+    sdMostrando:'Showing {a} of {b}',
+    sdComoTitulo:'How it is counted',
+    sdComo1:'Direct messages: conversations a customer starts with a company; answered when the company writes in the conversation. Messages are kept for 90 days.',
+    sdComo2:'Quote requests: answered when one of the companies that received it writes to that customer after the request (recipients are recorded since 30/10/2026; for earlier requests any company counts). Requests that reached no company are left out of the rate.',
+    sdComo3:'Tender invitations: only those sent by email, excluding test tenders; answered when the company sends a proposal or replies “We won’t bid”. A withdrawn proposal does not count in proposals per tender.',
+    sdComo4:'Claimed listing: managed by the company itself. The district comes from the town; when that is not a municipality, from the area it lies in.',
+    sdComo5:'Days and weeks in Lisbon time; weeks run from Monday to Sunday.',
+    sdErro:'Could not load the marketplace health.',
+    sdDiaUnid:'d',
+    sdOrcSemEmpresas1:'1 reached no company',
+    sdConvFalhados1:'1 was never sent (email error)',
+    sdConcAbertos1:'1 still taking proposals',
+    sdConcRecusas1:'1 invitation answered “We won’t bid”',
+    sdConcComPropostaN1:'{a} of 1 tender',
     // ── Sem mapa: pesquisa por filtros (telemóveis e tablets) ──
     smTitulo:'Find professionals near you',
     smSub:'Tell us where, the service and how far. Companies are listed by distance.',
@@ -1373,6 +1523,81 @@ const translations = {
     regCity:'Locality / City'
   },
   fr: {
+    // ── Saúde do marketplace (painel de administração) ──
+    adminTabHealth:'Santé du marketplace',
+    sdTitulo:'Santé du marketplace',
+    sdSub:'Les demandes des clients reçoivent-elles une réponse ? Où manque-t-il des entreprises ?',
+    sdJanela:'Période',
+    sdNDias:'{n} jours',
+    sdCanalMsg:'Messages directs',
+    sdCanalOrc:'Demandes de devis',
+    sdCanalConv:'Invitations aux appels d’offres',
+    sdPedido1:'1 demande',
+    sdPedidoN:'{n} demandes',
+    sdRespondidos:'{r} sur {n} avec réponse',
+    sdMediana:'Délai médian de première réponse',
+    sdSemPedidos:'Aucune demande sur cette période',
+    sdOrcNenhumEnviado:'Aucune n’a atteint une entreprise',
+    sdOrcSemEmpresas:'{n} n’ont atteint aucune entreprise',
+    sdConvFalhados:'{n} n’ont jamais été envoyées (erreur d’email)',
+    sdNotaEmail:'Seules les réponses données sur Hivex comptent. Les réponses envoyées directement au client par email ne sont pas visibles : les taux réels peuvent être plus élevés.',
+    sdGrafSemana:'Demandes par semaine, par canal',
+    sdGrafDia:'Demandes par jour, par canal',
+    sdSemanaDe:'Semaine du {d}',
+    sdParcial:'semaine incomplète : {n} jours sur 7',
+    sdHoje:'aujourd’hui, jusqu’à présent',
+    sdParciaisNota:'Les barres estompées sont des semaines incomplètes, aux extrémités de la période.',
+    sdTotal:'Total',
+    sdVerTabela:'Voir en tableau',
+    sdPeriodoCol:'Période',
+    sdAbrevMsg:'Msg',
+    sdAbrevOrc:'Devis',
+    sdAbrevConc:'AO',
+    sdConcTitulo:'Propositions par appel d’offres',
+    sdConcPublicados:'Appels d’offres publiés',
+    sdConcAbertos:'{n} reçoivent encore des propositions',
+    sdConcMedia:'Propositions par appel d’offres (moyenne)',
+    sdConcMediana:'médiane : {n}',
+    sdConcComProposta:'Avec au moins une proposition',
+    sdConcComPropostaN:'{a} sur {b} appels d’offres',
+    sdConcRecusas:'{n} invitations ont répondu « Nous ne soumissionnerons pas »',
+    sdConcDist:'Appels d’offres par nombre de propositions',
+    sdProp0:'Aucune proposition',
+    sdProp1:'1 proposition',
+    sdProp2:'2 propositions',
+    sdProp3:'3 ou plus',
+    sdConcNenhum:'Aucun appel d’offres publié sur cette période.',
+    sdZeroTitulo:'Demandes de devis qui n’ont atteint aucune entreprise',
+    sdZeroNota:'Aucune entreprise du domaine ne pouvait recevoir ces demandes : c’est là qu’il vaut la peine de recruter.',
+    sdZeroVazio:'Aucune sur cette période : chaque demande de devis a atteint au moins une entreprise.',
+    sdArea:'Domaine',
+    sdConcelho:'Commune',
+    sdDistrito:'District',
+    sdPedidos:'Demandes',
+    sdProcTitulo:'Demande et fiches revendiquées, par domaine et district',
+    sdProcNota:'Demandes de la période (messages, devis et appels d’offres) et fiches gérées par les entreprises elles-mêmes. Signalés : domaines avec de la demande et aucune fiche revendiquée dans le district.',
+    sdProcVazio:'Aucune demande sur cette période.',
+    sdReclamadas:'Revendiquées',
+    sdFichas:'Fiches',
+    sdSemReclamadas:'Aucune fiche revendiquée',
+    sdSemLocal:'Localité non reconnue',
+    sdOutraArea:'Autre domaine',
+    sdMostrarTodas:'Tout afficher ({n})',
+    sdMostrarMenos:'Afficher moins',
+    sdMostrando:'{a} affichées sur {b}',
+    sdComoTitulo:'Mode de calcul',
+    sdComo1:'Messages directs : conversations qu’un client commence avec une entreprise ; avec réponse quand l’entreprise écrit dans la conversation. Les messages sont conservés 90 jours.',
+    sdComo2:'Demandes de devis : avec réponse quand l’une des entreprises destinataires écrit à ce client après la demande (destinataires enregistrées depuis le 30/10/2026 ; pour les demandes antérieures, toute entreprise compte). Celles qui n’ont atteint aucune entreprise sont exclues du taux.',
+    sdComo3:'Invitations aux appels d’offres : seulement celles envoyées par email, hors appels d’offres de test ; avec réponse quand l’entreprise envoie une proposition ou répond « Nous ne soumissionnerons pas ». Une proposition retirée ne compte pas dans les propositions par appel d’offres.',
+    sdComo4:'Fiche revendiquée : gérée par l’entreprise elle-même. Le district vient de la localité ; quand ce n’est pas une commune, de la zone où elle se trouve.',
+    sdComo5:'Jours et semaines à l’heure de Lisbonne ; les semaines vont du lundi au dimanche.',
+    sdErro:'Impossible de charger la santé du marketplace.',
+    sdDiaUnid:'j',
+    sdOrcSemEmpresas1:'1 n’a atteint aucune entreprise',
+    sdConvFalhados1:'1 n’a jamais été envoyée (erreur d’email)',
+    sdConcAbertos1:'1 reçoit encore des propositions',
+    sdConcRecusas1:'1 invitation a répondu « Nous ne soumissionnerons pas »',
+    sdConcComPropostaN1:'{a} sur 1 appel d’offres',
     // ── Sem mapa: pesquisa por filtros (telemóveis e tablets) ──
     smTitulo:'Trouvez des professionnels près de chez vous',
     smSub:'Indiquez où, le service et jusqu’à quelle distance. Les entreprises sont classées par proximité.',
@@ -2058,6 +2283,81 @@ const translations = {
   },
 
   es: {
+    // ── Saúde do marketplace (painel de administração) ──
+    adminTabHealth:'Salud del marketplace',
+    sdTitulo:'Salud del marketplace',
+    sdSub:'¿Se responden las solicitudes de los clientes? ¿Dónde faltan empresas?',
+    sdJanela:'Período',
+    sdNDias:'{n} días',
+    sdCanalMsg:'Mensajes directos',
+    sdCanalOrc:'Solicitudes de presupuesto',
+    sdCanalConv:'Invitaciones a concursos',
+    sdPedido1:'1 solicitud',
+    sdPedidoN:'{n} solicitudes',
+    sdRespondidos:'{r} de {n} con respuesta',
+    sdMediana:'Mediana hasta la 1.ª respuesta',
+    sdSemPedidos:'Sin solicitudes en este período',
+    sdOrcNenhumEnviado:'Ninguna llegó a una empresa',
+    sdOrcSemEmpresas:'{n} no llegaron a ninguna empresa',
+    sdConvFalhados:'{n} no llegaron a enviarse (error de email)',
+    sdNotaEmail:'Solo cuentan las respuestas dadas en Hivex. Las respuestas enviadas directamente al cliente por email no se ven, así que las tasas reales pueden ser más altas.',
+    sdGrafSemana:'Solicitudes por semana, por canal',
+    sdGrafDia:'Solicitudes por día, por canal',
+    sdSemanaDe:'Semana del {d}',
+    sdParcial:'semana incompleta: {n} de 7 días',
+    sdHoje:'hoy, hasta ahora',
+    sdParciaisNota:'Las barras atenuadas son semanas incompletas, en los extremos del período.',
+    sdTotal:'Total',
+    sdVerTabela:'Ver en tabla',
+    sdPeriodoCol:'Período',
+    sdAbrevMsg:'Msj.',
+    sdAbrevOrc:'Presup.',
+    sdAbrevConc:'Conc.',
+    sdConcTitulo:'Propuestas por concurso',
+    sdConcPublicados:'Concursos publicados',
+    sdConcAbertos:'{n} aún reciben propuestas',
+    sdConcMedia:'Propuestas por concurso (media)',
+    sdConcMediana:'mediana: {n}',
+    sdConcComProposta:'Con al menos una propuesta',
+    sdConcComPropostaN:'{a} de {b} concursos',
+    sdConcRecusas:'{n} invitaciones respondieron «No nos presentaremos»',
+    sdConcDist:'Concursos por número de propuestas',
+    sdProp0:'Sin propuestas',
+    sdProp1:'1 propuesta',
+    sdProp2:'2 propuestas',
+    sdProp3:'3 o más',
+    sdConcNenhum:'Ningún concurso publicado en este período.',
+    sdZeroTitulo:'Solicitudes de presupuesto que no llegaron a ninguna empresa',
+    sdZeroNota:'Ninguna empresa del área podía recibir estas solicitudes: aquí vale la pena captar empresas.',
+    sdZeroVazio:'Ninguna en este período: todas las solicitudes de presupuesto llegaron al menos a una empresa.',
+    sdArea:'Área',
+    sdConcelho:'Municipio',
+    sdDistrito:'Distrito',
+    sdPedidos:'Solicitudes',
+    sdProcTitulo:'Demanda y fichas reclamadas, por área y distrito',
+    sdProcNota:'Solicitudes del período (mensajes, presupuestos y concursos) y las fichas gestionadas por las propias empresas. Señaladas: áreas con demanda y ninguna ficha reclamada en el distrito.',
+    sdProcVazio:'Sin solicitudes en este período.',
+    sdReclamadas:'Reclamadas',
+    sdFichas:'Fichas',
+    sdSemReclamadas:'Ninguna ficha reclamada',
+    sdSemLocal:'Localidad no reconocida',
+    sdOutraArea:'Otra área',
+    sdMostrarTodas:'Mostrar todas ({n})',
+    sdMostrarMenos:'Mostrar menos',
+    sdMostrando:'Mostrando {a} de {b}',
+    sdComoTitulo:'Cómo se cuenta',
+    sdComo1:'Mensajes directos: conversaciones que un cliente inicia con una empresa; con respuesta cuando la empresa escribe en la conversación. Los mensajes se guardan 90 días.',
+    sdComo2:'Solicitudes de presupuesto: con respuesta cuando una de las empresas que la recibieron escribe a ese cliente después de la solicitud (destinatarias registradas desde el 30/10/2026; en las anteriores cuenta cualquier empresa). Las que no llegaron a ninguna empresa quedan fuera de la tasa.',
+    sdComo3:'Invitaciones a concursos: solo las enviadas por email, sin los concursos de prueba; con respuesta cuando la empresa envía una propuesta o responde «No nos presentaremos». Una propuesta retirada no cuenta en las propuestas por concurso.',
+    sdComo4:'Ficha reclamada: gestionada por la propia empresa. El distrito viene de la localidad; cuando esta no es un municipio, de la zona donde está.',
+    sdComo5:'Días y semanas en hora de Lisboa; las semanas van de lunes a domingo.',
+    sdErro:'No se pudo cargar la salud del marketplace.',
+    sdDiaUnid:'d',
+    sdOrcSemEmpresas1:'1 no llegó a ninguna empresa',
+    sdConvFalhados1:'1 no llegó a enviarse (error de email)',
+    sdConcAbertos1:'1 aún recibe propuestas',
+    sdConcRecusas1:'1 invitación respondió «No nos presentaremos»',
+    sdConcComPropostaN1:'{a} de 1 concurso',
     // ── Sem mapa: pesquisa por filtros (telemóveis e tablets) ──
     smTitulo:'Encuentre profesionales cerca de usted',
     smSub:'Indique dónde, el servicio y hasta qué distancia. Las empresas aparecen por proximidad.',
@@ -2735,6 +3035,81 @@ const translations = {
   },
 
   de: {
+    // ── Saúde do marketplace (painel de administração) ──
+    adminTabHealth:'Marktplatz-Zustand',
+    sdTitulo:'Zustand des Marktplatzes',
+    sdSub:'Werden Kundenanfragen beantwortet? Wo fehlen Unternehmen?',
+    sdJanela:'Zeitraum',
+    sdNDias:'{n} Tage',
+    sdCanalMsg:'Direktnachrichten',
+    sdCanalOrc:'Angebotsanfragen',
+    sdCanalConv:'Einladungen zu Ausschreibungen',
+    sdPedido1:'1 Anfrage',
+    sdPedidoN:'{n} Anfragen',
+    sdRespondidos:'{r} von {n} beantwortet',
+    sdMediana:'Median bis zur 1. Antwort',
+    sdSemPedidos:'Keine Anfragen in diesem Zeitraum',
+    sdOrcNenhumEnviado:'Keine hat ein Unternehmen erreicht',
+    sdOrcSemEmpresas:'{n} haben kein Unternehmen erreicht',
+    sdConvFalhados:'{n} wurden nie versendet (E-Mail-Fehler)',
+    sdNotaEmail:'Es zählen nur Antworten über Hivex. Antworten, die direkt per E-Mail an den Kunden gehen, sind nicht sichtbar – die tatsächlichen Quoten können höher sein.',
+    sdGrafSemana:'Anfragen pro Woche, nach Kanal',
+    sdGrafDia:'Anfragen pro Tag, nach Kanal',
+    sdSemanaDe:'Woche vom {d}',
+    sdParcial:'unvollständige Woche: {n} von 7 Tagen',
+    sdHoje:'heute, bisher',
+    sdParciaisNota:'Blasse Balken sind unvollständige Wochen am Anfang oder Ende des Zeitraums.',
+    sdTotal:'Gesamt',
+    sdVerTabela:'Als Tabelle anzeigen',
+    sdPeriodoCol:'Zeitraum',
+    sdAbrevMsg:'Nachr.',
+    sdAbrevOrc:'Angeb.',
+    sdAbrevConc:'Ausschr.',
+    sdConcTitulo:'Angebote pro Ausschreibung',
+    sdConcPublicados:'Veröffentlichte Ausschreibungen',
+    sdConcAbertos:'{n} nehmen noch Angebote an',
+    sdConcMedia:'Angebote pro Ausschreibung (Durchschnitt)',
+    sdConcMediana:'Median: {n}',
+    sdConcComProposta:'Mit mindestens einem Angebot',
+    sdConcComPropostaN:'{a} von {b} Ausschreibungen',
+    sdConcRecusas:'{n} Einladungen mit „Wir bieten nicht“ beantwortet',
+    sdConcDist:'Ausschreibungen nach Anzahl der Angebote',
+    sdProp0:'Keine Angebote',
+    sdProp1:'1 Angebot',
+    sdProp2:'2 Angebote',
+    sdProp3:'3 oder mehr',
+    sdConcNenhum:'Keine Ausschreibung in diesem Zeitraum veröffentlicht.',
+    sdZeroTitulo:'Angebotsanfragen, die kein Unternehmen erreicht haben',
+    sdZeroNota:'Kein Unternehmen des Bereichs konnte diese Anfragen erhalten: Hier lohnt sich die Akquise.',
+    sdZeroVazio:'Keine in diesem Zeitraum: Jede Angebotsanfrage hat mindestens ein Unternehmen erreicht.',
+    sdArea:'Bereich',
+    sdConcelho:'Gemeinde',
+    sdDistrito:'Distrikt',
+    sdPedidos:'Anfragen',
+    sdProcTitulo:'Nachfrage und übernommene Einträge, nach Bereich und Distrikt',
+    sdProcNota:'Anfragen im Zeitraum (Nachrichten, Angebote und Ausschreibungen) und die von den Unternehmen selbst verwalteten Einträge. Markiert: Bereiche mit Nachfrage und ohne übernommenen Eintrag im Distrikt.',
+    sdProcVazio:'Keine Anfragen in diesem Zeitraum.',
+    sdReclamadas:'Übernommen',
+    sdFichas:'Einträge',
+    sdSemReclamadas:'Kein übernommener Eintrag',
+    sdSemLocal:'Ort nicht erkannt',
+    sdOutraArea:'Anderer Bereich',
+    sdMostrarTodas:'Alle anzeigen ({n})',
+    sdMostrarMenos:'Weniger anzeigen',
+    sdMostrando:'{a} von {b} angezeigt',
+    sdComoTitulo:'So wird gezählt',
+    sdComo1:'Direktnachrichten: Gespräche, die ein Kunde mit einem Unternehmen beginnt; beantwortet, wenn das Unternehmen im Gespräch schreibt. Nachrichten werden 90 Tage aufbewahrt.',
+    sdComo2:'Angebotsanfragen: beantwortet, wenn eines der empfangenden Unternehmen diesem Kunden nach der Anfrage schreibt (Empfänger werden seit dem 30.10.2026 erfasst; bei früheren Anfragen zählt jedes Unternehmen). Anfragen, die kein Unternehmen erreicht haben, zählen nicht zur Quote.',
+    sdComo3:'Einladungen zu Ausschreibungen: nur per E-Mail versendete, ohne Test-Ausschreibungen; beantwortet, wenn das Unternehmen ein Angebot sendet oder „Wir bieten nicht“ antwortet. Ein zurückgezogenes Angebot zählt nicht bei den Angeboten pro Ausschreibung.',
+    sdComo4:'Übernommener Eintrag: vom Unternehmen selbst verwaltet. Der Distrikt ergibt sich aus dem Ort; ist dieser keine Gemeinde, aus der Gegend, in der er liegt.',
+    sdComo5:'Tage und Wochen nach Lissabonner Zeit; Wochen laufen von Montag bis Sonntag.',
+    sdErro:'Der Zustand des Marktplatzes konnte nicht geladen werden.',
+    sdDiaUnid:'T',
+    sdOrcSemEmpresas1:'1 hat kein Unternehmen erreicht',
+    sdConvFalhados1:'1 wurde nie versendet (E-Mail-Fehler)',
+    sdConcAbertos1:'1 nimmt noch Angebote an',
+    sdConcRecusas1:'1 Einladung mit „Wir bieten nicht“ beantwortet',
+    sdConcComPropostaN1:'{a} von 1 Ausschreibung',
     // ── Sem mapa: pesquisa por filtros (telemóveis e tablets) ──
     smTitulo:'Finden Sie Fachleute in Ihrer Nähe',
     smSub:'Geben Sie Ort, Leistung und Entfernung an. Die Unternehmen erscheinen nach Nähe sortiert.',
@@ -4369,6 +4744,7 @@ function setLanguage(lang) {
   applyI18n();
   if (typeof _tnRelang === 'function') _tnRelang();
   if (typeof _smRelang === 'function') _smRelang();
+  if (typeof _sdRelang === 'function') _sdRelang();
 }
 
 // Cycle through PT → EN → FR → ES → ZH → PT for the mobile flag button
@@ -13941,9 +14317,10 @@ function closeAdminPanel() {
 function adminSwitchTab(tab) {
   _adminCurrentTab = tab;
   document.querySelectorAll('.admin-tab').forEach((el, i) => {
-    el.classList.toggle('active', ['stats','pending','all','reports','errors'][i] === tab);
+    el.classList.toggle('active', ['stats','saude','pending','all','reports','errors'][i] === tab);
   });
   if (tab === 'stats') adminLoadStats();
+  else if (tab === 'saude') adminLoadSaude();
   else if (tab === 'pending') adminLoadCompanies('pending');
   else if (tab === 'reports') adminLoadReports('pending');
   else if (tab === 'errors') adminLoadErrors();
@@ -14052,6 +14429,7 @@ async function adminLoadStats() {
     // Show the pending count on the "Pendentes" tab so it's visible at a glance.
     const pendTab = document.querySelector('.admin-tab[onclick*="pending"]');
     if (pendTab) pendTab.innerHTML = t('adminTabPending') + (s.pending > 0 ? ` <span style="background:#ef4444;color:#fff;font-size:10px;font-weight:800;border-radius:9px;padding:1px 6px;margin-left:4px">${s.pending}</span>` : '');
+    if (_adminCurrentTab !== 'stats') return;   // entretanto abriu-se outro separador
     const visitsHtml = v ? `
       <div style="font-size:13px;font-weight:800;color:var(--text);margin:0 0 10px">Visitas ao site</div>
       <div class="admin-stat-grid avg-5">
@@ -14089,6 +14467,7 @@ async function adminLoadStats() {
       </div>`;
     if (v) _setVisitsPeriodBtns('day');
   } catch(e) {
+    if (_adminCurrentTab !== 'stats') return;
     body.innerHTML = '<div style="color:var(--red);text-align:center;padding:32px">' + (e.message||t('admErrorLoading')) + '</div>';
   }
 }
@@ -17653,3 +18032,352 @@ Object.assign(window, {
   _semMapa, _smGps, _smLocalInput, _smLocalEscolher, _smArea, _smSub, _smTodas, _smRaio, _smNome, _smExtraMuda,
   _smVerResultados, _smVerFiltros, _smPedirOrcamentos, _smRelang, detectUserLocation, _flyToPlace,
 });
+
+// ══ SAÚDE DO MARKETPLACE (painel de administração) ═══════════════════════════
+// Separador "Saúde do marketplace": os pedidos dos clientes são respondidos e
+// onde faltam empresas, nos últimos 7, 30 ou 90 dias. Lê só contagens de
+// GET /api/admin/marketplace-health (definições em
+// hive/backend/src/saude-marketplace.js). Cores do gráfico: 3 primeiras da
+// paleta categórica validada para daltonismo, em claro e em escuro.
+var _sdDias = 30;
+var _sdDados = null;
+var _sdPedido = 0;
+var _sdTudo = { sem: false, proc: false };
+const _SD_LINHAS = 12;
+const _SD_CANAIS = [['mensagens', 'sdCanalMsg', 'sdAbrevMsg', 1], ['orcamentos', 'sdCanalOrc', 'sdAbrevOrc', 2], ['convites', 'sdCanalConv', 'sdAbrevConc', 3]];
+
+const _sdNum = (n) => { try { return Number(n || 0).toLocaleString(_tnLocale()); } catch (_) { return String(n || 0); } };
+const _sdPct = (a, b) => (b > 0 ? Math.round(100 * a / b) + '%' : '—');
+const _sdData = (iso, o) => { try { return new Date(iso + 'T12:00:00Z').toLocaleDateString(_tnLocale(), Object.assign({ timeZone: 'UTC' }, o)); } catch (_) { return iso; } };
+const _sdDiaMes = (iso) => _sdData(iso, { day: '2-digit', month: '2-digit' });
+const _sdArea = (k) => (k === 'outro' ? t('sdOutraArea') : _tnSetorNome(k));
+const _sdPedidos = (n) => (n === 1 ? t('sdPedido1') : _tnFmt(t('sdPedidoN'), { n: _sdNum(n) }));
+// Frase com um número: a chave terminada em 1 é o singular
+const _sdN = (n, k, o) => _tnFmt(t(n === 1 ? k + '1' : k), Object.assign({ n: _sdNum(n) }, o));
+
+function _sdDuracao(s) {
+  if (s == null) return '—';
+  const min = Math.round(s / 60);
+  if (min < 1) return '< 1 min';
+  if (min < 60) return min + ' min';
+  const h = Math.floor(min / 60), m = min % 60;
+  if (h < 48) return h + ' h' + (m && h < 10 ? ' ' + m + ' min' : '');
+  const d = Math.floor(h / 24), hr = h % 24;
+  return d + ' ' + t('sdDiaUnid') + (hr ? ' ' + hr + ' h' : '');
+}
+
+function _sdRotuloBalde(d, b) {
+  if (d.granularidade === 'dia') {
+    return _sdData(b.inicio, { weekday: 'short', day: 'numeric', month: 'short' }) + (b.inicio === d.hoje ? ' (' + t('sdHoje') + ')' : '');
+  }
+  return _tnFmt(t('sdSemanaDe'), { d: _sdData(b.inicio, { day: 'numeric', month: 'short' }) }) +
+    (b.dias < 7 ? ' (' + _tnFmt(t('sdParcial'), { n: b.dias }) + ')' : '');
+}
+
+function _sdCanalHtml(c, k, rot, slot) {
+  const den = k === 'orcamentos' ? c.enviados : c.pedidos;
+  const avisos = [];
+  if (k === 'orcamentos' && c.sem_empresas > 0) avisos.push(_sdN(c.sem_empresas, 'sdOrcSemEmpresas'));
+  if (k === 'convites' && c.falhados > 0) avisos.push(_sdN(c.falhados, 'sdConvFalhados'));
+  let corpo;
+  if (!c.pedidos) corpo = '<div class="sd-valor sd-valor-vazio">—</div><div class="sd-rotulo">' + escHtml(t('sdSemPedidos')) + '</div>';
+  else if (!den) corpo = '<div class="sd-valor sd-valor-vazio">—</div><div class="sd-rotulo">' + escHtml(t('sdOrcNenhumEnviado')) + '</div>';
+  else {
+    corpo = '<div class="sd-valor">' + _sdPct(c.respondidos, den) + '</div>' +
+      '<div class="sd-rotulo">' + escHtml(_tnFmt(t('sdRespondidos'), { r: _sdNum(c.respondidos), n: _sdNum(den) })) + '</div>' +
+      '<div class="sd-mediana"><span>' + escHtml(t('sdMediana')) + '</span><strong>' + escHtml(_sdDuracao(c.mediana_s)) + '</strong></div>';
+  }
+  return '<div class="sd-canal">' +
+    '<div class="sd-canal-nome"><span class="sd-chave sd-c' + slot + '" aria-hidden="true"></span>' + escHtml(t(rot)) +
+    '<span class="sd-canal-n">' + escHtml(_sdPedidos(c.pedidos)) + '</span></div>' + corpo +
+    avisos.map(a => '<div class="sd-aviso"><i data-lucide="alert-triangle" aria-hidden="true"></i><span>' + escHtml(a) + '</span></div>').join('') +
+    '</div>';
+}
+
+// Coluna com o topo arredondado (4px) e a base direita
+function _sdColuna(x, y, w, h) {
+  const r = Math.max(0, Math.min(4, w / 2, h));
+  const f = (v) => v.toFixed(1);
+  return 'M' + f(x) + ',' + f(y + h) + 'V' + f(y + r) + 'Q' + f(x) + ',' + f(y) + ' ' + f(x + r) + ',' + f(y) +
+    'H' + f(x + w - r) + 'Q' + f(x + w) + ',' + f(y) + ' ' + f(x + w) + ',' + f(y + r) + 'V' + f(y + h) + 'Z';
+}
+
+// Colunas empilhadas por canal (mensagens em baixo); a largura é a do ecrã
+function _sdGraficoSvg(d, largura) {
+  const serie = d.serie || [];
+  const W = Math.max(260, Math.round(largura || 600)), H = 190;
+  const P = { l: 34, r: 8, t: 12, b: 26 };
+  const iW = W - P.l - P.r, iH = H - P.t - P.b;
+  const max = Math.max(1, ...serie.map(b => b.mensagens + b.orcamentos + b.convites));
+  const passo = [1, 2, 5, 10, 20, 25, 50, 100, 200, 250, 500, 1000, 2000, 5000].find(p => max / p <= 4) || Math.ceil(max / 4);
+  const topo = Math.ceil(max / passo) * passo;
+  const Y = (v) => P.t + iH - (v / topo) * iH;
+  const banda = iW / Math.max(1, serie.length);
+  const bw = Math.max(4, Math.min(24, banda * 0.6));
+  let svg = '';
+  for (let v = 0; v <= topo; v += passo) {
+    svg += '<line class="sd-grelha' + (v === 0 ? ' sd-base' : '') + '" x1="' + P.l + '" x2="' + (W - P.r) + '" y1="' + Y(v).toFixed(1) + '" y2="' + Y(v).toFixed(1) + '"/>' +
+      '<text class="sd-eixo" x="' + (P.l - 6) + '" y="' + (Y(v) + 3.5).toFixed(1) + '" text-anchor="end">' + _sdNum(v) + '</text>';
+  }
+  const cada = Math.max(1, Math.ceil(serie.length / Math.max(2, Math.floor(iW / 52))));
+  serie.forEach((b, i) => {
+    const x0 = P.l + banda * i, cx = x0 + banda / 2, x = cx - bw / 2;
+    const camadas = _SD_CANAIS.map(([k, , , slot]) => [b[k], slot]).filter(([v]) => v > 0);
+    let base = 0, segs = '';
+    camadas.forEach(([v, slot], j) => {
+      const y0 = Y(base), y1 = Y(base + v), h = y0 - y1;
+      base += v;
+      if (j === camadas.length - 1) segs += '<path class="sd-seg sd-c' + slot + '" d="' + _sdColuna(x, y1, bw, h) + '"/>';
+      else {
+        const vao = Math.min(2, h / 2);   // 2px da cor do fundo entre segmentos
+        segs += '<rect class="sd-seg sd-c' + slot + '" x="' + x.toFixed(1) + '" y="' + (y1 + vao).toFixed(1) + '" width="' + bw.toFixed(1) + '" height="' + Math.max(1, h - vao).toFixed(1) + '"/>';
+      }
+    });
+    const total = b.mensagens + b.orcamentos + b.convites;
+    const desc = _sdRotuloBalde(d, b) + ': ' + _SD_CANAIS.map(([k, rot]) => b[k] + ' ' + t(rot)).join(', ') + '. ' + t('sdTotal') + ' ' + total;
+    svg += '<g class="sd-col' + (d.granularidade === 'semana' && b.dias < 7 ? ' sd-parcial' : '') + '" data-i="' + i + '" tabindex="0" role="img" aria-label="' + escHtml(desc) + '">' +
+      '<rect class="sd-banda" x="' + x0.toFixed(1) + '" y="' + P.t + '" width="' + banda.toFixed(1) + '" height="' + iH + '"/>' + segs + '</g>';
+    if ((serie.length - 1 - i) % cada === 0) {
+      svg += '<text class="sd-eixo" x="' + cx.toFixed(1) + '" y="' + (H - 8) + '" text-anchor="middle">' + escHtml(_sdDiaMes(b.inicio)) + '</text>';
+    }
+  });
+  return '<svg viewBox="0 0 ' + W + ' ' + H + '" width="' + W + '" height="' + H + '">' + svg + '</svg>';
+}
+
+function _sdTabelaSerie(d) {
+  const linhas = (d.serie || []).map(b => '<tr><td>' + escHtml(_sdRotuloBalde(d, b)) + '</td>' +
+    _SD_CANAIS.map(([k]) => '<td class="sd-n">' + _sdNum(b[k]) + '</td>').join('') +
+    '<td class="sd-n"><b>' + _sdNum(b.mensagens + b.orcamentos + b.convites) + '</b></td></tr>').join('');
+  return '<details class="sd-det"><summary>' + escHtml(t('sdVerTabela')) + '</summary><div class="sd-tabela-wrap"><table class="sd-tabela">' +
+    '<thead><tr><th>' + escHtml(t('sdPeriodoCol')) + '</th>' +
+    _SD_CANAIS.map(([, rot, abrev]) => '<th class="sd-n"><abbr title="' + escHtml(t(rot)) + '">' + escHtml(t(abrev)) + '</abbr></th>').join('') +
+    '<th class="sd-n">' + escHtml(t('sdTotal')) + '</th></tr></thead><tbody>' + linhas + '</tbody></table></div></details>';
+}
+
+function _sdConcursosHtml(c) {
+  if (!c.publicados) return '<p class="sd-vazio">' + escHtml(t('sdConcNenhum')) + '</p>';
+  const dist = c.distribuicao || {};
+  const comProp = c.publicados - (dist['0'] || 0);
+  const media = (c.propostas / c.publicados).toLocaleString(_tnLocale(), { maximumFractionDigits: 1 });
+  const mediana = c.mediana_propostas == null ? '—' : Number(c.mediana_propostas).toLocaleString(_tnLocale(), { maximumFractionDigits: 1 });
+  const maxD = Math.max(1, ...['0', '1', '2', '3+'].map(k => dist[k] || 0));
+  return '<div class="sd-mini">' +
+      '<div><div class="sd-mini-v">' + _sdNum(c.publicados) + '</div><div class="sd-mini-r">' + escHtml(t('sdConcPublicados')) + '</div>' +
+        (c.abertos ? '<div class="sd-mini-r">' + escHtml(_sdN(c.abertos, 'sdConcAbertos')) + '</div>' : '') + '</div>' +
+      '<div><div class="sd-mini-v">' + escHtml(media) + '</div><div class="sd-mini-r">' + escHtml(t('sdConcMedia')) + '</div>' +
+        '<div class="sd-mini-r">' + escHtml(_tnFmt(t('sdConcMediana'), { n: mediana })) + '</div></div>' +
+      '<div><div class="sd-mini-v">' + _sdPct(comProp, c.publicados) + '</div><div class="sd-mini-r">' + escHtml(t('sdConcComProposta')) + '</div>' +
+        '<div class="sd-mini-r">' + escHtml(_sdN(c.publicados, 'sdConcComPropostaN', { a: _sdNum(comProp), b: _sdNum(c.publicados) })) + '</div></div>' +
+    '</div>' +
+    '<div class="sd-dist-t">' + escHtml(t('sdConcDist')) + '</div><div class="sd-dist" role="list">' +
+      [['0', 'sdProp0'], ['1', 'sdProp1'], ['2', 'sdProp2'], ['3+', 'sdProp3']].map(([k, rot]) =>
+        '<div class="sd-dist-l" role="listitem"><span>' + escHtml(t(rot)) + '</span><span class="sd-dist-b"><span style="width:' +
+        (100 * (dist[k] || 0) / maxD).toFixed(1) + '%"></span><b>' + _sdNum(dist[k] || 0) + '</b></span></div>').join('') +
+    '</div>' +
+    (c.recusas ? '<p class="sd-nota">' + escHtml(_sdN(c.recusas, 'sdConcRecusas')) + '</p>' : '');
+}
+
+function _sdMaisHtml(qual, n) {
+  if (n <= _SD_LINHAS) return '';
+  return '<button type="button" class="sd-mais" onclick="_sdMostrar(\'' + qual + '\')">' +
+    escHtml(_sdTudo[qual] ? t('sdMostrarMenos') : _tnFmt(t('sdMostrarTodas'), { n: _sdNum(n) })) + '</button>';
+}
+
+function _sdSemEmpresasHtml(d) {
+  const linhas = d.sem_empresas || [];
+  if (!linhas.length) return '<p class="sd-vazio">' + escHtml(t('sdZeroVazio')) + '</p>';
+  const ver = _sdTudo.sem ? linhas : linhas.slice(0, _SD_LINHAS);
+  return '<div class="sd-tabela-wrap"><table class="sd-tabela"><thead><tr><th>' + escHtml(t('sdArea')) + '</th><th>' + escHtml(t('sdConcelho')) +
+    '</th><th>' + escHtml(t('sdDistrito')) + '</th><th class="sd-n">' + escHtml(t('sdPedidos')) + '</th></tr></thead><tbody>' +
+    ver.map(r => '<tr><td>' + escHtml(_sdArea(r.setor)) + '</td><td>' + escHtml(r.concelho || t('sdSemLocal')) + '</td><td>' +
+      escHtml(r.distrito || '—') + '</td><td class="sd-n"><b>' + _sdNum(r.pedidos) + '</b></td></tr>').join('') +
+    '</tbody></table></div>' +
+    (d.sem_empresas_grupos > linhas.length ? '<p class="sd-nota">' + escHtml(_tnFmt(t('sdMostrando'), { a: _sdNum(linhas.length), b: _sdNum(d.sem_empresas_grupos) })) + '</p>' : '') +
+    _sdMaisHtml('sem', linhas.length);
+}
+
+function _sdProcuraHtml(d) {
+  const linhas = d.procura || [];
+  if (!linhas.length) return '<p class="sd-vazio">' + escHtml(t('sdProcVazio')) + '</p>';
+  const ver = _sdTudo.proc ? linhas : linhas.slice(0, _SD_LINHAS);
+  const falta = '<span class="sd-falta-ic" title="' + escHtml(t('sdSemReclamadas')) + '"><i data-lucide="alert-triangle" aria-hidden="true"></i>0' +
+    '<span class="sr-only">' + escHtml(t('sdSemReclamadas')) + '</span></span>';
+  return '<div class="sd-tabela-wrap"><table class="sd-tabela"><thead><tr><th>' + escHtml(t('sdArea')) + '</th><th>' + escHtml(t('sdDistrito')) +
+    '</th><th class="sd-n">' + escHtml(t('sdPedidos')) + '</th>' +
+    _SD_CANAIS.map(([, rot, abrev]) => '<th class="sd-n sd-col-canal"><abbr title="' + escHtml(t(rot)) + '">' + escHtml(t(abrev)) + '</abbr></th>').join('') +
+    '<th class="sd-n">' + escHtml(t('sdReclamadas')) + '</th><th class="sd-n">' + escHtml(t('sdFichas')) + '</th></tr></thead><tbody>' +
+    ver.map(r => {
+      const semDono = r.distrito && r.reclamadas === 0;
+      return '<tr' + (semDono ? ' class="sd-falta"' : '') + '><td>' + escHtml(_sdArea(r.setor)) + '</td><td>' + escHtml(r.distrito || t('sdSemLocal')) +
+        '</td><td class="sd-n"><b>' + _sdNum(r.pedidos) + '</b></td>' +
+        '<td class="sd-n sd-col-canal">' + _sdNum(r.mensagens) + '</td><td class="sd-n sd-col-canal">' + _sdNum(r.orcamentos) +
+        '</td><td class="sd-n sd-col-canal">' + _sdNum(r.concursos) + '</td>' +
+        '<td class="sd-n">' + (r.reclamadas == null ? '—' : semDono ? falta : _sdNum(r.reclamadas)) + '</td>' +
+        '<td class="sd-n">' + (r.fichas == null ? '—' : _sdNum(r.fichas)) + '</td></tr>';
+    }).join('') +
+    '</tbody></table></div>' +
+    (d.procura_total > linhas.length ? '<p class="sd-nota">' + escHtml(_tnFmt(t('sdMostrando'), { a: _sdNum(linhas.length), b: _sdNum(d.procura_total) })) + '</p>' : '') +
+    _sdMaisHtml('proc', linhas.length);
+}
+
+function _sdHtml(d) {
+  const c = d.canais;
+  const parciais = d.granularidade === 'semana' && (d.serie || []).some(b => b.dias < 7);
+  const vazio = !(d.serie || []).some(b => b.mensagens + b.orcamentos + b.convites > 0);
+  return '<div class="sd-root" id="sdRoot">' +
+    '<div class="sd-topo"><div><h3 class="sd-titulo">' + escHtml(t('sdTitulo')) + '</h3><p class="sd-sub">' + escHtml(t('sdSub')) + '</p></div>' +
+      '<div class="sd-janela" role="group" aria-label="' + escHtml(t('sdJanela')) + '">' +
+      [7, 30, 90].map(n => '<button type="button" aria-pressed="' + (n === d.dias) + '" onclick="adminLoadSaude(' + n + ')">' +
+        escHtml(_tnFmt(t('sdNDias'), { n })) + '</button>').join('') + '</div></div>' +
+    (d.desde ? '<p class="sd-periodo">' + escHtml(_sdData(d.desde, { day: 'numeric', month: 'short' }) + ' – ' + _sdData(d.hoje, { day: 'numeric', month: 'short', year: 'numeric' })) + '</p>' : '') +
+    '<div class="sd-canais">' + _SD_CANAIS.map(([k, rot, , slot]) => _sdCanalHtml(c[k], k, rot, slot)).join('') + '</div>' +
+    '<p class="sd-nota">' + escHtml(t('sdNotaEmail')) + '</p>' +
+    '<section class="sd-bloco"><h4>' + escHtml(t(d.granularidade === 'dia' ? 'sdGrafDia' : 'sdGrafSemana')) + '</h4>' +
+      (vazio ? '<p class="sd-vazio">' + escHtml(t('sdSemPedidos')) + '</p>' :
+        '<div class="sd-legenda">' + _SD_CANAIS.map(([, rot, , slot]) => '<span><i class="sd-chave sd-c' + slot + '" aria-hidden="true"></i>' + escHtml(t(rot)) + '</span>').join('') + '</div>' +
+        '<div class="sd-grafico" id="sdGrafico">' + _sdGraficoSvg(d, _sdLarguraGrafico()) + '<div class="sd-dica" id="sdDica" role="tooltip" hidden></div></div>' +
+        (parciais ? '<p class="sd-nota">' + escHtml(t('sdParciaisNota')) + '</p>' : '') + _sdTabelaSerie(d)) +
+    '</section>' +
+    '<section class="sd-bloco"><h4>' + escHtml(t('sdConcTitulo')) + '</h4>' + _sdConcursosHtml(d.concursos) + '</section>' +
+    '<section class="sd-bloco"><h4>' + escHtml(t('sdZeroTitulo')) + '</h4><p class="sd-nota">' + escHtml(t('sdZeroNota')) + '</p>' +
+      '<div id="sdSem">' + _sdSemEmpresasHtml(d) + '</div></section>' +
+    '<section class="sd-bloco"><h4>' + escHtml(t('sdProcTitulo')) + '</h4><p class="sd-nota">' + escHtml(t('sdProcNota')) + '</p>' +
+      '<div id="sdProc">' + _sdProcuraHtml(d) + '</div></section>' +
+    '<details class="sd-det"><summary>' + escHtml(t('sdComoTitulo')) + '</summary><ul class="sd-notas">' +
+      ['sdComo1', 'sdComo2', 'sdComo3', 'sdComo4', 'sdComo5'].map(k => '<li>' + escHtml(t(k)) + '</li>').join('') + '</ul></details>' +
+    '</div>';
+}
+
+function _sdLarguraGrafico() {
+  const corpo = document.getElementById('adminBody');
+  if (!corpo) return 600;
+  const cs = getComputedStyle(corpo);
+  // a caixa do gráfico tem 4px de padding e 1px de borda de cada lado
+  return corpo.clientWidth - parseFloat(cs.paddingLeft || 0) - parseFloat(cs.paddingRight || 0) - 10;
+}
+
+// Dica por coluna (rato e teclado): o valor primeiro, o canal depois
+function _sdLigarGrafico() {
+  const caixa = document.getElementById('sdGrafico');
+  const dica = document.getElementById('sdDica');
+  if (!caixa || !dica || !_sdDados) return;
+  const mostrar = (g) => {
+    const b = (_sdDados.serie || [])[Number(g.getAttribute('data-i'))];
+    if (!b) return;
+    caixa.querySelectorAll('.sd-col.sd-ativa').forEach(x => x.classList.remove('sd-ativa'));
+    g.classList.add('sd-ativa');
+    dica.textContent = '';
+    const tit = document.createElement('div');
+    tit.className = 'sd-dica-t';
+    tit.textContent = _sdRotuloBalde(_sdDados, b);
+    dica.appendChild(tit);
+    for (const [k, rot, , slot] of _SD_CANAIS.slice().reverse()) {
+      const l = document.createElement('div');
+      l.className = 'sd-dica-l';
+      const chave = document.createElement('i');
+      chave.className = 'sd-c' + slot;
+      const v = document.createElement('b');
+      v.textContent = _sdNum(b[k]);
+      l.append(chave, v, document.createTextNode(' ' + t(rot)));
+      dica.appendChild(l);
+    }
+    const tot = document.createElement('div');
+    tot.className = 'sd-dica-l sd-dica-tot';
+    const vt = document.createElement('b');
+    vt.textContent = _sdNum(b.mensagens + b.orcamentos + b.convites);
+    tot.append(vt, document.createTextNode(' ' + t('sdTotal')));
+    dica.appendChild(tot);
+    dica.hidden = false;
+    // getBoundingClientRect vem com o zoom fluido do computador; left/top são px do layout
+    const rc = caixa.getBoundingClientRect(), rg = g.getBoundingClientRect();
+    const k = rc.width ? caixa.offsetWidth / rc.width : 1;
+    const larg = dica.offsetWidth, alt = dica.offsetHeight;
+    let x = (rg.left - rc.left + rg.width / 2) * k - larg / 2;
+    x = Math.max(4, Math.min(x, caixa.clientWidth - larg - 4));
+    dica.style.left = x + 'px';
+    dica.style.top = Math.max(4, (rg.top - rc.top) * k - alt + 18) + 'px';
+  };
+  const esconder = () => {
+    dica.hidden = true;
+    caixa.querySelectorAll('.sd-col.sd-ativa').forEach(x => x.classList.remove('sd-ativa'));
+  };
+  // Rato: passar por cima. Toque: tocar na coluna — o pointerleave do toque
+  // chega logo a seguir (apagava a dica) e nem todos os browsers dão foco ao
+  // toque; fecha ao tocar fora do gráfico (ouvinte abaixo). Teclado: foco.
+  caixa.addEventListener('pointerover', e => { const g = e.target.closest('.sd-col'); if (g && e.pointerType === 'mouse') mostrar(g); });
+  caixa.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse' && !caixa.contains(document.activeElement)) esconder(); });
+  caixa.addEventListener('click', e => { const g = e.target.closest('.sd-col'); if (g) mostrar(g); });
+  caixa.addEventListener('focusin', e => { const g = e.target.closest('.sd-col'); if (g) mostrar(g); });
+  caixa.addEventListener('focusout', e => { if (!caixa.contains(e.relatedTarget)) esconder(); });
+}
+// Um só ouvinte para todos os redesenhos: tocar/clicar fora do gráfico fecha a dica
+document.addEventListener('pointerdown', (e) => {
+  const caixa = document.getElementById('sdGrafico'), dica = document.getElementById('sdDica');
+  if (!caixa || !dica || dica.hidden || caixa.contains(e.target)) return;
+  dica.hidden = true;
+  caixa.querySelectorAll('.sd-col.sd-ativa').forEach(x => x.classList.remove('sd-ativa'));
+}, true);
+
+function _sdRender() {
+  const body = document.getElementById('adminBody');
+  if (!body || !_sdDados) return;
+  body.innerHTML = _sdHtml(_sdDados);
+  _sdLigarGrafico();
+  refreshLucide();
+}
+
+async function adminLoadSaude(dias) {
+  if (dias) _sdDias = dias;
+  const body = document.getElementById('adminBody');
+  if (!body) return;
+  const anterior = document.getElementById('sdRoot');
+  // Ao mudar de período o ecrã anterior fica, esbatido, até chegarem os números
+  if (anterior && _sdDados) {
+    anterior.classList.add('sd-a-carregar');
+    anterior.querySelectorAll('.sd-janela button').forEach(b => b.setAttribute('aria-pressed', String(Number(b.textContent.replace(/\D/g, '')) === _sdDias)));
+  } else {
+    body.innerHTML = '<div style="text-align:center;padding:32px;color:var(--muted)">' + t('loadingGeneric') + '</div>';
+  }
+  const pedido = ++_sdPedido;
+  try {
+    const d = await apiFetch('/admin/marketplace-health?days=' + _sdDias);
+    if (pedido !== _sdPedido || _adminCurrentTab !== 'saude') return;
+    _sdDados = d;
+    _sdTudo = { sem: false, proc: false };
+    _sdRender();
+  } catch (e) {
+    if (pedido !== _sdPedido || _adminCurrentTab !== 'saude') return;
+    body.innerHTML = '<div style="color:var(--red);text-align:center;padding:32px">' + escHtml(t('sdErro')) +
+      (e && e.message ? '<div style="font-size:12px;color:var(--muted);margin-top:6px">' + escHtml(e.message) + '</div>' : '') +
+      '<div style="margin-top:14px"><button type="button" class="admin-action-btn" onclick="adminLoadSaude()">' + escHtml(t('retryBtn')) + '</button></div></div>';
+  }
+}
+
+function _sdMostrar(qual) {
+  _sdTudo[qual] = !_sdTudo[qual];
+  const alvo = document.getElementById(qual === 'sem' ? 'sdSem' : 'sdProc');
+  if (alvo && _sdDados) {
+    alvo.innerHTML = qual === 'sem' ? _sdSemEmpresasHtml(_sdDados) : _sdProcuraHtml(_sdDados);
+    refreshLucide();
+  }
+}
+
+// Mudança de língua e de largura (rodar o telemóvel): redesenha com os mesmos números
+function _sdVisivel() {
+  const p = document.getElementById('adminPanel');
+  return !!(p && p.classList.contains('open') && _adminCurrentTab === 'saude' && _sdDados && document.getElementById('sdRoot'));
+}
+function _sdRelang() { if (_sdVisivel()) _sdRender(); }
+let _sdRedim = null;
+window.addEventListener('resize', () => {
+  clearTimeout(_sdRedim);
+  _sdRedim = setTimeout(() => {
+    if (!_sdVisivel()) return;
+    const caixa = document.getElementById('sdGrafico');
+    if (!caixa) return;
+    caixa.querySelector('svg').outerHTML = _sdGraficoSvg(_sdDados, _sdLarguraGrafico());
+    document.getElementById('sdDica').hidden = true;
+  }, 200);
+});
+
+Object.assign(window, { adminLoadSaude, _sdMostrar, _sdRelang });

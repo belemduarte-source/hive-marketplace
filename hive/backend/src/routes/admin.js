@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require('../db');
 const { requireAdmin } = require('../middleware/auth');
 const { pushToUser } = require('../push');
+const { saudeMarketplace } = require('../saude-marketplace');
 
 // All admin routes require admin auth
 router.use(requireAdmin);
@@ -37,6 +38,19 @@ router.get('/site-events', async (req, res, next) => {
         WHERE day > (now() AT TIME ZONE 'Europe/Lisbon')::date - $1::int
         ORDER BY day DESC, event`, [days]);
     res.json(rows);
+  } catch (e) {
+    next(e);
+  }
+});
+
+// GET /api/admin/marketplace-health?days=7|30|90 — saúde do marketplace: os
+// pedidos dos clientes são respondidos e onde faltam empresas (só contagens;
+// definições em saude-marketplace.js)
+router.get('/marketplace-health', async (req, res, next) => {
+  try {
+    res.set('Cache-Control', 'private, no-store');
+    const dias = [7, 30, 90].includes(Number(req.query.days)) ? Number(req.query.days) : 30;
+    res.json(await saudeMarketplace(dias));
   } catch (e) {
     next(e);
   }
