@@ -7717,6 +7717,9 @@ function setSearchView(mode) {
     if (mode === 'list') openResultsSheet(); else closeResultsSheet();
     return;
   }
+  // Vista "Lista": os cartões ocupam toda a área até à margem direita — a
+  // coluna "Empresas Destacadas" sai (as destacadas já vêm primeiro na lista)
+  document.getElementById('searchPane')?.classList.toggle('vista-lista', mode === 'list');
   if (mode === 'list') {
     if (mapEl) mapEl.style.display = 'none';
     if (listEl) listEl.style.display = 'grid';
@@ -7731,6 +7734,8 @@ function setSearchView(mode) {
     btnList?.classList.remove('active');
     hints.forEach(h => h.style.visibility = '');
     if (typeof map !== 'undefined' && map) setTimeout(() => map.invalidateSize(), 100);
+    // a coluna das destacadas esteve escondida: volta a preenchê-la
+    try { if (_nearbyLastFiltered) renderFeaturedPanel(_nearbyLastFiltered); } catch (_) {}
   }
 }
 
@@ -7823,7 +7828,7 @@ function _initResultsSheetDrag() {
 if (document.readyState !== 'loading') _initResultsSheetDrag();
 else document.addEventListener('DOMContentLoaded', _initResultsSheetDrag);
 
-const _LIST_PAGE = 10; // cards per batch ("Mostrar mais" acrescenta o seguinte)
+const _LIST_PAGE = 12; // cards per batch ("Mostrar mais" acrescenta o seguinte) — 12 enche linhas inteiras com 2, 3 ou 4 colunas
 let _listRenderedCount = 0;
 let _listCurrentData = [];
 
