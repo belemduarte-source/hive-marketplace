@@ -2,6 +2,43 @@
 // ── TRANSLATIONS ───────────────────────────────────────────────────────────────
 const translations = {
   pt: {
+    // ── Sem mapa: pesquisa por filtros (telemóveis e tablets) ──
+    smTitulo:'Encontre profissionais perto de si',
+    smSub:'Diga onde, o serviço e até que distância. As empresas aparecem por ordem de proximidade.',
+    smOnde:'Onde?',
+    smPerto:'Perto de mim',
+    smLocalPh:'Ou escreva a cidade, vila ou freguesia',
+    smOndeAqui:'Na sua localização atual',
+    smOndeGps:'Perto de {l} (a sua localização)',
+    smOndeIp:'{l}, aproximadamente. Toque em «Perto de mim» para mais precisão.',
+    smOndeNada:'Escolha um local para ordenarmos as empresas por distância.',
+    smOndeProcura:'A procurar…',
+    smProcurarLocal:'Procurar «{q}»',
+    smEmpresasN:'{n} empresas',
+    smEmpresas1:'1 empresa',
+    smServico:'Que serviço procura?',
+    smTodas:'Todas as áreas',
+    smSubDica:'Toque numa atividade para escolher só essa; volte a tocar para juntar outras.',
+    smDist:'Até que distância?',
+    smTodoPais:'Todo o país',
+    smMaisFiltros:'Mais filtros',
+    smNomePh:'Nome da empresa ou palavra-chave',
+    smAlvara:'Só com alvará IMPIC',
+    smGerida:'Só fichas geridas pela própria empresa',
+    smVerN:'Ver {n} empresas',
+    smVer1:'Ver 1 empresa',
+    smVer0:'Nenhuma empresa: alargue a distância',
+    smACarregar:'A carregar empresas…',
+    smFiltros:'Filtros',
+    smResOrdem:'Destacadas primeiro, depois as mais próximas de {l}.',
+    smAte:'até {km} km',
+    smDestacada:'Destacada',
+    smVazio:'Nenhuma empresa com estes filtros.',
+    smVazioSub:'Alargue a distância, escolha outras áreas ou peça orçamentos a várias empresas de uma vez.',
+    smAumentar:'Alargar para {km} km',
+    smFimTitulo:'Não encontrou o que procura?',
+    smFimRfq:'Pedir orçamentos a várias empresas',
+    smDonoCta:'Registe ou reclame a sua ficha →',
     // ── Concursos (pedido de propostas com anexos) ──
     // ── Pedidos de clientes e respostas dos concursos ──
     tnTabResp:'Respostas ({n} de {c})',
@@ -655,6 +692,43 @@ const translations = {
     regCity:'Localidade / Cidade'
   },
   en: {
+    // ── Sem mapa: pesquisa por filtros (telemóveis e tablets) ──
+    smTitulo:'Find professionals near you',
+    smSub:'Tell us where, the service and how far. Companies are listed by distance.',
+    smOnde:'Where?',
+    smPerto:'Near me',
+    smLocalPh:'Or type the city, town or parish',
+    smOndeAqui:'At your current location',
+    smOndeGps:'Near {l} (your location)',
+    smOndeIp:'{l}, approximately. Tap “Near me” for more precision.',
+    smOndeNada:'Choose a place so we can sort companies by distance.',
+    smOndeProcura:'Searching…',
+    smProcurarLocal:'Search for “{q}”',
+    smEmpresasN:'{n} companies',
+    smEmpresas1:'1 company',
+    smServico:'What service do you need?',
+    smTodas:'All trades',
+    smSubDica:'Tap an activity to pick just that one; tap others to add them.',
+    smDist:'How far?',
+    smTodoPais:'Whole country',
+    smMaisFiltros:'More filters',
+    smNomePh:'Company name or keyword',
+    smAlvara:'Only with an IMPIC licence',
+    smGerida:'Only listings managed by the company itself',
+    smVerN:'See {n} companies',
+    smVer1:'See 1 company',
+    smVer0:'No companies: widen the distance',
+    smACarregar:'Loading companies…',
+    smFiltros:'Filters',
+    smResOrdem:'Featured first, then the nearest to {l}.',
+    smAte:'up to {km} km',
+    smDestacada:'Featured',
+    smVazio:'No companies match these filters.',
+    smVazioSub:'Widen the distance, choose other trades or request quotes from several companies at once.',
+    smAumentar:'Widen to {km} km',
+    smFimTitulo:'Didn’t find what you need?',
+    smFimRfq:'Request quotes from several companies',
+    smDonoCta:'Register or claim your listing →',
     // ── Concursos (pedido de propostas com anexos) ──
     // ── Pedidos de clientes e respostas dos concursos ──
     tnTabResp:'Responses ({n} of {c})',
@@ -1299,6 +1373,43 @@ const translations = {
     regCity:'Locality / City'
   },
   fr: {
+    // ── Sem mapa: pesquisa por filtros (telemóveis e tablets) ──
+    smTitulo:'Trouvez des professionnels près de chez vous',
+    smSub:'Indiquez où, le service et jusqu’à quelle distance. Les entreprises sont classées par proximité.',
+    smOnde:'Où ?',
+    smPerto:'Près de moi',
+    smLocalPh:'Ou saisissez la ville, le village ou la commune',
+    smOndeAqui:'À votre position actuelle',
+    smOndeGps:'Près de {l} (votre position)',
+    smOndeIp:'{l}, environ. Touchez « Près de moi » pour plus de précision.',
+    smOndeNada:'Choisissez un lieu pour que nous classions les entreprises par distance.',
+    smOndeProcura:'Recherche…',
+    smProcurarLocal:'Rechercher « {q} »',
+    smEmpresasN:'{n} entreprises',
+    smEmpresas1:'1 entreprise',
+    smServico:'Quel service cherchez-vous ?',
+    smTodas:'Tous les métiers',
+    smSubDica:'Touchez une activité pour ne garder que celle-ci ; touchez-en d’autres pour les ajouter.',
+    smDist:'Jusqu’à quelle distance ?',
+    smTodoPais:'Tout le pays',
+    smMaisFiltros:'Plus de filtres',
+    smNomePh:'Nom de l’entreprise ou mot-clé',
+    smAlvara:'Seulement avec licence IMPIC',
+    smGerida:'Seulement les fiches gérées par l’entreprise elle-même',
+    smVerN:'Voir {n} entreprises',
+    smVer1:'Voir 1 entreprise',
+    smVer0:'Aucune entreprise : élargissez la distance',
+    smACarregar:'Chargement des entreprises…',
+    smFiltros:'Filtres',
+    smResOrdem:'Mises en avant d’abord, puis les plus proches de {l}.',
+    smAte:'jusqu’à {km} km',
+    smDestacada:'Mise en avant',
+    smVazio:'Aucune entreprise ne correspond à ces filtres.',
+    smVazioSub:'Élargissez la distance, choisissez d’autres métiers ou demandez des devis à plusieurs entreprises à la fois.',
+    smAumentar:'Élargir à {km} km',
+    smFimTitulo:'Vous n’avez pas trouvé ce que vous cherchez ?',
+    smFimRfq:'Demander des devis à plusieurs entreprises',
+    smDonoCta:'Inscrivez ou revendiquez votre fiche →',
     // ── Concursos (pedido de propostas com anexos) ──
     // ── Pedidos de clientes e respostas dos concursos ──
     tnTabResp:'Réponses ({n} sur {c})',
@@ -1947,6 +2058,43 @@ const translations = {
   },
 
   es: {
+    // ── Sem mapa: pesquisa por filtros (telemóveis e tablets) ──
+    smTitulo:'Encuentre profesionales cerca de usted',
+    smSub:'Indique dónde, el servicio y hasta qué distancia. Las empresas aparecen por proximidad.',
+    smOnde:'¿Dónde?',
+    smPerto:'Cerca de mí',
+    smLocalPh:'O escriba la ciudad, pueblo o parroquia',
+    smOndeAqui:'En su ubicación actual',
+    smOndeGps:'Cerca de {l} (su ubicación)',
+    smOndeIp:'{l}, aproximadamente. Toque en «Cerca de mí» para más precisión.',
+    smOndeNada:'Elija un lugar para ordenar las empresas por distancia.',
+    smOndeProcura:'Buscando…',
+    smProcurarLocal:'Buscar «{q}»',
+    smEmpresasN:'{n} empresas',
+    smEmpresas1:'1 empresa',
+    smServico:'¿Qué servicio busca?',
+    smTodas:'Todas las actividades',
+    smSubDica:'Toque una actividad para elegir solo esa; toque otras para añadirlas.',
+    smDist:'¿Hasta qué distancia?',
+    smTodoPais:'Todo el país',
+    smMaisFiltros:'Más filtros',
+    smNomePh:'Nombre de la empresa o palabra clave',
+    smAlvara:'Solo con licencia IMPIC',
+    smGerida:'Solo fichas gestionadas por la propia empresa',
+    smVerN:'Ver {n} empresas',
+    smVer1:'Ver 1 empresa',
+    smVer0:'Ninguna empresa: amplíe la distancia',
+    smACarregar:'Cargando empresas…',
+    smFiltros:'Filtros',
+    smResOrdem:'Destacadas primero, después las más cercanas a {l}.',
+    smAte:'hasta {km} km',
+    smDestacada:'Destacada',
+    smVazio:'Ninguna empresa con estos filtros.',
+    smVazioSub:'Amplíe la distancia, elija otras actividades o pida presupuestos a varias empresas a la vez.',
+    smAumentar:'Ampliar a {km} km',
+    smFimTitulo:'¿No encontró lo que busca?',
+    smFimRfq:'Pedir presupuestos a varias empresas',
+    smDonoCta:'Registre o reclame su ficha →',
     // ── Concursos (pedido de propostas com anexos) ──
     // ── Pedidos de clientes e respostas dos concursos ──
     tnTabResp:'Respuestas ({n} de {c})',
@@ -2587,6 +2735,43 @@ const translations = {
   },
 
   de: {
+    // ── Sem mapa: pesquisa por filtros (telemóveis e tablets) ──
+    smTitulo:'Finden Sie Fachleute in Ihrer Nähe',
+    smSub:'Geben Sie Ort, Leistung und Entfernung an. Die Unternehmen erscheinen nach Nähe sortiert.',
+    smOnde:'Wo?',
+    smPerto:'In meiner Nähe',
+    smLocalPh:'Oder Stadt, Ort oder Gemeinde eingeben',
+    smOndeAqui:'An Ihrem aktuellen Standort',
+    smOndeGps:'In der Nähe von {l} (Ihr Standort)',
+    smOndeIp:'{l}, ungefähr. Tippen Sie auf „In meiner Nähe“ für mehr Genauigkeit.',
+    smOndeNada:'Wählen Sie einen Ort, damit wir die Unternehmen nach Entfernung sortieren.',
+    smOndeProcura:'Suche…',
+    smProcurarLocal:'„{q}“ suchen',
+    smEmpresasN:'{n} Unternehmen',
+    smEmpresas1:'1 Unternehmen',
+    smServico:'Welche Leistung suchen Sie?',
+    smTodas:'Alle Gewerke',
+    smSubDica:'Tippen Sie auf eine Tätigkeit, um nur diese zu wählen; tippen Sie weitere an, um sie hinzuzufügen.',
+    smDist:'Wie weit?',
+    smTodoPais:'Ganzes Land',
+    smMaisFiltros:'Weitere Filter',
+    smNomePh:'Firmenname oder Stichwort',
+    smAlvara:'Nur mit IMPIC-Lizenz',
+    smGerida:'Nur Einträge, die das Unternehmen selbst verwaltet',
+    smVerN:'{n} Unternehmen ansehen',
+    smVer1:'1 Unternehmen ansehen',
+    smVer0:'Keine Unternehmen: Entfernung erweitern',
+    smACarregar:'Unternehmen werden geladen…',
+    smFiltros:'Filter',
+    smResOrdem:'Hervorgehobene zuerst, dann die nächsten zu {l}.',
+    smAte:'bis {km} km',
+    smDestacada:'Hervorgehoben',
+    smVazio:'Keine Unternehmen mit diesen Filtern.',
+    smVazioSub:'Erweitern Sie die Entfernung, wählen Sie andere Gewerke oder fragen Sie mehrere Unternehmen auf einmal an.',
+    smAumentar:'Auf {km} km erweitern',
+    smFimTitulo:'Nicht gefunden, was Sie suchen?',
+    smFimRfq:'Angebote bei mehreren Unternehmen anfragen',
+    smDonoCta:'Eintrag registrieren oder beanspruchen →',
     // ── Concursos (pedido de propostas com anexos) ──
     // ── Pedidos de clientes e respostas dos concursos ──
     tnTabResp:'Antworten ({n} von {c})',
@@ -3322,6 +3507,8 @@ function showTab(name) {
       const w = document.getElementById('welcomeOverlay');
       if (w) { w.style.display = 'flex'; applyI18n(); }
     } catch (_) {}
+    // sem mapa, o "Início" é o ecrã de filtros
+    try { if (_semMapa()) _smVerFiltros(); } catch (_) {}
   }
 
   // Show selected tab
@@ -3332,14 +3519,14 @@ function showTab(name) {
     // localStorage flag means it shows only once per browser.
     try {
       // (não em links de concursos: a pessoa vem responder, não explorar o mapa)
-      if (!localStorage.getItem('hive_pin_hint_shown') && !_tnLinkAtivo()) {
+      if (!localStorage.getItem('hive_pin_hint_shown') && !_tnLinkAtivo() && !_semMapa()) {
         setTimeout(() => {
           showToast(t('mapPinHint') || 'Toque num pin para ver os detalhes da empresa.');
           try { localStorage.setItem('hive_pin_hint_shown', '1'); } catch(_) {}
         }, 1200);
       }
       // dica única da folha de resultados (só mobile)
-      if (window.innerWidth <= 768 && !localStorage.getItem('hive_sheet_hint_shown') && !_tnLinkAtivo()) {
+      if (window.innerWidth <= 768 && !localStorage.getItem('hive_sheet_hint_shown') && !_tnLinkAtivo() && !_semMapa()) {
         setTimeout(() => {
           showToast((t('sheetHint') || 'Toque em "Ver lista" para ver as empresas'));
           try { localStorage.setItem('hive_sheet_hint_shown', '1'); } catch(_) {}
@@ -3888,6 +4075,8 @@ function heroSearch() {
 // pesquisa, áreas, selos). Pesquisar/escolher área/fechar recolhe-o e fica
 // memorizado; o botão "Início" volta a mostrá-lo. Deep links nunca o veem.
 function showWelcome() {
+  // Sem mapa, o ecrã de filtros é a porta de entrada (o cartão não aparece)
+  if (_semMapa()) { try { showTab('search'); _smVerFiltros(); } catch (_) {} return; }
   const w = document.getElementById('welcomeOverlay');
   if (!w) return;
   try { showTab('search'); } catch (_) {}
@@ -4179,6 +4368,7 @@ function setLanguage(lang) {
   // Apply all translations
   applyI18n();
   if (typeof _tnRelang === 'function') _tnRelang();
+  if (typeof _smRelang === 'function') _smRelang();
 }
 
 // Cycle through PT → EN → FR → ES → ZH → PT for the mobile flag button
@@ -6099,7 +6289,11 @@ class HxCircle {
   }
 }
 
-try {
+// Telemóveis e tablets (≤1024px no arranque, .hx-sem-mapa): sem mapa — a
+// pesquisa é por filtros e a lista por distância (bloco "SEM MAPA" no fim).
+if (_semMapa()) {
+  // map fica a null; o resto da app já trata esse caso (o mapa pode falhar)
+} else try {
   if (typeof maplibregl === 'undefined') throw new Error('MapLibre not loaded');
   // Texto árabe/hebraico nos rótulos mundiais precisa de shaping RTL (os tiles
   // raster traziam-no pré-renderizado). Lazy: só carrega se aparecer texto RTL.
@@ -6713,14 +6907,8 @@ function _geocodeLocationNominatim(location) {
                      place.type === 'town' ? 12 :
                      place.type === 'city' ? 11 :
                      place.type === 'county' ? 10 : 9;
-        map.setView([lat, lng], zoom, { animate: true });
-        // Update current map center
-        currentMapCenter = [lat, lng];
-        invalidateDistanceCache();
-        // Update radius circle center
-        if (radiusCircle) radiusCircle.setLatLng([lat, lng]);
-        // Show location name in toast
-        showToast(`${place.name || location}`);
+        // centro da pesquisa, círculo do raio e aviso (o mapa só se existir)
+        _flyToPlace({ lat, lng, zoom, label: place.name || location });
       } else {
         showToast(t('toastPlaceNotFound'));
       }
@@ -7762,6 +7950,8 @@ applyFilters.now = function() { clearTimeout(_afTimer); _runApplyFilters(); };
 
 function _runApplyFilters() {
   const filtered = getFiltered();
+  // Sem mapa (telemóveis e tablets): só a contagem e a lista do ecrã de filtros
+  if (_semMapa()) { _smAtualizar(filtered); return; }
   // The company open in the detail panel always keeps its pin, even when the
   // active filters wouldn't include it (e.g. arriving from the home "mais bem
   // avaliadas" cards with no area selected — the map used to zoom to nothing).
@@ -9035,6 +9225,9 @@ async function routeToCompany(id) {
   const cid = (id != null) ? id : selectedId;
   const c = companies.find(x => x.id === cid);
   if (!c || c.lat == null || c.lng == null) return;
+
+  // Sem mapa (telemóveis e tablets): a navegação abre logo no Google Maps
+  if (_semMapa()) { _routeDest = { lat: c.lat, lng: c.lng, name: c.name }; openNativeNav(); return; }
 
   // The route lives on the map, so make sure the map view is showing.
   try { setSearchView('map'); } catch (_) {}
@@ -13675,6 +13868,7 @@ window.pedirOrcamento = pedirOrcamento;
 // Clique num cartão da lista: no computador a ficha abre por cima, sem sair
 // da lista; no telemóvel mantém-se o percurso lista → mapa + ficha.
 function _abrirDaLista(id) {
+  if (_semMapa()) { openDetail(id); return; }
   if (window.matchMedia('(max-width:768px)').matches) { setSearchView('map'); setTimeout(() => openDetail(id), 300); }
   else openDetail(id);
 }
@@ -16888,4 +17082,574 @@ function openInboxThread(companyId, email, nome) {
 Object.assign(window, {
   openClientRequests, openInboxThread, closeInbox, closeTenderInvite, _tnVerSeparador, _rqFiltrar, _rqPorEmpresa,
   _rqAbrirConvite, _rqResponder, _rqContar,
+});
+
+// ══ SEM MAPA: telemóveis e tablets (pedido do dono, 2026-10-30) ══════════════
+// Até 1024px de largura no arranque (classe hx-sem-mapa no <html>, posta no
+// <head>) não há mapa: o MapLibre não arranca e a pesquisa faz-se por filtros,
+// como no idealista — Onde? (GPS ou localidade), Que serviço? (áreas e
+// atividades) e Até que distância? — e "Ver N empresas" abre a lista: as
+// destacadas primeiro (decisão do dono) e depois por proximidade ao ponto
+// escolhido, dentro do raio. Os filtros são os do computador (activeSectors,
+// radiusSlider, currentMapCenter, getFiltered); muda só o ecrã. O botão
+// "Filtros" e o "voltar" do telemóvel regressam aos filtros (history).
+function _semMapa() { return document.documentElement.classList.contains('hx-sem-mapa'); }
+
+// [km, valor do radiusSlider] — o slider é logarítmico (sliderToKm); 0 = todo o país
+const _SM_RAIOS = [[5, 0], [10, 15], [25, 35], [50, 50], [100, 65], [0, 100]];
+const _SM_PAGINA = 12;
+// var (e não let): o _runApplyFilters e o showTab podem chamar este bloco
+// antes de ele correr no arranque — _smPronto diz quando já está montado
+var _smPronto = false;
+var _smTela = 'filtros';
+var _smOnde = null;          // { label, lat, lng, fonte: 'gps' | 'local' | 'ip', cc }
+var _smFiltrados = null;     // resultado de getFiltered() com os filtros extra
+var _smOrdenadas = null;     // [[empresa, km], …] por ordem (calcula-se ao mostrar a lista)
+var _smMostradas = 0;
+var _smExtra = { alvara: false, gerida: false };
+var _smCidadesCache = null;
+var _smSugT = null;
+var _smGpsGen = 0;
+
+function _smSlider() {
+  const s = document.getElementById('radiusSlider');
+  return s ? parseInt(s.value, 10) : 100;
+}
+function _smSubsDe(g) {
+  const r = [];
+  const grupo = SECTOR_HIERARCHY[g];
+  if (grupo) Object.values(grupo.categories).forEach(cat => Object.keys(cat.subcategories).forEach(k => r.push(k)));
+  return r;
+}
+function _smNomeSub(k, sc) {
+  if (sc[k]) return sc[k];
+  for (const grupo of Object.values(SECTOR_HIERARCHY)) {
+    for (const cat of Object.values(grupo.categories)) if (cat.subcategories[k]) return cat.subcategories[k];
+  }
+  return k;
+}
+function _smKm(km) {
+  if (!Number.isFinite(km)) return '';
+  if (km < 1) return Math.max(50, Math.round(km * 20) * 50) + ' m';
+  return (km < 10 ? km.toLocaleString(_tnLocale(), { maximumFractionDigits: 1 }) : Math.round(km).toLocaleString(_tnLocale())) + ' km';
+}
+
+// ── Preferências: a última pesquisa fica para a próxima visita ──
+function _smGuardar() {
+  try {
+    localStorage.setItem('hivex_sm', JSON.stringify({ v: 1, setores: [...activeSectors], slider: _smSlider(), alvara: _smExtra.alvara, gerida: _smExtra.gerida }));
+  } catch (_) {}
+}
+function _smRestaurar() {
+  let p = null;
+  try { p = JSON.parse(localStorage.getItem('hivex_sm') || 'null'); } catch (_) {}
+  const validas = new Set();
+  Object.keys(SECTOR_HIERARCHY).forEach(g => _smSubsDe(g).forEach(k => validas.add(k)));
+  const slider = document.getElementById('radiusSlider');
+  if (p && p.v === 1) {
+    (p.setores || []).forEach(k => { if (validas.has(k)) activeSectors.add(k); });
+    const v = _SM_RAIOS.some(r => r[1] === Number(p.slider)) ? Number(p.slider) : 35;
+    if (slider) { slider.value = v; updateRadius(v); }
+    _smExtra.alvara = !!p.alvara;
+    _smExtra.gerida = !!p.gerida;
+  } else if (slider) {
+    slider.value = 35; updateRadius(35);   // 1.ª visita: até 25 km
+  }
+  try { updateSectorActiveStates(); } catch (_) {}
+}
+
+// ── Onde? ──
+function _smGuardarOnde() {
+  try { if (_smOnde) localStorage.setItem('hivex_sm_onde', JSON.stringify({ ..._smOnde, t: Date.now() })); } catch (_) {}
+}
+function _smDefinirOnde(o, semAplicar) {
+  const lat = Number(o.lat), lng = Number(o.lng);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return;
+  _smOnde = { label: String(o.label || ''), lat, lng, fonte: o.fonte || 'local', cc: o.cc || null };
+  currentMapCenter = [lat, lng];
+  try { invalidateDistanceCache(); } catch (_) {}
+  _smOrdenadas = null;
+  _smGuardarOnde();
+  _smAtualizarOnde();
+  try { if (o.cc && String(o.cc).toLowerCase() !== 'pt') garantirPais(String(o.cc).toLowerCase()); } catch (_) {}
+  if (!semAplicar) applyFilters();
+}
+function _smOndeTexto() {
+  if (!_smOnde) return '<i data-lucide="map-pin"></i><span>' + escHtml(t('smOndeNada')) + '</span>';
+  const l = _smOnde.label;
+  if (_smOnde.fonte === 'gps') return '<i data-lucide="crosshair"></i><span>' + escHtml(l ? _tnFmt(t('smOndeGps'), { l }) : t('smOndeAqui')) + '</span>';
+  if (_smOnde.fonte === 'ip') return '<i data-lucide="map-pin"></i><span>' + escHtml(_tnFmt(t('smOndeIp'), { l: l || '—' })) + '</span>';
+  return '<i data-lucide="map-pin"></i><span>' + escHtml(l) + '</span>';
+}
+function _smAtualizarOnde() {
+  const el = document.getElementById('smOndeAtual');
+  if (el) { el.innerHTML = _smOndeTexto(); el.classList.toggle('sm-onde-ok', !!_smOnde); refreshLucide(); }
+  const b = document.getElementById('smPerto');
+  if (b) b.classList.toggle('on', !!(_smOnde && _smOnde.fonte === 'gps'));
+  if (_smTela === 'resultados') _smCabecalho();
+}
+function _smLocalCurto() {
+  if (!_smOnde) return '';
+  return _smOnde.label || t('smOndeAqui');
+}
+// Nome do sítio onde o utilizador está: a localidade da empresa mais próxima
+// do catálogo (sem pedidos externos) ou, longe de todas, o Nominatim.
+async function _smNomeDoLugar(lat, lng) {
+  try {
+    let melhor = null, dmin = 8;
+    for (let i = 0; i < companies.length; i++) {
+      const c = companies[i];
+      if (!c.city) continue;
+      const d = calculateDistance(lat, lng, c.lat, c.lng);
+      if (d < dmin) { dmin = d; melhor = c; }
+    }
+    if (melhor) return _moradaLegivel(melhor.city) || melhor.city;
+  } catch (_) {}
+  try {
+    const ctl = new AbortController();
+    setTimeout(() => ctl.abort(), 5000);
+    const d = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lng}&format=json&accept-language=${currentLang}`, { signal: ctl.signal }).then(r => r.json());
+    const a = (d && d.address) || {};
+    return a.city || a.town || a.village || a.municipality || '';
+  } catch (_) { return ''; }
+}
+// modo: 'auto' (já autorizado, em silêncio), 'perguntar' (pede ao abrir,
+// em silêncio se falhar) ou 'toque' (botão: ajuda se recusado, avisos)
+function _smGps(modo) {
+  // a localidade que a pessoa escreveu manda: o GPS silencioso não a troca
+  if (modo === 'auto' && _smOnde && _smOnde.fonte === 'local') return;
+  if (!navigator.geolocation) { if (modo === 'toque') showToast(t('toastGeoNotSupported')); return; }
+  const gen = ++_smGpsGen;
+  const fim = () => { const b = document.getElementById('smPerto'); if (b) b.classList.remove('a-procurar'); };
+  if (modo === 'toque') { const b = document.getElementById('smPerto'); if (b) b.classList.add('a-procurar'); }
+  try {
+    navigator.geolocation.getCurrentPosition((pos) => {
+      if (gen !== _smGpsGen) return;
+      fim();
+      const lat = pos.coords.latitude, lng = pos.coords.longitude;
+      _locationObtained = true;
+      _smDefinirOnde({ lat, lng, label: '', fonte: 'gps' });
+      _smNomeDoLugar(lat, lng).then(nome => {
+        if (nome && _smOnde && _smOnde.fonte === 'gps' && _smOnde.lat === lat && _smOnde.lng === lng) {
+          _smOnde.label = nome; _smGuardarOnde(); _smAtualizarOnde();
+        }
+      });
+      if (modo === 'toque') showToast(t('toastLocationDetected'));
+    }, (err) => {
+      if (gen !== _smGpsGen) return;
+      fim();
+      if (modo !== 'toque') return;
+      if (err && err.code === 1) openGeoHelp();
+      else showToast(t(err && err.code === 3 ? 'toastGeoTimeout' : 'toastGeoPositionUnavailable'), 'error');
+    }, { enableHighAccuracy: false, maximumAge: modo === 'toque' ? 0 : 120000, timeout: modo === 'toque' ? 30000 : 15000 });
+  } catch (_) { fim(); }
+}
+// Localidades do catálogo (com o número de empresas) para as sugestões
+function _smCidades() {
+  const n = Array.isArray(companies) ? companies.length : 0;
+  if (_smCidadesCache && _smCidadesCache.n === n) return _smCidadesCache.m;
+  const m = new Map();
+  for (let i = 0; i < n; i++) {
+    const nome = String(companies[i].city || '').trim();
+    if (!nome) continue;
+    const k = _normTxt(nome);
+    const o = m.get(k);
+    if (o) o.n++; else m.set(k, { nome: _moradaLegivel(nome) || nome, n: 1 });
+  }
+  _smCidadesCache = { n, m };
+  return m;
+}
+function _smLocalInput(v) {
+  clearTimeout(_smSugT);
+  _smSugT = setTimeout(() => _smSugestoes(v), 120);
+}
+function _smSugestoes(v) {
+  const ul = document.getElementById('smSug');
+  if (!ul) return;
+  const bruto = String(v || '').trim();
+  const q = _normTxt(bruto);
+  if (q.length < 2) { ul.hidden = true; ul.innerHTML = ''; return; }
+  const comeca = [], contem = [];
+  for (const [k, o] of _smCidades()) {
+    if (k.startsWith(q)) comeca.push(o); else if (k.includes(q)) contem.push(o);
+  }
+  const porN = (a, b) => b.n - a.n;
+  const hits = comeca.sort(porN).concat(contem.sort(porN)).slice(0, 6);
+  ul.innerHTML = hits.map(o =>
+    '<li><button type="button" data-v="' + escHtml(o.nome) + '" onclick="_smLocalEscolher(this.dataset.v)"><i data-lucide="map-pin"></i><span>' + escHtml(o.nome) + '</span>' +
+    '<small>' + escHtml(o.n === 1 ? t('smEmpresas1') : _tnFmt(t('smEmpresasN'), { n: o.n.toLocaleString(_tnLocale()) })) + '</small></button></li>').join('') +
+    '<li><button type="button" data-v="' + escHtml(bruto) + '" onclick="_smLocalEscolher(this.dataset.v)"><i data-lucide="search"></i><span>' + escHtml(_tnFmt(t('smProcurarLocal'), { q: bruto })) + '</span></button></li>';
+  ul.hidden = false;
+  refreshLucide();
+}
+async function _smLocalEscolher(v) {
+  v = String(v || '').trim();
+  if (!v) return;
+  const ul = document.getElementById('smSug');
+  if (ul) { ul.hidden = true; ul.innerHTML = ''; }
+  const inp = document.getElementById('smLocal');
+  if (inp) { inp.value = ''; inp.blur(); }
+  const el = document.getElementById('smOndeAtual');
+  if (el) el.innerHTML = '<i data-lucide="search"></i><span>' + escHtml(t('smOndeProcura')) + '</span>';
+  _ev('pesquisa');
+  let g = null;
+  try { g = await _tnGeocodificar(v); } catch (_) {}
+  if (!g) { showToast(t('toastPlaceNotFound')); _smAtualizarOnde(); return; }
+  _smDefinirOnde({ lat: g.lat, lng: g.lng, label: g.label && g.cc && g.cc !== 'pt' ? g.label : v, fonte: 'local', cc: g.cc });
+}
+async function _smIniciarOnde() {
+  let g = null;
+  try { g = JSON.parse(localStorage.getItem('hivex_sm_onde') || 'null'); } catch (_) {}
+  if (g && Number.isFinite(Number(g.lat)) && Number.isFinite(Number(g.lng))) _smDefinirOnde(g, true);
+  else g = null;
+  let estado = null;
+  try { if (navigator.permissions) estado = (await navigator.permissions.query({ name: 'geolocation' })).state; } catch (_) {}
+  // Já autorizado: o arranque (detectUserLocation(true)) atualiza em silêncio.
+  // Primeira visita: pede a localização ao abrir (pedido do dono, como antes
+  // ao abrir o mapa) — nunca em links de concursos nem de uma empresa.
+  const deepLink = _tnLinkAtivo() || new URLSearchParams(location.search).has('company');
+  if (!g && estado !== 'granted' && estado !== 'denied' && !deepLink) _smGps('perguntar');
+  if (!g) {
+    // enquanto o GPS não responde (ou se for recusado): a cidade aproximada pelo IP
+    try {
+      const r = await apiFetch('/geo');
+      if (!_smOnde && r && Number.isFinite(r.lat) && Number.isFinite(r.lng)) {
+        _smDefinirOnde({ lat: r.lat, lng: r.lng, label: r.city || '', fonte: 'ip', cc: r.cc });
+      }
+    } catch (_) {}
+  }
+  if (!_smOnde) _smAtualizarOnde();
+}
+
+// ── Que serviço? (áreas e atividades) ──
+function _smHtmlAreas() {
+  const tr = translations[currentLang] || translations.pt;
+  const sg = tr.sectorGroups || {}, sc = tr.sectors || {};
+  let h = '<div class="sm-areas">' +
+    '<button type="button" class="sm-area' + (activeSectors.size ? '' : ' on') + '" aria-pressed="' + !activeSectors.size + '" onclick="_smTodas()"><i data-lucide="grid-2x2"></i><span>' + escHtml(t('smTodas')) + '</span></button>';
+  for (const [g, grupo] of Object.entries(SECTOR_HIERARCHY)) {
+    const subs = _smSubsDe(g);
+    const n = subs.filter(k => activeSectors.has(k)).length;
+    h += '<button type="button" class="sm-area' + (n ? ' on' : '') + '" aria-pressed="' + !!n + '" onclick="_smArea(\'' + g + '\')">' +
+      '<i data-lucide="' + (_mspIcones[g] || 'box') + '"></i><span>' + escHtml(sg[g] || grupo.label) + '</span>' +
+      (n && n < subs.length ? '<em>' + n + '</em>' : '') + '</button>';
+  }
+  h += '</div>';
+  for (const [g, grupo] of Object.entries(SECTOR_HIERARCHY)) {
+    const subs = _smSubsDe(g);
+    if (!subs.some(k => activeSectors.has(k))) continue;
+    h += '<div class="sm-subs"><div class="sm-subs-t">' + escHtml(sg[g] || grupo.label) + '</div><div class="sm-chips">' +
+      subs.map(k => '<button type="button" class="sm-chip' + (activeSectors.has(k) ? ' on' : '') + '" aria-pressed="' + activeSectors.has(k) + '" onclick="_smSub(\'' + k + '\',\'' + g + '\')">' + escHtml(_smNomeSub(k, sc)) + '</button>').join('') +
+      '</div></div>';
+  }
+  if (activeSectors.size) h += '<p class="sm-dica">' + escHtml(t('smSubDica')) + '</p>';
+  return h;
+}
+function _smSetoresMudaram() {
+  try { updateSectorActiveStates(); } catch (_) {}
+  applyFilters();
+  _smGuardar();
+  const b = document.getElementById('smAreas');
+  if (b) { b.innerHTML = _smHtmlAreas(); refreshLucide(); }
+}
+// Tocar numa área escolhe-a toda; voltar a tocar (com alguma atividade dela
+// escolhida) tira-a toda.
+function _smArea(g) {
+  const subs = _smSubsDe(g);
+  if (subs.some(k => activeSectors.has(k))) subs.forEach(k => activeSectors.delete(k));
+  else { subs.forEach(k => activeSectors.add(k)); _ev('area'); }
+  _smSetoresMudaram();
+}
+// Com a área toda escolhida, tocar numa atividade fica só com essa; depois
+// cada toque junta ou tira.
+function _smSub(k, g) {
+  const subs = _smSubsDe(g);
+  if (subs.every(s => activeSectors.has(s))) { subs.forEach(s => activeSectors.delete(s)); activeSectors.add(k); }
+  else if (activeSectors.has(k)) activeSectors.delete(k);
+  else activeSectors.add(k);
+  _smSetoresMudaram();
+}
+function _smTodas() { activeSectors.clear(); _smSetoresMudaram(); }
+
+// ── Até que distância? ──
+function _smHtmlRaios() {
+  const v = _smSlider();
+  // a ficha marcada é a mais próxima do raio atual (o slider pode ter outro valor)
+  let marcado = _SM_RAIOS[_SM_RAIOS.length - 1][1];
+  if (v < 100) {
+    let dmin = Infinity;
+    for (const [km, sv] of _SM_RAIOS) if (km && Math.abs(sv - v) < dmin) { dmin = Math.abs(sv - v); marcado = sv; }
+  }
+  return '<div class="sm-chips sm-raios">' + _SM_RAIOS.map(([km, sv]) =>
+    '<button type="button" class="sm-chip' + (sv === marcado ? ' on' : '') + '" aria-pressed="' + (sv === marcado) + '" onclick="_smRaio(' + sv + ')">' +
+    escHtml(km ? km + ' km' : t('smTodoPais')) + '</button>').join('') + '</div>';
+}
+function _smRaio(sv) {
+  _expandRadiusTo(sv);
+  _smGuardar();
+  const b = document.getElementById('smRaios');
+  if (b) b.innerHTML = _smHtmlRaios();
+}
+
+// ── Mais filtros ──
+function _smHtmlMais() {
+  const n = (_keywordFilter ? 1 : 0) + (_smExtra.alvara ? 1 : 0) + (_smExtra.gerida ? 1 : 0);
+  return '<details class="sm-mais"' + (n ? ' open' : '') + '><summary><i data-lucide="sliders-horizontal"></i><span>' + escHtml(t('smMaisFiltros')) + '</span>' + (n ? '<em>' + n + '</em>' : '') + '</summary>' +
+    '<div class="sm-mais-corpo">' +
+    '<label class="sm-campo"><i data-lucide="search"></i><input id="smNome" type="search" enterkeyhint="done" autocomplete="off" placeholder="' + escHtml(t('smNomePh')) + '" value="' + escHtml(_keywordFilter || '') + '" oninput="_smNome(this.value)"/></label>' +
+    '<label class="sm-check"><input type="checkbox"' + (_smExtra.alvara ? ' checked' : '') + ' onchange="_smExtraMuda(\'alvara\',this.checked)"/><span>' + escHtml(t('smAlvara')) + '</span></label>' +
+    '<label class="sm-check"><input type="checkbox"' + (_smExtra.gerida ? ' checked' : '') + ' onchange="_smExtraMuda(\'gerida\',this.checked)"/><span>' + escHtml(t('smGerida')) + '</span></label>' +
+    '</div></details>';
+}
+function _smNome(v) { _keywordFilter = String(v || '').trim(); applyFilters(); }
+function _smExtraMuda(k, on) { _smExtra[k] = !!on; _smGuardar(); applyFilters(); }
+
+// ── Contagem e lista ──
+// Chamada pelo _runApplyFilters em vez dos marcadores, do painel lateral e da
+// folha de resultados (que não existem sem mapa).
+function _smAtualizar(filtrados) {
+  if (!_smPronto) return;
+  // Sem local escolhido não há "perto de": o raio só conta depois de haver
+  // um ponto (GPS, localidade ou o aproximado pelo IP)
+  if (!_smOnde && _smSlider() < 100) {
+    const s = document.getElementById('radiusSlider');
+    const v = s.value;
+    s.value = 100;
+    try { filtrados = getFiltered(); } finally { s.value = v; }
+  }
+  if (_smExtra.alvara) filtrados = filtrados.filter(c => c.alvara);
+  if (_smExtra.gerida) filtrados = filtrados.filter(c => c.created_by != null && Number(c.created_by) !== 7);
+  // dentro de um raio só entram empresas com coordenadas (sem elas a distância não se mede)
+  if (_smOnde && _smSlider() < 100) filtrados = filtrados.filter(c => Number.isFinite(parseFloat(c.lat)) && Number.isFinite(parseFloat(c.lng)));
+  _smFiltrados = filtrados;
+  _smOrdenadas = null;
+  _smAtualizarBotao();
+  if (_smTela === 'resultados') _smPreencherLista();
+  try { const al = document.getElementById('ariaLive'); if (al) al.textContent = filtrados.length + ' ' + t('resultsCount'); } catch (_) {}
+  try { const tc = document.getElementById('trustCompanyCount'); if (tc) tc.textContent = companies.length; } catch (_) {}
+}
+function _smAtualizarBotao() {
+  const b = document.getElementById('smVer');
+  if (!b) return;
+  const carregado = Array.isArray(companies) && companies.length > 0;
+  const n = _smFiltrados ? _smFiltrados.length : 0;
+  b.disabled = !carregado;
+  b.textContent = !carregado ? t('smACarregar') : n === 0 ? t('smVer0') : n === 1 ? t('smVer1') : _tnFmt(t('smVerN'), { n: n.toLocaleString(_tnLocale()) });
+  b.classList.toggle('sm-ver-zero', carregado && n === 0);
+}
+function _smOrdenar() {
+  const [rl, rg] = currentMapCenter;
+  const dist = (c) => { const d = calculateDistance(rl, rg, parseFloat(c.lat), parseFloat(c.lng)); return Number.isFinite(d) ? d : Infinity; };
+  _smOrdenadas = (_smFiltrados || []).map(c => [c, dist(c)])
+    .sort((a, b) => ((b[0].featured ? 1 : 0) - (a[0].featured ? 1 : 0)) || (a[1] - b[1]));
+}
+function _smResumo() {
+  const tr = translations[currentLang] || translations.pt;
+  const sg = tr.sectorGroups || {}, sc = tr.sectors || {};
+  let areas = t('smTodas');
+  if (activeSectors.size) {
+    const nomes = [];
+    for (const [g, grupo] of Object.entries(SECTOR_HIERARCHY)) {
+      const subs = _smSubsDe(g);
+      const sel = subs.filter(k => activeSectors.has(k));
+      if (!sel.length) continue;
+      if (sel.length === subs.length) nomes.push(sg[g] || grupo.label);
+      else sel.forEach(k => nomes.push(_smNomeSub(k, sc)));
+    }
+    if (nomes.length) areas = nomes.length > 2 ? nomes.slice(0, 2).join(', ') + ' +' + (nomes.length - 2) : nomes.join(', ');
+  }
+  const v = _smSlider();
+  return areas + ' · ' + (v >= 100 || !_smOnde ? t('smTodoPais') : _tnFmt(t('smAte'), { km: sliderToKm(v) }));
+}
+function _smCabecalho() {
+  const n = _smOrdenadas ? _smOrdenadas.length : (_smFiltrados ? _smFiltrados.length : 0);
+  const a = document.getElementById('smResN');
+  if (a) a.textContent = n === 1 ? t('smEmpresas1') : _tnFmt(t('smEmpresasN'), { n: n.toLocaleString(_tnLocale()) });
+  const d = document.getElementById('smResDesc');
+  if (d) d.textContent = _smResumo();
+  const o = document.getElementById('smResOrdem');
+  if (o) o.textContent = _smOnde && n ? _tnFmt(t('smResOrdem'), { l: _smLocalCurto() }) : '';
+}
+function _smPreencherLista() {
+  const box = document.getElementById('smLista');
+  if (!box) return;
+  if (!_smFiltrados) _smFiltrados = [];
+  if (!_smOrdenadas) _smOrdenar();
+  _smCabecalho();
+  _smMostradas = 0;
+  box.innerHTML = '';
+  const fimEl = document.getElementById('smFim');
+  if (fimEl) fimEl.hidden = !_smOrdenadas.length;
+  if (!_smOrdenadas.length) {
+    if (Array.isArray(companies) && companies.length) { box.innerHTML = _smVazioHtml(); refreshLucide(); }
+    else box.innerHTML = '<p class="sm-a-carregar">' + escHtml(t('smACarregar')) + '</p>';
+    return;
+  }
+  _smAcrescentar(box);
+}
+function _smAcrescentar(box, antesDe) {
+  const ini = _smMostradas, fim = Math.min(ini + _SM_PAGINA, _smOrdenadas.length);
+  const frag = document.createDocumentFragment();
+  const empresas = _smOrdenadas.slice(ini, fim).map(p => p[0]);
+  _appendListCards(frag, empresas, 0, empresas.length);
+  [...frag.children].forEach((card, i) => {
+    const [c, km] = _smOrdenadas[ini + i];
+    const meta = card.querySelector('.slc-meta');
+    const txt = _smKm(km);
+    if (meta && txt) {
+      const s = document.createElement('span');
+      s.className = 'sm-km';
+      s.textContent = txt;
+      meta.prepend(s);
+    }
+    if (c.featured) {
+      const nm = card.querySelector('.slc-name');
+      if (nm) nm.insertAdjacentHTML('afterend', '<span class="sm-dest">★ ' + escHtml(t('smDestacada')) + '</span>');
+    }
+  });
+  _smMostradas = fim;
+  if (antesDe) box.insertBefore(frag, antesDe);
+  else {
+    box.appendChild(frag);
+    if (_smMostradas < _smOrdenadas.length) {
+      box.appendChild(_moreButton(_smMostradas, _smOrdenadas.length, (btn) => {
+        _smAcrescentar(box, btn);
+        return [_smMostradas, _smOrdenadas.length];
+      }));
+    }
+  }
+  refreshLucide();
+}
+function _smVazioHtml() {
+  const v = _smSlider();
+  let btns = '';
+  if (v < 100) {
+    const prox = _SM_RAIOS.find(([km, sv]) => km && sv > v);
+    if (prox) btns += '<button type="button" class="sm-btn" onclick="_smRaio(' + prox[1] + ')">' + escHtml(_tnFmt(t('smAumentar'), { km: prox[0] })) + '</button>';
+    btns += '<button type="button" class="sm-btn sm-btn-sec" onclick="_smRaio(100)">' + escHtml(t('smTodoPais')) + '</button>';
+  }
+  btns += '<button type="button" class="sm-btn sm-btn-sec" onclick="_smVerFiltros()"><i data-lucide="sliders-horizontal"></i>' + escHtml(t('smFiltros')) + '</button>';
+  btns += '<button type="button" class="sm-btn sm-btn-sec" onclick="_smPedirOrcamentos()">' + escHtml(t('smFimRfq')) + '</button>';
+  return '<div class="sm-vazio"><i data-lucide="search"></i><p class="sm-vazio-t">' + escHtml(t('smVazio')) + '</p><p>' + escHtml(t('smVazioSub')) + '</p><div class="sm-vazio-acoes">' + btns + '</div></div>';
+}
+function _smPedirOrcamentos() { openRfqModal([...activeSectors][0] || ''); }
+
+// ── Ecrãs ──
+function _smRenderFiltros() {
+  const el = document.getElementById('smFiltros');
+  if (!el) return;
+  el.innerHTML =
+    '<header class="sm-cab"><h1 class="sm-titulo">' + escHtml(t('smTitulo')) + '</h1><p class="sm-sub">' + escHtml(t('smSub')) + '</p></header>' +
+    '<section class="sm-bloco"><h2 class="sm-h2"><i data-lucide="map-pin"></i>' + escHtml(t('smOnde')) + '</h2>' +
+      '<div class="sm-onde"><button type="button" class="sm-perto" id="smPerto" onclick="_smGps(\'toque\')"><i data-lucide="crosshair"></i><span>' + escHtml(t('smPerto')) + '</span></button>' +
+      '<label class="sm-campo sm-local"><i data-lucide="search"></i><input id="smLocal" type="search" enterkeyhint="search" autocomplete="off" autocorrect="off" placeholder="' + escHtml(t('smLocalPh')) + '" oninput="_smLocalInput(this.value)" onkeydown="if(event.key===\'Enter\'){event.preventDefault();_smLocalEscolher(this.value)}"/></label></div>' +
+      '<ul class="sm-sug" id="smSug" hidden></ul>' +
+      '<p class="sm-onde-atual" id="smOndeAtual" aria-live="polite"></p></section>' +
+    '<section class="sm-bloco"><h2 class="sm-h2"><i data-lucide="hammer"></i>' + escHtml(t('smServico')) + '</h2><div id="smAreas">' + _smHtmlAreas() + '</div></section>' +
+    '<section class="sm-bloco"><h2 class="sm-h2"><i data-lucide="target"></i>' + escHtml(t('smDist')) + '</h2><div id="smRaios">' + _smHtmlRaios() + '</div></section>' +
+    '<section class="sm-bloco" id="smMais">' + _smHtmlMais() + '</section>' +
+    // o assistente "Top 3" vivia nos chips e no painel do mapa
+    '<button type="button" class="sm-recs" onclick="openRecs()"><i data-lucide="sparkles"></i><span><strong>' + escHtml(t('recsBtn')) + '</strong><small>' + escHtml(t('recsBtnSub')) + '</small></span><span aria-hidden="true">→</span></button>' +
+    '<p class="sm-dono">' + escHtml(t('authOwnerHint')) + ' <button type="button" class="auth-link" onclick="startCompanyFlow()">' + escHtml(t('smDonoCta')) + '</button></p>' +
+    '<div class="sm-rodape"><button type="button" class="sm-ver" id="smVer" onclick="_smVerResultados()"></button></div>';
+  _smAtualizarOnde();
+  _smAtualizarBotao();
+  refreshLucide();
+}
+function _smRenderResultados() {
+  const el = document.getElementById('smResultados');
+  if (!el) return;
+  el.innerHTML =
+    '<div class="sm-res-topo"><button type="button" class="sm-voltar" onclick="_smVerFiltros()"><i data-lucide="sliders-horizontal"></i><span>' + escHtml(t('smFiltros')) + '</span></button>' +
+    '<div class="sm-res-resumo"><strong id="smResN"></strong><span id="smResDesc"></span></div></div>' +
+    '<p class="sm-res-ordem" id="smResOrdem"></p>' +
+    '<div class="sm-lista" id="smLista"></div>' +
+    '<div class="sm-fim" id="smFim" hidden><p>' + escHtml(t('smFimTitulo')) + '</p>' +
+    '<button type="button" class="sm-btn" onclick="_smPedirOrcamentos()"><i data-lucide="file-text"></i>' + escHtml(t('smFimRfq')) + '</button>' +
+    '<button type="button" class="tn-rfq-link" onclick="openTenderWizard()">' + escHtml(t('tnRfqLink')) + '</button></div>';
+  if (_smTela === 'resultados') _smPreencherLista();
+  refreshLucide();
+}
+function _smMostrar(tela) {
+  _smTela = tela;
+  const f = document.getElementById('smFiltros'), r = document.getElementById('smResultados');
+  if (f) f.hidden = tela !== 'filtros';
+  if (r) r.hidden = tela !== 'resultados';
+  const app = document.getElementById('smApp');
+  if (app) app.scrollTop = 0;
+  if (tela === 'resultados') _smPreencherLista();
+  else { _smAtualizarBotao(); const b = document.getElementById('smRaios'); if (b) b.innerHTML = _smHtmlRaios(); }
+}
+function _smVerResultados() {
+  _ev('lista');
+  if (_smTela !== 'resultados') { try { history.pushState({ sm: 'resultados' }, ''); } catch (_) {} }
+  _smMostrar('resultados');
+}
+function _smVerFiltros() {
+  if (!_smPronto) return;
+  const st = history.state || {};
+  _smMostrar('filtros');
+  // A entrada dos resultados limpa → voltar atrás (o "voltar" do telemóvel
+  // fica coerente). Se a ficha de uma empresa empurrou entradas por cima
+  // (fechar no ✕ empurra uma), voltar atrás reabria-a: empurra os filtros.
+  if (st.sm === 'resultados' && !('company' in st)) { try { history.back(); } catch (_) {} }
+  else if (st.sm === 'resultados') { try { history.pushState({ sm: 'filtros' }, ''); } catch (_) {} }
+}
+// Cada entrada do histórico leva o ecrã em que foi criada (a ficha de uma
+// empresa empurra entradas próprias); o "voltar" repõe esse ecrã.
+(function () {
+  const push0 = history.pushState.bind(history);
+  history.pushState = function (st, ...resto) {
+    if (_semMapa() && (st == null || typeof st === 'object') && !(st && 'sm' in st)) st = Object.assign({}, st || {}, { sm: _smTela });
+    return push0(st, ...resto);
+  };
+})();
+window.addEventListener('popstate', (e) => {
+  if (!_semMapa()) return;
+  const sm = e.state && e.state.sm;
+  const tela = sm === 'resultados' ? 'resultados' : 'filtros';
+  if (tela !== _smTela) _smMostrar(tela);
+});
+function _smRelang() {
+  if (!_semMapa() || !_smPronto) return;
+  _smRenderFiltros();
+  _smRenderResultados();
+  if (_smTela === 'resultados') _smPreencherLista();
+}
+
+// Sem mapa, a localização do utilizador vem daqui (o resto da app chama
+// detectUserLocation: arranque com permissão já dada, botões antigos)
+const _smDetetar0 = detectUserLocation;
+detectUserLocation = function (auto) {
+  if (_semMapa()) return _smGps(auto === true ? 'auto' : auto === 'soft' ? 'perguntar' : 'toque');
+  return _smDetetar0.apply(this, arguments);
+};
+// Pesquisas de lugar feitas fora deste ecrã (a pesquisa do cabeçalho nos tablets)
+const _smVoar0 = _flyToPlace;
+_flyToPlace = function (hit) {
+  _smVoar0.apply(this, arguments);
+  if (_semMapa() && hit) _smDefinirOnde({ lat: hit.lat, lng: hit.lng, label: hit.label, fonte: 'local', cc: hit.cc });
+};
+
+function _smIniciar() {
+  if (!_semMapa() || document.getElementById('smApp')) return;
+  const tab = document.getElementById('tab-search');
+  if (!tab) return;
+  const app = document.createElement('div');
+  app.id = 'smApp';
+  app.innerHTML = '<section id="smFiltros" class="sm-tela"></section><section id="smResultados" class="sm-tela" hidden></section>';
+  tab.prepend(app);
+  _smRestaurar();
+  try { history.replaceState(Object.assign({}, history.state || {}, { sm: 'filtros' }), ''); } catch (_) {}
+  _smPronto = true;
+  _smRenderFiltros();
+  _smRenderResultados();
+  _smIniciarOnde();
+  applyFilters();
+}
+_smIniciar();
+
+Object.assign(window, {
+  _semMapa, _smGps, _smLocalInput, _smLocalEscolher, _smArea, _smSub, _smTodas, _smRaio, _smNome, _smExtraMuda,
+  _smVerResultados, _smVerFiltros, _smPedirOrcamentos, _smRelang, detectUserLocation, _flyToPlace,
 });

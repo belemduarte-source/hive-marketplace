@@ -4883,3 +4883,119 @@ a.tn-file-name:hover{text-decoration:underline}
   .rq-item{padding:14px}
   .rq-actions .btn-submit{flex:1 1 auto;justify-content:center;font-size:15px !important;min-height:44px !important}
 }
+
+/* ══ Sem mapa (pedido do dono, 2026-10-30): telemóveis e tablets — até 1024px
+   no arranque, o <html> recebe .hx-sem-mapa no <head> — pesquisam por filtros
+   (Onde? · Que serviço? · Até que distância?) e veem a lista por proximidade.
+   O mapa, a barra de pesquisa antiga, os chips e a folha de resultados saem. ══ */
+#smApp{display:none}
+.hx-sem-mapa #smApp{display:block;flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;background:var(--bg)}
+.hx-sem-mapa #tab-search>.unified-bar,
+.hx-sem-mapa #recentStrip,
+.hx-sem-mapa #mobileSearchPanel,
+.hx-sem-mapa #mspBackdrop,
+.hx-sem-mapa #mspSheet,
+.hx-sem-mapa #filterBackdrop,
+.hx-sem-mapa #searchPane,
+.hx-sem-mapa #welcomeOverlay{display:none !important}
+.sm-tela{max-width:720px;margin:0 auto;padding:18px 16px 0}
+.sm-tela[hidden]{display:none}
+.sm-cab{margin:2px 0 14px}
+.sm-titulo{font-size:var(--fs-xl);line-height:1.2;font-weight:800;color:var(--text);margin:0 0 6px;letter-spacing:-.01em}
+.sm-sub{font-size:var(--fs-sm);color:var(--text-secondary);margin:0;line-height:1.5}
+.sm-bloco{background:var(--surface);border:1px solid var(--border);border-radius:var(--rad-md);padding:16px;margin:0 0 12px}
+.sm-h2{display:flex;align-items:center;gap:8px;font-size:var(--fs-md);font-weight:700;color:var(--text);margin:0 0 12px}
+.sm-h2 svg{width:18px;height:18px;color:var(--primary);flex-shrink:0}
+.sm-onde{display:flex;gap:8px;flex-wrap:wrap}
+.sm-perto{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 16px;border:1.5px solid var(--primary);border-radius:var(--rad-sm);background:var(--surface);color:var(--primary);font:inherit;font-size:var(--fs-sm);font-weight:700;cursor:pointer;flex:0 0 auto}
+.sm-perto svg{width:18px;height:18px}
+.sm-perto.on{background:var(--primary);color:#fff}
+.sm-perto.a-procurar svg{animation:tn-gira 1s linear infinite}
+.sm-campo{display:flex;align-items:center;gap:8px;min-height:48px;padding:0 12px;border:1.5px solid var(--border);border-radius:var(--rad-sm);background:var(--bg);flex:1 1 220px;min-width:0;cursor:text}
+.sm-campo:focus-within{border-color:var(--primary)}
+.sm-campo svg{width:17px;height:17px;color:var(--muted);flex-shrink:0}
+.sm-campo input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:16px;color:var(--text);outline:none;padding:12px 0}
+.sm-sug{list-style:none;margin:8px 0 0;padding:4px;border:1px solid var(--border);border-radius:var(--rad-sm);background:var(--surface);box-shadow:var(--shadow-md)}
+.sm-sug[hidden]{display:none}
+.sm-sug button{width:100%;display:flex;align-items:center;gap:10px;min-height:44px;padding:8px 10px;border:0;border-radius:6px;background:none;font:inherit;font-size:var(--fs-sm);color:var(--text);text-align:left;cursor:pointer}
+.sm-sug button:hover,.sm-sug button:focus-visible{background:var(--bg)}
+.sm-sug svg{width:16px;height:16px;color:var(--muted);flex-shrink:0}
+.sm-sug span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sm-sug small{flex-shrink:0;font-size:var(--fs-xs);color:var(--muted)}
+.sm-onde-atual{display:flex;align-items:flex-start;gap:8px;margin:12px 0 0;font-size:var(--fs-sm);line-height:1.45;color:var(--muted)}
+.sm-onde-atual.sm-onde-ok{color:var(--text)}
+.sm-onde-atual svg{width:16px;height:16px;flex-shrink:0;margin-top:2px;color:var(--primary)}
+.sm-areas{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.sm-area{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;min-height:78px;padding:10px 6px;border:1.5px solid var(--border);border-radius:var(--rad-sm);background:var(--surface);color:var(--text-secondary);font:inherit;font-size:13px;font-weight:600;line-height:1.2;text-align:center;cursor:pointer}
+.sm-area svg{width:22px;height:22px}
+.sm-area.on{border-color:var(--primary);background:var(--primary-light);color:var(--primary-dark)}
+.sm-area em{position:absolute;top:6px;right:6px;min-width:18px;height:18px;padding:0 5px;border-radius:var(--rad-full);background:var(--primary);color:#fff;font-style:normal;font-size:11px;font-weight:700;line-height:18px}
+.sm-subs{margin-top:14px}
+.sm-subs-t{margin:0 0 8px;font-size:var(--fs-xs);font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.04em}
+.sm-chips{display:flex;flex-wrap:wrap;gap:8px}
+.sm-chip{min-height:40px;padding:8px 14px;border:1.5px solid var(--border);border-radius:var(--rad-full);background:var(--surface);color:var(--text-secondary);font:inherit;font-size:var(--fs-sm);font-weight:600;line-height:1.2;cursor:pointer}
+.sm-chip.on{border-color:var(--primary);background:var(--primary);color:#fff}
+.sm-dica{margin:12px 0 0;font-size:var(--fs-xs);line-height:1.45;color:var(--muted)}
+.sm-mais summary{display:flex;align-items:center;gap:8px;min-height:28px;font-size:var(--fs-md);font-weight:700;color:var(--text);cursor:pointer;list-style:none}
+.sm-mais summary::-webkit-details-marker{display:none}
+.sm-mais summary svg{width:18px;height:18px;color:var(--primary)}
+.sm-mais summary em{padding:1px 8px;border-radius:var(--rad-full);background:var(--primary);color:#fff;font-style:normal;font-size:12px;font-weight:700}
+.sm-mais summary::after{content:'▾';margin-left:auto;color:var(--muted)}
+.sm-mais[open] summary::after{content:'▴'}
+.sm-mais-corpo{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.sm-check{display:flex;align-items:center;gap:10px;min-height:44px;font-size:var(--fs-sm);color:var(--text);cursor:pointer}
+.sm-check input{width:20px;height:20px;margin:0;flex-shrink:0;accent-color:var(--primary)}
+.sm-recs{display:flex;align-items:center;gap:12px;width:100%;margin:0 0 12px;padding:14px 16px;border:1px solid #bfdbfe;border-radius:var(--rad-md);background:var(--primary-light);color:var(--primary-dark);font:inherit;text-align:left;cursor:pointer}
+.sm-recs>svg{width:22px;height:22px;flex-shrink:0}
+.sm-recs>span:nth-of-type(1){display:flex;flex-direction:column;gap:2px;flex:1;min-width:0}
+.sm-recs strong{font-size:var(--fs-sm)}
+.sm-recs small{font-size:var(--fs-xs);color:var(--text-secondary)}
+.sm-recs>span:last-child{font-weight:700}
+[data-theme="dark"] .sm-recs{background:rgba(37,99,235,.14);border-color:rgba(37,99,235,.35);color:#bfdbfe}
+.sm-dono{margin:6px 0 16px;text-align:center;font-size:var(--fs-sm);color:var(--text-secondary)}
+.sm-rodape{position:sticky;bottom:0;z-index:5;margin:0 -16px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:linear-gradient(to top,var(--bg) 72%,transparent)}
+.sm-ver{width:100%;min-height:54px;border:0;border-radius:var(--rad-md);background:var(--primary);color:#fff;font:inherit;font-size:17px;font-weight:700;cursor:pointer;box-shadow:var(--shadow-md)}
+.sm-ver:disabled{opacity:.7;cursor:progress}
+.sm-ver.sm-ver-zero{border:1.5px solid var(--border);background:var(--surface);color:var(--text-secondary);box-shadow:none}
+.sm-res-topo{position:sticky;top:0;z-index:5;display:flex;align-items:center;gap:12px;margin:-18px -16px 0;padding:12px 16px;background:var(--bg);border-bottom:1px solid var(--border)}
+.sm-voltar{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 14px;border:1.5px solid var(--border);border-radius:var(--rad-full);background:var(--surface);color:var(--text);font:inherit;font-size:var(--fs-sm);font-weight:700;cursor:pointer;flex-shrink:0}
+.sm-voltar svg{width:16px;height:16px;color:var(--primary)}
+.sm-res-resumo{display:flex;flex-direction:column;min-width:0}
+.sm-res-resumo strong{font-size:var(--fs-md);color:var(--text)}
+.sm-res-resumo span{font-size:var(--fs-xs);color:var(--text-secondary);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sm-res-ordem{margin:12px 0 10px;font-size:var(--fs-xs);color:var(--muted)}
+.sm-res-ordem:empty{display:block;height:4px;margin:0}
+.sm-lista{display:grid;grid-template-columns:minmax(0,1fr);gap:10px}
+.sm-lista .list-more-btn{grid-column:1/-1}
+.sm-lista .slc-meta{flex-wrap:wrap}
+.sm-km{display:inline-flex;align-items:center;flex-shrink:0;padding:2px 9px;border-radius:var(--rad-full);background:var(--primary-light);color:var(--primary-dark);font-size:var(--fs-xs);font-weight:700}
+.sm-dest{display:inline-block;margin-top:3px;padding:1px 8px;border-radius:var(--rad-full);background:#fef3c7;color:#92400e;font-size:11px;font-weight:700}
+.sm-a-carregar{grid-column:1/-1;padding:30px 0;text-align:center;color:var(--muted)}
+.sm-vazio{grid-column:1/-1;padding:28px 8px;text-align:center;color:var(--text-secondary)}
+.sm-vazio>svg{width:36px;height:36px;color:var(--border)}
+.sm-vazio-t{margin:8px 0 4px;font-size:var(--fs-md);font-weight:700;color:var(--text)}
+.sm-vazio-acoes{display:flex;flex-direction:column;gap:8px;max-width:420px;margin:16px auto 0}
+.sm-btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:0 18px;border:0;border-radius:var(--rad-sm);background:var(--primary);color:#fff;font:inherit;font-size:var(--fs-sm);font-weight:700;cursor:pointer}
+.sm-btn svg{width:17px;height:17px}
+.sm-btn-sec{border:1.5px solid var(--border);background:var(--surface);color:var(--text)}
+.sm-fim{margin:20px 0 24px;padding:18px 16px;border:1px dashed var(--border);border-radius:var(--rad-md);text-align:center}
+.sm-fim[hidden]{display:none}
+.sm-fim p{margin:0 0 10px;font-weight:700;color:var(--text)}
+.sm-fim .sm-btn{width:100%}
+@media (min-width:600px){
+  .sm-areas{grid-template-columns:repeat(5,minmax(0,1fr))}
+  .sm-lista{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (min-width:769px){
+  .sm-tela{padding-top:24px}
+  .sm-res-topo{margin-top:-24px}
+  .sm-titulo{font-size:28px}
+}
+[data-theme="dark"] .sm-area.on{background:rgba(37,99,235,.18);color:#bfdbfe}
+[data-theme="dark"] .sm-km{background:rgba(37,99,235,.22);color:#bfdbfe}
+[data-theme="dark"] .sm-dest{background:rgba(245,158,11,.18);color:#fcd34d}
+/* a barra inferior antiga já não aparece no telemóvel: sem a reserva de 64px
+   por baixo, o botão "Ver N empresas" assenta no fundo do ecrã */
+@media (max-width:768px){
+  .hx-sem-mapa .tab-search{padding-bottom:0 !important}
+}
