@@ -749,14 +749,29 @@ router.get('/reviews/request-digest', async (req, res) => {
   catch (e) { res.status(500).json({ error: e.message }); }
 });
 
-// GET /api/reviews/optout — link "não quero receber" dos emails.
+// Página dos links "não quero receber" (o mesmo aspeto em todas). O helmet põe
+// Referrer-Policy no-referrer e, com ela, o browser envia o POST do botão com
+// "Origin: null", que o CORS recusa (500, nada registado); strict-origin faz o
+// POST levar a origem www.hivex.pt e nunca põe o email/token no Referer.
+function _paginaOptout(res, status, corpo) {
+  res.status(status).set({ 'Content-Type': 'text/html; charset=utf-8', 'Referrer-Policy': 'strict-origin' }).send(
+    `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">` +
+    `<div style="font-family:Arial,sans-serif;max-width:520px;margin:60px auto;padding:0 20px;color:#374151;line-height:1.6">${corpo}` +
+    `<p><a href="https://www.hivex.pt" style="color:#f97316">Voltar à Hivex</a></p></div>`);
+}
+const _BOTAO_CONFIRMAR = `<form method="post"><button type="submit" style="background:#2563eb;color:#fff;border:0;border-radius:8px;padding:12px 22px;font-size:15px;font-weight:700;cursor:pointer">Confirmar</button></form>`;
+
+// /api/reviews/optout — link "não quero receber" dos emails.
 //   ?e=&t=  pedidos de avaliação (HMAC do email com JWT_SECRET)
 //   ?i=     convites da campanha "reclame a sua ficha" (token aleatório
 //           guardado em claim_invites — o script corre fora do Vercel e não
 //           partilha o JWT_SECRET de produção)
 // Os dois alimentam a mesma email_optouts: quem recusa um tipo de email não
-// essencial deixa de receber todos. POST = cancelamento num clique (RFC 8058,
-// cabeçalho List-Unsubscribe-Post): o Gmail/Yahoo chamam o mesmo URL.
+// essencial deixa de receber todos. GET (e HEAD, que o Express entrega ao
+// mesmo handler) só mostra a confirmação: os filtros de email abrem os links
+// sozinhos e não podem recusar por engano. POST regista: botão da página e
+// cancelamento num clique (RFC 8058, cabeçalho List-Unsubscribe-Post), que o
+// Gmail/Yahoo fazem no mesmo URL.
 async function optout(req, res) {
   const invite = String(req.query.i || '');
   let email = '', ok = false;
@@ -764,7 +779,7 @@ async function optout(req, res) {
     if (invite) {
       if (/^[a-f0-9]{32}$/.test(invite)) {
         const { rows } = await pool.query(`SELECT email FROM claim_invites WHERE token = $1`, [invite]);
-        email = rows[0] ? rows[0].email : '';
+        email = rows[0] ? String(rows[0].email).toLowerCase().trim() : '';
         ok = !!email;
       }
     } else {
@@ -775,29 +790,38 @@ async function optout(req, res) {
         crypto.timingSafeEqual(Buffer.from(tok), Buffer.from(esperado));
     }
   } catch (_) { ok = false; }
-  if (ok) {
-    try { await pool.query(`INSERT INTO email_optouts (email) VALUES ($1) ON CONFLICT DO NOTHING`, [email]); }
-    catch (_) { ok = false; }
+  const registar = req.method === 'POST';
+  if (!ok) {
+    return _paginaOptout(res, registar ? 400 : 200,
+      `<h2>Link inválido</h2><p>Este link não é válido ou expirou. Responda a qualquer email da Hivex e tratamos do pedido manualmente.</p>`);
   }
-  const feito = invite
-    ? `<h2>Pedido registado</h2><p>Não voltará a receber convites nem outros emails promocionais da Hivex neste endereço.</p>` +
-      `<p>Se também quiser que a ficha da sua empresa seja corrigida ou removida, escreva para <a href="mailto:geral.hivex@gmail.com" style="color:#f97316">geral.hivex@gmail.com</a>.</p>`
-    : `<h2>Pedido registado</h2><p>Não voltará a receber pedidos de avaliação da Hivex neste endereço.</p>`;
-  res.status(ok || req.method === 'GET' ? 200 : 400).set('Content-Type', 'text/html; charset=utf-8').send(
-    `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">` +
-    `<div style="font-family:Arial,sans-serif;max-width:520px;margin:60px auto;padding:0 20px;color:#374151;line-height:1.6">` +
-    (ok
-      ? feito
-      : `<h2>Link inválido</h2><p>Este link não é válido ou expirou. Responda a qualquer email da Hivex e tratamos do pedido manualmente.</p>`) +
-    `<p><a href="https://www.hivex.pt" style="color:#f97316">Voltar à Hivex</a></p></div>`);
+  // As fichas da campanha também recebem pedidos de orçamento de clientes (que
+  // respeitam a email_optouts): a página di-lo antes de a empresa confirmar.
+  const que = invite ? 'convites, pedidos de orçamento de clientes' : 'pedidos de avaliação';
+  if (!registar) {
+    return _paginaOptout(res, 200,
+      `<h2>${invite ? 'Deixar de receber emails da Hivex' : 'Deixar de receber pedidos de avaliação'}</h2>` +
+      `<p>Confirme que o endereço <strong>${esc(email)}</strong> não quer receber ${que} nem outros emails não essenciais da Hivex.` +
+      (invite ? ' As mensagens que um cliente escrever diretamente à sua empresa continuam a chegar.' : '') + `</p>` +
+      _BOTAO_CONFIRMAR);
+  }
+  try {
+    await pool.query(`INSERT INTO email_optouts (email) VALUES ($1) ON CONFLICT DO NOTHING`, [email]);
+  } catch (e) {
+    console.error('[optout] falhou:', e.message);
+    return _paginaOptout(res, 500, '<h2>Erro</h2><p>Não foi possível registar o pedido. Tente de novo.</p>');
+  }
+  return _paginaOptout(res, 200,
+    `<h2>Pedido registado</h2><p>Não voltará a receber ${que} nem outros emails não essenciais da Hivex em ${esc(email)}.</p>` +
+    (invite ? `<p>Se também quiser que a ficha da sua empresa seja corrigida ou removida, escreva para <a href="mailto:geral.hivex@gmail.com" style="color:#f97316">geral.hivex@gmail.com</a>.</p>` : ''));
 }
 router.get('/reviews/optout', optout);
 router.post('/reviews/optout', optout);
 
 // "Não quero receber pedidos de orçamento por email" (?e=&t=, HMAC como acima).
-// GET só mostra a confirmação — os filtros de email abrem os links sozinhos e
-// não podem recusar por engano; POST regista (botão da página e cancelamento
-// num clique, RFC 8058). Alimenta a mesma email_optouts.
+// Como no /reviews/optout: GET (e HEAD) só mostra a confirmação, POST regista
+// (botão da página e cancelamento num clique, RFC 8058). Alimenta a mesma
+// email_optouts.
 async function optoutPedidos(req, res) {
   const email = String(req.query.e || '').toLowerCase().trim();
   const tok = String(req.query.t || '');
@@ -806,23 +830,19 @@ async function optoutPedidos(req, res) {
     const esperado = _optoutToken(email);
     ok = !!email && tok.length === esperado.length && crypto.timingSafeEqual(Buffer.from(tok), Buffer.from(esperado));
   } catch (_) { ok = false; }
-  const pagina = (status, corpo) => res.status(status).set('Content-Type', 'text/html; charset=utf-8').send(
-    `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">` +
-    `<div style="font-family:Arial,sans-serif;max-width:520px;margin:60px auto;padding:0 20px;color:#374151;line-height:1.6">${corpo}` +
-    `<p><a href="https://www.hivex.pt" style="color:#f97316">Voltar à Hivex</a></p></div>`);
-  if (!ok) return pagina(400, `<h2>Link inválido</h2><p>Este link não é válido. Responda a qualquer email da Hivex e tratamos do pedido.</p>`);
-  if (req.method === 'GET') {
-    return pagina(200,
+  if (!ok) return _paginaOptout(res, 400, `<h2>Link inválido</h2><p>Este link não é válido. Responda a qualquer email da Hivex e tratamos do pedido.</p>`);
+  if (req.method !== 'POST') {
+    return _paginaOptout(res, 200,
       `<h2>Deixar de receber pedidos de orçamento</h2><p>Confirme que o endereço <strong>${esc(email)}</strong> não quer receber pedidos de orçamento de clientes nem outros emails não essenciais da Hivex. As mensagens que um cliente escrever diretamente à sua empresa continuam a chegar.</p>` +
-      `<form method="post"><button type="submit" style="background:#2563eb;color:#fff;border:0;border-radius:8px;padding:12px 22px;font-size:15px;font-weight:700;cursor:pointer">Confirmar</button></form>`);
+      _BOTAO_CONFIRMAR);
   }
   try {
     await pool.query(`INSERT INTO email_optouts (email) VALUES ($1) ON CONFLICT DO NOTHING`, [email]);
   } catch (e) {
     console.error('[rfq] opt-out falhou:', e.message);
-    return pagina(500, '<h2>Erro</h2><p>Não foi possível registar o pedido. Tente de novo.</p>');
+    return _paginaOptout(res, 500, '<h2>Erro</h2><p>Não foi possível registar o pedido. Tente de novo.</p>');
   }
-  return pagina(200, `<h2>Pedido registado</h2><p>Não voltará a receber pedidos de orçamento nem outros emails não essenciais da Hivex em ${esc(email)}.</p>`);
+  return _paginaOptout(res, 200, `<h2>Pedido registado</h2><p>Não voltará a receber pedidos de orçamento nem outros emails não essenciais da Hivex em ${esc(email)}.</p>`);
 }
 router.get('/quote-requests/optout', optoutPedidos);
 router.post('/quote-requests/optout', optoutPedidos);
