@@ -1164,12 +1164,15 @@ router.post('/tender-invites/:ref/decline', optionalAuth, async (req, res, next)
   } catch (e) { _resp(res, next, e); }
 });
 
-// "Não quero receber convites de concursos" — GET mostra a confirmação (os
-// filtros de email abrem links sozinhos; um GET não pode recusar por engano);
-// POST regista (botão da página e cancelamento num clique, RFC 8058).
+// "Não quero receber convites de concursos" — GET (e HEAD, que o Express
+// entrega ao mesmo handler) mostra a confirmação (os filtros de email abrem
+// links sozinhos; não podem recusar por engano); POST regista (botão da página
+// e cancelamento num clique, RFC 8058). Referrer-Policy strict-origin: com o
+// no-referrer do helmet o POST do botão levava "Origin: null" e o CORS
+// recusava-o (500, nada registado) — ver _paginaOptout em marketplace.js.
 async function optoutConvite(req, res) {
   const ref = String(req.params.ref || '');
-  const pagina = (corpo) => res.set('Content-Type', 'text/html; charset=utf-8').send(
+  const pagina = (corpo) => res.set({ 'Content-Type': 'text/html; charset=utf-8', 'Referrer-Policy': 'strict-origin' }).send(
     `<!doctype html><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">` +
     `<div style="font-family:Arial,sans-serif;max-width:520px;margin:60px auto;padding:0 20px;color:#374151;line-height:1.6">${corpo}` +
     `<p><a href="https://www.hivex.pt" style="color:#2563eb">Voltar à Hivex</a></p></div>`);
@@ -1179,7 +1182,7 @@ async function optoutConvite(req, res) {
     inv = rows[0] || null;
   }
   if (!inv) return pagina(`<h2>Link inválido</h2><p>Este link não é válido. Responda a qualquer email da Hivex e tratamos do pedido.</p>`);
-  if (req.method === 'GET') {
+  if (req.method !== 'POST') {
     return pagina(
       `<h2>Deixar de receber convites</h2><p>Confirme que o endereço <strong>${esc(inv.email)}</strong> não quer receber convites de concursos nem outros emails não essenciais da Hivex.</p>` +
       `<form method="post"><button type="submit" style="background:#2563eb;color:#fff;border:0;border-radius:8px;padding:12px 22px;font-size:15px;font-weight:700;cursor:pointer">Confirmar</button></form>`);
