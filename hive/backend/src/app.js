@@ -871,7 +871,16 @@ async function ensureSchema() {
           _migrated = true;
           return;
         }
-      } catch (_) { /* table missing (fresh DB) → full run below creates it */ }
+      } catch (e) {
+        // Só a tabela em falta (BD nova, 42P01) segue para a corrida completa.
+        // Com a BD em baixo não se marca nada e o próximo pedido volta a
+        // tentar: antes, uma instância que arrancava durante uma falha da BD
+        // falhava as migrações todas, ficava "migrada" e nunca as aplicava.
+        if (!e || e.code !== '42P01') {
+          console.error('Schema check failed (retrying on the next request):', e && e.message);
+          return;
+        }
+      }
 
       // Every migration is idempotent (IF NOT EXISTS / IF EXISTS) so we just
       // run them all. Each statement is wrapped so one failure doesn't block
@@ -887,6 +896,8 @@ async function ensureSchema() {
         }
       }
       console.log(`Schema migrations: ${okCount} OK, ${failCount} failed`);
+      // Nada correu (a BD caiu a meio): também não fica marcado.
+      if (okCount === 0) return;
       // Record the version only after a clean run — a partial run keeps the
       // old version so the next cold start retries everything.
       if (failCount === 0) {
