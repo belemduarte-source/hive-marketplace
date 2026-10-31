@@ -114,6 +114,27 @@ const translations = {
     smFimTitulo:'Não encontrou o que procura?',
     smFimRfq:'Pedir orçamentos a várias empresas',
     smDonoCta:'Registe ou reclame a sua ficha →',
+    // ── Os meus orçamentos, avisos no telemóvel e Guardar pesquisa ──
+    qrTab:'Os meus orçamentos',
+    qrVazio:'Ainda não pediu orçamentos com este email. Quando pedir, vê aqui a que empresas foi o pedido e quem já respondeu.',
+    qrEnviado1:'Enviado a 1 empresa',
+    qrEnviadoN:'Enviado a {n} empresas',
+    qrEnviado0:'Não havia empresas da área para receber este pedido',
+    qrResp0:'ainda ninguém respondeu pela Hivex',
+    qrResp1:'1 respondeu pela Hivex',
+    qrRespN:'{n} responderam pela Hivex',
+    qrVerResposta:'Ver resposta',
+    qrSemResposta:'Ainda sem resposta',
+    qrRespEmail:'Respondeu: veja o seu email',
+    qrNotaEmail:'As empresas também podem responder diretamente para o seu email; essas respostas não aparecem aqui.',
+    rqPushTxt:'Receba um aviso no telemóvel a cada pedido novo: quem responde primeiro ganha mais trabalhos.',
+    tnPushTxt:'Receba um aviso no telemóvel a cada proposta nova.',
+    smGuardar:'Guardar pesquisa (aviso por email de empresas novas)',
+    smGuardarCurto:'Guardar',
+    smGuardada:'Pesquisa guardada: enviamos-lhe um email por semana quando aparecerem empresas novas.',
+    smJaGuardada:'Esta pesquisa já está guardada.',
+    chatMineTitle:'As minhas mensagens',
+    smGuardarFalta:'Escolha uma atividade ou um raio à volta de um local para guardar a pesquisa.',
     // ── Concursos (pedido de propostas com anexos) ──
     // ── Pedidos de clientes e respostas dos concursos ──
     tnTabResp:'Respostas ({n} de {c})',
@@ -879,6 +900,27 @@ const translations = {
     smFimTitulo:'Didn’t find what you need?',
     smFimRfq:'Request quotes from several companies',
     smDonoCta:'Register or claim your listing →',
+    // ── Os meus orçamentos, avisos no telemóvel e Guardar pesquisa ──
+    qrTab:'My quote requests',
+    qrVazio:'You haven’t requested quotes with this email yet. When you do, you’ll see here which companies got the request and who replied.',
+    qrEnviado1:'Sent to 1 company',
+    qrEnviadoN:'Sent to {n} companies',
+    qrEnviado0:'There were no companies in this trade to receive this request',
+    qrResp0:'no replies on Hivex yet',
+    qrResp1:'1 replied on Hivex',
+    qrRespN:'{n} replied on Hivex',
+    qrVerResposta:'See reply',
+    qrSemResposta:'No reply yet',
+    qrRespEmail:'Replied: check your email',
+    qrNotaEmail:'Companies can also reply straight to your email; those replies don’t show here.',
+    rqPushTxt:'Get a phone alert for every new request: whoever replies first wins more jobs.',
+    tnPushTxt:'Get a phone alert for every new proposal.',
+    smGuardar:'Save search (email alert for new companies)',
+    smGuardarCurto:'Save',
+    smGuardada:'Search saved: we’ll email you weekly when new companies appear.',
+    smJaGuardada:'This search is already saved.',
+    chatMineTitle:'My messages',
+    smGuardarFalta:'Choose a trade or a radius around a place to save the search.',
     // ── Concursos (pedido de propostas com anexos) ──
     // ── Pedidos de clientes e respostas dos concursos ──
     tnTabResp:'Responses ({n} of {c})',
@@ -1635,6 +1677,27 @@ const translations = {
     smFimTitulo:'Vous n’avez pas trouvé ce que vous cherchez ?',
     smFimRfq:'Demander des devis à plusieurs entreprises',
     smDonoCta:'Inscrivez ou revendiquez votre fiche →',
+    // ── Os meus orçamentos, avisos no telemóvel e Guardar pesquisa ──
+    qrTab:'Mes demandes de devis',
+    qrVazio:'Vous n’avez pas encore demandé de devis avec cet e-mail. Quand vous le ferez, vous verrez ici à quelles entreprises la demande est allée et qui a répondu.',
+    qrEnviado1:'Envoyée à 1 entreprise',
+    qrEnviadoN:'Envoyée à {n} entreprises',
+    qrEnviado0:'Aucune entreprise de ce métier ne pouvait recevoir cette demande',
+    qrResp0:'pas encore de réponse sur Hivex',
+    qrResp1:'1 a répondu sur Hivex',
+    qrRespN:'{n} ont répondu sur Hivex',
+    qrVerResposta:'Voir la réponse',
+    qrSemResposta:'Pas encore de réponse',
+    qrRespEmail:'A répondu : voyez vos e-mails',
+    qrNotaEmail:'Les entreprises peuvent aussi répondre directement à votre e-mail ; ces réponses n’apparaissent pas ici.',
+    rqPushTxt:'Recevez une alerte sur votre téléphone à chaque nouvelle demande : qui répond le premier décroche plus de travaux.',
+    tnPushTxt:'Recevez une alerte sur votre téléphone à chaque nouvelle offre.',
+    smGuardar:'Enregistrer la recherche (alerte e-mail pour les nouvelles entreprises)',
+    smGuardarCurto:'Enregistrer',
+    smGuardada:'Recherche enregistrée : nous vous écrirons chaque semaine quand de nouvelles entreprises apparaîtront.',
+    smJaGuardada:'Cette recherche est déjà enregistrée.',
+    chatMineTitle:'Mes messages',
+    smGuardarFalta:'Choisissez un métier ou un rayon autour d’un lieu pour enregistrer la recherche.',
     // ── Concursos (pedido de propostas com anexos) ──
     // ── Pedidos de clientes e respostas dos concursos ──
     tnTabResp:'Réponses ({n} sur {c})',
@@ -2395,6 +2458,27 @@ const translations = {
     smFimTitulo:'¿No encontró lo que busca?',
     smFimRfq:'Pedir presupuestos a varias empresas',
     smDonoCta:'Registre o reclame su ficha →',
+    // ── Os meus orçamentos, avisos no telemóvel e Guardar pesquisa ──
+    qrTab:'Mis presupuestos',
+    qrVazio:'Aún no ha pedido presupuestos con este email. Cuando lo haga, verá aquí a qué empresas llegó la solicitud y quién respondió.',
+    qrEnviado1:'Enviada a 1 empresa',
+    qrEnviadoN:'Enviada a {n} empresas',
+    qrEnviado0:'No había empresas de esta actividad para recibir esta solicitud',
+    qrResp0:'aún nadie respondió en Hivex',
+    qrResp1:'1 respondió en Hivex',
+    qrRespN:'{n} respondieron en Hivex',
+    qrVerResposta:'Ver respuesta',
+    qrSemResposta:'Aún sin respuesta',
+    qrRespEmail:'Respondió: revise su email',
+    qrNotaEmail:'Las empresas también pueden responder directamente a su email; esas respuestas no aparecen aquí.',
+    rqPushTxt:'Reciba un aviso en el móvil con cada nueva solicitud: quien responde primero gana más trabajos.',
+    tnPushTxt:'Reciba un aviso en el móvil con cada nueva propuesta.',
+    smGuardar:'Guardar búsqueda (aviso por email de empresas nuevas)',
+    smGuardarCurto:'Guardar',
+    smGuardada:'Búsqueda guardada: le enviaremos un email semanal cuando aparezcan empresas nuevas.',
+    smJaGuardada:'Esta búsqueda ya está guardada.',
+    chatMineTitle:'Mis mensajes',
+    smGuardarFalta:'Elija una actividad o un radio alrededor de un lugar para guardar la búsqueda.',
     // ── Concursos (pedido de propostas com anexos) ──
     // ── Pedidos de clientes e respostas dos concursos ──
     tnTabResp:'Respuestas ({n} de {c})',
@@ -3147,6 +3231,27 @@ const translations = {
     smFimTitulo:'Nicht gefunden, was Sie suchen?',
     smFimRfq:'Angebote bei mehreren Unternehmen anfragen',
     smDonoCta:'Eintrag registrieren oder beanspruchen →',
+    // ── Os meus orçamentos, avisos no telemóvel e Guardar pesquisa ──
+    qrTab:'Meine Angebotsanfragen',
+    qrVazio:'Sie haben mit dieser E-Mail noch keine Angebote angefragt. Danach sehen Sie hier, welche Unternehmen die Anfrage erhalten und wer geantwortet hat.',
+    qrEnviado1:'An 1 Unternehmen gesendet',
+    qrEnviadoN:'An {n} Unternehmen gesendet',
+    qrEnviado0:'Es gab keine Unternehmen dieses Gewerks, die diese Anfrage erhalten konnten',
+    qrResp0:'noch keine Antwort über Hivex',
+    qrResp1:'1 hat über Hivex geantwortet',
+    qrRespN:'{n} haben über Hivex geantwortet',
+    qrVerResposta:'Antwort ansehen',
+    qrSemResposta:'Noch keine Antwort',
+    qrRespEmail:'Hat geantwortet: siehe E-Mail',
+    qrNotaEmail:'Unternehmen können auch direkt an Ihre E-Mail antworten; diese Antworten erscheinen hier nicht.',
+    rqPushTxt:'Erhalten Sie bei jeder neuen Anfrage eine Benachrichtigung aufs Handy: Wer zuerst antwortet, gewinnt mehr Aufträge.',
+    tnPushTxt:'Erhalten Sie bei jedem neuen Angebot eine Benachrichtigung aufs Handy.',
+    smGuardar:'Suche speichern (E-Mail-Hinweis auf neue Unternehmen)',
+    smGuardarCurto:'Speichern',
+    smGuardada:'Suche gespeichert: Wir schreiben Ihnen wöchentlich, wenn neue Unternehmen erscheinen.',
+    smJaGuardada:'Diese Suche ist bereits gespeichert.',
+    chatMineTitle:'Meine Nachrichten',
+    smGuardarFalta:'Wählen Sie ein Gewerk oder einen Umkreis um einen Ort, um die Suche zu speichern.',
     // ── Concursos (pedido de propostas com anexos) ──
     // ── Pedidos de clientes e respostas dos concursos ──
     tnTabResp:'Antworten ({n} von {c})',
@@ -10355,6 +10460,9 @@ function openMyChats() {
 }
 function _openChatOverlay() {
   _chatFiles = []; _chatPeer = null; _chatThreads = [];
+  // título conforme o lado: o cliente vê as suas conversas com as empresas
+  const tit = document.getElementById('inboxTitle');
+  if (tit) { const k = _chatMode === 'client' ? 'chatMineTitle' : 'inboxTitle'; tit.setAttribute('data-i18n', k); tit.textContent = t(k); }
   _renderPendingFiles();
   _chatEl('chatHead').textContent = '';
   _chatEl('chatMsgs').innerHTML = '';
@@ -10436,7 +10544,8 @@ function _chatMarcarLida(th) {
     .catch(() => {});
 }
 
-async function _loadClientThreads() {
+// foco: a empresa cuja conversa abre logo ("Ver resposta" em "Os meus orçamentos")
+async function _loadClientThreads(foco) {
   try {
     const rows = await apiFetch('/messages/mine');
     _chatThreads = rows;
@@ -10445,10 +10554,19 @@ async function _loadClientThreads() {
       sub: (r.last_body || '').slice(0, 46), unread: r.unread,
       emoji: r.company_emoji || null, at: r.last_at || null,
     })));
-    if (rows.length && !_chatIsMobile()) _selectClientThread(rows[0].company_id);
+    if (foco && rows.some(r => Number(r.company_id) === Number(foco))) _selectClientThread(Number(foco));
+    else if (rows.length && !_chatIsMobile()) _selectClientThread(rows[0].company_id);
     else if (!rows.length) _chatEmpty();
   } catch (e) { _chatError(e); }
 }
+function openMyChatsCom(companyId) {
+  if (!_isLoggedIn()) { openLogin(); return; }
+  _chatMode = 'client';
+  _chatCompanyId = null;
+  _openChatOverlay();
+  _loadClientThreads(Number(companyId));
+}
+window.openMyChatsCom = openMyChatsCom;
 async function _selectClientThread(companyId) {
   _chatCompanyId = Number(companyId);
   _markThreadActive(String(companyId));
@@ -10946,7 +11064,8 @@ const LEGAL_DOCS = {
           <li><strong>Conta:</strong> nome, e-mail, palavra-passe (cifrada com bcrypt) ou identificador Google. Telefone se for empresa.</li>
           <li><strong>Empresa:</strong> dados públicos comerciais (nome, CAE, morada, contactos) + código da Certidão Permanente (apenas visível ao próprio e à equipa Hivex).</li>
           <li><strong>Utilização:</strong> contadores anónimos e agregados (aberturas de perfis, cliques de contacto) — sem cookies nem identificadores, nunca associados a si.</li>
-          <li><strong>Localização:</strong> coordenadas só se autorizar o navegador a partilhá-las; nunca são guardadas no servidor.</li>
+          <li><strong>Localização:</strong> coordenadas só se autorizar o navegador a partilhá-las; nunca são guardadas no servidor, exceto se guardar uma pesquisa: aí fica um ponto aproximado (a cerca de 1 km) para o alerta, que pode apagar no seu perfil.</li>
+          <li><strong>Avisos no telemóvel:</strong> se os ativar, guardamos o endereço de entrega que o navegador cria para a Hivex; quando desativa os avisos no navegador, esse endereço deixa de funcionar e é apagado.</li>
         </ul>
         <h3>3. Para que usamos os dados</h3>
         <ul>
@@ -10966,7 +11085,7 @@ const LEGAL_DOCS = {
         <h3>5.2 Concursos (pedidos de proposta)</h3>
         <p>Quem lança um concurso partilha a descrição da obra, os anexos e os seus contactos (nome, email e, se o indicar, telefone) <strong>apenas com as empresas que escolhe</strong> (no máximo 10), para que possam responder; a proposta e os contactos de cada empresa só são vistos por quem lançou o concurso. Os anexos ficam num armazenamento privado (Vercel Blob) e só se descarregam através de links temporários. Registamos quando cada empresa convidada abre o concurso, descarrega anexos e responde, para que quem lançou possa acompanhar. Base legal: execução do pedido feito por si (art. 6.º, n.º 1, alínea b)) e, quanto às empresas convidadas, interesse legítimo em fazer-lhes chegar um pedido concreto de um cliente (alínea f)). Só enviamos convites por email a fichas geridas pela própria empresa ou a empresas portuguesas com NIF de pessoa coletiva, e cada convite tem um link para deixar de os receber. Os anexos são apagados 90 dias depois do fecho do concurso e o resto 12 meses depois.</p>
         <h3>5.3 Pedidos de orçamento e Pedidos de clientes</h3>
-        <p>Quando pede orçamentos a várias empresas, enviamos o seu pedido (descrição, localidade, prazo, orçamento indicativo, o seu nome, email e, se o indicar, telefone) a <strong>no máximo 10 empresas</strong> da área escolhida, as mais próximas: só fichas geridas pela própria empresa ou empresas portuguesas com NIF de pessoa coletiva, e nunca a quem pediu para não receber estes emails. Registamos a que empresas foi enviado, para que quem gere essas fichas o veja na sua conta, em «Pedidos de clientes», junto das mensagens e dos convites para concursos que recebeu; os pedidos ficam nessa lista durante 90 dias. Base legal: execução do pedido feito por si (art. 6.º, n.º 1, alínea b)) e, quanto às empresas, interesse legítimo em fazer-lhes chegar um pedido concreto de um cliente (alínea f)). Cada email tem um link para deixar de os receber.</p>
+        <p>Quando pede orçamentos a várias empresas, enviamos o seu pedido (descrição, localidade, prazo, orçamento indicativo, o seu nome, email e, se o indicar, telefone) a <strong>no máximo 10 empresas</strong> da área escolhida, as mais próximas: só fichas geridas pela própria empresa ou empresas portuguesas com NIF de pessoa coletiva, e nunca a quem pediu para não receber estes emails. Registamos a que empresas foi enviado, para que quem gere essas fichas o veja na sua conta, em «Pedidos de clientes», junto das mensagens e dos convites para concursos que recebeu; os pedidos ficam nessa lista durante 90 dias. Base legal: execução do pedido feito por si (art. 6.º, n.º 1, alínea b)) e, quanto às empresas, interesse legítimo em fazer-lhes chegar um pedido concreto de um cliente (alínea f)). Cada email tem um link para deixar de os receber. Pode ver a que empresas foi o seu pedido e quais já responderam pela Hivex em «Os meus orçamentos», entrando com o mesmo email. Os pedidos de orçamento são apagados 12 meses depois de enviados.</p>
         <h3>6. Período de conservação</h3>
         <p>Mantemos os dados enquanto a conta estiver ativa. Após eliminação, dados de conta são apagados em 30 dias. Logs de segurança: 12 meses. Empresas aprovadas continuam visíveis no diretório até pedido de remoção.</p>
         <h3>7. Os seus direitos</h3>
@@ -11067,7 +11186,8 @@ LEGAL_DOCS.en = {
       <li><strong>Account:</strong> name, e-mail, password (encrypted with bcrypt) or Google identifier. Phone if a company.</li>
       <li><strong>Company:</strong> public commercial data (name, business code, address, contacts) + Permanent Certificate code (only visible to the owner and the Hivex team).</li>
       <li><strong>Usage:</strong> anonymous, aggregate counters (profile opens, contact clicks) — no cookies or identifiers, never linked to you.</li>
-      <li><strong>Location:</strong> coordinates only if you allow the browser to share them; never stored on the server.</li>
+      <li><strong>Location:</strong> coordinates only if you allow the browser to share them; never stored on the server, except when you save a search: then an approximate point (to within about 1 km) is kept for the alert, which you can delete in your profile.</li>
+      <li><strong>Phone alerts:</strong> if you turn them on, we store the delivery address your browser creates for Hivex; when you turn the alerts off in the browser, that address stops working and is deleted.</li>
     </ul>
     <h3>3. Why we use the data</h3>
     <ul>
@@ -11087,7 +11207,7 @@ LEGAL_DOCS.en = {
     <h3>5.2 Tenders (requests for proposals)</h3>
     <p>When you run a tender, the description of the works, the attachments and your contact details (name, email and, if given, phone) are shared <strong>only with the companies you choose</strong> (up to 10) so they can reply; each company’s proposal and contact details are seen only by the person who ran the tender. Attachments are kept in private storage (Vercel Blob) and can only be downloaded through temporary links. We record when each invited company opens the tender, downloads attachments and replies, so the person who ran it can follow progress. Legal basis: performance of the request you made (Art. 6(1)(b)) and, for invited companies, legitimate interest in passing on a specific client request (Art. 6(1)(f)). We only send email invitations to listings managed by the company itself or to Portuguese companies with a corporate tax number, and every invitation includes a link to stop receiving them. Attachments are deleted 90 days after the tender closes and everything else after 12 months.</p>
     <h3>5.3 Quote requests and Customer requests</h3>
-    <p>When you request quotes from several companies, we send your request (description, place, timing, indicative budget, your name, email and, if given, phone) to <strong>at most 10 companies</strong> in the chosen trade, the nearest ones: only listings managed by the company itself or Portuguese companies with a corporate tax number, and never to anyone who asked not to receive these emails. We record which companies it was sent to, so that whoever manages those listings can see it in their account under “Customer requests”, alongside the messages and tender invitations they received; requests stay on that list for 90 days. Legal basis: performance of the request you made (Art. 6(1)(b)) and, for the companies, legitimate interest in passing on a specific client request (Art. 6(1)(f)). Every email includes a link to stop receiving them.</p>
+    <p>When you request quotes from several companies, we send your request (description, place, timing, indicative budget, your name, email and, if given, phone) to <strong>at most 10 companies</strong> in the chosen trade, the nearest ones: only listings managed by the company itself or Portuguese companies with a corporate tax number, and never to anyone who asked not to receive these emails. We record which companies it was sent to, so that whoever manages those listings can see it in their account under “Customer requests”, alongside the messages and tender invitations they received; requests stay on that list for 90 days. Legal basis: performance of the request you made (Art. 6(1)(b)) and, for the companies, legitimate interest in passing on a specific client request (Art. 6(1)(f)). Every email includes a link to stop receiving them. You can see which companies got your request and which have replied on Hivex under “My quote requests”, signing in with the same email. Quote requests are deleted 12 months after they are sent.</p>
     <h3>6. Retention period</h3>
     <p>We keep the data while the account is active. After deletion, account data is erased within 30 days. Security logs: 12 months. Approved companies remain visible in the directory until a removal request.</p>
     <h3>7. Your rights</h3>
@@ -11169,7 +11289,8 @@ LEGAL_DOCS.fr = {
       <li><strong>Compte :</strong> nom, e-mail, mot de passe (chiffré avec bcrypt) ou identifiant Google. Téléphone s'il s'agit d'une entreprise.</li>
       <li><strong>Entreprise :</strong> données commerciales publiques (nom, code d'activité, adresse, contacts) + code de Certificat Permanent (visible uniquement par le propriétaire et l'équipe Hivex).</li>
       <li><strong>Utilisation :</strong> compteurs anonymes et agrégés (ouvertures de profils, clics de contact) — sans cookies ni identifiants, jamais associés à vous.</li>
-      <li><strong>Localisation :</strong> coordonnées uniquement si vous autorisez le navigateur à les partager ; jamais enregistrées sur le serveur.</li>
+      <li><strong>Localisation :</strong> coordonnées uniquement si vous autorisez le navigateur à les partager ; jamais enregistrées sur le serveur, sauf si vous enregistrez une recherche : un point approximatif (à environ 1 km près) est alors conservé pour l’alerte, que vous pouvez supprimer dans votre profil.</li>
+      <li><strong>Alertes sur le téléphone :</strong> si vous les activez, nous conservons l’adresse de distribution que votre navigateur crée pour Hivex ; lorsque vous désactivez les alertes dans le navigateur, cette adresse cesse de fonctionner et est supprimée.</li>
     </ul>
     <h3>3. Pourquoi nous utilisons les données</h3>
     <ul>
@@ -11189,7 +11310,7 @@ LEGAL_DOCS.fr = {
     <h3>5.2 Appels d’offres (demandes d’offre)</h3>
     <p>Lorsque vous lancez un appel d’offres, la description des travaux, les pièces jointes et vos coordonnées (nom, e-mail et, si indiqué, téléphone) sont partagées <strong>uniquement avec les entreprises que vous choisissez</strong> (10 au maximum) pour qu’elles puissent répondre ; l’offre et les coordonnées de chaque entreprise ne sont vues que par la personne qui a lancé l’appel d’offres. Les pièces jointes sont conservées dans un stockage privé (Vercel Blob) et ne se téléchargent que par des liens temporaires. Nous enregistrons quand chaque entreprise invitée ouvre l’appel d’offres, télécharge les pièces jointes et répond, afin que la personne qui l’a lancé puisse suivre. Base légale : exécution de votre demande (art. 6, par. 1, b)) et, pour les entreprises invitées, intérêt légitime à leur transmettre une demande concrète d’un client (art. 6, par. 1, f)). Nous n’envoyons d’invitations par e-mail qu’aux fiches gérées par l’entreprise elle-même ou aux entreprises portugaises ayant un numéro fiscal de personne morale, et chaque invitation contient un lien pour ne plus en recevoir. Les pièces jointes sont supprimées 90 jours après la clôture et le reste après 12 mois.</p>
     <h3>5.3 Demandes de devis et Demandes de clients</h3>
-    <p>Lorsque vous demandez des devis à plusieurs entreprises, nous envoyons votre demande (description, lieu, délai, budget indicatif, votre nom, votre e-mail et, si indiqué, votre téléphone) à <strong>10 entreprises au maximum</strong> du métier choisi, les plus proches : uniquement des fiches gérées par l’entreprise elle-même ou des entreprises portugaises ayant un numéro fiscal de personne morale, et jamais à ceux qui ont demandé à ne plus recevoir ces e-mails. Nous enregistrons à quelles entreprises elle a été envoyée, afin que les personnes qui gèrent ces fiches la voient dans leur compte, sous « Demandes de clients », avec les messages et les invitations à des appels d’offres reçus ; les demandes restent dans cette liste pendant 90 jours. Base légale : exécution de votre demande (art. 6, par. 1, b)) et, pour les entreprises, intérêt légitime à leur transmettre une demande concrète d’un client (art. 6, par. 1, f)). Chaque e-mail contient un lien pour ne plus en recevoir.</p>
+    <p>Lorsque vous demandez des devis à plusieurs entreprises, nous envoyons votre demande (description, lieu, délai, budget indicatif, votre nom, votre e-mail et, si indiqué, votre téléphone) à <strong>10 entreprises au maximum</strong> du métier choisi, les plus proches : uniquement des fiches gérées par l’entreprise elle-même ou des entreprises portugaises ayant un numéro fiscal de personne morale, et jamais à ceux qui ont demandé à ne plus recevoir ces e-mails. Nous enregistrons à quelles entreprises elle a été envoyée, afin que les personnes qui gèrent ces fiches la voient dans leur compte, sous « Demandes de clients », avec les messages et les invitations à des appels d’offres reçus ; les demandes restent dans cette liste pendant 90 jours. Base légale : exécution de votre demande (art. 6, par. 1, b)) et, pour les entreprises, intérêt légitime à leur transmettre une demande concrète d’un client (art. 6, par. 1, f)). Chaque e-mail contient un lien pour ne plus en recevoir. Vous pouvez voir à quelles entreprises votre demande a été envoyée et lesquelles ont répondu sur Hivex dans « Mes demandes de devis », en vous connectant avec le même e-mail. Les demandes de devis sont supprimées 12 mois après leur envoi.</p>
     <h3>6. Durée de conservation</h3>
     <p>Nous conservons les données tant que le compte est actif. Après suppression, les données du compte sont effacées sous 30 jours. Journaux de sécurité : 12 mois. Les entreprises approuvées restent visibles dans l'annuaire jusqu'à une demande de retrait.</p>
     <h3>7. Vos droits</h3>
@@ -11271,7 +11392,8 @@ LEGAL_DOCS.es = {
       <li><strong>Cuenta:</strong> nombre, correo, contraseña (cifrada con bcrypt) o identificador de Google. Teléfono si es empresa.</li>
       <li><strong>Empresa:</strong> datos comerciales públicos (nombre, código de actividad, dirección, contactos) + código de Certificado Permanente (solo visible para el propietario y el equipo de Hivex).</li>
       <li><strong>Uso:</strong> contadores anónimos y agregados (aperturas de perfiles, clics de contacto): sin cookies ni identificadores, nunca asociados a ti.</li>
-      <li><strong>Ubicación:</strong> coordenadas solo si autorizas al navegador a compartirlas; nunca se guardan en el servidor.</li>
+      <li><strong>Ubicación:</strong> coordenadas solo si autorizas al navegador a compartirlas; nunca se guardan en el servidor, salvo si guardas una búsqueda: entonces se conserva un punto aproximado (con una precisión de 1 km) para el aviso, que puedes borrar en tu perfil.</li>
+      <li><strong>Avisos en el móvil:</strong> si los activas, guardamos la dirección de entrega que tu navegador crea para Hivex; cuando desactivas los avisos en el navegador, esa dirección deja de funcionar y se borra.</li>
     </ul>
     <h3>3. Para qué usamos los datos</h3>
     <ul>
@@ -11291,7 +11413,7 @@ LEGAL_DOCS.es = {
     <h3>5.2 Concursos (solicitudes de propuesta)</h3>
     <p>Quien lanza un concurso comparte la descripción de la obra, los adjuntos y sus datos de contacto (nombre, email y, si lo indica, teléfono) <strong>solo con las empresas que elige</strong> (como máximo 10) para que puedan responder; la propuesta y los datos de contacto de cada empresa solo los ve quien lanzó el concurso. Los adjuntos se guardan en un almacenamiento privado (Vercel Blob) y solo se descargan mediante enlaces temporales. Registramos cuándo cada empresa invitada abre el concurso, descarga adjuntos y responde, para que quien lo lanzó pueda seguirlo. Base legal: ejecución de la solicitud que usted hizo (art. 6.1.b) y, para las empresas invitadas, interés legítimo en hacerles llegar una solicitud concreta de un cliente (art. 6.1.f). Solo enviamos invitaciones por email a fichas gestionadas por la propia empresa o a empresas portuguesas con NIF de persona jurídica, y cada invitación incluye un enlace para dejar de recibirlas. Los adjuntos se borran 90 días después del cierre del concurso y el resto a los 12 meses.</p>
     <h3>5.3 Solicitudes de presupuesto y Solicitudes de clientes</h3>
-    <p>Cuando pide presupuestos a varias empresas, enviamos su solicitud (descripción, localidad, plazo, presupuesto orientativo, su nombre, email y, si lo indica, teléfono) a <strong>un máximo de 10 empresas</strong> de la actividad elegida, las más cercanas: solo fichas gestionadas por la propia empresa o empresas portuguesas con NIF de persona jurídica, y nunca a quien pidió no recibir estos emails. Registramos a qué empresas se envió, para que quien gestiona esas fichas la vea en su cuenta, en «Solicitudes de clientes», junto con los mensajes y las invitaciones a concursos que recibió; las solicitudes permanecen en esa lista durante 90 días. Base legal: ejecución de la solicitud que usted hizo (art. 6.1.b) y, para las empresas, interés legítimo en hacerles llegar una solicitud concreta de un cliente (art. 6.1.f). Cada email incluye un enlace para dejar de recibirlos.</p>
+    <p>Cuando pide presupuestos a varias empresas, enviamos su solicitud (descripción, localidad, plazo, presupuesto orientativo, su nombre, email y, si lo indica, teléfono) a <strong>un máximo de 10 empresas</strong> de la actividad elegida, las más cercanas: solo fichas gestionadas por la propia empresa o empresas portuguesas con NIF de persona jurídica, y nunca a quien pidió no recibir estos emails. Registramos a qué empresas se envió, para que quien gestiona esas fichas la vea en su cuenta, en «Solicitudes de clientes», junto con los mensajes y las invitaciones a concursos que recibió; las solicitudes permanecen en esa lista durante 90 días. Base legal: ejecución de la solicitud que usted hizo (art. 6.1.b) y, para las empresas, interés legítimo en hacerles llegar una solicitud concreta de un cliente (art. 6.1.f). Cada email incluye un enlace para dejar de recibirlos. Puede ver a qué empresas llegó su solicitud y cuáles respondieron en Hivex en «Mis presupuestos», entrando con el mismo email. Las solicitudes de presupuesto se borran 12 meses después de enviarlas.</p>
     <h3>6. Periodo de conservación</h3>
     <p>Conservamos los datos mientras la cuenta esté activa. Tras la eliminación, los datos de la cuenta se borran en 30 días. Registros de seguridad: 12 meses. Las empresas aprobadas siguen visibles en el directorio hasta que se solicite su retirada.</p>
     <h3>7. Tus derechos</h3>
@@ -11373,7 +11495,8 @@ LEGAL_DOCS.de = {
       <li><strong>Konto:</strong> Name, E-Mail, Passwort (mit bcrypt verschlüsselt) oder Google-Kennung. Telefon, wenn ein Unternehmen.</li>
       <li><strong>Unternehmen:</strong> öffentliche Geschäftsdaten (Name, Tätigkeitscode, Adresse, Kontakte) + Code des Permanenten Zertifikats (nur für den Inhaber und das Hivex-Team sichtbar).</li>
       <li><strong>Nutzung:</strong> anonyme, aggregierte Zähler (Profilaufrufe, Kontaktklicks) — ohne Cookies und Kennungen, nie mit Ihnen verknüpft.</li>
-      <li><strong>Standort:</strong> Koordinaten nur, wenn Sie dem Browser die Freigabe erlauben; werden nie auf dem Server gespeichert.</li>
+      <li><strong>Standort:</strong> Koordinaten nur, wenn Sie dem Browser die Freigabe erlauben; werden nie auf dem Server gespeichert, außer wenn Sie eine Suche speichern: Dann bleibt für den Hinweis ein ungefährer Punkt (auf etwa 1 km genau) gespeichert, den Sie in Ihrem Profil löschen können.</li>
+      <li><strong>Handy-Benachrichtigungen:</strong> Wenn Sie sie aktivieren, speichern wir die Zustelladresse, die Ihr Browser für Hivex erzeugt; schalten Sie die Benachrichtigungen im Browser ab, funktioniert diese Adresse nicht mehr und wird gelöscht.</li>
     </ul>
     <h3>3. Wofür wir die Daten verwenden</h3>
     <ul>
@@ -11393,7 +11516,7 @@ LEGAL_DOCS.de = {
     <h3>5.2 Ausschreibungen (Angebotsanfragen)</h3>
     <p>Wenn Sie eine Ausschreibung starten, werden die Beschreibung der Arbeiten, die Anhänge und Ihre Kontaktdaten (Name, E-Mail und, falls angegeben, Telefon) <strong>nur mit den von Ihnen gewählten Unternehmen</strong> (höchstens 10) geteilt, damit diese antworten können; Angebot und Kontaktdaten jedes Unternehmens sieht nur die Person, die die Ausschreibung gestartet hat. Anhänge liegen in einem privaten Speicher (Vercel Blob) und lassen sich nur über zeitlich begrenzte Links herunterladen. Wir erfassen, wann jedes eingeladene Unternehmen die Ausschreibung öffnet, Anhänge herunterlädt und antwortet, damit der Auftraggeber den Stand verfolgen kann. Rechtsgrundlage: Durchführung Ihrer Anfrage (Art. 6 Abs. 1 lit. b DSGVO) und, für eingeladene Unternehmen, berechtigtes Interesse, ihnen eine konkrete Kundenanfrage zu übermitteln (Art. 6 Abs. 1 lit. f DSGVO). Einladungen per E-Mail senden wir nur an Einträge, die das Unternehmen selbst verwaltet, oder an portugiesische Unternehmen mit Steuernummer einer juristischen Person; jede Einladung enthält einen Link zum Abbestellen. Anhänge werden 90 Tage nach Abschluss der Ausschreibung gelöscht, alles Übrige nach 12 Monaten.</p>
     <h3>5.3 Angebotsanfragen und Kundenanfragen</h3>
-    <p>Wenn Sie Angebote bei mehreren Unternehmen anfragen, senden wir Ihre Anfrage (Beschreibung, Ort, Zeitrahmen, Budgetrahmen, Ihr Name, Ihre E-Mail und, falls angegeben, Telefon) an <strong>höchstens 10 Unternehmen</strong> des gewählten Gewerks, die nächstgelegenen: nur an Einträge, die das Unternehmen selbst verwaltet, oder an portugiesische Unternehmen mit Steuernummer einer juristischen Person, und nie an Adressen, die diese E-Mails abbestellt haben. Wir speichern, an welche Unternehmen sie ging, damit die Verwalter dieser Einträge sie in ihrem Konto unter „Kundenanfragen“ sehen, zusammen mit den erhaltenen Nachrichten und Einladungen zu Ausschreibungen; Anfragen bleiben 90 Tage in dieser Liste. Rechtsgrundlage: Durchführung Ihrer Anfrage (Art. 6 Abs. 1 lit. b DSGVO) und, für die Unternehmen, berechtigtes Interesse, ihnen eine konkrete Kundenanfrage zu übermitteln (Art. 6 Abs. 1 lit. f DSGVO). Jede E-Mail enthält einen Link zum Abbestellen.</p>
+    <p>Wenn Sie Angebote bei mehreren Unternehmen anfragen, senden wir Ihre Anfrage (Beschreibung, Ort, Zeitrahmen, Budgetrahmen, Ihr Name, Ihre E-Mail und, falls angegeben, Telefon) an <strong>höchstens 10 Unternehmen</strong> des gewählten Gewerks, die nächstgelegenen: nur an Einträge, die das Unternehmen selbst verwaltet, oder an portugiesische Unternehmen mit Steuernummer einer juristischen Person, und nie an Adressen, die diese E-Mails abbestellt haben. Wir speichern, an welche Unternehmen sie ging, damit die Verwalter dieser Einträge sie in ihrem Konto unter „Kundenanfragen“ sehen, zusammen mit den erhaltenen Nachrichten und Einladungen zu Ausschreibungen; Anfragen bleiben 90 Tage in dieser Liste. Rechtsgrundlage: Durchführung Ihrer Anfrage (Art. 6 Abs. 1 lit. b DSGVO) und, für die Unternehmen, berechtigtes Interesse, ihnen eine konkrete Kundenanfrage zu übermitteln (Art. 6 Abs. 1 lit. f DSGVO). Jede E-Mail enthält einen Link zum Abbestellen. Unter „Meine Angebotsanfragen“ sehen Sie, an welche Unternehmen Ihre Anfrage ging und welche über Hivex geantwortet haben, wenn Sie sich mit derselben E-Mail anmelden. Angebotsanfragen werden 12 Monate nach dem Versand gelöscht.</p>
     <h3>6. Aufbewahrungsdauer</h3>
     <p>Wir bewahren die Daten auf, solange das Konto aktiv ist. Nach der Löschung werden Kontodaten innerhalb von 30 Tagen gelöscht. Sicherheitsprotokolle: 12 Monate. Genehmigte Unternehmen bleiben im Verzeichnis sichtbar, bis eine Entfernung beantragt wird.</p>
     <h3>7. Ihre Rechte</h3>
@@ -15725,11 +15848,19 @@ async function _renderMyAlerts() {
   if (!body || document.getElementById('myAlertsBox')) return;
   const tr = translations[currentLang] || translations.pt;
   const sc = tr.sectors || {};
+  // Alertas da pesquisa por filtros (telemóveis): atividades · raio · local
+  const texto = (r) => {
+    if (!Array.isArray(r.sectors)) return escHtml(sc[r.sector] || r.sector) + (r.city ? ' · ' + escHtml(r.city) : '') + (r.country ? ' · ' + escHtml(String(r.country).toUpperCase()) : '');
+    const nomes = r.sectors.map(k => _smNomeSub(k, sc));
+    const areas = !nomes.length ? t('smTodas') : nomes.length > 2 ? nomes.slice(0, 2).join(', ') + ' +' + (nomes.length - 2) : nomes.join(', ');
+    const raio = r.radius_km ? _tnFmt(t('smAte'), { km: r.radius_km }) : t('smTodoPais');
+    return escHtml([areas, raio, r.label].filter(Boolean).join(' · '));
+  };
   body.insertAdjacentHTML('beforeend',
     '<div id="myAlertsBox" style="margin-top:18px"><div class="profile-section-title">🔔 ' + escHtml(t('alertsTitle')) + '</div>' +
     rows.map(r =>
       '<div style="display:flex;align-items:center;gap:8px;padding:8px 2px;border-bottom:1px solid var(--border);font-size:13px">' +
-      '<span style="flex:1">' + escHtml(sc[r.sector] || r.sector) + (r.city ? ' · ' + escHtml(r.city) : '') + (r.country ? ' · ' + escHtml(String(r.country).toUpperCase()) : '') + '</span>' +
+      '<span style="flex:1">' + texto(r) + '</span>' +
       '<button onclick="deleteSearchAlert(' + r.id + ', this)" style="background:none;border:none;color:var(--text-secondary);cursor:pointer;font-size:15px" aria-label="Remover alerta">✕</button></div>').join('') +
     '</div>');
 }
@@ -16449,6 +16580,8 @@ let _tnSeparador = 'meus'; // ecrã dos concursos: 'meus' ou 'clientes' (pedidos
 let _tnMeus = [];         // os meus concursos (lista)
 let _tnDonoEmpresas = false;
 let _tnNovos = 0;         // pedidos de clientes novos (número no separador)
+let _tnOrc = [];          // os meus pedidos de orçamento (separador "Os meus orçamentos")
+let _tnMostrarOrc = false;
 let _tnConv = null;       // vista do convite (lado da empresa)
 let _tnRef = null;        // token do link (ou 'i<id>' com sessão)
 let _tnUpsConv = [];      // envios em curso (proposta)
@@ -16870,22 +17003,26 @@ async function _tnPublicar(btn) {
 
 // ── Painel: os meus concursos (e, para quem gere empresas, os pedidos de clientes)
 async function openMyTenders(id, separador) {
-  if (!_isLoggedIn()) { window._hxPendingTender = { painel: id || (separador === 'clientes' ? 'clientes' : 'lista') }; openLogin(); return; }
+  if (!_isLoggedIn()) { window._hxPendingTender = { painel: id || (separador === 'clientes' || separador === 'orcamentos' ? separador : 'lista') }; openLogin(); return; }
   await _tnConfig();
   document.getElementById('tenderPanelOverlay').classList.add('open');
   if (id) return _tnAbrirPainel(id);
   _tnPainel = null;
   if (separador) _tnSeparador = separador;
   const el = document.getElementById('tnPanel');
-  el.innerHTML = '<h2 class="legal-title" id="tnPanelTitle">' + escHtml(t(_tnSeparador === 'clientes' ? 'rqMenu' : 'tnMine')) + '</h2><p class="tn-empty">' + escHtml(t('tnLoading')) + '</p>';
+  el.innerHTML = '<h2 class="legal-title" id="tnPanelTitle">' + escHtml(t(_tnSeparador === 'clientes' ? 'rqMenu' : _tnSeparador === 'orcamentos' ? 'qrTab' : 'tnMine')) + '</h2><p class="tn-empty">' + escHtml(t('tnLoading')) + '</p>';
   let conta = null;
   try {
-    [_tnMeus, conta] = await Promise.all([apiFetch('/tenders/mine'), apiFetch('/requests/received/count').catch(() => null)]);
+    [_tnMeus, conta, _tnOrc] = await Promise.all([apiFetch('/tenders/mine'), apiFetch('/requests/received/count').catch(() => null),
+      apiFetch('/quote-requests/mine').catch(() => [])]);
   } catch (e) { el.innerHTML = '<h2 class="legal-title" id="tnPanelTitle">' + escHtml(t('tnMine')) + '</h2><p class="tn-empty">' + escHtml(e.message || t('tnErrGeneric')) + '</p>'; return; }
   _tnDonoEmpresas = !!(conta && conta.empresas);
   _tnNovos = conta ? conta.novos || 0 : 0;
   if (conta) _rqMenu(_tnDonoEmpresas, _tnNovos);
-  if (!_tnDonoEmpresas) _tnSeparador = 'meus';
+  // "Os meus orçamentos" aparece a quem pediu algum (ou veio do link do email)
+  if (!Array.isArray(_tnOrc)) _tnOrc = [];
+  _tnMostrarOrc = _tnOrc.length > 0 || _tnSeparador === 'orcamentos';
+  if (!_tnDonoEmpresas && _tnSeparador === 'clientes') _tnSeparador = 'meus';
   _rq = null;
   _tnRenderLista();
   if (_tnSeparador === 'clientes') _rqCarregar();
@@ -16894,18 +17031,23 @@ function _tnRenderLista() {
   const el = document.getElementById('tnPanel');
   if (!el) return;
   const cli = _tnSeparador === 'clientes';
+  const orc = _tnSeparador === 'orcamentos';
   const meus = _tnMeus || [];
-  let h = '<div class="tn-panel-head"><h2 class="legal-title" id="tnPanelTitle">' + escHtml(t(_tnDonoEmpresas ? 'tnMenu' : 'tnMine')) + '</h2>' +
-    (cli ? '' : '<button type="button" class="btn-submit" onclick="closeMyTenders();openTenderWizard()"><i data-lucide="plus"></i> ' + escHtml(t('tnNew')) + '</button>') + '</div>';
-  if (_tnDonoEmpresas) {
-    h += '<div class="tn-tabs tn-tabs-top" role="tablist">' +
-      '<button type="button" role="tab" aria-selected="' + !cli + '" class="' + (cli ? '' : 'on') + '" onclick="_tnVerSeparador(\'meus\')">' + escHtml(t('tnMine')) + ' (' + meus.length + ')</button>' +
-      '<button type="button" role="tab" aria-selected="' + cli + '" class="' + (cli ? 'on' : '') + '" onclick="_tnVerSeparador(\'clientes\')">' + escHtml(t('rqMenu')) +
-      (_tnNovos ? ' <span class="rq-pill">' + _tnNovos + '</span>' : '') + '</button></div>';
+  const abas = [['meus', escHtml(t('tnMine')) + ' (' + meus.length + ')']];
+  if (_tnMostrarOrc) abas.push(['orcamentos', escHtml(t('qrTab')) + ' (' + (_tnOrc || []).length + ')']);
+  if (_tnDonoEmpresas) abas.push(['clientes', escHtml(t('rqMenu')) + (_tnNovos ? ' <span class="rq-pill">' + _tnNovos + '</span>' : '')]);
+  let h = '<div class="tn-panel-head"><h2 class="legal-title" id="tnPanelTitle">' + escHtml(t(abas.length > 1 ? 'tnMenu' : 'tnMine')) + '</h2>' +
+    (cli ? '' : orc
+      ? '<button type="button" class="btn-submit" onclick="closeMyTenders();openRfqModal()"><i data-lucide="plus"></i> ' + escHtml(t('rfqTitle')) + '</button>'
+      : '<button type="button" class="btn-submit" onclick="closeMyTenders();openTenderWizard()"><i data-lucide="plus"></i> ' + escHtml(t('tnNew')) + '</button>') + '</div>';
+  if (abas.length > 1) {
+    h += '<div class="tn-tabs tn-tabs-top" role="tablist">' + abas.map(([k, rot]) =>
+      '<button type="button" role="tab" aria-selected="' + (_tnSeparador === k) + '" class="' + (_tnSeparador === k ? 'on' : '') + '" onclick="_tnVerSeparador(\'' + k + '\')">' + rot + '</button>').join('') + '</div>';
   }
   if (cli) h += '<div id="rqBody">' + _rqHtml() + '</div>';
+  else if (orc) h += _qrHtml();
   else if (!meus.length) h += '<div class="tn-empty-box"><i data-lucide="clipboard-list"></i><p>' + escHtml(t('tnMineEmpty')) + '</p></div>';
-  else h += '<ul class="tn-list">' + meus.map(m => {
+  else h += (meus.some(m => m.estado === 'open') ? _avisosConvite('tnPushTxt') : '') + '<ul class="tn-list">' + meus.map(m => {
     // Quem já respondeu com proposta (da mais barata) e quantas não concorrem
     let resp = '';
     if (m.estado !== 'draft') {
@@ -17234,8 +17376,9 @@ function _tnReclamar(companyId) {
 // Entrada pendente (visitante que fez login a meio)
 function _tnRetomar(p) {
   if (!p) return;
+  if (p.guardarPesquisa) { try { _smGuardarPesquisa(); } catch (_) {} return; }
   if (p.wizard) openTenderWizard(p.wizard === 'novo' ? null : p.wizard, { mais: p.mais });
-  else if (p.painel === 'clientes') openMyTenders(null, 'clientes');
+  else if (p.painel === 'clientes' || p.painel === 'orcamentos') openMyTenders(null, p.painel);
   else if (p.painel) openMyTenders(p.painel === 'lista' ? null : p.painel);
 }
 // Mudança de língua com um ecrã de concursos aberto: volta a desenhá-lo
@@ -17286,7 +17429,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const k = p.get('concurso') || _tnTokenGuardado();
     if (painel && /^\d+$/.test(painel)) setTimeout(() => openMyTenders(Number(painel)), 400);
     else if (k && /^[A-Za-z0-9_-]{32}$/.test(k)) setTimeout(() => openTenderInvite(k), 400);
-    else if (p.get('pedidos')) setTimeout(() => openMyTenders(null, 'clientes'), 400);
+    else if (p.get('pedidos')) setTimeout(() => openMyTenders(null, p.get('pedidos') === 'orcamentos' ? 'orcamentos' : 'clientes'), 400);
   } catch (_) {}
 });
 Object.assign(window, {
@@ -17377,10 +17520,10 @@ function _rqRedesenhar() {
 function _rqHtml() {
   if (!_rq) return '<p class="tn-empty">' + escHtml(t('tnLoading')) + '</p>';
   const todos = _rq.items;
-  if (!todos.length) return '<div class="tn-empty-box"><i data-lucide="inbox"></i><p>' + escHtml(t('rqEmpty')) + '</p></div>';
+  if (!todos.length) return _avisosConvite('rqPushTxt') + '<div class="tn-empty-box"><i data-lucide="inbox"></i><p>' + escHtml(t('rqEmpty')) + '</p></div>';
   const daEmpresa = todos.filter(i => !_rqEmpresa || i.company_id === _rqEmpresa);
   const conta = (k) => daEmpresa.filter(i => k === 'all' || i.kind === k).length;
-  let h = '<div class="rq-bar"><div class="rq-filtros" role="group">' +
+  let h = _avisosConvite('rqPushTxt') + '<div class="rq-bar"><div class="rq-filtros" role="group">' +
     [['all', 'rqAll'], ['tender', 'rqTenders'], ['rfq', 'rqQuotes'], ['msg', 'rqMsgs']].map(([k, n]) =>
       '<button type="button" class="rq-filtro' + (_rqFiltro === k ? ' on' : '') + '" aria-pressed="' + (_rqFiltro === k) + '" onclick="_rqFiltrar(\'' + k + '\')">' +
       escHtml(t(n)) + ' <span>' + conta(k) + '</span></button>').join('') + '</div>';
@@ -17802,6 +17945,9 @@ function _smAtualizar(filtrados) {
   if (_smOnde && _smSlider() < 100) filtrados = filtrados.filter(c => Number.isFinite(parseFloat(c.lat)) && Number.isFinite(parseFloat(c.lng)));
   _smFiltrados = filtrados;
   _smOrdenadas = null;
+  // outra pesquisa: o sino "Guardar" volta a estar por guardar
+  const sino = document.getElementById('smGuardar');
+  if (sino) sino.classList.remove('on');
   _smAtualizarBotao();
   if (_smTela === 'resultados') _smPreencherLista();
   try { const al = document.getElementById('ariaLive'); if (al) al.textContent = filtrados.length + ' ' + t('resultsCount'); } catch (_) {}
@@ -17940,7 +18086,8 @@ function _smRenderResultados() {
   if (!el) return;
   el.innerHTML =
     '<div class="sm-res-topo"><button type="button" class="sm-voltar" onclick="_smVerFiltros()"><i data-lucide="sliders-horizontal"></i><span>' + escHtml(t('smFiltros')) + '</span></button>' +
-    '<div class="sm-res-resumo"><strong id="smResN"></strong><span id="smResDesc"></span></div></div>' +
+    '<div class="sm-res-resumo"><strong id="smResN"></strong><span id="smResDesc"></span></div>' +
+    '<button type="button" class="sm-guardar" id="smGuardar" onclick="_smGuardarPesquisa(this)" title="' + escHtml(t('smGuardar')) + '" aria-label="' + escHtml(t('smGuardar')) + '"><i data-lucide="bell"></i><span>' + escHtml(t('smGuardarCurto')) + '</span></button></div>' +
     '<p class="sm-res-ordem" id="smResOrdem"></p>' +
     '<div class="sm-lista" id="smLista"></div>' +
     '<div class="sm-fim" id="smFim" hidden><p>' + escHtml(t('smFimTitulo')) + '</p>' +
@@ -18381,3 +18528,80 @@ window.addEventListener('resize', () => {
 });
 
 Object.assign(window, { adminLoadSaude, _sdMostrar, _sdRelang });
+
+// ══ OS MEUS ORÇAMENTOS · AVISOS NO TELEMÓVEL · GUARDAR PESQUISA (2026-10-30) ══
+// "Os meus orçamentos": separador do ecrã dos Concursos com os pedidos de
+// orçamento do cliente (GET /api/quote-requests/mine), a que empresas foram e
+// quais já responderam pela Hivex ("Ver resposta" abre essa conversa).
+function _qrHtml() {
+  const lista = _tnOrc || [];
+  if (!lista.length) return '<div class="tn-empty-box"><i data-lucide="file-text"></i><p>' + escHtml(t('qrVazio')) + '</p></div>';
+  return '<ul class="rq-list">' + lista.map(p => {
+    const resp = p.empresas.filter(e => e.respondeu_em).length;
+    let linha = !p.notified ? t('qrEnviado0') : p.notified === 1 ? t('qrEnviado1') : _tnFmt(t('qrEnviadoN'), { n: p.notified });
+    if (p.empresas.length) linha += ' · ' + (resp === 0 ? t('qrResp0') : resp === 1 ? t('qrResp1') : _tnFmt(t('qrRespN'), { n: resp }));
+    const longo = String(p.description || '').length > 260;
+    return '<li class="rq-item">' +
+      '<div class="rq-top"><span class="rq-kind"><i data-lucide="file-text"></i>' + escHtml(t('rqKindQuote')) + '</span><time datetime="' + escHtml(p.created_at) + '">' + escHtml(_tnData(p.created_at)) + '</time></div>' +
+      '<div class="rq-who"><strong>' + escHtml(_tnSetorNome(p.sector)) + '</strong>' + (p.city ? ' · ' + escHtml(p.city) : '') + '</div>' +
+      (p.description ? '<p class="rq-text">' + escHtml(p.description) + '</p>' +
+        (longo ? '<button type="button" class="tn-link-btn" onclick="this.previousElementSibling.classList.add(\'rq-text-full\');this.remove()">' + escHtml(t('rqMore')) + '</button>' : '') : '') +
+      '<div class="qr-n">' + escHtml(linha) + '</div>' +
+      (p.empresas.length ? '<ul class="qr-empresas">' + p.empresas.map(e =>
+        '<li><span class="qr-nome">' + escHtml(e.name) + (e.city ? '<small>' + escHtml(e.city) + '</small>' : '') + '</span>' +
+        (e.respondeu_em && p.no_chat
+          ? '<button type="button" class="btn-submit qr-ver" onclick="openMyChatsCom(' + e.id + ')"><i data-lucide="message-circle"></i> ' + escHtml(t('qrVerResposta')) + '</button>'
+          : e.respondeu_em ? '<span class="tn-chip tn-chip-open">' + escHtml(t('qrRespEmail')) + '</span>'
+          : '<span class="tn-chip">' + escHtml(t('qrSemResposta')) + '</span>') + '</li>').join('') + '</ul>' : '') +
+      '</li>';
+  }).join('') + '</ul><p class="tn-note"><i data-lucide="mail"></i>' + escHtml(t('qrNotaEmail')) + '</p>';
+}
+
+// Convite discreto a ativar os avisos no telemóvel (Web Push), só onde faz
+// sentido — pedidos de clientes (donos de empresas) e concursos abertos — e
+// nunca pedido sem um toque. Na app nativa o WebView não tem Push API: os
+// avisos aí precisam do FCM (chaves do Firebase).
+function _avisosConvite(chave) {
+  try {
+    if (!('Notification' in window) || !('serviceWorker' in navigator) || !('PushManager' in window)) return '';
+    if (Notification.permission !== 'default') return '';
+  } catch (_) { return ''; }
+  return '<p class="tn-note sm-push"><i data-lucide="bell"></i><span>' + escHtml(t(chave)) + '</span>' +
+    '<button type="button" class="btn-submit tn-sec" onclick="_ativarAvisos(this)">' + escHtml(t('pushBtn')) + '</button></p>';
+}
+async function _ativarAvisos(btn) {
+  if (btn) btn.disabled = true;
+  let ok = false;
+  try { ok = await enablePush(); } catch (_) {}
+  const caixa = btn && btn.closest('.sm-push');
+  if (ok && caixa) caixa.remove();
+  else if (btn) btn.disabled = false;
+}
+
+// "Guardar pesquisa" na lista sem mapa (telemóveis e tablets): alerta semanal
+// por email com as empresas novas da pesquisa — atividades, raio e local (um
+// ponto arredondado a ~1 km no servidor; o nome do local para o email).
+async function _smGuardarPesquisa(btn) {
+  if (!_isLoggedIn()) { window._hxPendingTender = { guardarPesquisa: true }; openLogin(); return; }
+  // sem raio (todo o país) o local não conta: ficam só as atividades
+  const v = _smSlider();
+  const comRaio = !!_smOnde && v < 100;
+  if (!activeSectors.size && !comRaio) { showToast(t('smGuardarFalta')); return; }
+  const corpo = { sectors: [...activeSectors], country: String((_smOnde && _smOnde.cc) || 'pt').toLowerCase() };
+  if (comRaio) {
+    corpo.lat = _smOnde.lat;
+    corpo.lng = _smOnde.lng;
+    corpo.radius_km = sliderToKm(v);
+    if (_smOnde.label) corpo.label = _smOnde.label;
+  }
+  if (btn) btn.disabled = true;
+  try {
+    const r = await apiFetch('/saved-searches', { method: 'POST', body: corpo });
+    showToast(t(r && r.existente ? 'smJaGuardada' : 'smGuardada'));
+    const sino = document.getElementById('smGuardar');
+    if (sino) sino.classList.add('on');
+  } catch (e) { showToast(e.message || t('tnErrGeneric'), 'error'); }
+  finally { if (btn) btn.disabled = false; }
+}
+
+Object.assign(window, { _ativarAvisos, _smGuardarPesquisa });

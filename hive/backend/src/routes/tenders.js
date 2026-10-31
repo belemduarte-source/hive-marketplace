@@ -21,6 +21,7 @@ const crypto = require('crypto');
 const pool = require('../db');
 const { requireAuth, optionalAuth, ensureAdminFlag } = require('../middleware/auth');
 const { sendBrandedEmail, esc } = require('../email');
+const { pushToUser } = require('../push');
 const { nomeLegivel } = require('../texto-legivel');
 const blob = require('../blob-privado');
 
@@ -838,7 +839,7 @@ router.post('/tenders/:id(\\d+)/publish', requireAuth, async (req, res, next) =>
            VALUES ($1, $2, $3, $4, $5, $6, $7)
            ON CONFLICT (tender_id, company_id) DO NOTHING RETURNING id`,
           [t.id, c.id, c.name, c.email, _hash(token), t.is_test ? 'test' : 'pending', t.is_test ? token : null]);
-        if (rows[0]) criados.push({ id: rows[0].id, token, company_name: c.name, email: c.email, claimed: _reclamada(c) });
+        if (rows[0]) criados.push({ id: rows[0].id, token, company_name: c.name, email: c.email, claimed: _reclamada(c), dono: _reclamada(c) ? c.created_by : null });
       }
       await client.query('COMMIT');
     } catch (e) {
@@ -858,6 +859,8 @@ router.post('/tenders/:id(\\d+)/publish', requireAuth, async (req, res, next) =>
         for (const c of criados) {
           try {
             await _emailConvite(tt, c, c.token, nf[0].n);
+            // aviso no telemóvel de quem gere a ficha (Web Push / FCM)
+            if (c.dono) pushToUser(c.dono, 'Novo pedido de proposta', `${tt.owner_name}: ${tt.title}`, { url: '/?pedidos=recebidos' }).catch(() => {});
             await pool.query(`UPDATE tender_invites SET status = 'sent', sent_at = NOW() WHERE id = $1`, [c.id]);
           } catch (e) {
             console.error('[concursos] convite falhou:', c.id, e.message);
@@ -1109,6 +1112,9 @@ router.put('/tender-invites/:ref/proposal', optionalAuth, async (req, res, next)
           <p style="text-align:center;margin:24px 0"><a href="${BASE}/?concursos=${t.id}" style="display:inline-block;background:#2563eb;color:#fff;padding:13px 30px;border-radius:8px;text-decoration:none;font-weight:700">Ver e comparar as propostas</a></p>
           <p style="color:#6b7280;font-size:13px;margin-bottom:0">Pode responder a este email para falar diretamente com a empresa.</p>`,
       }), `concurso ${t.id}: proposta (convite ${inv.id})`);
+      deferEmail(() => pushToUser(t.owner_user_id, nova ? 'Nova proposta' : 'Proposta atualizada',
+        `${inv.company_name} · ${_euros(Math.round(preco * 100))}: ${t.title}`, { url: `/?concursos=${t.id}` }),
+      `concurso ${t.id}: push da proposta (convite ${inv.id})`);
     }
     res.json(await _vistaConvite(inv));
   } catch (e) { _resp(res, next, e); }

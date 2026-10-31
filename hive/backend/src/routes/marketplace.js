@@ -7,6 +7,7 @@ const pool = require('../db');
 const { requireAuth, optionalAuth, ensureAdminFlag } = require('../middleware/auth');
 const { sendBrandedEmail, esc, companyReplyCtaHtml } = require('../email');
 const { pushToUser, getVapid } = require('../push');
+const { nomeLegivel } = require('../texto-legivel');
 
 // Same "respond first, email after" pattern used by the contact relay.
 function deferEmail(makePromise, label) {
@@ -359,6 +360,13 @@ router.post('/quote-requests', optionalAuth, async (req, res, next) => {
           throw e;
         }
       }, `RFQ ${requestId} → company ${co.id}`);
+      // Aviso no telemóvel de quem gere a ficha (Web Push; FCM na app nativa
+      // quando estiver configurado) — quem responde primeiro costuma ganhar
+      if (reclamada) {
+        deferEmail(() => pushToUser(co.created_by, 'Novo pedido de orçamento',
+          `${name}${city ? ' · ' + city : ''}: ${description.slice(0, 90)}`, { url: '/?pedidos=recebidos' }),
+        `push RFQ ${requestId} → company ${co.id}`);
+      }
     }
 
     await pool.query(`UPDATE quote_requests SET notified_count = $1 WHERE id = $2`, [picked.length, requestId]);
@@ -372,11 +380,65 @@ router.post('/quote-requests', optionalAuth, async (req, res, next) => {
         bodyHtml: `
           <p>Olá ${esc(name)},</p>
           <p>O seu pedido de orçamento foi enviado a <strong>${picked.length} empresa${picked.length === 1 ? '' : 's'}</strong> da área ${city ? 'de ' + esc(city) : 'indicada'}. As empresas respondem para o seu email ou por mensagem na Hivex (em «As minhas mensagens», se tiver conta com este email).</p>
-          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px"><p style="margin:0;white-space:pre-wrap">${esc(description)}</p></div>`,
+          <div style="background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:14px 18px"><p style="margin:0;white-space:pre-wrap">${esc(description)}</p></div>
+          <p style="text-align:center;margin:24px 0 8px"><a href="https://www.hivex.pt/?pedidos=orcamentos" style="display:inline-block;background:#2563eb;color:#fff;padding:12px 26px;border-radius:8px;text-decoration:none;font-weight:700">Ver a que empresas foi e quem já respondeu</a></p>
+          <p style="color:#6b7280;font-size:13px;margin:0;text-align:center">Entre na Hivex com este email; o pedido aparece em «Os meus orçamentos».</p>`,
       }), `RFQ ${requestId} confirmation`);
     }
 
     res.status(201).json({ ok: true, notified: picked.length });
+  } catch (e) { next(e); }
+});
+
+// GET /api/quote-requests/mine — "Os meus orçamentos": os pedidos do cliente
+// com sessão (pela conta ou pelo email da conta, para os feitos antes de
+// entrar), a que empresas foram e quais já responderam pela Hivex (registado
+// no pedido quando a empresa responde pelo chat; antes disso, uma mensagem da
+// empresa para este email depois do pedido). Os pedidos de antes de
+// 2026-10-30 não têm destinatários guardados: só o número. `no_chat`: o
+// pedido foi feito com o email da conta, por isso as respostas estão em
+// «As minhas mensagens» (com outro email, só por email).
+router.get('/quote-requests/mine', requireAuth, async (req, res, next) => {
+  try {
+    res.set('Cache-Control', 'private, no-store');
+    const { rows: me } = await pool.query(`SELECT email FROM users WHERE id = $1`, [req.user.id]);
+    if (!me[0]) return res.status(401).json({ error: 'Sessão inválida' });
+    const { rows: pedidos } = await pool.query(
+      `SELECT id, sector, description, city, timeline, budget_range, notified_count, created_at,
+              lower(client_email) = lower($2) AS no_chat
+         FROM quote_requests
+        WHERE (client_user_id = $1 OR lower(client_email) = lower($2))
+          AND created_at > NOW() - INTERVAL '12 months'
+        ORDER BY created_at DESC LIMIT 50`, [req.user.id, me[0].email]);
+    if (!pedidos.length) return res.json([]);
+    const { rows: dest } = await pool.query(
+      `SELECT r.request_id, r.company_id, c.name, c.city, c.country,
+              COALESCE(r.replied_at, (SELECT MIN(m.created_at) FROM messages m
+                WHERE m.company_id = r.company_id AND m.sender = 'company'
+                  AND lower(m.client_email) = lower(q.client_email)
+                  AND m.created_at >= r.created_at)) AS respondeu_em
+         FROM quote_request_recipients r
+         JOIN quote_requests q ON q.id = r.request_id
+         JOIN companies c ON c.id = r.company_id
+        WHERE r.request_id = ANY($1::bigint[])`, [pedidos.map(p => p.id)]);
+    const porPedido = new Map();
+    for (const d of dest) {
+      const k = String(d.request_id);
+      if (!porPedido.has(k)) porPedido.set(k, []);
+      porPedido.get(k).push({
+        id: Number(d.company_id), name: nomeLegivel(d.name, d.country), city: d.city || null,
+        respondeu_em: d.respondeu_em || null,
+      });
+    }
+    res.json(pedidos.map(p => {
+      const empresas = (porPedido.get(String(p.id)) || [])
+        .sort((a, b) => (!!b.respondeu_em - !!a.respondeu_em) || a.name.localeCompare(b.name, 'pt'));
+      return {
+        id: Number(p.id), sector: p.sector, description: p.description, city: p.city,
+        timeline: p.timeline, budget: p.budget_range, created_at: p.created_at,
+        notified: Number(p.notified_count) || empresas.length, no_chat: !!p.no_chat, empresas,
+      };
+    }));
   } catch (e) { next(e); }
 });
 
@@ -450,6 +512,14 @@ router.post('/messages/company/:companyId/reply', requireAuth, async (req, res, 
       [co[0].id, clientEmail, nome, text.slice(0, 4000)]
     );
     await saveChatFiles(ins[0].id, files);
+    // "Os meus orçamentos": a resposta fica registada nos pedidos deste cliente
+    // a esta empresa (as mensagens apagam-se aos 90 dias, os pedidos aos 12 meses)
+    await pool.query(
+      `UPDATE quote_request_recipients r SET replied_at = NOW()
+         FROM quote_requests q
+        WHERE q.id = r.request_id AND r.company_id = $1 AND r.replied_at IS NULL
+          AND lower(q.client_email) = lower($2)`,
+      [co[0].id, clientEmail]).catch(e => console.error('[rfq] resposta:', e.message));
     // push web/nativo para o cliente (se tiver conta e subscrições)
     pool.query(`SELECT id FROM users WHERE lower(email) = lower($1)`, [clientEmail])
       .then(r => { if (r.rows[0]) pushToUser(r.rows[0].id, co[0].name, text.slice(0, 120) || '📎 Documento', { url: '/' }); })
@@ -592,8 +662,17 @@ router.get('/messages/purge', async (req, res) => {
   // Concursos: resumos de prazo, convites por enviar e retenção dos anexos.
   let concursos = null;
   try { concursos = await require('./tenders').manutencaoConcursos(); } catch (e) { console.error('[concursos] manutenção:', e.message); }
-  res.json({ ok: true, pedidosAvaliacao: pedidos, concursos });
+  // Retenção: pedidos de orçamento apagados 12 meses depois (os destinatários e
+  // as respostas antigas saem em cascata) — política de privacidade, 5.3
+  let orcamentosApagados = null;
+  try { orcamentosApagados = await purgeQuoteRequests(); } catch (e) { console.error('[rfq] retenção:', e.message); }
+  res.json({ ok: true, pedidosAvaliacao: pedidos, concursos, orcamentosApagados });
 });
+async function purgeQuoteRequests() {
+  const r = await pool.query(`DELETE FROM quote_requests WHERE created_at < NOW() - INTERVAL '12 months'`);
+  if (r.rowCount) console.log(`[rfq] retenção: ${r.rowCount} pedidos de orçamento apagados (12 meses)`);
+  return r.rowCount || 0;
+}
 
 // ── PEDIDOS DE AVALIAÇÃO ──────────────────────────────────────────────────────
 // Depois de uma interação real pela Hivex, o cliente recebe UM email a
@@ -908,27 +987,59 @@ router.post('/push/subscribe', requireAuth, async (req, res, next) => {
 router.get('/saved-searches', requireAuth, async (req, res, next) => {
   try {
     const { rows } = await pool.query(
-      `SELECT id, sector, city, country, created_at FROM saved_searches WHERE user_id = $1 ORDER BY id DESC`,
+      `SELECT id, sector, sectors, city, label, country, radius_km, created_at
+         FROM saved_searches WHERE user_id = $1 ORDER BY id DESC`,
       [req.user.id]);
-    res.json(rows);
+    // radius_km só conta nos alertas novos (com sectors); os antigos têm 50 por omissão
+    res.json(rows.map(r => ({ ...r, radius_km: r.sectors ? r.radius_km : null })));
   } catch (e) { next(e); }
 });
 router.post('/saved-searches', requireAuth, async (req, res, next) => {
   try {
     const b = req.body || {};
-    const sector = String(b.sector || '').toLowerCase().replace(/[^a-z_]/g, '').slice(0, 50);
-    if (!sector) return res.status(400).json({ error: 'Escolha uma área de atividade' });
+    const limpa = (s) => String(s || '').toLowerCase().replace(/[^a-z_]/g, '').slice(0, 50);
+    const sector = limpa(b.sector);
+    // "Guardar pesquisa" da pesquisa por filtros (telemóveis e tablets): várias
+    // atividades (nenhuma = todas, mas só com um raio), o raio à volta de um
+    // ponto ARREDONDADO a ~1 km (a localização exata nunca fica guardada —
+    // política de privacidade) e o nome do local. Sem raio = todo o país, e
+    // então nem o ponto nem o local se guardam.
+    const sectors = Array.isArray(b.sectors) ? [...new Set(b.sectors.map(limpa).filter(Boolean))].slice(0, 60) : null;
+    const lat = Number(b.lat), lng = Number(b.lng);
+    const raio = Number.isInteger(Number(b.radius_km)) && Number(b.radius_km) >= 1 && Number(b.radius_km) <= 600 ? Number(b.radius_km) : null;
+    const temPonto = raio != null && b.lat != null && b.lng != null && Number.isFinite(lat) && Number.isFinite(lng) && Math.abs(lat) <= 90 && Math.abs(lng) <= 180;
+    if (sectors) {
+      if (!sectors.length && !temPonto) return res.status(400).json({ error: 'Escolha uma área de atividade ou um raio à volta de um local' });
+    } else if (!sector) return res.status(400).json({ error: 'Escolha uma área de atividade' });
     const { rows: me } = await pool.query(`SELECT email FROM users WHERE id = $1`, [req.user.id]);
     if (!me[0]) return res.status(401).json({ error: 'Sessão inválida' });
+    const pais = b.country ? String(b.country).toLowerCase().replace(/[^a-z]/g, '').slice(0, 2) || null : null;
+    const la = temPonto ? Math.round(lat * 100) / 100 : null;
+    const lo = temPonto ? Math.round(lng * 100) / 100 : null;
+    if (sectors) {
+      // a mesma pesquisa outra vez não cria um segundo alerta
+      const { rows: ja } = await pool.query(
+        `SELECT id FROM saved_searches
+          WHERE user_id = $1 AND sectors IS NOT NULL AND sectors @> $2::text[] AND sectors <@ $2::text[]
+            AND lat IS NOT DISTINCT FROM $3::float8 AND lng IS NOT DISTINCT FROM $4::float8
+            AND radius_km IS NOT DISTINCT FROM $5::int`,
+        [req.user.id, sectors, la, lo, temPonto ? raio : null]);
+      if (ja[0]) return res.json({ ok: true, id: ja[0].id, existente: true });
+    }
     const { rows: cnt } = await pool.query(
       `SELECT COUNT(*)::int AS n FROM saved_searches WHERE user_id = $1`, [req.user.id]);
     if (cnt[0].n >= 5) return res.status(409).json({ error: 'Máximo de 5 alertas guardados' });
-    const { rows } = await pool.query(
-      `INSERT INTO saved_searches (user_id, email, sector, city, country)
-       VALUES ($1, $2, $3, $4, $5) RETURNING id`,
-      [req.user.id, me[0].email, sector,
-       b.city ? String(b.city).slice(0, 60) : null,
-       b.country ? String(b.country).toLowerCase().slice(0, 2) : null]);
+    const { rows } = sectors
+      ? await pool.query(
+        `INSERT INTO saved_searches (user_id, email, sector, sectors, city, label, country, lat, lng, radius_km)
+         VALUES ($1, $2, NULL, $3, NULL, $4, $5, $6, $7, $8) RETURNING id`,
+        [req.user.id, me[0].email, sectors, temPonto && b.label ? String(b.label).replace(/[\u0000-\u001f]/g, '').trim().slice(0, 60) || null : null,
+         pais, la, lo, temPonto ? raio : null])
+      : await pool.query(
+        `INSERT INTO saved_searches (user_id, email, sector, city, country)
+         VALUES ($1, $2, $3, $4, $5) RETURNING id`,
+        [req.user.id, me[0].email, sector,
+         b.city ? String(b.city).slice(0, 60) : null, pais]);
     res.status(201).json({ ok: true, id: rows[0].id });
   } catch (e) { next(e); }
 });
@@ -949,17 +1060,46 @@ router.get('/saved-searches/digest', async (req, res) => {
   let sent = 0;
   for (const s of searches) {
     try {
-      const { rows: novas } = await pool.query(
-        `SELECT id, name, city FROM companies
-          WHERE status = 'approved' AND sector = $1
-            AND ($2::text IS NULL OR country = $2)
-            AND ($3::text IS NULL OR city ILIKE '%' || $3 || '%')
-            AND created_at > $4
-          ORDER BY created_at DESC LIMIT 6`,
-        [s.sector, s.country || null, s.city || null, s.last_sent]);
+      // Alertas da pesquisa por filtros (sectors): qualquer das atividades
+      // (nenhuma = todas), dentro do raio do ponto guardado (sem raio = todo o
+      // país). Os antigos: uma área + localidade por texto, como sempre.
+      const { rows: novas } = s.sectors
+        ? await pool.query(
+          `SELECT id, name, city FROM companies
+            WHERE status = 'approved' AND created_at > $1
+              AND (cardinality($2::text[]) = 0 OR sector = ANY($2::text[]) OR sectors && $2::text[])
+              AND ($3::float8 IS NULL OR $5::int IS NULL OR (lat IS NOT NULL AND lng IS NOT NULL AND
+                   2 * 6371 * asin(sqrt(power(sin(radians(lat - $3) / 2), 2) +
+                     cos(radians($3)) * cos(radians(lat)) * power(sin(radians(lng - $4) / 2), 2))) <= $5))
+              AND ($6::text IS NULL OR $5::int IS NOT NULL OR country = $6)
+            ORDER BY created_at DESC LIMIT 6`,
+          [s.last_sent, s.sectors, s.lat, s.lng, s.radius_km, s.country || null])
+        : await pool.query(
+          `SELECT id, name, city FROM companies
+            WHERE status = 'approved' AND sector = $1
+              AND ($2::text IS NULL OR country = $2)
+              AND ($3::text IS NULL OR city ILIKE '%' || $3 || '%')
+              AND created_at > $4
+            ORDER BY created_at DESC LIMIT 6`,
+          [s.sector, s.country || null, s.city || null, s.last_sent]);
       if (!novas.length) continue;
       const lista = novas.map(n =>
         `<li><a href="https://www.hivex.pt/e/${n.id}"><strong>${esc(n.name)}</strong></a>${n.city ? ' — ' + esc(n.city) : ''}</li>`).join('');
+      if (s.sectors) {
+        const onde = s.radius_km && s.lat != null
+          ? `até ${s.radius_km} km${s.label ? ' de ' + s.label : ''}` : 'em todo o país';
+        await sendBrandedEmail({
+          to: s.email,
+          subject: `[Hivex] ${novas.length === 1 ? '1 empresa nova' : novas.length + ' empresas novas'} na sua pesquisa (${onde})`,
+          title: 'Hivex — novas empresas na sua pesquisa',
+          bodyHtml: `<p>Apareceram empresas novas na pesquisa que guardou (${esc(onde)}):</p><ul>${lista}</ul>
+            <p><a href="https://www.hivex.pt/">Ver todas na Hivex →</a></p>
+            <p style="color:#6b7280;font-size:12px">Recebe este email porque guardou esta pesquisa na Hivex. Pode apagá-la no seu perfil, em «Os meus alertas».</p>`,
+        });
+        await pool.query(`UPDATE saved_searches SET last_sent = NOW() WHERE id = $1`, [s.id]);
+        sent++;
+        continue;
+      }
       await sendBrandedEmail({
         to: s.email,
         subject: `[Hivex] ${novas.length} nova(s) empresa(s) de ${s.sector.replace(/_/g, ' ')}${s.city ? ' em ' + s.city : ''}`,

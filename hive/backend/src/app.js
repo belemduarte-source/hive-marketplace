@@ -818,6 +818,15 @@ const MIGRATIONS = [
      UNIQUE (request_id, company_id)
    )`,
   `CREATE INDEX IF NOT EXISTS idx_qrr_company ON quote_request_recipients(company_id, created_at DESC)`,
+
+  // v15: alertas de pesquisa da pesquisa por filtros (telemóveis e tablets,
+  // "Guardar pesquisa"): várias atividades e o nome do local; o ponto fica
+  // arredondado a ~1 km nas colunas lat/lng e o raio em radius_km.
+  `ALTER TABLE saved_searches ADD COLUMN IF NOT EXISTS sectors TEXT[]`,
+  `ALTER TABLE saved_searches ADD COLUMN IF NOT EXISTS label TEXT`,
+  // "Os meus orçamentos": quando a empresa respondeu pelo chat (as mensagens
+  // apagam-se aos 90 dias, o pedido fica 12 meses)
+  `ALTER TABLE quote_request_recipients ADD COLUMN IF NOT EXISTS replied_at TIMESTAMPTZ`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -826,7 +835,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 14; // v14: destinatários dos pedidos de orçamento (pedidos de clientes)
+const SCHEMA_VERSION = 15; // v15: alertas de pesquisa com várias atividades, local e raio; resposta registada no pedido de orçamento
 
 async function ensureSchema() {
   if (_migrated) return;

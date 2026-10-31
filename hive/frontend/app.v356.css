@@ -5086,3 +5086,32 @@ a.tn-file-name:hover{text-decoration:underline}
       .sd-janela{width:100%}
       .sd-janela button{flex:1;padding:0 8px}
     }
+
+/* ══ "Os meus orçamentos", avisos no telemóvel e "Guardar pesquisa" ══ */
+.qr-n{font-size:var(--fs-xs);font-weight:600;color:var(--text-secondary)}
+.qr-empresas{list-style:none;margin:4px 0 0;padding:0;display:flex;flex-direction:column;gap:6px}
+.qr-empresas li{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:44px;padding:6px 10px;border:1px solid var(--border-light);border-radius:var(--rad-sm);font-size:var(--fs-sm);color:var(--text)}
+.qr-nome{display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.qr-nome small{font-size:var(--fs-xs);color:var(--muted)}
+.qr-ver{display:inline-flex;align-items:center;gap:6px;flex-shrink:0;min-height:0;padding:7px 12px;border-radius:var(--rad-sm);font-size:var(--fs-xs)}
+.qr-ver svg{width:14px;height:14px}
+.sm-push{align-items:center;margin:0 0 12px}
+.sm-push>span{flex:1;min-width:0}
+.sm-push .btn-submit{flex-shrink:0;min-height:0;padding:7px 12px;border-radius:var(--rad-sm);font-size:var(--fs-xs)}
+.sm-res-topo .sm-res-resumo{flex:1 1 auto}
+.sm-guardar{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;min-width:44px;padding:0 14px;border:1.5px solid var(--border);border-radius:var(--rad-full);background:var(--surface);color:var(--text);font:inherit;font-size:var(--fs-sm);font-weight:700;cursor:pointer;flex-shrink:0}
+.sm-guardar svg{width:16px;height:16px;color:var(--primary)}
+.sm-guardar.on{border-color:#bfdbfe;background:var(--primary-light);color:var(--primary-dark)}
+.sm-guardar:disabled{opacity:.6}
+[data-theme="dark"] .sm-guardar.on{background:rgba(37,99,235,.18);border-color:rgba(37,99,235,.35);color:#bfdbfe}
+@media (max-width:420px){
+  .sm-guardar{padding:0 12px}
+  .sm-guardar span{display:none}
+}
+@media (max-width:768px){
+  .qr-ver{min-height:40px;font-size:14px}
+  /* o botão desce para baixo do texto (alinhado com ele, depois do sino) */
+  .sm-push{flex-wrap:wrap;align-items:flex-start}
+  .sm-push>span{flex:1 1 calc(100% - 24px)}
+  .sm-push .btn-submit{min-height:40px;font-size:14px;margin-left:24px}
+}
