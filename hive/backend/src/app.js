@@ -303,8 +303,9 @@ const MIGRATIONS = [
   // company independent of user type — so the column is dropped.
   `ALTER TABLE users DROP COLUMN IF EXISTS type`,
   // Email verification was removed — drop the now-unused columns/index if present.
+  // (email_verified voltou na v5 e NÃO se apaga aqui: o DROP que aqui estava
+  // corria em cada bump e repunha FALSE nas contas criadas depois de 2026-07-08.)
   `DROP INDEX IF EXISTS idx_users_email_verification_token`,
-  `ALTER TABLE users DROP COLUMN IF EXISTS email_verified`,
   `ALTER TABLE users DROP COLUMN IF EXISTS email_verification_token`,
   `ALTER TABLE users DROP COLUMN IF EXISTS email_verification_expires_at`,
 
@@ -827,6 +828,25 @@ const MIGRATIONS = [
   // "Os meus orçamentos": quando a empresa respondeu pelo chat (as mensagens
   // apagam-se aos 90 dias, o pedido fica 12 meses)
   `ALTER TABLE quote_request_recipients ADD COLUMN IF NOT EXISTS replied_at TIMESTAMPTZ`,
+
+  // v16: «contacto verificado» só com o email provado (decisão do dono,
+  // 2026-10-31; routes/reviews.js). email_proven_at = quando o dono da conta
+  // provou que o email é seu: código por email, Google, código do claim,
+  // recuperação da palavra-passe ou o link do pedido de avaliação. O registo
+  // com palavra-passe continua sem verificação (2026-07) e fica NULL.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS email_proven_at TIMESTAMPTZ`,
+  // Contas que só nascem de uma prova (sem palavra-passe: código, Google ou
+  // claim sem conta) ou que entraram com o Google.
+  `UPDATE users SET email_proven_at = COALESCE(created_at, NOW())
+    WHERE email_proven_at IS NULL AND (password_hash IS NULL OR google_id IS NOT NULL)`,
+  // Contas com palavra-passe cujo último código de acesso foi gasto com
+  // sucesso: fica a expirar antes dos 10 minutos (5 erros deixam-no igual).
+  `UPDATE users u SET email_proven_at = NOW() FROM login_codes c
+    WHERE u.email_proven_at IS NULL AND c.email = u.email AND c.attempts >= 5
+      AND c.expires_at < c.last_sent_at + INTERVAL '10 minutes'`,
+  // O DROP de email_verified (já retirado, acima) corria em cada bump: repõe
+  // a decisão de 2026-07, todas as contas nascem ativas.
+  `UPDATE users SET email_verified = TRUE WHERE email_verified = FALSE`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -835,7 +855,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 15; // v15: alertas de pesquisa com várias atividades, local e raio; resposta registada no pedido de orçamento
+const SCHEMA_VERSION = 16; // v16: users.email_proven_at (selo «contacto verificado»)
 
 async function ensureSchema() {
   if (_migrated) return;

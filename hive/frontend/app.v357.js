@@ -14243,14 +14243,18 @@ async function submitReview() {
   if (btn) btn.disabled = true;
   try {
     // api.js is immutable-cached, so call the endpoint directly with the new criteria fields.
-    await apiFetch('/companies/' + selectedId + '/reviews', { method: 'POST', body: {
+    const body = {
       score: overall,
       score_quality:       s.quality || null,
       score_speed:         s.speed || null,
       score_communication: s.communication || null,
       score_value:         s.value || null,
       comment,
-    }});
+    };
+    // Token do link "Avaliar" do email de pedido de avaliação (o index.html
+    // guarda-o ao abrir o link): prova que o email da conta é o que o recebeu.
+    try { const prova = window.__hxProva || sessionStorage.getItem('hx_prova'); if (prova) body.prova = prova; } catch (_) {}
+    await apiFetch('/companies/' + selectedId + '/reviews', { method: 'POST', body });
     showToast(t('toastReviewPublished'));
     toggleReviewForm();
     loadReviews(selectedId);

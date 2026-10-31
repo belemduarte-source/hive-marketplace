@@ -243,7 +243,8 @@ router.post('/verify-email', requireAuth, async (req, res, next) => {
       return res.status(400).json({ error: 'Código errado ou expirado. Peça um novo código.' });
     }
     const { rows: upd } = await pool.query(
-      `UPDATE users SET email_verified = TRUE, verify_code = NULL, verify_expires = NULL
+      `UPDATE users SET email_verified = TRUE, email_proven_at = COALESCE(email_proven_at, NOW()),
+                        verify_code = NULL, verify_expires = NULL
         WHERE id = $1 RETURNING *`, [user.id]);
     res.json({ ok: true, user: safeUser(upd[0]) });
   } catch (e) { next(e); }
@@ -372,21 +373,24 @@ router.post('/code/verify', async (req, res, next) => {
     await pool.query(`UPDATE login_codes SET expires_at = NOW() - INTERVAL '1 second', attempts = $2 WHERE email = $1`,
       [email, CODE_MAX_TRIES]);
 
+    // O código chegou a este email: fica provado (selo «contacto verificado»).
     let isNew = false;
     let { rows: us } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     let user = us[0];
     if (!user) {
       const { rows: created } = await pool.query(
-        `INSERT INTO users (name, email, email_verified) VALUES ($1, $2, TRUE)
-         ON CONFLICT (email) DO UPDATE SET email_verified = TRUE
+        `INSERT INTO users (name, email, email_verified, email_proven_at) VALUES ($1, $2, TRUE, NOW())
+         ON CONFLICT (email) DO UPDATE SET email_verified = TRUE,
+           email_proven_at = COALESCE(users.email_proven_at, NOW())
          RETURNING *, (xmax = 0) AS inserted`, [_nameFromEmail(email), email]);
       user = created[0];
       isNew = !!(user && user.inserted);
       if (isNew) sendWelcomeEmail(user).catch(err =>
         console.error('[auth] welcome email send failed for', user.email, err.message));
-    } else if (!user.email_verified) {
+    } else if (!user.email_verified || !user.email_proven_at) {
       const { rows: v } = await pool.query(
-        `UPDATE users SET email_verified = TRUE, verify_code = NULL, verify_expires = NULL
+        `UPDATE users SET email_verified = TRUE, email_proven_at = COALESCE(email_proven_at, NOW()),
+                          verify_code = NULL, verify_expires = NULL
           WHERE id = $1 RETURNING *`, [user.id]);
       user = v[0] || user;
     }
@@ -506,8 +510,8 @@ router.post('/google', async (req, res, next) => {
     // 3. Else create a new user.
     if (!user) {
       const { rows: created } = await pool.query(
-        `INSERT INTO users (name, email, google_id, picture, company, phone, email_verified)
-         VALUES ($1, $2, $3, $4, '', '', TRUE)
+        `INSERT INTO users (name, email, google_id, picture, company, phone, email_verified, email_proven_at)
+         VALUES ($1, $2, $3, $4, '', '', TRUE, NOW())
          RETURNING *`,
         [name, email, googleId, picture]
       );
@@ -515,11 +519,15 @@ router.post('/google', async (req, res, next) => {
     }
 
     // Google guarantees email_verified on the ID token (checked above) — treat
-    // any Google sign-in as a confirmed address.
-    if (!user.email_verified) {
+    // any Google sign-in as a confirmed address. O email da conta só fica
+    // provado (selo «contacto verificado») se for o do Google: a conta achada
+    // pelo google_id guarda o email antigo se o da conta Google mudou.
+    const provado = String(user.email || '').toLowerCase() === email;
+    if (!user.email_verified || (provado && !user.email_proven_at)) {
       const { rows: verified } = await pool.query(
-        `UPDATE users SET email_verified = TRUE, verify_code = NULL, verify_expires = NULL
-          WHERE id = $1 RETURNING *`, [user.id]);
+        `UPDATE users SET email_verified = TRUE, verify_code = NULL, verify_expires = NULL,
+                          email_proven_at = CASE WHEN $2 THEN COALESCE(email_proven_at, NOW()) ELSE email_proven_at END
+          WHERE id = $1 RETURNING *`, [user.id, provado]);
       user = verified[0] || user;
     }
 
@@ -581,9 +589,12 @@ router.post('/reset-password', async (req, res, next) => {
     );
     if (!rows[0]) return res.status(400).json({ error: 'Hiperligação inválida ou expirada. Peça uma nova.' });
 
+    // O link chegou ao email da conta: fica provado (selo «contacto verificado»).
     const passwordHash = await bcrypt.hash(password, 10);
     await pool.query(
-      'UPDATE users SET password_hash = $1, password_reset_token = NULL, password_reset_expires_at = NULL WHERE id = $2',
+      `UPDATE users SET password_hash = $1, password_reset_token = NULL, password_reset_expires_at = NULL,
+                        email_proven_at = COALESCE(email_proven_at, NOW())
+        WHERE id = $2`,
       [passwordHash, rows[0].id]
     );
     res.json({ ok: true });

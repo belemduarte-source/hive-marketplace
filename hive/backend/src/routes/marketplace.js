@@ -233,18 +233,21 @@ router.post('/claims/:companyId/guest/verify', async (req, res, next) => {
     if (!_ownerPlataforma(co)) {
       return res.status(409).json({ error: 'Esta ficha já tem gestor.', code: 'ALREADY_CLAIMED' });
     }
+    // O código chegou a este email: a conta fica com o email provado.
     const email = String(co.email).trim().toLowerCase();
     const { rows: us } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     let user = us[0];
     if (!user) {
       const { rows: created } = await pool.query(
-        `INSERT INTO users (name, email, email_verified) VALUES ($1, $2, TRUE)
-         ON CONFLICT (email) DO UPDATE SET email_verified = TRUE RETURNING *`,
+        `INSERT INTO users (name, email, email_verified, email_proven_at) VALUES ($1, $2, TRUE, NOW())
+         ON CONFLICT (email) DO UPDATE SET email_verified = TRUE,
+           email_proven_at = COALESCE(users.email_proven_at, NOW()) RETURNING *`,
         [String(co.name || 'Empresa').slice(0, 80), email]);
       user = created[0];
-    } else if (!user.email_verified) {
+    } else if (!user.email_verified || !user.email_proven_at) {
       const { rows: v } = await pool.query(
-        `UPDATE users SET email_verified = TRUE WHERE id = $1 RETURNING *`, [user.id]);
+        `UPDATE users SET email_verified = TRUE, email_proven_at = COALESCE(email_proven_at, NOW())
+          WHERE id = $1 RETURNING *`, [user.id]);
       user = v[0] || user;
     }
     await pool.query(`UPDATE claims SET verified_at = NOW(), user_id = $2 WHERE id = $1`, [cl.id, user.id]);
@@ -698,6 +701,14 @@ function _optoutToken(email) {
   return crypto.createHmac('sha256', String(process.env.JWT_SECRET || 'hivex-optout'))
     .update('optout:' + String(email).toLowerCase()).digest('hex').slice(0, 32);
 }
+// Token do link "Avaliar" (?prova=): só quem recebeu o email o tem. A
+// avaliação feita com sessão nesse email leva-o e o servidor dá o email como
+// provado (routes/reviews.js). O link não leva o email: a página tem
+// publicidade, e o index.html tira o token do endereço logo ao abrir.
+function _provaEmailToken(email) {
+  return crypto.createHmac('sha256', String(process.env.JWT_SECRET || 'hivex-prova'))
+    .update('prova-email:' + String(email).toLowerCase().trim()).digest('hex').slice(0, 32);
+}
 // Texto de cada origem (co já escapado): português + uma linha em inglês.
 function _textoPedidoAvaliacao(r, co, link) {
   if (r.origem === 'concurso') {
@@ -784,7 +795,7 @@ async function sendReviewRequests() {
       `INSERT INTO review_requests (company_id, email) VALUES ($1, $2)
        ON CONFLICT DO NOTHING RETURNING 1`, [r.company_id, r.email]);
     if (!ins.rows[0]) continue;
-    const link = `https://www.hivex.pt/?company=${r.company_id}&review=1`;
+    const link = `https://www.hivex.pt/?company=${r.company_id}&review=1&prova=${_provaEmailToken(r.email)}`;
     const optout = `https://www.hivex.pt/api/reviews/optout?e=${encodeURIComponent(r.email)}&t=${_optoutToken(r.email)}`;
     const co = esc(r.company_name || '');
     const txt = _textoPedidoAvaliacao(r, co, link);
@@ -1136,3 +1147,4 @@ router.get('/saved-searches/digest', async (req, res) => {
 });
 
 module.exports = router;
+module.exports._provaEmailToken = _provaEmailToken;

@@ -4,6 +4,7 @@
   <meta charset="UTF-8"/>
   <script>/* Apply saved theme before paint to avoid a flash of the wrong theme */try{document.documentElement.classList.add('hx-no-reviews');var _t=localStorage.getItem('hivex_theme');if(_t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
   <script>/* Link pessoal de concurso (?concurso=TOKEN): guarda o token na sessão do separador e tira-o do endereço já, antes de qualquer script de terceiros (publicidade) poder ler o URL */try{var _k=/[?&]concurso=([A-Za-z0-9_-]{32})(?=&|$)/.exec(location.search);if(_k){window.__hxConcurso=_k[1];sessionStorage.setItem('hx_concurso',_k[1]);history.replaceState(history.state,'',location.pathname+location.search.replace(/([?&])concurso=[^&]*&?/,'$1').replace(/[?&]$/,'')+location.hash);}}catch(e){}</script>
+  <script>/* Link "Avaliar" dos pedidos de avaliação (?prova=TOKEN, HMAC do email): guarda o token na sessão do separador e tira-o do endereço já, antes de a publicidade poder ler o URL; segue com a avaliação (submitReview) e prova que o email da conta é o que recebeu o pedido */try{var _v=/[?&]prova=([a-f0-9]{32})(?=&|$)/.exec(location.search);if(_v){window.__hxProva=_v[1];history.replaceState(history.state,'',location.pathname+location.search.replace(/([?&])prova=[^&]*&?/,'$1').replace(/[?&]$/,'')+location.hash);try{sessionStorage.setItem('hx_prova',_v[1]);}catch(e){}}}catch(e){}</script>
   <!-- ── Google AdSense (dormant until you add your IDs) ──────────────────────────
        1. Paste your publisher ID into ADSENSE_CLIENT  (looks like ca-pub-XXXXXXXXXXXXXXXX).
           That alone loads AdSense + enables Auto Ads (toggle them in your AdSense dashboard).
@@ -180,7 +181,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v356.css"/>
+  <link rel="stylesheet" href="app.v357.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -2028,7 +2029,7 @@
      vetoriais OpenFreeMap sem chave, clustering nativo e 3D) entra nesta fila
      pelo <head>, e só nos computadores (ver hx-sem-mapa). -->
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v356.js"></script>
+<script defer src="app.v357.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->
