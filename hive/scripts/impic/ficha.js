@@ -65,6 +65,9 @@ const RE_OBRA = /CONSTR|\bCONST\b|OBRAS?\b|EMPREIT|ENGENH|ENGINEER|REMODEL|REABI
 // não fazem obras para o público. Na listagem inteira só apanha estas (Euro Select, Friendly Rhythms, I-Visa,
 // Interim MSMK, Reforme); "Job", "Staff" e "RH" sozinhos ficam de fora da regra por serem ambíguos.
 const RE_TRAB_TEMP = /\bTRABALHO TEMPORARIO\b|\bRECURSOS HUMANOS\b/;
+// Administradoras de condomínios: gerem prédios e contratam as obras, não as fazem para o público. Saem quando o nome
+// não tem palavra de obra, como as gestoras imobiliárias (o singular "Condomínio" já sai em RE_ENTIDADE).
+const RE_CONDOMINIOS = /\bCONDOMINIOS\b/;
 function filtroEntidade(nome, nif) {
   const n = N(nome);
   if (!nif) return 'eni-nif-oculto';                      // o IMPIC esconde o NIF dos empresários em nome individual
@@ -74,6 +77,7 @@ function filtroEntidade(nome, nif) {
   if (RE_ENTIDADE.test(n)) return 'entidade-nao-empresa';
   if (RE_FORA_AMBITO.test(n)) return 'fora-de-ambito';
   if (RE_TRAB_TEMP.test(n)) return 'trabalho-temporario';
+  if (RE_CONDOMINIOS.test(n) && !RE_OBRA.test(n)) return 'gestao-de-condominios';
   if (RE_IMOBILIARIA.test(n) && !RE_OBRA.test(n)) return 'imobiliaria-sem-obra';
   return null;
 }

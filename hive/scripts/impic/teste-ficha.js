@@ -34,6 +34,8 @@ eq('Gestão hoteleira fora', f.filtroEntidade('LUCRIVAGEST - GESTAO E EXPLORACAO
 eq('trabalho temporário fora', f.filtroEntidade('INTERIM MSMK JOB CENTER EMPRESA DE TRABALHO TEMPORARIO LDA', '510315917'), 'trabalho-temporario');
 eq('recursos humanos fora', f.filtroEntidade('Reforme - Recursos Humanos LDA', '510315917'), 'trabalho-temporario');
 eq('"Job" sozinho entra', f.filtroEntidade('24 H JOB HOME SERVICES LDA', '510315917'), null);
+eq('gestão de condomínios fora', f.filtroEntidade('Great House Gestão de Condomínios LDA', '510315917'), 'gestao-de-condominios');
+eq('condomínios com obra entra', f.filtroEntidade('Condominios e Manutencao de Edificios XPTO LDA', '510315917'), null);
 // imobiliárias e investimento escritos de outras maneiras (nomes reais da listagem)
 for (const n of ['KZERO-IMOVEIS, LDA', 'JBBC INVESTIMENTOS LDA', 'BMSWINVEST SA', 'LANDELTA - EMPREENDIMENTOS URBANISTICOS, S.A.',
   'MEDIRECORD PORTUGAL REAL ESTATE - MED E PROMOCAO IMOB LDA', 'JOSE ALEGRE - COMPRA E VENDA DE PROPRIEDADES, LDA', 'GROWLIGHT INVESTMENTS LDA'])
