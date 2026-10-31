@@ -4999,6 +4999,55 @@ a.tn-file-name:hover{text-decoration:underline}
 @media (max-width:768px){
   .hx-sem-mapa .tab-search{padding-bottom:0 !important}
 }
+/* O ecrã de filtros vem no index.html (título + esqueleto) e pinta no 1.º
+   paint: o separador já está visível antes de o bundle chamar showTab */
+.hx-sem-mapa #tab-search{display:flex}
+/* O título e o subtítulo pintam antes de a Inter do @fontsource chegar: com
+   uma fonte de recurso a trocar depois pela Inter, as linhas mudavam (ex.: PT
+   a 360px) e tudo por baixo saltava. Esta é a mesma Inter (latin 400/700/800
+   do @fontsource 5.1.0) só com A–Z/a–z, os acentos de PT/FR/ES/DE e " ,.’"
+   (feita com subset-font/HarfBuzz; licença em fonts/OFL.txt): ~6 KB por peso,
+   pedidos logo no <head> nos telemóveis e tablets (800 + o subtítulo: 400, ou
+   700 no tema escuro, que põe os <p> a negrito), já está quando o título pinta.
+   Fora do subconjunto, a letra vem da Inter normal. */
+@font-face{font-family:'Inter sm';font-style:normal;font-weight:800;font-display:swap;src:url(fonts/inter-sm-800.v1.woff2) format('woff2')}
+@font-face{font-family:'Inter sm';font-style:normal;font-weight:700;font-display:swap;src:url(fonts/inter-sm-700.v1.woff2) format('woff2')}
+@font-face{font-family:'Inter sm';font-style:normal;font-weight:400;font-display:swap;src:url(fonts/inter-sm-400.v1.woff2) format('woff2')}
+.sm-cab{font-family:'Inter sm','Inter','Segoe UI',system-ui,sans-serif}
+/* Esqueleto (só até o bundle o trocar pelos filtros): as caixas com as medidas
+   dos filtros, barras no lugar dos textos e dos ícones. Sem animação de
+   "pulsar": corria no thread principal (um recálculo de estilo por frame)
+   precisamente enquanto o bundle descarrega e corre. */
+.sm-esq b{display:block;flex:none;width:60%;height:12px;border-radius:6px;background:var(--border)}
+.sm-esq .sm-h2{height:20px}
+.sm-esq .sm-h2 b:first-child,.sm-esq .sm-area b:first-child{width:18px;height:18px;border-radius:50%}
+.sm-esq .sm-h2 b+b{width:9em}
+.sm-esq .sm-perto{width:156px;border-color:var(--border)}
+.sm-esq .sm-onde-atual{height:43.5px;align-items:center}
+.sm-esq .sm-onde-atual b{width:85%}
+.sm-esq .sm-area b:first-child{width:22px;height:22px}
+.sm-esq .sm-chip{width:74px}
+.sm-esq .sm-chip:last-child{width:113px}
+.sm-esq .sm-esq-mais{height:28px;margin:0}
+.sm-esq .sm-recs{height:102px}
+.sm-esq .sm-dono{display:flex;justify-content:center;align-items:center;height:39px}
+.sm-esq .sm-ver{display:block;opacity:.35}
+@media (min-width:600px){
+  .sm-esq .sm-onde-atual{height:21.75px}
+  .sm-esq .sm-onde-atual b{width:70%}
+  .sm-esq .sm-recs{height:67px}
+  .sm-esq .sm-dono{height:20px}
+  .sm-esq .sm-dono b{width:45%}
+}
+/* Ícones por desenhar (<i data-lucide>: o lucide troca-os num idle callback,
+   depois de os filtros pintarem) já com o tamanho do SVG — nada mexe quando
+   aparecem */
+.sm-h2 i[data-lucide],.sm-perto i[data-lucide],.sm-mais summary i[data-lucide]{width:18px;height:18px}
+.sm-campo i[data-lucide],.sm-btn i[data-lucide]{width:17px;height:17px}
+.sm-onde-atual i[data-lucide]{width:16px;height:16px;margin-top:2px}
+.sm-sug i[data-lucide],.sm-voltar i[data-lucide],.sm-guardar i[data-lucide]{width:16px;height:16px}
+.sm-area i[data-lucide],.sm-recs>i[data-lucide]{width:22px;height:22px}
+.sm-vazio>i[data-lucide]{width:36px;height:36px}
     /* ══ Saúde do marketplace (painel de administração) ══ */
     /* 6 separadores: no telemóvel a barra desliza na horizontal */
     #adminPanel .admin-tabs{overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}

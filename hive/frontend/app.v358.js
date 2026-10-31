@@ -17619,6 +17619,8 @@ Object.assign(window, {
 // escolhido, dentro do raio. Os filtros são os do computador (activeSectors,
 // radiusSlider, currentMapCenter, getFiltered); muda só o ecrã. O botão
 // "Filtros" e o "voltar" do telemóvel regressam aos filtros (history).
+// O #smApp, com o título e um esqueleto dos filtros, já vem no index.html
+// (pinta no 1.º paint); este bloco reaproveita-o.
 function _semMapa() { return document.documentElement.classList.contains('hx-sem-mapa'); }
 
 // [km, valor do radiusSlider] — o slider é logarítmico (sliderToKm); 0 = todo o país
@@ -18067,8 +18069,20 @@ function _smPedirOrcamentos() { openRfqModal([...activeSectors][0] || ''); }
 function _smRenderFiltros() {
   const el = document.getElementById('smFiltros');
   if (!el) return;
-  el.innerHTML =
-    '<header class="sm-cab"><h1 class="sm-titulo">' + escHtml(t('smTitulo')) + '</h1><p class="sm-sub">' + escHtml(t('smSub')) + '</p></header>' +
+  // O cabeçalho vem do index.html e pinta no 1.º paint (é o LCP nestes ecrãs):
+  // fica o mesmo nó — um título refeito era um LCP novo, já depois do bundle.
+  // Só o texto muda, se a língua for outra; o resto (da 1.ª vez, o esqueleto)
+  // é refeito.
+  let cab = el.firstElementChild;
+  if (!cab || !cab.classList.contains('sm-cab')) {
+    el.innerHTML = '<header class="sm-cab"><h1 class="sm-titulo"></h1><p class="sm-sub"></p></header>';
+    cab = el.firstElementChild;
+  }
+  const tit = cab.querySelector('.sm-titulo'), sub = cab.querySelector('.sm-sub');
+  if (tit.textContent !== t('smTitulo')) tit.textContent = t('smTitulo');
+  if (sub.textContent !== t('smSub')) sub.textContent = t('smSub');
+  while (cab.nextSibling) cab.nextSibling.remove();
+  cab.insertAdjacentHTML('afterend',
     '<section class="sm-bloco"><h2 class="sm-h2"><i data-lucide="map-pin"></i>' + escHtml(t('smOnde')) + '</h2>' +
       '<div class="sm-onde"><button type="button" class="sm-perto" id="smPerto" onclick="_smGps(\'toque\')"><i data-lucide="crosshair"></i><span>' + escHtml(t('smPerto')) + '</span></button>' +
       '<label class="sm-campo sm-local"><i data-lucide="search"></i><input id="smLocal" type="search" enterkeyhint="search" autocomplete="off" autocorrect="off" placeholder="' + escHtml(t('smLocalPh')) + '" oninput="_smLocalInput(this.value)" onkeydown="if(event.key===\'Enter\'){event.preventDefault();_smLocalEscolher(this.value)}"/></label></div>' +
@@ -18080,7 +18094,7 @@ function _smRenderFiltros() {
     // o assistente "Top 3" vivia nos chips e no painel do mapa
     '<button type="button" class="sm-recs" onclick="openRecs()"><i data-lucide="sparkles"></i><span><strong>' + escHtml(t('recsBtn')) + '</strong><small>' + escHtml(t('recsBtnSub')) + '</small></span><span aria-hidden="true">→</span></button>' +
     '<p class="sm-dono">' + escHtml(t('authOwnerHint')) + ' <button type="button" class="auth-link" onclick="startCompanyFlow()">' + escHtml(t('smDonoCta')) + '</button></p>' +
-    '<div class="sm-rodape"><button type="button" class="sm-ver" id="smVer" onclick="_smVerResultados()"></button></div>';
+    '<div class="sm-rodape"><button type="button" class="sm-ver" id="smVer" onclick="_smVerResultados()"></button></div>');
   _smAtualizarOnde();
   _smAtualizarBotao();
   refreshLucide();
@@ -18162,13 +18176,16 @@ _flyToPlace = function (hit) {
 };
 
 function _smIniciar() {
-  if (!_semMapa() || document.getElementById('smApp')) return;
+  if (!_semMapa() || _smPronto) return;
   const tab = document.getElementById('tab-search');
   if (!tab) return;
-  const app = document.createElement('div');
-  app.id = 'smApp';
-  app.innerHTML = '<section id="smFiltros" class="sm-tela"></section><section id="smResultados" class="sm-tela" hidden></section>';
-  tab.prepend(app);
+  // O #smApp vem no index.html (título e esqueleto, pintados no 1.º paint)
+  if (!document.getElementById('smApp')) {
+    const app = document.createElement('div');
+    app.id = 'smApp';
+    app.innerHTML = '<section id="smFiltros" class="sm-tela"></section><section id="smResultados" class="sm-tela" hidden></section>';
+    tab.prepend(app);
+  }
   _smRestaurar();
   try { history.replaceState(Object.assign({}, history.state || {}, { sm: 'filtros' }), ''); } catch (_) {}
   _smPronto = true;
