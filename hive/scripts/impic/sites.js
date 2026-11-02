@@ -4,8 +4,8 @@
 const dados = require('./dados');   // ficheiros de dados fora do repositório (IMPIC_DADOS)
 const fs = require('fs');
 const path = require('path');
-const { nucleo } = require('./candidatas');
 const { N } = require('./ficha');
+const { distintivas } = require('./site-valida');
 const PROC = dados('processadas.jsonl');
 const OUT = dados('sites.json');
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36';
@@ -33,8 +33,11 @@ async function validar(dom, nome, nif) {
     // mesma marca noutro TLD (teixeiraduarte.com → teixeiraduarte.pt) é aceite; outro nome não
     const rotulo = h => h.split('.')[0];
     if (domFinal !== dom && !domFinal.endsWith('.' + dom) && rotulo(domFinal) !== rotulo(dom)) return { ok: false, motivo: 'redireciona-para-outro-dominio:' + domFinal };
-    const pal = nucleo(nome).filter(t => t.length >= 4);
-    const menciona = T => pal.some(t => T.includes(t)) || T.includes(nif) || T.includes(N(dom.split('.')[0]));
+    // tem de mencionar o NIF ou uma palavra distintiva do nome, ou o domínio tem de a conter. Mencionar o próprio domínio não
+    // chega: era assim que sites de contabilistas, grupos e portais passavam por site da empresa (corrigido a 2/11/2026)
+    const pal = distintivas(nome), rot = N(dom.split('.')[0]).replace(/\s/g, '');
+    const noDominio = pal.some(t => rot.includes(t) || (t.length >= 5 && t.includes(rot)));
+    const menciona = T => noDominio || pal.some(t => new RegExp('\\b' + t + '\\b').test(T)) || T.includes(nif);
     // sites feitos em JavaScript têm pouco texto no HTML: aí basta o <title>/meta mencionar a empresa
     const cabecalho = N([(r.html.match(/<title[^>]*>([^<]*)/i) || [])[1], ...[...r.html.matchAll(/<meta[^>]+(?:og:site_name|og:title|name="description")[^>]*content="([^"]*)"/gi)].map(m => m[1])].filter(Boolean).join(' '));
     if (texto.replace(/\s+/g, ' ').trim().length < 200) return menciona(cabecalho) ? { ok: true, url: final.origin + '/' } : { ok: false, motivo: 'pagina-vazia' };
