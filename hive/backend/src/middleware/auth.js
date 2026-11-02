@@ -11,16 +11,36 @@ function extractToken(req) {
   return null;
 }
 
-function requireAuth(req, res, next) {
+// As sessões de antes da primeira prova do email deixam de valer (provarEmail,
+// routes/auth.js): podem ser de quem registou o email de outra pessoa. Um JWT não
+// se revoga sozinho, por isso consulta-se a BD, mas só para tokens emitidos com o
+// email por provar (sem `ep`): com o email provado não há nada a revogar e o
+// pedido não paga esta consulta. Uma falha da BD não termina a sessão.
+async function sessaoRevogada(payload) {
+  if (payload.ep) return false;
+  try {
+    const { rows } = await pool.query('SELECT sessions_valid_from FROM users WHERE id = $1', [payload.id]);
+    const desde = rows[0] && rows[0].sessions_valid_from;
+    return !!desde && payload.iat < Math.floor(new Date(desde).getTime() / 1000);
+  } catch (e) {
+    console.error('[auth] verificação da sessão falhou:', e.message);
+    return false;
+  }
+}
+
+async function requireAuth(req, res, next) {
   const token = extractToken(req);
   if (!token) return res.status(401).json({ error: 'Não autenticado' });
 
+  let payload;
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET);
-    next();
+    payload = jwt.verify(token, process.env.JWT_SECRET);
   } catch {
-    res.status(401).json({ error: 'Token inválido ou expirado' });
+    return res.status(401).json({ error: 'Token inválido ou expirado' });
   }
+  if (await sessaoRevogada(payload)) return res.status(401).json({ error: 'Token inválido ou expirado' });
+  req.user = payload;
+  next();
 }
 
 function requireAdmin(req, res, next) {
@@ -44,10 +64,13 @@ function requireAdmin(req, res, next) {
 // Like requireAuth, but never blocks the request — populates req.user when a
 // valid token is present, leaves it undefined otherwise. Useful for endpoints
 // whose response shape depends on whether the caller is the resource owner.
-function optionalAuth(req, res, next) {
+async function optionalAuth(req, res, next) {
   const token = extractToken(req);
   if (token) {
-    try { req.user = jwt.verify(token, process.env.JWT_SECRET); } catch { /* ignore */ }
+    try {
+      const payload = jwt.verify(token, process.env.JWT_SECRET);
+      if (!(await sessaoRevogada(payload))) req.user = payload;
+    } catch { /* ignore */ }
   }
   next();
 }

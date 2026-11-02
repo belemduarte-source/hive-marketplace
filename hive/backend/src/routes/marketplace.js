@@ -234,25 +234,10 @@ router.post('/claims/:companyId/guest/verify', async (req, res, next) => {
       return res.status(409).json({ error: 'Esta ficha já tem gestor.', code: 'ALREADY_CLAIMED' });
     }
     // O código chegou a este email: a conta fica com o email provado.
-    const email = String(co.email).trim().toLowerCase();
-    const { rows: us } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    let user = us[0];
-    if (!user) {
-      const { rows: created } = await pool.query(
-        `INSERT INTO users (name, email, email_verified, email_proven_at) VALUES ($1, $2, TRUE, NOW())
-         ON CONFLICT (email) DO UPDATE SET email_verified = TRUE,
-           email_proven_at = COALESCE(users.email_proven_at, NOW()) RETURNING *`,
-        [String(co.name || 'Empresa').slice(0, 80), email]);
-      user = created[0];
-    } else if (!user.email_verified || !user.email_proven_at) {
-      const { rows: v } = await pool.query(
-        `UPDATE users SET email_verified = TRUE, email_proven_at = COALESCE(email_proven_at, NOW())
-          WHERE id = $1 RETURNING *`, [user.id]);
-      user = v[0] || user;
-    }
+    const { issueSession, contaDoEmailProvado } = require('./auth');
+    const { user } = await contaDoEmailProvado(String(co.email).trim().toLowerCase(), String(co.name || 'Empresa').slice(0, 80));
     await pool.query(`UPDATE claims SET verified_at = NOW(), user_id = $2 WHERE id = $1`, [cl.id, user.id]);
     await pool.query(`UPDATE companies SET created_by = $1, updated_at = NOW() WHERE id = $2`, [user.id, companyId]);
-    const { issueSession } = require('./auth');
     res.json({ ok: true, ...(await issueSession(req, res, user)) });
   } catch (e) { next(e); }
 });

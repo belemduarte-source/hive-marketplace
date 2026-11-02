@@ -855,6 +855,12 @@ const MIGRATIONS = [
   // a decisão de 2026-07, todas as contas nascem ativas.
   `UPDATE users SET email_verified = TRUE
     WHERE email_verified = FALSE AND created_at < TIMESTAMPTZ '2026-10-31 02:18+00'`,
+
+  // v17: as sessões emitidas antes desta data deixam de valer (middleware/auth.js).
+  // Preenchida na primeira prova do email: quem registou com palavra-passe o email
+  // de outra pessoa pode ter uma sessão aberta (provarEmail, routes/auth.js).
+  // NULL = nenhuma sessão revogada.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS sessions_valid_from TIMESTAMPTZ`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -863,7 +869,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 16; // v16: users.email_proven_at (selo «contacto verificado»)
+const SCHEMA_VERSION = 17; // v17: users.sessions_valid_from (contas registadas com o email de outra pessoa)
 
 async function ensureSchema() {
   if (_migrated) return;
