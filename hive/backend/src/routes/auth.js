@@ -31,7 +31,9 @@ function googleClient() {
 
 function signToken(user) {
   return jwt.sign(
-    { id: user.id, email: user.email, name: user.name, is_admin: user.is_admin },
+    // ep: emitido com o email já provado (o middleware não precisa de ver se a
+    // sessão foi revogada: ver sessaoRevogada em middleware/auth.js).
+    { id: user.id, email: user.email, name: user.name, is_admin: user.is_admin, ep: !!user.email_proven_at },
     process.env.JWT_SECRET,
     { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
   );
@@ -113,6 +115,55 @@ async function sendUserVerifyCode(user) {
       <p style="font-size:32px;font-weight:800;letter-spacing:8px;text-align:center;margin:18px 0">${code}</p>
       <p style="color:#6b7280;font-size:13px">O código expira em 30 minutos. Se não criou uma conta na Hivex, ignore este email.</p>`,
   });
+}
+
+// ── Prova do email ao entrar (código, Google, claim sem conta) ────────────────
+// O registo com palavra-passe não confirma o email (decisão do dono, 2026-07), por
+// isso alguém pode criar a conta com o email de outra pessoa antes dela. Na
+// primeira prova, a palavra-passe pode ser de outra pessoa: deixa de funcionar e as
+// sessões abertas até aqui terminam (decisão do dono, 2026-11-02). Quem usa a sua
+// própria palavra-passe volta com o código por email ou define outra em
+// "Esqueceu a palavra-passe?", e fica avisado por email.
+async function provarEmail(user) {
+  if (user.email_verified && user.email_proven_at) return user;
+  const perdeSenha = !user.email_proven_at && !!user.password_hash;
+  const { rows } = await pool.query(
+    `UPDATE users SET email_verified = TRUE, verify_code = NULL, verify_expires = NULL,
+                      email_proven_at = COALESCE(email_proven_at, NOW()),
+                      password_hash = CASE WHEN email_proven_at IS NULL THEN NULL ELSE password_hash END,
+                      sessions_valid_from = CASE WHEN email_proven_at IS NULL THEN NOW() ELSE sessions_valid_from END
+      WHERE id = $1 RETURNING *`, [user.id]);
+  const provado = rows[0] || user;
+  if (perdeSenha) {
+    try {
+      await sendBrandedEmail({
+        to: provado.email,
+        subject: '[Hivex] A palavra-passe da sua conta foi desativada',
+        title: 'Hivex — Palavra-passe desativada',
+        bodyHtml: `
+      <p style="margin-top:0">Acabou de confirmar este email na Hivex. A conta tinha uma palavra-passe criada sem o email estar confirmado, por isso, por segurança, <strong>essa palavra-passe deixou de funcionar</strong> e as sessões abertas noutros dispositivos terminaram. Se outra pessoa tiver criado a conta com o seu email, já não consegue entrar.</p>
+      <p><strong>Para entrar</strong>, use o código por email em <a href="https://www.hivex.pt" style="color:#f97316">hivex.pt</a>. Se preferir continuar com palavra-passe, escolha «Prefiro entrar com palavra-passe» e depois «Esqueceu a palavra-passe?» para definir outra.</p>
+      <p style="color:#9ca3af;font-size:12px;margin-bottom:0">For security, the password on your Hivex account no longer works because this email was just confirmed. Sign in with an email code, or set a new password with “Forgot your password?”.</p>`,
+      });
+    } catch (e) {
+      console.error('[auth] aviso de palavra-passe desativada falhou:', e.message);
+    }
+  }
+  return provado;
+}
+
+// A conta deste email depois de o dono o provar: criada se ainda não existir.
+async function contaDoEmailProvado(email, nome) {
+  const procurar = async () => (await pool.query('SELECT * FROM users WHERE email = $1', [email])).rows[0];
+  let user = await procurar();
+  if (!user) {
+    const { rows: created } = await pool.query(
+      `INSERT INTO users (name, email, email_verified, email_proven_at) VALUES ($1, $2, TRUE, NOW())
+       ON CONFLICT (email) DO NOTHING RETURNING *`, [nome, email]);
+    if (created[0]) return { user: created[0], isNew: true };
+    user = await procurar();   // registada entretanto
+  }
+  return { user: await provarEmail(user), isNew: false };
 }
 
 // Practical email-format check — not RFC-perfect, but rejects the obvious
@@ -258,7 +309,10 @@ router.post('/login', async (req, res, next) => {
     if (!email || !password) return res.status(400).json({ error: 'email e password são obrigatórios' });
 
     const { rows } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    if (!rows[0]) return res.status(401).json({ error: 'Email ou palavra-passe incorretos' });
+    // Conta sem palavra-passe (entra com código ou Google, ou perdeu-a ao provar o
+    // email) responde como uma errada, para não revelar que o email tem conta. O
+    // texto do frontend (toastBadCredentials) indica como voltar a entrar.
+    if (!rows[0] || !rows[0].password_hash) return res.status(401).json({ error: 'Email ou palavra-passe incorretos' });
 
     const match = await bcrypt.compare(password, rows[0].password_hash);
     if (!match) return res.status(401).json({ error: 'Email ou palavra-passe incorretos' });
@@ -374,26 +428,9 @@ router.post('/code/verify', async (req, res, next) => {
       [email, CODE_MAX_TRIES]);
 
     // O código chegou a este email: fica provado (selo «contacto verificado»).
-    let isNew = false;
-    let { rows: us } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    let user = us[0];
-    if (!user) {
-      const { rows: created } = await pool.query(
-        `INSERT INTO users (name, email, email_verified, email_proven_at) VALUES ($1, $2, TRUE, NOW())
-         ON CONFLICT (email) DO UPDATE SET email_verified = TRUE,
-           email_proven_at = COALESCE(users.email_proven_at, NOW())
-         RETURNING *, (xmax = 0) AS inserted`, [_nameFromEmail(email), email]);
-      user = created[0];
-      isNew = !!(user && user.inserted);
-      if (isNew) sendWelcomeEmail(user).catch(err =>
-        console.error('[auth] welcome email send failed for', user.email, err.message));
-    } else if (!user.email_verified || !user.email_proven_at) {
-      const { rows: v } = await pool.query(
-        `UPDATE users SET email_verified = TRUE, email_proven_at = COALESCE(email_proven_at, NOW()),
-                          verify_code = NULL, verify_expires = NULL
-          WHERE id = $1 RETURNING *`, [user.id]);
-      user = v[0] || user;
-    }
+    const { user, isNew } = await contaDoEmailProvado(email, _nameFromEmail(email));
+    if (isNew) sendWelcomeEmail(user).catch(err =>
+      console.error('[auth] welcome email send failed for', user.email, err.message));
     res.json({ ...(await issueSession(req, res, user)), isNew });
   } catch (e) { next(e); }
 });
@@ -431,10 +468,13 @@ router.get('/me', requireAuth, async (req, res, next) => {
     if (!rows[0]) return res.status(401).json({ error: 'Utilizador não encontrado' });
     const user = rows[0];
     let token = null;
-    if (!!user.is_admin !== !!req.user.is_admin) {
+    // Com o email provado, o token novo leva `ep` e o middleware deixa de consultar
+    // a BD em cada pedido desta sessão (tokens anteriores a isto ou à prova).
+    const adminMudou = !!user.is_admin !== !!req.user.is_admin;
+    if (adminMudou || (user.email_proven_at && !req.user.ep)) {
       token = signToken(user);
       res.cookie('hive_token', token, COOKIE_OPTS);
-      console.log('[auth] refreshed session token (is_admin changed) for', user.email);
+      if (adminMudou) console.log('[auth] refreshed session token (is_admin changed) for', user.email);
     }
     res.json(token ? authBody(req, user, token) : { user: safeUser(user) });
   } catch (e) {
@@ -522,12 +562,12 @@ router.post('/google', async (req, res, next) => {
     // any Google sign-in as a confirmed address. O email da conta só fica
     // provado (selo «contacto verificado») se for o do Google: a conta achada
     // pelo google_id guarda o email antigo se o da conta Google mudou.
-    const provado = String(user.email || '').toLowerCase() === email;
-    if (!user.email_verified || (provado && !user.email_proven_at)) {
+    if (String(user.email || '').toLowerCase() === email) {
+      user = await provarEmail(user);
+    } else if (!user.email_verified) {
       const { rows: verified } = await pool.query(
-        `UPDATE users SET email_verified = TRUE, verify_code = NULL, verify_expires = NULL,
-                          email_proven_at = CASE WHEN $2 THEN COALESCE(email_proven_at, NOW()) ELSE email_proven_at END
-          WHERE id = $1 RETURNING *`, [user.id, provado]);
+        `UPDATE users SET email_verified = TRUE, verify_code = NULL, verify_expires = NULL
+          WHERE id = $1 RETURNING *`, [user.id]);
       user = verified[0] || user;
     }
 
@@ -590,9 +630,11 @@ router.post('/reset-password', async (req, res, next) => {
     if (!rows[0]) return res.status(400).json({ error: 'Hiperligação inválida ou expirada. Peça uma nova.' });
 
     // O link chegou ao email da conta: fica provado (selo «contacto verificado»).
+    // Se foi a primeira prova, as sessões abertas até aqui terminam (provarEmail).
     const passwordHash = await bcrypt.hash(password, 10);
     await pool.query(
       `UPDATE users SET password_hash = $1, password_reset_token = NULL, password_reset_expires_at = NULL,
+                        sessions_valid_from = CASE WHEN email_proven_at IS NULL THEN NOW() ELSE sessions_valid_from END,
                         email_proven_at = COALESCE(email_proven_at, NOW())
         WHERE id = $2`,
       [passwordHash, rows[0].id]
@@ -642,7 +684,7 @@ router.post('/change-password', requireAuth, async (req, res, next) => {
 // cascade-delete via the schema's foreign-key rules.
 router.delete('/me', requireAuth, async (req, res, next) => {
   try {
-    const { rows } = await pool.query('SELECT id, password_hash FROM users WHERE id = $1', [req.user.id]);
+    const { rows } = await pool.query('SELECT id, email, password_hash FROM users WHERE id = $1', [req.user.id]);
     const user = rows[0];
     if (!user) return res.status(401).json({ error: 'Utilizador não encontrado' });
 
@@ -663,6 +705,11 @@ router.delete('/me', requireAuth, async (req, res, next) => {
       if (fs.length) await require('./tenders')._paraLixo(fs.map(f => f.pathname));
     } catch (e) { console.error('[auth] anexos dos concursos por apagar:', e.message); }
     await pool.query('DELETE FROM users WHERE id = $1', [user.id]);
+    // O email sai também dos códigos de acesso: a política promete apagar os
+    // dados da conta e um código ainda válido voltaria a criá-la. Se isto
+    // falhar, a limpeza diária apanha a linha (routes/marketplace.js).
+    await pool.query('DELETE FROM login_codes WHERE email = $1', [normalizeEmail(user.email)])
+      .catch(e => console.error('[auth] código de acesso por apagar:', e.message));
     res.clearCookie('hive_token', CLEAR_COOKIE_OPTS);
     res.json({ ok: true });
   } catch (e) {
@@ -671,5 +718,7 @@ router.delete('/me', requireAuth, async (req, res, next) => {
 });
 
 module.exports = router;
-// Partilhada com o claim sem conta (routes/marketplace.js): mesma sessão/cookie.
+// Partilhadas com o claim sem conta (routes/marketplace.js): mesma sessão/cookie e
+// a mesma prova do email.
 module.exports.issueSession = issueSession;
+module.exports.contaDoEmailProvado = contaDoEmailProvado;

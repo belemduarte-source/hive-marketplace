@@ -234,25 +234,10 @@ router.post('/claims/:companyId/guest/verify', async (req, res, next) => {
       return res.status(409).json({ error: 'Esta ficha já tem gestor.', code: 'ALREADY_CLAIMED' });
     }
     // O código chegou a este email: a conta fica com o email provado.
-    const email = String(co.email).trim().toLowerCase();
-    const { rows: us } = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
-    let user = us[0];
-    if (!user) {
-      const { rows: created } = await pool.query(
-        `INSERT INTO users (name, email, email_verified, email_proven_at) VALUES ($1, $2, TRUE, NOW())
-         ON CONFLICT (email) DO UPDATE SET email_verified = TRUE,
-           email_proven_at = COALESCE(users.email_proven_at, NOW()) RETURNING *`,
-        [String(co.name || 'Empresa').slice(0, 80), email]);
-      user = created[0];
-    } else if (!user.email_verified || !user.email_proven_at) {
-      const { rows: v } = await pool.query(
-        `UPDATE users SET email_verified = TRUE, email_proven_at = COALESCE(email_proven_at, NOW())
-          WHERE id = $1 RETURNING *`, [user.id]);
-      user = v[0] || user;
-    }
+    const { issueSession, contaDoEmailProvado } = require('./auth');
+    const { user } = await contaDoEmailProvado(String(co.email).trim().toLowerCase(), String(co.name || 'Empresa').slice(0, 80));
     await pool.query(`UPDATE claims SET verified_at = NOW(), user_id = $2 WHERE id = $1`, [cl.id, user.id]);
     await pool.query(`UPDATE companies SET created_by = $1, updated_at = NOW() WHERE id = $2`, [user.id, companyId]);
-    const { issueSession } = require('./auth');
     res.json({ ok: true, ...(await issueSession(req, res, user)) });
   } catch (e) { next(e); }
 });
@@ -669,11 +654,20 @@ router.get('/messages/purge', async (req, res) => {
   // as respostas antigas saem em cascata) — política de privacidade, 5.3
   let orcamentosApagados = null;
   try { orcamentosApagados = await purgeQuoteRequests(); } catch (e) { console.error('[rfq] retenção:', e.message); }
-  res.json({ ok: true, pedidosAvaliacao: pedidos, concursos, orcamentosApagados });
+  // Retenção: códigos de acesso. O código vale 10 minutos e os contadores de
+  // envio 1 hora; depois disso a linha só guardava o email de quem o pediu.
+  let codigosApagados = null;
+  try { codigosApagados = await purgeLoginCodes(); } catch (e) { console.error('[auth] retenção dos códigos:', e.message); }
+  res.json({ ok: true, pedidosAvaliacao: pedidos, concursos, orcamentosApagados, codigosApagados });
 });
 async function purgeQuoteRequests() {
   const r = await pool.query(`DELETE FROM quote_requests WHERE created_at < NOW() - INTERVAL '12 months'`);
   if (r.rowCount) console.log(`[rfq] retenção: ${r.rowCount} pedidos de orçamento apagados (12 meses)`);
+  return r.rowCount || 0;
+}
+async function purgeLoginCodes() {
+  const r = await pool.query(`DELETE FROM login_codes WHERE last_sent_at < NOW() - INTERVAL '1 day'`);
+  if (r.rowCount) console.log(`[auth] retenção: ${r.rowCount} códigos de acesso apagados (1 dia)`);
   return r.rowCount || 0;
 }
 
@@ -687,7 +681,10 @@ async function purgeQuoteRequests() {
 //  - orçamento: a empresa respondeu pela Hivex (mensagem da empresa para o
 //    email do cliente) a um pedido de orçamento que lhe chegou
 //    (quote_request_recipients) — ~10 dias depois da resposta;
-//  - contacto: o cliente escreveu à empresa pela Hivex — ~7 dias depois.
+//  - contacto: o cliente escreveu à empresa com sessão numa conta com o email já
+//    provado — ~7 dias depois. O formulário sem sessão aceita qualquer email, e a
+//    Hivex não envia pedidos a um endereço que alguém escreveu e ninguém provou
+//    (decisão do dono, 2026-11-02).
 // Regras: um só pedido por (empresa, email), seja qual for a origem; cada
 // origem tem uma janela de 7 dias (nunca "acorda" interações antigas de uma
 // vez; o que o teto deixar para trás segue no dia seguinte); enquanto uma
@@ -763,6 +760,9 @@ async function sendReviewRequests() {
       UNION ALL
       SELECT 3, 'contacto', m.company_id, lower(trim(m.client_email)), m.client_name, NULL, m.created_at
         FROM messages m
+        JOIN users u ON u.id = m.client_user_id
+                    AND lower(trim(u.email)) = lower(trim(m.client_email))
+                    AND u.email_proven_at <= m.created_at
        WHERE m.sender = 'client'
          AND m.created_at BETWEEN NOW() - INTERVAL '14 days' AND NOW() - INTERVAL '7 days'
     )
