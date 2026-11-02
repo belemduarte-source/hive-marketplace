@@ -4,6 +4,7 @@
   <meta charset="UTF-8"/>
   <script>/* Apply saved theme before paint to avoid a flash of the wrong theme */try{document.documentElement.classList.add('hx-no-reviews');var _t=localStorage.getItem('hivex_theme');if(_t==='dark')document.documentElement.setAttribute('data-theme','dark');}catch(e){}</script>
   <script>/* Link pessoal de concurso (?concurso=TOKEN): guarda o token na sessão do separador e tira-o do endereço já, antes de qualquer script de terceiros (publicidade) poder ler o URL */try{var _k=/[?&]concurso=([A-Za-z0-9_-]{32})(?=&|$)/.exec(location.search);if(_k){window.__hxConcurso=_k[1];sessionStorage.setItem('hx_concurso',_k[1]);history.replaceState(history.state,'',location.pathname+location.search.replace(/([?&])concurso=[^&]*&?/,'$1').replace(/[?&]$/,'')+location.hash);}}catch(e){}</script>
+  <script>/* Link "Avaliar" dos pedidos de avaliação (?prova=TOKEN, HMAC do email): guarda o token na sessão do separador e tira-o do endereço já, antes de a publicidade poder ler o URL; segue com a avaliação (submitReview) e prova que o email da conta é o que recebeu o pedido */try{var _v=/[?&]prova=([a-f0-9]{32})(?=&|$)/.exec(location.search);if(_v){window.__hxProva=_v[1];history.replaceState(history.state,'',location.pathname+location.search.replace(/([?&])prova=[^&]*&?/,'$1').replace(/[?&]$/,'')+location.hash);try{sessionStorage.setItem('hx_prova',_v[1]);}catch(e){}}}catch(e){}</script>
   <!-- ── Google AdSense (dormant until you add your IDs) ──────────────────────────
        1. Paste your publisher ID into ADSENSE_CLIENT  (looks like ca-pub-XXXXXXXXXXXXXXXX).
           That alone loads AdSense + enables Auto Ads (toggle them in your AdSense dashboard).
@@ -54,6 +55,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"/>
   <script>/* Telemóveis e tablets (até 1024px no arranque): sem mapa — pesquisa por filtros e lista por distância (pedido do dono, 2026-10-30). Decidido antes de pintar para o mapa nunca aparecer. */try{if(window.innerWidth<=1024)document.documentElement.classList.add('hx-sem-mapa')}catch(e){}</script>
+  <script>/* Só telemóveis e tablets: a Inter do título e do subtítulo do ecrã de filtros (~6 KB por peso, ver .sm-cab na CSS) pede-se já, para estar pronta quando eles pintam no 1.º paint. O subtítulo é um <p>: 400, ou 700 no tema escuro. hx-sem-mapa-largo (>768px) diz ao script a seguir ao </nav> que é cabeçalho de uma linha: ler innerWidth lá, com o body já parcialmente lido, forçava um layout antes do 1.º paint. */(function(){var d=document.documentElement;if(!d.classList.contains('hx-sem-mapa'))return;if(window.innerWidth>768)d.classList.add('hx-sem-mapa-largo');['800',d.getAttribute('data-theme')==='dark'?'700':'400'].forEach(function(w){var l=document.createElement('link');l.rel='preload';l.as='font';l.type='font/woff2';l.crossOrigin='anonymous';l.href='/fonts/inter-sm-'+w+'.v1.woff2';document.head.appendChild(l)})})()</script>
   <!-- O mapa só se descarrega nos computadores (>1024px no arranque): MapLibre
        (~280 KB transferidos, JS + CSS) e as ligações aos servidores do mapa
        (tiles OpenFreeMap, rotas OSRM). Nos telemóveis e tablets o mapa nunca arranca.
@@ -66,7 +68,7 @@
   <title>Hivex – Marketplace B2B & B2C de Construção em Portugal</title>
 
   <!-- SEO -->
-  <meta name="description" content="Hivex é o marketplace português que liga empresas e particulares aos melhores profissionais de construção. Pesquise por localização, compare avaliações verificadas e peça orçamentos em minutos."/>
+  <meta name="description" content="Encontre empresas de construção e serviços perto de si e peça orçamentos grátis. Milhares de empresas em 31 países."/>
   <meta name="keywords" content="marketplace construção, empresas construção Portugal, orçamento construção, B2B construção, profissionais verificados, Hivex"/>
   <meta name="author" content="Hivex"/>
   <meta name="robots" content="index,follow"/>
@@ -76,12 +78,13 @@
   <meta property="og:type" content="website"/>
   <meta property="og:site_name" content="Hivex"/>
   <meta property="og:title" content="Hivex — Empresas de Construção e Serviços"/>
-  <meta property="og:description" content="Milhares de empresas em 31 países. Avaliações, contacto direto e orçamentos grátis — sem intermediários."/>
+  <meta property="og:description" content="Encontre empresas de construção e serviços perto de si e peça orçamentos grátis. Milhares de empresas em 31 países."/>
   <meta property="og:url" content="https://www.hivex.pt/"/>
-  <meta property="og:image" content="https://www.hivex.pt/og-cover.png?v=1"/>
+  <meta property="og:image" content="https://www.hivex.pt/og-cover.png?v=2"/>
   <meta property="og:image:width" content="1200"/>
   <meta property="og:image:height" content="630"/>
   <meta property="og:image:type" content="image/png"/>
+  <meta property="og:image:alt" content="Logótipo da Hivex: empresas de construção e serviços"/>
   <meta property="og:locale" content="pt_PT"/>
   <meta property="og:locale:alternate" content="en_US"/>
   <meta property="og:locale:alternate" content="fr_FR"/>
@@ -91,8 +94,8 @@
   <!-- Twitter card -->
   <meta name="twitter:card" content="summary_large_image"/>
   <meta name="twitter:title" content="Hivex — Empresas de Construção e Serviços"/>
-  <meta name="twitter:description" content="Milhares de empresas em 31 países. Avaliações, contacto direto e orçamentos grátis."/>
-  <meta name="twitter:image" content="https://www.hivex.pt/og-cover.png?v=1"/>
+  <meta name="twitter:description" content="Encontre empresas de construção e serviços perto de si e peça orçamentos grátis. Milhares de empresas em 31 países."/>
+  <meta name="twitter:image" content="https://www.hivex.pt/og-cover.png?v=2"/>
 
   <!-- PWA -->
   <link rel="manifest" href="manifest.json"/>
@@ -180,7 +183,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v356.css"/>
+  <link rel="stylesheet" href="app.v358.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -429,6 +432,7 @@
     </div>
   </div>
 </nav>
+<script>/* Tablets sem mapa (769–1024px, hx-sem-mapa-largo posta no <head>): o cabeçalho de uma linha (64px) já no 1.º paint. O bundle põe esta classe ao arrancar (dockMapSearchControls); sem ela o nav pinta com 68px e o ecrã de filtros, que pinta logo por baixo, subia 4px. */try{if(document.documentElement.classList.contains('hx-sem-mapa-largo'))document.currentScript.previousElementSibling.classList.add('nav-map-grid')}catch(e){}</script>
 
 <!-- MOBILE NAV DRAWER -->
 <div class="mobile-nav-drawer" id="mobileNavDrawer" onclick="closeMobileNav(event)">
@@ -582,6 +586,29 @@
 
 <!-- SEARCH TAB -->
 <div id="tab-search" class="tab-search">
+
+<!-- SEM MAPA (telemóveis e tablets, .hx-sem-mapa): o ecrã de filtros vem no HTML
+     para o título — o LCP nestes ecrãs — pintar no 1.º paint em vez de esperar
+     pelo bundle (~2 s depois em 4G lento). O bundle (_smIniciar/_smRenderFiltros)
+     reaproveita este #smApp: o cabeçalho fica (o mesmo nó; só o texto muda, se
+     for preciso) e o esqueleto, com as caixas dos filtros, dá lugar aos filtros.
+     No computador #smApp tem display:none. -->
+<div id="smApp">
+  <section id="smFiltros" class="sm-tela">
+    <header class="sm-cab"><h1 class="sm-titulo">Encontre profissionais perto de si</h1><p class="sm-sub">Diga onde, o serviço e até que distância. As empresas aparecem por ordem de proximidade.</p></header>
+    <script>/* A língua guardada (hive_lang) já no 1.º paint, sem trocar o texto à vista quando o bundle chega. Sem hive_lang o bundle fica em PT (o registo de visitas cria o hivex_vid antes de ele correr). Textos = smTitulo/smSub das traduções do bundle, que os volta a aplicar com t(). */(function(){try{var s={en:['Find professionals near you','Tell us where, the service and how far. Companies are listed by distance.'],fr:['Trouvez des professionnels près de chez vous','Indiquez où, le service et jusqu’à quelle distance. Les entreprises sont classées par proximité.'],es:['Encuentre profesionales cerca de usted','Indique dónde, el servicio y hasta qué distancia. Las empresas aparecen por proximidad.'],de:['Finden Sie Fachleute in Ihrer Nähe','Geben Sie Ort, Leistung und Entfernung an. Die Unternehmen erscheinen nach Nähe sortiert.']}[localStorage.getItem('hive_lang')],c=document.currentScript.previousElementSibling;if(s&&document.documentElement.classList.contains('hx-sem-mapa')){c.firstElementChild.textContent=s[0];c.lastElementChild.textContent=s[1];}}catch(e){}})();</script>
+    <div class="sm-esq" aria-hidden="true">
+      <div class="sm-bloco"><div class="sm-h2"><b></b><b></b></div><div class="sm-onde"><span class="sm-perto"></span><span class="sm-campo"></span></div><p class="sm-onde-atual"><b></b></p></div>
+      <div class="sm-bloco"><div class="sm-h2"><b></b><b></b></div><div class="sm-areas"><span class="sm-area"><b></b><b></b></span><span class="sm-area"><b></b><b></b></span><span class="sm-area"><b></b><b></b></span><span class="sm-area"><b></b><b></b></span><span class="sm-area"><b></b><b></b></span><span class="sm-area"><b></b><b></b></span><span class="sm-area"><b></b><b></b></span><span class="sm-area"><b></b><b></b></span><span class="sm-area"><b></b><b></b></span></div></div>
+      <div class="sm-bloco"><div class="sm-h2"><b></b><b></b></div><div class="sm-chips"><span class="sm-chip"></span><span class="sm-chip"></span><span class="sm-chip"></span><span class="sm-chip"></span><span class="sm-chip"></span><span class="sm-chip"></span></div></div>
+      <div class="sm-bloco"><div class="sm-h2 sm-esq-mais"><b></b><b></b></div></div>
+      <div class="sm-recs"></div>
+      <p class="sm-dono"><b></b></p>
+      <div class="sm-rodape"><span class="sm-ver"></span></div>
+    </div>
+  </section>
+  <section id="smResultados" class="sm-tela" hidden></section>
+</div>
 
 <!-- UNIFIED SEARCH + CATEGORIES BAR -->
 <div class="unified-bar">
@@ -2028,7 +2055,7 @@
      vetoriais OpenFreeMap sem chave, clustering nativo e 3D) entra nesta fila
      pelo <head>, e só nos computadores (ver hx-sem-mapa). -->
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v356.js"></script>
+<script defer src="app.v358.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

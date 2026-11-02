@@ -44,6 +44,7 @@ const favouritesRouter = require('./routes/favourites');
 const marketplaceRouter = require('./routes/marketplace');
 const errorHandler = require('./middleware/errorHandler');
 const { nomeLegivel, moradaLegivel } = require('./texto-legivel');
+const { OG_COVER } = require('./og-empresa');
 
 const app = express();
 
@@ -303,8 +304,9 @@ const MIGRATIONS = [
   // company independent of user type — so the column is dropped.
   `ALTER TABLE users DROP COLUMN IF EXISTS type`,
   // Email verification was removed — drop the now-unused columns/index if present.
+  // (email_verified voltou na v5 e NÃO se apaga aqui: o DROP que aqui estava
+  // corria em cada bump e repunha FALSE nas contas criadas depois de 2026-07-08.)
   `DROP INDEX IF EXISTS idx_users_email_verification_token`,
-  `ALTER TABLE users DROP COLUMN IF EXISTS email_verified`,
   `ALTER TABLE users DROP COLUMN IF EXISTS email_verification_token`,
   `ALTER TABLE users DROP COLUMN IF EXISTS email_verification_expires_at`,
 
@@ -827,6 +829,32 @@ const MIGRATIONS = [
   // "Os meus orçamentos": quando a empresa respondeu pelo chat (as mensagens
   // apagam-se aos 90 dias, o pedido fica 12 meses)
   `ALTER TABLE quote_request_recipients ADD COLUMN IF NOT EXISTS replied_at TIMESTAMPTZ`,
+
+  // v16: «contacto verificado» só com o email provado (decisão do dono,
+  // 2026-10-31; routes/reviews.js). email_proven_at = quando o dono da conta
+  // provou que o email é seu: código por email, Google, código do claim,
+  // recuperação da palavra-passe ou o link do pedido de avaliação. O registo
+  // com palavra-passe continua sem verificação (2026-07) e fica NULL.
+  `ALTER TABLE users ADD COLUMN IF NOT EXISTS email_proven_at TIMESTAMPTZ`,
+  // Os três acertos seguintes só valem para as contas anteriores à regra
+  // (deploy de 2026-10-31, 02:18 UTC): esta lista corre inteira em cada bump, e
+  // sem o limite quem registasse com palavra-passe o email de uma conta apagada
+  // ficava provado no bump seguinte (o código gasto fica em login_codes).
+  // Contas que só nascem de uma prova (sem palavra-passe: código, Google ou
+  // claim sem conta) ou que entraram com o Google.
+  `UPDATE users SET email_proven_at = created_at
+    WHERE email_proven_at IS NULL AND (password_hash IS NULL OR google_id IS NOT NULL)
+      AND created_at < TIMESTAMPTZ '2026-10-31 02:18+00'`,
+  // Contas com palavra-passe cujo último código de acesso foi gasto com
+  // sucesso: fica a expirar antes dos 10 minutos (5 erros deixam-no igual).
+  `UPDATE users u SET email_proven_at = NOW() FROM login_codes c
+    WHERE u.email_proven_at IS NULL AND c.email = u.email AND c.attempts >= 5
+      AND c.expires_at < c.last_sent_at + INTERVAL '10 minutes'
+      AND u.created_at < TIMESTAMPTZ '2026-10-31 02:18+00'`,
+  // O DROP de email_verified (já retirado, acima) corria em cada bump: repõe
+  // a decisão de 2026-07, todas as contas nascem ativas.
+  `UPDATE users SET email_verified = TRUE
+    WHERE email_verified = FALSE AND created_at < TIMESTAMPTZ '2026-10-31 02:18+00'`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
@@ -835,7 +863,7 @@ const MIGRATIONS = [
 // on mismatch (or missing table) they run everything and store the new
 // version. Unlike the old column-existence sentinel this can never skip DROP
 // migrations, because the version is written only after a full run.
-const SCHEMA_VERSION = 15; // v15: alertas de pesquisa com várias atividades, local e raio; resposta registada no pedido de orçamento
+const SCHEMA_VERSION = 16; // v16: users.email_proven_at (selo «contacto verificado»)
 
 async function ensureSchema() {
   if (_migrated) return;
@@ -851,7 +879,16 @@ async function ensureSchema() {
           _migrated = true;
           return;
         }
-      } catch (_) { /* table missing (fresh DB) → full run below creates it */ }
+      } catch (e) {
+        // Só a tabela em falta (BD nova, 42P01) segue para a corrida completa.
+        // Com a BD em baixo não se marca nada e o próximo pedido volta a
+        // tentar: antes, uma instância que arrancava durante uma falha da BD
+        // falhava as migrações todas, ficava "migrada" e nunca as aplicava.
+        if (!e || e.code !== '42P01') {
+          console.error('Schema check failed (retrying on the next request):', e && e.message);
+          return;
+        }
+      }
 
       // Every migration is idempotent (IF NOT EXISTS / IF EXISTS) so we just
       // run them all. Each statement is wrapped so one failure doesn't block
@@ -867,6 +904,8 @@ async function ensureSchema() {
         }
       }
       console.log(`Schema migrations: ${okCount} OK, ${failCount} failed`);
+      // Nada correu (a BD caiu a meio): também não fica marcado.
+      if (okCount === 0) return;
       // Record the version only after a clean run — a partial run keeps the
       // old version so the next cold start retries everything.
       if (failCount === 0) {
@@ -949,6 +988,15 @@ app.use('/api/favourites', favouritesRouter);
 
 // Slug canónico de empresa: minúsculas, sem acentos, não-alfanumérico → '-'.
 // Tem de coincidir com _companySlug() no frontend.
+// Resumos de pré-visualização: corta na última palavra inteira, nunca a meio.
+const cortaFrase = (s, n) => {
+  const t = String(s == null ? '' : s).replace(/\s+/g, ' ').trim();
+  if (t.length <= n) return t;
+  const c = t.slice(0, n - 1);
+  const e = c.lastIndexOf(' ');
+  return (e > n * 0.6 ? c.slice(0, e) : c).replace(/[\s,;:.·—-]+$/, '') + '…';
+};
+
 const hivexSlugify = s => String(s == null ? '' : s)
   .replace(/ß/g, 'ss').replace(/[æÆ]/g, 'ae').replace(/[øØ]/g, 'o').replace(/[œŒ]/g, 'oe').replace(/[łŁ]/g, 'l')
   .normalize('NFD').replace(/[̀-ͯ]/g, '')
@@ -1043,9 +1091,9 @@ app.get('/e/:id(\\d+)', async (req, res, next) => {
     const title = `${c.name}${c.city ? ' — ' + c.city : ''} | Hivex`;
     const bits = [];
     if (Number(c.rating) > 0) bits.push(`⭐ ${Number(c.rating).toFixed(1)}/5 (${c.reviews || 0})`);
-    if (c.description) bits.push(String(c.description).slice(0, 140));
+    if (c.description) bits.push(cortaFrase(c.description, 140));
     const desc = bits.join(' · ') || 'Encontre empresas de construção e serviços na Hivex.';
-    const img = c.has_logo ? `${BASE}/api/companies/${c.id}/logo?v=${c.logo_v}` : `${BASE}/og-cover.png?v=1`;
+    const img = c.has_logo ? `${BASE}/api/companies/${c.id}/og.png?v=${c.logo_v}` : OG_COVER;
     res.set('Content-Type', 'text/html; charset=utf-8');
     res.set('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
     res.send(`<!doctype html><html lang="pt"><head><meta charset="utf-8">
@@ -1056,6 +1104,10 @@ app.get('/e/:id(\\d+)', async (req, res, next) => {
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:image" content="${esc(img)}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="${esc(c.has_logo ? 'Logótipo de ' + c.name : 'Logótipo da Hivex: empresas de construção e serviços')}">
 <meta property="og:url" content="${BASE}/e/${c.id}">
 <meta name="twitter:card" content="summary">
 <link rel="canonical" href="${BASE}/c/${c.id}-${hivexSlugify(c.name)}">
@@ -1125,7 +1177,7 @@ app.get('/s/:sector/:city', async (req, res, next) => {
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${BASE}/s/${esc(sector)}/${esc(req.params.city)}">
-<meta property="og:image" content="${BASE}/og-cover.png?v=1">
+<meta property="og:image" content="${OG_COVER}">
 <link rel="canonical" href="${BASE}/s/${esc(sector)}/${esc(req.params.city)}">
 <script type="application/ld+json">${JSON.stringify(itemList)}</script>
 <style>body{font-family:system-ui;max-width:720px;margin:0 auto;padding:28px 18px;background:#0f172a;color:#e2e8f0}a{color:#93c5fd}li{margin:9px 0}h1{font-size:26px}.cta{display:inline-block;margin:18px 0;background:#f97316;color:#fff;padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none}</style>
@@ -1186,11 +1238,11 @@ app.get('/c/:idslug', async (req, res, next) => {
       `${c.name} é uma empresa de ${_listaPt}${c.city ? ' em ' + c.city : ''}.` +
       (_alvPt ? ` Está registada no IMPIC, o regulador da construção em Portugal, com o alvará n.º ${_alvPt}.` : '') +
       (c.email ? ' Pode pedir-lhe um orçamento diretamente pela Hivex.' : '');
-    const desc = ((c.description
-        ? String(c.description).replace(/\s+/g, ' ').slice(0, 120) + ' · '
-        : autoDesc.slice(0, 120) + ' · ') +
-      `${label}${c.city ? ' em ' + c.city : ''}. Contactos, avaliações e orçamento grátis na Hivex.`).slice(0, 160);
-    const img = c.has_logo ? `${BASE}/api/companies/${c.id}/logo?v=${c.logo_v}` : `${BASE}/og-cover.png?v=1`;
+    const desc = cortaFrase((c.description
+        ? cortaFrase(c.description, 100) + ' · '
+        : cortaFrase(autoDesc, 100) + ' · ') +
+      `${label}${c.city ? ' em ' + c.city : ''}. Contactos, avaliações e orçamento grátis na Hivex.`, 160);
+    const img = c.has_logo ? `${BASE}/api/companies/${c.id}/og.png?v=${c.logo_v}` : OG_COVER;
     const spaUrl = `/?company=${c.id}`;
     const ld = {
       '@context': 'https://schema.org',
@@ -1209,7 +1261,7 @@ app.get('/c/:idslug', async (req, res, next) => {
       ...(c.website ? { sameAs: [c.website] } : {}),
       ...(Number(c.rating) > 0 ? { aggregateRating: {
         '@type': 'AggregateRating', ratingValue: Number(c.rating), reviewCount: Number(c.reviews) || 0 } } : {}),
-      ...(c.has_logo ? { image: img } : {}),
+      ...(c.has_logo ? { image: `${BASE}/api/companies/${c.id}/logo?v=${c.logo_v}` } : {}),
     };
     const sCity = c.sector && c.city
       ? `/s/${c.sector}/${encodeURIComponent(String(c.city).toLowerCase().trim().replace(/\s+/g, '-'))}` : null;
@@ -1229,6 +1281,10 @@ app.get('/c/:idslug', async (req, res, next) => {
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:image" content="${esc(img)}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:type" content="image/png">
+<meta property="og:image:alt" content="${esc(c.has_logo ? 'Logótipo de ' + c.name : 'Logótipo da Hivex: empresas de construção e serviços')}">
 <meta property="og:url" content="${canonical}">
 <meta name="twitter:card" content="summary">
 <link rel="canonical" href="${canonical}">

@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router({ mergeParams: true }); // mergeParams gives access to :id from parent
+const crypto = require('crypto');
 const pool = require('../db');
 const { requireAuth, ensureAdminFlag } = require('../middleware/auth');
 const { pushToUser } = require('../push');
@@ -107,6 +108,19 @@ router.post('/', requireAuth, async (req, res, next) => {
         return res.status(404).json({ error: 'Empresa não encontrada' });
       }
 
+      // Link "Avaliar" do pedido de avaliação (?prova=, HMAC do email; o
+      // frontend guarda-o ao abrir o link): com sessão nesse email, a conta
+      // fica com o email provado.
+      const prova = String((req.body && req.body.prova) || '');
+      if (/^[a-f0-9]{32}$/.test(prova)) {
+        const { rows: eu } = await client.query(
+          `SELECT email FROM users WHERE id = $1 AND email_proven_at IS NULL`, [req.user.id]);
+        const esperado = eu[0] && require('./marketplace')._provaEmailToken(eu[0].email);
+        if (esperado && crypto.timingSafeEqual(Buffer.from(prova), Buffer.from(esperado))) {
+          await client.query(`UPDATE users SET email_proven_at = NOW() WHERE id = $1 AND email_proven_at IS NULL`, [req.user.id]);
+        }
+      }
+
       // "Contacto verificado": o autor tratou com a empresa pela plataforma —
       // escreveu-lhe (mensagem do cliente), a empresa respondeu a um pedido de
       // orçamento dele que lhe chegou (o "respondido" de pedidos.js), aceitou
@@ -116,25 +130,33 @@ router.post('/', requireAuth, async (req, res, next) => {
       // mensagens) — combate reviews de fachada. Uma mensagem da empresa, só
       // por si, não conta: a resposta do inbox aceita qualquer email, e a
       // empresa tornaria "verificada" a avaliação de quem quisesse.
+      // Desde 2026-10-31 (decisão do dono) é preciso também que o autor tenha
+      // provado o email (users.email_proven_at): o contacto sem sessão aceita
+      // qualquer email e o registo com palavra-passe não o confirma, e a
+      // empresa criaria assim contas-fantoche "verificadas". E nunca na
+      // própria empresa: nem o dono da ficha nem o email público dela.
       const { rows: vc } = await client.query(
-        `WITH eu AS (SELECT id, lower(trim(email)) AS email FROM users WHERE id = $2)
+        `WITH eu AS (SELECT id, lower(trim(email)) AS email FROM users
+                      WHERE id = $2 AND email_proven_at IS NOT NULL)
          SELECT 1 FROM eu
-          WHERE EXISTS (SELECT 1 FROM messages m
-                         WHERE m.company_id = $1 AND m.sender = 'client'
-                           AND (m.client_user_id = eu.id OR lower(m.client_email) = eu.email))
-             OR EXISTS (SELECT 1 FROM quote_request_recipients r
-                          JOIN quote_requests q ON q.id = r.request_id
-                          JOIN messages m ON m.company_id = r.company_id AND m.sender = 'company'
-                                         AND lower(m.client_email) = lower(q.client_email)
-                                         AND m.created_at >= r.created_at
-                         WHERE r.company_id = $1 AND lower(q.client_email) = eu.email)
-             OR EXISTS (SELECT 1 FROM review_requests rr
-                         WHERE rr.company_id = $1 AND rr.email = eu.email)
-             OR EXISTS (SELECT 1 FROM tender_proposals p
-                          JOIN tender_invites i ON i.id = p.invite_id
-                          JOIN tenders t ON t.id = p.tender_id
-                         WHERE i.company_id = $1 AND p.status = 'accepted' AND NOT t.is_test
-                           AND (t.owner_user_id = eu.id OR lower(t.owner_email) = eu.email))
+          WHERE NOT EXISTS (SELECT 1 FROM companies c
+                             WHERE c.id = $1 AND (c.created_by = eu.id OR lower(trim(c.email)) = eu.email))
+            AND (EXISTS (SELECT 1 FROM messages m
+                          WHERE m.company_id = $1 AND m.sender = 'client'
+                            AND (m.client_user_id = eu.id OR lower(m.client_email) = eu.email))
+              OR EXISTS (SELECT 1 FROM quote_request_recipients r
+                           JOIN quote_requests q ON q.id = r.request_id
+                           JOIN messages m ON m.company_id = r.company_id AND m.sender = 'company'
+                                          AND lower(m.client_email) = lower(q.client_email)
+                                          AND m.created_at >= r.created_at
+                          WHERE r.company_id = $1 AND lower(q.client_email) = eu.email)
+              OR EXISTS (SELECT 1 FROM review_requests rr
+                          WHERE rr.company_id = $1 AND rr.email = eu.email)
+              OR EXISTS (SELECT 1 FROM tender_proposals p
+                           JOIN tender_invites i ON i.id = p.invite_id
+                           JOIN tenders t ON t.id = p.tender_id
+                          WHERE i.company_id = $1 AND p.status = 'accepted' AND NOT t.is_test
+                            AND (t.owner_user_id = eu.id OR lower(t.owner_email) = eu.email)))
           LIMIT 1`,
         [req.params.id, req.user.id]);
       const verified = !!vc[0];

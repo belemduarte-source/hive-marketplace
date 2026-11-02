@@ -3,6 +3,7 @@ const router = express.Router();
 const pool = require('../db');
 const { requireAuth, requireAdmin, optionalAuth, ensureAdminFlag } = require('../middleware/auth');
 const reviewsRouter = require('./reviews');
+const { OG_COVER, LOGO_DATA_URI, desenhaOgEmpresa } = require('../og-empresa');
 // Item de portfólio aceitável: URL http(s) curto OU imagem inline até ~300KB
 const _pfOk = u => typeof u === 'string' && (/^https?:\/\//.test(u) ? u.length < 2048 : (/^data:image\//.test(u) && u.length < 400000));
 // Portfólio → Vercel Blob quando BLOB_READ_WRITE_TOKEN existe: as fotos saem
@@ -159,11 +160,32 @@ function _getSharp() {
   if (_sharp === undefined) { try { _sharp = require('sharp'); } catch (_) { _sharp = null; } }
   return _sharp;
 }
+// Imagem de partilha das páginas /e/ e /c/ (ver og-empresa.js), em cache imutável
+// na CDN: o ?v= versiona. O logo só sai da BD com o ?v= atual, e qualquer outro
+// segue para esse, por isso um ?v= inventado não gasta BD nem CPU a desenhar.
+// Sem imagem própria segue para a og-cover, com cache curta: nunca fica sem imagem.
+router.get('/:id(\\d+)/og.png', async (req, res, next) => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT extract(epoch from updated_at)::bigint::text AS v,
+              CASE WHEN extract(epoch from updated_at)::bigint::text = $2 THEN logo END AS logo
+         FROM companies WHERE id = $1 AND status = 'approved'`, [req.params.id, String(req.query.v || '')]);
+    const c = rows[0];
+    res.set('Cache-Control', 'public, max-age=3600');
+    if (c && c.v && c.v !== req.query.v) return res.redirect(302, `/api/companies/${req.params.id}/og.png?v=${c.v}`);
+    const png = c && await desenhaOgEmpresa(_getSharp(), c.logo);
+    if (!png) return res.redirect(302, OG_COVER);
+    res.set('Content-Type', 'image/png');
+    res.set('Cache-Control', 'public, max-age=31536000, immutable');
+    res.send(png);
+  } catch (e) { next(e); }
+});
+
 router.get('/:id(\\d+)/logo', async (req, res, next) => {
   try {
     const { rows } = await pool.query('SELECT logo FROM companies WHERE id = $1', [req.params.id]);
     const logo = rows[0] && rows[0].logo;
-    const m = logo && /^data:(image\/[a-z0-9.+-]+);base64,([\s\S]+)$/i.exec(logo);
+    const m = logo && LOGO_DATA_URI.exec(logo);
     if (!m) return res.status(404).end();
     let tipo = m[1];
     let buf = Buffer.from(m[2], 'base64');
