@@ -835,18 +835,25 @@ const MIGRATIONS = [
   // recuperação da palavra-passe ou o link do pedido de avaliação. O registo
   // com palavra-passe continua sem verificação (2026-07) e fica NULL.
   `ALTER TABLE users ADD COLUMN IF NOT EXISTS email_proven_at TIMESTAMPTZ`,
+  // Os três acertos seguintes só valem para as contas anteriores à regra
+  // (deploy de 2026-10-31, 02:18 UTC): esta lista corre inteira em cada bump, e
+  // sem o limite quem registasse com palavra-passe o email de uma conta apagada
+  // ficava provado no bump seguinte (o código gasto fica em login_codes).
   // Contas que só nascem de uma prova (sem palavra-passe: código, Google ou
   // claim sem conta) ou que entraram com o Google.
-  `UPDATE users SET email_proven_at = COALESCE(created_at, NOW())
-    WHERE email_proven_at IS NULL AND (password_hash IS NULL OR google_id IS NOT NULL)`,
+  `UPDATE users SET email_proven_at = created_at
+    WHERE email_proven_at IS NULL AND (password_hash IS NULL OR google_id IS NOT NULL)
+      AND created_at < TIMESTAMPTZ '2026-10-31 02:18+00'`,
   // Contas com palavra-passe cujo último código de acesso foi gasto com
   // sucesso: fica a expirar antes dos 10 minutos (5 erros deixam-no igual).
   `UPDATE users u SET email_proven_at = NOW() FROM login_codes c
     WHERE u.email_proven_at IS NULL AND c.email = u.email AND c.attempts >= 5
-      AND c.expires_at < c.last_sent_at + INTERVAL '10 minutes'`,
+      AND c.expires_at < c.last_sent_at + INTERVAL '10 minutes'
+      AND u.created_at < TIMESTAMPTZ '2026-10-31 02:18+00'`,
   // O DROP de email_verified (já retirado, acima) corria em cada bump: repõe
   // a decisão de 2026-07, todas as contas nascem ativas.
-  `UPDATE users SET email_verified = TRUE WHERE email_verified = FALSE`,
+  `UPDATE users SET email_verified = TRUE
+    WHERE email_verified = FALSE AND created_at < TIMESTAMPTZ '2026-10-31 02:18+00'`,
 ];
 
 // Version sentinel: bump this integer WHENEVER a statement is added to
