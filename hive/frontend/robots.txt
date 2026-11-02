@@ -1,6 +1,7 @@
 User-agent: *
 Allow: /
 Allow: /api/companies/*/logo
+Allow: /api/companies/*/og.png
 Disallow: /api/
 Disallow: /admin
 Disallow: /reset-password
