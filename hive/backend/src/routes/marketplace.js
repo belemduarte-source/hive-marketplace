@@ -696,7 +696,10 @@ async function purgeLoginCodes() {
 //  - orçamento: a empresa respondeu pela Hivex (mensagem da empresa para o
 //    email do cliente) a um pedido de orçamento que lhe chegou
 //    (quote_request_recipients) — ~10 dias depois da resposta;
-//  - contacto: o cliente escreveu à empresa pela Hivex — ~7 dias depois.
+//  - contacto: o cliente escreveu à empresa com sessão numa conta com o email já
+//    provado — ~7 dias depois. O formulário sem sessão aceita qualquer email, e a
+//    Hivex não envia pedidos a um endereço que alguém escreveu e ninguém provou
+//    (decisão do dono, 2026-11-02).
 // Regras: um só pedido por (empresa, email), seja qual for a origem; cada
 // origem tem uma janela de 7 dias (nunca "acorda" interações antigas de uma
 // vez; o que o teto deixar para trás segue no dia seguinte); enquanto uma
@@ -772,6 +775,9 @@ async function sendReviewRequests() {
       UNION ALL
       SELECT 3, 'contacto', m.company_id, lower(trim(m.client_email)), m.client_name, NULL, m.created_at
         FROM messages m
+        JOIN users u ON u.id = m.client_user_id
+                    AND lower(trim(u.email)) = lower(trim(m.client_email))
+                    AND u.email_proven_at <= m.created_at
        WHERE m.sender = 'client'
          AND m.created_at BETWEEN NOW() - INTERVAL '14 days' AND NOW() - INTERVAL '7 days'
     )
