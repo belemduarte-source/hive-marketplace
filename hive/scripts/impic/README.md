@@ -35,6 +35,10 @@ Dados (caches, registos, contactos) ficam FORA do repositório, em `IMPIC_DADOS`
   subcategorias ("Ascensores…" e "11.ª - Instalações de elevação" são o mesmo); uma subcategoria
   que a tabela não conheça deixa a ficha de fora em vez de a pôr em construção geral.
 
+## Lacunas cidade × atividade (nov/2026)
+
+Só análise, salvo o piloto. `gap-query.js` faz UMA query agregada (sem `logo`); o resto corre offline: `gap-municipios.js` (população e centro, GeoAPI), `gap-centros.js` (centro = mediana das fichas), `gap-analise.js` (tabelas), `fontes-avaliar.js` e `fontes-avaliar2.js` (o que cada fonte fecharia), `osm-pt.js` + `osm-avaliar.js` (OSM, Overpass), `sites-evidencia.js` (palavras nos sites: muito ruído). `hierarquia.json` vem de `SECTOR_HIERARCHY` do frontend. As listas oficiais (DGEG, ACT) ficam em `../fontes`, fora do repositório, descompactadas. O piloto escolhe-se à mão em `piloto-preparar.js`, `piloto-gravar.js` só grava com `--gravar`, e `piloto-verificar.js` confere por ids.
+
 ## Ordem
 
 ```bash

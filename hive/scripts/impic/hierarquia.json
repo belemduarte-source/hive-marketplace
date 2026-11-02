@@ -1,0 +1,95 @@
+{
+ "estrutura_fundacao": {
+  "label": "Estrutura",
+  "subs": {
+   "construcao_geral": "Construção Geral / Empreiteiros",
+   "pedreiros": "Pedreiros / Trolhas",
+   "escavacao": "Escavação & Terraplanagem",
+   "betao_cimento": "Betão & Cimento",
+   "demolicao": "Demolição",
+   "alvenaria": "Alvenaria",
+   "cofragem": "Cofragem & Armação",
+   "impermeabilizacao": "Impermeabilização"
+  }
+ },
+ "instalacoes": {
+  "label": "Instalações",
+  "subs": {
+   "eletricistas": "Eletricistas",
+   "picheleiros": "Picheleiros / Canalizadores",
+   "canalizacao_saneamento": "Canalização & Saneamento",
+   "climatizacao_avac": "Climatização / AVAC",
+   "gas": "Instalações de Gás",
+   "domotica_automacao": "Domótica & Automação",
+   "energias_renovaveis": "Energias Renováveis / Solar",
+   "seguranca_alarmes": "Segurança & Alarmes",
+   "pocos_agua": "Poços de Água / Furos"
+  }
+ },
+ "acabamentos": {
+  "label": "Acabamentos",
+  "subs": {
+   "pintores": "Pintores",
+   "estucadores": "Estucadores",
+   "pavimentos": "Pavimentos & Revestimentos",
+   "azulejos": "Azulejos & Cerâmica",
+   "marmoraria": "Marmoraria & Pedra",
+   "isolamento": "Isolamento Térmico & Acústico",
+   "gesso_cartonado": "Gesso Cartonado / Pladur"
+  }
+ },
+ "carpintaria": {
+  "label": "Carpintaria",
+  "subs": {
+   "carpinteiros": "Carpinteiros",
+   "moveis_medida": "Móveis por Medida"
+  }
+ },
+ "serralharia_metal": {
+  "label": "Serralharia",
+  "subs": {
+   "serralharia": "Serralharia",
+   "estruturas_metalicas": "Estruturas Metálicas",
+   "aluminios_pvc": "Alumínios & PVC",
+   "caixilharia": "Caixilharia",
+   "vidraceiros": "Vidraceiros",
+   "portoes_vedacoes": "Portões & Vedações"
+  }
+ },
+ "exterior_jardim": {
+  "label": "Exterior",
+  "subs": {
+   "telhados_coberturas": "Telhados & Coberturas",
+   "piscinas": "Piscinas",
+   "paisagismo_jardins": "Paisagismo & Jardins",
+   "jardineiros": "Jardineiros",
+   "vedacoes_muros": "Vedações & Muros",
+   "calcetamento": "Calçada & Pavimento Exterior",
+   "fachadas": "Fachadas & Reabilitação"
+  }
+ },
+ "projeto_gestao": {
+  "label": "Projeto",
+  "subs": {
+   "arquitetura_projetos": "Arquitetura & Projetos",
+   "engenharia_civil": "Engenharia Civil",
+   "topografia": "Topografia",
+   "gestao_obra": "Gestão de Obra",
+   "certificacao_energetica": "Certificação Energética",
+   "seguranca_trabalho": "Segurança no Trabalho",
+   "design_interiores": "Design de Interiores",
+   "materiais_construcao": "Materiais de Construção",
+   "equipamentos_construcao": "Equipamentos de Construção"
+  }
+ },
+ "chave_na_mao": {
+  "label": "Chave na Mão",
+  "subs": {
+   "chave_na_mao_construcao": "Construção Chave na Mão",
+   "chave_na_mao_remodelacao": "Remodelação Chave na Mão",
+   "chave_na_mao_moradia": "Moradias Chave na Mão",
+   "chave_na_mao_apartamento": "Apartamentos Chave na Mão",
+   "chave_na_mao_comercial": "Espaços Comerciais Chave na Mão"
+  }
+ }
+}
