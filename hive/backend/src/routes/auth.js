@@ -642,7 +642,7 @@ router.post('/change-password', requireAuth, async (req, res, next) => {
 // cascade-delete via the schema's foreign-key rules.
 router.delete('/me', requireAuth, async (req, res, next) => {
   try {
-    const { rows } = await pool.query('SELECT id, password_hash FROM users WHERE id = $1', [req.user.id]);
+    const { rows } = await pool.query('SELECT id, email, password_hash FROM users WHERE id = $1', [req.user.id]);
     const user = rows[0];
     if (!user) return res.status(401).json({ error: 'Utilizador não encontrado' });
 
@@ -663,6 +663,11 @@ router.delete('/me', requireAuth, async (req, res, next) => {
       if (fs.length) await require('./tenders')._paraLixo(fs.map(f => f.pathname));
     } catch (e) { console.error('[auth] anexos dos concursos por apagar:', e.message); }
     await pool.query('DELETE FROM users WHERE id = $1', [user.id]);
+    // O email sai também dos códigos de acesso: a política promete apagar os
+    // dados da conta e um código ainda válido voltaria a criá-la. Se isto
+    // falhar, a limpeza diária apanha a linha (routes/marketplace.js).
+    await pool.query('DELETE FROM login_codes WHERE email = $1', [normalizeEmail(user.email)])
+      .catch(e => console.error('[auth] código de acesso por apagar:', e.message));
     res.clearCookie('hive_token', CLEAR_COOKIE_OPTS);
     res.json({ ok: true });
   } catch (e) {

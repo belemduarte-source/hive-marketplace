@@ -669,11 +669,20 @@ router.get('/messages/purge', async (req, res) => {
   // as respostas antigas saem em cascata) — política de privacidade, 5.3
   let orcamentosApagados = null;
   try { orcamentosApagados = await purgeQuoteRequests(); } catch (e) { console.error('[rfq] retenção:', e.message); }
-  res.json({ ok: true, pedidosAvaliacao: pedidos, concursos, orcamentosApagados });
+  // Retenção: códigos de acesso. O código vale 10 minutos e os contadores de
+  // envio 1 hora; depois disso a linha só guardava o email de quem o pediu.
+  let codigosApagados = null;
+  try { codigosApagados = await purgeLoginCodes(); } catch (e) { console.error('[auth] retenção dos códigos:', e.message); }
+  res.json({ ok: true, pedidosAvaliacao: pedidos, concursos, orcamentosApagados, codigosApagados });
 });
 async function purgeQuoteRequests() {
   const r = await pool.query(`DELETE FROM quote_requests WHERE created_at < NOW() - INTERVAL '12 months'`);
   if (r.rowCount) console.log(`[rfq] retenção: ${r.rowCount} pedidos de orçamento apagados (12 meses)`);
+  return r.rowCount || 0;
+}
+async function purgeLoginCodes() {
+  const r = await pool.query(`DELETE FROM login_codes WHERE last_sent_at < NOW() - INTERVAL '1 day'`);
+  if (r.rowCount) console.log(`[auth] retenção: ${r.rowCount} códigos de acesso apagados (1 dia)`);
   return r.rowCount || 0;
 }
 

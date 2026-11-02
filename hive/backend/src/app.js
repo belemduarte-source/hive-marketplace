@@ -839,7 +839,7 @@ const MIGRATIONS = [
   // Os três acertos seguintes só valem para as contas anteriores à regra
   // (deploy de 2026-10-31, 02:18 UTC): esta lista corre inteira em cada bump, e
   // sem o limite quem registasse com palavra-passe o email de uma conta apagada
-  // ficava provado no bump seguinte (o código gasto fica em login_codes).
+  // ficava provado no bump seguinte (o código gasto ficava em login_codes).
   // Contas que só nascem de uma prova (sem palavra-passe: código, Google ou
   // claim sem conta) ou que entraram com o Google.
   `UPDATE users SET email_proven_at = created_at
