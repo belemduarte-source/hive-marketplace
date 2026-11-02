@@ -980,6 +980,15 @@ app.use('/api/favourites', favouritesRouter);
 
 // Slug canónico de empresa: minúsculas, sem acentos, não-alfanumérico → '-'.
 // Tem de coincidir com _companySlug() no frontend.
+// Resumos de pré-visualização: corta na última palavra inteira, nunca a meio.
+const cortaFrase = (s, n) => {
+  const t = String(s == null ? '' : s).replace(/\s+/g, ' ').trim();
+  if (t.length <= n) return t;
+  const c = t.slice(0, n - 1);
+  const e = c.lastIndexOf(' ');
+  return (e > n * 0.6 ? c.slice(0, e) : c).replace(/[\s,;:.·—-]+$/, '') + '…';
+};
+
 const hivexSlugify = s => String(s == null ? '' : s)
   .replace(/ß/g, 'ss').replace(/[æÆ]/g, 'ae').replace(/[øØ]/g, 'o').replace(/[œŒ]/g, 'oe').replace(/[łŁ]/g, 'l')
   .normalize('NFD').replace(/[̀-ͯ]/g, '')
@@ -1074,9 +1083,9 @@ app.get('/e/:id(\\d+)', async (req, res, next) => {
     const title = `${c.name}${c.city ? ' — ' + c.city : ''} | Hivex`;
     const bits = [];
     if (Number(c.rating) > 0) bits.push(`⭐ ${Number(c.rating).toFixed(1)}/5 (${c.reviews || 0})`);
-    if (c.description) bits.push(String(c.description).slice(0, 140));
+    if (c.description) bits.push(cortaFrase(c.description, 140));
     const desc = bits.join(' · ') || 'Encontre empresas de construção e serviços na Hivex.';
-    const img = c.has_logo ? `${BASE}/api/companies/${c.id}/logo?v=${c.logo_v}` : `${BASE}/og-cover.png?v=1`;
+    const img = c.has_logo ? `${BASE}/api/companies/${c.id}/logo?v=${c.logo_v}` : `${BASE}/og-cover.png?v=2`;
     res.set('Content-Type', 'text/html; charset=utf-8');
     res.set('Cache-Control', 'public, max-age=0, s-maxage=3600, stale-while-revalidate=86400');
     res.send(`<!doctype html><html lang="pt"><head><meta charset="utf-8">
@@ -1156,7 +1165,7 @@ app.get('/s/:sector/:city', async (req, res, next) => {
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(desc)}">
 <meta property="og:url" content="${BASE}/s/${esc(sector)}/${esc(req.params.city)}">
-<meta property="og:image" content="${BASE}/og-cover.png?v=1">
+<meta property="og:image" content="${BASE}/og-cover.png?v=2">
 <link rel="canonical" href="${BASE}/s/${esc(sector)}/${esc(req.params.city)}">
 <script type="application/ld+json">${JSON.stringify(itemList)}</script>
 <style>body{font-family:system-ui;max-width:720px;margin:0 auto;padding:28px 18px;background:#0f172a;color:#e2e8f0}a{color:#93c5fd}li{margin:9px 0}h1{font-size:26px}.cta{display:inline-block;margin:18px 0;background:#f97316;color:#fff;padding:12px 22px;border-radius:10px;font-weight:700;text-decoration:none}</style>
@@ -1217,11 +1226,11 @@ app.get('/c/:idslug', async (req, res, next) => {
       `${c.name} é uma empresa de ${_listaPt}${c.city ? ' em ' + c.city : ''}.` +
       (_alvPt ? ` Está registada no IMPIC, o regulador da construção em Portugal, com o alvará n.º ${_alvPt}.` : '') +
       (c.email ? ' Pode pedir-lhe um orçamento diretamente pela Hivex.' : '');
-    const desc = ((c.description
-        ? String(c.description).replace(/\s+/g, ' ').slice(0, 120) + ' · '
-        : autoDesc.slice(0, 120) + ' · ') +
-      `${label}${c.city ? ' em ' + c.city : ''}. Contactos, avaliações e orçamento grátis na Hivex.`).slice(0, 160);
-    const img = c.has_logo ? `${BASE}/api/companies/${c.id}/logo?v=${c.logo_v}` : `${BASE}/og-cover.png?v=1`;
+    const desc = cortaFrase((c.description
+        ? cortaFrase(c.description, 100) + ' · '
+        : cortaFrase(autoDesc, 100) + ' · ') +
+      `${label}${c.city ? ' em ' + c.city : ''}. Contactos, avaliações e orçamento grátis na Hivex.`, 160);
+    const img = c.has_logo ? `${BASE}/api/companies/${c.id}/logo?v=${c.logo_v}` : `${BASE}/og-cover.png?v=2`;
     const spaUrl = `/?company=${c.id}`;
     const ld = {
       '@context': 'https://schema.org',
