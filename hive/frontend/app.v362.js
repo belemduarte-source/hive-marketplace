@@ -3885,6 +3885,12 @@ const translations = {
     regCity:'Ort / Stadt'
   }
 };
+// As áreas "Chave na Mão" só têm rótulo em sectorOptions (o formulário): sem
+// isto, os cartões mostravam a chave crua ("chave_na_mao_construcao").
+for (const _L of Object.values(translations)) {
+  if (!_L.sectors || !_L.sectorOptions) continue;
+  for (const [k, v] of Object.entries(_L.sectorOptions)) if (!_L.sectors[k] && /^chave_na_mao_/.test(k)) _L.sectors[k] = v;
+}
 
 // ── LANGUAGE STATE ─────────────────────────────────────────────────────────────
 let currentLang = (function() {
