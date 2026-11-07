@@ -183,7 +183,7 @@
     "sameAs": []
   }
   </script>
-  <link rel="stylesheet" href="app.v360.css"/>
+  <link rel="stylesheet" href="app.v361.css"/>
   <!-- Vercel Web Analytics + Speed Insights (enable both in the Vercel project dashboard) -->
   
 
@@ -618,7 +618,7 @@
       <input id="searchUnified" type="text" placeholder="Cidade, empresa ou atividade..." enterkeyhint="search" autocomplete="off" autocorrect="off" autocapitalize="none" oninput="handleUnifiedSearch(this.value)" onfocus="_renderSearchSuggest(this.value)"/>
       <button class="btn-locate" id="btnLocate" onclick="detectUserLocation()" title="Usar localização atual" aria-label="Usar a minha localização atual"><i data-lucide="crosshair" aria-hidden="true"></i></button>
     </div>
-    <button class="ub-btn" id="btnSearch" onclick="applyFilters();showToast(t('searchUpdated'))">
+    <button class="ub-btn" id="btnSearch" type="button">
       <i data-lucide="search"></i><span data-i18n="btnSearch">Pesquisar</span>
     </button>
     <!-- Mobile-only Filtros button inside the search row -->
@@ -831,6 +831,7 @@
           <button class="hx-rating-ui" data-ns="rating" onclick="setNearbySort('rating')" data-i18n="sortRating2">Avaliação</button>
         </div>
         <div class="nearby-chips" id="nearbyChips" style="display:none"></div>
+        <div class="nearby-ref" id="nearbyRef" hidden style="font-size:var(--fs-xs);color:var(--muted);margin-top:6px"></div>
       </div>
       <div class="nearby-panel-body" id="nearbyList"></div>
     </div>
@@ -996,9 +997,10 @@
     </div>
   </div>
 
-  <!-- CLAIM ROW — visibilidade gerida em openDetail (escondido para o dono) -->
-  <div id="dpClaimRow" style="display:none;padding:0 20px 14px">
-    <button onclick="openClaimModal()" style="width:100%;background:transparent;border:1.5px dashed var(--border);border-radius:12px;padding:13px 16px;font-size:16px;font-weight:700;color:var(--text-secondary);cursor:pointer;font-family:inherit" data-i18n="claimLink">É a sua empresa? Reclame esta ficha</button>
+  <!-- CLAIM ROW — visibilidade gerida em _renderDetailPanel (escondido para o dono), que o
+       passa para o fim de .dp-body: linha discreta, nunca acima de "Sobre" -->
+  <div id="dpClaimRow" style="display:none">
+    <button type="button" onclick="openClaimModal()" style="background:none;border:0;padding:0;color:var(--primary);cursor:pointer;font-family:inherit;text-align:left;line-height:1.45" data-i18n="claimLink">É a sua empresa? Reclame esta ficha</button>
   </div>
 
   <div class="dp-body">
@@ -1055,7 +1057,6 @@
             <div class="dp-cred-doc-head">
               <i data-lucide="file-check"></i>
               <span class="dp-cred-doc-name" data-i18n="detailCertidao">Certidão Permanente</span>
-              <span class="dp-cred-required" data-i18n="credRequired">Obrigatória</span>
             </div>
             <div class="dp-cred-doc-value" id="dpCertidao"></div>
           </div>
@@ -1063,7 +1064,6 @@
             <div class="dp-cred-doc-head">
               <i data-lucide="award"></i>
               <span class="dp-cred-doc-name" data-i18n="detailAlvara">Alvará</span>
-              <span class="dp-cred-optional" data-i18n="credOptional">Opcional</span>
             </div>
             <div class="dp-cred-doc-value" id="dpAlvara"></div>
           </div>
@@ -2055,7 +2055,7 @@
      vetoriais OpenFreeMap sem chave, clustering nativo e 3D) entra nesta fila
      pelo <head>, e só nos computadores (ver hx-sem-mapa). -->
 <script defer src="https://cdn.jsdelivr.net/npm/lucide@0.441.0/dist/umd/lucide.min.js" integrity="sha384-+BmuXGyhRt0m3keXGimGlGjRHSt5U+wqLV71/sdbtxPN7ep6z3rHVT6Wp7q3K240" crossorigin="anonymous"></script>
-<script defer src="app.v360.js"></script>
+<script defer src="app.v361.js"></script>
 
 <!-- AI ASSISTANT WIDGET — helps customers find companies. Hidden unless the
      backend reports assistantEnabled (AI_GATEWAY_API_KEY set). -->

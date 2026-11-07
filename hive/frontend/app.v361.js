@@ -418,7 +418,7 @@ const translations = {
     sortBy:'Ordenar Por', sortRating:'Melhor Avaliação', sortReviews:'Mais Avaliados', sortName:'Nome A–Z',
     sectorArea:'Área de Atividade', minRating:'Avaliação',
     ratingAny:'Qualquer avaliação', ratingOrMore:'ou mais',
-    searchRadius:'Raio de Pesquisa', featured:'Destaque', ignoreRadius:'Não Usar Raio de Pesquisa', nearbyTitle:'Empresas Próximas', contactYourName:'O seu nome', contactYourEmail:'O seu email (para a empresa responder)', contactNameReq:'Indique o seu nome', contactEmailReq:'Indique um email válido', retryBtn:'Tentar novamente', clearFiltersBtn:'Limpar filtros', resultsCount:'empresas encontradas', chatToday:'Hoje', chatYesterday:'Ontem', alertSaveBtn:'Avisar-me de novas', alertSaved:'Alerta criado! Receberá um email quando houver novas empresas.', alertsTitle:'Os meus alertas', alertDeleted:'Alerta removido', pushBtn:'Ativar notificações', pushOn:'Notificações ativas neste dispositivo', rvVerified:'contacto verificado', navHow:'Como funciona', dpCompare:'Comparar', dpMission:'Missão', dpVision:'Visão', allCountries:'Todos os países', profFilterPh:'Filtrar por nome ou cidade…', profShowMore:'Mostrar mais', profShowing:'A mostrar', dpStreetTitle:'Vista de Rua (Street View)', svOpenExternal:'Abrir no Google Maps ↗', svFallback:'Se a vista não carregar, ', svFallbackLink:'abra no Google Maps', claimLink:'É a sua empresa? Reclame esta ficha', claimTitle:'Reclamar ficha da empresa', claimIntro:'Para provar que gere esta empresa, enviamos um código de 6 dígitos para o email público da ficha. Com a ficha reclamada pode editar os dados, responder a avaliações e ver estatísticas.', claimSendBtn:'Enviar código para o email da ficha', claimSentTo:'Código enviado para', claimVerifyBtn:'Confirmar código', claimSuccess:'Ficha reclamada! Já pode editar os dados e ver as mensagens.', claimNeedLogin:'Inicie sessão para reclamar a ficha', claimCodeInvalid:'Introduza o código de 6 dígitos', rfqCta:'Pedir Orçamentos Grátis', rfqTitle:'Pedir orçamentos', rfqIntro:'Descreva o trabalho — enviamos o pedido às empresas certas da sua zona e as propostas chegam diretamente ao seu email.', rfqSector:'Área de atividade', rfqDesc:'Descrição do trabalho', rfqDescPh:'Ex.: Remodelação completa de casa de banho (~4 m²): substituição de loiças, azulejos e canalização.', rfqCity:'Localidade', rfqTimeline:'Prazo desejado', rfqBudget:'Orçamento indicativo', rfqPhone:'Telefone (opcional)', rfqEmail:'O seu email', rfqSend:'Enviar pedido às empresas', rfqSentA:'Pedido enviado a', rfqSentB:'empresas! As propostas chegarão ao seu email.', rfqDescShort:'Descreva o trabalho com mais detalhe (mínimo 20 caracteres)', rfqCityReq:'Indique a localidade', tlFlex:'Flexível', tlUrgent:'Urgente', tl1m:'No próximo mês', tl3m:'Nos próximos 3 meses', budNS:'Ainda não sei', inboxBtn:'Mensagens de clientes', inboxTitle:'Mensagens de clientes', inboxEmpty:'Ainda não há mensagens.', inboxReplyPh:'Escreva a sua resposta…', inboxReplySend:'Responder', inboxReplySent:'Resposta enviada ao cliente', inboxYou:'Você', featureBtn:'Pedir destaque', featureSent:'Pedido de destaque enviado ao administrador',
+    searchRadius:'Raio de Pesquisa', featured:'Destaque', ignoreRadius:'Não Usar Raio de Pesquisa', nearbyTitle:'Empresas Próximas', nearbyRefCentro:'Distâncias ao centro do mapa', contactYourName:'O seu nome', contactYourEmail:'O seu email (para a empresa responder)', contactNameReq:'Indique o seu nome', contactEmailReq:'Indique um email válido', retryBtn:'Tentar novamente', clearFiltersBtn:'Limpar filtros', resultsCount:'empresas encontradas', chatToday:'Hoje', chatYesterday:'Ontem', alertSaveBtn:'Avisar-me de novas', alertSaved:'Alerta criado! Receberá um email quando houver novas empresas.', alertsTitle:'Os meus alertas', alertDeleted:'Alerta removido', pushBtn:'Ativar notificações', pushOn:'Notificações ativas neste dispositivo', rvVerified:'contacto verificado', navHow:'Como funciona', dpCompare:'Comparar', dpMission:'Missão', dpVision:'Visão', allCountries:'Todos os países', profFilterPh:'Filtrar por nome ou cidade…', profShowMore:'Mostrar mais', profShowing:'A mostrar', dpStreetTitle:'Vista de Rua (Street View)', svOpenExternal:'Abrir no Google Maps ↗', svFallback:'Se a vista não carregar, ', svFallbackLink:'abra no Google Maps', claimLink:'É a sua empresa? Reclame esta ficha', claimTitle:'Reclamar ficha da empresa', claimIntro:'Para provar que gere esta empresa, enviamos um código de 6 dígitos para o email público da ficha. Com a ficha reclamada pode editar os dados, responder a avaliações e ver estatísticas.', claimSendBtn:'Enviar código para o email da ficha', claimSentTo:'Código enviado para', claimVerifyBtn:'Confirmar código', claimSuccess:'Ficha reclamada! Já pode editar os dados e ver as mensagens.', claimNeedLogin:'Inicie sessão para reclamar a ficha', claimCodeInvalid:'Introduza o código de 6 dígitos', rfqCta:'Pedir Orçamentos Grátis', rfqTitle:'Pedir orçamentos', rfqIntro:'Descreva o trabalho — enviamos o pedido às empresas certas da sua zona e as propostas chegam diretamente ao seu email.', rfqSector:'Área de atividade', rfqDesc:'Descrição do trabalho', rfqDescPh:'Ex.: Remodelação completa de casa de banho (~4 m²): substituição de loiças, azulejos e canalização.', rfqCity:'Localidade', rfqTimeline:'Prazo desejado', rfqBudget:'Orçamento indicativo', rfqPhone:'Telefone (opcional)', rfqEmail:'O seu email', rfqSend:'Enviar pedido às empresas', rfqSentA:'Pedido enviado a', rfqSentB:'empresas! As propostas chegarão ao seu email.', rfqDescShort:'Descreva o trabalho com mais detalhe (mínimo 20 caracteres)', rfqCityReq:'Indique a localidade', tlFlex:'Flexível', tlUrgent:'Urgente', tl1m:'No próximo mês', tl3m:'Nos próximos 3 meses', budNS:'Ainda não sei', inboxBtn:'Mensagens de clientes', inboxTitle:'Mensagens de clientes', inboxEmpty:'Ainda não há mensagens.', inboxReplyPh:'Escreva a sua resposta…', inboxReplySend:'Responder', inboxReplySent:'Resposta enviada ao cliente', inboxYou:'Você', featureBtn:'Pedir destaque', featureSent:'Pedido de destaque enviado ao administrador',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Novo Registo',
     specialties:'Especialidades',
     mapLive:'Mapa em tempo real', mapCity:'Lisboa, Portugal',
@@ -1205,7 +1205,7 @@ const translations = {
     sortBy:'Sort By', sortRating:'Best Rating', sortReviews:'Most Reviewed', sortName:'Name A–Z',
     sectorArea:'Activity Area', minRating:'Rating',
     ratingAny:'Any rating', ratingOrMore:'or more',
-    searchRadius:'Search Radius', featured:'Featured', ignoreRadius:'Don\'t Use Search Radius', nearbyTitle:'Nearby Companies', contactYourName:'Your name', contactYourEmail:'Your email (so the company can reply)', contactNameReq:'Enter your name', contactEmailReq:'Enter a valid email', retryBtn:'Try again', clearFiltersBtn:'Clear filters', resultsCount:'companies found', chatToday:'Today', chatYesterday:'Yesterday', alertSaveBtn:'Alert me to new ones', alertSaved:'Alert created! You will get an email when new companies appear.', alertsTitle:'My alerts', alertDeleted:'Alert removed', pushBtn:'Enable notifications', pushOn:'Notifications active on this device', rvVerified:'verified contact', navHow:'How it works', dpCompare:'Compare', dpMission:'Mission', dpVision:'Vision', allCountries:'All countries', profFilterPh:'Filter by name or city…', profShowMore:'Show more', profShowing:'Showing', dpStreetTitle:'Street View', svOpenExternal:'Open in Google Maps ↗', svFallback:'If the view does not load, ', svFallbackLink:'open it in Google Maps', claimLink:'Is this your business? Claim this listing', claimTitle:'Claim this listing', claimIntro:'To prove you manage this business we send a 6-digit code to the listing\u2019s public email. Once claimed, you can edit the details, reply to reviews and see analytics.', claimSendBtn:'Send code to the listing email', claimSentTo:'Code sent to', claimVerifyBtn:'Confirm code', claimSuccess:'Listing claimed! You can now edit it and see messages.', claimNeedLogin:'Sign in to claim this listing', claimCodeInvalid:'Enter the 6-digit code', rfqCta:'Get Free Quotes', rfqTitle:'Request quotes', rfqIntro:'Describe the job — we send it to the right companies in your area and proposals arrive in your email.', rfqSector:'Activity area', rfqDesc:'Job description', rfqDescPh:'E.g.: Full bathroom renovation (~4 m²): new fixtures, tiles and plumbing.', rfqCity:'Town/City', rfqTimeline:'Desired timeline', rfqBudget:'Indicative budget', rfqPhone:'Phone (optional)', rfqEmail:'Your email', rfqSend:'Send request to companies', rfqSentA:'Request sent to', rfqSentB:'companies! Proposals will arrive by email.', rfqDescShort:'Describe the job in more detail (min. 20 characters)', rfqCityReq:'Enter the town/city', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Next month', tl3m:'Within 3 months', budNS:'Not sure yet', inboxBtn:'Client messages', inboxTitle:'Client messages', inboxEmpty:'No messages yet.', inboxReplyPh:'Write your reply…', inboxReplySend:'Reply', inboxReplySent:'Reply sent to the client', inboxYou:'You', featureBtn:'Request featuring', featureSent:'Feature request sent to the admin',
+    searchRadius:'Search Radius', featured:'Featured', ignoreRadius:'Don\'t Use Search Radius', nearbyTitle:'Nearby Companies', nearbyRefCentro:'Distances from the map centre', contactYourName:'Your name', contactYourEmail:'Your email (so the company can reply)', contactNameReq:'Enter your name', contactEmailReq:'Enter a valid email', retryBtn:'Try again', clearFiltersBtn:'Clear filters', resultsCount:'companies found', chatToday:'Today', chatYesterday:'Yesterday', alertSaveBtn:'Alert me to new ones', alertSaved:'Alert created! You will get an email when new companies appear.', alertsTitle:'My alerts', alertDeleted:'Alert removed', pushBtn:'Enable notifications', pushOn:'Notifications active on this device', rvVerified:'verified contact', navHow:'How it works', dpCompare:'Compare', dpMission:'Mission', dpVision:'Vision', allCountries:'All countries', profFilterPh:'Filter by name or city…', profShowMore:'Show more', profShowing:'Showing', dpStreetTitle:'Street View', svOpenExternal:'Open in Google Maps ↗', svFallback:'If the view does not load, ', svFallbackLink:'open it in Google Maps', claimLink:'Is this your business? Claim this listing', claimTitle:'Claim this listing', claimIntro:'To prove you manage this business we send a 6-digit code to the listing\u2019s public email. Once claimed, you can edit the details, reply to reviews and see analytics.', claimSendBtn:'Send code to the listing email', claimSentTo:'Code sent to', claimVerifyBtn:'Confirm code', claimSuccess:'Listing claimed! You can now edit it and see messages.', claimNeedLogin:'Sign in to claim this listing', claimCodeInvalid:'Enter the 6-digit code', rfqCta:'Get Free Quotes', rfqTitle:'Request quotes', rfqIntro:'Describe the job — we send it to the right companies in your area and proposals arrive in your email.', rfqSector:'Activity area', rfqDesc:'Job description', rfqDescPh:'E.g.: Full bathroom renovation (~4 m²): new fixtures, tiles and plumbing.', rfqCity:'Town/City', rfqTimeline:'Desired timeline', rfqBudget:'Indicative budget', rfqPhone:'Phone (optional)', rfqEmail:'Your email', rfqSend:'Send request to companies', rfqSentA:'Request sent to', rfqSentB:'companies! Proposals will arrive by email.', rfqDescShort:'Describe the job in more detail (min. 20 characters)', rfqCityReq:'Enter the town/city', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Next month', tl3m:'Within 3 months', budNS:'Not sure yet', inboxBtn:'Client messages', inboxTitle:'Client messages', inboxEmpty:'No messages yet.', inboxReplyPh:'Write your reply…', inboxReplySend:'Reply', inboxReplySent:'Reply sent to the client', inboxYou:'You', featureBtn:'Request featuring', featureSent:'Feature request sent to the admin',
     topRated:'Top Rated', verified:'Verified', newEntry:'New Entry',
     specialties:'Specialties',
     mapLive:'Live map', mapCity:'Lisbon, Portugal',
@@ -1982,7 +1982,7 @@ const translations = {
     sortBy:'Trier Par', sortRating:'Meilleure Évaluation', sortReviews:'Plus Évalués', sortName:'Nom A–Z',
     sectorArea:"Secteur d'Activité", minRating:'Évaluation',
     ratingAny:'Toute évaluation', ratingOrMore:'ou plus',
-    searchRadius:'Rayon de Recherche', featured:'En Vedette', ignoreRadius:'Ne pas utiliser le rayon', nearbyTitle:'Entreprises à Proximité', contactYourName:'Votre nom', contactYourEmail:'Votre email (pour la réponse de l\'entreprise)', contactNameReq:'Indiquez votre nom', contactEmailReq:'Indiquez un email valide', retryBtn:'Réessayer', clearFiltersBtn:'Effacer les filtres', resultsCount:'entreprises trouvées', chatToday:"Aujourd'hui", chatYesterday:'Hier', alertSaveBtn:'M’alerter des nouveautés', alertSaved:'Alerte créée !', alertsTitle:'Mes alertes', alertDeleted:'Alerte supprimée', pushBtn:'Activer les notifications', pushOn:'Notifications actives', rvVerified:'contact vérifié', navHow:'Comment ça marche', dpCompare:'Comparer', dpMission:'Mission', dpVision:'Vision', allCountries:'Tous les pays', profFilterPh:'Filtrer par nom ou ville…', profShowMore:'Afficher plus', profShowing:'Affichage de', dpStreetTitle:'Vue de la rue (Street View)', svOpenExternal:'Ouvrir dans Google Maps ↗', svFallback:'Si la vue ne se charge pas, ', svFallbackLink:'ouvrez-la dans Google Maps', claimLink:'C\u2019est votre entreprise ? Revendiquez cette fiche', claimTitle:'Revendiquer la fiche', claimIntro:'Pour prouver que vous gérez cette entreprise, nous envoyons un code à 6 chiffres à l\u2019email public de la fiche. Une fois revendiquée, vous pouvez la modifier, répondre aux avis et voir les statistiques.', claimSendBtn:'Envoyer le code à l\u2019email de la fiche', claimSentTo:'Code envoyé à', claimVerifyBtn:'Confirmer le code', claimSuccess:'Fiche revendiquée !', claimNeedLogin:'Connectez-vous pour revendiquer la fiche', claimCodeInvalid:'Saisissez le code à 6 chiffres', rfqCta:'Devis Gratuits', rfqTitle:'Demander des devis', rfqIntro:'Décrivez les travaux — nous envoyons la demande aux bonnes entreprises de votre zone et les propositions arrivent par email.', rfqSector:'Domaine d\u2019activité', rfqDesc:'Description des travaux', rfqDescPh:'Ex. : Rénovation complète de salle de bain (~4 m²).', rfqCity:'Localité', rfqTimeline:'Délai souhaité', rfqBudget:'Budget indicatif', rfqPhone:'Téléphone (optionnel)', rfqEmail:'Votre email', rfqSend:'Envoyer la demande', rfqSentA:'Demande envoyée à', rfqSentB:'entreprises ! Les propositions arriveront par email.', rfqDescShort:'Décrivez les travaux plus en détail (min. 20 caractères)', rfqCityReq:'Indiquez la localité', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Le mois prochain', tl3m:'Sous 3 mois', budNS:'Je ne sais pas encore', inboxBtn:'Messages clients', inboxTitle:'Messages clients', inboxEmpty:'Pas encore de messages.', inboxReplyPh:'Écrivez votre réponse…', inboxReplySend:'Répondre', inboxReplySent:'Réponse envoyée', inboxYou:'Vous', featureBtn:'Demander la mise en avant', featureSent:'Demande envoyée à l\u2019administrateur',
+    searchRadius:'Rayon de Recherche', featured:'En Vedette', ignoreRadius:'Ne pas utiliser le rayon', nearbyTitle:'Entreprises à Proximité', nearbyRefCentro:'Distances depuis le centre de la carte', contactYourName:'Votre nom', contactYourEmail:'Votre email (pour la réponse de l\'entreprise)', contactNameReq:'Indiquez votre nom', contactEmailReq:'Indiquez un email valide', retryBtn:'Réessayer', clearFiltersBtn:'Effacer les filtres', resultsCount:'entreprises trouvées', chatToday:"Aujourd'hui", chatYesterday:'Hier', alertSaveBtn:'M’alerter des nouveautés', alertSaved:'Alerte créée !', alertsTitle:'Mes alertes', alertDeleted:'Alerte supprimée', pushBtn:'Activer les notifications', pushOn:'Notifications actives', rvVerified:'contact vérifié', navHow:'Comment ça marche', dpCompare:'Comparer', dpMission:'Mission', dpVision:'Vision', allCountries:'Tous les pays', profFilterPh:'Filtrer par nom ou ville…', profShowMore:'Afficher plus', profShowing:'Affichage de', dpStreetTitle:'Vue de la rue (Street View)', svOpenExternal:'Ouvrir dans Google Maps ↗', svFallback:'Si la vue ne se charge pas, ', svFallbackLink:'ouvrez-la dans Google Maps', claimLink:'C\u2019est votre entreprise ? Revendiquez cette fiche', claimTitle:'Revendiquer la fiche', claimIntro:'Pour prouver que vous gérez cette entreprise, nous envoyons un code à 6 chiffres à l\u2019email public de la fiche. Une fois revendiquée, vous pouvez la modifier, répondre aux avis et voir les statistiques.', claimSendBtn:'Envoyer le code à l\u2019email de la fiche', claimSentTo:'Code envoyé à', claimVerifyBtn:'Confirmer le code', claimSuccess:'Fiche revendiquée !', claimNeedLogin:'Connectez-vous pour revendiquer la fiche', claimCodeInvalid:'Saisissez le code à 6 chiffres', rfqCta:'Devis Gratuits', rfqTitle:'Demander des devis', rfqIntro:'Décrivez les travaux — nous envoyons la demande aux bonnes entreprises de votre zone et les propositions arrivent par email.', rfqSector:'Domaine d\u2019activité', rfqDesc:'Description des travaux', rfqDescPh:'Ex. : Rénovation complète de salle de bain (~4 m²).', rfqCity:'Localité', rfqTimeline:'Délai souhaité', rfqBudget:'Budget indicatif', rfqPhone:'Téléphone (optionnel)', rfqEmail:'Votre email', rfqSend:'Envoyer la demande', rfqSentA:'Demande envoyée à', rfqSentB:'entreprises ! Les propositions arriveront par email.', rfqDescShort:'Décrivez les travaux plus en détail (min. 20 caractères)', rfqCityReq:'Indiquez la localité', tlFlex:'Flexible', tlUrgent:'Urgent', tl1m:'Le mois prochain', tl3m:'Sous 3 mois', budNS:'Je ne sais pas encore', inboxBtn:'Messages clients', inboxTitle:'Messages clients', inboxEmpty:'Pas encore de messages.', inboxReplyPh:'Écrivez votre réponse…', inboxReplySend:'Répondre', inboxReplySent:'Réponse envoyée', inboxYou:'Vous', featureBtn:'Demander la mise en avant', featureSent:'Demande envoyée à l\u2019administrateur',
     topRated:'Mieux Noté', verified:'Vérifié', newEntry:'Nouveau Enregistrement',
     specialties:'Spécialités',
     mapLive:'Carte en direct', mapCity:'Lisbonne, Portugal',
@@ -2761,7 +2761,7 @@ const translations = {
     sortBy:'Ordenar Por', sortRating:'Mejor Valoradas', sortReviews:'Más Valoradas', sortName:'Nombre A–Z',
     sectorArea:'Área de Actividad', minRating:'Valoración',
     ratingAny:'Cualquier valoración', ratingOrMore:'o más',
-    searchRadius:'Radio de Búsqueda', featured:'Destacados', ignoreRadius:'No Usar Radio de Búsqueda', nearbyTitle:'Empresas Cercanas', contactYourName:'Su nombre', contactYourEmail:'Su email (para que la empresa responda)', contactNameReq:'Indique su nombre', contactEmailReq:'Indique un email válido', retryBtn:'Intentar de nuevo', clearFiltersBtn:'Borrar filtros', resultsCount:'empresas encontradas', chatToday:'Hoy', chatYesterday:'Ayer', alertSaveBtn:'Avisarme de nuevas', alertSaved:'¡Alerta creada!', alertsTitle:'Mis alertas', alertDeleted:'Alerta eliminada', pushBtn:'Activar notificaciones', pushOn:'Notificaciones activas', rvVerified:'contacto verificado', navHow:'Cómo funciona', dpCompare:'Comparar', dpMission:'Misión', dpVision:'Visión', allCountries:'Todos los países', profFilterPh:'Filtrar por nombre o ciudad…', profShowMore:'Mostrar más', profShowing:'Mostrando', dpStreetTitle:'Vista de calle (Street View)', svOpenExternal:'Abrir en Google Maps ↗', svFallback:'Si la vista no carga, ', svFallbackLink:'ábrala en Google Maps', claimLink:'¿Es su empresa? Reclame esta ficha', claimTitle:'Reclamar ficha de la empresa', claimIntro:'Para demostrar que gestiona esta empresa, enviamos un código de 6 dígitos al email público de la ficha. Una vez reclamada, puede editar los datos, responder a reseñas y ver estadísticas.', claimSendBtn:'Enviar código al email de la ficha', claimSentTo:'Código enviado a', claimVerifyBtn:'Confirmar código', claimSuccess:'¡Ficha reclamada!', claimNeedLogin:'Inicie sesión para reclamar la ficha', claimCodeInvalid:'Introduzca el código de 6 dígitos', rfqCta:'Pedir Presupuestos Gratis', rfqTitle:'Pedir presupuestos', rfqIntro:'Describa el trabajo — lo enviamos a las empresas adecuadas de su zona y las propuestas llegan a su email.', rfqSector:'Área de actividad', rfqDesc:'Descripción del trabajo', rfqDescPh:'Ej.: Reforma completa de baño (~4 m²).', rfqCity:'Localidad', rfqTimeline:'Plazo deseado', rfqBudget:'Presupuesto indicativo', rfqPhone:'Teléfono (opcional)', rfqEmail:'Su email', rfqSend:'Enviar solicitud', rfqSentA:'Solicitud enviada a', rfqSentB:'empresas. Las propuestas llegarán por email.', rfqDescShort:'Describa el trabajo con más detalle (mín. 20 caracteres)', rfqCityReq:'Indique la localidad', tlFlex:'Flexible', tlUrgent:'Urgente', tl1m:'El próximo mes', tl3m:'En 3 meses', budNS:'Aún no lo sé', inboxBtn:'Mensajes de clientes', inboxTitle:'Mensajes de clientes', inboxEmpty:'Aún no hay mensajes.', inboxReplyPh:'Escriba su respuesta…', inboxReplySend:'Responder', inboxReplySent:'Respuesta enviada', inboxYou:'Usted', featureBtn:'Pedir destacado', featureSent:'Solicitud enviada al administrador',
+    searchRadius:'Radio de Búsqueda', featured:'Destacados', ignoreRadius:'No Usar Radio de Búsqueda', nearbyTitle:'Empresas Cercanas', nearbyRefCentro:'Distancias al centro del mapa', contactYourName:'Su nombre', contactYourEmail:'Su email (para que la empresa responda)', contactNameReq:'Indique su nombre', contactEmailReq:'Indique un email válido', retryBtn:'Intentar de nuevo', clearFiltersBtn:'Borrar filtros', resultsCount:'empresas encontradas', chatToday:'Hoy', chatYesterday:'Ayer', alertSaveBtn:'Avisarme de nuevas', alertSaved:'¡Alerta creada!', alertsTitle:'Mis alertas', alertDeleted:'Alerta eliminada', pushBtn:'Activar notificaciones', pushOn:'Notificaciones activas', rvVerified:'contacto verificado', navHow:'Cómo funciona', dpCompare:'Comparar', dpMission:'Misión', dpVision:'Visión', allCountries:'Todos los países', profFilterPh:'Filtrar por nombre o ciudad…', profShowMore:'Mostrar más', profShowing:'Mostrando', dpStreetTitle:'Vista de calle (Street View)', svOpenExternal:'Abrir en Google Maps ↗', svFallback:'Si la vista no carga, ', svFallbackLink:'ábrala en Google Maps', claimLink:'¿Es su empresa? Reclame esta ficha', claimTitle:'Reclamar ficha de la empresa', claimIntro:'Para demostrar que gestiona esta empresa, enviamos un código de 6 dígitos al email público de la ficha. Una vez reclamada, puede editar los datos, responder a reseñas y ver estadísticas.', claimSendBtn:'Enviar código al email de la ficha', claimSentTo:'Código enviado a', claimVerifyBtn:'Confirmar código', claimSuccess:'¡Ficha reclamada!', claimNeedLogin:'Inicie sesión para reclamar la ficha', claimCodeInvalid:'Introduzca el código de 6 dígitos', rfqCta:'Pedir Presupuestos Gratis', rfqTitle:'Pedir presupuestos', rfqIntro:'Describa el trabajo — lo enviamos a las empresas adecuadas de su zona y las propuestas llegan a su email.', rfqSector:'Área de actividad', rfqDesc:'Descripción del trabajo', rfqDescPh:'Ej.: Reforma completa de baño (~4 m²).', rfqCity:'Localidad', rfqTimeline:'Plazo deseado', rfqBudget:'Presupuesto indicativo', rfqPhone:'Teléfono (opcional)', rfqEmail:'Su email', rfqSend:'Enviar solicitud', rfqSentA:'Solicitud enviada a', rfqSentB:'empresas. Las propuestas llegarán por email.', rfqDescShort:'Describa el trabajo con más detalle (mín. 20 caracteres)', rfqCityReq:'Indique la localidad', tlFlex:'Flexible', tlUrgent:'Urgente', tl1m:'El próximo mes', tl3m:'En 3 meses', budNS:'Aún no lo sé', inboxBtn:'Mensajes de clientes', inboxTitle:'Mensajes de clientes', inboxEmpty:'Aún no hay mensajes.', inboxReplyPh:'Escriba su respuesta…', inboxReplySend:'Responder', inboxReplySent:'Respuesta enviada', inboxYou:'Usted', featureBtn:'Pedir destacado', featureSent:'Solicitud enviada al administrador',
     topRated:'Top Rated', verified:'Verificado', newEntry:'Nuevo Registro',
     specialties:'Especialidades',
     mapLive:'Mapa en tiempo real', mapCity:'Lisboa, Portugal',
@@ -3534,7 +3534,7 @@ const translations = {
     sortBy:'Sortieren nach', sortRating:'Beste Bewertung', sortReviews:'Meiste Bewertungen', sortName:'Name A–Z',
     sectorArea:'Tätigkeitsbereich', minRating:'Bewertung',
     ratingAny:'Beliebige Bewertung', ratingOrMore:'oder mehr',
-    searchRadius:'Suchradius', featured:'Empfohlen', ignoreRadius:'Suchradius nicht verwenden', nearbyTitle:'Unternehmen in der Nähe', contactYourName:'Ihr Name', contactYourEmail:'Ihre E-Mail (für die Antwort der Firma)', contactNameReq:'Geben Sie Ihren Namen an', contactEmailReq:'Geben Sie eine gültige E-Mail an', retryBtn:'Erneut versuchen', clearFiltersBtn:'Filter zurücksetzen', resultsCount:'Unternehmen gefunden', chatToday:'Heute', chatYesterday:'Gestern', alertSaveBtn:'Bei neuen benachrichtigen', alertSaved:'Alarm erstellt!', alertsTitle:'Meine Alarme', alertDeleted:'Alarm entfernt', pushBtn:'Benachrichtigungen aktivieren', pushOn:'Benachrichtigungen aktiv', rvVerified:'verifizierter Kontakt', navHow:'So funktioniert es', dpCompare:'Vergleichen', dpMission:'Mission', dpVision:'Vision', allCountries:'Alle Länder', profFilterPh:'Nach Name oder Stadt filtern…', profShowMore:'Mehr anzeigen', profShowing:'Zeige', dpStreetTitle:'Straßenansicht (Street View)', svOpenExternal:'In Google Maps öffnen ↗', svFallback:'Wenn die Ansicht nicht lädt, ', svFallbackLink:'in Google Maps öffnen', claimLink:'Ist das Ihr Unternehmen? Eintrag übernehmen', claimTitle:'Eintrag übernehmen', claimIntro:'Zum Nachweis senden wir einen 6-stelligen Code an die öffentliche E-Mail des Eintrags. Danach können Sie Daten bearbeiten, auf Bewertungen antworten und Statistiken sehen.', claimSendBtn:'Code an die Eintrags-E-Mail senden', claimSentTo:'Code gesendet an', claimVerifyBtn:'Code bestätigen', claimSuccess:'Eintrag übernommen!', claimNeedLogin:'Zum Übernehmen bitte anmelden', claimCodeInvalid:'6-stelligen Code eingeben', rfqCta:'Kostenlose Angebote', rfqTitle:'Angebote anfragen', rfqIntro:'Beschreiben Sie die Arbeit — wir senden die Anfrage an passende Firmen in Ihrer Region; Angebote kommen per E-Mail.', rfqSector:'Tätigkeitsbereich', rfqDesc:'Beschreibung der Arbeit', rfqDescPh:'z. B.: Komplette Badsanierung (~4 m²).', rfqCity:'Ort', rfqTimeline:'Gewünschter Zeitrahmen', rfqBudget:'Ungefähres Budget', rfqPhone:'Telefon (optional)', rfqEmail:'Ihre E-Mail', rfqSend:'Anfrage senden', rfqSentA:'Anfrage gesendet an', rfqSentB:'Firmen! Angebote kommen per E-Mail.', rfqDescShort:'Bitte ausführlicher beschreiben (mind. 20 Zeichen)', rfqCityReq:'Ort angeben', tlFlex:'Flexibel', tlUrgent:'Dringend', tl1m:'Im nächsten Monat', tl3m:'In 3 Monaten', budNS:'Weiß noch nicht', inboxBtn:'Kundennachrichten', inboxTitle:'Kundennachrichten', inboxEmpty:'Noch keine Nachrichten.', inboxReplyPh:'Antwort schreiben…', inboxReplySend:'Antworten', inboxReplySent:'Antwort gesendet', inboxYou:'Sie', featureBtn:'Hervorhebung anfragen', featureSent:'Anfrage an den Administrator gesendet',
+    searchRadius:'Suchradius', featured:'Empfohlen', ignoreRadius:'Suchradius nicht verwenden', nearbyTitle:'Unternehmen in der Nähe', nearbyRefCentro:'Entfernungen zur Kartenmitte', contactYourName:'Ihr Name', contactYourEmail:'Ihre E-Mail (für die Antwort der Firma)', contactNameReq:'Geben Sie Ihren Namen an', contactEmailReq:'Geben Sie eine gültige E-Mail an', retryBtn:'Erneut versuchen', clearFiltersBtn:'Filter zurücksetzen', resultsCount:'Unternehmen gefunden', chatToday:'Heute', chatYesterday:'Gestern', alertSaveBtn:'Bei neuen benachrichtigen', alertSaved:'Alarm erstellt!', alertsTitle:'Meine Alarme', alertDeleted:'Alarm entfernt', pushBtn:'Benachrichtigungen aktivieren', pushOn:'Benachrichtigungen aktiv', rvVerified:'verifizierter Kontakt', navHow:'So funktioniert es', dpCompare:'Vergleichen', dpMission:'Mission', dpVision:'Vision', allCountries:'Alle Länder', profFilterPh:'Nach Name oder Stadt filtern…', profShowMore:'Mehr anzeigen', profShowing:'Zeige', dpStreetTitle:'Straßenansicht (Street View)', svOpenExternal:'In Google Maps öffnen ↗', svFallback:'Wenn die Ansicht nicht lädt, ', svFallbackLink:'in Google Maps öffnen', claimLink:'Ist das Ihr Unternehmen? Eintrag übernehmen', claimTitle:'Eintrag übernehmen', claimIntro:'Zum Nachweis senden wir einen 6-stelligen Code an die öffentliche E-Mail des Eintrags. Danach können Sie Daten bearbeiten, auf Bewertungen antworten und Statistiken sehen.', claimSendBtn:'Code an die Eintrags-E-Mail senden', claimSentTo:'Code gesendet an', claimVerifyBtn:'Code bestätigen', claimSuccess:'Eintrag übernommen!', claimNeedLogin:'Zum Übernehmen bitte anmelden', claimCodeInvalid:'6-stelligen Code eingeben', rfqCta:'Kostenlose Angebote', rfqTitle:'Angebote anfragen', rfqIntro:'Beschreiben Sie die Arbeit — wir senden die Anfrage an passende Firmen in Ihrer Region; Angebote kommen per E-Mail.', rfqSector:'Tätigkeitsbereich', rfqDesc:'Beschreibung der Arbeit', rfqDescPh:'z. B.: Komplette Badsanierung (~4 m²).', rfqCity:'Ort', rfqTimeline:'Gewünschter Zeitrahmen', rfqBudget:'Ungefähres Budget', rfqPhone:'Telefon (optional)', rfqEmail:'Ihre E-Mail', rfqSend:'Anfrage senden', rfqSentA:'Anfrage gesendet an', rfqSentB:'Firmen! Angebote kommen per E-Mail.', rfqDescShort:'Bitte ausführlicher beschreiben (mind. 20 Zeichen)', rfqCityReq:'Ort angeben', tlFlex:'Flexibel', tlUrgent:'Dringend', tl1m:'Im nächsten Monat', tl3m:'In 3 Monaten', budNS:'Weiß noch nicht', inboxBtn:'Kundennachrichten', inboxTitle:'Kundennachrichten', inboxEmpty:'Noch keine Nachrichten.', inboxReplyPh:'Antwort schreiben…', inboxReplySend:'Antworten', inboxReplySent:'Antwort gesendet', inboxYou:'Sie', featureBtn:'Hervorhebung anfragen', featureSent:'Anfrage an den Administrator gesendet',
     topRated:'Top-Bewertet', verified:'Verifiziert', newEntry:'Neu eingetragen',
     specialties:'Fachbereiche',
     mapLive:'Live-Karte', mapCity:'Lissabon, Portugal',
@@ -4509,7 +4509,7 @@ function heroSearch() {
     showTab('search');
     const u = document.getElementById('searchUnified');
     if (u) u.value = val;
-    try { handleUnifiedSearch(val); } catch (_) {}
+    try { submitUnifiedSearch(val); } catch (_) {}
     try { applyFilters.now(); } catch (_) {}
     setTimeout(() => { try { openResultsSheet(); } catch (_) {} }, 350);
     return;
@@ -4577,7 +4577,7 @@ function welcomeSearch() {
   _ev('pesquisa');
   const u = document.getElementById('searchUnified');
   if (u) u.value = v;
-  try { handleUnifiedSearch(v); } catch (_) {}
+  try { submitUnifiedSearch(v); } catch (_) {}
   try { applyFilters.now(); } catch (_) {}
   if (window.innerWidth <= 768) setTimeout(() => { try { openResultsSheet(); } catch (_) {} }, 350);
 }
@@ -5590,8 +5590,6 @@ async function openCompareModal() {
   const docCount    = c => (c.alvara ? 1 : 0) + (c.certidao_permanente ? 1 : 0);
   const bestDocs    = Math.max(...cos.map(docCount));
 
-  // Credentials/contacts are redacted server-side for anonymous visitors.
-  const lockedCell = '<span style="color:var(--muted)">🔒 requer sessão</span>';
 
   // Tabela lado-a-lado SÓ com linhas que distinguem as empresas: linha vazia
   // em todas, ou com o mesmo valor em todas, é ruído e sai. O selo "Melhor"
@@ -5616,10 +5614,10 @@ async function openCompareModal() {
       val: c => String(c.city || c.address || ''),
       render: c => c.city || c.address ? escHtml(c.city || c.address) : null },
     { label:'Documentação', mode:'max',
-      val: c => loggedIn ? (c.alvara ? 'A' : '') + (c.certidao_permanente ? 'C' : '') : '',
-      bestVal: c => loggedIn ? docCount(c) : null,
+      // Alvará público para todos; a certidão só vem com sessão (backend).
+      val: c => (c.alvara ? 'A' : '') + (c.certidao_permanente ? 'C' : ''),
+      bestVal: c => docCount(c),
       render: c => {
-        if (!loggedIn) return lockedCell;
         const b = [];
         if (c.alvara) b.push(`<span class="compare-doc-badge">📜 Alvará ${escHtml(String(c.alvara).split(' ')[0])}</span>`);
         if (c.certidao_permanente) b.push('<span class="compare-doc-badge">✓ Certidão</span>');
@@ -6633,7 +6631,8 @@ class HxMap {
   flyTo(p, zoom, opts) {
     const ll = _toLL(p);
     this._ml.flyTo({ center: [ll.lng, ll.lat], zoom: this._z(zoom),
-      duration: ((opts && opts.duration) || 1.2) * 1000, essential: true });
+      duration: ((opts && opts.duration) || 1.2) * 1000, essential: true,
+      ...(opts && opts.padding ? { padding: opts.padding } : {}) });
     return this;
   }
   panTo(p) { const ll = _toLL(p); this._ml.panTo([ll.lng, ll.lat], { duration: 600 }); return this; }
@@ -6812,6 +6811,9 @@ if (_semMapa()) {
   // sincronização dos markers (idempotente e barata).
   _ml.once('load', _hxScheduleSync);
   _ml.on('moveend', _hxScheduleSync);
+  // Gesto do utilizador (arrastar, roda, pinça, botões +/−, teclado, balão de
+  // cluster) com a ficha aberta: ao fechá-la a câmara fica onde ele a deixou.
+  _ml.on('movestart', (e) => { if (e && e.originalEvent && window._vistaAntesFicha) window._vistaAntesFicha.mexeu = true; });
   _ml.on('zoomend', _hxScheduleSync);
   _ml.on('sourcedata', (e) => { if (!e || e.sourceId === 'hx-companies') _hxScheduleSync(); });
   // 3D: ao aproximar (zoom Leaflet ≥16) a câmara inclina e os edifícios
@@ -7145,7 +7147,8 @@ function _hxMakeClusterMarker(f) {
     try {
       const src = map._ml.getSource('hx-companies');
       Promise.resolve(src.getClusterExpansionZoom(cid)).then(zm => {
-        map._ml.easeTo({ center: co, zoom: Math.min(zm + 0.1, 17), duration: 550 });
+        // originalEvent: conta como gesto do utilizador (movestart → closeDetail)
+        map._ml.easeTo({ center: co, zoom: Math.min(zm + 0.1, 17), duration: 550 }, { originalEvent: e });
       }).catch(() => {});
     } catch (_) {}
   });
@@ -7297,7 +7300,7 @@ window.toggleIgnoreRadius = toggleIgnoreRadius;
 // Só aceitamos POVOAÇÕES/fronteiras administrativas cujo nome bate com o texto —
 // nunca POIs — para uma pesquisa de atividade não saltar para uma aldeia homónima.
 const _POVOACAO = new Set(['city', 'town', 'village', 'municipality', 'hamlet', 'suburb', 'borough', 'quarter', 'district', 'state', 'province', 'county', 'region', 'country', 'island']);
-function _geocodePlaceWorldwide(q) {
+function _geocodePlaceWorldwide(q, comFalha) {
   const norm = s => String(s || '').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '').trim();
   const alvo = norm(String(q).split(',')[0]);
   if (!alvo) return Promise.resolve(null);
@@ -7351,7 +7354,9 @@ function _geocodePlaceWorldwide(q) {
         })
         .catch(() => aceite);
     })
-    .catch(() => null);
+    // Falha de rede ou limite do Photon NÃO quer dizer "não é um lugar": quem
+    // pede comFalha (a pesquisa explícita) recebe { falhou: true }.
+    .catch(() => (comFalha ? { falhou: true } : null));
 }
 function _flyToPlace(hit) {
   try { if (typeof map !== 'undefined' && map) map.setView([hit.lat, hit.lng], hit.zoom, { animate: true }); } catch (_) {}
@@ -8267,40 +8272,84 @@ function handleUnifiedSearch(val) {
   try { _renderSearchSuggest(val); } catch (_) {}
   if (!val || !val.trim()) { _keywordFilter = ''; applyFilters(); return; }
   val = val.trim();
-  // Known Portuguese city patterns — geocode the location, do NOT use as keyword filter
+  // Known Portuguese city patterns — a place, do NOT use as keyword filter
   const cityPatterns = /portugal|lisboa|porto|braga|faro|coimbra|aveiro|leiria|viseu|setúbal|setubal|évora|evora|arouca|guimarães|guimaraes|funchal|sintra|cascais|almada|amadora|vila nova|santarém|santarem|beja|castelo branco|viana|bragança|braganca|guarda|portalegre/i;
-  // "Cidade, País" genérico (qualquer país do mundo) — com debounce, para não
-  // bombardear o geocoder a cada tecla enquanto o utilizador escreve.
+  // "Cidade, País" genérico (qualquer país do mundo)
   const padraoMundial = /^.{2,},\s*[a-zà-ÿ][a-zà-ÿ .-]{2,}$/i;
-  if (cityPatterns.test(val) || /,\s*(pt|portugal)/i.test(val)) {
-    geocodeLocation(val);
+  // Parece um lugar: não filtra por nome, mas também já não geocodifica a cada
+  // tecla (cada letra voava o mapa e mostrava um aviso). Centrar fica para o
+  // Enter/botão (submitUnifiedSearch) ou para a sugestão escolhida.
+  if (cityPatterns.test(val) || /,\s*(pt|portugal)/i.test(val) || padraoMundial.test(val)) {
     _keywordFilter = '';  // location, not keyword
-  } else if (padraoMundial.test(val)) {
-    clearTimeout(handleUnifiedSearch._tGeo);
-    handleUnifiedSearch._tGeo = setTimeout(() => geocodeLocation(val), 650);
-    _keywordFilter = '';  // localização, não palavra-chave
   } else {
     _keywordFilter = val;  // actual keyword search
   }
   applyFilters();
 }
 
-// Explicit search (Enter / search button). Smarter than the live oninput handler:
-// if the term matches a loaded company/activity, keep it as a keyword filter and
-// leave the map where it is; otherwise treat it as a PLACE — geocode it (restricted
-// to Portugal so results are accurate) and recenter the map. This is what makes the
-// box actually centre on any location typed, not just a hardcoded city list.
+// Área de atividade escrita por extenso ("canalizador", "eletricistas",
+// "design de interiores"): a chave do setor, ou null. Só a 1.ª palavra de cada
+// parte do rótulo ("Picheleiros / Canalizadores", "Marmoraria & Pedra"), com
+// singular/plural (até 2 letras a mais) — "Constru", "obra" ou um pedaço de
+// nome de empresa não desviam para uma área. Rótulos do idioma ativo e do PT.
+function _setorDoTexto(val) {
+  const q = _normTxt(String(val || '').trim());
+  if (q.length < 4) return null;
+  for (const L of [currentLang, 'pt']) {
+    const sec = Object.entries(((translations[L] || {}).sectors) || {});
+    for (const [k, label] of sec) {
+      const nl = _normTxt(label);
+      if (nl === q || nl.split(/\s*[\/&]\s*/).includes(q)) return k;
+    }
+    if (q.includes(' ')) continue;
+    for (const [k, label] of sec) {
+      const primeiras = _normTxt(label).split(/[/&]/).map(p => p.trim().split(/[^a-z0-9]+/)[0] || '');
+      if (primeiras.some(w => w.startsWith(q) && w.length - q.length <= 2)) return k;
+    }
+  }
+  return null;
+}
+
+// Pesquisa explícita (Enter, botão Pesquisar, cartão de boas-vindas). Ordem:
+// 1) localidade do próprio catálogo com ≥3 empresas — centra na MEDIANA delas,
+//    sem rede (uma falha do Photon já não transforma "Porto" em filtro por nome);
+// 2) área de atividade escrita por extenso → filtro da área, como a sugestão;
+// 3) povoação no Photon/Nominatim, mundial (lugar antes de empresa: "Paris");
+// 4) localidade do catálogo com 1-2 empresas;
+// 5) filtro por nome; uma morada ("Rua X, 12") vai ao geocoder geral.
+let _suqPedido = 0;   // só a resposta da pesquisa mais recente conta
 function submitUnifiedSearch(val) {
+  const pedido = ++_suqPedido;
+  try { _hideSuggest(); } catch (_) {}
   if (!val || !val.trim()) { _keywordFilter = ''; applyFilters(); return; }
   val = val.trim();
-  // LUGAR PRIMEIRO, mundial. Antes, uma empresa chamada "Paris" na América
-  // ganhava à cidade de Paris — o mapa voava para a empresa. O geocoder só
-  // devolve povoações cujo nome bate com o texto, por isso pesquisas de
-  // atividade/empresa ("eletricista", "Farcimar") caem naturalmente no filtro
-  // de palavra-chave em baixo.
-  _geocodePlaceWorldwide(val).then(hit => {
-    if (hit) {
+  const loc = _tnGeoCatalogo(val, 3);
+  if (loc) {
+    _flyToPlace({ lat: loc.lat, lng: loc.lng, zoom: 11, label: val, cc: loc.cc });
+    _keywordFilter = '';
+    applyFilters();
+    return;
+  }
+  // uma localidade do catálogo (mesmo com 1-2 empresas) nunca vira área: "Porto" ≠ Portões
+  const setor = _tnGeoCatalogo(val, 1) ? null : _setorDoTexto(val);
+  if (setor) { suggestPickSector(setor); return; }
+  _geocodePlaceWorldwide(val, true).then(hit => {
+    if (pedido !== _suqPedido) return;   // entretanto houve outra pesquisa
+    // Uma vila/aldeia homónima noutro ponto do mundo não ganha a uma empresa do
+    // catálogo com esse nome ("Orestes" voava para o Indiana); cidades ganham ("Paris").
+    const nomeDeEmpresa = hit && !hit.falhou && hit.zoom >= 12 && (() => {
+      const q = ' ' + _normTxt(val);
+      return (typeof companies !== 'undefined' ? companies : []).some(c => (' ' + _normTxt(c.name || '')).includes(q));
+    })();
+    if (hit && !hit.falhou && !nomeDeEmpresa) {
       _flyToPlace(hit);
+      _keywordFilter = '';
+      applyFilters();
+      return;
+    }
+    const loc1 = _tnGeoCatalogo(val, 1);
+    if (loc1) {
+      _flyToPlace({ lat: loc1.lat, lng: loc1.lng, zoom: 12, label: val, cc: loc1.cc });
       _keywordFilter = '';
       applyFilters();
       return;
@@ -8308,6 +8357,20 @@ function submitUnifiedSearch(val) {
     const companyMatch = (typeof companies !== 'undefined' ? companies : []).some(c => {
       try { return fuzzySearch(val, c); } catch (_) { return false; }
     });
+    if (!companyMatch && /[,\d]/.test(val)) {
+      // parece uma morada: o geocoder geral encontra ruas (ou diz que não)
+      _keywordFilter = '';
+      applyFilters();
+      _geocodeLocationNominatim(val);
+      return;
+    }
+    if (!companyMatch && hit && hit.falhou) {
+      // sem resposta do geocoder não se sabe se era um lugar: não filtra por nome
+      _keywordFilter = '';
+      applyFilters();
+      showToast(t('toastLocationError'));
+      return;
+    }
     _keywordFilter = val;
     if (!companyMatch) showToast(t('toastPlaceNotFound'));
     applyFilters();
@@ -8315,11 +8378,12 @@ function submitUnifiedSearch(val) {
 }
 window.submitUnifiedSearch = submitUnifiedSearch;
 
-function fuzzySearch(kw, company) {
+// exato=true: só correspondência literal, sem tolerância a gralhas
+function fuzzySearch(kw, company, exato) {
   // Use pre-computed _searchIndex (built at load time) to avoid repeated string join
   const hay = company._searchIndex || [company.name, company.cae, ...(company.tags || [])].join(' ').toLowerCase();
   const tokens = kw.toLowerCase().split(/\s+/).filter(t => t.length > 0);
-  return tokens.every(token => fuzzyMatchToken(token, hay));
+  return tokens.every(token => exato ? hay.includes(token) : fuzzyMatchToken(token, hay));
 }
 
 // ── DISTANCE CACHE ────────────────────────────────────────────────────────────
@@ -8358,6 +8422,9 @@ function getFiltered() {
   const filterVerified = document.getElementById('filterVerified')?.checked;
   const filterNew      = document.getElementById('filterNew')?.checked;
   const kw = _keywordFilter || '';
+  // Gralhas só quando a pesquisa exata não encontra nenhuma empresa: com 1
+  // edição de tolerância, "Porto" apanhava "Ponto Rar LDA".
+  const kwExato = !!kw && companies.some(c => fuzzySearch(kw, c, true));
   const sort = document.querySelector('input[name="sort"]:checked')?.value || 'all';
   const hasSectorFilter = activeSectors.size > 0;
 
@@ -8390,7 +8457,7 @@ function getFiltered() {
     // Tag
     if (activeTag && !(c.tags && c.tags.includes(activeTag))) continue;
     // Keyword (uses pre-built _searchIndex)
-    if (kw && !fuzzySearch(kw, c)) continue;
+    if (kw && !fuzzySearch(kw, c, kwExato)) continue;
     // Sort pre-filter
     if (sort === 'rating' && c.rating < 4) continue;
     if (sort === 'reviews' && (c.reviews || 0) < 100) continue;
@@ -8515,9 +8582,9 @@ function _runApplyFilters() {
       filterBadge.style.display = hasFilters ? '' : 'none';
     }
   }
-  // Result count label + list view (pass filtered so list doesn't re-compute)
-  const countEl = document.getElementById('viewResultCount');
-  if (countEl) countEl.textContent = filtered.length + ' ' + t(filtered.length === 1 ? 'resultCompany' : 'resultCompanies');
+  // Result count label (same number as "Empresas Próximas", see _updateViewCount)
+  // + list view (pass filtered so list doesn't re-compute)
+  _updateViewCount(filtered);
   // Mobile results-sheet peek count
   const sheetCount = document.getElementById('mapSheetCount');
   if (sheetCount) sheetCount.textContent = filtered.length;
@@ -8598,6 +8665,7 @@ function setSearchView(mode) {
     btnList?.classList.add('active');
     hints.forEach(h => h.style.visibility = 'hidden');
     renderSearchList();
+    try { _updateViewCount(_nearbyLastFiltered); } catch (_) {}
   } else {
     if (mapEl) mapEl.style.display = 'block';
     if (listEl) listEl.style.display = 'none';
@@ -8607,6 +8675,7 @@ function setSearchView(mode) {
     if (typeof map !== 'undefined' && map) setTimeout(() => map.invalidateSize(), 100);
     // a coluna das destacadas esteve escondida: volta a preenchê-la
     try { if (_nearbyLastFiltered) renderFeaturedPanel(_nearbyLastFiltered); } catch (_) {}
+    try { _updateViewCount(_nearbyLastFiltered); } catch (_) {}
   }
 }
 
@@ -8861,6 +8930,7 @@ function _appendListCards(frag, data, start, end) {
         <div class="slc-info">
           <div class="slc-name">${escHtml(c.name)}</div>
           <div class="slc-sector-badge"><span class="slc-dot" style="background:${c.color}"></span>${escHtml(sectorLabel)}</div>
+          ${alvaraBadgeHtml(c) ? '<div class="nc-cred">' + alvaraBadgeHtml(c) + '</div>' : ''}
         </div>
         <div class="slc-actions">
           <label class="slc-compare" onclick="event.stopPropagation()" title="Adicionar à comparação">
@@ -8875,7 +8945,9 @@ function _appendListCards(frag, data, start, end) {
       <div class="slc-footer">
         ${phoneFrag}
         ${waFrag}
-        <button class="btn-slc-contact" onclick="event.stopPropagation();pedirOrcamento(${c.id})" data-i18n="btnRequestQuote">Pedir Orçamento</button>
+        ${(c.email && String(c.email).trim())
+          ? `<button class="btn-slc-contact" onclick="event.stopPropagation();pedirOrcamento(${c.id})" data-i18n="btnRequestQuote">Pedir Orçamento</button>`
+          : (c.phone ? '' : `<button class="btn-slc-contact" onclick="event.stopPropagation();_abrirDaLista(${c.id})" data-i18n="recsSeeProfile">${escHtml(t('recsSeeProfile'))}</button>`)}
       </div>`;
     frag.appendChild(div);
   }
@@ -8931,8 +9003,28 @@ function _nearbyLabelDist(c) {
 function _scheduleNearbyRefresh() {
   clearTimeout(_nearbyMoveT);
   _nearbyMoveT = setTimeout(() => {
+    // Com a ficha aberta o mapa aproxima-se da empresa e a lista ficava só
+    // com ela ("1 · 0,0 km"): mantém-se a de antes; o closeDetail refresca-a.
+    if (document.body.classList.contains('dp-aberto')) return;
     try { if (_nearbyLastFiltered) renderNearbyPanel(_nearbyLastFiltered, true); } catch (_) {}
+    try { _updateViewCount(_nearbyLastFiltered); } catch (_) {}
   }, 250);
+}
+// Empresa dentro da zona visível (bb de _nearbyViewBounds; trata o antimeridiano)
+function _naVista(bb, c) {
+  return c.lat >= bb.s && c.lat <= bb.n &&
+    (bb.w <= bb.e ? (c.lng >= bb.w && c.lng <= bb.e) : (c.lng >= bb.w || c.lng <= bb.e));
+}
+// Pílula "N empresas" ao lado de Mapa | Lista: na vista Mapa conta as empresas
+// no ecrã, o mesmo número de "Empresas Próximas" (antes mostrava o total
+// filtrado ao lado desse número); na vista Lista conta a lista toda.
+function _updateViewCount(filtered) {
+  const el = document.getElementById('viewResultCount');
+  if (!el || !filtered) return;
+  const bb = document.getElementById('searchListView')?.style.display === 'none' ? _nearbyViewBounds() : null;
+  let n = filtered.length;
+  if (bb) { n = 0; for (const c of filtered) if (_naVista(bb, c)) n++; }
+  el.textContent = n.toLocaleString('pt-PT') + ' ' + t(n === 1 ? 'resultCompany' : 'resultCompanies');
 }
 try { if (map) map.on('moveend', _scheduleNearbyRefresh); } catch (_) {}
 
@@ -8960,11 +9052,19 @@ function renderNearbyPanel(filtered, fromMapMove) {
     return;
   }
   panel.style.display = '';   // restore the CSS default (flex) when populated
+  // Sem GPS, os "N km" dos cartões contam-se a partir do centro do mapa
+  // (_nearbyLabelDist) — dizê-lo, em vez de parecer a distância ao utilizador.
+  const _refEl = document.getElementById('nearbyRef');
+  if (_refEl) {
+    let _gps = false;
+    try { _gps = typeof userLocationMarker !== 'undefined' && !!userLocationMarker; } catch (_) {}
+    _refEl.hidden = _gps;
+    if (!_gps) _refEl.textContent = t('nearbyRefCentro');
+  }
 
   const [refLat, refLng] = _nearbyViewPoint();
   const bb = _nearbyViewBounds();
-  const naVista = c => !bb || (c.lat >= bb.s && c.lat <= bb.n &&
-    (bb.w <= bb.e ? (c.lng >= bb.w && c.lng <= bb.e) : (c.lng >= bb.w || c.lng <= bb.e)));
+  const naVista = c => !bb || _naVista(bb, c);
   // Sort a copy — never mutate the caller's array (markers use it).
   // 1.º as empresas dentro do ecrã; entre elas, destacadas (colocação paga)
   // primeiro; depois por proximidade ao centro da vista. As de fora do ecrã
@@ -8974,17 +9074,17 @@ function renderNearbyPanel(filtered, fromMapMove) {
   // lugar à direita: aqui a ordem é só proximidade (sem as repetir no topo).
   const fp = document.getElementById('featPanel');
   const comColunaDestaque = !!fp && getComputedStyle(fp).display !== 'none';
-  let nVista = 0;
-  _nearbyData = filtered.map(c => {
-    const v = naVista(c); if (v) nVista++;
-    return { c, v, dv: calculateDistance(refLat, refLng, c.lat, c.lng) };
-  }).sort((a, b) => ((b.v ? 1 : 0) - (a.v ? 1 : 0))
-    || (!comColunaDestaque && a.v && b.v ? ((b.c.featured ? 1 : 0) - (a.c.featured ? 1 : 0)) : 0)
-    || (_nearbySort === 'rating' ? ((b.c.rating || 0) - (a.c.rating || 0)) : (a.dv - b.dv)));
-  // Com empresas no ecrã, a secção lista só essas (o botão "10 de N" bate
-  // certo com o contador); sem nenhuma à vista, mostra as mais próximas.
-  if (bb && nVista > 0) _nearbyData = _nearbyData.slice(0, nVista);
-  if (countEl) countEl.textContent = bb ? nVista : filtered.length;
+  // Filtra primeiro o que está no ecrã e só esse subconjunto é medido e
+  // ordenado (antes: distância e sort das 44k a cada moveend). Com empresas no
+  // ecrã, a secção lista só essas (o botão "10 de N" bate certo com o
+  // contador); sem nenhuma à vista, mostra as mais próximas de todas.
+  const emVista = bb ? filtered.filter(naVista) : filtered;
+  const nVista = emVista.length;
+  const haVista = nVista > 0;
+  _nearbyData = (haVista ? emVista : filtered).map(c => ({ c, v: haVista, dv: calculateDistance(refLat, refLng, c.lat, c.lng) }))
+    .sort((a, b) => (!comColunaDestaque && a.v && b.v ? ((b.c.featured ? 1 : 0) - (a.c.featured ? 1 : 0)) : 0)
+      || (_nearbySort === 'rating' ? ((b.c.rating || 0) - (a.c.rating || 0)) : (a.dv - b.dv)));
+  if (countEl) countEl.textContent = (bb ? nVista : filtered.length).toLocaleString('pt-PT');
   listEl.innerHTML = '';
   _nearbyRendered = 0;
   _appendNearbyCards(listEl, Math.min(_NEARBY_PAGE, _nearbyData.length));
@@ -9830,6 +9930,16 @@ async function openDetail(id) {
   // credentials gated for this viewer — and re-render.
   _renderDetailPanel(c);
   try { _sizeDetailPanel(); } catch (_) {}
+  // Vista do mapa antes da ficha, para o closeDetail lá voltar. Só quando a
+  // ficha estava fechada: abrir outra empresa com ela aberta (ou o swipe
+  // lateral) não substitui a vista de partida. cmc: uma pesquisa de local, o
+  // "localizar" ou um país trocam o currentMapCenter — aí fechar não desfaz.
+  try {
+    if (map && window._mapEverShown && !document.getElementById('detailPanel').classList.contains('open')) {
+      const ml = map._ml, ce = ml.getCenter();
+      window._vistaAntesFicha = { center: [ce.lng, ce.lat], zoom: ml.getZoom(), pitch: ml.getPitch(), bearing: ml.getBearing(), cmc: currentMapCenter, mexeu: false };
+    }
+  } catch (_) {}
   document.getElementById('detailPanel').classList.add('open');
   document.body.classList.add('dp-aberto');
   const _dpLat = parseFloat(c.lat), _dpLng = parseFloat(c.lng);
@@ -9847,7 +9957,8 @@ async function openDetail(id) {
         window._vistaPendente = [_dpLat, _dpLng];
         if (sz.x > 0 && sz.y > 0) map.setView([_dpLat, _dpLng], 15, { animate: false });
       } else if (sz.x > 0 && sz.y > 0) {
-        map.flyTo([_dpLat, _dpLng], 15, { animate: true, duration: 1.2 });
+        map.flyTo([_dpLat, _dpLng], 15, { animate: true, duration: 1.2,
+          padding: { top: 0, bottom: 0, left: 0, right: _dpTapaMapa() } });
       } else {
         map.setView([_dpLat, _dpLng], 15, { animate: false });
       }
@@ -9896,6 +10007,21 @@ function _sizeDetailPanel() {
   panel.style.setProperty('--dp-right', Math.round((window.innerWidth - r.right) / f) + 'px');
 }
 window._sizeDetailPanel = _sizeDetailPanel;
+// Quanto da direita do mapa fica por baixo da ficha, mais uma margem: o flyTo
+// do openDetail põe o pin na parte do mapa que se vê. A ficha mede-se como em
+// _sizeDetailPanel (zoom do body × .7); o #map tem contra-zoom (1/--z), por
+// isso os px do MapLibre já são px visuais e a sobreposição não se divide.
+function _dpTapaMapa() {
+  try {
+    const dp = document.getElementById('detailPanel');
+    if (!map || !dp || window.innerWidth <= 1023) return 0;
+    const z = parseFloat(getComputedStyle(document.body).zoom) || 1;
+    const dir = parseFloat(dp.style.getPropertyValue('--dp-right')) || 0;
+    const esq = window.innerWidth - dir * z * 0.7 - dp.getBoundingClientRect().width;
+    const tapa = map.getContainer().getBoundingClientRect().right - esq;
+    return tapa > 0 ? Math.round(tapa + 24) : 0;
+  } catch (_) { return 0; }
+}
 window.addEventListener('resize', () => { try { _sizeDetailPanel(); } catch (_) {} }, { passive: true });
 
 function _renderDetailPanel(c) {
@@ -9934,9 +10060,10 @@ function _renderDetailPanel(c) {
   const specialtiesSection = document.getElementById('dpSpecialtiesSection');
   if (specialtiesSection) specialtiesSection.style.display = (c.tags && c.tags.length) ? '' : 'none';
 
-  // Credenciais & Áreas de Atividade — sectors are public; the alvará and
-  // certidão permanente are private credentials the backend only returns to
-  // authenticated users, so anonymous visitors get a "sign in to view" prompt.
+  // Credenciais & Áreas de Atividade — sectors are public. O alvará também é
+  // público (impic.pt; o backend envia-o a todos e o n.º já está no cabeçalho):
+  // aberto para todos. Só a certidão permanente é retirada aos visitantes —
+  // sem sessão a linha da certidão sai, em vez de um cadeado.
   const dpActivities = document.getElementById('dpActivities');
   if (dpActivities) {
     const sc = (tr && tr.sectors) || {};
@@ -9956,14 +10083,12 @@ function _renderDetailPanel(c) {
       dpNifBlock.style.display = 'none';
     }
   }
-  const _fillCredential = (el, value, emptyText) => {
+  const _fillCredential = (el, value, emptyText, soComSessao) => {
     if (!el) return;
     el.classList.remove('empty', 'locked');
-    if (!_isLoggedIn()) {
-      el.classList.add('locked');
-      el.innerHTML = `<button type="button" class="dp-cred-lock" onclick="closeDetail();openLogin()">`
-        + `🔒 <span>${escHtml((tr && tr.credLoginToView) || 'Inicie sessão para ver')}</span></button>`;
-    } else if (value) {
+    const doc = el.closest('.dp-cred-doc');
+    if (doc) doc.style.display = (soComSessao && !_isLoggedIn()) ? 'none' : '';
+    if (value) {
       el.textContent = value;
     } else {
       el.classList.add('empty');
@@ -9971,7 +10096,7 @@ function _renderDetailPanel(c) {
     }
   };
   _fillCredential(document.getElementById('dpCertidao'), c.certidao_permanente,
-    (tr && tr.certidaoPending) || 'Em verificação');
+    (tr && tr.certidaoPending) || 'Em verificação', true);
   _fillCredential(document.getElementById('dpAlvara'), c.alvara,
     (tr && tr.alvaraNotApplicable) || 'Não aplicável');
 
@@ -10121,13 +10246,13 @@ function _renderDetailPanel(c) {
     const me = JSON.parse(localStorage.getItem('hive_user') || 'null');
     const isOwner = !!(me && c.created_by != null && Number(c.created_by) === Number(me.id));
     claimRow.style.display = isOwner ? 'none' : '';
-    // Ficha incompleta (sem descrição real ou sem logótipo): o convite a
-    // reclamar ganha destaque — o dono é quem melhor a completa.
-    const incompleta = !!(c._full && (!String(c.description || '').trim() || !c.logo));
-    claimRow.classList.toggle('dp-claim-strong', incompleta && !isOwner);
+    // Convite discreto no fim da ficha. "Esta ficha está incompleta" saiu:
+    // aparecia a visitantes em ~2/3 das fichas PT (sem logótipo).
+    const _dpBody = document.querySelector('#detailPanel .dp-body');
+    if (_dpBody && claimRow.parentNode !== _dpBody) _dpBody.appendChild(claimRow);
     const _cb = claimRow.querySelector('button');
     if (_cb) {
-      const k = incompleta ? 'claimIncomplete' : 'claimLink';
+      const k = 'claimLink';
       _cb.setAttribute('data-i18n', k);
       _cb.textContent = t(k) || _cb.textContent;
     }
@@ -10177,6 +10302,8 @@ function closeDetail() {
   document.body.classList.remove('dp-aberto');
   selectedId = null;
   _hxMarcarPin(null);
+  // Sem mapa à vista não há flyTo (mais abaixo): o espaço da ficha sai já.
+  try { if (map && !(map.getSize().x > 0)) map._ml.setPadding({ top: 0, right: 0, bottom: 0, left: 0 }); } catch (_) {}
   // Drop ?company from the URL unless the close was triggered by popstate.
   if (!window._suppressCompanyHistory) {
     try {
@@ -10187,13 +10314,24 @@ function closeDetail() {
       }
     } catch (_) {}
   }
-  // Return to the location user was viewing. Guarded: flying a hidden or
-  // zero-size map throws "Invalid LatLng (NaN, NaN)" (the projection has no
-  // pixel space) — happens when the detail is closed from the list view or
-  // right after a tab switch, and the throw breaks the caller mid-flow.
+  // Volta à vista de antes da ficha (centro, zoom, inclinação e rumo, guardada
+  // no openDetail). Antes voava para currentMapCenter ao zoom 12, que não segue
+  // o mapa: com a vista do país inteiro guardada dava Ortiga/Belver. Se o
+  // utilizador mexeu no mapa com a ficha aberta (gesto ou balão de cluster) ou
+  // mudou de local (pesquisa, localizar, país), a câmara fica onde está. Em
+  // ambos os casos sai o espaço que o openDetail reservou à ficha (padding).
+  // Guarded: a hidden or zero-size map can't animate (detail closed from the
+  // list view or right after a tab switch).
+  const _v = window._vistaAntesFicha;
+  window._vistaAntesFicha = null;
   try {
     if (map && map.getSize().x > 0) {
-      map.flyTo(currentMapCenter, 12, { animate: true, duration: 1 });
+      const _semPad = { top: 0, right: 0, bottom: 0, left: 0 };
+      if (_v && !_v.mexeu && _v.cmc === currentMapCenter) {
+        map._ml.easeTo({ center: _v.center, zoom: _v.zoom, pitch: _v.pitch, bearing: _v.bearing, padding: _semPad, duration: 800 });
+      } else {
+        map._ml.easeTo({ padding: _semPad, duration: 400 });
+      }
     }
   } catch (_) {}
 }
@@ -10216,7 +10354,17 @@ function shareCompany() {
   // /e/:id serve og:title/description por empresa aos crawlers (pré-visualização
   // rica no WhatsApp/redes) e redireciona humanos para /?company=id
   const shareUrl = location.origin + '/e/' + c.id;
-  const text = c.name + ' — ' + c.description + '\n⭐ ' + c.rating + '/5 · ' + c.city;
+  // Só o que existe: sem descrição/avaliações/cidade saía "— null" e "⭐ 0/5".
+  const _sc = (translations[currentLang] || translations.pt).sectors || {};
+  const _setor = c.sector || (c.sectors && c.sectors[0]) || '';
+  const _alv = c.alvara && c.country === 'pt' ? (String(c.alvara).match(/\d+/) || [''])[0] : '';
+  const text = c.name
+    + (_setor ? ' — ' + (_sc[_setor] || _setor) : '')
+    + (c.city ? ' · ' + c.city : '')
+    + (_alv ? ' · ' + t('alvaraImpic') + ' ' + _alv : '')
+    + (c.reviews > 0 && c.rating > 0
+      ? ' · ★ ' + Number(c.rating).toLocaleString(currentLang, { minimumFractionDigits: 1, maximumFractionDigits: 1 }) + ' (' + c.reviews + ')'
+      : '');
   if (navigator.share) {
     navigator.share({ title: c.name, text: text, url: shareUrl }).catch(() => {});
   } else {
@@ -12812,22 +12960,12 @@ setTimeout(() => {
     });
   }
 
-  // Setup unified search input listener
-  const uniInput = document.getElementById('searchUnified');
-  if (uniInput) {
-    uniInput.addEventListener('keypress', function(e) {
-      if (e.key === 'Enter') {
-        submitUnifiedSearch(this.value);
-      }
-    });
-  }
-
-  // Setup search button
+  // Enter na caixa: ver o keydown "Enter na pesquisa" (único handler).
+  // Botão Pesquisar: o mesmo caminho do Enter (vazio limpa o filtro por nome).
   const btnSearch = document.getElementById('btnSearch');
   if (btnSearch) {
     btnSearch.addEventListener('click', function() {
-      const val = (document.getElementById('searchUnified') || {}).value || '';
-      if (val.trim()) submitUnifiedSearch(val);
+      submitUnifiedSearch((document.getElementById('searchUnified') || {}).value || '');
     });
   }
 }, 100);
@@ -13681,7 +13819,10 @@ function fitSectorBar() {
     let fs = 15;
     for (; fs > 13; fs--) {
       ub.style.setProperty('--cat-fs', fs + 'px');
-      if (container.scrollWidth <= container.clientWidth + 1) break;
+      // Mede a barra inteira: o botão "Todas" fica fora do .sector-filter-container,
+      // que encolhe até ao próprio conteúdo e nunca "transborda" — medido sozinho,
+      // o último separador saía cortado na borda (1025-1090px com zoom 0,92).
+      if (ub.scrollWidth <= ub.clientWidth + 1) break;
     }
     ub.style.setProperty('--cat-fs', fs + 'px');
   } catch (e) {}
@@ -15420,6 +15561,9 @@ function _renderSearchSuggest(val) {
 }
 function _hideSuggest() { const b = document.getElementById('searchSuggestBox'); if (b) b.style.display = 'none'; }
 function suggestPickCity(label, lat, lng) {
+  // Centro = MEDIANA das empresas da localidade: o índice guarda a 1.ª empresa,
+  // que pode ter uma morada IMPIC empilhada noutro ponto.
+  try { const g = _tnGeoCatalogo(label, 1); if (g) { lat = g.lat; lng = g.lng; } } catch (_) {}
   _ssRemember({ t: 'city', label: label, lat: lat, lng: lng });
   _hideSuggest();
   const input = document.getElementById('searchUnified');
@@ -15472,7 +15616,8 @@ function _savedMapView() {
   try {
     const v = JSON.parse(localStorage.getItem('hivex_map_view') || 'null');
     if (v && isFinite(v.lat) && isFinite(v.lng) && isFinite(v.z) &&
-        Math.abs(v.lat) <= 90 && Math.abs(v.lng) <= 180) return v;
+        Math.abs(v.lat) <= 90 && Math.abs(v.lng) <= 180 &&
+        Date.now() - (v.ts || 0) < 7 * 864e5) return v;   // só vistas com < 7 dias
   } catch (_) {}
   return null;
 }
@@ -15493,8 +15638,16 @@ function _savedMapView() {
     clearTimeout(_mvT);
     _mvT = setTimeout(() => {
       try {
+        // O voo da ficha (zoom 15 sobre uma empresa) não é a vista do utilizador,
+        // e uma zona com < 10 empresas não deve ser a próxima abertura do mapa:
+        // nesses casos fica a última vista boa.
+        if (document.body.classList.contains('dp-aberto')) return;
+        const b = _nearbyViewBounds();
+        let n = 0;
+        if (b) for (const e of companies) { if (e.lat >= b.s && e.lat <= b.n && e.lng >= b.w && e.lng <= b.e && ++n >= 10) break; }
+        if (n < 10) return;
         const c = map.getCenter();
-        localStorage.setItem('hivex_map_view', JSON.stringify({ lat: c.lat, lng: c.lng, z: map.getZoom() }));
+        localStorage.setItem('hivex_map_view', JSON.stringify({ lat: c.lat, lng: c.lng, z: map.getZoom(), ts: Date.now() }));
       } catch (_) {}
     }, 400);
   });
@@ -16525,11 +16678,14 @@ function _offlineBanner(mostrar) {
 window.addEventListener('online', () => { _offlineBanner(false); try { loadCompaniesFromDB({ full: true }); } catch (_) {} });
 window.addEventListener('offline', () => { if (!companies.length) _offlineBanner(true); });
 
-// Enter na pesquisa: aplica e fecha o teclado
+// Enter na pesquisa: faz a pesquisa explícita (submitUnifiedSearch: um lugar
+// centra o mapa, ou define o "Onde?" sem mapa; senão, filtro por nome) e fecha
+// o teclado. É o único handler do Enter: o preventDefault deste keydown matava o
+// keypress que chamava submitUnifiedSearch, e o Enter só reaplicava os filtros.
 try {
   const _su = document.getElementById('searchUnified');
   if (_su) _su.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') { e.preventDefault(); _su.blur(); applyFilters.now(); showToast(t('searchUpdated')); }
+    if (e.key === 'Enter' && !e.isComposing) { e.preventDefault(); _su.blur(); submitUnifiedSearch(_su.value); }
   });
 } catch (_) {}
 

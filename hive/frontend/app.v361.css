@@ -4312,7 +4312,11 @@ button,input,select,textarea{font-family:inherit}
 #detailPanel .btn-dp-directions{background:var(--surface) !important;color:var(--text) !important;border:1px solid var(--border) !important}
 #detailPanel .btn-dp-directions:hover{border-color:var(--primary) !important;color:var(--primary) !important;transform:none !important}
 #detailPanel .dp-quote-bar .btn-quote-secondary{font-size:var(--dpf-sm) !important;font-weight:600 !important;box-shadow:none !important}
-#dpClaimRow button{font-size:var(--dpf-sm) !important;font-weight:600 !important}
+#dpClaimRow{order:11}
+#dpClaimRow button{font-size:var(--dpf-xs) !important;font-weight:600 !important}
+#dpClaimRow button::after{content:" →"}
+#dpClaimRow button:hover{text-decoration:underline}
+[data-theme="dark"] #dpClaimRow button{color:#93c5fd !important}
 .dp-social-link{text-decoration:none !important}
 #detailPanel .dp-social-website{background:var(--surface) !important;color:var(--primary) !important;border:1px solid var(--border) !important;box-shadow:none !important}
 #detailPanel .dp-social-website:hover{border-color:var(--primary) !important;transform:none !important}
