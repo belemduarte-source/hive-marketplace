@@ -3893,16 +3893,12 @@ for (const _L of Object.values(translations)) {
 }
 
 // ── LANGUAGE STATE ─────────────────────────────────────────────────────────────
+// O idioma da 1.ª visita decide-se antes, no script de idioma do <head> do
+// index.html, e fica em hive_lang. Aqui já não dava: o registo de visitas cria
+// o hivex_vid antes de o bundle correr. Sem hive_lang (quem já cá esteve, robôs,
+// localStorage indisponível) fica o PT de sempre.
 let currentLang = (function() {
-  try {
-    const saved = localStorage.getItem('hive_lang');
-    if (saved) return saved;
-    // Visitantes que já cá estiveram (têm o id de visita) mantêm o PT de
-    // sempre — o idioma automático só se aplica a PRIMEIRAS visitas.
-    if (localStorage.getItem('hivex_vid')) return 'pt';
-    const nav = (navigator.language || 'pt').slice(0, 2).toLowerCase();
-    return ['pt', 'en', 'fr', 'es', 'de'].includes(nav) ? nav : 'en';
-  } catch (_) { return 'pt'; }
+  try { return localStorage.getItem('hive_lang') || 'pt'; } catch (_) { return 'pt'; }
 })();
 
 // shorthand helper
@@ -4884,7 +4880,7 @@ function _i18nRefreshLists() {
   _i18nCache.dirty = false;
 }
 
-function applyI18n() {
+function _i18nTextos() {
   const tr = translations[currentLang];
   if (_i18nCache.dirty) _i18nRefreshLists();
 
@@ -4912,6 +4908,10 @@ function applyI18n() {
     const k = el.getAttribute('data-i18n-aria');
     if (tr[k] !== undefined) el.setAttribute('aria-label', tr[k]);
   }
+}
+function applyI18n() {
+  const tr = translations[currentLang];
+  _i18nTextos();
 
   // Unified search placeholder (one element, no querySelectorAll cost)
   const _uniPh = {
@@ -6786,8 +6786,9 @@ if (_semMapa()) {
   try {
     maplibregl.setRTLTextPlugin('https://cdn.jsdelivr.net/npm/@mapbox/mapbox-gl-rtl-text@0.2.3/mapbox-gl-rtl-text.min.js', true);
   } catch (_) {}
-  const _tabSearchEl = document.getElementById('tab-search');
-  if (_tabSearchEl) { _tabSearchEl.style.display = 'flex'; _tabSearchEl.style.visibility = 'hidden'; }
+  // O #tab-search já está visível (CSS), por isso o mapa nasce com tamanho real.
+  // Não o esconder aqui: um display:none pelo meio refazia a caixa do #mapEmptyHint
+  // (o LCP no PSI) e o LCP recomeçava já depois do bundle.
   const _ml = new maplibregl.Map({
     container: 'map',
     style: _hxDark() ? HX_STYLE_DARK : HX_STYLE_LIGHT,
@@ -6829,7 +6830,6 @@ if (_semMapa()) {
     if (_hxPitchBusy) { _hxPitchBusy = false; return; }
     _hx3dOn = _ml.getPitch() > 5;   // inclinação manual (2 dedos / botão direito) manda
   });
-  if (_tabSearchEl) { _tabSearchEl.style.display = 'none'; _tabSearchEl.style.visibility = ''; }
   // Slate-blue instead of orange: the radius is context, not a call to action —
   // keeps orange reserved for primary CTAs (credibility pass).
   radiusCircle = new HxCircle(PORTUGAL_CENTER, { radius: 600000 });
@@ -8952,7 +8952,7 @@ function _appendListCards(frag, data, start, end) {
         ${phoneFrag}
         ${waFrag}
         ${(c.email && String(c.email).trim())
-          ? `<button class="btn-slc-contact" onclick="event.stopPropagation();pedirOrcamento(${c.id})" data-i18n="btnRequestQuote">Pedir Orçamento</button>`
+          ? `<button class="btn-slc-contact" onclick="event.stopPropagation();pedirOrcamento(${c.id})" data-i18n="btnRequestQuote">${escHtml(t('btnRequestQuote'))}</button>`
           : (c.phone ? '' : `<button class="btn-slc-contact" onclick="event.stopPropagation();_abrirDaLista(${c.id})" data-i18n="recsSeeProfile">${escHtml(t('recsSeeProfile'))}</button>`)}
       </div>`;
     frag.appendChild(div);
@@ -13796,6 +13796,11 @@ if (_origRenderSectorFilters) {
 // size adapts to the language.
 function fitSectorBar() {
   try {
+    // Sem mapa (telemóveis e tablets) esta barra nunca aparece: a .unified-bar
+    // está display:none e a classe só muda ao recarregar. Sair já — senão, dos
+    // 769px para cima, a largura 0 prendia o "volta a tentar" abaixo num ciclo
+    // sem fim (uma leitura de layout a cada 200 ms).
+    if (_semMapa()) return;
     const ub = document.getElementById('sectorFilters');
     if (!ub) return;
     const container = ub.querySelector('.sector-filter-container');
@@ -13852,8 +13857,7 @@ window.addEventListener('resize', () => {
           mapPinHint:'Toque num pin para ver os detalhes da empresa.',
           faqTitle:'Perguntas Frequentes', faqMeta:'Respostas rápidas às dúvidas mais comuns',
           featuredSeeAllBig:'Ver todas as empresas no mapa →',
-          regFoundedYear:'Ano de fundação', regBusinessHours:'Horário', regPortfolio:'Galeria de trabalhos',
-          regPortfolioHint:'Cole URLs de imagens dos seus trabalhos. Para já apenas links externos (ex: Imgur, Unsplash).',
+          regFoundedYear:'Ano de fundação', regBusinessHours:'Horário',
           detailPortfolio:'Galeria de trabalhos',
           compareTitle:'Comparar empresas', compareClear:'Limpar', compareGo:'Comparar →',
           forgotTitle:'Recuperar palavra-passe',
@@ -13878,8 +13882,7 @@ window.addEventListener('resize', () => {
           mapPinHint:'Tap a pin to see company details.',
           faqTitle:'Frequently Asked Questions', faqMeta:'Quick answers to common questions',
           featuredSeeAllBig:'See all companies on the map →',
-          regFoundedYear:'Founded year', regBusinessHours:'Business hours', regPortfolio:'Work gallery',
-          regPortfolioHint:'Paste image URLs of your work. For now external links only (e.g. Imgur, Unsplash).',
+          regFoundedYear:'Founded year', regBusinessHours:'Business hours',
           detailPortfolio:'Work gallery',
           compareTitle:'Compare companies', compareClear:'Clear', compareGo:'Compare →',
           forgotTitle:'Reset your password',
@@ -13904,8 +13907,7 @@ window.addEventListener('resize', () => {
           mapPinHint:"Touchez un pin pour voir les détails de l'entreprise.",
           faqTitle:'Questions fréquentes', faqMeta:'Réponses rapides aux questions courantes',
           featuredSeeAllBig:'Voir toutes les entreprises sur la carte →',
-          regFoundedYear:'Année de création', regBusinessHours:'Horaires', regPortfolio:'Galerie de travaux',
-          regPortfolioHint:"Collez les URLs d'images de vos réalisations. Pour l'instant uniquement des liens externes.",
+          regFoundedYear:'Année de création', regBusinessHours:'Horaires',
           detailPortfolio:'Galerie de travaux',
           compareTitle:'Comparer les entreprises', compareClear:'Effacer', compareGo:'Comparer →',
           forgotTitle:'Réinitialiser le mot de passe',
@@ -13930,8 +13932,7 @@ window.addEventListener('resize', () => {
           mapPinHint:'Toque un pin para ver los detalles de la empresa.',
           faqTitle:'Preguntas Frecuentes', faqMeta:'Respuestas rápidas a las dudas más comunes',
           featuredSeeAllBig:'Ver todas las empresas en el mapa →',
-          regFoundedYear:'Año de fundación', regBusinessHours:'Horario', regPortfolio:'Galería de trabajos',
-          regPortfolioHint:'Pegue URLs de imágenes de sus trabajos. Por ahora solo enlaces externos.',
+          regFoundedYear:'Año de fundación', regBusinessHours:'Horario',
           detailPortfolio:'Galería de trabajos',
           compareTitle:'Comparar empresas', compareClear:'Limpiar', compareGo:'Comparar →',
           forgotTitle:'Recuperar contraseña',
@@ -13956,8 +13957,7 @@ window.addEventListener('resize', () => {
           mapPinHint:'Tippen Sie auf einen Pin, um Firmendetails zu sehen.',
           faqTitle:'Häufige Fragen', faqMeta:'Schnelle Antworten auf gängige Fragen',
           featuredSeeAllBig:'Alle Unternehmen auf der Karte ansehen →',
-          regFoundedYear:'Gründungsjahr', regBusinessHours:'Öffnungszeiten', regPortfolio:'Arbeitsgalerie',
-          regPortfolioHint:'Fügen Sie Bild-URLs Ihrer Arbeiten ein. Aktuell nur externe Links.',
+          regFoundedYear:'Gründungsjahr', regBusinessHours:'Öffnungszeiten',
           detailPortfolio:'Arbeitsgalerie',
           compareTitle:'Unternehmen vergleichen', compareClear:'Löschen', compareGo:'Vergleichen →',
           forgotTitle:'Passwort zurücksetzen',
@@ -13976,6 +13976,12 @@ window.addEventListener('resize', () => {
     Object.keys(extra).forEach(lang => {
       if (translations[lang]) Object.assign(translations[lang], extra[lang]);
     });
+    // O setLanguage do arranque corre antes desta fusão: sem isto, estes textos
+    // (o banner de cookies, a primeira coisa a que quem chega de fora responde)
+    // ficavam em PT até se mudar de língua à mão. Em PT não faz falta: o HTML já é PT.
+    // (regPortfolio/regPortfolioHint saíram deste bloco: eram os textos antigos dos links de
+    // imagens e tapavam os das fotos, que estão no dicionário principal e no HTML.)
+    if (currentLang !== 'pt') { try { _i18nTextos(); } catch (_) {} }
   }
 })();
 
